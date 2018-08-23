@@ -74,7 +74,7 @@
     </div>
 
     <div class="constructionInstallationEngineeringFeeB" style="display: none;">
-        <jsp:include page="constructionInstallationEngineeringFeeB.jsp"></jsp:include>
+        <jsp:include page="../architecturalEngineering/buildingEngineering.jsp"></jsp:include>
         <div class="form-group">
             <div class="col-sm-6">
             </div>
@@ -932,27 +932,27 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
                 type: "get",
-                data: {projectId:"${projectInfo.id}"},
+                data: {projectId: "${projectInfo.id}"},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        var cost = result.data.DataInfrastructureCost;
-                        var matchingCost = result.data.InfrastructureMatchingCost;
-                        var option = "<option value=''>请选择</option>";
-                        if (cost.length > 0) {
-                            for (var i = 0; i < cost.length; i++) {
-                                option += "<option value='" + cost[i].number + "'>" + cost[i].name + "</option>";
+                        var infrastructureVo = result.data.InfrastructureVo;
+                        var optionA = "<option value=''>请选择</option>";
+                        var optionB = "<option value=''>请选择</option>";
+                        if (infrastructureVo.length > 0) {
+                            var temp = null;
+                            for (var i = 0; i < infrastructureVo.length; i++) {
+                                temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
+                                optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
+                                temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
+                                optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                             }
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(optionA);
                             $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).select2();
-                        }
-                        if (matchingCost.length > 0) {
-                            for (var i = 0; i < matchingCost.length; i++) {
-                                option += "<option value='" + matchingCost[i].number + "'>" + matchingCost[i].name + "</option>";
-                            }
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(option);
+                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                             $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).select2();
                         }
+
                     }
                 },
                 error: function (result) {
@@ -982,10 +982,26 @@
             var data = constructEngineeringObject.getCalculatedResults();
             build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().constructionInstallationEngineeringFee.key, data);
             build.inputFun.constructionInstallationEngineeringFeeInput(data);
+            build.constructionInstallationEngineeringFee.saveAndUpdate(constructEngineeringObject.loadData());
             $("." + build.config().engineeringFee).hide();
         },
         close: function () {
             $("." + build.config().engineeringFee).hide();
+        },
+        saveAndUpdate:function (data) {
+            var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {jsonContent:JSON.stringify(data),type:"MdCostBuilding",id:"${mdCostAndDevelopmentOther.id}"},
+                dataType: "json",
+                success: function (result) {
+                    toastr.success('成功');
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 
@@ -1331,7 +1347,8 @@
                                             建筑结构
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control buildingStructure" name="buildingStructure" readonly="readonly"
+                                            <input type="text" class="form-control buildingStructure"
+                                                   name="buildingStructure" readonly="readonly"
                                                    placeholder="建筑结构" required="required">
                                         </div>
                                     </div>

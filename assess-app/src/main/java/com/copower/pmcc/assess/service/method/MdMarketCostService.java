@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
@@ -15,6 +16,7 @@ import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostServic
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -59,68 +61,75 @@ public class MdMarketCostService {
     @Autowired
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
 
-    public int addMdCost(MdCost mdCost){
+    public void saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
+        if (mdCostAndDevelopmentOther.getId() == null) {
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+            }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+            }
+            mdCostAndDevelopmentOther.setPid(0);
+            mdCostAndDevelopmentOtherService.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+        } else {
+            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+        }
+    }
+
+    public int addMdCost(MdCost mdCost) {
         mdCost.setCreator(commonService.thisUserAccount());
         return mdCostDao.addEstateNetwork(mdCost);
     }
 
-    public boolean updateMdCostBuilding(MdCostBuilding mdCostBuilding){
+    public boolean updateMdCostBuilding(MdCostBuilding mdCostBuilding) {
         return mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
     }
 
-    public boolean updateMdCostConstruction(MdCostConstruction mdCostConstruction){
+    public boolean updateMdCostConstruction(MdCostConstruction mdCostConstruction) {
         return mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
     }
 
-    public MdCost getByMdCostId(int id){
+    public MdCost getByMdCostId(int id) {
         MdCost mdCost = mdCostDao.getEstateNetworkById(id);
         return mdCost;
     }
 
-    public List<MdCost> getMdCostList(MdCost mdCost){
+    public List<MdCost> getMdCostList(MdCost mdCost) {
         return mdCostDao.getEstateNetworkList(mdCost);
     }
 
-    public boolean addMdCostBuilding(MdCostBuilding mdCostBuilding) {
-        try {
-            mdCostBuilding.setCreator(commonService.thisUserAccount());
-            int id = mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
-            mdCostBuilding.setId(id);
-            return true;
-        } catch (Exception e1) {
-        }
-        return false;
+    public int addMdCostBuilding(MdCostBuilding mdCostBuilding) {
+        mdCostBuilding.setCreator(commonService.thisUserAccount());
+        return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
 
     }
 
-    public boolean addMdCostConstruction(MdCostConstruction mdCostConstruction) {
-        try {
-            mdCostConstruction.setCreator(commonService.thisUserAccount());
-            int id = mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
-            mdCostConstruction.setId(id);
-            return true;
-        } catch (Exception e1) {
-            return false;
-        }
+    public int addMdCostConstruction(MdCostConstruction mdCostConstruction) {
+        mdCostConstruction.setCreator(commonService.thisUserAccount());
+        return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
     }
 
-    public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding){
-        return  mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
+    public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding) {
+        return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
     }
 
-    public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction){
+    public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction) {
         return mdCostConstructionDao.getEstateNetworkList(mdCostConstruction);
     }
-    public List<InfrastructureVo> infrastructureList(ProjectInfo projectInfo){
+
+    public List<InfrastructureVo> infrastructureList(ProjectInfo projectInfo) {
         List<InfrastructureVo> vos = dataInfrastructureService.infrastructureList(new Infrastructure());
         List<InfrastructureVo> tela = Lists.newArrayList();
-        if (projectInfo==null){
+        if (projectInfo == null) {
             return vos;
         }
         String province = projectInfo.getProvince();
-        for (InfrastructureVo vo:vos){
-            if (Objects.equal(vo.getProvince(),province)){
-                tela.add(vo);
+        String city = projectInfo.getCity();
+        for (InfrastructureVo vo : vos) {
+            if (Objects.equal(vo.getProvince(), province)) {
+                if (Objects.equal(vo.getCity(), city)) {
+                    tela.add(vo);
+                }
             }
         }
         return tela;
@@ -146,16 +155,16 @@ public class MdMarketCostService {
         return costList;
     }
 
-    public List<InfrastructureMatchingCost> infrastructureMatchingCosts() {
-        List<InfrastructureMatchingCost> infrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts();
-        Ordering<InfrastructureMatchingCost> firstOrdering = Ordering.from(new Comparator<InfrastructureMatchingCost>() {
+    public List<DataInfrastructureMatchingCost> infrastructureMatchingCosts() {
+        List<DataInfrastructureMatchingCost> infrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts();
+        Ordering<DataInfrastructureMatchingCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureMatchingCost>() {
             @Override
-            public int compare(InfrastructureMatchingCost o1, InfrastructureMatchingCost o2) {
+            public int compare(DataInfrastructureMatchingCost o1, DataInfrastructureMatchingCost o2) {
                 return o1.getGmtCreated().compareTo(o2.getGmtCreated());
             }
         }).reverse();//排序 并且反转
         Collections.sort(infrastructureMatchingCosts, firstOrdering);
-        List<InfrastructureMatchingCost> costList = Lists.newArrayList();
+        List<DataInfrastructureMatchingCost> costList = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(infrastructureMatchingCosts)) {
             costList.add(infrastructureMatchingCosts.get(0));
         }

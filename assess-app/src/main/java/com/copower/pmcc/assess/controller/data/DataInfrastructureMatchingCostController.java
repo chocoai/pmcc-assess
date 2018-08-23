@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
 import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -28,7 +29,7 @@ public class DataInfrastructureMatchingCostController {
 
     @ResponseBody
     @RequestMapping(value = "/addAndEdit",name = "新增或者编辑",method = RequestMethod.POST)
-    public HttpResult addAndEdit(InfrastructureMatchingCost infrastructureMatchingCost){
+    public HttpResult addAndEdit(DataInfrastructureMatchingCost infrastructureMatchingCost){
 
         try {
             if (infrastructureMatchingCost.getId() != null && infrastructureMatchingCost.getId() > 0){

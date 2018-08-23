@@ -1,21 +1,20 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class MdCostAndDevelopmentOther {
+public class DataInfrastructureMatchingCost {
     private Integer id;
+
+    private String name;
+
+    private BigDecimal number;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String jsonContent;
-
-    private String databaseName;
-
-    private String type;
 
     private Integer pid;
 
@@ -25,6 +24,22 @@ public class MdCostAndDevelopmentOther {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public BigDecimal getNumber() {
+        return number;
+    }
+
+    public void setNumber(BigDecimal number) {
+        this.number = number;
     }
 
     public String getCreator() {
@@ -49,30 +64,6 @@ public class MdCostAndDevelopmentOther {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public String getDatabaseName() {
-        return databaseName;
-    }
-
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName == null ? null : databaseName.trim();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 
     public Integer getPid() {

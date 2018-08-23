@@ -223,11 +223,9 @@
 
     optionsBuildBox.mdCostBuildingInit = function (data) {
         $("#frmBuild").initForm(data);
-        $("#frmBuild :input").attr("readonly", "readonly");
     };
     optionsBuildBox.mdCostConstructionInit = function (data) {
         $("#frmConstruction").initForm(data);
-        $("#frmConstruction :input").attr("readonly", "readonly");
     };
     optionsBuildBox.detailInit = function () {
         var mdCostBuilding = "${mdCostBuilding}";
@@ -252,19 +250,9 @@
                 console.log("json parse 失败!")
             }
         }
+        $("#frmBuild :input").attr("readonly", "readonly");
+        $("#frmConstruction :input").attr("readonly", "readonly");
     }
-
-    optionsBuildBox.getMdCostBuilding = function () {
-        var jsonParams = formParams("frmBuild");
-        jsonParams.id = "${mdCostBuilding.id}";//确保修改能成功
-        return jsonParams;
-    };
-    optionsBuildBox.getMdCostConstruction = function () {
-        var jsonParams = formParams("frmConstruction");
-        jsonParams.id = "${mdCostConstruction.id}";//确保修改能成功
-        return jsonParams;
-    };
-
 
     $(function () {
         optionsBuildBox.tabControl();

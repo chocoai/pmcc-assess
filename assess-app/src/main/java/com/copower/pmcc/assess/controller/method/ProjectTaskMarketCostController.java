@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.controller.method;
 
-import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
-import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -36,7 +34,6 @@ public class ProjectTaskMarketCostController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-
     @Autowired
     private MdMarketCostService mdMarketCostService;
 
@@ -48,11 +45,22 @@ public class ProjectTaskMarketCostController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/saveAndUpdateMdCostAndDevelopmentOther", name = "建筑安装工程费或者成新率或者其他什么的", method = RequestMethod.POST)
+    public HttpResult saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther){
+        try {
+            mdMarketCostService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult(e1.getMessage());
+        }
+        return HttpResult.newCorrectResult("success");
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用以及基础设施维护", method = RequestMethod.GET)
     public HttpResult listDataInfrastructureCostAndInfrastructureMatchingCost(Integer projectId) {
         Map<Object, Object> map = Maps.newHashMap();
         map.put(DataInfrastructureCost.class.getSimpleName(), mdMarketCostService.infrastructureCostList());
-        map.put(InfrastructureMatchingCost.class.getSimpleName(), mdMarketCostService.infrastructureMatchingCosts());
+        map.put(DataInfrastructureMatchingCost.class.getSimpleName(), mdMarketCostService.infrastructureMatchingCosts());
         if (projectId == null) {
             map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(null));
         }else {

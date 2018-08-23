@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdMarketCostDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
@@ -48,6 +49,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private MdMarketCostService mdMarketCostService;
     @Autowired
     private SchemeSupportInfoService schemeSupportInfoService;
+    @Autowired
+    private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -60,7 +63,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         MdCost mdCost = new MdCost();
         mdCost.setPrice(BigDecimal.valueOf(10));
         mdCost.setArea(BigDecimal.valueOf(20));
-        modelAndView.addObject("mdCost",mdCost);
+        modelAndView.addObject("mdCost", mdCost);
+        mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
 
@@ -137,6 +141,11 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                     mdCostBuilding = mdCostBuildings.get(0);
                     modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
                     modelAndView.addObject("mdCostBuilding", mdCostBuilding);
+                    if (mdCostBuilding.getEngineeringId() != null) {
+                        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostBuilding.getEngineeringId());
+                        modelAndView.addObject("mdCostAndDevelopmentOther", mdCostAndDevelopmentOther);
+                        modelAndView.addObject("mdCostAndDevelopmentOtherJSON", mdCostAndDevelopmentOther.getJsonContent());
+                    }
                 }
             }
             if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostConstruction.class))) {
@@ -147,14 +156,20 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                     mdCostConstruction = mdCostConstructionList.get(0);
                     modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
                     modelAndView.addObject("mdCostConstruction", mdCostConstruction);
+                    if (mdCostConstruction.getEngineeringId() != null) {
+                        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getEngineeringId());
+                        modelAndView.addObject("mdCostAndDevelopmentOther", mdCostAndDevelopmentOther);
+                        modelAndView.addObject("mdCostAndDevelopmentOtherJSON", mdCostAndDevelopmentOther.getJsonContent());
+                    }
                 }
             }
 
         }
+        //手动注入 委估对象数据
         MdCost mdCost = new MdCost();
         mdCost.setPrice(BigDecimal.valueOf(10));
         mdCost.setArea(BigDecimal.valueOf(20));
-        modelAndView.addObject("mdCost",mdCost);
+        modelAndView.addObject("mdCost", mdCost);
         return modelAndView;
     }
 
@@ -176,6 +191,15 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         MdMarketCostDto mdMarketCostDto = JSON.parseObject(formData, MdMarketCostDto.class);
         MdCost mdCost = new MdCost();
+        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
+        mdCostAndDevelopmentOther = new MdCostAndDevelopmentOther();
+        mdCostAndDevelopmentOther.setPid(0);
+        List<MdCostAndDevelopmentOther> otherList = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOtherList(mdCostAndDevelopmentOther);
+        if (!ObjectUtils.isEmpty(otherList)){
+            mdCostAndDevelopmentOther = otherList.get(0);
+        }else {
+            mdCostAndDevelopmentOther = null;
+        }
         int id = 0;
 
         if (CollectionUtils.isNotEmpty(mdMarketCostDto.getSupportInfoList())) {
@@ -196,7 +220,12 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             } else {
                 mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
             }
-            mdMarketCostService.addMdCostBuilding(mdCostBuilding);
+            if (mdCostAndDevelopmentOther != null){
+                mdCostBuilding.setEngineeringId(mdCostAndDevelopmentOther.getId());
+            }
+            int pid = mdMarketCostService.addMdCostBuilding(mdCostBuilding);
+            mdCostAndDevelopmentOther.setPid(pid);
+            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         }
         if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostConstruction())) {//在建工程
             mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
@@ -209,7 +238,12 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             } else {
                 mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
             }
-            mdMarketCostService.addMdCostConstruction(mdCostConstruction);
+            if (mdCostAndDevelopmentOther != null){
+                mdCostConstruction.setEngineeringId(mdCostAndDevelopmentOther.getId());
+            }
+            int pid = mdMarketCostService.addMdCostConstruction(mdCostConstruction);
+            mdCostAndDevelopmentOther.setPid(pid);
+            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         }
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());

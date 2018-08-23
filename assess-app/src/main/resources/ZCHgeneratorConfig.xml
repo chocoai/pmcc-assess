@@ -41,7 +41,7 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_data_infrastructure_cost" domainObjectName="DataInfrastructureCost">
+        <table tableName="tb_md_cost_and_development_other" domainObjectName="MdCostAndDevelopmentOther">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table tableName="tb_data_infrastructure_cost" domainObjectName="DataInfrastructureCost">-->

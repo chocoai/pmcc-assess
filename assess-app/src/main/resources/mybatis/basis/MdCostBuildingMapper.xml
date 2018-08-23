@@ -11,6 +11,7 @@
     <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="cost_id" property="costId" jdbcType="INTEGER" />
+    <result column="engineering_id" property="engineeringId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, new_rate, assess_price, construction_installation_engineering_fee, 
-    json_content, cost_id
+    json_content, cost_id, engineering_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostBuildingExample" >
     select
@@ -110,10 +111,12 @@
     </selectKey>
     insert into tb_md_cost_building (creator, gmt_created, gmt_modified, 
       new_rate, assess_price, construction_installation_engineering_fee, 
-      json_content, cost_id)
+      json_content, cost_id, engineering_id
+      )
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{newRate,jdbcType=VARCHAR}, #{assessPrice,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
-      #{jsonContent,jdbcType=CHAR}, #{costId,jdbcType=INTEGER})
+      #{jsonContent,jdbcType=CHAR}, #{costId,jdbcType=INTEGER}, #{engineeringId,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -145,6 +148,9 @@
       <if test="costId != null" >
         cost_id,
       </if>
+      <if test="engineeringId != null" >
+        engineering_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
@@ -170,6 +176,9 @@
       </if>
       <if test="costId != null" >
         #{costId,jdbcType=INTEGER},
+      </if>
+      <if test="engineeringId != null" >
+        #{engineeringId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -209,6 +218,9 @@
       <if test="record.costId != null" >
         cost_id = #{record.costId,jdbcType=INTEGER},
       </if>
+      <if test="record.engineeringId != null" >
+        engineering_id = #{record.engineeringId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -224,7 +236,8 @@
       assess_price = #{record.assessPrice,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{record.jsonContent,jdbcType=CHAR},
-      cost_id = #{record.costId,jdbcType=INTEGER}
+      cost_id = #{record.costId,jdbcType=INTEGER},
+      engineering_id = #{record.engineeringId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -256,6 +269,9 @@
       <if test="costId != null" >
         cost_id = #{costId,jdbcType=INTEGER},
       </if>
+      <if test="engineeringId != null" >
+        engineering_id = #{engineeringId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -268,7 +284,8 @@
       assess_price = #{assessPrice,jdbcType=DECIMAL},
       construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
       json_content = #{jsonContent,jdbcType=CHAR},
-      cost_id = #{costId,jdbcType=INTEGER}
+      cost_id = #{costId,jdbcType=INTEGER},
+      engineering_id = #{engineeringId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
