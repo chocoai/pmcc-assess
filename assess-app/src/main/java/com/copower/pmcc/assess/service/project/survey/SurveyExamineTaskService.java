@@ -1,28 +1,31 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyExamineTaskDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -72,7 +75,20 @@ public class SurveyExamineTaskService {
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
-
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ExamineBlockService examineBlockService;
+    @Autowired
+    private ExamineEstateLandStateService examineEstateLandStateService;
+    @Autowired
+    private ExamineEstateService examineEstateService;
+    @Autowired
+    private ExamineHouseService examineHouseService;
+    @Autowired
+    private ExamineHouseTradingService examineHouseTradingService;
+    @Autowired
+    private ExamineUnitService examineUnitService;
     /**
      * 获取调查任务
      *
@@ -465,4 +481,53 @@ public class SurveyExamineTaskService {
         return projectPlanDetailsService.getProjectDetails(projectPlanDetails);
     }
 
+    /**
+     * 保存调查信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void saveExamineDataInfo(String formData) throws BusinessException {
+        if (StringUtils.isBlank(formData))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        List<KeyValueDto> keyValueDtoList = JSON.parseArray(formData, KeyValueDto.class);
+        if (CollectionUtils.isNotEmpty(keyValueDtoList)) {
+            for (KeyValueDto keyValueDto : keyValueDtoList) {
+                switch (keyValueDto.getKey()) {
+                    case AssessExamineTaskConstant.FC_INDUSTRY_BLOCK_BASE:
+                    case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
+                        ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
+                        examineBlockService.saveBlock(examineBlock);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_ESTATE_BASE:
+                        ExamineEstate examineEstate = JSON.parseObject(keyValueDto.getValue(), ExamineEstate.class);
+                        examineEstateService.saveEstate(examineEstate);
+                        //更新附件
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineEstate.class), examineEstate.getId());
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_LAND_STATE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_ESTATE_LAND_STATE:
+                        ExamineEstateLandState examineEstateLandState = JSON.parseObject(keyValueDto.getValue(), ExamineEstateLandState.class);
+                        examineEstateLandStateService.saveEstateLandState(examineEstateLandState);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_UNIT_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_UNIT_BASE:
+                        ExamineUnit examineUnit = JSON.parseObject(keyValueDto.getValue(), ExamineUnit.class);
+                        examineUnitService.saveUnit(examineUnit);
+                        break;
+                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_BASE:
+                    case AssessExamineTaskConstant.FC_INDUSTRY_HOUSE_BASE:
+                        ExamineHouse examineHouse = JSON.parseObject(keyValueDto.getValue(), ExamineHouse.class);
+                        examineHouseService.saveHouse(examineHouse);
+                        //更新附件
+                        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineHouse.class), examineHouse.getId());
+                        break;
+                    case AssessExamineTaskConstant.FC_INDUSTRY_HOUSE_TRADING:
+                    case AssessExamineTaskConstant.FC_RESIDENCE_HOUSE_TRADING:
+                        ExamineHouseTrading examineHouseTrading = JSON.parseObject(keyValueDto.getValue(), ExamineHouseTrading.class);
+                        examineHouseTradingService.saveHouseTrading(examineHouseTrading);
+                        break;
+                }
+            }
+        }
+    }
 }

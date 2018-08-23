@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -34,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
@@ -202,6 +204,7 @@ public class SurveyCommonService {
      * @param userAccount
      * @param projectStatusEnum
      */
+    @Transactional(rollbackFor = Exception.class)
     public void updateExamineTaskStatus(Integer planDetailsId, String userAccount, ProjectStatusEnum projectStatusEnum) {
         //查询条件
         SurveyExamineTask where = new SurveyExamineTask();
@@ -212,6 +215,17 @@ public class SurveyCommonService {
         surveyExamineTask.setTaskStatus(projectStatusEnum.getKey());
 
         surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
+
+        //检查是否所有待处理的表单任务都已完成，如果完成则将关联的计划任务状态更新为finish
+        where = new SurveyExamineTask();
+        where.setPlanDetailsId(planDetailsId);
+        where.setTaskStatus(ProjectStatusEnum.WAIT.getKey());
+        List<SurveyExamineTask> list = surveyExamineTaskService.getSurveyExamineTaskList(where);
+        if(CollectionUtils.isEmpty(list)){
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
+            projectPlanDetailsService.updateProjectPlanDetails(planDetails);
+        }
     }
 
     /**
@@ -283,11 +297,10 @@ public class SurveyCommonService {
             projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
             projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
             List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
             for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
                 if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
                     projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
-                } else if (projectPlanDetailsVo.getPid().equals(planDetailsId)) {//第二层级为具体案例数据，可查看详情
-                    //暂不处理
                 }
                 if (CollectionUtils.isNotEmpty(projectTaskList)) {
                     for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
@@ -296,17 +309,15 @@ public class SurveyCommonService {
                         }
                     }
                 }
+
+                //设置查看url
+                if(StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount())&&projectPlanDetailsVo.getBisStart()){
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                }
             }
         }
         return planDetailsVoList;
     }
 
-    /**
-     * 判断该计划任务下的所有任务是否都已完成
-     * @param planDetailsId
-     * @return
-     */
-    public boolean isAllFinish(Integer planDetailsId){
-        return true;
-    }
+
 }

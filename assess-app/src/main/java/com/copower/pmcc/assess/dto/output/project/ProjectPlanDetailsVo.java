@@ -23,8 +23,6 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     private String excuteUrl;
 
-    private List<String> executeUrlList;
-
     private String declareFormName;
 
     private Boolean canAssignment;
@@ -69,14 +67,6 @@ public class ProjectPlanDetailsVo extends ProjectPlanDetails {
 
     public void setExcuteUrl(String excuteUrl) {
         this.excuteUrl = excuteUrl;
-    }
-
-    public List<String> getExecuteUrlList() {
-        return executeUrlList;
-    }
-
-    public void setExecuteUrlList(List<String> executeUrlList) {
-        this.executeUrlList = executeUrlList;
     }
 
     public String getDeclareFormName() {

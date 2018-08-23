@@ -3,6 +3,12 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 
@@ -21,15 +27,11 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
-                    <table class="table table-bordered" id="tb_List">
-                        <!-- cerare document add ajax data-->
-                    </table>
-
+                    <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
                 </div>
             </div>
 
@@ -40,7 +42,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}工作成果</h2>
+                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}工作成果</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -78,11 +80,11 @@
     </div>
 </div>
 </body>
-
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-        loadCaseList();
+        taskExploreIndex.getExploreTaskList();
 
         FileUtils.getFileShows({
             target: "file_upload_task",
@@ -99,43 +101,85 @@
         saveApprovalform("");
     }
 
-    function loadCaseList() {
-        var cols = [];
-        cols.push({field: 'houseName', title: '楼盘名称'});
-        cols.push({field: 'caseTypeName', title: '案例类型'});
-        cols.push({field: 'price', title: '单价'});
-        cols.push({field: 'dealCaondition', title: '交易情况'});
-        cols.push({
-            field: 'dealTime', title: '交易时间', formatter: function (value, row, index) {
-                return formatDate(value, false);
+
+</script>
+<script type="application/javascript">
+    var taskExploreIndex = {};
+
+    //加载现场查勘数据
+    taskExploreIndex.getExploreTaskList = function () {
+        $("#explore_list").treegrid({
+                url: '${pageContext.request.contextPath}/surveyCaseStudy/getPlanTaskExamineList?planDetailsId=${projectPlanDetails.id}',
+                method: 'get',
+                idField: 'id',
+                treeField: 'projectPhaseName',
+                datatype: 'json',
+                lines: true,
+                width: 'auto',
+                rownumbers: true,
+                onLoadSuccess: function () {
+                    $(".tooltips").tooltip();
+                },
+
+                columns: [[
+                    {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
+                    {
+                        field: "planStartDate",
+                        title: "开始时间",
+                        width: "10%",
+                        align: "center",
+                        formatter: function (value, row) {
+                            return formatDate(value, false);
+                        }
+                    },
+                    {
+                        field: "planEndDate",
+                        title: "结束时间",
+                        width: "10%",
+                        align: "center",
+                        formatter: function (value, row) {
+                            return formatDate(value, false);
+                        }
+                    },
+                    {
+                        field: "planHours",
+                        title: "计划工时",
+                        width: "5%",
+                        align: "center"
+                    },
+                    {
+                        field: "executeUserName",
+                        title: "责任人",
+                        width: "10%",
+                        align: "center"
+                    },
+                    {
+                        field: "executeDepartmentName",
+                        title: "责任部门",
+                        width: "10%",
+                        align: "center"
+                    },
+                    {
+                        field: "proportion",
+                        title: "权重占比",
+                        width: "5%",
+                        align: "center"
+                    },
+
+                    {
+                        field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
+                        if (row.bisEnable) {
+                            var s = "";
+                            if (row.pid == '${projectPlanDetails.id}'&&row.displayUrl) {
+                                s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                            }
+                            return s;
+                        }
+                    }
+                    }
+                ]]
             }
-        });
-        cols.push({field: 'paymentMethod', title: '付款方式'});
-        cols.push({field: 'informationSourceName', title: '信息来源'});
-        cols.push({field: 'linkman', title: '联系人'});
-        cols.push({field: 'contactWay', title: '联系方式'});
-
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:detailsData(' + row.id + ');" >查看详情</i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-
-        $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/caseStudy/list", cols, {
-            planDetailsId: ${projectPlanDetails.id}
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false
-        });
-    }
-
-    function detailsData(id) {
-        window.open("${pageContext.request.contextPath}/caseStudy/detailsIndex?projectId=${projectId}&id=" + id);
+        );
     }
 
 </script>

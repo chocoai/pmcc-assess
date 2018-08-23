@@ -144,6 +144,10 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
+        if (!taskExploreIndex.isAllFinish()) {
+            Alert("还有未完成的任务，请检查！");
+            return false;
+        }
         //需验证所有子任务提交完成后，才能提交主任务
         if ("${processInsId}" != "0") {
             submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
@@ -171,7 +175,15 @@
                 },
 
                 columns: [[
-                    {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
+                    {
+                        field: "projectPhaseName",
+                        title: "工作内容",
+                        width: "20%",
+                        align: "left",
+                        formatter: function (value, row) {
+                            return value
+                        }
+                    },
                     {
                         field: "planStartDate",
                         title: "开始时间",
@@ -224,7 +236,9 @@
                             } else {
                                 //只用于处理任务
                                 if (row.excuteUrl) {
-                                    s += "<a style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskExploreIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                    s += "<a data-placement='top' data-original-title='提交' class='btn btn-xs btn-success tooltips' target='_blank' onclick='taskExploreIndex.openTaskUrl(\"" + row.excuteUrl + "\")'   ><i class='fa fa-arrow-right fa-white'></i></a>";
+                                } else if (row.displayUrl) {
+                                    s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                                 }
                             }
                             return s;
@@ -239,8 +253,8 @@
     //获取案例任务可操作权限
     taskExploreIndex.getOperationHtml = function (status, id) {
         //none 可编辑、删除、分派 runing 查看 分派 finish 查看
-        var assignmentHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
-        var viewHtml = "<a style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick=''><i class='fa fa-search fa-white'></i></a>";
+        var assignmentHtml = "<a  data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskExploreIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
+        var viewHtml = "";
         var resultHtml = "";
         switch (status) {
             case "none":
@@ -269,6 +283,24 @@
         openWin(url, function () {
             taskExploreIndex.getExploreTaskList();
         })
+    }
+
+    //所有任务完成
+    taskExploreIndex.isAllFinish = function () {
+        var isFinish = true;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectPlanDetails/isAllFinish",
+            data: {planDetailsId: "${projectPlanDetails.id}"},
+            dataType: 'json',
+            type: 'post',
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    isFinish = result.data;
+                }
+            }
+        })
+        return isFinish;
     }
 
 </script>

@@ -1,12 +1,16 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyExamineInfo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.event.project.SurveyExamineItemEvent;
+import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
@@ -48,7 +52,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Autowired
     private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
-    private SurveyExamineItemService surveyExamineItemService;
+    private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
@@ -66,7 +70,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemApproval", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getCreator(), projectPlanDetails, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -74,7 +78,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemIndex", processInsId, boxId, taskId, agentUserAccount);
-        setViewParam(projectPlanDetails.getCreator(), projectPlanDetails, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -86,17 +90,24 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setViewParam(projectPlanDetails.getCreator(), projectPlanDetails, modelAndView);
+        setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        surveyExamineItemService.saveExamineDataInfo(formData);
+        surveyExamineTaskService.saveExamineDataInfo(formData);
         //更新父级案例信息状态为运行中
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
         planDetails.setStatus(ProcessStatusEnum.RUN.getValue());
         projectPlanDetailsService.updateProjectPlanDetails(planDetails);
+
+        if(StringUtils.isBlank(processInsId)){
+            //更新各项表单任务状态
+            surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
+        }else {
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyExamineTaskEvent.class.getSimpleName());//修改监听器
+        }
     }
 
     @Override
@@ -106,7 +117,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        surveyExamineItemService.saveExamineDataInfo(formData);
+        surveyExamineTaskService.saveExamineDataInfo(formData);
     }
 
     /**

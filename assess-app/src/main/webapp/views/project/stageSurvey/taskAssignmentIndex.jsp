@@ -60,7 +60,7 @@
                     <table id="survey_examine_task_list" class="easyui-datagrid" style="max-height: auto;"></table>
                     <div id="survey_examine_task_list_tb" style="padding:5px;height:auto;display: none;">
                         <div style=" margin-bottom:5px">
-                            <button type="button" onclick="taskAssignment.keySet()" class="btn btn-warning btn-xs">
+                            <button type="button" onclick="taskAssignment.selFastEmployee()" class="btn btn-warning btn-xs">
                                 <i class='fa fa-fire fa-white'></i> 批量设置
                             </button>
                         </div>
@@ -372,6 +372,7 @@
                     if (data.account) {
                         $("#fast_executeUserAccount").val(data.account);
                         $("#fast_executeUserName").val(data.name);
+                        taskAssignment.saveFastset();
                     }
                     else {
                         $("#fast_executeUserAccount").val("");
@@ -568,7 +569,7 @@
                     planDetailsId: "${projectPlanDetails.id}",
                     examineFormType: $("input:radio[name='examineFormType']:checked").val(),
                     userAccount: "${projectPlanDetails.executeUserAccount}",
-                    declareRecordId: "${parentPlan.declareRecordId}",
+                    declareRecordId: "${declareRecord.id}",
                     examineType: "${examineType}"
                 },
                 type: "post",
@@ -625,7 +626,7 @@
                     planDetailsId: "${projectPlanDetails.id}",
                     userAccount: "${projectPlanDetails.executeUserAccount}",
                     examineFormType: $("input:radio[name='examineFormType']:checked").val(),
-                    declareRecordId: "${parentPlan.declareRecordId}",
+                    declareRecordId: "${declareRecord.id}",
                     examineType: "${examineType}"
                 },
                 type: "post",

@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.controller.project.survey;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -11,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
@@ -43,7 +43,7 @@ public class SurveyExamineController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
@@ -57,7 +57,7 @@ public class SurveyExamineController {
     public ModelAndView assignment(Integer planDetailsId) {
         String view = "/project/stageSurvey/taskAssignmentIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         Integer id = projectPlanDetails.getPid();
 
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
@@ -189,4 +189,6 @@ public class SurveyExamineController {
             return HttpResult.newErrorResult("获取调查信息by申报id异常");
         }
     }
+
+
 }

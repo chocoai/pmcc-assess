@@ -118,11 +118,13 @@ public class ProjectTaskService {
             //更新业务
             projectPlanDetails.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetails.setBisStart(true);
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
             projectPlanDetails.setTaskRemarks(taskRemarks);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         } else {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
+            projectPlanDetails.setBisStart(true);
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
             projectPlanDetails.setTaskRemarks(taskRemarks);
             projectPlanDetails.setReturnDetailsReason("");
