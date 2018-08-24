@@ -377,7 +377,7 @@ public class ProjectPlanDetailsService {
     private void getPlanDetailsSubList(Integer pid, List<ProjectPlanDetails> list) {
         if (pid == null) return;
         if (list == null) return;
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPId(pid);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pid);
         if (CollectionUtils.isEmpty(planDetailsList)) return;
         for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
             list.add(projectPlanDetails);
@@ -399,5 +399,14 @@ public class ProjectPlanDetailsService {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * 获取子项计划任务
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetails> getChildrenPlanDetailsList(Integer planDetailsId) {
+        return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
     }
 }

@@ -71,6 +71,13 @@
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
+    <!-- jdbcTemplate -->
+    <!-- ======================================= -->
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="masterDataSource"/>
+    </bean>
+
     <!-- ======================================= -->
     <!--启动spring注解功能 -->
     <!-- ======================================= -->

@@ -64,7 +64,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">区域描述</label>
             <div class="col-sm-11">
-                <textarea name="remark" class="form-control" placeholder="区域描述">${surveyExamineDataInfoVo.examineBlockVo.remark}</textarea>
+                <textarea name="remark" class="form-control"
+                          placeholder="区域描述">${surveyExamineDataInfoVo.examineBlockVo.remark}</textarea>
             </div>
         </div>
     </div>
@@ -114,24 +115,24 @@
         //避免方法重复，定义全局变量
         var block = {
             //初始化
-            init:function () {
+            init: function () {
                 AssessCommon.initAreaInfo({
                     provinceTarget: $("#frm_block").find("[name='province']"),
                     cityTarget: $("#frm_block").find("[name='city']"),
                     districtTarget: $("#frm_block").find("[name='district']"),
-                    provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
-                    cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
-                    districtValue: "${surveyExamineDataInfoVo.examineBlockVo.district}"
+                    provinceValue: "${empty surveyExamineDataInfoVo.examineBlockVo.province?declareRecord.province:surveyExamineDataInfoVo.examineBlockVo.province}",
+                    cityValue: "${empty surveyExamineDataInfoVo.examineBlockVo.city?declareRecord.city:surveyExamineDataInfoVo.examineBlockVo.city}",
+                    districtValue: "${empty surveyExamineDataInfoVo.examineBlockVo.district?declareRecord.district:surveyExamineDataInfoVo.examineBlockVo.district}"
                 });
 
                 Block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
             },
 
             //验证
-            valid:function () {
-                var options={
-                    msg:"请检查【版块】填写的信息",
-                    hiddenValid:true
+            valid: function () {
+                var options = {
+                    msg: "请检查【版块】填写的信息",
+                    hiddenValid: true
                 };
                 return $("#frm_block").valid(options);
             },

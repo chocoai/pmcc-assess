@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExploreExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveySceneExploreMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,16 @@ public class SurveySceneExploreDao {
     public boolean deleteSurveySceneExplore(Integer id) {
         int i = surveySceneExploreMapper.deleteByPrimaryKey(id);
         return i > 0;
+    }
+
+    public SurveySceneExplore getSurveySceneExplore(SurveySceneExplore surveySceneExplore) {
+        SurveySceneExploreExample example = new SurveySceneExploreExample();
+        MybatisUtils.convertObj2Example(surveySceneExplore,example);
+        List<SurveySceneExplore> surveySceneExplores = surveySceneExploreMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(surveySceneExplores)){
+            return surveySceneExplores.get(0);
+        }
+        return null;
     }
 
     public SurveySceneExplore getSurveySceneExplore(String processInsId) {

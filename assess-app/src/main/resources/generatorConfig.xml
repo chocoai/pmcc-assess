@@ -39,39 +39,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <table tableName="tb_examine_block" domainObjectName="ExamineBlock"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_building" domainObjectName="ExamineBuilding"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_building_maintenance" domainObjectName="ExamineBuildingMaintenance"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_building_surface" domainObjectName="ExamineBuildingSurface"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_estate" domainObjectName="ExamineEstate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_estate_land_state" domainObjectName="ExamineEstateLandState"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_estate_network" domainObjectName="ExamineEstateNetwork"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_estate_parking" domainObjectName="ExamineEstateParking"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_estate_supply" domainObjectName="ExamineEstateSupply"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house" domainObjectName="ExamineHouse"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_corollary_equipment" domainObjectName="ExamineHouseCorollaryEquipment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_equipment" domainObjectName="ExamineHouseEquipment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_face_street" domainObjectName="ExamineHouseFaceStreet"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_intelligent" domainObjectName="ExamineHouseIntelligent"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_room" domainObjectName="ExamineHouseRoom"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_room_decorate" domainObjectName="ExamineHouseRoomDecorate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_trading" domainObjectName="ExamineHouseTrading"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_trading_lease" domainObjectName="ExamineHouseTradingLease"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_trading_sell" domainObjectName="ExamineHouseTradingSell"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_house_water" domainObjectName="ExamineHouseWater"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_education" domainObjectName="ExamineMatchingEducation"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_environment" domainObjectName="ExamineMatchingEnvironment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_finance" domainObjectName="ExamineMatchingFinance"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_leisure_place" domainObjectName="ExamineMatchingLeisurePlace"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_material" domainObjectName="ExamineMatchingMaterial"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_medical" domainObjectName="ExamineMatchingMedical"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_matching_traffic" domainObjectName="ExamineMatchingTraffic"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_unit" domainObjectName="ExamineUnit"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_unit_decorate" domainObjectName="ExamineUnitDecorate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_unit_elevator" domainObjectName="ExamineUnitElevator"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_examine_unit_huxing" domainObjectName="ExamineUnitHuxing"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_survey_case_study" domainObjectName="SurveyCaseStudy"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_survey_scene_explore" domainObjectName="SurveySceneExplore"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
     </context>
 

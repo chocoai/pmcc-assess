@@ -32,6 +32,17 @@
                 </div>
                 <div class="x_content">
                     <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
+                    <form id="frm_explore" class="form-horizontal">
+                        <fieldset>
+                            <legend>同步数据到其它权证</legend>
+                            <div class="form-group">
+                                <div class="col-sm-10" id="declareCertContent">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <input type="hidden" id="jsonContentExplore" value='${surveySceneExplore.jsonContent}'>
                 </div>
             </div>
 
@@ -85,7 +96,7 @@
 <script type="application/javascript">
     $(function () {
         taskExploreIndex.getExploreTaskList();
-
+        taskExploreIndex.loadDeclareCert();
         FileUtils.getFileShows({
             target: "file_upload_task",
             formData: {
@@ -182,7 +193,24 @@
         );
     }
 
+    //加载申报权证
+    taskExploreIndex.loadDeclareCert = function () {
+        var jsonContent = $("#jsonContentExplore").val();
+        if (jsonContent) {
+            jsonContent = JSON.parse(jsonContent);
+            var html = '';
+            $.each(jsonContent, function (i, item) {
+                html += '<span class="checkbox-inline">';
+                html += '<input type="checkbox" id="declareCert' + item.key + '" disabled="disabled"';
+                if (item.isChecked) {
+                    html += ' checked="checked" ';
+                }
+                html += 'name="declareCert" value="' + item.value + '" class="form-inline">';
+                html += '<label for="declareCert' + item.key + '">' + item.value + '</label></span>';
+            })
+            $('#declareCertContent').append(html);
+        }
+    }
 </script>
 </body>
 </html>
-

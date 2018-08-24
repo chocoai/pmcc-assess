@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -13,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -81,6 +85,8 @@ public class SurveyCommonService {
     private ExamineBuildingService examineBuildingService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
 
     /**
@@ -312,6 +318,28 @@ public class SurveyCommonService {
             }
         }
         return planDetailsVoList;
+    }
+
+    /**
+     * 获取初始化权证json数据
+     *
+     * @param projectId
+     * @param declareId
+     * @return
+     */
+    public String getDeclareCertJson(Integer projectId, Integer declareId) {
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+        if (CollectionUtils.isEmpty(declareRecordList)) return null;
+        JSONArray jsonArray = new JSONArray();
+        for (DeclareRecord declareRecord : declareRecordList) {
+            if(declareRecord.getId().equals(declareId)) continue;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("key",declareRecord.getId());
+            jsonObject.put("isChecked",false);
+            jsonObject.put("value",declareRecord.getName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray.toJSONString();
     }
 
 

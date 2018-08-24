@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
@@ -42,6 +43,8 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreIndex", "", 0, "0", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
+        SurveySceneExplore surveySceneExplore = surveySceneExploreService.initSceneExplore(projectPlanDetails.getProjectId(), projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("surveySceneExplore", surveySceneExplore);
         return modelAndView;
     }
 
@@ -50,6 +53,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreApproval", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
+        modelAndView.addObject("surveySceneExplore", surveySceneExploreService.getSurveySceneExplore(processInsId));
         return modelAndView;
     }
 
@@ -58,6 +62,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreIndex", processInsId, boxId, taskId, agentUserAccount);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
+        modelAndView.addObject("surveySceneExplore", surveySceneExploreService.getSurveySceneExplore(processInsId));
         return modelAndView;
     }
 
@@ -71,17 +76,15 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExploreApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
+        modelAndView.addObject("surveySceneExplore", surveySceneExploreService.getSurveySceneExplore(projectPlanDetails.getId()));
         return modelAndView;
     }
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveySceneExplore surveySceneExplore=new SurveySceneExplore();
-        surveySceneExplore.setProjectId(projectPlanDetails.getProjectId());
-        surveySceneExplore.setPlanDetailsId(projectPlanDetails.getId());
-        surveySceneExplore.setProcessInsId(processInsId);
-        surveySceneExplore.setCreator(commonService.thisUserAccount());
+        SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
+        surveySceneExplore.setProcessInsId(processInsId);
         surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
     }
 
