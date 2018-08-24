@@ -14,48 +14,90 @@
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+<div class="form-group">
+    <div class="col-sm-12">
+        <table id="hypothesisDevelopmentBuildID">
 
-<%--<div data-options="region:'center'" style="width:850px;height:650px;">--%>
-<%----%>
-<%--</div>--%>
-<%--<table id="constructionInstallationEngineeringFeeA">--%>
+        </table>
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            建安成本小计
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            建筑面积（㎡）
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            单方造价(元/㎡)
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            总造价（万元）
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            估价时点总价（万元)
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            续建投入总价(万元)
+        </label>
+    </div>
+</div>
+<div class="form-group">
+    <div class="x-valid">
+        <label class="col-sm-2 control-label">
+            数据计算值:
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBAreaClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBCurrencyClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label constructionInstallationEngineeringFeeBTotalCostClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label valuationDateTotalClassA">
+            0
+        </label>
+    </div>
+    <div class="x-valid">
+        <label class="col-sm-2 control-label continuedConstructionInvestmentTotalClassA">
+            0
+        </label>
+    </div>
+</div>
 
-<%--</table>--%>
-<%--<table cellpadding="5" class="table">--%>
-<%--<thead>--%>
-<%--<tr>--%>
-<%--<td>建安成本小计</td>--%>
-<%--<td>建筑面积（㎡）</td>--%>
-<%--<td>单方造价(元/㎡)</td>--%>
-<%--<td>总造价（万元）</td>--%>
-<%--<td>估价时点总价（万元)</td>--%>
-<%--<td>续建投入总价(万元)</td>--%>
-<%--</tr>--%>
-<%--</thead>--%>
-<%--<tbody>--%>
-<%--<tr class="info">--%>
-<%--<td><label class="control-label">计算值:</label></td>--%>
-<%--<td><label class="control-label constructionInstallationEngineeringFeeBAreaClassA">0</label></td>--%>
-<%--<td><label class="control-label constructionInstallationEngineeringFeeBCurrencyClassA">0</label></td>--%>
-<%--<td><label class="control-label constructionInstallationEngineeringFeeBTotalCostClassA">0</label></td>--%>
-<%--<td><label class="control-label valuationDateTotalClassA">0</label></td>--%>
-<%--<td><label class="control-label continuedConstructionInvestmentTotalClassA">0</label></td>--%>
-<%--</tr>--%>
-<%--</tbody>--%>
-<%--</table>--%>
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 
-    var constructEngineeringObjectA = new Object();
-
+    var hypothesisDevelopmentBuild = new Object();
 
     /**
      * @author:  zch
      * 描述:加法
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.add = function (arg1, arg2) {
+    hypothesisDevelopmentBuild.add = function (arg1, arg2) {
         arg1 = arg1.toString(), arg2 = arg2.toString();
         var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
             d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
@@ -72,7 +114,7 @@
      * 描述:除法函数，用来得到精确的除法结果 如:3,2 = 1.5
      * @date:2018-08-15
      **/
-    constructEngineeringObjectA.div = function (arg1, arg2) {
+    hypothesisDevelopmentBuild.div = function (arg1, arg2) {
         if (arg1 != 0) {//除数不能为0
             var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
             m = (r2.split(".")[1] ? r2.split(".")[1].length : 0) - (r1.split(".")[1] ? r1.split(".")[1].length : 0);
@@ -89,9 +131,9 @@
      * 参数：arg1：第一个乘数；arg2第二个乘数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.mul = function (arg1, arg2) {
-        if (constructEngineeringObjectA.isNumber(arg1)) {
-            if (constructEngineeringObjectA.isNumber(arg2)) {
+    hypothesisDevelopmentBuild.mul = function (arg1, arg2) {
+        if (hypothesisDevelopmentBuild.isNumber(arg1)) {
+            if (hypothesisDevelopmentBuild.isNumber(arg2)) {
                 var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
                 m = (r1.split(".")[1] ? r1.split(".")[1].length : 0) + (r2.split(".")[1] ? r2.split(".")[1].length : 0);
                 resultVal = Number(r1.replace(".", "")) * Number(r2.replace(".", "")) / Math.pow(10, m);
@@ -105,7 +147,7 @@
      * 描述:百分数转小数
      * @date:
      **/
-    constructEngineeringObjectA.toPoint = function (percent) {
+    hypothesisDevelopmentBuild.toPoint = function (percent) {
         var str = percent.replace("%", "");
         str = str / 100;
         return str;
@@ -116,7 +158,7 @@
      * *这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%
      * @date:
      **/
-    constructEngineeringObjectA.toPercent = function (point) {
+    hypothesisDevelopmentBuild.toPercent = function (point) {
         var str = Number(point * 100).toFixed(1);
         str += "%";
         return str;
@@ -127,8 +169,8 @@
      * 描述:判断是否为数字
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.isNumber = function (obj) {
-        if (constructEngineeringObjectA.isNotNull(obj)) {
+    hypothesisDevelopmentBuild.isNumber = function (obj) {
+        if (hypothesisDevelopmentBuild.isNotNull(obj)) {
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
             if (obj == 0) {
@@ -146,7 +188,7 @@
             return false;
         }
     }
-    constructEngineeringObjectA.isNotNull = function (obj) {
+    hypothesisDevelopmentBuild.isNotNull = function (obj) {
         if (obj == 0) {
             return true;
         }
@@ -158,9 +200,9 @@
         }
         return false;
     };
-    constructEngineeringObjectA.config = function () {
+    hypothesisDevelopmentBuild.config = function () {
         return {
-            tableId: "constructionInstallationEngineeringFeeA",
+            tableId: "hypothesisDevelopmentBuildID",
             currencyClass: "constructionInstallationEngineeringFeeBCurrencyClassA",//建安成本小计 3个label class
             areaClass: "constructionInstallationEngineeringFeeBAreaClassA",
             totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClassA",
@@ -173,75 +215,125 @@
 
     /**
      * @author:  zch
-     * 描述:数据表格初始化数据
-     * @date:2018-08-13
+     * 描述:读取树形表单数据
+     * @date: 2018-08-23
      **/
-    constructEngineeringObjectA.init = function () {
-        var accuracy = 1;
-        /*
-            * 特别提醒:
-            * 当fixed: false 时 并不会去阻止 fitColumns对列的自适应,当为true就会阻止
-            * */
-        $('#' + constructEngineeringObjectA.config().tableId).treegrid({
+    hypothesisDevelopmentBuild.loadData = function () {
+        var data = $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getData');
+        return data;
+    };
+
+    /**
+     * @author:  zch
+     * 描述:注入修改的数据
+     * @date:2018-08-23
+     **/
+    hypothesisDevelopmentBuild.setServerData = function (data) {
+        this.data = data;
+    }
+    hypothesisDevelopmentBuild.getColumns = function () {
+        var data = null;
+        data = [[
+            {field: 'number', title: '序号', width: 50},
+            {field: 'name', title: '工程名称', width: '20%'},
+            {
+                field: 'area',
+                title: '建筑面积',
+                width: 90,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+            {field: 'currency', title: ' 单方造价(元/㎡)', width: 100},
+            {field: 'totalCost', title: '总造价', width: 120},
+            {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 110},
+            {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 110},
+            {
+                field: 'valuationDateCurrency',
+                title: '估价时点单价(元/㎡)',
+                width: 110,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+            {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 110},
+            {
+                field: 'continuedConstructionInvestmentCurrency',
+                title: '续建投入单价(元/㎡)',
+                width: 110,
+                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            },
+        ]];
+        return data;
+    }
+    hypothesisDevelopmentBuild.treeGrIdInit = function (data) {
+        $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid({
             iconCls: 'icon-edit',
             nowrap: false,
             width: 1000,
-            height: 600,
+            height: 'auto',
             collapsible: true,
             title: "建安工程费用测算表",
-            url: "${pageContext.request.contextPath}/marketCost/getBaseDicTree",
-            method: "get",
+            data:data,
             idField: 'id',//数据表格要有主键
             treeField: 'name',//treegrid 树形结构主键 text
             fitColumns: true,
             striped: true,//显示斑马线
-            columns: [[
-                {field: 'number', title: '序号', width: 20, fixed: false},
-                {field: 'name', title: '工程名称', width: 30, fixed: false},
-                {
-                    field: 'area',
-                    title: '建筑面积',
-                    width: 100,
-                    fixed: true,
-                    editor: {type: "numberbox", options: {precision: accuracy}},//精度为2
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-                {
-                    field: 'continuedConstructionInvestmentCurrency',
-                    title: '续建投入单价(元/㎡)',
-                    width: 100,
-                    fixed: true,
-                    editor: {type: "numberbox", options: {precision: accuracy}},//精度为2
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-                {
-                    field: 'valuationDateCurrency',
-                    title: '估价时点单价(元/㎡)',
-                    width: 100,
-                    fixed: true,
-                    editor: {type: "numberbox", options: {precision: accuracy}},//精度为2
-                    styler: function (value, row, index) {
-                        return 'background-color:#F0F0F0;color:red;';
-                    }
-                },
-                {field: 'currency', title: ' 单方造价(元/㎡)', width: 30, fixed: false},
-                {field: 'totalCost', title: '总造价', width: 30, fixed: false},
-                {field: 'valuationDateDegreeCompletion', title: '估价时点完工程度', width: 30, fixed: false},
-                {field: 'valuationDateTotal', title: '估价时点总价（万元)', width: 30, fixed: false},
-                {field: 'continuedConstructionInvestmentTotal', title: '续建投入总价(万元)', width: 30, fixed: false}
-            ]],
+            columns: hypothesisDevelopmentBuild.getColumns(),
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
-                constructEngineeringObjectA.updateChildren($('#' + constructEngineeringObjectA.config().tableId).treegrid('find', row.id), changes);
-            },
-            onLoadSuccess: function (row, data) {
-                var mark = 1; //这里涉及到简单的运算，mark是计算每次需要合并的格子数
+                hypothesisDevelopmentBuild.updateChildren($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('find', row.id), changes);
             }
         });
+    }
+
+    /**
+     * @author:  zch
+     * 描述:数据表格初始化数据
+     * @date:2018-08-13
+     **/
+    hypothesisDevelopmentBuild.init = function () {
+        function isNotNull(obj) {
+            if (obj) {
+                return true;
+            }
+            return false;
+        }
+
+        var data = this.data;
+        var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
+        if (isNotNull(data)) {//引用修改数据继续处理
+            console.log("引用修改数据!");
+            hypothesisDevelopmentBuild.treeGrIdInit(data);
+        } else {//说明非修改 需要手动从服务器上获取数据
+            console.log("从服务器上获取数据!");
+            //说明 由于 easyui 如果是传入的data并且data中是没有初始化过的数据那么无法开启编辑
+            $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid({
+                iconCls: 'icon-edit',
+                nowrap: false,
+                // rownumbers: true,
+                width: 700,
+                height: 'auto',
+                collapsible: true,
+                title: "建安工程费用测算表",
+                url: "${pageContext.request.contextPath}/marketCost/getBaseDicTree",
+                method: "get",
+                idField: 'id',//数据表格要有主键
+                treeField: 'name',//treegrid 树形结构主键 text
+                fitColumns: true,
+                striped: true,//显示斑马线
+                columns: hypothesisDevelopmentBuild.getColumns(),
+                onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
+                    //根据id获取值
+                    hypothesisDevelopmentBuild.updateChildren($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('find', row.id), changes);
+                }
+            });
+        }
     }
 
     /**
@@ -249,7 +341,7 @@
      * 描述:计算方法
      * @date:
      **/
-    constructEngineeringObjectA.algs = function (data) {
+    hypothesisDevelopmentBuild.algs = function (data) {
         var area;//建筑面积
         var totalCost;//总造价
         var currency;//单方造价
@@ -274,12 +366,12 @@
          * 输入值: 续建投入单价,估价时点单价,建筑面积
          **/
 
-        currency = constructEngineeringObjectA.add(valuationDateCurrency, continuedConstructionInvestmentCurrency);
-        continuedConstructionInvestmentTotal = constructEngineeringObjectA.mul(continuedConstructionInvestmentCurrency, area);
-        valuationDateTotal = constructEngineeringObjectA.mul(valuationDateCurrency, area);
-        totalCost = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, valuationDateTotal);
-        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
-        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+        currency = hypothesisDevelopmentBuild.add(valuationDateCurrency, continuedConstructionInvestmentCurrency);
+        continuedConstructionInvestmentTotal = hypothesisDevelopmentBuild.mul(continuedConstructionInvestmentCurrency, area);
+        valuationDateTotal = hypothesisDevelopmentBuild.mul(valuationDateCurrency, area);
+        totalCost = hypothesisDevelopmentBuild.add(continuedConstructionInvestmentTotal, valuationDateTotal);
+        var temp = hypothesisDevelopmentBuild.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = hypothesisDevelopmentBuild.toPercent(temp);
 
         var algs4 = {};
         algs4.area = area;
@@ -299,14 +391,14 @@
      * 描述:更新子节点数据
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.updateChildren = function (data, changes) {
-        if (constructEngineeringObjectA.isNotNull(data)) {
+    hypothesisDevelopmentBuild.updateChildren = function (data, changes) {
+        if (hypothesisDevelopmentBuild.isNotNull(data)) {
             var continuedConstructionInvestmentCurrency = null;
             var valuationDateCurrency = null;
             var area = null;
             if (changes.continuedConstructionInvestmentCurrency) {//续建投入单价
                 continuedConstructionInvestmentCurrency = changes.continuedConstructionInvestmentCurrency;
-                if (constructEngineeringObjectA.isNumber(continuedConstructionInvestmentCurrency)) {
+                if (hypothesisDevelopmentBuild.isNumber(continuedConstructionInvestmentCurrency)) {
                     valuationDateCurrency = data.valuationDateCurrency;
                     area = data.area;
                 } else {
@@ -316,7 +408,7 @@
             }
             if (changes.valuationDateCurrency) {//估价时点单价(元/㎡)
                 valuationDateCurrency = changes.valuationDateCurrency;
-                if (constructEngineeringObjectA.isNumber(valuationDateCurrency)) {
+                if (hypothesisDevelopmentBuild.isNumber(valuationDateCurrency)) {
                     continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
                     area = data.area;
                 } else {
@@ -326,7 +418,7 @@
             }
             if (changes.area) {//面积
                 area = changes.area;
-                if (constructEngineeringObjectA.isNumber(area)) {
+                if (hypothesisDevelopmentBuild.isNumber(area)) {
                     continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
                     valuationDateCurrency = data.valuationDateCurrency;
                 } else {
@@ -334,13 +426,13 @@
                     return false;
                 }
             }
-            if (constructEngineeringObjectA.isNotNull(continuedConstructionInvestmentCurrency)) {
-                if (constructEngineeringObjectA.isNotNull(valuationDateCurrency)) {
-                    if (constructEngineeringObjectA.isNotNull(area)) {
+            if (hypothesisDevelopmentBuild.isNotNull(continuedConstructionInvestmentCurrency)) {
+                if (hypothesisDevelopmentBuild.isNotNull(valuationDateCurrency)) {
+                    if (hypothesisDevelopmentBuild.isNotNull(area)) {
                         //更新节点值
-                        $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
+                        $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('update', {
                             id: data.id,
-                            row: constructEngineeringObjectA.algs(
+                            row: hypothesisDevelopmentBuild.algs(
                                 {
                                     area: area,
                                     continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency,
@@ -348,9 +440,9 @@
                                 })
                         });
                         if (!data.parent) {//说明不是父节点
-                            constructEngineeringObjectA.updateFather(data);
-                        }else {
-                            constructEngineeringObjectA.updateDirectFather();
+                            hypothesisDevelopmentBuild.updateFather(data);
+                        } else {
+                            hypothesisDevelopmentBuild.updateDirectFather();
                         }
                     }
                 }
@@ -358,9 +450,9 @@
         }
     };
 
-    constructEngineeringObjectA.updateDirectFather = function () {
+    hypothesisDevelopmentBuild.updateDirectFather = function () {
         //更新建安成本小计
-        constructEngineeringObjectA.totalCalculation();
+        hypothesisDevelopmentBuild.totalCalculation();
     }
 
     /**
@@ -368,8 +460,8 @@
      * 描述:更新父节点数据
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.updateFather = function (data) {
-        var parent = $('#' + constructEngineeringObjectA.config().tableId).treegrid('getParent', data.id);
+    hypothesisDevelopmentBuild.updateFather = function (data) {
+        var parent = $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
         var area = 0;//建筑面积
         var totalCost = 0;//总造价
@@ -380,19 +472,19 @@
         var continuedConstructionInvestmentTotal = 0;//续建投入总价（万元）
         var continuedConstructionInvestmentCurrency = 0;//续建投入单价（元/㎡）
 
-        if (constructEngineeringObjectA.isNotNull(childrens)) {
+        if (hypothesisDevelopmentBuild.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
-                currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
-                area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
-                totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
-                valuationDateTotal = constructEngineeringObjectA.add(valuationDateTotal, constructEngineeringObjectA.specialTreatment(n.valuationDateTotal));
-                valuationDateCurrency = constructEngineeringObjectA.add(valuationDateCurrency, constructEngineeringObjectA.specialTreatment(n.valuationDateCurrency));
-                continuedConstructionInvestmentTotal = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentTotal));
-                continuedConstructionInvestmentCurrency = constructEngineeringObjectA.add(continuedConstructionInvestmentCurrency, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentCurrency));
+                currency = hypothesisDevelopmentBuild.add(currency, hypothesisDevelopmentBuild.specialTreatment(n.currency));
+                area = hypothesisDevelopmentBuild.add(area, hypothesisDevelopmentBuild.specialTreatment(n.area));
+                totalCost = hypothesisDevelopmentBuild.add(totalCost, hypothesisDevelopmentBuild.specialTreatment(n.totalCost));
+                valuationDateTotal = hypothesisDevelopmentBuild.add(valuationDateTotal, hypothesisDevelopmentBuild.specialTreatment(n.valuationDateTotal));
+                valuationDateCurrency = hypothesisDevelopmentBuild.add(valuationDateCurrency, hypothesisDevelopmentBuild.specialTreatment(n.valuationDateCurrency));
+                continuedConstructionInvestmentTotal = hypothesisDevelopmentBuild.add(continuedConstructionInvestmentTotal, hypothesisDevelopmentBuild.specialTreatment(n.continuedConstructionInvestmentTotal));
+                continuedConstructionInvestmentCurrency = hypothesisDevelopmentBuild.add(continuedConstructionInvestmentCurrency, hypothesisDevelopmentBuild.specialTreatment(n.continuedConstructionInvestmentCurrency));
             });
         }
-        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
-        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+        var temp = hypothesisDevelopmentBuild.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = hypothesisDevelopmentBuild.toPercent(temp);
 
         parent.currency = currency;
         parent.area = area;
@@ -403,12 +495,12 @@
         parent.continuedConstructionInvestmentTotal = continuedConstructionInvestmentTotal;
         parent.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
         //更新节点值
-        $('#' + constructEngineeringObjectA.config().tableId).treegrid('update', {
+        $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('update', {
             id: parent.id,
             row: parent
         });
         //更新建安成本小计
-        constructEngineeringObjectA.totalCalculation();
+        hypothesisDevelopmentBuild.totalCalculation();
     }
 
     /**
@@ -416,7 +508,7 @@
      * 描述:建安成本小计
      * @date:2018-08-14
      **/
-    constructEngineeringObjectA.totalCalculation = function () {
+    hypothesisDevelopmentBuild.totalCalculation = function () {
         var area = 0;//建筑面积
         var totalCost = 0;//总造价
         var currency = 0;//单方造价
@@ -426,19 +518,19 @@
         var continuedConstructionInvestmentTotal = 0;//续建投入总价（万元）
         var continuedConstructionInvestmentCurrency = 0;//续建投入单价（元/㎡）
 
-        $.each($('#' + constructEngineeringObjectA.config().tableId).treegrid('getRoots'), function (i, n) {
-            currency = constructEngineeringObjectA.add(currency, constructEngineeringObjectA.specialTreatment(n.currency));
-            area = constructEngineeringObjectA.add(area, constructEngineeringObjectA.specialTreatment(n.area));
-            totalCost = constructEngineeringObjectA.add(totalCost, constructEngineeringObjectA.specialTreatment(n.totalCost));
-            valuationDateTotal = constructEngineeringObjectA.add(valuationDateTotal, constructEngineeringObjectA.specialTreatment(n.valuationDateTotal));
-            valuationDateCurrency = constructEngineeringObjectA.add(valuationDateCurrency, constructEngineeringObjectA.specialTreatment(n.valuationDateCurrency));
-            continuedConstructionInvestmentTotal = constructEngineeringObjectA.add(continuedConstructionInvestmentTotal, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentTotal));
-            continuedConstructionInvestmentCurrency = constructEngineeringObjectA.add(continuedConstructionInvestmentCurrency, constructEngineeringObjectA.specialTreatment(n.continuedConstructionInvestmentCurrency));
+        $.each($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getRoots'), function (i, n) {
+            currency = hypothesisDevelopmentBuild.add(currency, hypothesisDevelopmentBuild.specialTreatment(n.currency));
+            area = hypothesisDevelopmentBuild.add(area, hypothesisDevelopmentBuild.specialTreatment(n.area));
+            totalCost = hypothesisDevelopmentBuild.add(totalCost, hypothesisDevelopmentBuild.specialTreatment(n.totalCost));
+            valuationDateTotal = hypothesisDevelopmentBuild.add(valuationDateTotal, hypothesisDevelopmentBuild.specialTreatment(n.valuationDateTotal));
+            valuationDateCurrency = hypothesisDevelopmentBuild.add(valuationDateCurrency, hypothesisDevelopmentBuild.specialTreatment(n.valuationDateCurrency));
+            continuedConstructionInvestmentTotal = hypothesisDevelopmentBuild.add(continuedConstructionInvestmentTotal, hypothesisDevelopmentBuild.specialTreatment(n.continuedConstructionInvestmentTotal));
+            continuedConstructionInvestmentCurrency = hypothesisDevelopmentBuild.add(continuedConstructionInvestmentCurrency, hypothesisDevelopmentBuild.specialTreatment(n.continuedConstructionInvestmentCurrency));
         });
-        var temp = constructEngineeringObjectA.div(valuationDateTotal, totalCost);
-        valuationDateDegreeCompletion = constructEngineeringObjectA.toPercent(temp);
+        var temp = hypothesisDevelopmentBuild.div(valuationDateTotal, totalCost);
+        valuationDateDegreeCompletion = hypothesisDevelopmentBuild.toPercent(temp);
 
-        constructEngineeringObjectA.updateHtml({
+        hypothesisDevelopmentBuild.updateHtml({
             area: area,
             totalCost: totalCost,
             currency: currency,
@@ -454,12 +546,12 @@
      * 描述:建安成本小计 写html value
      * @date:2018-08-14
      **/
-    constructEngineeringObjectA.updateHtml = function (data) {
-        $('.' + constructEngineeringObjectA.config().areaClass).html(data.area);
-        $('.' + constructEngineeringObjectA.config().currencyClass).html(data.currency);
-        $('.' + constructEngineeringObjectA.config().totalCostClass).html(data.totalCost);
-        $('.' + constructEngineeringObjectA.config().valuationDateTotalClass).html(data.valuationDateTotal);
-        $('.' + constructEngineeringObjectA.config().continuedConstructionInvestmentTotalClass).html(data.continuedConstructionInvestmentTotal);
+    hypothesisDevelopmentBuild.updateHtml = function (data) {
+        $('.' + hypothesisDevelopmentBuild.config().areaClass).html(data.area);
+        $('.' + hypothesisDevelopmentBuild.config().currencyClass).html(data.currency);
+        $('.' + hypothesisDevelopmentBuild.config().totalCostClass).html(data.totalCost);
+        $('.' + hypothesisDevelopmentBuild.config().valuationDateTotalClass).html(data.valuationDateTotal);
+        $('.' + hypothesisDevelopmentBuild.config().continuedConstructionInvestmentTotalClass).html(data.continuedConstructionInvestmentTotal);
     }
 
     /**
@@ -467,8 +559,8 @@
      * 描述:获取建安成本小计
      * @date:2018-08-14
      **/
-    constructEngineeringObjectA.getCalculatedResults = function () {
-        return $('.' + constructEngineeringObjectA.config().totalCostClass).html();
+    hypothesisDevelopmentBuild.getCalculatedResults = function () {
+        return $('.' + hypothesisDevelopmentBuild.config().totalCostClass).html();
     }
 
     /**
@@ -476,8 +568,8 @@
      * 描述:特别处理
      * @date:
      **/
-    constructEngineeringObjectA.specialTreatment = function (obj) {
-        if (constructEngineeringObjectA.isNotNull(obj)) {
+    hypothesisDevelopmentBuild.specialTreatment = function (obj) {
+        if (hypothesisDevelopmentBuild.isNotNull(obj)) {
             return obj;
         }
         return 0;
@@ -488,7 +580,7 @@
      * 描述:封装临时的方法到$datagrid上 enableCellEditing,editCell
      * @date:2018-08-13
      **/
-    constructEngineeringObjectA.extendOverwrite = function () {
+    hypothesisDevelopmentBuild.extendOverwrite = function () {
         $.extend($.fn.datagrid.methods, {
             editCell: function (jq, param) {
                 return jq.each(function () {
@@ -543,18 +635,18 @@
         });
     }
 
-    constructEngineeringObjectA.viewInit = function () {
-        constructEngineeringObjectA.extendOverwrite();
-        constructEngineeringObjectA.init();
+    hypothesisDevelopmentBuild.viewInit = function () {
+        hypothesisDevelopmentBuild.extendOverwrite();
+        hypothesisDevelopmentBuild.init();
         /**
          * @author:  zch
          * 描述:开启单元格编辑
          * @date:2018-08-13
          **/
-        $('#' + constructEngineeringObjectA.config().tableId).datagrid().datagrid('enableCellEditing');
+        $('#' + hypothesisDevelopmentBuild.config().tableId).datagrid().datagrid('enableCellEditing');
     }
 
     $(function () {
-        // constructEngineeringObjectA.viewInit();
+        // hypothesisDevelopmentBuild.viewInit();
     })
 </script>

@@ -34,11 +34,11 @@
             </span>
         </div>
         <div class="hypothesisDevelopment">
-            <jsp:include page="./developmentModule/hypothesisDevelopment.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/hypothesisDevelopmentDetail.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
         <div class="architecturalEngineering" style="display: none;">
-            <jsp:include page="./developmentModule/architecturalEngineering.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/architecturalEngineeringDetail.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
     </div>
@@ -200,23 +200,7 @@
         });
     };
 
-    /**
-     * @author:  zch
-     * 描述:获取假设开发法数据
-     * @date:2018-08-17
-     **/
-    optionsBuildBox.getDevelopment = function () {
 
-    };
-
-    /**
-     * @author:  zch
-     * 描述:在建工程建设开发法数据
-     * @date:2018-08-17
-     **/
-    optionsBuildBox.getArchitecturalEngineering = function () {
-
-    };
 
     $(function () {
         optionsBuildBox.tabControl();

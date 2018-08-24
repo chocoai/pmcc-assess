@@ -41,15 +41,17 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_md_cost_and_development_other" domainObjectName="MdCostAndDevelopmentOther">
+        <table tableName="tb_md_development" domainObjectName="MdDevelopment">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="tb_data_infrastructure_cost" domainObjectName="DataInfrastructureCost">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+
+        <table tableName="tb_md_development_architectural" domainObjectName="MdDevelopmentArchitectural">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_md_development_hypothesis" domainObjectName="MdDevelopmentHypothesis">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
     </context>
 
