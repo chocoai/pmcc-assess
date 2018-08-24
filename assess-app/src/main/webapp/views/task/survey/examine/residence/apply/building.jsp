@@ -35,13 +35,13 @@
     </form>
 
     <form class="form-horizontal" id="frmExamineBuilding_">
-        <input type="hidden" name="id">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     楼栋号
                 </label>
                 <div class="col-sm-3">
+                    <input type="hidden" name="id">
                     <input type="text" placeholder="楼栋号" name="buildingNumber"
                            class="form-control" required="required">
                 </div>
@@ -388,6 +388,42 @@
                 }
                 return id;
             },
+            isEmpty:function (item) {
+                if (item == null){
+                    return false;
+                }
+                if (item == ""){
+                    return false;
+                }
+                if (item == ''){
+                    return false;
+                }
+                return true;
+            },
+            /**
+             * @author:  zch
+             * 描述:第二栋或者第一栋写数据
+             * @date:
+             **/
+            firstAndTwoWrite:function (result) {
+                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
+                var objectWrite = new Object();
+                objectWrite.write = function (item,name) {
+                    if (examineBuilding_.prototype.isEmpty(item)){
+                        $("#" + examineBuilding_.prototype.config().frm + " ."+name).val(item).trigger("change");
+                    }else {
+                        $("#" + examineBuilding_.prototype.config().frm + " ."+name).val(null).trigger("change");
+                    }
+                };
+                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
+                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
+                objectWrite.write(result.data.buildingCategory,"buildingCategory");
+                objectWrite.write(result.data.buildingStructure,"buildingStructure");
+                objectWrite.write(result.data.buildingstructurepid,"buildingstructurepid");
+                objectWrite.write(result.data.propertyType,"propertyType");
+                objectWrite.write(result.data.builderId,"builderId");
+                objectWrite.write(result.data.propertyId,"propertyId");
+            },
             twoData:function (target) {
                 var data = {};
                 if ($("#declareId").size() > 0){
@@ -396,51 +432,19 @@
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
-                $("#" + examineBuilding_.prototype.config().frm).clearAll();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getTwoData",
                     type: "get",
                     data:data,
                     dataType: "json",
                     success: function (result) {
+                        $("#" + examineBuilding_.prototype.config().frm).clearAll();
                         if (result.ret) {
                             if (result.data != null){
                                 //改变按钮颜色
                                 $(target).removeClass();
                                 $(target).addClass("btn btn-primary");
-                                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
-                                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
-                                if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
-                                }
-                                if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructure).trigger("change");
-                                }
-                                if (result.data.buildingstructurepid == null || result.data.buildingstructurepid == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(result.data.buildingstructurepid).trigger("change");
-                                }
-                                if (result.data.propertyType == null || result.data.propertyType == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
-                                }
-                                if (result.data.builderId == null || result.data.builderId == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
-                                }
-                                if (result.data.propertyId == null || result.data.propertyId == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
-                                }
+                                examineBuilding_.prototype.firstAndTwoWrite(result);
                             }
                             examineBuilding_.prototype.showFiles();
                             examineBuilding_.prototype.subLoadDataList();
@@ -457,56 +461,24 @@
                     data.declareId = $("#declareId").val();
                 }
                 if ($("#planDetailsId").size() > 0){
-                    data.declareId = $("#planDetailsId").val();
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
-                $("#" + examineBuilding_.prototype.config().frm).clearAll();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getFirstData",
                     type: "get",
                     data:data,
                     dataType: "json",
                     success: function (result) {
+                        $("#" + examineBuilding_.prototype.config().frm).clearAll();
                         if (result.ret) {
                             if (result.data != null){
                                 //改变按钮颜色
                                 $(target).removeClass();
                                 $(target).addClass("btn btn-primary");
-                                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
-                                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
-                                if (result.data.buildingCategory == null || result.data.buildingCategory == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").val(result.data.buildingCategory).trigger("change");
-                                }
-                                if (result.data.buildingStructure == null || result.data.buildingStructure == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").val(result.data.buildingStructure).trigger("change");
-                                }
-                                if (result.data.buildingstructurepid == null || result.data.buildingstructurepid == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .buildingstructurepid").val(result.data.buildingstructurepid).trigger("change");
-                                }
-                                if (result.data.propertyType == null || result.data.propertyType == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").val(result.data.propertyType).trigger("change");
-                                }
-                                if (result.data.builderId == null || result.data.builderId == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .builderId").val(result.data.builderId).trigger("change");
-                                }
-                                if (result.data.propertyId == null || result.data.propertyId == '') {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(null).trigger("change");
-                                } else {
-                                    $("#" + examineBuilding_.prototype.config().frm + " .propertyId").val(result.data.propertyId).trigger("change");
-                                }
+                                examineBuilding_.prototype.firstAndTwoWrite(result);
                             }
                             examineBuilding_.prototype.showFiles();
                             examineBuilding_.prototype.subLoadDataList();
@@ -552,6 +524,9 @@
                 }
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 $.ajax({
                     url:"${pageContext.request.contextPath}/examineBuildingOutfit/saveAndUpdateExamineBuildingOutfit",
@@ -745,6 +720,7 @@
                     }
                 });
                 $("#"+examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
+                console.log(examineBuilding_.prototype.getBuildId());
                 TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
                     declareId : $("#declareId").val(),
                     planDetailsId : $("#planDetailsId").val(),

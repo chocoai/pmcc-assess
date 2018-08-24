@@ -15,7 +15,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易时间<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input required="required" placeholder="交易时间"
+                    <input required="required" placeholder="交易时间" readonly="readonly"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate tradingTime" value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}">
                 </div>
@@ -24,16 +24,16 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 tradingType" name="tradingType"
-                            required="required">
-                    </select>
+                    <input type="text" placeholder="交易类型" readonly="readonly"
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}"
+                           name="tradingType" class="form-control">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易价格<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易价格(请输入数字)" required="required"
+                    <input type="text" placeholder="交易价格(请输入数字)" readonly="readonly"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingPrice}" data-rule-number='true'
                            name="tradingPrice"
                            class="form-control">
@@ -45,7 +45,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">买方支付的额外税费<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="买方支付的额外税费" required="required"
+                    <input type="text" placeholder="买方支付的额外税费" readonly="readonly"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.buyerExtraTaxFee}"
                            name="buyerExtraTaxFee"
                            class="form-control">
@@ -57,7 +57,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承租方支付的额外税费<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="承租方支付的额外税费" required="required"
+                    <input type="text" placeholder="承租方支付的额外税费" readonly="readonly"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.rentingExtraTaxFee}"
                            name="rentingExtraTaxFee"
                            class="form-control">
@@ -66,7 +66,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">押金<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="押金" required="required" class="form-control" name="deposit" value="${surveyExamineDataInfoVo.examineHouseTradingVo.deposit}">
+                    <input type="text" placeholder="押金" readonly="readonly" class="form-control" name="deposit" value="${surveyExamineDataInfoVo.examineHouseTradingVo.deposit}">
                 </div>
             </div>
 
@@ -88,19 +88,18 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">说明事项类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 descriptionType" name="descriptionType"
-                            required="required">
-                    </select>
+                    <input type="text" placeholder="说明事项类型" readonly="readonly"
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}"
+                           name="descriptionType" class="form-control">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">说明事项内容<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容" required="required"
+                    <input type="text" placeholder="说明事项内容" readonly="readonly"
                            value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionContent}"
-                           name="descriptionContent"
-                           class="form-control">
+                           name="descriptionContent" class="form-control">
                 </div>
             </div>
         </div>

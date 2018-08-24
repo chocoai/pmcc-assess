@@ -579,6 +579,9 @@
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
+                if ($("#examineType").size() > 0){
+                    data.examineType = $("#examineType").val();
+                }
                 $.ajax({
                     url:"${pageContext.request.contextPath}/examineBuildingOutfit/saveAndUpdateExamineBuildingOutfit",
                     type: "post",
@@ -803,6 +806,9 @@
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
+                if ($("#examineType").size() > 0){
+                    data.examineType = $("#examineType").val();
+                }
                 $.ajax({
                     url:"${pageContext.request.contextPath}/examineBuildingMaintenance/saveAndUpdateExamineBuildingMaintenance",
                     type: "post",
@@ -831,6 +837,9 @@
                 data.buildingId = examineBuilding_.prototype.getBuildId();
                 if ($("#declareId").size() > 0){
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0){
+                    data.examineType = $("#examineType").val();
                 }
                 if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
@@ -1163,6 +1172,9 @@
                     data.declareId = $("#declareId").val();
                 }
                 if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                if ($("#examineType").size() > 0){
                     data.examineType = $("#examineType").val();
                 }
                 $.ajax({

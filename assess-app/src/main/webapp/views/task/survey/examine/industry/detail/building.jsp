@@ -768,7 +768,7 @@
     $(function () {
         // building.init();
         //默认显示第一栋
-        // building.firstData(null);
+        building.firstData(null);
         building.select2ChangeEvent();
     });
 </script>

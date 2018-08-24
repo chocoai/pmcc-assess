@@ -9,14 +9,14 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">单元编号</label>
             <div class="col-sm-5">
-                <input type="text" name="unitNumber" class="form-control" placeholder="单元编号" value="${surveyExamineDataInfoVo.examineUnitVo.unitNumber}">
+                <input type="text" name="unitNumber" readonly="readonly" class="form-control" placeholder="单元编号" value="${surveyExamineDataInfoVo.examineUnitVo.unitNumber}">
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">户梯比</label>
             <div class="col-sm-5">
-                <input type="text" name="elevatorHouseholdRatio" class="form-control" placeholder="户梯比" value="${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}">
+                <input type="text" name="elevatorHouseholdRatio" readonly="readonly" class="form-control" placeholder="户梯比" value="${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}">
             </div>
         </div>
     </div>

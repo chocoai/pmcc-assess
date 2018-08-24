@@ -10,7 +10,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="房号" required="required"
+                <input type="text" data-rule-maxlength="100" placeholder="房号" required="required" readonly="readonly"
                        value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="houseNumber"
                        class="form-control">
             </div>
@@ -19,7 +19,7 @@
             <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="所在楼层(请输入数字)"
-                       required="required"
+                       required="required" readonly="readonly"
                        value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="floor"
                        class="form-control">
             </div>
@@ -31,8 +31,9 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 huxingId" name="huxingId" required="required">
-                </select>
+                <input type="text" data-rule-maxlength="100" placeholder="户型选择" required="required" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.huxingId}" name="huxingId"
+                       class="form-control">
             </div>
         </div>
 
@@ -48,8 +49,9 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 newsHuxing" name="newsHuxing" required="required">
-                </select>
+                <input type="text" data-rule-maxlength="100" placeholder="最新户型" required="required" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}" name="newsHuxing"
+                       class="form-control">
             </div>
         </div>
 
@@ -65,23 +67,25 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 certUse" name="certUse" required="required">
-                </select>
+                <input type="text" data-rule-maxlength="100" placeholder="证载用途" required="required" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.certUse}" name="certUse"
+                       class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 practicalUse" name="practicalUse" required="required">
-                </select>
+                <input type="text" data-rule-maxlength="100" placeholder="证载用途" required="required" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.practicalUse}" name="practicalUse"
+                       class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">权益限制<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="权益限制" required="required"
+                <input type="text" data-rule-maxlength="100" readonly="readonly" placeholder="权益限制"
                        value="${surveyExamineDataInfoVo.examineHouseVo.rightInterestsRestriction}"
                        name="rightInterestsRestriction"
                        class="form-control">
@@ -93,7 +97,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" name="description">
+                <textarea class="form-control" name="description" readonly="readonly">
                     ${surveyExamineDataInfoVo.examineHouseVo.description}
                 </textarea>
             </div>

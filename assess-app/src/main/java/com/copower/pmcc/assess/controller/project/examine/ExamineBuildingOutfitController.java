@@ -35,13 +35,6 @@ public class ExamineBuildingOutfitController {
     private ProcessControllerComponent processControllerComponent;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//    @Deprecated
-//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-//    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/examineBuildingOutfit" ;
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-//        return modelAndView;
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitById",method = {RequestMethod.GET},name = "获取楼栋外装情况")

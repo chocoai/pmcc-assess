@@ -9,7 +9,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required
+                <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" readonly="readonly"
                        value="${surveyExamineDataInfoVo.examineEstateVo.name}" name="name" class="form-control">
             </div>
         </div>
@@ -17,15 +17,15 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 developerId" name="developerId" required="required">
-                </select>
+                <input type="text" data-rule-maxlength="100" placeholder="开发商" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.developerId}" name="developerId" class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">街道</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="街道"
+                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
                        value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">编号</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="编号(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="编号(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.number}" name="number" class="form-control">
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">附号</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="附号(请输入数字)"
+                <input type="text" data-rule-maxlength="100" readonly="readonly" data-rule-number='true' placeholder="附号(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.attachNumber}" name="attachNumber"
                        class="form-control">
             </div>
@@ -52,7 +52,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">建筑面积</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea"
                        class="form-control">
             </div>
@@ -63,7 +63,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">占地面积</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="占地面积(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="占地面积(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.coverAnArea}" name="coverAnArea"
                        class="form-control">
             </div>
@@ -72,7 +72,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">容积率</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="容积率(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="容积率(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.volumetricRate}" name="volumetricRate"
                        class="form-control">
             </div>
@@ -81,7 +81,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">绿化率<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="绿化率(请输入数字)" required
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="绿化率(请输入数字)" required
                        value="${surveyExamineDataInfoVo.examineEstateVo.greeningRate}" name="greeningRate"
                        class="form-control">
             </div>
@@ -93,7 +93,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" required="required" name="description" placeholder="楼盘概况">
+                <textarea class="form-control" readonly="readonly" required="required" name="description" placeholder="楼盘概况">
                     ${surveyExamineDataInfoVo.examineEstateVo.description}
                 </textarea>
             </div>
@@ -104,9 +104,9 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">总栋数<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 totalBuildingType" name="totalBuildingType"
-                        required="required">
-                </select>
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="总栋数" required
+                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}" name="totalBuildingType"
+                       class="form-control">
             </div>
         </div>
     </div>
