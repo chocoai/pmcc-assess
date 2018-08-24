@@ -68,7 +68,7 @@ public class MdIncomeLeaseDao {
     public boolean updateIncomeLease(MdIncomeLease mdIncomeLease,MdIncomeLease where) {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         MybatisUtils.convertObj2Example(where, example);
-        return mdIncomeLeaseMapper.updateByExample(mdIncomeLease,example) > 0;
+        return mdIncomeLeaseMapper.updateByExampleSelective(mdIncomeLease,example) > 0;
     }
 
     /**

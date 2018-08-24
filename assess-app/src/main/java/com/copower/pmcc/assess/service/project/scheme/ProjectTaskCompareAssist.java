@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.taks.assist.scheme;
+package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -7,8 +7,6 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApply
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeSupportInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.assist;
+package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
