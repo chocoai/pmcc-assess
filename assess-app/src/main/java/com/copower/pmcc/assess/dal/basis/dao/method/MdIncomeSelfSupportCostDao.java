@@ -74,7 +74,7 @@ public class MdIncomeSelfSupportCostDao {
     public boolean updateSelfSupportCost(MdIncomeSelfSupportCost mdIncomeSelfSupportCost, MdIncomeSelfSupportCost where) {
         MdIncomeSelfSupportCostExample example = new MdIncomeSelfSupportCostExample();
         MybatisUtils.convertObj2Example(where, example);
-        return mdIncomeSelfSupportCostMapper.updateByExample(mdIncomeSelfSupportCost,example) > 0;
+        return mdIncomeSelfSupportCostMapper.updateByExampleSelective(mdIncomeSelfSupportCost,example) > 0;
     }
 
     /**

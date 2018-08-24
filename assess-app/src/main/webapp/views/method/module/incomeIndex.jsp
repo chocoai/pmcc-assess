@@ -605,12 +605,14 @@
         income.defaluts = $.extend({}, defaluts, options);
         var defaluts = income.defaluts;
         if (defaluts.incomeSelfSupport) {
-            $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
+            if (defaluts.incomeSelfSupport.id)
+                $("#frm_self_support").find("[name=id]").val(defaluts.incomeSelfSupport.id);
             $("#frm_self_support").find("[name=averageProfitRate]").val(defaluts.incomeSelfSupport.averageProfitRate);
             $("#frm_self_support").find("[name=averageProfitRateRemark]").val(defaluts.incomeSelfSupport.averageProfitRateRemark);
         }
         if (defaluts.incomeInfo) {
-            $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
+            if (defaluts.incomeInfo.id)
+                $("#frm_income").find("[name=id]").val(defaluts.incomeInfo.id);
             $("#frm_income").find("[name=restrictionExplain]").val(defaluts.incomeInfo.restrictionExplain);
             $("#frm_income").find("[name=operationMode][value=" + defaluts.incomeInfo.operationMode + "]").trigger('click');
         }
@@ -703,7 +705,7 @@
     }
 
     //删除自营金额列表信息
-    income.delSupportCost = function (id, tbListId) {
+    income.delSupportCost = function (id, type, tbListId) {
         Alert("确认要删除么？", 2, null, function () {
             Loading.progressShow();
             $.ajax({
@@ -715,7 +717,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        income.loadSupportCostList(tbListId);
+                        income.loadSupportCostList(type, tbListId);
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -777,7 +779,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="income.editSupportCost(' + index + ',\'' + tbListId + '\');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="income.delSupportCost(' + row.id + ',\'' + tbListId + '\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="income.delSupportCost(' + row.id + ',' + type + ',\'' + tbListId + '\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }

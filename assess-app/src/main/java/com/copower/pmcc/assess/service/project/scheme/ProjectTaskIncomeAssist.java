@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.taks.assist.scheme;
+package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -8,11 +8,10 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeSupportInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,19 +101,18 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("schemeInfo", schemeInfo);
         //评估支持数据
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
-        modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
+        modelAndView.addObject("supportInfosJSON", JSON.toJSONString(CollectionUtils.isEmpty(supportInfoList) ? Lists.newArrayList() : supportInfoList));
         //收益法相关
         MdIncome mdIncome = null;
+        MdIncomeSelfSupport incomeSelfSupport = null;
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
             if (mdIncome != null) {
-                MdIncomeSelfSupport incomeSelfSupport = mdIncomeService.getSelfSupportByIncomeId(mdIncome.getId());
-                modelAndView.addObject("incomeSelfSupportJSON", JSON.toJSONString(incomeSelfSupport));
-            } else {
-                mdIncome = new MdIncome();
+                incomeSelfSupport = mdIncomeService.getSelfSupportByIncomeId(mdIncome.getId());
             }
         }
-        modelAndView.addObject("mdIncomeJSON", JSON.toJSONString(mdIncome));
+        modelAndView.addObject("mdIncomeJSON", JSON.toJSONString(mdIncome == null ? new MdIncome() : mdIncome));
+        modelAndView.addObject("incomeSelfSupportJSON", JSON.toJSONString(incomeSelfSupport == null ? new MdIncomeSelfSupport() : incomeSelfSupport));
     }
 
     /**
