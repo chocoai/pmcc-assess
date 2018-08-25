@@ -30,6 +30,17 @@
                 </div>
                 <div class="x_content">
                     <table id="case_list" class="table table-bordered" style="max-height: auto;"></table>
+                    <form id="frm_case" class="form-horizontal">
+                        <fieldset>
+                            <legend>同步数据到其它权证</legend>
+                            <div class="form-group">
+                                <div class="col-sm-10" id="declareCertContent">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <input type="hidden" id="jsonContentCase" value='${surveyCaseStudy.jsonContent}'>
                 </div>
             </div>
 
@@ -83,7 +94,7 @@
 <script type="application/javascript">
     $(function () {
         taskCaseIndex.getCaseTaskList();
-
+        taskCaseIndex.loadDeclareCert();
         FileUtils.getFileShows({
             target: "file_upload_task",
             formData: {
@@ -180,7 +191,24 @@
         );
     }
 
-
+    //加载申报权证
+    taskCaseIndex.loadDeclareCert = function () {
+        var jsonContent = $("#jsonContentCase").val();
+        if (jsonContent) {
+            jsonContent = JSON.parse(jsonContent);
+            var html = '';
+            $.each(jsonContent, function (i, item) {
+                html += '<span class="checkbox-inline">';
+                html += '<input type="checkbox" id="declareCert' + item.key + '" disabled="disabled"';
+                if (item.isChecked) {
+                    html += ' checked="checked" ';
+                }
+                html += 'name="declareCert" value="' + item.value + '" class="form-inline">';
+                html += '<label for="declareCert' + item.key + '">' + item.value + '</label></span>';
+            })
+            $('#declareCertContent').append(html);
+        }
+    }
 
 </script>
 </body>

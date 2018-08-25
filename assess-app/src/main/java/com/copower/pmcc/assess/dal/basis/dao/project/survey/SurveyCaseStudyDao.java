@@ -2,7 +2,10 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyCaseStudyMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,6 +33,16 @@ public class SurveyCaseStudyDao {
     public boolean deleteSurveyCaseStudy(Integer id) {
         int i = surveyCaseStudyMapper.deleteByPrimaryKey(id);
         return i > 0;
+    }
+
+    public SurveyCaseStudy getSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        SurveyCaseStudyExample example = new SurveyCaseStudyExample();
+        MybatisUtils.convertObj2Example(surveyCaseStudy,example);
+        List<SurveyCaseStudy> surveyCaseStudys = surveyCaseStudyMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(surveyCaseStudys)){
+            return surveyCaseStudys.get(0);
+        }
+        return null;
     }
 
     public SurveyCaseStudy getSurveyCaseStudy(String processInsId) {

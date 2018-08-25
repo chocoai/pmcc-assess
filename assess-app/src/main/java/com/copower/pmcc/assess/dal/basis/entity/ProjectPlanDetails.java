@@ -50,13 +50,7 @@ public class ProjectPlanDetails {
 
     private BigDecimal actualHours;
 
-    private Boolean bisAllSubmit;
-
-    private Boolean bisAgainSubmit;
-
     private String status;
-
-    private Boolean bisPartake;
 
     private Integer returnDetailsId;
 
@@ -268,36 +262,12 @@ public class ProjectPlanDetails {
         this.actualHours = actualHours;
     }
 
-    public Boolean getBisAllSubmit() {
-        return bisAllSubmit;
-    }
-
-    public void setBisAllSubmit(Boolean bisAllSubmit) {
-        this.bisAllSubmit = bisAllSubmit;
-    }
-
-    public Boolean getBisAgainSubmit() {
-        return bisAgainSubmit;
-    }
-
-    public void setBisAgainSubmit(Boolean bisAgainSubmit) {
-        this.bisAgainSubmit = bisAgainSubmit;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
-    }
-
-    public Boolean getBisPartake() {
-        return bisPartake;
-    }
-
-    public void setBisPartake(Boolean bisPartake) {
-        this.bisPartake = bisPartake;
     }
 
     public Integer getReturnDetailsId() {

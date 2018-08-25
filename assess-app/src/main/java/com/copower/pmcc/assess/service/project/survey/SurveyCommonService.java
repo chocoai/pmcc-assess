@@ -38,12 +38,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +89,8 @@ public class SurveyCommonService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -342,5 +346,38 @@ public class SurveyCommonService {
         return jsonArray.toJSONString();
     }
 
+    public List<String> getTableList() {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        List<String> tableList = Lists.newArrayList();
+        for (Map<String, Object> map : mapList) {
+            tableList.add(String.valueOf(map.get("TABLE_NAME")));
+        }
+        return tableList;
+    }
 
+    public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        //1.去除id 评出sql前半截  拼出sql后半截
+        for (Map<String, Object> map : mapList) {
+            if (map.get("column_name").equals("id")) {
+                mapList.remove(map);
+                break;
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : mapList) {
+            stringBuilder.append(map.get("column_name")).append(",");
+        }
+        String columnString = stringBuilder.toString();
+        columnString = columnString.replaceAll(",$", "");
+
+        String resultString = MessageFormat.format("INSERT into {0}({1}) SELECT %s FROM {0} where plan_details_id={2};", tableName, columnString, String.valueOf(oldPlanDetailsId));
+        columnString = columnString.replace("plan_details_id", String.valueOf(newPlanDetailsId)).replace("declare_id", String.valueOf(newDeclareId));
+        resultString = String.format(resultString, columnString);
+        return resultString;
+    }
 }

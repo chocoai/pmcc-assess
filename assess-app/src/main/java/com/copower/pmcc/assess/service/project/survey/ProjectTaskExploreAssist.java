@@ -82,8 +82,8 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveySceneExploreEvent.class.getSimpleName());//修改监听器
+        SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         surveySceneExplore.setProcessInsId(processInsId);
         surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
     }

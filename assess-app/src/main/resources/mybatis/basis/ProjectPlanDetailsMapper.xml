@@ -25,10 +25,7 @@
     <result column="task_submit_time" property="taskSubmitTime" jdbcType="TIMESTAMP" />
     <result column="task_remarks" property="taskRemarks" jdbcType="VARCHAR" />
     <result column="actual_hours" property="actualHours" jdbcType="DECIMAL" />
-    <result column="bis_all_submit" property="bisAllSubmit" jdbcType="BIT" />
-    <result column="bis_again_submit" property="bisAgainSubmit" jdbcType="BIT" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="bis_partake" property="bisPartake" jdbcType="BIT" />
     <result column="return_details_id" property="returnDetailsId" jdbcType="INTEGER" />
     <result column="return_process_ins_id" property="returnProcessInsId" jdbcType="VARCHAR" />
     <result column="return_details_reason" property="returnDetailsReason" jdbcType="VARCHAR" />
@@ -105,10 +102,10 @@
     id, project_work_stage_id, plan_id, project_id, project_phase_id, project_phase_details_id, 
     project_phase_name, plan_start_date, plan_end_date, plan_hours, plan_remarks, execute_user_account, 
     execute_department_id, bis_enable, proportion, sorting, pid, first_pid, bis_start, 
-    process_ins_id, task_submit_time, task_remarks, actual_hours, bis_all_submit, bis_again_submit, 
-    status, bis_partake, return_details_id, return_process_ins_id, return_details_reason, 
-    bis_new, bis_last_layer, company_nature, declare_form_id, declare_record_id, area_group_id, 
-    group_number, creator, gmt_created, gmt_modified
+    process_ins_id, task_submit_time, task_remarks, actual_hours, status, return_details_id, 
+    return_process_ins_id, return_details_reason, bis_new, bis_last_layer, company_nature, 
+    declare_form_id, declare_record_id, area_group_id, group_number, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample" >
     select
@@ -151,8 +148,7 @@
       execute_department_id, bis_enable, proportion, 
       sorting, pid, first_pid, 
       bis_start, process_ins_id, task_submit_time, 
-      task_remarks, actual_hours, bis_all_submit, 
-      bis_again_submit, status, bis_partake, 
+      task_remarks, actual_hours, status, 
       return_details_id, return_process_ins_id, return_details_reason, 
       bis_new, bis_last_layer, company_nature, 
       declare_form_id, declare_record_id, area_group_id, 
@@ -165,8 +161,7 @@
       #{executeDepartmentId,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{proportion,jdbcType=DECIMAL}, 
       #{sorting,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{firstPid,jdbcType=INTEGER}, 
       #{bisStart,jdbcType=BIT}, #{processInsId,jdbcType=VARCHAR}, #{taskSubmitTime,jdbcType=TIMESTAMP}, 
-      #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, #{bisAllSubmit,jdbcType=BIT}, 
-      #{bisAgainSubmit,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{bisPartake,jdbcType=BIT}, 
+      #{taskRemarks,jdbcType=VARCHAR}, #{actualHours,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
       #{returnDetailsId,jdbcType=INTEGER}, #{returnProcessInsId,jdbcType=VARCHAR}, #{returnDetailsReason,jdbcType=VARCHAR}, 
       #{bisNew,jdbcType=BIT}, #{bisLastLayer,jdbcType=BIT}, #{companyNature,jdbcType=INTEGER}, 
       #{declareFormId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
@@ -245,17 +240,8 @@
       <if test="actualHours != null" >
         actual_hours,
       </if>
-      <if test="bisAllSubmit != null" >
-        bis_all_submit,
-      </if>
-      <if test="bisAgainSubmit != null" >
-        bis_again_submit,
-      </if>
       <if test="status != null" >
         status,
-      </if>
-      <if test="bisPartake != null" >
-        bis_partake,
       </if>
       <if test="returnDetailsId != null" >
         return_details_id,
@@ -364,17 +350,8 @@
       <if test="actualHours != null" >
         #{actualHours,jdbcType=DECIMAL},
       </if>
-      <if test="bisAllSubmit != null" >
-        #{bisAllSubmit,jdbcType=BIT},
-      </if>
-      <if test="bisAgainSubmit != null" >
-        #{bisAgainSubmit,jdbcType=BIT},
-      </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="bisPartake != null" >
-        #{bisPartake,jdbcType=BIT},
       </if>
       <if test="returnDetailsId != null" >
         #{returnDetailsId,jdbcType=INTEGER},
@@ -495,17 +472,8 @@
       <if test="record.actualHours != null" >
         actual_hours = #{record.actualHours,jdbcType=DECIMAL},
       </if>
-      <if test="record.bisAllSubmit != null" >
-        bis_all_submit = #{record.bisAllSubmit,jdbcType=BIT},
-      </if>
-      <if test="record.bisAgainSubmit != null" >
-        bis_again_submit = #{record.bisAgainSubmit,jdbcType=BIT},
-      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bisPartake != null" >
-        bis_partake = #{record.bisPartake,jdbcType=BIT},
       </if>
       <if test="record.returnDetailsId != null" >
         return_details_id = #{record.returnDetailsId,jdbcType=INTEGER},
@@ -576,10 +544,7 @@
       task_submit_time = #{record.taskSubmitTime,jdbcType=TIMESTAMP},
       task_remarks = #{record.taskRemarks,jdbcType=VARCHAR},
       actual_hours = #{record.actualHours,jdbcType=DECIMAL},
-      bis_all_submit = #{record.bisAllSubmit,jdbcType=BIT},
-      bis_again_submit = #{record.bisAgainSubmit,jdbcType=BIT},
       status = #{record.status,jdbcType=VARCHAR},
-      bis_partake = #{record.bisPartake,jdbcType=BIT},
       return_details_id = #{record.returnDetailsId,jdbcType=INTEGER},
       return_process_ins_id = #{record.returnProcessInsId,jdbcType=VARCHAR},
       return_details_reason = #{record.returnDetailsReason,jdbcType=VARCHAR},
@@ -666,17 +631,8 @@
       <if test="actualHours != null" >
         actual_hours = #{actualHours,jdbcType=DECIMAL},
       </if>
-      <if test="bisAllSubmit != null" >
-        bis_all_submit = #{bisAllSubmit,jdbcType=BIT},
-      </if>
-      <if test="bisAgainSubmit != null" >
-        bis_again_submit = #{bisAgainSubmit,jdbcType=BIT},
-      </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="bisPartake != null" >
-        bis_partake = #{bisPartake,jdbcType=BIT},
       </if>
       <if test="returnDetailsId != null" >
         return_details_id = #{returnDetailsId,jdbcType=INTEGER},
@@ -744,10 +700,7 @@
       task_submit_time = #{taskSubmitTime,jdbcType=TIMESTAMP},
       task_remarks = #{taskRemarks,jdbcType=VARCHAR},
       actual_hours = #{actualHours,jdbcType=DECIMAL},
-      bis_all_submit = #{bisAllSubmit,jdbcType=BIT},
-      bis_again_submit = #{bisAgainSubmit,jdbcType=BIT},
       status = #{status,jdbcType=VARCHAR},
-      bis_partake = #{bisPartake,jdbcType=BIT},
       return_details_id = #{returnDetailsId,jdbcType=INTEGER},
       return_process_ins_id = #{returnProcessInsId,jdbcType=VARCHAR},
       return_details_reason = #{returnDetailsReason,jdbcType=VARCHAR},
