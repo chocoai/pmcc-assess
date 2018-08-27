@@ -207,6 +207,7 @@ public class ProjectInfoService {
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
                 BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
                 ProcessInfo processInfo = new ProcessInfo();
+                processInfo.setProjectId(projectInfo.getId());
                 processInfo.setProcessName(boxReDto.getProcessName());
                 processInfo.setGroupName(boxReDto.getGroupName());
                 processInfo.setFolio(projectInfo.getProjectName());//流程描述

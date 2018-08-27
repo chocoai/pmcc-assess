@@ -120,7 +120,7 @@
                     <button class="btn btn-default" onclick="window.close()">
                         取消
                     </button>
-                    <button id="btn_submit" class="btn btn-success" onclick="saveform()">
+                    <button id="btn_submit" class="btn btn-primary" onclick="saveform()">
                         提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                     </button>
                 </div>

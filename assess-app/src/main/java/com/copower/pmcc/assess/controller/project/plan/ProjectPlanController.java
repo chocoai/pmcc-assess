@@ -174,7 +174,6 @@ public class ProjectPlanController {
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
-
     }
 
     @ResponseBody
