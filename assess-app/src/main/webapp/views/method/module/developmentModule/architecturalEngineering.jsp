@@ -233,7 +233,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"
-                       placeholder="建设成本" class="form-control" name="constructionCost">
+                       placeholder="续建成本" class="form-control" name="constructionCost">
             </div>
         </div>
     </div>
@@ -331,7 +331,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"
-                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+                       placeholder="增值及附加税金" class="form-control" name="addedValueAdditionalTaxRate">
             </div>
         </div>
 
@@ -754,6 +754,7 @@
         //建筑安装工程费
         constructionInstallationEngineeringFeeInput:function () {
             architecturalObj.inputAlgorithmObject.reconnaissanceDesignFun();
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
         },
         //勘察设计和前期工程费率
         reconnaissanceDesignRoteInput:function () {
@@ -761,19 +762,150 @@
         },
         //基础设施建设费 单价选择
         infrastructureCostSelectInput: function () {
-
+            architecturalObj.inputAlgorithmObject.infrastructureCostFun();//基础设施建设费
         },
         //公共配套设施建设费 单价选择
         infrastructureMatchingCostSelectInput: function () {
-
+            architecturalObj.inputAlgorithmObject.infrastructureMatchingCostFun();//公共配套设施建设费
+        },
+        //开发建筑面积
+        developmentBuildAreaInput:function () {
+            architecturalObj.inputAlgorithmObject.infrastructureCostFun();//基础设施建设费
+            architecturalObj.inputAlgorithmObject.infrastructureMatchingCostFun();//公共配套设施建设费
+            architecturalObj.inputAlgorithmObject.devDuringPriceTaxFun();//开发期间税费
+            architecturalObj.inputAlgorithmObject.otherEngineeringCostFun();//其它工程费
+        },
+        //开发期间单价
+        devDuringPriceInput:function () {
+            architecturalObj.inputAlgorithmObject.devDuringPriceTaxFun();//开发期间税费
+        },
+        //其它工程费单价
+        otherEngineeringCostPriceInput:function () {
+            architecturalObj.inputAlgorithmObject.otherEngineeringCostFun();//其它工程费
+        },
+        //续建管理费率
+        managementExpenseRoteInput:function () {
+            architecturalObj.inputAlgorithmObject.managementExpenseFun();//续建管理费
+        },
+        //续建不可预见费率
+        unforeseenExpensesRoteInput:function () {
+            architecturalObj.inputAlgorithmObject.unforeseenExpensesFun();//续建不可预见费
+        },
+        //重置价格
+        replacementValueInput:function () {
+            architecturalObj.inputAlgorithmObject.salesFeeRoteFun();//销售费
+            architecturalObj.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
+        },
+        //销售费率
+        salesFeeRoteInput:function () {
+            architecturalObj.inputAlgorithmObject.salesFeeRoteFun();//销售费
         },
         //  增值及附加税率
         addedValueAdditionalTaxRateSelectInput: function () {
-
-        }
+            architecturalObj.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
+        },
     };
 
     architecturalObj.inputAlgorithmObject = {
+        //增值及附加税金 = 重置价格*增值及附加税率
+        addedValueAdditionalTaxRateFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//重置价格
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//重置价格
+            var key = architecturalObj.config.inputConfig().addedValueAdditionalTaxRate;
+            b = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
+            AssessCommon.getDataDicInfo(b, function (data) {
+                if (architecturalObj.isNotNull(data)) {
+                    try {
+                        b = architecturalObj.toPoint(data.name);
+                    } catch (e) {
+                        b = 0;
+                    }
+                    c = architecturalObj.mul(a,b);
+                    console.log("c:" +c+"; a:"+a+"; b:"+b);
+                    architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", key.key,c);//增值及附加税金
+                }
+            });
+        },
+        //销售费 = 重置价格*销售费率
+        salesFeeRoteFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().salesFeeRote.key,null);//销售费率
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//重置价格
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().salesFee.key,c);//销售费
+        },
+        //续建不可预见费 = （续建成本+续建管理费）*续建不可预见费率
+        unforeseenExpensesFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            var value = 0;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().managementExpense.key,null);//续建管理费
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().constructionCost.key,null);//续建成本
+            c = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().unforeseenExpensesRote.key,null);//续建不可预见费率
+            value = architecturalObj.add(a,b);
+            value = architecturalObj.mul(value,c);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().unforeseenExpenses.key,value);//续建不可预见费
+        },
+        //续建管理费 = 续建成本*续建管理费率
+        managementExpenseFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().constructionCost.key,null);//续建成本
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().managementExpenseRote.key,null);//续建管理费率
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().managementExpense.key,c);//续建管理费
+            architecturalObj.inputAlgorithmObject.unforeseenExpensesFun();//续建不可预见费
+        },
+        //续建成本 = 前期工程费+安装工程费+基础设施费+公共设施费+开发期间税费+其它工程费
+        constructionCostFun:function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().reconnaissanceDesign.key,null);//勘察设计和前期工程费
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().constructionInstallationEngineeringFee.key,null);//建筑安装工程费
+            c = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().infrastructureCost.key,null);//基础设施建设费
+            d = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().infrastructureMatchingCost.key,null);//公共设施费
+            e = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().devDuringPriceTax.key,null);//开发期间税费
+            f = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().otherEngineeringCost.key,null);//其它工程费
+            var value = 0;
+            value = architecturalObj.add(architecturalObj.add(a, b), architecturalObj.add(c, d));
+            value = architecturalObj.add(architecturalObj.add(e, f), value);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().constructionCost.key,value);//续建成本
+            architecturalObj.inputAlgorithmObject.managementExpenseFun();// 续建管理费
+        },
+        //其它工程费 = 其它工程费单价*开发建筑面积
+        otherEngineeringCostFun:function () {
+            var a = 0, b = 0, c = 0;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().developmentBuildArea.key, null);//开发建筑面积
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().otherEngineeringCostPrice.key, null);//其它工程费单价
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().otherEngineeringCost.key,c);//其它工程费
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
+        },
+        //开发期间税费
+        devDuringPriceTaxFun:function () {
+            var a = 0, b = 0, c = 0;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().developmentBuildArea.key, null);//开发建筑面积
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().devDuringPrice.key, null);//开发期间单价
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().devDuringPriceTax.key,c);//开发期间税费
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
+        },
+        //基础设施建设费
+        infrastructureCostFun:function () {
+            var a = 0, b = 0, c = 0;
+            a = $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureCost.select).eq(1).val();//基础设施建设费单价
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().developmentBuildArea.key, null);//开发建筑面积
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().infrastructureCost.key,c);//基础设施建设费
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
+        },
+        //公共配套设施建设费
+        infrastructureMatchingCostFun:function () {
+            var a = 0, b = 0, c = 0;
+            a = $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureMatchingCost.select).eq(1).val();//公共配套设施建设费单价
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().developmentBuildArea.key, null);//开发建筑面积
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().infrastructureMatchingCost.key,c);//公共配套设施建设费
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
+        },
         //勘察设计和前期工程费
         reconnaissanceDesignFun:function () {
             var a = 0, b = 0, c = 0;
@@ -781,6 +913,7 @@
             b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().constructionInstallationEngineeringFee.key, null);//建筑安装工程费
             c = architecturalObj.mul(a,b);
             architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().reconnaissanceDesign.key,c);//勘察设计和前期工程费
+            architecturalObj.inputAlgorithmObject.constructionCostFun();//续建成本
         },
         undergroundBusinessShopFun:function () {
             var a, b, c ;
@@ -1109,7 +1242,7 @@
                 var key = architecturalObj.config.inputConfig().infrastructureCost;
                 $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
                     var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
-                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    var funName = "architecturalObj.inputFun." + key.select + "Input(" + value + ")";
                     try {
                         eval(funName);
                     } catch (e) {
@@ -1122,7 +1255,7 @@
                 var key = architecturalObj.config.inputConfig().infrastructureMatchingCost;
                 $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
                     var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
-                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    var funName = "architecturalObj.inputFun." + key.select + "Input(" + value + ")";
                     try {
                         eval(funName);
                     } catch (e) {
@@ -1134,7 +1267,7 @@
                 var key = architecturalObj.config.inputConfig().addedValueAdditionalTaxRate;
                 $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
                     var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
-                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    var funName = "architecturalObj.inputFun." + key.select + "Input(" + value + ")";
                     try {
                         eval(funName);
                     } catch (e) {

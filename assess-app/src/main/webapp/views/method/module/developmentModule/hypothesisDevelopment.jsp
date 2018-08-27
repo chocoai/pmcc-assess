@@ -331,7 +331,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"
-                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+                       placeholder="增值及附加税金" class="form-control" name="addedValueAdditionalTaxRate">
             </div>
         </div>
 
