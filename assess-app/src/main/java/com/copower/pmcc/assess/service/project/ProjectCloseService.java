@@ -195,7 +195,7 @@ public class ProjectCloseService {
             projectInfoService.updateProjectInfo(projectInfo);
         }
         //关闭审批中的工作成果
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectid(projectInfo.getId());
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getProjectPlanDetailsByProjectId(projectInfo.getId());
         if(CollectionUtils.isNotEmpty(projectPlanDetailsVos)){
             List<ProjectPlanDetailsVo> filter = LangUtils.filter(projectPlanDetailsVos, o -> {
                 return ProcessStatusEnum.RUN.getValue().equals(o.getStatus());

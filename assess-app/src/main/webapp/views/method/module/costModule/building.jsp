@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="constructionInstallationEngineeringFeeB" style="display: none;">
+    <div class="constructionInstallationEngineeringFeeB" style="display: none;width: 1000px;">
         <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
         <div class="form-group">
             <div class="col-sm-6">
@@ -978,7 +978,13 @@
      **/
     build.constructionInstallationEngineeringFee = {
         event: function () {
-            $("." + build.config().engineeringFee).show();
+            layer.open({
+                type: 1,
+                area: '1000px;',
+                offset: 't',
+                content: $("." + build.config().engineeringFee)
+            });
+//            $("." + build.config().engineeringFee).show();
             $(function () {
                 constructEngineeringObject.viewInit();
             });

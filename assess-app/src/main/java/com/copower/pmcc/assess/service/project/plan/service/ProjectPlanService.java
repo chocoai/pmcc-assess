@@ -327,7 +327,7 @@ public class ProjectPlanService {
          * 4、保存项目计划
          */
 
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId());
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(),ProcessStatusEnum.NOPROCESS.getValue());
         //数据效性验证
         StringBuilder sb = new StringBuilder();
         for (ProjectPlanDetails item : projectPlanDetails) {
@@ -393,9 +393,6 @@ public class ProjectPlanService {
             updateDetailsSorting(detailsSoring);
         }
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
-
         if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
         {
             saveProjectPlanResponsibility(projectPlan, projectPlanDto.getNextApproval(), projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
@@ -408,7 +405,7 @@ public class ProjectPlanService {
              * 4、保存项目计划
              */
 
-            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId());
+            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(),ProcessStatusEnum.NOPROCESS.getValue());
             //数据效性验证
             StringBuilder sb = new StringBuilder();
             for (ProjectPlanDetails item : projectPlanDetails) {
@@ -655,28 +652,14 @@ public class ProjectPlanService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectWorkStageRestart.getProjectId());
         ProjectPlan projectPlan = getProjectplanById(projectWorkStageRestart.getProjectPlanOldId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        ProjectPlan projectPlanNew = new ProjectPlan();
-        BeanUtils.copyProperties(projectPlan, projectPlanNew);
-        projectPlanNew.setPlanName(projectPlan.getPlanName() + "(重启)");
-        projectPlanNew.setProcessInsId("-1");
-        projectPlanNew.setPlanRemarks("");
-        projectPlanNew.setProjectPlanStart(null);
-        projectPlanNew.setProjectPlanEnd(null);
-        projectPlanNew.setCreated(new Date());
-        projectPlanNew.setProcessInsIdApproval(null);
-        projectPlanNew.setStatus(null);
-        projectPlanNew.setApprovalStatus(null);
-        projectPlanNew.setBisRestart(true);
-        projectPlanDao.addProjectPlan(projectPlanNew);
         String workStageUserAccounts = projectWorkStageService.getWorkStageUserAccounts(projectWorkStage.getId(), projectPlan.getProjectId());
         if (StringUtils.isNotBlank(workStageUserAccounts)) {
             List<String> strings = FormatUtils.transformString2List(workStageUserAccounts);
             for (String s : strings) {
-                saveProjectPlanResponsibility(projectPlanNew, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                saveProjectPlanResponsibility(projectPlan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
             }
         }
-        return projectPlanNew;
+        return projectPlan;
     }
 
     public Boolean updateProjectPlan(ProjectPlan projectPlan) {

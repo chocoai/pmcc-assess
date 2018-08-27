@@ -15,7 +15,7 @@
     </div>
     <div class="x_content">
         <div class="form-group" style="text-align: center;">
-            <div class="btn-group">
+            <div class="">
                 <a id="cancel_btn" class="btn btn-default" onclick="window.close()">
                     取消
                 </a>

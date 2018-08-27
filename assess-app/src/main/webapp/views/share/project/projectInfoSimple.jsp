@@ -12,7 +12,12 @@
     <div class="x_title">
         <h2>
             项目信息
-            <small><button type="button" onclick="window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');return false;" class="btn btn-success btn-xs">查看更多...</button></small>
+            <small>
+                <button type="button"
+                        onclick="window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');return false;"
+                        class="btn btn-success btn-xs">查看更多...
+                </button>
+            </small>
             <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
         </h2>
         <div class="clearfix"></div>
@@ -154,7 +159,7 @@
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
-                tableId: ${projectInfo.id}
+                tableId: '${empty projectInfo.id?0:projectInfo.id}'
             },
             deleteFlag: false
         })

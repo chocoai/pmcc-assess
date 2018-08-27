@@ -672,6 +672,9 @@
     function groupNumberBlur(_this) {
         var tr = $(_this).closest("tr");
         var tbody = tr.closest("tbody");
+        tbody.find('tr').find('td:eq(-2)').html('');
+        return;//
+
         if (canSetJudgeFunction(tbody)) {
             whereCanSetJudgeFunction(tbody);
         } else {

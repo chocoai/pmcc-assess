@@ -126,9 +126,13 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsLastLayer(Integer planId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsLastLayer(Integer planId, String status) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andBisEnableEqualTo(true).andPlanIdEqualTo(planId).andBisLastLayerEqualTo(true);
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true).andPlanIdEqualTo(planId).andBisLastLayerEqualTo(true);
+        if (StringUtils.isNotBlank(status)) {
+            criteria.andStatusEqualTo(status);
+        }
         example.setOrderByClause(" sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }

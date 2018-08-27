@@ -63,7 +63,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/ProjectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
+                                        <a href="${pageContext.request.contextPath}/projectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
                                            target="_blank">阶段重启</a>
                                         <a href="${pageContext.request.contextPath}/projectPlanHistory/projectPlanHistoryIndex?projectId=${projectInfo.id}"
                                            target="_blank">总体时间</a>

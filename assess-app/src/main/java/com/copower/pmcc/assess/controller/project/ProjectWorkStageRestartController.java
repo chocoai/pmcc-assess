@@ -31,7 +31,7 @@ import java.util.List;
  * @time: 14:36
  */
 @Controller
-@RequestMapping(value = "/ProjectWorkStageRestart", name = "项目阶段重启功能实现")
+@RequestMapping(value = "/projectWorkStageRestart", name = "项目阶段重启功能实现")
 public class ProjectWorkStageRestartController {
     @Autowired
     private ProjectWorkStageRestartService projectWorkStageRestartService;
@@ -46,7 +46,7 @@ public class ProjectWorkStageRestartController {
 
     @RequestMapping(value = "/restartApply", name = "申请页面")
     public ModelAndView restartApply(Integer projectId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/workStageRestart/restartApply", "0", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/manage/workStageRestart/restartApply", "0", 0, "0", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStageRestart projectWorkStageRestart = new ProjectWorkStageRestart();
         projectWorkStageRestart.setProjectId(projectId);
@@ -66,11 +66,13 @@ public class ProjectWorkStageRestartController {
             keyValueDto.setValue(projectPlan.getPlanName());
             return keyValueDto;
         });
+
         modelAndView.addObject("keyValueDtos", keyValueDtos);
         modelAndView.addObject("boxCnName", projectInfo.getProjectName() + "-阶段重启");
         modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "阶段重启");
         modelAndView.addObject("currUserName", processControllerComponent.getThisUserInfo().getUserName());
+        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId)));
         return modelAndView;
     }
 

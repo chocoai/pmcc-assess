@@ -123,7 +123,7 @@ public class ProjectPlanDetailsService {
      * @param projectId
      * @return
      */
-    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectid(Integer projectId) {
+    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectId(Integer projectId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectId(projectId);
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
@@ -223,15 +223,26 @@ public class ProjectPlanDetailsService {
                         }
                     } else {
                         if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                            ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
-                            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                            String approvalUrl = boxReDto.getProcessApprovalUrl();
-                            if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                approvalUrl = boxReDto.getProcessEditUrl();
+                            String processInsId = projectPlanDetailsVo.getProcessInsId();
+                            String taskId = new String();
+                            //根据情况获取对应的审批节点数据activitiTaskNodeDto
+                            ActivitiTaskNodeDto activitiTaskNodeDto = null;
+                            for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
+                                if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
+                                    activitiTaskNodeDto = taskNodeDto;
+                                    taskId = taskNodeDto.getTaskId();
+                                }
                             }
-                            approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                            if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
-                                projectPlanDetailsVo.setExcuteUrl(approvalUrl);
+                            if (activitiTaskNodeDto != null) {
+                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                                String approvalUrl = boxReDto.getProcessApprovalUrl();
+                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                    approvalUrl = boxReDto.getProcessEditUrl();
+                                }
+                                approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
+                                if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
+                                    projectPlanDetailsVo.setExcuteUrl(approvalUrl);
+                                }
                             }
                         }
                     }
@@ -403,10 +414,31 @@ public class ProjectPlanDetailsService {
 
     /**
      * 获取子项计划任务
+     *
      * @param planDetailsId
      * @return
      */
     public List<ProjectPlanDetails> getChildrenPlanDetailsList(Integer planDetailsId) {
         return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
+    }
+
+    /**
+     * 删除计划任务
+     * @param id
+     */
+    public void deletePlanDetailsRecursion(Integer id){
+        //任务状态为关闭 则只将状态设置为不可用
+        //递归检查子项任务信息
+        //1.计划任务未启动 直接删除
+        //2.计划任务启动 但没有启动流程 检查待提交任务 一并删除
+        //3.计划任务发起了流程 关闭流程 删除任务
+    }
+
+    /**
+     * 重启计划任务
+     * @param id
+     */
+    public void restartPlanDetails(Integer id){
+
     }
 }
