@@ -316,7 +316,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="计息周期" class="form-control" name="interestPeriod">
             </div>
         </div>
@@ -326,7 +326,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
             </div>
         </div>
@@ -348,7 +348,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="投资利润率" class="form-control" name="investmentProfitRate">
             </div>
         </div>
@@ -565,12 +565,7 @@
         config.hiddenData = function () {
             var area = $(".mdCost_area").val();
             var price = $(".mdCost_price").val();
-            // if (!build.isNotNull(area)) {
-            //     area = Math.round(Math.random() * 100);
-            // }
-            // if (!build.isNotNull(price)) {
-            //     price = Math.round(Math.random() * 100) + Math.random();
-            // }
+
             var data = {
                 area: area,
                 price: price
@@ -648,7 +643,21 @@
         //成新率
         newRateInput: function (data) {
             build.inputAlgorithmObject.assessPriceFun();//评估单价
-        }
+        },
+        //计息周期
+        interestPeriodInput: function () {
+            console.log("计息周期");
+            build.inputAlgorithmObject.interestInInvestmentFun();// 投资利息
+        },
+        //投资计息利率
+        interestRateOnInvestmentInput: function () {
+            console.log("投资计息利率");
+            build.inputAlgorithmObject.interestInInvestmentFun();// 投资利息
+        },
+        //投资利润率
+        investmentProfitRateInput: function () {
+            build.inputAlgorithmObject.investmentProfitFun();// 投资利润
+        },
     }
     /**
      * @author:  zch
@@ -656,6 +665,53 @@
      * @date:
      **/
     build.inputAlgorithmObject = {
+        //投资利润 = 利润率 * 利息(暂时计算)
+        investmentProfitFun: function () {
+            var a = 0, b = 0, c = 0;
+            a = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().interestInInvestment.key, null);//投资利息
+            b = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().investmentProfitRate.key, null);//投资利润率
+            c = build.mul(a,b);
+            build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().investmentProfit.key, c);//投资利润
+        },
+        /**
+         * 说明:此方法并非是建筑物的计算方法
+         * f 投资利息 =
+         * (土地取得小计+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)+( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*((1+投资计息利率)^( 计息周期/2)-1)
+         * -------------------------------A-----------------------------------------|| -------------------------------------------------B---------------------------------------------------
+         * (土地取得小计+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)+( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*投资计息税率修正
+         * //分析 ((1+投资计息利率)^( 计息周期/2)-1) 表示为:投资计息税率修正
+         * **
+         */
+        interestInInvestmentFun: function () {
+            var a, c, b, d, e;
+            var f, g, h, j, k, l;
+            var m, n, temp;//运算变量
+            a = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().reconnaissanceDesign.key, null);//勘察设计和前期工程费
+            b = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().infrastructureCost.key, null);//基础设施建设费
+
+            c = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().constructionInstallationEngineeringFee.key, null);//安装工程费
+            d = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().infrastructureMatchingCost.key, null);//公共配套设施费用
+            e = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().devDuringPriceTax.key, null);//开发期间税费
+            f = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().otherEngineeringCost.key, null);//其它工程费
+
+            g = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().interestRateOnInvestment.key, null);//投资计息利率
+            h = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().interestPeriod.key, null);//计息周期
+
+            //数据校验省略 (由于计算太多不再使用计算方法)
+            //首先计算A段
+            m = Math.pow((1 + g), (h - 1));
+            temp = build.add(a, b);
+            m = temp * m;
+
+            //接着计算B段结果
+            n = Math.pow((1 + g), (h / 2) - 1);
+            temp = c + d + e + f;
+            n = temp * n;
+            //总计算
+            temp = build.add(m, n);
+            build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().interestInInvestment.key, temp);//投资利息
+            build.inputAlgorithmObject.investmentProfitFun();// 投资利润
+        },
         //评估单价 = 重置价格*成新率
         assessPriceFun: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
@@ -822,8 +878,9 @@
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
                 try {
-                    if (build.isNumber(value)){
+                    if (build.isNumber(value)) {
                         var funName = "build.inputFun." + key + "Input(" + input.val() + ")";
+                        console.log(funName);
                         eval(funName);
                     }
                 } catch (e) {
@@ -999,12 +1056,16 @@
         close: function () {
             $("." + build.config().engineeringFee).hide();
         },
-        saveAndUpdate:function (data) {
+        saveAndUpdate: function (data) {
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
             $.ajax({
                 url: url,
                 type: "post",
-                data: {jsonContent:JSON.stringify(data),type:"MdCostBuilding",id:"${mdCostAndDevelopmentOther.id}"},
+                data: {
+                    jsonContent: JSON.stringify(data),
+                    type: "MdCostBuilding",
+                    id: "${mdCostAndDevelopmentOther.id}"
+                },
                 dataType: "json",
                 success: function (result) {
                     toastr.success('成功');
