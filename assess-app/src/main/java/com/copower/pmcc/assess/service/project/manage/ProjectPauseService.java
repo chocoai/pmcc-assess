@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project;
+package com.copower.pmcc.assess.service.project.manage;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;

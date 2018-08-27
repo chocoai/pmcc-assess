@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.taks.assist;
+package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;

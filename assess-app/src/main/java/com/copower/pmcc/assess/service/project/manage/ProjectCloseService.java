@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project;
+package com.copower.pmcc.assess.service.project.manage;
 
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectCloseEvent;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;

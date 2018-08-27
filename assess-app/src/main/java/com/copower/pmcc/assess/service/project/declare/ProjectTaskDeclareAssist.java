@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.taks.assist;
+package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;

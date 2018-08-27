@@ -10,7 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectWorkStageVo;
 import com.copower.pmcc.assess.service.base.BaseAssistService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.PublicRole;

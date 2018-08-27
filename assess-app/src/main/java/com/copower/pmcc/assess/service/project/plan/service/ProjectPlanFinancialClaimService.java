@@ -14,7 +14,7 @@ import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
-import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;

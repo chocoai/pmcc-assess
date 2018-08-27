@@ -1,8 +1,10 @@
-package com.copower.pmcc.assess.service.project;
+package com.copower.pmcc.assess.service.project.manage;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectFollowDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.service.project.ProjectCenterService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
