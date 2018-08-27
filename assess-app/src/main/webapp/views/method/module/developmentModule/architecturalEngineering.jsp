@@ -1436,13 +1436,20 @@
 
     architecturalObj.constructionInstallationEngineeringFee = {
         event: function () {
-            $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.architecturalEngineeringModel()).show();
+            // $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.architecturalEngineeringModel()).show();
+            layer.open({
+                type: 1,
+                area: '1000px;',
+                offset: 't',
+                content: $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.architecturalEngineeringModel())
+            });
             $(function () {
                 architecturalEngineeringObj.viewInit();
             });
         },
         close: function () {
-            $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.architecturalEngineeringModel()).hide();
+            // $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.architecturalEngineeringModel()).hide();
+            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         getDataAndWriteHtml: function () {
             var data = architecturalEngineeringObj.getCalculatedResults();

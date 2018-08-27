@@ -1349,7 +1349,13 @@
      **/
     construction.constructionInstallationEngineeringFee = {
         event: function () {
-            $("." + construction.config().frm + " ." + construction.config().engineeringFee).show();
+            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).show();
+            layer.open({
+                type: 1,
+                area: '1000px;',
+                offset: 't',
+                content: $("." + construction.config().frm+" ." + construction.config().engineeringFee)
+            });
             $(function () {
                 constructEngineeringObjectA.viewInit();
             });
@@ -1357,12 +1363,17 @@
         getDataAndWriteHtml: function () {
             var data = constructEngineeringObjectA.getCalculatedResults();
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionInstallationEngineeringFee.key, data); //建筑安装工程费
-            $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
+            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
             construction.inputFun.constructionInstallationEngineeringFeeInput(data);
             construction.constructionInstallationEngineeringFee.saveAndUpdate(constructEngineeringObjectA.loadData());
+            construction.constructionInstallationEngineeringFee.layerClose();
         },
         close: function () {
-            $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
+            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
+            construction.constructionInstallationEngineeringFee.layerClose();
+        },
+        layerClose:function () {
+            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         saveAndUpdate: function (data) {
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";

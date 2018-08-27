@@ -1385,13 +1385,23 @@
 
     hypothesisDevelopment.constructionInstallationEngineeringFee = {
         event: function () {
-            $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).show();
+            // $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).show();
+            layer.open({
+                type: 1,
+                area: '1000px;',
+                offset: 't',
+                content: $("." + hypothesisDevelopment.config().frm+" ." + hypothesisDevelopment.config().architecturalEngineeringModel)
+            });
             $(function () {
                 hypothesisDevelopmentBuild.viewInit();
             });
         },
         close: function () {
-            $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).hide();
+            // $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).hide();
+            hypothesisDevelopment.constructionInstallationEngineeringFee.layerClose();
+        },
+        layerClose:function () {
+            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         getDataAndWriteHtml: function () {
             var data = hypothesisDevelopmentBuild.getCalculatedResults();
