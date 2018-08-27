@@ -25,7 +25,7 @@ public class MdDevelopmentArchitecturalDao {
      * @param id
      * @return
      */
-    public MdDevelopmentArchitectural getIncomeById(Integer id) {
+    public MdDevelopmentArchitectural getMdDevelopmentArchitecturalById(Integer id) {
         return mdDevelopmentArchitecturalMapper.selectByPrimaryKey(id);
     }
 
@@ -34,7 +34,7 @@ public class MdDevelopmentArchitecturalDao {
      * @param mdDevelopmentArchitectural
      * @return
      */
-    public List<MdDevelopmentArchitectural> getIncomeList(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
+    public List<MdDevelopmentArchitectural> getMdDevelopmentArchitecturalList(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
         MdDevelopmentArchitecturalExample example = new MdDevelopmentArchitecturalExample();
         MybatisUtils.convertObj2Example(mdDevelopmentArchitectural, example);
         return mdDevelopmentArchitecturalMapper.selectByExample(example);
@@ -45,7 +45,7 @@ public class MdDevelopmentArchitecturalDao {
      * @param mdDevelopmentArchitectural
      * @return
      */
-    public int addIncome(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
+    public int addMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
         mdDevelopmentArchitecturalMapper.insertSelective(mdDevelopmentArchitectural);
         return mdDevelopmentArchitectural.getId();
     }
@@ -55,7 +55,7 @@ public class MdDevelopmentArchitecturalDao {
      * @param mdDevelopmentArchitectural
      * @return
      */
-    public boolean updateIncome(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
+    public boolean updateMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
         return mdDevelopmentArchitecturalMapper.updateByPrimaryKeySelective(mdDevelopmentArchitectural) > 0;
     }
 
@@ -64,7 +64,7 @@ public class MdDevelopmentArchitecturalDao {
      * @param id
      * @return
      */
-    public boolean deleteIncome(Integer id){
+    public boolean deleteMdDevelopmentArchitectural(Integer id){
         return mdDevelopmentArchitecturalMapper.deleteByPrimaryKey(id) > 0;
     }
 }

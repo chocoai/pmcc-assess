@@ -281,6 +281,16 @@
         </div>
 
         <label class="col-sm-1 control-label">
+            重置价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="重置价格" class="form-control" name="replacementValue">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
             销售费率
         </label>
         <div class="x-valid">
@@ -291,6 +301,9 @@
         </div>
 
 
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             销售费
         </label>
@@ -300,9 +313,7 @@
                        placeholder="销售费" class="form-control" name="salesFee">
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             增值及附加税率
         </label>
@@ -324,6 +335,9 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             计息周期
         </label>
@@ -333,9 +347,7 @@
                        placeholder="计息周期" class="form-control" name="interestPeriod">
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             投资计息利率
         </label>
@@ -356,6 +368,9 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-1 control-label">
             投资利息
         </label>
@@ -365,9 +380,7 @@
                        placeholder="投资利息" class="form-control" name="interestInInvestment">
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             投资利润
         </label>
@@ -378,6 +391,178 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            地价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="地价" class="form-control" name="landPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            委估土地单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="委估土地单价" class="form-control" name="valuationLandUnitPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            年期修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="年期修正" class="form-control" name="landPrice">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            权利状况修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="权利状况修正" class="form-control" name="statusRightsRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            其它修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="其它修正" class="form-control" name="otherRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发程度修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            土地还原率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="土地还原率" class="form-control" name="landReductionRate">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            法定年限
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="法定年限" class="form-control" name="legalPeriod">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            剩余年限
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="剩余年限" class="form-control" name="remainingYear">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            评估单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="评估单价" class="form-control" name="evaluationPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            楼面地价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="楼面地价" class="form-control" name="floorPrice">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            市场价格预测
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="市场价格预测"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            用地类别对房地产价格影响
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="用地类别对房地产价格影响"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            开发程度修正说明
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="开发程度修正说明"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            权力状况修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="权力状况修正"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            其他修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="其他修正"></textarea>
+            </div>
+        </div>
+    </div>
+
 </form>
 
 
@@ -579,7 +764,6 @@
                 sceneryWorkTotalPrice: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.totalPrice},
                 sceneryWorkMaySaleArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.maySaleArea},
                 sceneryWorkBuildArea: {key: hypothesisDevelopment.formType.work.scenery + hypothesisDevelopment.formType.base.buildArea},
-
                 reconnaissanceDesignRote: {key: "reconnaissanceDesignRote", describe: "勘察设计和前期工程费率"},
                 reconnaissanceDesign: {key: "reconnaissanceDesign", describe: "勘察设计和前期工程费"},
                 infrastructureCost: {
@@ -608,6 +792,7 @@
                 managementExpenseRote: {key: "managementExpenseRote", describe: "管理费率"},
                 unforeseenExpenses: {key: "unforeseenExpenses", describe: "不可预见费"},
                 unforeseenExpensesRote: {key: "unforeseenExpensesRote", describe: "不可预见费率"},
+                replacementValue: {key: "replacementValue", describe: "重置价格"},
                 salesFeeRote: {key: "salesFeeRote", describe: "销售费率"},
                 salesFee: {key: "salesFee", describe: "销售费"},
                 addedValueAdditionalTaxRate: {
@@ -621,6 +806,17 @@
                 interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
                 interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},
                 investmentProfit: {key: "investmentProfit", describe: "投资利润"},
+                valuationLandUnitPrice: {key: "valuationLandUnitPrice", describe: "委估土地单价"},
+                landPrice: {key: "landPrice", describe: "地价"},
+                yearRevision: {key: "yearRevision", describe: "年起修正"},
+                statusRightsRevision: {key: "statusRightsRevision", describe: "权利状况修正"},
+                otherRevision: {key: "otherRevision", describe: "其它修正"},
+                developmentDegree: {key: "developmentDegreeRevision", describe: "开发程度修正"},
+                landReductionRate: {key: "landReductionRate", describe: "土地还原率"},
+                legalPeriod: {key: "legalPeriod", describe: "法定年限"},
+                remainingYear: {key: "remainingYear", describe: "剩余年限"},
+                evaluationPrice: {key: "evaluationPrice", describe: "评估单价"},
+                floorPrice: {key: "floorPrice", describe: "楼面单价"},
             };
         };
         config.inputName = function () {
@@ -668,12 +864,56 @@
         otherEngineeringCostPriceInput: function () {
             hypothesisDevelopment.inputAlgorithmObject.otherEngineeringCostFun();
         },
+        //管理费率
+        managementExpenseRoteInput:function () {
+            hypothesisDevelopment.inputAlgorithmObject.managementExpenseFun();//管理费
+        },
         //  增值及附加税率
         addedValueAdditionalTaxRateSelectInput: function () {
-            hypothesisDevelopment.inputAlgorithmObject.addedValueAdditionalTaxRateFun();
+            hypothesisDevelopment.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
+        },
+        //不可预见费率
+        unforeseenExpensesRoteInput:function () {
+            hypothesisDevelopment.inputAlgorithmObject.unforeseenExpensesFun();//不可预见费
+        },
+        //重置价格
+        replacementValueInput:function () {
+            hypothesisDevelopment.inputAlgorithmObject.salesFeeRoteFun();//销售费
+            hypothesisDevelopment.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
+        },
+        //销售费率
+        salesFeeRoteInput:function () {
+            hypothesisDevelopment.inputAlgorithmObject.salesFeeRoteFun();//销售费
         },
     }
     hypothesisDevelopment.inputAlgorithmObject = {
+        //销售费 = 重置价格*销售费率
+        salesFeeRoteFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().salesFeeRote.key, null);//销售费率
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().replacementValue.key, null);//重置价格
+            c = hypothesisDevelopment.mul(a,b);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().salesFee.key, c);//销售费
+        },
+        //不可预见费 = （建设成本+管理费金额）*不可预见费率
+        unforeseenExpensesFun:function () {
+            var a = 0, b = 0, c = 0 ,d = 0; ;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionCost.key, null);//建设成本
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpense.key, null);//管理费
+            c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unforeseenExpensesRote.key, null);//不可预见费率
+            d = hypothesisDevelopment.add(a,b);
+            d = hypothesisDevelopment.mul(d,c);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key,d);//不可预见费
+        },
+        //管理费 = 建设成本*管理费率
+        managementExpenseFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionCost.key, null);//建设成本
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpenseRote.key, null);//管理费率
+            c = hypothesisDevelopment.mul(a,b);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().managementExpense.key, c);//管理费
+            hypothesisDevelopment.inputAlgorithmObject.unforeseenExpensesFun();//不可预见费
+        },
         //建设费成本 = 前期工程费+安装工程费+基础设施费+公共设施费+开发期间税费+其它工程费
         constructionCostFun: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
@@ -687,6 +927,7 @@
             value = hypothesisDevelopment.add(hypothesisDevelopment.add(a, b), hypothesisDevelopment.add(c, d));
             value = hypothesisDevelopment.add(hypothesisDevelopment.add(e, f), value);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().constructionCost.key, c);//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.managementExpenseFun();//管理费
         },
         //其它工程费 = 其它工程费单价  * 开发建筑面积
         otherEngineeringCostFun: function () {
@@ -708,8 +949,11 @@
                     } catch (e) {
                         a = 0;
                     }
+                    b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().replacementValue.key, null);//重置价格
+                    c = hypothesisDevelopment.mul(a,b);
                     console.log("a:" + a + "; b:" + b + "; c:" + c);
                     // run method
+                    hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.key, c);//增值及附加税金
                 }
             });
         },

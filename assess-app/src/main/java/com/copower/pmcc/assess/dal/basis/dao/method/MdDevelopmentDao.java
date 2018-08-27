@@ -24,7 +24,7 @@ public class MdDevelopmentDao {
      * @param id
      * @return
      */
-    public MdDevelopment getEstateNetworkById(Integer id) {
+    public MdDevelopment getMdDevelopmentById(Integer id) {
         return mdDevelopmentMapper.selectByPrimaryKey(id);
     }
 
@@ -33,7 +33,7 @@ public class MdDevelopmentDao {
      * @param mdDevelopment
      * @return
      */
-    public List<MdDevelopment> getEstateNetworkList(MdDevelopment mdDevelopment) {
+    public List<MdDevelopment> getMdDevelopmentList(MdDevelopment mdDevelopment) {
         MdDevelopmentExample example = new MdDevelopmentExample();
         MybatisUtils.convertObj2Example(mdDevelopment, example);
         return mdDevelopmentMapper.selectByExample(example);
@@ -44,7 +44,7 @@ public class MdDevelopmentDao {
      * @param mdDevelopment
      * @return
      */
-    public int addEstateNetwork(MdDevelopment mdDevelopment) {
+    public int addMdDevelopment(MdDevelopment mdDevelopment) {
         mdDevelopmentMapper.insertSelective(mdDevelopment);
         return mdDevelopment.getId();
     }
@@ -54,7 +54,7 @@ public class MdDevelopmentDao {
      * @param mdDevelopment
      * @return
      */
-    public boolean updateEstateNetwork(MdDevelopment mdDevelopment) {
+    public boolean updateMdDevelopment(MdDevelopment mdDevelopment) {
         return mdDevelopmentMapper.updateByPrimaryKeySelective(mdDevelopment) > 0;
     }
 
@@ -63,7 +63,7 @@ public class MdDevelopmentDao {
      * @param id
      * @return
      */
-    public boolean deleteEstateNetwork(Integer id){
+    public boolean deleteMdDevelopment(Integer id){
         return mdDevelopmentMapper.deleteByPrimaryKey(id) > 0;
     }
 }

@@ -24,7 +24,7 @@ public class MdDevelopmentHypothesisDao {
      * @param id
      * @return
      */
-    public MdDevelopmentHypothesis getEstateNetworkById(Integer id) {
+    public MdDevelopmentHypothesis getMdDevelopmentHypothesisById(Integer id) {
         return mdDevelopmentHypothesisMapper.selectByPrimaryKey(id);
     }
 
@@ -33,7 +33,7 @@ public class MdDevelopmentHypothesisDao {
      * @param mdDevelopmentHypothesis
      * @return
      */
-    public List<MdDevelopmentHypothesis> getEstateNetworkList(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
+    public List<MdDevelopmentHypothesis> getMdDevelopmentHypothesisList(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
         MdDevelopmentHypothesisExample example = new MdDevelopmentHypothesisExample();
         MybatisUtils.convertObj2Example(mdDevelopmentHypothesis, example);
         return mdDevelopmentHypothesisMapper.selectByExample(example);
@@ -44,7 +44,7 @@ public class MdDevelopmentHypothesisDao {
      * @param mdDevelopmentHypothesis
      * @return
      */
-    public int addEstateNetwork(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
+    public int addMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
         mdDevelopmentHypothesisMapper.insertSelective(mdDevelopmentHypothesis);
         return mdDevelopmentHypothesis.getId();
     }
@@ -54,7 +54,7 @@ public class MdDevelopmentHypothesisDao {
      * @param mdDevelopmentHypothesis
      * @return
      */
-    public boolean updateEstateNetwork(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
+    public boolean updateMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
         return mdDevelopmentHypothesisMapper.updateByPrimaryKeySelective(mdDevelopmentHypothesis) > 0;
     }
 
@@ -63,7 +63,7 @@ public class MdDevelopmentHypothesisDao {
      * @param id
      * @return
      */
-    public boolean deleteEstateNetwork(Integer id){
+    public boolean deleteMdDevelopmentHypothesis(Integer id){
         return mdDevelopmentHypothesisMapper.deleteByPrimaryKey(id) > 0;
     }
 }

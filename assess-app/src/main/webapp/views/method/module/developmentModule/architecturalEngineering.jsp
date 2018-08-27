@@ -128,6 +128,355 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            基础设施建设费 单价选择
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="infrastructureCostSelect"
+                        class="form-control search-select select2 infrastructureCostSelect">
+                </select>
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            基础设施建设费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            公共配套设施建设费 单价选择
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="infrastructureMatchingCostSelect"
+                        class="form-control search-select select2 infrastructureMatchingCostSelect">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            公共配套设施建设费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发建筑面积
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="开发建筑面积" class="form-control" name="developmentBuildArea">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发期间单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="开发期间单价" class="form-control" name="devDuringPrice">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            其它工程费单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            其它工程费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发期间税费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            续建成本 (建设成本)
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="建设成本" class="form-control" name="constructionCost">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            续建管理费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="管理费" class="form-control" name="managementExpense">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            续建管理费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="管理费率" class="form-control" name="managementExpenseRote">
+            </div>
+        </div>
+        <label class="col-sm-1 control-label">
+            续建不可预见费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            续建不可预见费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            重置价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="重置价格" class="form-control" name="replacementValue">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            销售费率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="销售费率" class="form-control" name="salesFeeRote">
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            销售费
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="销售费" class="form-control" name="salesFee">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            增值及附加税率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <select name="addedValueAdditionalTaxRate"
+                        class="form-control search-select select2 addedValueAdditionalTaxRateSelect">
+                </select>
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            增值及附加税金
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            权利状况修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="权利状况修正" class="form-control" name="statusRightsRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            其它修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="其它修正" class="form-control" name="otherRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发程度修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            土地还原率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="土地还原率" class="form-control" name="landReductionRate">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            法定年限
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="法定年限" class="form-control" name="legalPeriod">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            剩余年限
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text"
+                       placeholder="剩余年限" class="form-control" name="remainingYear">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            评估单价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="评估单价" class="form-control" name="evaluationPrice">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            楼面地价
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-2">
+                <input type="text" readonly="readonly"
+                       placeholder="楼面地价" class="form-control" name="floorPrice">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            市场价格预测
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="市场价格预测"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            用地类别对房地产价格影响
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="用地类别对房地产价格影响"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            开发程度修正说明
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="开发程度修正说明"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            权力状况修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="权力状况修正"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">
+            其他修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-11">
+                <textarea class="form-control" placeholder="其他修正"></textarea>
+            </div>
+        </div>
+    </div>
+
 </form>
 
 <script>
@@ -361,6 +710,7 @@
                 managementExpenseRote: {key: "managementExpenseRote", describe: "管理费率"},
                 unforeseenExpenses: {key: "unforeseenExpenses", describe: "不可预见费"},
                 unforeseenExpensesRote: {key: "unforeseenExpensesRote", describe: "不可预见费率"},
+                replacementValue: {key: "replacementValue", describe: "重置价格"},
                 salesFeeRote: {key: "salesFeeRote", describe: "销售费率"},
                 salesFee: {key: "salesFee", describe: "销售费"},
                 addedValueAdditionalTaxRate: {
@@ -374,6 +724,17 @@
                 interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
                 interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},
                 investmentProfit: {key: "investmentProfit", describe: "投资利润"},
+                valuationLandUnitPrice: {key: "valuationLandUnitPrice", describe: "委估土地单价"},
+                landPrice: {key: "landPrice", describe: "地价"},
+                yearRevision: {key: "yearRevision", describe: "年起修正"},
+                statusRightsRevision: {key: "statusRightsRevision", describe: "权利状况修正"},
+                otherRevision: {key: "otherRevision", describe: "其它修正"},
+                developmentDegree: {key: "developmentDegreeRevision", describe: "开发程度修正"},
+                landReductionRate: {key: "landReductionRate", describe: "土地还原率"},
+                legalPeriod: {key: "legalPeriod", describe: "法定年限"},
+                remainingYear: {key: "remainingYear", describe: "剩余年限"},
+                evaluationPrice: {key: "evaluationPrice", describe: "评估单价"},
+                floorPrice: {key: "floorPrice", describe: "楼面单价"},
             };
         },
         inputName: function () {
@@ -398,6 +759,18 @@
         reconnaissanceDesignRoteInput:function () {
             architecturalObj.inputAlgorithmObject.reconnaissanceDesignFun();
         }
+        //基础设施建设费 单价选择
+        infrastructureCostSelectInput: function () {
+
+        },
+        //公共配套设施建设费 单价选择
+        infrastructureMatchingCostSelectInput: function () {
+
+        },
+        //  增值及附加税率
+        addedValueAdditionalTaxRateSelectInput: function () {
+
+        }
     };
 
     architecturalObj.inputAlgorithmObject = {
@@ -408,6 +781,86 @@
             b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().constructionInstallationEngineeringFee.key, null);//建筑安装工程费
             c = architecturalObj.mul(a,b);
             architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().reconnaissanceDesign.key,c);//勘察设计和前期工程费
+        },
+        undergroundBusinessShopFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().undergroundBusinessShopMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().undergroundBusinessShopUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().undergroundBusinessShopTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        closeWorkFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().closeWorkMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().closeWorkUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().closeWorkTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        unitWorkFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().unitWorkMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().unitWorkUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().unitWorkTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        openWorkFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().openWorkMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().openWorkUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().openWorkTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        sceneryWorkFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().sceneryWorkMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().sceneryWorkUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().sceneryWorkTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        operateBusinessFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().operateBusinessMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().operateBusinessUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().operateBusinessTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        strategyBusinessFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().strategyBusinessMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().strategyBusinessUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().strategyBusinessTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        ordinaryResidenceFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().ordinaryResidenceMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().ordinaryResidenceUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().ordinaryResidenceTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        apartmentResidenceFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().apartmentResidenceMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().apartmentResidenceUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().apartmentResidenceTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
+        },
+        villaResidenceFun:function () {
+            var a, b, c ;
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().villaResidenceMaySaleArea.key, null);
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().villaResidenceUnitPrice.key, null);
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().villaResidenceTotalPrice.key,c);
+            architecturalObj.inputAlgorithmObject.baseFormFun();
         },
         //大车库 算法
         bigGarageFun: function () {
@@ -522,6 +975,44 @@
                 architecturalObj.inputAlgorithmObject.smallGarageFun();
             }
         }
+        if (architecturalObj.indexOfUtils(key,architecturalObj.formType.work.work)){//属于办公
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.work.close)) {
+                architecturalObj.inputAlgorithmObject.closeWorkFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.work.open)) {
+                architecturalObj.inputAlgorithmObject.openWorkFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.work.scenery)) {
+                architecturalObj.inputAlgorithmObject.sceneryWorkFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.work.unit)) {
+                architecturalObj.inputAlgorithmObject.unitWorkFun();
+            }
+        }
+        if (architecturalObj.indexOfUtils(key,architecturalObj.formType.business.business)){//属于商业
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.business.operate)) {
+                architecturalObj.inputAlgorithmObject.operateBusinessFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.business.strategy)) {
+                architecturalObj.inputAlgorithmObject.strategyBusinessFun();
+            }
+        }
+        if (architecturalObj.indexOfUtils(key,architecturalObj.formType.undergroundBusiness.undergroundBusiness)){//属于地下商业
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.undergroundBusiness.shop)) {
+                architecturalObj.inputAlgorithmObject.undergroundBusinessShopFun();
+            }
+        }
+        if (architecturalObj.indexOfUtils(key,architecturalObj.formType.residence.residence)){//属于住宅
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.residence.apartment)) {
+                architecturalObj.inputAlgorithmObject.apartmentResidenceFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.residence.ordinary)) {
+                architecturalObj.inputAlgorithmObject.ordinaryResidenceFun();
+            }
+            if (architecturalObj.indexOfUtils(key, architecturalObj.formType.residence.villa)) {
+                architecturalObj.inputAlgorithmObject.villaResidenceFun();
+            }
+        }
     }
 
     architecturalObj.inputEvent = function () {
@@ -561,16 +1052,96 @@
                     $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().hypothesisDevelopmentSelect2.select).select2();
                 });
             },
+            //增值及附加税率
             loadAddedValueAdditionalTaxRate: function () {
+                AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
+                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().addedValueAdditionalTaxRate.select).html(html);
+                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                })
+            },
+            /**
+            * @author:  zch
+            * 描述:获取基础设施费用列表和公共配套设施费用
+            * @date:
+            **/
+            loadCostAndMatchingCost:function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
+                    type: "get",
+                    data: {projectId: "${projectInfo.id}"},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var infrastructureVo = result.data.InfrastructureVo;
+                            var optionA = "<option value=''>请选择</option>";
+                            var optionB = "<option value=''>请选择</option>";
+                            if (infrastructureVo.length > 0) {
+                                var temp = null;
+                                for (var i = 0; i < infrastructureVo.length; i++) {
+                                    temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
+                                    optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
+                                    temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
+                                    optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
+                                }
+                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureCost.select).html(optionA);
+                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureCost.select).select2();
+                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureMatchingCost.select).html(optionB);
+                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureMatchingCost.select).select2();
+                            }
 
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
             },
             load: function () {
                 architecturalObj.selectEvent.load.hypothesisDevelopmentSelect2();
                 architecturalObj.selectEvent.load.loadAddedValueAdditionalTaxRate();
+                architecturalObj.selectEvent.load.loadCostAndMatchingCost();
             }
         },
         //监听change 事件
         monitor: {
+            // 基础设施建设费 单价选择
+            infrastructureCost:function () {
+                var key = architecturalObj.config.inputConfig().infrastructureCost;
+                $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
+                    var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
+                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    try {
+                        eval(funName);
+                    } catch (e) {
+                        console.log("没有这个函数");
+                    }
+                });
+            },
+            //公共配套设施建设费 单价选择
+            infrastructureMatchingCost:function () {
+                var key = architecturalObj.config.inputConfig().infrastructureMatchingCost;
+                $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
+                    var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
+                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    try {
+                        eval(funName);
+                    } catch (e) {
+                        console.log("没有这个函数");
+                    }
+                });
+            },
+            addedValueAdditionalTaxRate:function () {
+                var key = architecturalObj.config.inputConfig().addedValueAdditionalTaxRate;
+                $("." + architecturalObj.config.frm() + " ." + key.select).change(function () {
+                    var value = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
+                    var funName = "architecturalObj.inputFun." + key + "Input(" + input.val() + ")";
+                    try {
+                        eval(funName);
+                    } catch (e) {
+                        console.log("没有这个函数");
+                    }
+                });
+            },
             hypothesisDevelopmentSelect2: function () {
                 var key = architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().hypothesisDevelopmentSelect2.select;
                 $("." + key).change(function () {
@@ -602,6 +1173,9 @@
             monitor: function () {
                 architecturalObj.selectEvent.monitor.hypothesisDevelopmentSelect2();
                 architecturalObj.selectEvent.monitor.hypothesisDevelopmentSelect2Type();
+                architecturalObj.selectEvent.monitor.infrastructureCost();
+                architecturalObj.selectEvent.monitor.infrastructureMatchingCost();
+                architecturalObj.selectEvent.monitor.addedValueAdditionalTaxRate();
             }
         }
     }
