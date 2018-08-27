@@ -1200,7 +1200,9 @@
                 var value = input.val();
                 var funName = "construction.inputFun." + key + "Input(" + input.val() + ")";
                 try {
-                    eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
+                    if (construction.isNumber(value)){
+                        eval(funName);//例如执行construction.inputFun.developmentLandAreaInput(22)函数
+                    }
                 } catch (e) {
                 }
 

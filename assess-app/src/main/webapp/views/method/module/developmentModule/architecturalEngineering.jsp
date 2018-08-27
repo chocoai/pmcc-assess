@@ -758,7 +758,7 @@
         //勘察设计和前期工程费率
         reconnaissanceDesignRoteInput:function () {
             architecturalObj.inputAlgorithmObject.reconnaissanceDesignFun();
-        }
+        },
         //基础设施建设费 单价选择
         infrastructureCostSelectInput: function () {
 

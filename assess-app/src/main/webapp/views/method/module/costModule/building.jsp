@@ -822,8 +822,10 @@
             input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
                 var value = input.val();
                 try {
-                    var funName = "build.inputFun." + key + "Input(" + input.val() + ")";
-                    eval(funName);
+                    if (build.isNumber(value)){
+                        var funName = "build.inputFun." + key + "Input(" + input.val() + ")";
+                        eval(funName);
+                    }
                 } catch (e) {
                     console.log("函数不存在!");
                 }
@@ -1043,7 +1045,7 @@
                 var k2 = build.mul(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(d));
                 k = build.add(k1, k2);
                 $("." + build.config().newRate + " .integratednewRate").html(k);
-                build.newRateModel.select2Event.eventInit();
+                // build.newRateModel.select2Event.eventInit();
             },
             //年限法 成新率
             newRateA: function (obj) {
@@ -1075,7 +1077,7 @@
                             d = 1 - (1 - b) * (c / a);
                             $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
                             build.newRateModel.algorithm.integratednewRate(d);
-                            build.newRateModel.select2Event.eventInit();
+                            // build.newRateModel.select2Event.eventInit();
                         }
                     },
                     error: function (result) {
@@ -1153,7 +1155,7 @@
                     if (build.isNumber(value)) {
                         build.newRateModel.algorithm.newRateA(value);
                     } else {
-                        Alert("请输入合法数字!")
+
                     }
                 });
             },
@@ -1166,7 +1168,7 @@
                     if (build.isNumber(value)) {
                         build.newRateModel.algorithm.integratednewRate(value);
                     } else {
-                        Alert("请输入合法数字!")
+
                     }
                 });
             }, // 观察法 成新率 事件
@@ -1178,7 +1180,7 @@
                     if (build.isNumber(value)) {
                         build.newRateModel.algorithm.integratednewRate(value);
                     } else {
-                        Alert("请输入合法数字!")
+
                     }
                 });
             },// 观察法 权重 事件
@@ -1190,7 +1192,7 @@
                     if (build.isNumber(value)) {
                         build.newRateModel.algorithm.integratednewRate(value);
                     } else {
-                        Alert("请输入合法数字!")
+
                     }
                 });
             },
@@ -1209,6 +1211,7 @@
                 build.newRateModel.setNewRateModelFlag(false);
             }
             $("." + build.config().newRate).modal("show");
+            $("#" + build.config().newRate).validate();
         },
         save: function () {
             if (!$("#" + build.config().newRate).valid()) {
