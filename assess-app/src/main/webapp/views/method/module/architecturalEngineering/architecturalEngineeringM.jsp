@@ -7,7 +7,7 @@
   建筑安装工程费
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/views/share/main_css.jsp" %>
+<%--<%@include file="/views/share/main_css.jsp" %>--%>
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
 <link rel="stylesheet"

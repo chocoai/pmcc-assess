@@ -84,6 +84,8 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
+<script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <script>
     $(function () {
         //支撑信息初始化
