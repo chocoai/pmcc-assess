@@ -236,6 +236,17 @@
                        placeholder="续建成本" class="form-control" name="constructionCost">
             </div>
         </div>
+
+        <label class="col-sm-1 control-label">
+            重置价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="重置价格" class="form-control" name="replacementValue">
+            </div>
+        </div>
+
     </div>
 
     <div class="form-group">
@@ -280,15 +291,6 @@
             </div>
         </div>
 
-        <label class="col-sm-1 control-label">
-            重置价格
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="重置价格" class="form-control" name="replacementValue">
-            </div>
-        </div>
 
         <label class="col-sm-1 control-label">
             销售费率
@@ -300,10 +302,6 @@
             </div>
         </div>
 
-
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             销售费
         </label>
@@ -313,6 +311,12 @@
                        placeholder="销售费" class="form-control" name="salesFee">
             </div>
         </div>
+
+
+    </div>
+
+    <div class="form-group">
+
 
         <label class="col-sm-1 control-label">
             增值及附加税率
@@ -335,6 +339,84 @@
             </div>
         </div>
 
+        <label class="col-sm-1 control-label">
+            计息周期
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="计息周期" class="form-control" name="interestPeriod">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+        <label class="col-sm-1 control-label">
+            投资计息利率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text"
+                       placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资计息税率修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资计息税率修正" class="form-control" name="interestRateOnInvestmentCorrect">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            开发利润率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="投资利润率" class="form-control" name="investmentProfitRote">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+
+        <label class="col-sm-1 control-label">
+            投资利润率修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利润率修正" class="form-control" name="investmentProfitRoteRevision">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资利息
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利息" class="form-control" name="interestInInvestment">
+            </div>
+        </div>
+
+        <label class="col-sm-1 control-label">
+            投资利润
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利润" class="form-control" name="investmentProfit">
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
@@ -724,6 +806,8 @@
                 interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
                 interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},
                 investmentProfit: {key: "investmentProfit", describe: "投资利润"},
+                investmentProfitRote: {key: "investmentProfitRote", describe: "投资利润率"},
+                investmentProfitRoteRevision: {key: "investmentProfitRoteRevision", describe: "投资利润率修正"},
                 valuationLandUnitPrice: {key: "valuationLandUnitPrice", describe: "委估土地单价"},
                 landPrice: {key: "landPrice", describe: "地价"},
                 yearRevision: {key: "yearRevision", describe: "年起修正"},
@@ -799,19 +883,49 @@
         //销售费率
         salesFeeRoteInput:function () {
             architecturalObj.inputAlgorithmObject.salesFeeRoteFun();//销售费
+            architecturalObj.inputAlgorithmObject.investmentProfitRoteRevisionFun();// 投资利润率修正
         },
         //  增值及附加税率
         addedValueAdditionalTaxRateSelectInput: function () {
             architecturalObj.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
         },
+        //计息周期
+        interestPeriodInput: function () {
+            architecturalObj.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();// 投资计息税率修正
+        },
+        //投资计息利率
+        interestRateOnInvestmentInput: function () {
+            architecturalObj.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();// 投资计息税率修正
+        },
+        //开发利润率
+        investmentProfitRoteInput:function () {
+            architecturalObj.inputAlgorithmObject.investmentProfitRoteRevisionFun();// 投资利润率修正
+        },
     };
 
     architecturalObj.inputAlgorithmObject = {
+        //投资利润率修正 = 开发利润率*销售费率
+        investmentProfitRoteRevisionFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().salesFeeRote.key,null);//销售费率
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().investmentProfitRote.key,null);//开发利润率
+            c = architecturalObj.mul(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().investmentProfitRoteRevision.key,c);//投资利润率修正
+        },
+        //投资计息税率修正 = (1+投资利息利率)^(计息周期/2)-1
+        interestRateOnInvestmentCorrectFun:function () {
+            var a = 0, b = 0, c = 0 ;
+            a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().interestRateOnInvestment.key,null);//投资利息利率
+            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//计息周期
+            a = architecturalObj.add(a,1);
+            b = architecturalObj.div(b/2) - 1;
+            c= Math.pow(a,b);
+            architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().interestRateOnInvestmentCorrect.key,c);//投资计息税率修正
+        },
         //增值及附加税金 = 重置价格*增值及附加税率
         addedValueAdditionalTaxRateFun:function () {
             var a = 0, b = 0, c = 0 ;
             a = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//重置价格
-            b = architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("get", architecturalObj.config.inputConfig().replacementValue.key,null);//重置价格
             var key = architecturalObj.config.inputConfig().addedValueAdditionalTaxRate;
             b = $("." + architecturalObj.config.frm() + " ." + key.select).eq(1).val();
             AssessCommon.getDataDicInfo(b, function (data) {

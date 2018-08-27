@@ -953,7 +953,7 @@
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, h = 0, i = 0, j = 0;
             var m = 0, n = 0, temp = 0;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().totalBuildArea.key, null);//总建筑面积
-            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().reconnaissanceDesign.key, null);//勘察设计和前期工程费
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().reconnaissanceDesign.key, null);//勘察设计和前期工程费
             c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().infrastructureCost.key, null);//基础设施费
 
             m = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().interestPeriod.key, null);//计息周期
