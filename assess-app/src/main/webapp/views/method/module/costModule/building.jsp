@@ -15,7 +15,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" placeholder="委估对象面积"
-                       class="form-control mdCost area" name="area" readonly="readonly" value="${mdCost.area}">
+                       class="form-control mdCost_area" name="area" readonly="readonly" value="${mdCost.area}">
                 <!-- 委估对象面积 -->
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="x-valid">
             <div class="col-sm-3">
                 <input type="text" placeholder="委估对象价格"
-                       class="form-control mdCost price" name="price" readonly="readonly" value="${mdCost.area}">
+                       class="form-control mdCost_price" name="price" readonly="readonly" value="${mdCost.area}">
                 <!-- 委估对象价格 -->
             </div>
         </div>
@@ -563,14 +563,14 @@
             return arr;
         };
         config.hiddenData = function () {
-            var area = $(".mdCost .area").val();
-            var price = $(".mdCost .price").val();
-            if (!build.isNotNull(area)) {
-                area = Math.round(Math.random() * 100);
-            }
-            if (!build.isNotNull(price)) {
-                price = Math.round(Math.random() * 100) + Math.random();
-            }
+            var area = $(".mdCost_area").val();
+            var price = $(".mdCost_price").val();
+            // if (!build.isNotNull(area)) {
+            //     area = Math.round(Math.random() * 100);
+            // }
+            // if (!build.isNotNull(price)) {
+            //     price = Math.round(Math.random() * 100) + Math.random();
+            // }
             var data = {
                 area: area,
                 price: price
