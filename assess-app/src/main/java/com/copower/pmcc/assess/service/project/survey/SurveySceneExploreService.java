@@ -17,6 +17,8 @@ public class SurveySceneExploreService {
     private SurveySceneExploreDao surveySceneExploreDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     /**
      * 数据保存
@@ -61,5 +63,33 @@ public class SurveySceneExploreService {
         return surveySceneExplore;
     }
 
+    public SurveySceneExplore getSurveySceneExplore(Integer planDetailsId) {
+        SurveySceneExplore where = new SurveySceneExplore();
+        where.setPlanDetailsId(planDetailsId);
+        SurveySceneExplore surveySceneExplore = surveySceneExploreDao.getSurveySceneExplore(where);
+        return surveySceneExplore;
+    }
 
+    /**
+     * 初始化
+     *
+     * @param projectId
+     * @param planDetailsId
+     * @param declareId
+     */
+    public SurveySceneExplore initSceneExplore(Integer projectId, Integer planDetailsId, Integer declareId) {
+        SurveySceneExplore where = new SurveySceneExplore();
+        where.setProjectId(projectId);
+        where.setPlanDetailsId(planDetailsId);
+        SurveySceneExplore surveySceneExplore = surveySceneExploreDao.getSurveySceneExplore(where);
+        if (surveySceneExplore != null) return surveySceneExplore;
+        surveySceneExplore = new SurveySceneExplore();
+        surveySceneExplore.setProjectId(projectId);
+        surveySceneExplore.setPlanDetailsId(planDetailsId);
+        surveySceneExplore.setDeclareId(declareId);
+        surveySceneExplore.setJsonContent(surveyCommonService.getDeclareCertJson(projectId,declareId));
+        surveySceneExplore.setCreator(commonService.thisUserAccount());
+        surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
+        return surveySceneExplore;
+    }
 }

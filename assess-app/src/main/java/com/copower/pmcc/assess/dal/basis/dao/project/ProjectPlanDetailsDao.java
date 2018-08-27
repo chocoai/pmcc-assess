@@ -58,9 +58,9 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPId(Integer pId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPid(Integer pid) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPidEqualTo(pId);
+        example.createCriteria().andPidEqualTo(pid);
         example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }

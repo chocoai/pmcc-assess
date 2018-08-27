@@ -29,6 +29,20 @@
                 </div>
                 <div class="x_content">
                     <table id="case_list" class="table table-bordered" style="max-height: auto;"></table>
+                    <form id="frm_case" class="form-horizontal">
+                        <fieldset>
+                            <legend>同步数据到其它权证</legend>
+                            <input type="button" class="btn btn-primary" onclick="taskCaseIndex.selectAll();" value="全选" />
+                            <input type="button" class="btn btn-primary" onclick="taskCaseIndex.unSelectAll();" value="全不选"/>
+                            <input type="button" class="btn btn-primary" onclick="taskCaseIndex.invertSelect();" value="反选"/>
+                            <div class="form-group">
+                                <div class="col-sm-10" id="declareCertContent">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <input type="hidden" id="jsonContentCase" value='${surveyCaseStudy.jsonContent}'>
                 </div>
             </div>
 
@@ -222,6 +236,7 @@
     $(function () {
         $("#frm_task").validate();
         taskCaseIndex.getCaseTaskList();
+        taskCaseIndex.loadDeclareCert();
         //显示附件
         loadUploadFiles();
         //上传附件
@@ -265,12 +280,14 @@
             Alert("还有未完成的任务，请检查！");
             return false;
         }
-        //需验证所有子任务提交完成后，才能提交主任务
+        var formData = {};
+        formData.id = "${surveyCaseStudy.id}";
+        formData.jsonContent = taskCaseIndex.getDeclareCertData();
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(formData), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(formData), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 
@@ -528,6 +545,53 @@
             }
         })
         return isFinish;
+    }
+
+    //加载申报权证
+    taskCaseIndex.loadDeclareCert = function () {
+        var jsonContent = $("#jsonContentCase").val();
+        if (jsonContent) {
+            jsonContent = JSON.parse(jsonContent);
+            var html = '';
+            $.each(jsonContent, function (i, item) {
+                html += '<span class="checkbox-inline">';
+                html += '<input type="checkbox" id="declareCert' + item.key + '" ';
+                if (item.isChecked) {
+                    html += ' checked="checked" ';
+                }
+                html += 'name="declareCert" value="' + item.key + '" class="form-inline">';
+                html += '<label for="declareCert' + item.key + '">' + item.value + '</label></span>';
+            })
+            $('#declareCertContent').append(html);
+        }
+    }
+
+    //获取申报权证数据
+    taskCaseIndex.getDeclareCertData = function () {
+        var keyValueArray = [];
+        $('#declareCertContent').find(':checkbox').each(function () {
+            var keyValue = {};
+            keyValue.key = $(this).val();
+            keyValue.value = $(this).closest('span').find('label').text();
+            keyValue.isChecked = $(this).prop('checked');
+            keyValueArray.push(keyValue);
+        })
+        return JSON.stringify(keyValueArray);
+    }
+
+    //全选
+    taskCaseIndex.selectAll = function () {
+        $('#declareCertContent').find(':checkbox').prop('checked',true);
+    }
+    //全不选
+    taskCaseIndex.unSelectAll = function () {
+        $('#declareCertContent').find(':checkbox').prop('checked',false);
+    }
+    //反选
+    taskCaseIndex.invertSelect = function () {
+        $('#declareCertContent').find(':checkbox').each(function () {
+            $(this).prop('checked',!$(this).prop('checked'));
+        })
     }
 
 </script>

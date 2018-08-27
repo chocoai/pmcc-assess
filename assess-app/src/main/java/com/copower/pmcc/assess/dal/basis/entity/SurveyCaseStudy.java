@@ -11,6 +11,10 @@ public class SurveyCaseStudy {
 
     private String processInsId;
 
+    private Integer declareId;
+
+    private String jsonContent;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +51,22 @@ public class SurveyCaseStudy {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public String getCreator() {

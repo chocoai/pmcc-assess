@@ -355,6 +355,136 @@ public class SurveySceneExploreExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIsNull() {
+            addCriterion("json_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIsNotNull() {
+            addCriterion("json_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentEqualTo(String value) {
+            addCriterion("json_content =", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotEqualTo(String value) {
+            addCriterion("json_content <>", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThan(String value) {
+            addCriterion("json_content >", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
+            addCriterion("json_content >=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThan(String value) {
+            addCriterion("json_content <", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLessThanOrEqualTo(String value) {
+            addCriterion("json_content <=", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentLike(String value) {
+            addCriterion("json_content like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotLike(String value) {
+            addCriterion("json_content not like", value, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentIn(List<String> values) {
+            addCriterion("json_content in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotIn(List<String> values) {
+            addCriterion("json_content not in", values, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentBetween(String value1, String value2) {
+            addCriterion("json_content between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andJsonContentNotBetween(String value1, String value2) {
+            addCriterion("json_content not between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

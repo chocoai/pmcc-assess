@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -13,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.examine.*;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -34,12 +38,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +87,10 @@ public class SurveyCommonService {
     private ExamineBuildingService examineBuildingService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -314,5 +324,60 @@ public class SurveyCommonService {
         return planDetailsVoList;
     }
 
+    /**
+     * 获取初始化权证json数据
+     *
+     * @param projectId
+     * @param declareId
+     * @return
+     */
+    public String getDeclareCertJson(Integer projectId, Integer declareId) {
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+        if (CollectionUtils.isEmpty(declareRecordList)) return null;
+        JSONArray jsonArray = new JSONArray();
+        for (DeclareRecord declareRecord : declareRecordList) {
+            if(declareRecord.getId().equals(declareId)) continue;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("key",declareRecord.getId());
+            jsonObject.put("isChecked",false);
+            jsonObject.put("value",declareRecord.getName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray.toJSONString();
+    }
 
+    public List<String> getTableList() {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        List<String> tableList = Lists.newArrayList();
+        for (Map<String, Object> map : mapList) {
+            tableList.add(String.valueOf(map.get("TABLE_NAME")));
+        }
+        return tableList;
+    }
+
+    public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        //1.去除id 评出sql前半截  拼出sql后半截
+        for (Map<String, Object> map : mapList) {
+            if (map.get("column_name").equals("id")) {
+                mapList.remove(map);
+                break;
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : mapList) {
+            stringBuilder.append(map.get("column_name")).append(",");
+        }
+        String columnString = stringBuilder.toString();
+        columnString = columnString.replaceAll(",$", "");
+
+        String resultString = MessageFormat.format("INSERT into {0}({1}) SELECT %s FROM {0} where plan_details_id={2};", tableName, columnString, String.valueOf(oldPlanDetailsId));
+        columnString = columnString.replace("plan_details_id", String.valueOf(newPlanDetailsId)).replace("declare_id", String.valueOf(newDeclareId));
+        resultString = String.format(resultString, columnString);
+        return resultString;
+    }
 }

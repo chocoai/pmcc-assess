@@ -6,6 +6,8 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -69,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, declare_id, json_content, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExploreExample" >
     select
@@ -106,11 +109,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_scene_explore (project_id, plan_details_id, process_ins_id, 
-      creator, gmt_created, gmt_modified
-      )
+      declare_id, json_content, creator, 
+      gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{declareId,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +129,12 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="jsonContent != null" >
+        json_content,
       </if>
       <if test="creator != null" >
         creator,
@@ -146,6 +155,12 @@
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -179,6 +194,12 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=CHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -199,6 +220,8 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      json_content = #{record.jsonContent,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -218,6 +241,12 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=CHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +264,8 @@
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      declare_id = #{declareId,jdbcType=INTEGER},
+      json_content = #{jsonContent,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

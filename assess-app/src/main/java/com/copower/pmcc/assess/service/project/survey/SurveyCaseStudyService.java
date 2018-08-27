@@ -30,6 +30,8 @@ public class SurveyCaseStudyService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     /**
      * 数据保存
@@ -119,5 +121,35 @@ public class SurveyCaseStudyService {
             surveyExamineTaskService.deletePlanDetailsAndTask(list);
         }
         projectPlanDetailsService.deleteProjectPlanDetails(planDetailsId);
+    }
+
+    public SurveyCaseStudy getSurveyCaseStudy(Integer planDetailsId) {
+        SurveyCaseStudy where = new SurveyCaseStudy();
+        where.setPlanDetailsId(planDetailsId);
+        SurveyCaseStudy surveyCaseStudy = surveyCaseStudyDao.getSurveyCaseStudy(where);
+        return surveyCaseStudy;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param projectId
+     * @param planDetailsId
+     * @param declareId
+     */
+    public SurveyCaseStudy initCaseStudy(Integer projectId, Integer planDetailsId, Integer declareId) {
+        SurveyCaseStudy where = new SurveyCaseStudy();
+        where.setProjectId(projectId);
+        where.setPlanDetailsId(planDetailsId);
+        SurveyCaseStudy surveyCaseStudy = surveyCaseStudyDao.getSurveyCaseStudy(where);
+        if (surveyCaseStudy != null) return surveyCaseStudy;
+        surveyCaseStudy = new SurveyCaseStudy();
+        surveyCaseStudy.setProjectId(projectId);
+        surveyCaseStudy.setPlanDetailsId(planDetailsId);
+        surveyCaseStudy.setDeclareId(declareId);
+        surveyCaseStudy.setJsonContent(surveyCommonService.getDeclareCertJson(projectId,declareId));
+        surveyCaseStudy.setCreator(commonService.thisUserAccount());
+        surveyCaseStudyDao.addSurveyCaseStudy(surveyCaseStudy);
+        return surveyCaseStudy;
     }
 }

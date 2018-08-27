@@ -808,7 +808,7 @@ public class ProjectPlanService {
      * @param planDetailsId
      */
     private void copyPlanDetailsRecursion(Integer planDetailsId, Integer pid) {
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPId(planDetailsId);
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                 Integer sourcePlanDetailsId = projectPlanDetails.getId();

@@ -29,8 +29,23 @@
                 </div>
                 <div class="x_content">
                     <table id="explore_list" class="table table-bordered" style="max-height: auto;"></table>
+                    <form id="frm_explore" class="form-horizontal">
+                        <fieldset>
+                            <legend>同步数据到其它权证</legend>
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.selectAll();" value="全选" />
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.unSelectAll();" value="全不选"/>
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.invertSelect();" value="反选"/>
+                            <div class="form-group">
+                                <div class="col-sm-10" id="declareCertContent">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <input type="hidden" id="jsonContentExplore" value='${surveySceneExplore.jsonContent}'>
                 </div>
             </div>
+
 
             <!--填写表单-->
             <div class="x_panel">
@@ -105,6 +120,7 @@
     $(function () {
         $("#frm_task").validate();
         taskExploreIndex.getExploreTaskList();
+        taskExploreIndex.loadDeclareCert();
         //显示附件
         loadUploadFiles();
         //上传附件
@@ -148,12 +164,15 @@
             Alert("还有未完成的任务，请检查！");
             return false;
         }
-        //需验证所有子任务提交完成后，才能提交主任务
+        var formData = {};
+        formData.id = "${surveySceneExplore.id}";
+        formData.jsonContent = taskExploreIndex.getDeclareCertData();
+
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(formData), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(formData), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 
@@ -303,7 +322,55 @@
         return isFinish;
     }
 
+    //加载申报权证
+    taskExploreIndex.loadDeclareCert = function () {
+        var jsonContent = $("#jsonContentExplore").val();
+        if (jsonContent) {
+            jsonContent = JSON.parse(jsonContent);
+            var html = '';
+            $.each(jsonContent, function (i, item) {
+                html += '<span class="checkbox-inline">';
+                html += '<input type="checkbox" id="declareCert' + item.key + '" ';
+                if (item.isChecked) {
+                    html += ' checked="checked" ';
+                }
+                html += 'name="declareCert" value="' + item.key + '" class="form-inline">';
+                html += '<label for="declareCert' + item.key + '">' + item.value + '</label></span>';
+            })
+            $('#declareCertContent').append(html);
+        }
+    }
+
+    //获取申报权证数据
+    taskExploreIndex.getDeclareCertData = function () {
+        var keyValueArray = [];
+        $('#declareCertContent').find(':checkbox').each(function () {
+            var keyValue = {};
+            keyValue.key = $(this).val();
+            keyValue.value = $(this).closest('span').find('label').text();
+            keyValue.isChecked = $(this).prop('checked');
+            keyValueArray.push(keyValue);
+        })
+        return JSON.stringify(keyValueArray);
+    }
+
+    //全选
+    taskExploreIndex.selectAll = function () {
+        $('#declareCertContent').find(':checkbox').prop('checked',true);
+    }
+    //全不选
+    taskExploreIndex.unSelectAll = function () {
+        $('#declareCertContent').find(':checkbox').prop('checked',false);
+    }
+    //反选
+    taskExploreIndex.invertSelect = function () {
+        $('#declareCertContent').find(':checkbox').each(function () {
+            $(this).prop('checked',!$(this).prop('checked'));
+        })
+    }
+
 </script>
+
 
 </html>
 
