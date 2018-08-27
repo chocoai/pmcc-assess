@@ -236,6 +236,16 @@
                        placeholder="建设成本" class="form-control" name="constructionCost">
             </div>
         </div>
+
+        <label class="col-sm-1 control-label">
+            重置价格
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="重置价格" class="form-control" name="replacementValue">
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
@@ -281,12 +291,12 @@
         </div>
 
         <label class="col-sm-1 control-label">
-            重置价格
+            销售费
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="重置价格" class="form-control" name="replacementValue">
+                <input type="text" readonly="readonly"
+                       placeholder="销售费" class="form-control" name="salesFee">
             </div>
         </div>
 
@@ -304,15 +314,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-1 control-label">
-            销售费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="销售费" class="form-control" name="salesFee">
-            </div>
-        </div>
+
 
         <label class="col-sm-1 control-label">
             增值及附加税率
@@ -335,9 +337,6 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-1 control-label">
             计息周期
         </label>
@@ -347,6 +346,10 @@
                        placeholder="计息周期" class="form-control" name="interestPeriod">
             </div>
         </div>
+
+    </div>
+
+    <div class="form-group">
 
         <label class="col-sm-1 control-label">
             投资计息利率
@@ -368,9 +371,31 @@
             </div>
         </div>
 
+        <label class="col-sm-1 control-label">
+            开发利润率
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" data-rule-number='true' required="required"
+                       placeholder="投资利润率" class="form-control" name="investmentProfitRote">
+            </div>
+        </div>
+
     </div>
 
     <div class="form-group">
+
+
+        <label class="col-sm-1 control-label">
+            投资利润率修正
+        </label>
+        <div class="x-valid">
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"
+                       placeholder="投资利润率修正" class="form-control" name="investmentProfitRoteRevision">
+            </div>
+        </div>
+
         <label class="col-sm-1 control-label">
             投资利息
         </label>
@@ -564,7 +589,6 @@
     </div>
 
 </form>
-
 
 
 <script>
@@ -806,6 +830,8 @@
                 interestRateOnInvestmentCorrect: {key: "interestRateOnInvestmentCorrect", describe: "投资计息税率修正"},
                 interestInInvestment: {key: "interestInInvestment", describe: "投资利息"},
                 investmentProfit: {key: "investmentProfit", describe: "投资利润"},
+                investmentProfitRote: {key: "investmentProfitRote", describe: "投资利润率"},
+                investmentProfitRoteRevision: {key: "investmentProfitRoteRevision", describe: "投资利润率修正"},
                 valuationLandUnitPrice: {key: "valuationLandUnitPrice", describe: "委估土地单价"},
                 landPrice: {key: "landPrice", describe: "地价"},
                 yearRevision: {key: "yearRevision", describe: "年起修正"},
@@ -865,7 +891,7 @@
             hypothesisDevelopment.inputAlgorithmObject.otherEngineeringCostFun();
         },
         //管理费率
-        managementExpenseRoteInput:function () {
+        managementExpenseRoteInput: function () {
             hypothesisDevelopment.inputAlgorithmObject.managementExpenseFun();//管理费
         },
         //  增值及附加税率
@@ -873,46 +899,135 @@
             hypothesisDevelopment.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
         },
         //不可预见费率
-        unforeseenExpensesRoteInput:function () {
+        unforeseenExpensesRoteInput: function () {
             hypothesisDevelopment.inputAlgorithmObject.unforeseenExpensesFun();//不可预见费
         },
         //重置价格
-        replacementValueInput:function () {
+        replacementValueInput: function () {
             hypothesisDevelopment.inputAlgorithmObject.salesFeeRoteFun();//销售费
             hypothesisDevelopment.inputAlgorithmObject.addedValueAdditionalTaxRateFun();//增值及附加税金
         },
         //销售费率
-        salesFeeRoteInput:function () {
+        salesFeeRoteInput: function () {
             hypothesisDevelopment.inputAlgorithmObject.salesFeeRoteFun();//销售费
+            hypothesisDevelopment.inputAlgorithmObject.investmentProfitRoteRevisionFun();// 投资利润率修正
         },
+        //计息周期
+        interestPeriodInput: function () {
+            hypothesisDevelopment.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();// 投资计息税率修正
+        },
+        //投资计息利率
+        interestRateOnInvestmentInput: function () {
+            hypothesisDevelopment.inputAlgorithmObject.interestRateOnInvestmentCorrectFun();// 投资计息税率修正
+        },
+        //投资利润率
+        investmentProfitRoteInput: function () {
+            hypothesisDevelopment.inputAlgorithmObject.investmentProfitRoteRevisionFun();// 投资利润率修正
+            hypothesisDevelopment.inputAlgorithmObject.investmentProfitFun();// 投资利润
+        }
     }
     hypothesisDevelopment.inputAlgorithmObject = {
+        /**投资利润
+         * (土地取得小计+建设成本+不可预见费+管理费)* 开发利润率
+         * 土地取得小计 改为 总建筑面积
+         **/
+        investmentProfitFun: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().totalBuildArea.key, null);//总建筑面积
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionCost.key, null);//建设成本
+            c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key, null);//不可预见费
+            d = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpense.key, null);//管理费
+            e = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().investmentProfitRote.key, null);// 开发利润率
+            a = a + b +c +d ;
+            e = hypothesisDevelopment.mul(a,e);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().investmentProfit.key,e);//投资利润
+        },
+        //投资利息 = (土地取得小计+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)+( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*((1+投资计息利率)^( 计息周期/2)-1)
+        //          --------------------------------A---------------------------------------  -------------------------B--------------------------------------------------------------------------
+        /**
+         * 土地取得小计 改为 总建筑面积
+         * A段 (总建筑面积+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)
+         * B段 ( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*((1+投资计息利率)^( 计息周期/2)-1)
+         */
+        interestInInvestmentFun: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, h = 0, i = 0, j = 0;
+            var m = 0, n = 0, temp = 0;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().totalBuildArea.key, null);//总建筑面积
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().reconnaissanceDesign.key, null);//勘察设计和前期工程费
+            c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().infrastructureCost.key, null);//基础设施费
+
+            m = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().interestPeriod.key, null);//计息周期
+            n = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().interestRateOnInvestment.key, null);//投资计息利率
+
+            d = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key, null);//建筑安装工程费
+            e = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.key, null);//公共设施费
+            f = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().devDuringPriceTax.key, null);//开发期间税费
+            h = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().otherEngineeringCost.key, null);//其它工程费
+            i = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key, null);//不可预见费
+            j = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpense.key, null);//管理费
+
+            temp = Math.pow((1 + n), (m - 1));
+            m = Math.pow((1 + n), (m / 2) - 1);
+            n = temp;
+            //A段计算
+            temp = a + b + c;
+            n = temp * n;
+            //B段计算
+            temp = d + e + f + h + i + j;
+            m = temp * m;
+            //总计算
+            temp = hypothesisDevelopment.add(n, m);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().interestInInvestment.key, temp);//投资利息
+        },
+        //投资利润率修正 = 开发利润率 * 销售费率
+        investmentProfitRoteRevisionFun: function () {
+            var a = 0, b = 0, c = 0;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().investmentProfitRote.key, null);// 开发利润率
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().salesFeeRote.key, null);//销售费率
+            c = hypothesisDevelopment.mul(a, b);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().investmentProfitRoteRevision.key, c);//投资利润率修正
+        },
+        // 投资计息税率修正 = (1+投资利息利率)^(计息周期/2)-1
+        interestRateOnInvestmentCorrectFun: function () {
+            var a = 0, b = 0, c = 0;
+            a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().interestPeriod.key, null);//计息周期
+            b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().interestRateOnInvestment.key, null);//投资计息利率
+            console.log("a:" + a + "; b:" + b + "; c:" + c);
+            b = hypothesisDevelopment.add(1, b);
+            a = (a / 2 - 1);
+            c = Math.pow(b, a);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().interestRateOnInvestmentCorrect.key, c);//投资计息税率修正
+        },
         //销售费 = 重置价格*销售费率
-        salesFeeRoteFun:function () {
-            var a = 0, b = 0, c = 0 ;
+        salesFeeRoteFun: function () {
+            var a = 0, b = 0, c = 0;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().salesFeeRote.key, null);//销售费率
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().replacementValue.key, null);//重置价格
-            c = hypothesisDevelopment.mul(a,b);
+            c = hypothesisDevelopment.mul(a, b);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().salesFee.key, c);//销售费
         },
         //不可预见费 = （建设成本+管理费金额）*不可预见费率
-        unforeseenExpensesFun:function () {
-            var a = 0, b = 0, c = 0 ,d = 0; ;
+        unforeseenExpensesFun: function () {
+            var a = 0, b = 0, c = 0, d = 0;
+            ;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionCost.key, null);//建设成本
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpense.key, null);//管理费
             c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unforeseenExpensesRote.key, null);//不可预见费率
-            d = hypothesisDevelopment.add(a,b);
-            d = hypothesisDevelopment.mul(d,c);
-            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key,d);//不可预见费
+            d = hypothesisDevelopment.add(a, b);
+            d = hypothesisDevelopment.mul(d, c);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key, d);//不可预见费
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
+            hypothesisDevelopment.inputAlgorithmObject.investmentProfitFun();// 投资利润
         },
         //管理费 = 建设成本*管理费率
-        managementExpenseFun:function () {
-            var a = 0, b = 0, c = 0 ;
+        managementExpenseFun: function () {
+            var a = 0, b = 0, c = 0;
             a = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().constructionCost.key, null);//建设成本
             b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpenseRote.key, null);//管理费率
-            c = hypothesisDevelopment.mul(a,b);
+            c = hypothesisDevelopment.mul(a, b);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().managementExpense.key, c);//管理费
             hypothesisDevelopment.inputAlgorithmObject.unforeseenExpensesFun();//不可预见费
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //建设费成本 = 前期工程费+安装工程费+基础设施费+公共设施费+开发期间税费+其它工程费
         constructionCostFun: function () {
@@ -937,6 +1052,7 @@
             c = hypothesisDevelopment.mul(b, a);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().otherEngineeringCost.key, c);//其它工程费
             hypothesisDevelopment.inputAlgorithmObject.constructionCostFun();//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //增值及附加税金
         addedValueAdditionalTaxRateFun: function () {
@@ -950,7 +1066,7 @@
                         a = 0;
                     }
                     b = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().replacementValue.key, null);//重置价格
-                    c = hypothesisDevelopment.mul(a,b);
+                    c = hypothesisDevelopment.mul(a, b);
                     console.log("a:" + a + "; b:" + b + "; c:" + c);
                     // run method
                     hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.key, c);//增值及附加税金
@@ -965,6 +1081,7 @@
             c = hypothesisDevelopment.mul(b, a);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().devDuringPriceTax.key, c);//开发期间税费
             hypothesisDevelopment.inputAlgorithmObject.constructionCostFun();//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //公共配套设施建设费
         infrastructureMatchingCostFun: function () {
@@ -975,6 +1092,7 @@
             c = hypothesisDevelopment.mul(b, a);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.key, c);//公共设施费
             hypothesisDevelopment.inputAlgorithmObject.constructionCostFun();//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //基础设施建设费
         infrastructureCostFun: function () {
@@ -985,6 +1103,7 @@
             c = hypothesisDevelopment.mul(b, a);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().infrastructureCost.key, c);//基础设施费
             hypothesisDevelopment.inputAlgorithmObject.constructionCostFun();//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //f勘察设计和前期工程费 = 建筑安装工程费*勘察设计和前期工程费率
         reconnaissanceDesignFun: function () {
@@ -996,6 +1115,7 @@
             console.log("a:" + a + "; b:" + b + "; c:" + c);
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().reconnaissanceDesign.key, c);//勘察设计和前期工程费
             hypothesisDevelopment.inputAlgorithmObject.constructionCostFun();//建设成本
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         //地下商业
         undergroundBusinessShopFun: function () {
@@ -1145,9 +1265,9 @@
             totalBuildArea = hypothesisDevelopment.add(mayNotSaleArea, estimateBuildSaleArea);
             /*总建筑面积*/
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().totalBuildArea.key, totalBuildArea);
+            hypothesisDevelopment.inputAlgorithmObject.interestInInvestmentFun();//投资利息
         },
         jqueryInputGetAndSet: function (flag, name, data) {
-            console.log("jqueryInputGetAndSet");
             if (flag == 'get') {
                 var text = null;
                 text = $("." + hypothesisDevelopment.config().frm + " " + "input[name='" + name + "']").val();
@@ -1249,9 +1369,11 @@
                 var value = input.val();
                 try {
                     console.log("key:" + key);
-                    var funName = "hypothesisDevelopment.inputFun." + key + "Input(" + input.val() + ")";
-                    console.log(funName);
-                    eval(funName);
+                    if (hypothesisDevelopment.isNumber(value)) {
+                        var funName = "hypothesisDevelopment.inputFun." + key + "Input(" + input.val() + ")";
+                        console.log(funName);
+                        eval(funName);
+                    }
                 } catch (e) {
                     console.log("没有相关定义的函数或者是属于子表单");
                     hypothesisDevelopment.inputForm(key, value);
@@ -1263,22 +1385,22 @@
 
     hypothesisDevelopment.constructionInstallationEngineeringFee = {
         event: function () {
-            $("."+hypothesisDevelopment.config().frm+" ."+hypothesisDevelopment.config().architecturalEngineeringModel).show();
+            $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).show();
             $(function () {
                 hypothesisDevelopmentBuild.viewInit();
             });
         },
         close: function () {
-            $("."+hypothesisDevelopment.config().frm+" ."+hypothesisDevelopment.config().architecturalEngineeringModel).hide();
+            $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).hide();
         },
-        getDataAndWriteHtml:function () {
+        getDataAndWriteHtml: function () {
             var data = hypothesisDevelopmentBuild.getCalculatedResults();
-            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key,data);//建筑安装工程费
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key, data);//建筑安装工程费
             hypothesisDevelopment.inputFun.constructionInstallationEngineeringFeeInput(data);
             hypothesisDevelopment.constructionInstallationEngineeringFee.close();
             hypothesisDevelopment.constructionInstallationEngineeringFee.saveAndUpdate();
         },
-        saveAndUpdate:function () {
+        saveAndUpdate: function () {
 
         }
 
