@@ -19,6 +19,8 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
+            <input type="hidden" id="mdDevelopmentHypothesisJSON" name="mdDevelopmentHypothesisJSON" value='${mdDevelopmentHypothesisJSON}'>
+            <input type="hidden" id="mdDevelopmentArchitecturalJSON" name="mdDevelopmentArchitecturalJSON" value='${mdDevelopmentArchitecturalJSON}'>
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
@@ -201,9 +203,48 @@
     };
 
 
+    //初始化假设开发法
+    optionsBuildBox.hypothesisDevelopmentInit = function (data) {
+        $("#frmDevelopment").initForm(data);
+    };
+
+    //在建工程建设开发法
+    optionsBuildBox.architecturalEngineeringInit = function (data) {
+        $("#frmArchitecturalEngineering").initForm(data);
+    };
+
+    optionsBuildBox.detailInit = function () {
+        var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}" ;
+        var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}" ;
+
+        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)){
+            optionsBuildBox.showArchitecturalEngineering();
+            mdDevelopmentArchitectural = $("mdDevelopmentArchitecturalJSON").val();
+            try {
+                mdDevelopmentArchitectural = JSON.parse(mdDevelopmentArchitectural);
+                optionsBuildBox.architecturalEngineeringInit(mdDevelopmentArchitectural);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+
+        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)){
+            optionsBuildBox.showHypothesisDevelopment();
+            mdDevelopmentHypothesis = $("#mdDevelopmentHypothesisJSON").val();
+            try {
+                mdDevelopmentHypothesis = JSON.parse(mdDevelopmentHypothesis);
+                optionsBuildBox.hypothesisDevelopmentInit(mdDevelopmentHypothesis);
+            } catch (e) {
+                console.log("json parse 失败!")
+            }
+        }
+    };
+
+
 
     $(function () {
         optionsBuildBox.tabControl();
+        optionsBuildBox.detailInit();
     });
 </script>
 

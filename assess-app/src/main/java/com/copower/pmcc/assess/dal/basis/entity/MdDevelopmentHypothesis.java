@@ -12,17 +12,15 @@ public class MdDevelopmentHypothesis {
 
     private Date gmtModified;
 
-    private String newRate;
-
-    private BigDecimal assessPrice;
+    private BigDecimal evaluationPrice;
 
     private BigDecimal constructionInstallationEngineeringFee;
 
     private String jsonContent;
 
-    private Integer costId;
-
     private Integer engineeringId;
+
+    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -56,20 +54,12 @@ public class MdDevelopmentHypothesis {
         this.gmtModified = gmtModified;
     }
 
-    public String getNewRate() {
-        return newRate;
+    public BigDecimal getEvaluationPrice() {
+        return evaluationPrice;
     }
 
-    public void setNewRate(String newRate) {
-        this.newRate = newRate == null ? null : newRate.trim();
-    }
-
-    public BigDecimal getAssessPrice() {
-        return assessPrice;
-    }
-
-    public void setAssessPrice(BigDecimal assessPrice) {
-        this.assessPrice = assessPrice;
+    public void setEvaluationPrice(BigDecimal evaluationPrice) {
+        this.evaluationPrice = evaluationPrice;
     }
 
     public BigDecimal getConstructionInstallationEngineeringFee() {
@@ -88,19 +78,19 @@ public class MdDevelopmentHypothesis {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
-    public Integer getCostId() {
-        return costId;
-    }
-
-    public void setCostId(Integer costId) {
-        this.costId = costId;
-    }
-
     public Integer getEngineeringId() {
         return engineeringId;
     }
 
     public void setEngineeringId(Integer engineeringId) {
         this.engineeringId = engineeringId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

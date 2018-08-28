@@ -135,15 +135,25 @@
 
 
     function submit() {
+
+        if (!$("#frmDevelopment").valid()) {
+            return false;
+        }
+        if (!$("#frmArchitecturalEngineering").valid()) {
+            return false;
+        }
         if (!$("#frm_task").valid()) {
             return false;
         }
-
+        var data = {};
+        data.supportInfoList = supportInfoModule.getData();
+        data.mdDevelopmentHypothesis = optionsBuildBox.getDevelopment();
+        data.mdDevelopmentArchitectural = optionsBuildBox.getArchitecturalEngineering();
         if ("${processInsId}" != "0") {
-            submitEditToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
         else {
-            submitToServer("", $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
     }
 

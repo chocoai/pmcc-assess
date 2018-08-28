@@ -28,14 +28,14 @@
             <label class="col-md-1 col-sm-1 control-label">建设周期</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="建设周期" class="form-control" name="">
+                       placeholder="建设周期" class="form-control" name="constructionCycle">
             </div>
         </div>
         <div class="x-valid">
             <label class="col-md-1 col-sm-1 control-label">已开发时间</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="已开发时间" class="form-control" name="">
+                       placeholder="已开发时间" class="form-control" name="developedTime">
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <select name="infrastructureCostSelect"
+                <select name="infrastructureCostSelect" required="required"
                         class="form-control search-select select2 infrastructureCostSelect">
                 </select>
             </div>
@@ -155,7 +155,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <select name="infrastructureMatchingCostSelect"
+                <select name="infrastructureMatchingCostSelect" required="required"
                         class="form-control search-select select2 infrastructureMatchingCostSelect">
                 </select>
             </div>
@@ -274,7 +274,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
             </div>
         </div>
@@ -323,7 +323,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <select name="addedValueAdditionalTaxRate"
+                <select name="addedValueAdditionalTaxRateSelect" required="required"
                         class="form-control search-select select2 addedValueAdditionalTaxRateSelect">
                 </select>
             </div>
@@ -358,7 +358,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
             </div>
         </div>
@@ -425,7 +425,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="权利状况修正" class="form-control" name="statusRightsRevision">
             </div>
         </div>
@@ -435,7 +435,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="其它修正" class="form-control" name="otherRevision">
             </div>
         </div>
@@ -445,7 +445,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision">
             </div>
         </div>
@@ -467,7 +467,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="法定年限" class="form-control" name="legalPeriod">
             </div>
         </div>
@@ -477,7 +477,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required" data-rule-number='true'
                        placeholder="剩余年限" class="form-control" name="remainingYear">
             </div>
         </div>
@@ -1456,10 +1456,26 @@
             architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().constructionInstallationEngineeringFee.key,data);//建筑安装工程费
             architecturalObj.constructionInstallationEngineeringFee.close();
             architecturalObj.inputFun.constructionInstallationEngineeringFeeInput();
-            architecturalObj.constructionInstallationEngineeringFee.saveAndUpdate();
+            architecturalObj.constructionInstallationEngineeringFee.saveAndUpdate(architecturalEngineeringObj.loadData());
         },
-        saveAndUpdate:function () {
-
+        saveAndUpdate:function (data) {
+            var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                    jsonContent: JSON.stringify(data),
+                    type: "MdDevelopmentArchitectural",
+                    id: "${mdCostAndDevelopmentOther.id}"
+                },
+                dataType: "json",
+                success: function (result) {
+                    toastr.success('成功');
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     }
 

@@ -18,8 +18,6 @@ public class MdDevelopment {
 
     private Date gmtModified;
 
-    private String type;
-
     public Integer getId() {
         return id;
     }
@@ -74,13 +72,5 @@ public class MdDevelopment {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 }

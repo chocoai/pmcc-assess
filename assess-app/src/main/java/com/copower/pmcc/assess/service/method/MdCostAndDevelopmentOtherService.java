@@ -6,6 +6,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,6 +38,19 @@ public class MdCostAndDevelopmentOtherService {
         }).reverse();//排序 并且反转
         Collections.sort(otherList, firstOrdering);
         return otherList;
+    }
+
+    public MdCostAndDevelopmentOther getMdCostAndDevelopmentOther(String entityName,int pid){
+        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = new MdCostAndDevelopmentOther();
+        mdCostAndDevelopmentOther.setPid(pid);
+        mdCostAndDevelopmentOther.setType(entityName);
+        List<MdCostAndDevelopmentOther> otherList = getMdCostAndDevelopmentOtherList(mdCostAndDevelopmentOther);
+        if (!ObjectUtils.isEmpty(otherList)) {
+            mdCostAndDevelopmentOther = otherList.get(0);
+            return  mdCostAndDevelopmentOther;
+        } else {
+            return null;
+        }
     }
 
     public int addMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {

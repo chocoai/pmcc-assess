@@ -29,14 +29,14 @@
             <label class="col-md-1 col-sm-1 control-label">建设周期</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="建设周期" class="form-control" name="">
+                       placeholder="建设周期" class="form-control" name="constructionCycle">
             </div>
         </div>
         <div class="x-valid">
             <label class="col-md-1 col-sm-1 control-label">已开发时间</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="已开发时间" class="form-control" name="">
+                       placeholder="已开发时间" class="form-control" name="developedTime">
             </div>
         </div>
     </div>
@@ -273,7 +273,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
+                <input type="text" data-rule-number='true' required="required"
                        placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
             </div>
         </div>
@@ -321,7 +321,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <select name="addedValueAdditionalTaxRate"
+                <select name="addedValueAdditionalTaxRateSelect" required="required"
                         class="form-control search-select select2 addedValueAdditionalTaxRateSelect">
                 </select>
             </div>
@@ -443,8 +443,8 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text"
-                       placeholder="年期修正" class="form-control" name="landPrice">
+                <input type="text" required="required"
+                       placeholder="年期修正" class="form-control" name="yearRevision">
             </div>
         </div>
     </div>
@@ -455,7 +455,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required"
                        placeholder="权利状况修正" class="form-control" name="statusRightsRevision">
             </div>
         </div>
@@ -465,7 +465,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required"
                        placeholder="其它修正" class="form-control" name="otherRevision">
             </div>
         </div>
@@ -475,7 +475,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required"
                        placeholder="开发程度修正" class="form-control" name="developmentDegreeRevision">
             </div>
         </div>
@@ -497,7 +497,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required"
                        placeholder="法定年限" class="form-control" name="legalPeriod">
             </div>
         </div>
@@ -507,7 +507,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-2">
-                <input type="text"
+                <input type="text" required="required"
                        placeholder="剩余年限" class="form-control" name="remainingYear">
             </div>
         </div>
@@ -834,7 +834,7 @@
                 investmentProfitRoteRevision: {key: "investmentProfitRoteRevision", describe: "投资利润率修正"},
                 valuationLandUnitPrice: {key: "valuationLandUnitPrice", describe: "委估土地单价"},
                 landPrice: {key: "landPrice", describe: "地价"},
-                yearRevision: {key: "yearRevision", describe: "年起修正"},
+                yearRevision: {key: "yearRevision", describe: "年期修正"},
                 statusRightsRevision: {key: "statusRightsRevision", describe: "权利状况修正"},
                 otherRevision: {key: "otherRevision", describe: "其它修正"},
                 developmentDegree: {key: "developmentDegreeRevision", describe: "开发程度修正"},
@@ -1408,10 +1408,26 @@
             hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().constructionInstallationEngineeringFee.key, data);//建筑安装工程费
             hypothesisDevelopment.inputFun.constructionInstallationEngineeringFeeInput(data);
             hypothesisDevelopment.constructionInstallationEngineeringFee.close();
-            hypothesisDevelopment.constructionInstallationEngineeringFee.saveAndUpdate();
+            hypothesisDevelopment.constructionInstallationEngineeringFee.saveAndUpdate(hypothesisDevelopmentBuild.loadData());
         },
-        saveAndUpdate: function () {
-
+        saveAndUpdate: function (data) {
+            var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                    jsonContent: JSON.stringify(data),
+                    type: "MdDevelopmentHypothesis",
+                    id: "${mdCostAndDevelopmentOther.id}"
+                },
+                dataType: "json",
+                success: function (result) {
+                    toastr.success('成功');
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
 
     }

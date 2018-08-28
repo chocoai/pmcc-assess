@@ -13,21 +13,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">策略性商业 建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="策略性商业建筑面积" class="form-control" name="strategyBusinessBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="strategyBusinessMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="strategyBusinessUnitPrice">
         </div>
     </div>
@@ -43,21 +43,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">运营性商业 建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="运营性商业建筑面积" class="form-control" name="operateBusinessBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="operateBusinessMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="operateBusinessUnitPrice">
         </div>
     </div>
@@ -76,21 +76,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">别墅建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="别墅建筑面积" class="form-control" name="villaResidenceBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="villaResidenceMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="villaResidenceUnitPrice">
         </div>
     </div>
@@ -106,21 +106,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">公寓式住宅 建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="公寓式住宅建筑面积" class="form-control" name="apartmentResidenceBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="apartmentResidenceMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="apartmentResidenceUnitPrice">
         </div>
     </div>
@@ -136,21 +136,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">普通住宅建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="普通住宅建筑面积" class="form-control" name="ordinaryResidenceBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="ordinaryResidenceMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="ordinaryResidenceUnitPrice">
         </div>
     </div>
@@ -168,21 +168,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">地下商业购物商场面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="地下商业购物商场面积" class="form-control" name="undergroundBusinessShopBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="undergroundBusinessShopMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="undergroundBusinessShopUnitPrice">
         </div>
     </div>
@@ -200,21 +200,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单元式办公面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单元式办公面积" class="form-control" name="unitWorkBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="unitWorkMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="unitWorkUnitPrice">
         </div>
     </div>
@@ -230,21 +230,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">景观式办公面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="开敝式办公面积" class="form-control" name="sceneryWorkBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="sceneryWorkMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="sceneryWorkUnitPrice">
         </div>
     </div>
@@ -260,21 +260,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">开敝式办公面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="开敝式办公面积" class="form-control" name="openWorkBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="openWorkMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="openWorkUnitPrice">
         </div>
     </div>
@@ -290,21 +290,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">闭式员工办公面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="闭式员工办公面积" class="form-control" name="closeWorkBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="closeWorkMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="closeWorkUnitPrice">
         </div>
     </div>
@@ -322,21 +322,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">大车库建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="大车库建筑面积" class="form-control" name="bigGarageBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="bigGarageMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="bigGarageUnitPrice">
         </div>
     </div>
@@ -352,21 +352,21 @@
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">小车库建筑面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="小车库建筑面积" class="form-control" name="smallGarageBuildArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">可售面积</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="可售面积" class="form-control" name="smallGarageMaySaleArea">
         </div>
     </div>
     <div class="x-valid">
         <label class="col-md-1 col-sm-1 control-label">单位售价</label>
         <div class="col-md-2 col-sm-2">
-            <input type="text" required="required"
+            <input type="text" readonly="readonly"
                    placeholder="单位售价" class="form-control" name="smallGarageUnitPrice">
         </div>
     </div>

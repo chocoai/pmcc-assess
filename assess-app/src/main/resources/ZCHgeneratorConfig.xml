@@ -45,13 +45,13 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_md_development_architectural" domainObjectName="MdDevelopmentArchitectural">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_development_architectural" domainObjectName="MdDevelopmentArchitectural">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_md_development_hypothesis" domainObjectName="MdDevelopmentHypothesis">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_md_development_hypothesis" domainObjectName="MdDevelopmentHypothesis">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
     </context>
 

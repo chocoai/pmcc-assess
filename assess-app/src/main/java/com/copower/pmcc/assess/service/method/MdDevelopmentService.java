@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Auther: zch
  * @Date: 2018/8/24 18:48
@@ -29,29 +31,43 @@ public class MdDevelopmentService {
     private MdDevelopmentHypothesisDao mdDevelopmentHypothesisDao;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void saveAndUpdateMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis){
-        if (mdDevelopmentHypothesis.getId()==null){
+    public Integer saveAndUpdateMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
+        if (mdDevelopmentHypothesis.getId() == null) {
             mdDevelopmentHypothesis.setCreator(commonService.thisUserAccount());
-            int id = mdDevelopmentHypothesisDao.addMdDevelopmentHypothesis(mdDevelopmentHypothesis);
-        }else {
+            Integer id = mdDevelopmentHypothesisDao.addMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+            return id;
+        } else {
             mdDevelopmentHypothesisDao.updateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+            return null;
         }
     }
 
-    public void saveAndUpdateMdDevelopment(MdDevelopment mdDevelopment){
-        if (mdDevelopment.getId()==null){
+    public Integer saveAndUpdateMdDevelopment(MdDevelopment mdDevelopment) {
+        if (mdDevelopment.getId() == null) {
             mdDevelopment.setCreator(commonService.thisUserAccount());
-            int id = mdDevelopmentDao.addMdDevelopment(mdDevelopment);
-        }else {
+            Integer id = mdDevelopmentDao.addMdDevelopment(mdDevelopment);
+            return id;
+        } else {
             mdDevelopmentDao.updateMdDevelopment(mdDevelopment);
+            return null;
         }
     }
 
-    public void saveAndUpdateMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural){
-        if (mdDevelopmentArchitectural.getId()==null){
-            int id = mdDevelopmentArchitecturalDao.addMdDevelopmentArchitectural(mdDevelopmentArchitectural);
-        }else {
+    public Integer saveAndUpdateMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
+        if (mdDevelopmentArchitectural.getId() == null) {
+            Integer id = mdDevelopmentArchitecturalDao.addMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            return  id;
+        } else {
             mdDevelopmentArchitecturalDao.updateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            return null;
         }
+    }
+
+    public List<MdDevelopmentArchitectural> getMdDevelopmentArchitecturalList(MdDevelopmentArchitectural mdDevelopmentArchitectural){
+        return mdDevelopmentArchitecturalDao.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
+    }
+
+    public List<MdDevelopmentHypothesis> getMdDevelopmentHypothesisList(MdDevelopmentHypothesis mdDevelopmentHypothesis){
+        return mdDevelopmentHypothesisDao.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
     }
 }
