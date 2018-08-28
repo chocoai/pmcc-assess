@@ -1167,7 +1167,7 @@
             architecturalObj.inputAlgorithmObject.jqueryInputGetAndSet("set", architecturalObj.config.inputConfig().totalBuildArea.key, totalBuildArea);
         },
         jqueryInputGetAndSet: function (flag, name, data) {
-            console.log("jqueryInputGetAndSet");
+            // console.log("jqueryInputGetAndSet");
             if (flag == 'get') {
                 var text = null;
                 text = $("." + architecturalObj.config.frm() + " " + "input[name='" + name + "']").val();

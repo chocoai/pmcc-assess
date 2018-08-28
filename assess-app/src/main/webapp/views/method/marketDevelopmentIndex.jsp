@@ -240,7 +240,7 @@
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}" ;
 
         if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)){
-            mdDevelopmentArchitectural = $("mdDevelopmentArchitecturalJSON").val();
+            mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();
             try {
                 mdDevelopmentArchitectural = JSON.parse(mdDevelopmentArchitectural);
                 optionsBuildBox.architecturalEngineeringInit(mdDevelopmentArchitectural);
