@@ -61,38 +61,38 @@ public class MdMarketCostService {
     @Autowired
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
 
-    public void saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
-        if (mdCostAndDevelopmentOther.getId() == null) {
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentHypothesis.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
-            }
-            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentArchitectural.class.getSimpleName())) {
-                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
-            }
-            mdCostAndDevelopmentOther.setPid(0);
-            mdCostAndDevelopmentOtherService.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
-        } else {
-            mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+
+
+    public Integer saveAndUpdateMdCost(MdCost mdCost){
+        if (mdCost.getId() == null){
+            mdCost.setCreator(commonService.thisUserAccount());
+            return mdCostDao.addEstateNetwork(mdCost);
+        }else {
+            mdCostDao.updateEstateNetwork(mdCost);
+            return null;
         }
     }
 
-    public int addMdCost(MdCost mdCost) {
-        mdCost.setCreator(commonService.thisUserAccount());
-        return mdCostDao.addEstateNetwork(mdCost);
+    public Integer saveAndUpdateMdCostBuilding(MdCostBuilding mdCostBuilding){
+        if (mdCostBuilding.getId()==null){
+            mdCostBuilding.setCreator(commonService.thisUserAccount());
+            return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+        }else {
+            mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
+            return  null;
+        }
     }
 
-    public boolean updateMdCostBuilding(MdCostBuilding mdCostBuilding) {
-        return mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
-    }
 
-    public boolean updateMdCostConstruction(MdCostConstruction mdCostConstruction) {
-        return mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
+
+    public Integer saveAndUpdateMdCostConstruction(MdCostConstruction mdCostConstruction) {
+        if (mdCostConstruction.getId() == null){
+            mdCostConstruction.setCreator(commonService.thisUserAccount());
+            return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+        }else {
+            mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
+            return null;
+        }
     }
 
     public MdCost getByMdCostId(int id) {
@@ -110,10 +110,7 @@ public class MdMarketCostService {
 
     }
 
-    public int addMdCostConstruction(MdCostConstruction mdCostConstruction) {
-        mdCostConstruction.setCreator(commonService.thisUserAccount());
-        return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
-    }
+
 
     public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding) {
         return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);

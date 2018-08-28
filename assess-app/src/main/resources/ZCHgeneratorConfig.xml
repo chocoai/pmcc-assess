@@ -41,9 +41,13 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_md_development" domainObjectName="MdDevelopment">
+        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_md_development_architectural" domainObjectName="MdDevelopmentArchitectural">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

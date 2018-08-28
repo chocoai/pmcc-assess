@@ -24,6 +24,8 @@ public class MdCostBuilding {
 
     private Integer engineeringId;
 
+    private Integer pid;
+
     public Integer getId() {
         return id;
     }
@@ -102,5 +104,13 @@ public class MdCostBuilding {
 
     public void setEngineeringId(Integer engineeringId) {
         this.engineeringId = engineeringId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.method.MdMarketCostDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
@@ -12,9 +11,6 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.google.common.base.Objects;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,32 +77,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
-        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
-        if (!ObjectUtils.isEmpty(schemeInfo.getMethodDataId())) {
-            MdCost mdCost = mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId());
-            String type = mdCost.getType();
-            if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostBuilding.class))) {
-                MdCostBuilding mdCostBuilding = new MdCostBuilding();
-                mdCostBuilding.setCostId(mdCost.getId());
-                List<MdCostBuilding> mdCostBuildings = mdMarketCostService.mdCostBuildingList(mdCostBuilding);
-                if (!ObjectUtils.isEmpty(mdCostBuildings)) {
-                    mdCostBuilding = mdCostBuildings.get(0);
-                    modelAndView.addObject("mdCostBuilding", mdCostBuilding);
-                    modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
-                }
-            }
-            if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostConstruction.class))) {
-                MdCostConstruction mdCostConstruction = new MdCostConstruction();
-                mdCostConstruction.setCostId(mdCost.getId());
-                List<MdCostConstruction> mdCostConstructionList = mdMarketCostService.getMdCostConstructionList(mdCostConstruction);
-                if (!ObjectUtils.isEmpty(mdCostConstructionList)) {
-                    mdCostConstruction = mdCostConstructionList.get(0);
-                    modelAndView.addObject("mdCostConstruction", mdCostConstruction);
-                    modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
-                }
-            }
-
-        }
         return modelAndView;
     }
 
@@ -126,45 +96,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
-        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
-        if (!ObjectUtils.isEmpty(schemeInfo.getMethodDataId())) {
-            MdCost mdCost = mdMarketCostService.getByMdCostId(schemeInfo.getMethodDataId());
-            String type = mdCost.getType();
-
-            //update MdCostBuilding
-            if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostBuilding.class))) {
-                MdCostBuilding mdCostBuilding = new MdCostBuilding();
-                mdCostBuilding.setCostId(mdCost.getId());
-                List<MdCostBuilding> mdCostBuildings = mdMarketCostService.mdCostBuildingList(mdCostBuilding);
-                if (!ObjectUtils.isEmpty(mdCostBuildings)) {
-                    mdCostBuilding = mdCostBuildings.get(0);
-                    modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
-                    modelAndView.addObject("mdCostBuilding", mdCostBuilding);
-                    if (mdCostBuilding.getEngineeringId() != null) {
-                        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostBuilding.getEngineeringId());
-                        modelAndView.addObject("mdCostAndDevelopmentOther", mdCostAndDevelopmentOther);
-                        modelAndView.addObject("mdCostAndDevelopmentOtherJSON", mdCostAndDevelopmentOther.getJsonContent());
-                    }
-                }
-            }
-            //update MdCostConstruction
-            if (Objects.equal(type, FormatUtils.entityNameConvertToTableName(MdCostConstruction.class))) {
-                MdCostConstruction mdCostConstruction = new MdCostConstruction();
-                mdCostConstruction.setCostId(mdCost.getId());
-                List<MdCostConstruction> mdCostConstructionList = mdMarketCostService.getMdCostConstructionList(mdCostConstruction);
-                if (!ObjectUtils.isEmpty(mdCostConstructionList)) {
-                    mdCostConstruction = mdCostConstructionList.get(0);
-                    modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
-                    modelAndView.addObject("mdCostConstruction", mdCostConstruction);
-                    if (mdCostConstruction.getEngineeringId() != null) {
-                        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getEngineeringId());
-                        modelAndView.addObject("mdCostAndDevelopmentOther", mdCostAndDevelopmentOther);
-                        modelAndView.addObject("mdCostAndDevelopmentOtherJSON", mdCostAndDevelopmentOther.getJsonContent());
-                    }
-                }
-            }
-
-        }
         //手动注入 委估对象数据
         MdCost mdCost = new MdCost();
         mdCost.setPrice(BigDecimal.valueOf(10));
@@ -189,80 +120,74 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        MdMarketCostDto mdMarketCostDto = JSON.parseObject(formData, MdMarketCostDto.class);
-        MdCost mdCost = new MdCost();
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
-        int id = 0;
-        if (CollectionUtils.isNotEmpty(mdMarketCostDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : mdMarketCostDto.getSupportInfoList()) {
+        Integer id = 0;
+        Integer pid = 0;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        List<SchemeSupportInfo> supportInfoList = null;
+        MdCostBuilding mdCostBuilding = null;
+        MdCostConstruction mdCostConstruction = null;
+        MdCost mdCost = new MdCost();
+        String jsonContent = null;
+        id = mdMarketCostService.saveAndUpdateMdCost(mdCost);
+
+        //解析实体 ,并且对json 进行一些处理
+        try {
+            jsonContent = jsonObject.getString("supportInfoList");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
+                jsonContent = null;//必须初始化,否则下面判定失败
+            }
+            jsonContent = jsonObject.getString("mdCostBuilding");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                mdCostBuilding = JSONObject.parseObject(jsonContent, MdCostBuilding.class);
+                mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
+                jsonContent = null;//必须初始化,否则下面判定失败
+            }
+            jsonContent = jsonObject.getString("mdCostConstruction");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                mdCostConstruction = JSONObject.parseObject(jsonContent, MdCostConstruction.class);
+                mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
+        }
+
+        //处理评估方法
+        if (!ObjectUtils.isEmpty(supportInfoList)) {
+            for (SchemeSupportInfo schemeSupportInfo : supportInfoList) {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
-        JSONObject jsonObject = JSON.parseObject(formData);
 
-        //save MdCostBuilding
-        if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostBuilding())) {//评估单价 (建筑物)
-            mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
-            id = mdMarketCostService.addMdCost(mdCost);
-            MdCostBuilding mdCostBuilding = mdMarketCostDto.getMdCostBuilding();
-            mdCostBuilding.setCostId(id);
-
-            String jsonContent = jsonObject.getString("mdCostBuilding");
-            if (StringUtils.isEmpty(jsonContent)) {
-                mdCostBuilding.setJsonContent(JSON.toJSONString(mdCostBuilding));
-            } else {
-                mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
-            }
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostBuilding.getClass().getSimpleName(),0);
+        //处理(建筑物)
+        if (!ObjectUtils.isEmpty(mdCostBuilding)) {
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostBuilding.class.getSimpleName(), 0);
             if (mdCostAndDevelopmentOther != null) {
-                mdCostBuilding.setEngineeringId(mdCostAndDevelopmentOther.getId());//
+                mdCostBuilding.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
             }
-            int pid = 0;
-            try {
-                pid = mdMarketCostService.addMdCostBuilding(mdCostBuilding);
-                mdCostAndDevelopmentOther.setPid(pid);//
-                mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
-            } catch (Exception e1) {
-                logger.error(e1.getMessage());
-                try {
-                    throw new Exception();
-                } catch (Exception e11) {
-
-                }
+            mdCostBuilding.setPid(id);
+            pid = mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding);//存入上级主表id
+            if (mdCostAndDevelopmentOther != null) {
+                mdCostAndDevelopmentOther.setPid(pid);//处理从表
+                mdCostAndDevelopmentOtherService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
             }
         }
 
-        //save MdCostConstruction
-        if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostConstruction())) {//在建工程
-            mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
-            MdCostConstruction mdCostConstruction = mdMarketCostDto.getMdCostConstruction();
-            id = mdMarketCostService.addMdCost(mdCost);
-            mdCostConstruction.setCostId(id);
-            String jsonContent = jsonObject.getString("mdCostConstruction");
-            if (StringUtils.isEmpty(jsonContent)) {
-                mdCostConstruction.setJsonContent(JSON.toJSONString(mdCostConstruction));
-            } else {
-                mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
-            }
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getClass().getSimpleName(),0);
+        //处理(在建工程)
+        if (!ObjectUtils.isEmpty(mdCostConstruction)) {
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostConstruction.class.getSimpleName(), 0);
             if (mdCostAndDevelopmentOther != null) {
-                mdCostConstruction.setEngineeringId(mdCostAndDevelopmentOther.getId());//
+                mdCostConstruction.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
             }
-            int pid = 0;
-            try {
-                pid = mdMarketCostService.addMdCostConstruction(mdCostConstruction);
-                mdCostAndDevelopmentOther.setPid(pid);//
-                mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
-            } catch (Exception e1) {
-                logger.error(e1.getMessage());
-                try {
-                    throw  new Exception();
-                } catch (Exception e11) {
-                }
+            mdCostConstruction.setPid(id);
+            pid = mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction);
+            if (mdCostAndDevelopmentOther != null) {
+                mdCostAndDevelopmentOther.setPid(pid);
+                mdCostAndDevelopmentOtherService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
             }
         }
-
-
+        //处理评估方案中的各个评估方法
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
@@ -279,46 +204,49 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        MdMarketCostDto mdMarketCostDto = JSON.parseObject(formData, MdMarketCostDto.class);
-        if (CollectionUtils.isNotEmpty(mdMarketCostDto.getSupportInfoList())) {
-            for (SchemeSupportInfo schemeSupportInfo : mdMarketCostDto.getSupportInfoList()) {
-                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);//saveAndUpdate
-            }
-        }
+        List<SchemeSupportInfo> supportInfoList = null;
+        MdCostBuilding mdCostBuilding = null;
+        MdCostConstruction mdCostConstruction = null;
         JSONObject jsonObject = JSON.parseObject(formData);
-        if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostBuilding())) {//评估单价 (建筑物)
-            MdCostBuilding building = mdMarketCostDto.getMdCostBuilding();
-            try {
-                if (building.getId() != null) {
-                    String jsonContent = jsonObject.getString("mdCostBuilding");
-                    if (StringUtils.isEmpty(jsonContent)) {
-                        building.setJsonContent(JSON.toJSONString(building));
-                    } else {
-                        building.setJsonContent(JSON.toJSONString(jsonContent));
-                    }
-                    mdMarketCostService.updateMdCostBuilding(building);
-                }
-            } catch (Exception e1) {
-                logger.error(String.format("取到空实体数据了,%s", e1.getMessage()), e1);
+        String jsonContent = null;
+        //解析实体 ,并且对json 进行一些处理
+        try {
+            jsonContent = jsonObject.getString("supportInfoList");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
+                jsonContent = null;//必须初始化,否则下面判定失败
             }
+            jsonContent = jsonObject.getString("mdCostBuilding");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                mdCostBuilding = JSONObject.parseObject(jsonContent, MdCostBuilding.class);
+                mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
+                jsonContent = null;//必须初始化,否则下面判定失败
+            }
+            jsonContent = jsonObject.getString("mdCostConstruction");
+            if (!StringUtils.isEmpty(jsonContent)) {
+                mdCostConstruction = JSONObject.parseObject(jsonContent, MdCostConstruction.class);
+                mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
         }
-        if (!ObjectUtils.isEmpty(mdMarketCostDto.getMdCostConstruction())) {//在建工程
-            MdCostConstruction costConstruction = mdMarketCostDto.getMdCostConstruction();
-            try {
-                if (costConstruction.getId() != null) {
-                    String jsonContent = jsonObject.getString("mdCostConstruction");
-                    if (StringUtils.isEmpty(jsonContent)) {
-                        costConstruction.setJsonContent(JSON.toJSONString(costConstruction));
-                    } else {
-                        costConstruction.setJsonContent(JSON.toJSONString(jsonContent));
-                    }
-                    mdMarketCostService.updateMdCostConstruction(costConstruction);
-                }
-            } catch (Exception e1) {
-                logger.error(String.format("取到空实体数据了,%s", e1.getMessage()), e1);
+
+        //处理评估方法
+        if (!ObjectUtils.isEmpty(supportInfoList)) {
+            for (SchemeSupportInfo schemeSupportInfo : supportInfoList) {
+                schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
 
+        //处理(建筑物)
+        if (!ObjectUtils.isEmpty(mdCostBuilding)){
+            mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding);
+        }
+
+        //处理(在建工程)
+        if (!ObjectUtils.isEmpty(mdCostConstruction)){
+            mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction);
+        }
     }
 
     /**
@@ -332,6 +260,45 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         Integer projectId = projectPlanDetails.getProjectId();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
+        SchemeInfo schemeInfo = null;
+        MdCostBuilding mdCostBuilding = null;
+        MdCostConstruction mdCostConstruction = null;
+        Integer pid = null;
+
+        try {
+            schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        } catch (Exception e1) {
+            logger.error(String.format("没有获取到数据 ==> %s", e1.getMessage()));//不需要抛出异常
+        }
+        if (schemeInfo != null) {
+            pid = schemeInfo.getMethodDataId();
+        }
+        //设置 (建筑物)
+        if (pid != null) {
+            mdCostBuilding = new MdCostBuilding();
+            mdCostBuilding.setPid(pid);
+            List<MdCostBuilding> mdCostBuildingList = mdMarketCostService.mdCostBuildingList(mdCostBuilding);
+            if (!ObjectUtils.isEmpty(mdCostBuildingList)){
+                mdCostBuilding = mdCostBuildingList.get(0);//一定会是只有一个或者没有,关于原因 查看save method
+                modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
+                modelAndView.addObject("mdCostBuilding", mdCostBuilding);
+                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getEngineeringId());
+                modelAndView.addObject("mdCostAndDevelopmentOtherBuilding", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherBuildingJSON", mdCostAndDevelopmentOther.getJsonContent());
+            }
+        }
+        if (pid != null){
+            mdCostConstruction = new MdCostConstruction();
+            List<MdCostConstruction> mdCostConstructionList = mdMarketCostService.getMdCostConstructionList(mdCostConstruction);
+            if (!ObjectUtils.isEmpty(mdCostConstructionList)){
+                mdCostConstruction = mdCostConstructionList.get(0);//.....................
+                modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
+                modelAndView.addObject("mdCostConstruction", mdCostConstruction);
+                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getEngineeringId());
+                modelAndView.addObject("mdCostAndDevelopmentOtherConstruction", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherConstructionJSON", mdCostAndDevelopmentOther.getJsonContent());
+            }
+        }
     }
 
 

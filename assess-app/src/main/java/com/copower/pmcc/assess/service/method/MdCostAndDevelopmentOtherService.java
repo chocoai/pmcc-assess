@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostAndDevelopmentOtherDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostAndDevelopmentOther;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,27 @@ public class MdCostAndDevelopmentOtherService {
 
     public void removePid(){
         mdCostAndDevelopmentOtherDao.deletePid(0);
+    }
+
+    public void saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
+        if (mdCostAndDevelopmentOther.getId() == null) {
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+            }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+            }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentHypothesis.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+            }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentArchitectural.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+            }
+            mdCostAndDevelopmentOther.setPid(0);
+            this.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+        } else {
+            this.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+        }
     }
 
     public List<MdCostAndDevelopmentOther> getMdCostAndDevelopmentOtherList(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {

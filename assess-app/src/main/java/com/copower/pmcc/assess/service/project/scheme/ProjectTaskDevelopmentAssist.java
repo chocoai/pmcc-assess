@@ -104,7 +104,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
         String jsonContent = null;
         id = mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-        mdDevelopment.setId(id);
 
         //解析实体 ,并且对json 进行一些处理
         try {
@@ -202,7 +201,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
-                mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonObject));
+                mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
             }
         } catch (Exception e1) {
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
@@ -256,6 +255,9 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 mdDevelopmentHypothesis = mdDevelopmentHypothesisList.get(0);//一定会是只有一个或者没有,关于原因 查看save method
                 modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
                 modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
+                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentHypothesis.getEngineeringId());
+                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
             }
         }
         //设置假设开发法中的在建工程建设开发法
@@ -267,6 +269,9 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);//一定会是 只有一个或者没有,原因...
                 modelAndView.addObject("mdDevelopmentArchitecturalJSON",mdDevelopmentArchitectural.getJsonContent());
                 modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
+                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentArchitectural.getEngineeringId());
+                modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
             }
         }
     }

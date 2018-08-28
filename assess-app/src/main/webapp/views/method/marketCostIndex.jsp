@@ -11,11 +11,10 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
-            <input type="hidden" id="mdCostAndDevelopmentOtherJSON" name="mdCostAndDevelopmentOtherJSON"
-                   value='${mdCostAndDevelopmentOtherJSON}'>
+            <input type="hidden" id="mdCostAndDevelopmentOtherConstructionJSON" name="mdCostAndDevelopmentOtherConstructionJSON" value='${mdCostAndDevelopmentOtherConstructionJSON}'>
+            <input type="hidden" id="mdCostAndDevelopmentOtherBuildingJSON" name="mdCostAndDevelopmentOtherBuildingJSON" value='${mdCostAndDevelopmentOtherBuildingJSON}'>
             <input type="hidden" id="mdCostBuildingJSON" name="mdCostBuildingJSON" value='${mdCostBuildingJSON}'>
-            <input type="hidden" id="mdCostConstructionJSON" name="mdCostConstructionJSON"
-                   value='${mdCostConstructionJSON}'>
+            <input type="hidden" id="mdCostConstructionJSON" name="mdCostConstructionJSON" value='${mdCostConstructionJSON}'>
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
@@ -235,36 +234,35 @@
      * @date:
      **/
     optionsBuildBox.updateInit = function () {
-        var mdCostAndDevelopmentOther = "${mdCostAndDevelopmentOther}" ;
         var mdCostBuilding = "${mdCostBuilding}";
         var mdCostConstruction = "${mdCostConstruction}";
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
-            optionsBuildBox.showBuilding();
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
                 //初始化数据
                 optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOther)){
-                    mdCostAndDevelopmentOther = $("#mdCostAndDevelopmentOtherJSON").val();
-                    mdCostAndDevelopmentOther = JSON.parse(mdCostAndDevelopmentOther);
-                    constructEngineeringObject.setServerData(mdCostAndDevelopmentOther);
+                var mdCostAndDevelopmentOtherBuildingJSON = "${mdCostAndDevelopmentOtherBuilding}" ;
+                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherBuildingJSON)){
+                    mdCostAndDevelopmentOtherBuildingJSON = $("#mdCostAndDevelopmentOtherBuildingJSON").val();
+                    mdCostAndDevelopmentOtherBuildingJSON = JSON.parse(mdCostAndDevelopmentOtherBuildingJSON);
+                    constructEngineeringObject.setServerData(mdCostAndDevelopmentOtherBuildingJSON);
                 }
             } catch (e) {
                 console.log("json parse 失败!")
             }
         }
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
-            optionsBuildBox.showConstruction();
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);
                 //初始化数据
                 optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOther)){
-                    mdCostAndDevelopmentOther = $("#mdCostAndDevelopmentOtherJSON").val();
-                    mdCostAndDevelopmentOther = JSON.parse(mdCostAndDevelopmentOther);
-                    constructEngineeringObjectA.setServerData(mdCostAndDevelopmentOther);
+                var mdCostAndDevelopmentOtherConstructionJSON = "${mdCostAndDevelopmentOtherConstruction}" ;
+                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherConstructionJSON)){
+                    mdCostAndDevelopmentOtherConstructionJSON = $("#mdCostAndDevelopmentOtherConstructionJSON").val();
+                    mdCostAndDevelopmentOtherConstructionJSON = JSON.parse(mdCostAndDevelopmentOtherConstructionJSON);
+                    constructEngineeringObjectA.setServerData(mdCostAndDevelopmentOtherConstructionJSON);
                 }
             } catch (e) {
                 console.log("json parse 失败!")

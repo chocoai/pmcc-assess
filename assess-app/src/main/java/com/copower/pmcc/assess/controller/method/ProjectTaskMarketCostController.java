@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.method;
 
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
+import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
@@ -36,6 +37,8 @@ public class ProjectTaskMarketCostController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private MdMarketCostService mdMarketCostService;
+    @Autowired
+    private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
 
     @ResponseBody
     @RequestMapping(value = "/getBaseDicTree", name = "获取", method = RequestMethod.GET)
@@ -48,7 +51,7 @@ public class ProjectTaskMarketCostController {
     @RequestMapping(value = "/saveAndUpdateMdCostAndDevelopmentOther", name = "建筑安装工程费或者成新率或者其他什么的", method = RequestMethod.POST)
     public HttpResult saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther){
         try {
-            mdMarketCostService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            mdCostAndDevelopmentOtherService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         } catch (Exception e1) {
             return HttpResult.newErrorResult(e1.getMessage());
         }
