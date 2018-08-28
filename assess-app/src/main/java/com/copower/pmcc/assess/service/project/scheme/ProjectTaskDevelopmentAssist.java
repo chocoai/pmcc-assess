@@ -58,6 +58,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         mdDevelopment.setPrice(BigDecimal.valueOf(10));
         mdDevelopment.setArea(BigDecimal.valueOf(20));
         modelAndView.addObject("mdDevelopment", mdDevelopment);
+        mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
 
@@ -74,6 +75,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
+        mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
 
@@ -183,7 +185,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         List<SchemeSupportInfo> supportInfoList = null;
         MdDevelopmentHypothesis mdDevelopmentHypothesis = null;
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
+        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null ;
         String jsonContent = null;
+        Integer id = 0;//(id至少会有一个实体含有 否则保存不会提交成功)
+        Integer pid = 0;
 
         //解析实体 ,并且对json 进行一些处理
         try {
@@ -197,11 +202,17 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 mdDevelopmentHypothesis = JSONObject.parseObject(jsonContent, MdDevelopmentHypothesis.class);
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
                 jsonContent = null;//必须初始化,否则下面判定失败
+                if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis.getId())){
+                    id = mdDevelopmentService.getMdDevelopmentHypothesis(mdDevelopmentHypothesis.getId()).getPid();
+                }
             }
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
+                if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural.getId())){
+                    id = mdDevelopmentService.getMdDevelopmentArchitectural(mdDevelopmentArchitectural.getId()).getPid();
+                }
             }
         } catch (Exception e1) {
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
@@ -216,12 +227,38 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
 
         //处理假设开发法中的假设开发法
         if (mdDevelopmentHypothesis != null) {
-            mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+            if (mdDevelopmentHypothesis.getId() == null){
+                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
+                if (mdCostAndDevelopmentOther != null) {
+                    mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                }
+                mdDevelopmentHypothesis.setPid(id);//存入上级主表id
+                pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+                if (mdCostAndDevelopmentOther != null) {//处理从表
+                    mdCostAndDevelopmentOther.setPid(pid);
+                    mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+                }
+            }else {
+                mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+            }
         }
 
         //处理假设开发法中的在建工程建设开发法
         if (mdDevelopmentArchitectural != null) {
-            mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            if (mdDevelopmentArchitectural.getId() == null){
+                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
+                if (mdCostAndDevelopmentOther != null) {
+                    mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                }
+                mdDevelopmentArchitectural.setPid(id);//存入上级主表id
+                pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+                if (mdCostAndDevelopmentOther != null) {//处理从表
+                    mdCostAndDevelopmentOther.setPid(pid);
+                    mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+                }
+            }else {
+                mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            }
         }
     }
 
@@ -256,8 +293,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
                 modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentHypothesis.getEngineeringId());
-                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
-                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
+                if (mdCostAndDevelopmentOther != null){
+                    modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
+                    modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
+                }
             }
         }
         //设置假设开发法中的在建工程建设开发法
@@ -270,8 +309,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 modelAndView.addObject("mdDevelopmentArchitecturalJSON",mdDevelopmentArchitectural.getJsonContent());
                 modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentArchitectural.getEngineeringId());
-                modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
-                modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
+                if (mdCostAndDevelopmentOther != null){
+                    modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
+                    modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
+                }
             }
         }
     }

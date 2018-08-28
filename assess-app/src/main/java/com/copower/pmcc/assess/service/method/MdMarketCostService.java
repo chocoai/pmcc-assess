@@ -104,16 +104,16 @@ public class MdMarketCostService {
         return mdCostDao.getEstateNetworkList(mdCost);
     }
 
-    public int addMdCostBuilding(MdCostBuilding mdCostBuilding) {
-        mdCostBuilding.setCreator(commonService.thisUserAccount());
-        return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
-
-    }
-
-
-
     public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding) {
         return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
+    }
+
+    public MdCostBuilding getMdCostBuilding(Integer id){
+        return mdCostBuildingDao.getEstateNetworkById(id);
+    }
+
+    public MdCostConstruction getMdCostConstruction(Integer id){
+        return mdCostConstructionDao.getEstateNetworkById(id);
     }
 
     public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction) {

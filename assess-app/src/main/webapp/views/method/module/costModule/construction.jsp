@@ -133,9 +133,22 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       onclick="construction.constructionInstallationEngineeringFee.event();"
-                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                <div class="input-group">
+                    <input type="text" readonly="readonly"
+                           placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择" onclick="construction.constructionInstallationEngineeringFee.event()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -1383,7 +1396,7 @@
                 data: {
                     jsonContent: JSON.stringify(data),
                     type: "MdCostConstruction",
-                    id: "${mdCostAndDevelopmentOther.id}"
+                    id: "${mdCostAndDevelopmentOtherConstruction.id}"
                 },
                 dataType: "json",
                 success: function (result) {

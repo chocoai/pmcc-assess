@@ -36,7 +36,8 @@
             <label class="col-md-1 col-sm-1 control-label">已开发时间</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="已开发时间" class="form-control" name="developedTime">
+                       placeholder="已开发时间" class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
+                       name="developedTime">
             </div>
         </div>
     </div>
@@ -107,9 +108,23 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       onclick="hypothesisDevelopment.constructionInstallationEngineeringFee.event();"
-                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                <div class="input-group">
+                    <input type="text" readonly="readonly"
+                           placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="hypothesisDevelopment.constructionInstallationEngineeringFee.event()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -938,9 +953,9 @@
             c = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().unforeseenExpenses.key, null);//不可预见费
             d = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().managementExpense.key, null);//管理费
             e = hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("get", hypothesisDevelopment.config().inputConfig().investmentProfitRote.key, null);// 开发利润率
-            a = a + b +c +d ;
-            e = hypothesisDevelopment.mul(a,e);
-            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().investmentProfit.key,e);//投资利润
+            a = a + b + c + d;
+            e = hypothesisDevelopment.mul(a, e);
+            hypothesisDevelopment.inputAlgorithmObject.jqueryInputGetAndSet("set", hypothesisDevelopment.config().inputConfig().investmentProfit.key, e);//投资利润
         },
         //投资利息 = (土地取得小计+勘察设计和前期工程费+基础设施建设费)*((1+投资计息利率)^ 计息周期-1)+( 建筑安装工程费+公共配套设施建设费+开发期间税费+其它工程费+不可预见费+管理费)*((1+投资计息利率)^( 计息周期/2)-1)
         //          --------------------------------A---------------------------------------  -------------------------B--------------------------------------------------------------------------
@@ -1390,7 +1405,7 @@
                 type: 1,
                 area: '1000px;',
                 offset: 't',
-                content: $("." + hypothesisDevelopment.config().frm+" ." + hypothesisDevelopment.config().architecturalEngineeringModel)
+                content: $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel)
             });
             $(function () {
                 hypothesisDevelopmentBuild.viewInit();
@@ -1400,7 +1415,7 @@
             // $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).hide();
             hypothesisDevelopment.constructionInstallationEngineeringFee.layerClose();
         },
-        layerClose:function () {
+        layerClose: function () {
             layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         getDataAndWriteHtml: function () {
@@ -1418,7 +1433,7 @@
                 data: {
                     jsonContent: JSON.stringify(data),
                     type: "MdDevelopmentHypothesis",
-                    id: "${mdCostAndDevelopmentOther.id}"
+                    id: "${mdCostAndDevelopmentOtherHypothesis.id}"
                 },
                 dataType: "json",
                 success: function (result) {

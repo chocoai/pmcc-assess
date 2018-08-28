@@ -145,6 +145,9 @@
         if (!$("#frm_task").valid()) {
             return false;
         }
+        if (!supportInfoModule.valid()) {
+            return false;
+        }
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
         data.mdDevelopmentHypothesis = optionsBuildBox.getDevelopment();

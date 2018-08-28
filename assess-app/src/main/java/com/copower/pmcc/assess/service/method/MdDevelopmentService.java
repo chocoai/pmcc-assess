@@ -31,6 +31,14 @@ public class MdDevelopmentService {
     private MdDevelopmentHypothesisDao mdDevelopmentHypothesisDao;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    public MdDevelopmentHypothesis getMdDevelopmentHypothesis(Integer id){
+        return mdDevelopmentHypothesisDao.getMdDevelopmentHypothesisById(id);
+    }
+
+    public MdDevelopmentArchitectural getMdDevelopmentArchitectural(Integer id){
+        return mdDevelopmentArchitecturalDao.getMdDevelopmentArchitecturalById(id);
+    }
+
     public Integer saveAndUpdateMdDevelopmentHypothesis(MdDevelopmentHypothesis mdDevelopmentHypothesis) {
         if (mdDevelopmentHypothesis.getId() == null) {
             mdDevelopmentHypothesis.setCreator(commonService.thisUserAccount());

@@ -35,7 +35,7 @@
             <label class="col-md-1 col-sm-1 control-label">已开发时间</label>
             <div class="col-md-2 col-sm-2">
                 <input type="text" required="required"
-                       placeholder="已开发时间" class="form-control" name="developedTime">
+                       placeholder="已开发时间" class="form-control date-picker dbdate" pattern='yyyy-MM-dd' name="developedTime">
             </div>
         </div>
     </div>
@@ -107,9 +107,22 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       onclick="architecturalObj.constructionInstallationEngineeringFee.event();"
-                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                <div class="input-group">
+                    <input type="text" readonly="readonly"
+                           placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择" onclick="architecturalObj.constructionInstallationEngineeringFee.event()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -1466,7 +1479,7 @@
                 data: {
                     jsonContent: JSON.stringify(data),
                     type: "MdDevelopmentArchitectural",
-                    id: "${mdCostAndDevelopmentOther.id}"
+                    id: "${mdCostAndDevelopmentOtherArchitectural.id}"
                 },
                 dataType: "json",
                 success: function (result) {

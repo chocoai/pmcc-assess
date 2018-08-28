@@ -153,6 +153,7 @@
         data.supportInfoList = supportInfoModule.getData();
         data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
         data.mdCostConstruction = optionsBuildBox.getMdCostConstruction();
+        console.log(data.mdCostConstruction);
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
