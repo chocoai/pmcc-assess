@@ -55,6 +55,7 @@ public class MdDevelopmentService {
 
     public Integer saveAndUpdateMdDevelopmentArchitectural(MdDevelopmentArchitectural mdDevelopmentArchitectural) {
         if (mdDevelopmentArchitectural.getId() == null) {
+            mdDevelopmentArchitectural.setCreator(commonService.thisUserAccount());
             Integer id = mdDevelopmentArchitecturalDao.addMdDevelopmentArchitectural(mdDevelopmentArchitectural);
             return  id;
         } else {

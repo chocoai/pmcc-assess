@@ -216,10 +216,8 @@
     optionsBuildBox.detailInit = function () {
         var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}" ;
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}" ;
-
-        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)){
-            optionsBuildBox.showArchitecturalEngineering();
-            mdDevelopmentArchitectural = $("mdDevelopmentArchitecturalJSON").val();
+        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)){
+            mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();
             try {
                 mdDevelopmentArchitectural = JSON.parse(mdDevelopmentArchitectural);
                 optionsBuildBox.architecturalEngineeringInit(mdDevelopmentArchitectural);
@@ -229,7 +227,6 @@
         }
 
         if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)){
-            optionsBuildBox.showHypothesisDevelopment();
             mdDevelopmentHypothesis = $("#mdDevelopmentHypothesisJSON").val();
             try {
                 mdDevelopmentHypothesis = JSON.parse(mdDevelopmentHypothesis);

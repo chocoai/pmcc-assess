@@ -69,6 +69,12 @@ public class MdMarketCostService {
             if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostConstruction.class.getSimpleName())) {
                 mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
             }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentHypothesis.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+            }
+            if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdDevelopmentArchitectural.class.getSimpleName())) {
+                mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+            }
             mdCostAndDevelopmentOther.setPid(0);
             mdCostAndDevelopmentOtherService.addMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
         } else {

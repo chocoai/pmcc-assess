@@ -71,10 +71,7 @@
             </div>
         </div>
     </div>
-    <!-- 引入类型form表单 -->
-    <div class="baseFrmDevelopment">
-        <jsp:include page="fromDevelopmentDetail.jsp"></jsp:include>
-    </div>
+
 
     <div class="form-group">
 

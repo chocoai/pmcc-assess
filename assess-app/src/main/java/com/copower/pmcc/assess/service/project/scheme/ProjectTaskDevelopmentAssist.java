@@ -122,7 +122,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
-                mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonObject));
+                mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
             }
         } catch (Exception e1) {
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
@@ -265,8 +265,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             List<MdDevelopmentArchitectural> mdDevelopmentArchitecturalList = mdDevelopmentService.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
             if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)){
                 mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);//一定会是 只有一个或者没有,原因...
-                modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
                 modelAndView.addObject("mdDevelopmentArchitecturalJSON",mdDevelopmentArchitectural.getJsonContent());
+                modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
             }
         }
     }

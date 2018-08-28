@@ -71,10 +71,7 @@
         </div>
     </div>
 
-    <!-- 引入类型form表单 -->
-    <div class="baseFrmArchitecturalEngineering">
-        <jsp:include page="fromDevelopmentDetail.jsp"></jsp:include>
-    </div>
+
 
     <div class="form-group">
 
@@ -305,9 +302,8 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-3">
-                <select name="addedValueAdditionalTaxRateSelect" readonly="readonly"
-                        class="form-control search-select select2 addedValueAdditionalTaxRateSelect">
-                </select>
+                <input type="text" readonly="readonly"
+                       placeholder="增值及附加税率" class="form-control" name="addedValueAdditionalTaxRateSelect">
             </div>
         </div>
 
@@ -492,7 +488,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                <textarea class="form-control" placeholder="市场价格预测"></textarea>
+                <textarea class="form-control" placeholder="市场价格预测" readonly="readonly" name=""></textarea>
             </div>
         </div>
     </div>
@@ -503,7 +499,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                <textarea class="form-control" placeholder="用地类别对房地产价格影响"></textarea>
+                <textarea class="form-control" placeholder="用地类别对房地产价格影响" readonly="readonly" name=""></textarea>
             </div>
         </div>
     </div>
@@ -514,7 +510,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                <textarea class="form-control" placeholder="开发程度修正说明"></textarea>
+                <textarea class="form-control" placeholder="开发程度修正说明" readonly="readonly" name=""></textarea>
             </div>
         </div>
     </div>
@@ -525,7 +521,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                <textarea class="form-control" placeholder="权力状况修正"></textarea>
+                <textarea class="form-control" placeholder="权力状况修正" readonly="readonly" name=""></textarea>
             </div>
         </div>
     </div>
@@ -536,7 +532,7 @@
         </label>
         <div class="x-valid">
             <div class="col-sm-11">
-                <textarea class="form-control" placeholder="其他修正"></textarea>
+                <textarea class="form-control" placeholder="其他修正" readonly="readonly" name=""></textarea>
             </div>
         </div>
     </div>
