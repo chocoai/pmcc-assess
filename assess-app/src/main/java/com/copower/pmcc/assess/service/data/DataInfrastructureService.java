@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
@@ -28,10 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -145,23 +143,11 @@ public class DataInfrastructureService {
         vo.setProvinceName(getProvinceName(Integer.parseInt(infrastructure.getProvince())));
         vo.setCityName(getSysArea(Integer.parseInt(infrastructure.getCity())));
         vo.setDistrictName(getSysArea(Integer.parseInt(infrastructure.getDistrict())));
-        Calendar calendar  = Calendar.getInstance();
-        StringBuilder builder = new StringBuilder(100);
         if (!ObjectUtils.isEmpty(infrastructure.getEndDate())) {
-            calendar .setTime(infrastructure.getEndDate());
-            builder.append(String.format("%d%s",calendar.get(Calendar.YEAR),"年"));
-            builder.append(String.format("%d%s",calendar.get(Calendar.MONTH)+1,"月"));
-            builder.append(String.format("%d%s",calendar.get(Calendar.DATE),"日"));
-            vo.setEndDateName(builder.toString());
-            builder.setLength(0);
+            vo.setEndDateName(DateHelp.getDateHelp().printDate(infrastructure.getEndDate()));
         }
         if (!ObjectUtils.isEmpty(infrastructure.getStartDate())) {
-            calendar .setTime(infrastructure.getStartDate());
-            builder.append(String.format("%d%s",calendar.get(Calendar.YEAR),"年"));
-            builder.append(String.format("%d%s",calendar.get(Calendar.MONTH)+1,"月"));
-            builder.append(String.format("%d%s",calendar.get(Calendar.DATE),"日"));
-            vo.setStartDateName(builder.toString());
-            builder.setLength(0);
+            vo.setStartDateName(DateHelp.getDateHelp().printDate(infrastructure.getStartDate()));
         }
         DataInfrastructureCost dataInfrastructureCost = new DataInfrastructureCost();
         DataInfrastructureMatchingCost dataInfrastructureMatchingCost = new DataInfrastructureMatchingCost();

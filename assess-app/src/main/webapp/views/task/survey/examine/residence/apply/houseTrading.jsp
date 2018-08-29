@@ -198,6 +198,16 @@
                 cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
                 cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
             }
+            var data = {} ;
+            if ($("#declareId").size() > 0){
+                data.declareId = $("#declareId").val();
+            }
+            if ($("#planDetailsId").size() > 0){
+                data.planDetailsId = $("#planDetailsId").val();
+            }
+            if ($("#examineType").size() > 0){
+                data.examineType = $("#examineType").val();
+            }
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -210,7 +220,7 @@
             });
             $("#" + examineHouseTrading.prototype.config().tableSon).bootstrapTable('destroy');
             TableInit(examineHouseTrading.prototype.config().tableSon, "${pageContext.request.contextPath}/examineHouse/getExamineHouseTradingSellAndLeaseDtoList", cols, {
-                type: type_
+                type: type_,examineType:data.examineType,declareId:data.declareId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -285,6 +295,9 @@
             }
             if ($("#examineType").size() > 0) {
                 data.examineType = $("#examineType").val();
+            }
+            if ($("#planDetailsId").size() > 0){
+                data.planDetailsId = $("#planDetailsId").val();
             }
             if ($("#" + examineHouseTrading.prototype.config().frmSon + " .type").size() > 0) {
                 data.tradingType = data.type;

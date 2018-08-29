@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingLease;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSell;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseTradingSellAndLeaseVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,12 +76,10 @@ public class ExamineHouseTradingLeaseService {
         ExamineHouseTradingSellAndLeaseVo vo = new ExamineHouseTradingSellAndLeaseVo();
         BeanUtils.copyProperties(examineHouseTradingSell,vo);
         if (examineHouseTradingSell.getRentPaymentTimeStart() != null){
-            Date date = examineHouseTradingSell.getRentPaymentTimeStart();
-            vo.setRentPaymentTimeStartName(String.format("%d-%d-%d",date.getYear(),date.getMonth(),date.getDay()));
+            vo.setRentPaymentTimeStartName(DateHelp.getDateHelp().printDate(examineHouseTradingSell.getRentPaymentTimeStart()));
         }
         if (examineHouseTradingSell.getRentPaymentTimeEnd() != null){
-            Date date = examineHouseTradingSell.getRentPaymentTimeEnd();
-            vo.setRentPaymentTimeEndName(String.format("%d-%d-%d",date.getYear(),date.getMonth(),date.getDay()));
+            vo.setRentPaymentTimeEndName(DateHelp.getDateHelp().printDate(examineHouseTradingSell.getRentPaymentTimeEnd()));
         }
         return vo;
     }
