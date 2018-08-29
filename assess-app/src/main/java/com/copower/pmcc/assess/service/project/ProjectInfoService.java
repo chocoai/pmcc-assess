@@ -645,6 +645,12 @@ public class ProjectInfoService {
         return initiateContactsService.add(dto);
     }
 
+    public void addContacts(List<InitiateContactsDto> dtos){
+        for (InitiateContactsDto dto:dtos){
+            this.addContacts(dto);
+        }
+    }
+
     /*联系人删除*/
     public boolean removeContacts(Integer id) {
         return initiateContactsService.remove(id);

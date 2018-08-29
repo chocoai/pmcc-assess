@@ -56,39 +56,24 @@ function POSSESSOR() {
 POSSESSOR.prototype = {
     //选项卡
     tabControl:function () {
+        /**
+        * @author:  zch
+        * 描述:这里会处理 把委托人的信息数据 带入 占有人中
+        * @date: 2018-08-29
+        **/
         $("#changeType1 input[type='radio'][name='pType']").change(function () {
             var value = $("#changeType :radio:checked").val();
             if ($(this).val() == 1) {
                 $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").hide();
-                $("#legal_person1").show();
-
-                $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
-                $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
-                if ($("#pEntrustmentUnitX").length > 0) {
-                    $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
-                }
-                $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
-                $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
-                $("#pSociologyCode").val($("#csSociologyCode").val());
-                $("#pScopeOperation").val($("#csScopeOperation").val());
-                $("#pAddress").val($("#csAddress").val());
-                var selectV = $("#csUnitProperties option:selected").val();
-                if (selectV != null && selectV != '') {
-                    $("#pUnitProperties").val(selectV);
-                }
+                POSSESSOR.prototype.takeOutCONSIGNOR.legal();
             }
             if ($(this).val() == 0) {
                 $("#changeType1 input[type='radio'][name='pType'][value='1']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").show();
-                $("#legal_person1").hide();
-
-                $("#pName").val($("#csName").val());
-                $("#pIdcard").val($("#csIdcard").val());
-                $("#pAddress2").val($("#csAddress2").val());
+                POSSESSOR.prototype.takeOutCONSIGNOR.noLegal();
             }
+            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.init();
         });
     }
     ,
@@ -101,6 +86,77 @@ POSSESSOR.prototype = {
         if (type == 1){
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
+        }
+    },
+    /**
+    * @author:  zch
+    * 描述:占有人 把委托人的数据带入
+    * @date:2018-08-29
+    **/
+    takeOutCONSIGNOR:{
+        //法人
+        legal:function () {
+            $("#no_legal_person1").hide();
+            $("#legal_person1").show();
+
+            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
+            $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
+            if ($("#pEntrustmentUnitX").length > 0) {
+                $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+            }
+            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+            $("#pSociologyCode").val($("#csSociologyCode").val());
+            $("#pScopeOperation").val($("#csScopeOperation").val());
+            $("#pAddress").val($("#csAddress").val());
+            var selectV = $("#csUnitProperties option:selected").val();
+            if (selectV != null && selectV != '') {
+                $("#pUnitProperties").val(selectV);
+            }
+        },
+        //非法人(自然人)
+        noLegal:function () {
+            $("#no_legal_person1").show();
+            $("#legal_person1").hide();
+
+            $("#pName").val($("#csName").val());
+            $("#pIdcard").val($("#csIdcard").val());
+            $("#pAddress2").val($("#csAddress2").val());
+        },
+        //联系人
+        contacts:{
+            init:function () {
+                var data = POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getContact();
+                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setContact(data);
+            },
+            //把联系人信息数据写入到数据库中 (把从委托人获取的联系人写入到占有人中)
+            setContact:function (data) {
+                var item = new Array();
+                $.each(data,function (i,n) {
+                    //write dataBase (然后处理必要的信息数据)
+                    n.cType = Contacts.prototype.config().POSSESSOR.nodeKey ;
+                    n.id = null;
+                    item.push(n);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: Contacts.prototype.getUrl()+"/projectInfo/Contacts/save",
+                    data: {formData:JSON.stringify({contacts:item})},
+                    success: function (result) {
+                        if (result.ret) {
+                            Contacts.prototype.POSSESSOR().loadDataList(null);
+                            toastr.success('成功');
+                        } else {
+                            Alert("传输数据失败，失败原因:" + result.errmsg);
+                        }
+                    }
+                });
+            },
+            getContact:function () {
+                var data = null;
+                data = $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("getData");
+                return data;
+            }
         }
     }
 };

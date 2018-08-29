@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
@@ -306,9 +308,10 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
-    public HttpResult addContacts(InitiateContactsDto dto) {
+    public HttpResult addContacts(InitiateContactsDto dto,String formData) {
+        List<InitiateContactsDto> dtos = null;
         try {
-            if (dto.getId() != null && dto.getId() != 0) {//不再使用专门的 update controller
+            if (dto.getId() != null && dto.getId().intValue() != 0) {//不再使用专门的 update controller
                 projectInfoService.updateContacts(dto);
             } else {
                 projectInfoService.addContacts(dto);
@@ -316,6 +319,19 @@ public class ProjectInfoController {
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
+        }
+        try {
+            if (!org.springframework.util.StringUtils.isEmpty(formData)){
+                JSONObject jsonObject = JSON.parseObject(formData);
+                String jsonContent = jsonObject.getString("contacts");
+                dtos = JSONObject.parseArray(jsonContent,InitiateContactsDto.class);
+                if (!ObjectUtils.isEmpty(dtos)){
+                    projectInfoService.addContacts(dtos);
+                }
+            }
+        } catch (Exception e1) {
+            logger.error(e1.getMessage());
+            return HttpResult.newErrorResult(e1.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
