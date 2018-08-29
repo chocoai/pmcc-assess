@@ -300,9 +300,16 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid,String crmContacts,String crmContactsName) {
         BootstrapTableVo vo = null;
         vo = projectInfoService.listContactsVo(crmId, type, pid);
+        if (!org.springframework.util.StringUtils.isEmpty(crmContacts)){
+            if (org.springframework.util.StringUtils.isEmpty(crmContactsName)){
+                vo = projectInfoService.crmContacts(null);
+            }else {
+                vo = projectInfoService.crmContacts(crmContactsName);
+            }
+        }
         return vo;
     }
 

@@ -51,6 +51,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -631,6 +632,31 @@ public class ProjectInfoService {
         }
         vos = initiateContactsService.getVoList(pid, cType, customerId);//从本地获取
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InitiateContactsVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public BootstrapTableVo crmContacts(String name){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CrmCustomerLinkmanDto> crmCustomerLinkmanDtos = Lists.newArrayList();
+        if (org.springframework.util.StringUtils.isEmpty(name)){
+            List<CrmCustomerDto> crmCustomerDtoList = crmCustomerService.getCustomerList(new CrmCustomerDto());
+            if (!ObjectUtils.isEmpty(crmCustomerDtoList)){
+                for (CrmCustomerDto crmCustomerDto:crmCustomerDtoList){
+                    List<CrmCustomerLinkmanDto> oos = crmCustomerService.getCustomerLinkmanList(crmCustomerDto.getId());
+                    if (!ObjectUtils.isEmpty(oos)){
+                        crmCustomerLinkmanDtos.addAll(oos);
+                    }
+                }
+            }
+        }else {
+            CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
+            crmCustomerLinkmanDto.setName(name);
+            crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanList(crmCustomerLinkmanDto);
+        }
+        vo.setRows(crmCustomerLinkmanDtos);
         vo.setTotal(page.getTotal());
         return vo;
     }

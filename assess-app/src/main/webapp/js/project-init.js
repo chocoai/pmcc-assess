@@ -216,10 +216,49 @@ Contacts.prototype.UNIT_INFORMATION = function () {
     Fun.getData = function () {
         var data = {};
         data.table = "tb_ListUNIT_INFORMATION";
+        data.crmTable = "tb_ListCRMContacts";
         data.frm = "frmUNIT_INFORMATIONContacts";
         data.pid = "0";
         data.box = "divBoxUNIT_INFORMATIONContacts";
+        data.crmBox = "divBoxCRMContacts";
         return data;
+    };
+    Fun.crmContacts = {
+        findCRMContacts:function () {
+            var crmContactsName = null;
+            crmContactsName = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox+" "+"input[name='" + "name" + "']").val();
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(crmContactsName);
+        },
+        showModel:function () {
+            $('#' + Contacts.prototype.UNIT_INFORMATION().getData().crmBox).modal("show");
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null);
+        },
+        loadDataList:function (crmContactsName) {
+            var data = {};
+            var cols = [];
+            cols.push({field: 'name', title: '姓名',searchable:true});
+            cols.push({field: 'department', title: '部门'});
+            cols.push({field: 'phoneNumber', title: '电话号码'});
+            cols.push({field: 'email', title: '邮箱'});
+            cols.push({field: 'id', visible: false, title: "id"});
+
+            // cols.push({
+            //     field: 'id', title: '操作', formatter: function (value, row, index) {
+            //         var str = '<div class="btn-margin">';
+            //         str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.UNIT_INFORMATION().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+            //         str += '</div>';
+            //         return str;
+            //     }
+            // });
+            $("#" + Contacts.prototype.UNIT_INFORMATION().getData().crmTable).bootstrapTable("destroy");
+            TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+                crmContacts: "crmContacts",crmContactsName:crmContactsName
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }
     };
     /**
      * 显示模态框
@@ -276,7 +315,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         data.pid = pid;
         data.crmId = crmId;
         var cols = [];
-        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cName', title: '姓名',searchable:true});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});

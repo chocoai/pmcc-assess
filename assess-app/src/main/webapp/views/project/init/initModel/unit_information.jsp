@@ -119,12 +119,63 @@
     </div>
     <div class="x_content">
         <button class="btn btn-success" data-toggle="modal" onclick="Contacts.prototype.UNIT_INFORMATION().showModel();">新增联系人</button>
+        <button type="button" class="btn btn-default docs-tooltip" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
+            查询crm中联系人<i class="fa fa-search"></i>
+        </button>
         <table class="table table-bordered" id="tb_ListUNIT_INFORMATION">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 </body>
+
+<div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">CRM联系人</h3>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <div class="col-sm-6">
+                                            <input type="text" name="name" placeholder="联系人名字"
+                                                   class="form-control" >
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <div class="col-sm-6">
+                                            <input type="button" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.findCRMContacts();" class="btn btn-success" value="查询">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered" id="tb_ListCRMContacts">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div id="divBoxUNIT_INFORMATIONContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
