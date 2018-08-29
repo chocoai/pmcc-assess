@@ -392,7 +392,9 @@ public class ProjectPlanService {
         if (StringUtils.isNotBlank(detailsSoring)) {
             updateDetailsSorting(detailsSoring);
         }
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());//删除待提交任务
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+
         if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
         {
             saveProjectPlanResponsibility(projectPlan, projectPlanDto.getNextApproval(), projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
