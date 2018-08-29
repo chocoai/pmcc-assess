@@ -28,6 +28,23 @@ public class CrmCustomerService {
         return crmRpcCustomerService.getCustomer(id);
     }
 
+    public List<CrmCustomerDto> getCustomerList(CrmCustomerDto crmCustomerDto){
+        return crmRpcCustomerService.getCustomerList(crmCustomerDto);
+    }
+
+    /**
+     *
+     * 功能描述: 暂时CRM系统中没有提供类似的方法
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2018/8/29 15:14
+     */
+    public List<CrmCustomerLinkmanDto> getCustomerLinkmanList(CrmCustomerLinkmanDto crmCustomerLinkmanDto){
+        return  null;
+    }
+
     /**
      * 根据客户id获取联系人信息
      * @param customerId

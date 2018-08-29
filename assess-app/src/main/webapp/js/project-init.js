@@ -56,39 +56,24 @@ function POSSESSOR() {
 POSSESSOR.prototype = {
     //选项卡
     tabControl:function () {
+        /**
+        * @author:  zch
+        * 描述:这里会处理 把委托人的信息数据 带入 占有人中
+        * @date: 2018-08-29
+        **/
         $("#changeType1 input[type='radio'][name='pType']").change(function () {
             var value = $("#changeType :radio:checked").val();
             if ($(this).val() == 1) {
                 $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").hide();
-                $("#legal_person1").show();
-
-                $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
-                $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
-                if ($("#pEntrustmentUnitX").length > 0) {
-                    $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
-                }
-                $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
-                $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
-                $("#pSociologyCode").val($("#csSociologyCode").val());
-                $("#pScopeOperation").val($("#csScopeOperation").val());
-                $("#pAddress").val($("#csAddress").val());
-                var selectV = $("#csUnitProperties option:selected").val();
-                if (selectV != null && selectV != '') {
-                    $("#pUnitProperties").val(selectV);
-                }
+                POSSESSOR.prototype.takeOutCONSIGNOR.legal();
             }
             if ($(this).val() == 0) {
                 $("#changeType1 input[type='radio'][name='pType'][value='1']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").show();
-                $("#legal_person1").hide();
-
-                $("#pName").val($("#csName").val());
-                $("#pIdcard").val($("#csIdcard").val());
-                $("#pAddress2").val($("#csAddress2").val());
+                POSSESSOR.prototype.takeOutCONSIGNOR.noLegal();
             }
+            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.init();
         });
     }
     ,
@@ -101,6 +86,77 @@ POSSESSOR.prototype = {
         if (type == 1){
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
+        }
+    },
+    /**
+    * @author:  zch
+    * 描述:占有人 把委托人的数据带入
+    * @date:2018-08-29
+    **/
+    takeOutCONSIGNOR:{
+        //法人
+        legal:function () {
+            $("#no_legal_person1").hide();
+            $("#legal_person1").show();
+
+            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
+            $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
+            if ($("#pEntrustmentUnitX").length > 0) {
+                $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+            }
+            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+            $("#pSociologyCode").val($("#csSociologyCode").val());
+            $("#pScopeOperation").val($("#csScopeOperation").val());
+            $("#pAddress").val($("#csAddress").val());
+            var selectV = $("#csUnitProperties option:selected").val();
+            if (selectV != null && selectV != '') {
+                $("#pUnitProperties").val(selectV);
+            }
+        },
+        //非法人(自然人)
+        noLegal:function () {
+            $("#no_legal_person1").show();
+            $("#legal_person1").hide();
+
+            $("#pName").val($("#csName").val());
+            $("#pIdcard").val($("#csIdcard").val());
+            $("#pAddress2").val($("#csAddress2").val());
+        },
+        //联系人
+        contacts:{
+            init:function () {
+                var data = POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getContact();
+                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setContact(data);
+            },
+            //把联系人信息数据写入到数据库中 (把从委托人获取的联系人写入到占有人中)
+            setContact:function (data) {
+                var item = new Array();
+                $.each(data,function (i,n) {
+                    //write dataBase (然后处理必要的信息数据)
+                    n.cType = Contacts.prototype.config().POSSESSOR.nodeKey ;
+                    n.id = null;
+                    item.push(n);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: Contacts.prototype.getUrl()+"/projectInfo/Contacts/save",
+                    data: {formData:JSON.stringify({contacts:item})},
+                    success: function (result) {
+                        if (result.ret) {
+                            Contacts.prototype.POSSESSOR().loadDataList(null);
+                            toastr.success('成功');
+                        } else {
+                            Alert("传输数据失败，失败原因:" + result.errmsg);
+                        }
+                    }
+                });
+            },
+            getContact:function () {
+                var data = null;
+                data = $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("getData");
+                return data;
+            }
         }
     }
 };
@@ -160,10 +216,49 @@ Contacts.prototype.UNIT_INFORMATION = function () {
     Fun.getData = function () {
         var data = {};
         data.table = "tb_ListUNIT_INFORMATION";
+        data.crmTable = "tb_ListCRMContacts";
         data.frm = "frmUNIT_INFORMATIONContacts";
         data.pid = "0";
         data.box = "divBoxUNIT_INFORMATIONContacts";
+        data.crmBox = "divBoxCRMContacts";
         return data;
+    };
+    Fun.crmContacts = {
+        findCRMContacts:function () {
+            var crmContactsName = null;
+            crmContactsName = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox+" "+"input[name='" + "name" + "']").val();
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(crmContactsName);
+        },
+        showModel:function () {
+            $('#' + Contacts.prototype.UNIT_INFORMATION().getData().crmBox).modal("show");
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null);
+        },
+        loadDataList:function (crmContactsName) {
+            var data = {};
+            var cols = [];
+            cols.push({field: 'name', title: '姓名',searchable:true});
+            cols.push({field: 'department', title: '部门'});
+            cols.push({field: 'phoneNumber', title: '电话号码'});
+            cols.push({field: 'email', title: '邮箱'});
+            cols.push({field: 'id', visible: false, title: "id"});
+
+            // cols.push({
+            //     field: 'id', title: '操作', formatter: function (value, row, index) {
+            //         var str = '<div class="btn-margin">';
+            //         str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.UNIT_INFORMATION().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
+            //         str += '</div>';
+            //         return str;
+            //     }
+            // });
+            $("#" + Contacts.prototype.UNIT_INFORMATION().getData().crmTable).bootstrapTable("destroy");
+            TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+                crmContacts: "crmContacts",crmContactsName:crmContactsName
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false
+            });
+        }
     };
     /**
      * 显示模态框
@@ -220,7 +315,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         data.pid = pid;
         data.crmId = crmId;
         var cols = [];
-        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cName', title: '姓名',searchable:true});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
