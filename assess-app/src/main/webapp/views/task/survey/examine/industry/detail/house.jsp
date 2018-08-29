@@ -31,7 +31,7 @@
             <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"  placeholder="户型选择"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.huxingId}" name="huxingId"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.huxingName}" name="huxingId"
                        class="form-control">
             </div>
         </div>
@@ -49,7 +49,7 @@
             <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"  placeholder="最新户型"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}" name="newsHuxing"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxingName}" name="newsHuxing"
                        class="form-control">
             </div>
         </div>
@@ -67,7 +67,7 @@
             <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"  placeholder="证载用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.certUse}" name="certUse"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.certUseName}" name="certUse"
                        class="form-control">
             </div>
         </div>
@@ -76,7 +76,7 @@
             <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"  placeholder="实际用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.practicalUse}" name="practicalUse"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.practicalUseName}" name="practicalUse"
                        class="form-control">
             </div>
         </div>
@@ -217,132 +217,14 @@
         });
     };
     house.select2ChangeEvent = function () {
-        $("#" + house.getFrm() + " .huxingId").change(function () {
-            var id = $("#" + houseFun.prototype.config().frm + " .huxingId").eq(1).val();
-            // 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-            if (id != null && id!=''){
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
-                    dataType: "JSON",
-                    data: {'id': id},
-                    type: "GET",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
-                        }
-                    },
-                    error: function (e) {
-                        Alert("调用服务端方法失败，失败原因:" + e);
-                    }
-                });
-            }
-        });
+
     };
     house.select2LoadData = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineHouse/examine_house_practical_use",
-            type: "get",
-            dataType: "json",
-            async:false,
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + house.getFrm() + " .practicalUse").html(option);
-                        $("#" + house.getFrm() + " .practicalUse").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineHouse/examine_house_load_utility",
-            type: "get",
-            dataType: "json",
-            async:false,
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + house.getFrm() + " .certUse").html(option);
-                        $("#" + house.getFrm() + " .certUse").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineHouse/examine_house_newshuxing",
-            type: "get",
-            async:false,
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + house.getFrm() + " .newsHuxing").html(option);
-                        $("#" + house.getFrm() + " .newsHuxing").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineHouse/examineunithuxingSelect",
-            type: "get",
-            dataType: "json",
-            async:false,
-            data:{
-                declareId : $("#declareId").val(),
-                examineType : $("#examineType").val()
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].houseLayoutName + "</option>";
-                        }
-                        if ($("#" + house.getFrm() + " .huxingId").size() > 0) {
-                            $("#" + house.getFrm() + " .huxingId").html(option);
-                            $("#" + house.getFrm() + " .huxingId").select2();//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+
     };
 
     $(function () {
-        // house.init();
-        house.select2ChangeEvent();
+        house.showFiles();
     });
 </script>
 

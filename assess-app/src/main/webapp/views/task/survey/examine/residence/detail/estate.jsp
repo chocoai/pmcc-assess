@@ -18,7 +18,7 @@
             <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" placeholder="开发商" readonly="readonly"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.developerId}" name="developerId" class="form-control">
+                       value="${surveyExamineDataInfoVo.examineEstateVo.developerName}" name="developerId" class="form-control">
             </div>
         </div>
 
