@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            价值时点<span class="symbol required"></span>
+                            评估基准日<span class="symbol required"></span>
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="valueTimePoint" required="required" placeholder="价值时间点"
@@ -43,7 +43,7 @@
                         <th>估价对象编号</th>
                         <th>权证号</th>
                         <th>所有权人</th>
-                        <th>最佳利用设置</th>
+                        <th>最佳利用描述</th>
                         <th>合并测算序号</th>
                         <th>证载面积</th>
                         <th>评估面积</th>

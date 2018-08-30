@@ -26,7 +26,8 @@
 <script type="application/javascript">
     var mainObj = {
         systemMessageWs: '<%=systemMessageWs%>',
-        websocket: null
+        websocket: null,
+        currDate: new Date()
     };
     $("#pmcc-footer").html(PMCC_MAIN.footer);
     //message init
@@ -58,5 +59,12 @@
             toastr.info("系统消息:" + message);
         };
     };
+
+    //获取打开页面与当前时间小时差
+    mainObj.getDiffHours = function () {
+        var ms = new Date().getTime() - mainObj.currDate.getTime();
+        if (ms < 0) return 0;
+        return (ms/1000/60/60).toFixed(2);
+    }
 </script>
 
