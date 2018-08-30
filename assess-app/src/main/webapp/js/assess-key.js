@@ -43,6 +43,9 @@ AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//实�
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型
 
+AssessDicKey.estate_total_land_level = "estate.land_level" ;//土地级别
+AssessDicKey.estate_total_land_use = "estate.land_use" ;//土地用途
+
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate" ;//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//土地取得税率
 

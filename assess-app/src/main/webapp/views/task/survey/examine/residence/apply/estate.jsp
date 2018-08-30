@@ -174,7 +174,6 @@
         ContainerFunForValid.push(Estate.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(Estate.getFormData);//获取数据方法写入容器
         ContainerFunForInit.estate.push(estateFun.init);//初始化方法写入容器
-        ContainerFunForInit.estate.push(estateFun.select2Init);//初始化方法写入容器
         ContainerFunForInit.estate.push(estateFun.viewFiles);//初始化方法写入容器
 
     })
@@ -215,7 +214,7 @@
 
         }
         estateFun.prototype = {
-            select2Init: function () {
+            saveShowData: function () {
                 estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.developerId}", "developerId");
                 estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", "totalBuildingType");
             },
@@ -265,12 +264,11 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 })
-
                 AssessCommon.loadDataDicByKey(AssessDicKey.estateTotalBuildingType, "${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", function (html, data) {
                     $("#" + Estate.config().frm + " .totalBuildingType").html(html);
                     $("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式
-                })
-
+                });
+                estateFun.prototype.saveShowData();
             },
             viewFiles: function () {
                 //总平面图

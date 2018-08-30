@@ -223,6 +223,7 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+                houseFun.prototype.init2();
             },
             init2:function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {

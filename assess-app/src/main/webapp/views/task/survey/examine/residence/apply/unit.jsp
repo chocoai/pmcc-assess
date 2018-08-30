@@ -10,7 +10,6 @@
             <label class="col-sm-1 control-label">单元编号<span class="symbol required"></span></label>
             <div class="col-sm-5">
                 <input type="text" name="unitNumber" class="form-control" placeholder="单元编号" value="${surveyExamineDataInfoVo.examineUnitVo.unitNumber}">
-                <%--<textarea name="unitNumber" class="form-control" placeholder="单元编号"></textarea>--%>
             </div>
         </div>
 
@@ -18,7 +17,6 @@
             <label class="col-sm-1 control-label">户梯比<span class="symbol required"></span></label>
             <div class="col-sm-5">
                 <input type="text" name="elevatorHouseholdRatio" class="form-control" placeholder="户梯比" value="${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}">
-                <%--<textarea name="unitNumber" class="form-control" placeholder="户梯比">${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}</textarea>--%>
             </div>
         </div>
     </div>
