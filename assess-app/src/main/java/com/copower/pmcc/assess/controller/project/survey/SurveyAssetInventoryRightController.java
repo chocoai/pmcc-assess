@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by zly on 2018/6/11.
  */
 @Controller
-@RequestMapping(value="/surveyAssetInventoryRight")
+@RequestMapping(value = "/surveyAssetInventoryRight")
 public class SurveyAssetInventoryRightController {
 
     @Autowired
@@ -23,15 +24,16 @@ public class SurveyAssetInventoryRightController {
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得他项权利详情", method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer planDetailId) {
-        BootstrapTableVo vo = surveyAssetInventoryRightService.getList(planDetailId);
+    public BootstrapTableVo list(Integer planDetailsId) {
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getList(planDetailsId);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/save", name = "新增和修改他项权利", method = RequestMethod.POST)
-    public HttpResult save(SurveyAssetInventoryRight surveyAssetInventoryRight) {
+    public HttpResult save(String formData) {
         try {
+            SurveyAssetInventoryRight surveyAssetInventoryRight = JSON.parseObject(formData, SurveyAssetInventoryRight.class);
             surveyAssetInventoryRightService.save(surveyAssetInventoryRight);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

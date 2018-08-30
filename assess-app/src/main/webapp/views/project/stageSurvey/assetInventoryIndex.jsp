@@ -93,7 +93,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
+                            <c:forEach items="${surveyAssetInventoryContentVos}" var="items" varStatus="s">
                                 <tr>
                                     <input type="hidden" id="id" name="id" value="${items.id}">
                                     <td name="inventoryContent"
@@ -160,6 +160,13 @@
                                         <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空重填</a>
                                     </td>
                                 </tr>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        //清查内容附件上传和加载
+                                        uploadFileCommon("${items.id}");
+                                        showFileCommon("${items.id}");
+                                    })
+                                </script>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -179,63 +186,6 @@
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
                     </table>
-                </div>
-            </div>
-
-            <div class="form-group" style="display: none">
-                <div class="col-sm-11">
-                    <iframe src="${pageContext.request.contextPath}/map/positionPicker?position="
-                            width="900" height="600" frameborder=”no” border=”0″ marginwidth=”0″
-                            marginheight=”0″ scrolling=”no” allowtransparency=”yes”></iframe>
-                </div>
-            </div>
-
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}成果提交</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                实际工时
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3"
-                                           value="${projectPlanDetails.actualHours}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果描述
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-11">
-                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control">${projectPlanDetails.taskRemarks}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果文件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="apply_file" name="apply_file" type="file" multiple="false">
-                                <div id="_apply_file">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
             <div class="x_panel">
@@ -423,42 +373,6 @@
 
     $(function () {
         loadAssetOtherList();
-
-        //清查内容附件上传和加载
-        uploadFileCommon("${surveyAssetTemplateVos.get(0).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(0).id}");
-
-        uploadFileCommon("${surveyAssetTemplateVos.get(1).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(1).id}");
-
-        uploadFileCommon("${surveyAssetTemplateVos.get(2).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(2).id}");
-
-        uploadFileCommon("${surveyAssetTemplateVos.get(3).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(3).id}");
-
-        FileUtils.uploadFiles({
-            target: "apply_file",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: "tb_project_plan_details",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        });
-
-        FileUtils.getFileShows({
-            target: "apply_file",
-            formData: {
-                tableName: "tb_project_plan_details",
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: true
-        })
     });
 
     //上传附件通用
@@ -469,9 +383,7 @@
             disabledTarget: "btn_submit",
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: tableId,
-                fieldsName: "credentialAccessory",
-                projectId: "${projectPlanDetails.projectId}"
+                tableId: tableId
             },
             deleteFlag: true
         });
@@ -484,9 +396,7 @@
             target: "credentialAccessory" + tableId,
             formData: {
                 tableName: "tb_survey_asset_template",
-                tableId: tableId,
-                fieldsName: "credentialAccessory",
-                projectId: "${projectPlanDetails.projectId}"
+                tableId: tableId
             },
             deleteFlag: true
         })
@@ -496,30 +406,26 @@
     function loadAssetOtherList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'otherRightsRegistrar', title: '他权登记人'});
-        cols.push({field: 'rightHander', title: '实际行权人'});
+        cols.push({field: 'categoryName', title: '类型'});
+        cols.push({field: 'number', title: '他权证编号'});
+        cols.push({field: 'obligor', title: '义务人'});
+        cols.push({field: 'obligee', title: '权利人'});
         cols.push({field: 'registerArea', title: '登记面积'});
-        cols.push({field: 'actualArea', title: '实际面积'});
-        cols.push({field: 'registerPurpose', title: '登记用途'});
-        cols.push({field: 'actualPurpose', title: '实际用途'});
-
+        cols.push({field: 'rightRank', title: '他权级次'});
+        cols.push({field: 'registerAmount', title: '登记金额'});
+        cols.push({field: 'actualAmount', title: '行权金额'});
         cols.push({
             field: 'registerDate', title: '登记日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         cols.push({
-            field: 'dueDate', title: '到期日', formatter: function (value, row, index) {
+            field: 'beginDate', title: '实际行权人行权日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         cols.push({
-            field: 'exerciseDate', title: '实际行权人行权日期', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({
-            field: 'predictDueDate', title: '预计到期日', formatter: function (value, row, index) {
+            field: 'endDate', title: '预计到期日', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
@@ -535,7 +441,7 @@
         });
         $("#tb_List").bootstrapTable('destroy');
         TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetInventoryRight/list", cols, {
-            planDetailId: '${projectPlanDetails.id}'
+            planDetailsId: '${projectPlanDetails.id}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -572,8 +478,8 @@
             dataItem.push(item);
         });
         var data = {};
-        data.surveyAssetInventoryDto = formParams("frm_asset");//评估人员 核对时间
-        data.surveyAssetTemplateDtos = dataItem;
+        data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
+        data.assetInventoryContentList = dataItem;
         return data;
     }
 
@@ -584,15 +490,12 @@
         if (!$("#frm_asset_inventory").valid()) {
             return false;
         }
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
         var formData = JSON.stringify(getFormData());
         if ("${processInsId}" != "0") {
-            submitEditToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(formData, "1", "1");
         }
         else {
-            submitToServer(formData, $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(formData, "1", "1");
         }
     }
 
@@ -638,17 +541,15 @@
     }
     //他权保存
     function saveData() {
-        var flag = false;
         var data = formParams("frm");
-        data.projectId = ${projectPlanDetails.projectId};
-        data.planDetailId = ${projectPlanDetails.id};
+        data.planDetailsId = ${projectPlanDetails.id};
         if ($("#frm").valid()) {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
                 type: "post",
                 dataType: "json",
-                data: data,
+                data: {formData: JSON.stringify(data)},
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
@@ -672,9 +573,8 @@
         $("#frm").clearAll();
         $("#frm").initForm(row);
         $("#registerDate").val(formatDate(row.registerDate, false));
-        $("#dueDate").val(formatDate(row.dueDate, false));
-        $("#exerciseDate").val(formatDate(row.exerciseDate, false));
-        $("#predictDueDate").val(formatDate(row.predictDueDate, false));
+        $("#beginDate").val(formatDate(row.beginDate, false));
+        $("#endDate").val(formatDate(row.endDate, false));
         $('#divBox').modal();
     }
     //他权删除
@@ -703,16 +603,6 @@
                 }
             })
         })
-    }
-
-    //解析定位结果
-    function onCompleteSuccess(data) {
-        $("#defaultLocaltion").val(data.position);
-    }
-
-    //解析定位错误信息
-    function onErrorFail(data) {
-        window.location.reload();
     }
 
 </script>

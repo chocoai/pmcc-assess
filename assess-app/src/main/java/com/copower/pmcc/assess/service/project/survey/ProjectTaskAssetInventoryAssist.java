@@ -23,7 +23,7 @@ import java.util.List;
 
 @Component
 @WorkFlowAnnotation(desc = "资产清查成果")
-public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
+public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -39,7 +39,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/assetInventoryIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", "", 0, "0", "");
 
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
         List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
@@ -48,10 +48,9 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
             for (BaseDataDic baseDataDic : baseDataDicList) {
                 Integer inventoryContent = baseDataDic.getId();
                 Integer projectId = projectPlanDetails.getProjectId();
-                Integer planDetailId = projectPlanDetails.getPlanId();
                 SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
                 surveyAssetInventoryContent.setProjectId(projectId);
-                surveyAssetInventoryContent.setPlanDetailsId(planDetailId);
+                surveyAssetInventoryContent.setPlanDetailsId(projectPlanDetails.getId());
                 surveyAssetInventoryContent.setInventoryContent(inventoryContent);
                 surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
             }
@@ -59,7 +58,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsById(id);
 
-        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(0);
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("otherRightTypeList", otherRightTypeList); //数据字典
@@ -71,14 +70,14 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/assetInventoryApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryApproval", processInsId, boxId, taskId, agentUserAccount);
         setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/assetInventoryIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", processInsId, boxId, taskId, agentUserAccount);
         setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -90,7 +89,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/task/survey/assetInventoryApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
