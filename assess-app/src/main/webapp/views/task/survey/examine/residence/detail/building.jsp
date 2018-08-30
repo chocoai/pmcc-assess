@@ -210,9 +210,7 @@
                     物业类型
                 </label>
                 <div class="col-sm-3">
-                    <select name="propertyType"
-                            class="form-control search-select select2 propertyType">
-                    </select>
+                    <input type="text" data-title="propertyType" readonly="readonly" name="propertyTypeName" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -220,9 +218,7 @@
                     建筑结构上级
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingStructure"
-                            class="form-control search-select select2 buildingStructure">
-                    </select>
+                    <input type="text" data-title="buildingStructure" readonly="readonly" name="buildingStructureName" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -230,11 +226,7 @@
                     建筑结构(下级)
                 </label>
                 <div class="col-sm-3">
-                    <select id="frmExamineBuilding_buildingStructure"
-                            name="buildingstructurepid"
-                            class="form-control search-select select2 buildingstructurepid">
-                        <option>请先选择建筑结构上级</option>
-                    </select>
+                    <input type="text" data-title="buildingstructurePid" readonly="readonly" name="buildingstructurePid" class="form-control">
                 </div>
             </div>
         </div>
@@ -245,9 +237,7 @@
                     楼栋基础 建筑类别
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingCategory"
-                            class="form-control search-select select2 buildingCategory">
-                    </select>
+                    <input type="text" data-title="buildingCategory" readonly="readonly" name="buildingCategoryName" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -255,9 +245,7 @@
                     楼栋基础 建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <select name="builderId"
-                            class="form-control search-select select2 builderId">
-                    </select>
+                    <input type="text" data-title="builderId" readonly="readonly" name="builderName" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
@@ -265,9 +253,7 @@
                     楼栋基础 物业公司
                 </label>
                 <div class="col-sm-3">
-                    <select name="propertyId"
-                            class="form-control search-select select2 propertyId">
-                    </select>
+                    <input type="text" data-title="propertyId" readonly="readonly" name="propertyName" class="form-control">
                 </div>
             </div>
         </div>
@@ -355,10 +341,7 @@
         };
     })();
     var building =  Object.create(building_config);
-    building.init = function () {
-        building.select2LoadData();
-        building.showFiles();
-    };
+
     building.firstData = function (target) {
         var data = {};
         if ($("#declareId").size() > 0){
@@ -428,36 +411,6 @@
             $("#" + building.getFrm()).initForm(item);
             $("#" + building.getFrm()+" .openTime").val(formatDate(item.openTime));
             $("#" + building.getFrm()+" .roomTime").val(formatDate(item.roomTime));
-            if (item.buildingCategory == null || item.buildingCategory == '') {
-                $("#" + building.getFrm() + " .buildingCategory").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .buildingCategory").val(item.buildingCategory).trigger("change");
-            }
-            if (item.buildingStructure == null || item.buildingStructure == '') {
-                $("#" + building.getFrm() + " .buildingStructure").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .buildingStructure").val(item.buildingStructure).trigger("change");
-            }
-            if (item.buildingstructurepid == null || item.buildingstructurepid == '') {
-                $("#" + building.getFrm() + " .buildingstructurepid").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .buildingstructurepid").val(item.buildingstructurepid).trigger("change");
-            }
-            if (item.propertyType == null || item.propertyType == '') {
-                $("#" + building.getFrm() + " .propertyType").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .propertyType").val(item.propertyType).trigger("change");
-            }
-            if (item.builderId == null || item.builderId == '') {
-                $("#" + building.getFrm() + " .builderId").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .builderId").val(item.builderId).trigger("change");
-            }
-            if (item.propertyId == null || item.propertyId == '') {
-                $("#" + building.getFrm() + " .propertyId").val(null).trigger("change");
-            } else {
-                $("#" + building.getFrm() + " .propertyId").val(item.propertyId).trigger("change");
-            }
             $("#" + building.getFrm()+" :input").attr("readonly","readonly");
         }
     };
@@ -512,154 +465,10 @@
         });
     };
     building.select2ChangeEvent = function () {
-        $("#" + building.getFrm() + " .buildingStructure").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
-            var id = $("#" + building.getFrm() + " .buildingStructure").eq(1).val();
-            if (id != null && id != '' && id != 0) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/getBasisList",
-                    dataType: "JSON",
-                    data: {'id': id},
-                    async:false,
-                    type: "GET",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + building.getFrm() + "buildingStructure").html(option);
-                                $("#" + building.getFrm() + "buildingStructure").select2();//加载样式
-                            }
 
-                        }
-                    },
-                    error: function (e) {
-                        Alert("调用服务端方法失败，失败原因:" + e);
-                    }
-                });
-            }
-        });
     };
     building.select2LoadData = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_examineBuilding_category",
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + building.getFrm() + " .buildingCategory").html(option);
-                        $("#" + building.getFrm() + " .buildingCategory").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_building_structure",
-            type: "get",
-            dataType: "json",
-            async:false,
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + building.getFrm() + " .buildingStructure").html(option);
-                        $("#" + building.getFrm() + " .buildingStructure").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_building_type",
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + building.getFrm() + " .propertyType").html(option);
-                        $("#" + building.getFrm() + " .propertyType").select2();//加载样式
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-            type: "get",
-            dataType: "json",
-            data: {type: "DataBuilder"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + building.getFrm() + " .builderId").html(option);
-                        $("#" + building.getFrm() + " .builderId").select2();//加载样式
-                    }
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-                        type: "get",
-                        dataType: "json",
-                        data: {type: "DataProperty"},
-                        success: function (result) {
-                            if (result.ret) {
-                                var data = result.data;
-                                var gradeNum = data.length;
-                                var option = "<option value=''>请选择</option>";
-                                if (gradeNum > 0) {
-                                    for (var i = 0; i < gradeNum; i++) {
-                                        option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                    }
-                                    $("#" + building.getFrm() + " .propertyId").html(option);
-                                    $("#" + building.getFrm() + " .propertyId").select2();//加载样式
-                                }
-                            }
-                        },
-                        error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
-                        }
-                    })
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+
 
     };
     building.subLoadDataList = function () {
@@ -684,9 +493,7 @@
     };
 
     $(function () {
-        // building.init();
         //默认显示第一栋
         building.firstData(null);
-        building.select2ChangeEvent();
     });
 </script>

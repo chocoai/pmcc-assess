@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandState;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineEstateLandStateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -21,7 +23,8 @@ public class ExamineEstateLandStateService {
     private ExamineEstateLandStateDao examineEstateLandStateDao;
     @Autowired
     private CommonService commonService;
-
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     /**
      * 获取数据
      *
@@ -46,6 +49,21 @@ public class ExamineEstateLandStateService {
         if (examineEstateLandState == null) return null;
         ExamineEstateLandStateVo examineEstateLandStateVo = new ExamineEstateLandStateVo();
         BeanUtils.copyProperties(examineEstateLandState, examineEstateLandStateVo);
+        BaseDataDic sysDataDicTemp = null;
+        if (examineEstateLandState.getLandLevel() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandLevel());
+            if (sysDataDicTemp != null){
+                examineEstateLandStateVo.setLandLevelName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
+        if (examineEstateLandState.getLandUse() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUse());
+            if (sysDataDicTemp != null){
+                examineEstateLandStateVo.setLandUseName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
         return examineEstateLandStateVo;
     }
 

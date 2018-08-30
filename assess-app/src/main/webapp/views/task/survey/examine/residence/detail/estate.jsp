@@ -104,8 +104,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">总栋数<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="总栋数" required
-                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}" name="totalBuildingType"
+                <input type="text" readonly="readonly"  placeholder="总栋数"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingTypeName}" name="totalBuildingType"
                        class="form-control">
             </div>
         </div>
@@ -214,95 +214,12 @@
     })();
 
     var estate = Object.create(config_estate);
+
     estate.init = function () {
-        estate.select2LoadData();
-        estate.select2Init();
         estate.showFiles();
-        $("#" + estate.getFrm() + " :input").attr("readonly","readonly");
     };
-    //必须在 select2LoadData 之后
-    estate.select2Init = function () {
-        estate.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.developerId}", "developerId");
-        estate.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", "totalBuildingType");
-    };
-    estate.select2InitMethodWrite = function (data, name) {
-        if (estate.select2IsNotNull(data)) {
-            if (estate.select2IsNotNull(name)) {
-                $("#" + estate.getFrm() + " ." + name).val(data).trigger("change");
-            }
-        } else {
-            $("#" + estate.getFrm() + " ." + name).val(null).trigger("change");
-        }
-    };
-    estate.select2IsNotNull = function (data) {
-        if (data == null) {
-            return false;
-        }
-        if (data == '') {
-            return false;
-        }
-        if (data == "") {
-            return false;
-        }
-        if (data == 0) {
-            return false;
-        }
-        return true;
-    };
-    estate.select2LoadData = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_building_type",
-            type: "get",
-            dataType: "json",
-            async: false,
-            data: {type: null},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + estate.getFrm() + " .totalBuildingType").size() > 0) {
-                            $("#" + estate.getFrm() + " .totalBuildingType").html(option);
-                            $("#" + estate.getFrm() + " .totalBuildingType").select2();//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-            type: "get",
-            dataType: "json",
-            async: false,
-            data: {type: "DataDeveloper"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + estate.getFrm() + " .developerId").size() > 0) {
-                            $("#" + estate.getFrm() + " .developerId").html(option);
-                            $("#" + estate.getFrm() + " .developerId").select2();//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-    };
+
+
     estate.showFiles = function () {
         FileUtils.getFileShows({
             target: estate.getFilePlanTotal(),
@@ -374,7 +291,7 @@
 
 
     $(function () {
-        // estate.init();
+       estate.init();
     });
 </script>
 

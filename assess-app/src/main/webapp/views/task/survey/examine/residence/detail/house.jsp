@@ -116,7 +116,7 @@
 
 <script>
     $(function () {
-        house.showFiles()
+        house.init();
     });
 </script>
 
@@ -146,32 +146,7 @@
     var house = Object.create(house_config);
     house.init = function () {
         house.select2LoadData();
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}", "huxingId");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}", "newsHuxing");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}", "certUse");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}", "practicalUse");
-        var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
-        if (house.select2IsNotNull(id)){
-            $.ajax({
-                url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
-                dataType: "JSON",
-                data: {'id': id},
-                type: "GET",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (house.select2IsNotNull(data)){
-                            $("#" + house.getFrm() + " .house_latest_family_plan").html(data.fileViewName);
-                        }
-                    }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
-                }
-            });
-        }
         house.showFiles();
-        $("#" + house.getFrm() + " :input").attr("readonly","readonly");
     };
     house.select2InitMethodWrite = function (data, name) {
         if (house.select2IsNotNull(data)) {

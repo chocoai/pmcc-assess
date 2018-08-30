@@ -23,14 +23,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" readonly="readonly" class="form-control" placeholder="土地用途" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}">
+                    <input type="text" readonly="readonly" class="form-control" placeholder="土地用途" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseName}">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" readonly="readonly" class="form-control"  placeholder="土地级别" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}">
+                    <input type="text" readonly="readonly" class="form-control"  placeholder="土地级别" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevelName}">
                 </div>
             </div>
 

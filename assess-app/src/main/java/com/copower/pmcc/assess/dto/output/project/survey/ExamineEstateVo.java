@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ExamineEstate;
 public class ExamineEstateVo extends ExamineEstate {
     private String developerName;//开发商
     private String address;//地址
+    private String totalBuildingTypeName;
 
     public String getDeveloperName() {
         return developerName;
@@ -23,5 +24,13 @@ public class ExamineEstateVo extends ExamineEstate {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTotalBuildingTypeName() {
+        return totalBuildingTypeName;
+    }
+
+    public void setTotalBuildingTypeName(String totalBuildingTypeName) {
+        this.totalBuildingTypeName = totalBuildingTypeName;
     }
 }

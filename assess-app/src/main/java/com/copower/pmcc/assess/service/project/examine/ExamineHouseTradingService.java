@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseTradingDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTrading;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseTradingVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -21,6 +23,8 @@ public class ExamineHouseTradingService {
     private ExamineHouseTradingDao examineHouseTradingDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 获取数据
@@ -38,14 +42,29 @@ public class ExamineHouseTradingService {
      * @param declareId
      * @return
      */
-    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,Integer planDetailsId,ExamineTypeEnum examineTypeEnum) {
-        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId,planDetailsId,examineTypeEnum.getId());
+    public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId, Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
+        return examineHouseTradingDao.getHouseTradingByDeclareId(declareId, planDetailsId, examineTypeEnum.getId());
     }
 
     public ExamineHouseTradingVo getExamineHouseTradingVo(ExamineHouseTrading examineHouseTrading) {
         if (examineHouseTrading == null) return null;
+        BaseDataDic sysDataDicTemp = null;
         ExamineHouseTradingVo examineHouseTradingVo = new ExamineHouseTradingVo();
         BeanUtils.copyProperties(examineHouseTrading, examineHouseTradingVo);
+        if (examineHouseTrading.getDescriptionType() != null) {
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineHouseTrading.getDescriptionType());
+            if (sysDataDicTemp != null) {
+                examineHouseTradingVo.setDescriptionTypeName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
+        if (examineHouseTrading.getTradingType() != null) {
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineHouseTrading.getTradingType());
+            if (sysDataDicTemp != null) {
+                examineHouseTradingVo.setTradingTypeName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
         return examineHouseTradingVo;
     }
 

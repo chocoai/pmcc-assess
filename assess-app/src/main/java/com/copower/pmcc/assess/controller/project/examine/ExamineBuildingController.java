@@ -74,7 +74,7 @@ public class ExamineBuildingController {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(examineBuilding);
+        return HttpResult.newCorrectResult(examineBuildingService.getExamineBuildingVo(examineBuilding));
     }
 
     @ResponseBody
@@ -87,7 +87,7 @@ public class ExamineBuildingController {
             logger.error( e1.getMessage(), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(examineBuilding);
+        return HttpResult.newCorrectResult(examineBuildingService.getExamineBuildingVo(examineBuilding));
     }
 
     @ResponseBody
