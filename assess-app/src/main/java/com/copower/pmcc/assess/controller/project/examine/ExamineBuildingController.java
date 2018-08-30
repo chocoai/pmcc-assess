@@ -1,8 +1,7 @@
 package com.copower.pmcc.assess.controller.project.examine;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineBuildingDto;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,6 +10,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -207,6 +208,13 @@ public class ExamineBuildingController {
                 if (Objects.equal(type, "DataDeveloper")) {
                     return HttpResult.newCorrectResult(examineBuildingService.getDataDeveloperList());
                 }
+                if (Objects.equal("type",type)){
+                    Map<Object,Object> map = Maps.newHashMap();
+                    map.put(DataDeveloper.class.getSimpleName(),examineBuildingService.getDataDeveloperList());
+                    map.put(DataProperty.class.getSimpleName(),examineBuildingService.getDataPropertyList());
+                    map.put(DataBuilder.class.getSimpleName(),examineBuildingService.getDataBuilderList());
+                    return HttpResult.newCorrectResult(map);
+                }
             }
             return null;
         } catch (Exception e1) {
@@ -228,28 +236,5 @@ public class ExamineBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_total_land_use", method = {RequestMethod.GET}, name = "土地用途")
-    public HttpResult estate_total_land_use() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_USE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estate_total_land_level", method = {RequestMethod.GET}, name = "土地级别")
-    public HttpResult estate_total_land_level() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_TOTAL_LAND_LEVEL);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 
 }

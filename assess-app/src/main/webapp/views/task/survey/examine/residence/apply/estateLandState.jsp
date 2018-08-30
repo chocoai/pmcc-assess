@@ -123,14 +123,14 @@
         ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
         ContainerFunForInit.estate.push(estateLandState.prototype.init);//初始化方法写入容器
-        ContainerFunForInit.estate.push(estateLandState.prototype.select2Init);//初始化方法写入容器
     })
 </script>
 <script type="text/javascript">
     function estateLandState() {
 
     }
-    estateLandState.prototype.select2Init = function () {
+    //页面保存数据后 展示数据
+    estateLandState.prototype.saveShowData = function () {
         estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");
         estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");
     };
@@ -161,59 +161,19 @@
         return true;
     };
     estateLandState.prototype.init = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_use",
-            type: "get",
-            dataType: "json",
-            async:false,
-            data: {type: "DataDeveloper"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + EstateLandState.config().frm + " .landUse").size() > 0) {
-                            $("#" + EstateLandState.config().frm + " .landUse").html(option);
-                            $("#" + EstateLandState.config().frm + " .landUse").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}", function (html,data) {
+            if ($("#" + EstateLandState.config().frm + " .landUse").size() > 0) {
+                $("#" + EstateLandState.config().frm + " .landUse").html(html);
+                $("#" + EstateLandState.config().frm + " .landUse").select2({minimumResultsForSearch: -1});//加载样式
             }
         });
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_level",
-            type: "get",
-            dataType: "json",
-            async:false,
-            data: {type: "DataDeveloper"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + EstateLandState.config().frm + " .landLevel").size() > 0) {
-                            $("#" + EstateLandState.config().frm + " .landLevel").html(option);
-                            $("#" + EstateLandState.config().frm + " .landLevel").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_level, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}", function (html,data) {
+            if ($("#" + EstateLandState.config().frm + " .landLevel").size() > 0) {
+                $("#" + EstateLandState.config().frm + " .landLevel").html(html);
+                $("#" + EstateLandState.config().frm + " .landLevel").select2({minimumResultsForSearch: -1});//加载样式
             }
         });
+        estateLandState.prototype.saveShowData();
     };
 
     (function ($) {

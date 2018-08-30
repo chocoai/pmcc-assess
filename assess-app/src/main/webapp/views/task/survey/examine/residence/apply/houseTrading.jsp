@@ -114,7 +114,6 @@
         ContainerFunForValid.push(ExamineHouseTrading.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouseTrading.getFormData);//获取数据方法写入容器
         ContainerFunForInit.house.push(examineHouseTrading.prototype.init);//初始化方法写入容器
-        ContainerFunForInit.house.push(examineHouseTrading.prototype.select2Init);//初始化方法写入容器
     });
 </script>
 
@@ -123,8 +122,8 @@
 
     };
     examineHouseTrading.prototype = {
-        select2Init:function () {
-            //页面保存数据后 展示数据
+        //页面保存数据后 展示数据
+        saveShowData:function () {
             $("#"+examineHouseTrading.prototype.config().frm+" .tradingTime").val(formatDate("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}"));
             examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
 
@@ -190,10 +189,8 @@
                 cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
                 cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
                 cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
-
             }
             if (type_ == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-
                 cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
                 cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
                 cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
@@ -353,6 +350,7 @@
                     }
                 })
             });
+            examineHouseTrading.prototype.saveShowData();
         }
     };
 

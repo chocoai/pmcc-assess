@@ -117,7 +117,6 @@
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouse.getFormData);//获取数据方法写入容器
         ContainerFunForInit.house.push(houseFun.init);//初始化方法写入容器
-        ContainerFunForInit.house.push(houseFun.select2Init);//初始化方法写入容器
         ContainerFunForInit.house.push(houseFun.files);//初始化方法写入容器
     });
 </script>
@@ -127,8 +126,8 @@
         var houseFun = function () {
         };
         houseFun.prototype = {
-            select2Init: function () {
-                //页面保存数据后 展示数据
+            //页面保存数据后 展示数据
+            saveShowData: function () {
                 houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}", "huxingId");
                 houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}", "newsHuxing");
                 houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}", "certUse");
@@ -221,7 +220,7 @@
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                })
+                });
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineHouse/examineunithuxingSelect",
                     type: "get",
@@ -252,8 +251,10 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+                houseFun.prototype.changeEvent();
+                houseFun.prototype.saveShowData();
             },
-            init2: function () {
+            changeEvent: function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {
                     var id = $("#" + houseFun.prototype.config().frm + " .huxingId").eq(1).val();
                     // 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
@@ -266,6 +267,7 @@
                             success: function (result) {
                                 if (result.ret) {
                                     var data = result.data;
+                                    console.log(data);
                                     $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
                                 }
                             },
@@ -278,36 +280,20 @@
             },
             files: function () {
                 //最新户型图
-                FileUtils.uploadFiles({
-                    target: houseFun.prototype.config().houseNewLatestFamilyPlan,
-                    disabledTarget: "btn_submit",
-                    formData: {
-                        fieldsName: houseFun.prototype.config().houseNewLatestFamilyPlan,
-                        tableName: houseFun.prototype.config().database_Table,
-                        tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: houseFun.prototype.config().houseNewLatestFamilyPlan,
-                    formData: {
-                        fieldsName: houseFun.prototype.config().houseNewLatestFamilyPlan,
-                        tableName: houseFun.prototype.config().database_Table,
-                        tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                })
+                houseFun.prototype.uploadFilesModel(houseFun.prototype.config().houseNewLatestFamilyPlan) ;
+                houseFun.prototype.getFileShowsModel(houseFun.prototype.config().houseNewLatestFamilyPlan) ;
+
 
                 //房屋平面图
+                houseFun.prototype.uploadFilesModel(houseFun.prototype.config().houseHousePlan) ;
+                houseFun.prototype.getFileShowsModel(houseFun.prototype.config().houseHousePlan) ;
+            },
+            uploadFilesModel:function (target) {
                 FileUtils.uploadFiles({
-                    target: houseFun.prototype.config().houseHousePlan,
+                    target: target,
                     disabledTarget: "btn_submit",
                     formData: {
-                        fieldsName: houseFun.prototype.config().houseHousePlan,
+                        fieldsName: target,
                         tableName: houseFun.prototype.config().database_Table,
                         tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
                         projectId: 0,
@@ -315,10 +301,12 @@
                     },
                     deleteFlag: true
                 });
+            },
+            getFileShowsModel:function (target) {
                 FileUtils.getFileShows({
-                    target: houseFun.prototype.config().houseHousePlan,
+                    target: target,
                     formData: {
-                        fieldsName: houseFun.prototype.config().houseHousePlan,
+                        fieldsName: target,
                         tableName: houseFun.prototype.config().database_Table,
                         tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
                         projectId: 0,
@@ -330,6 +318,8 @@
         };
         window.houseFun=new houseFun();
     })()
+
+
 </script>
 <script type="text/javascript">
     (function ($) {
