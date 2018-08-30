@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EvaluationBasisExample {
+public class DataEvaluationHypothesisExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public EvaluationBasisExample() {
+    public DataEvaluationHypothesisExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -632,6 +632,126 @@ public class EvaluationBasisExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNull() {
+            addCriterion("category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNotNull() {
+            addCriterion("category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryEqualTo(Integer value) {
+            addCriterion("category =", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotEqualTo(Integer value) {
+            addCriterion("category <>", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThan(Integer value) {
+            addCriterion("category >", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category >=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThan(Integer value) {
+            addCriterion("category <", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("category <=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIn(List<Integer> values) {
+            addCriterion("category in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotIn(List<Integer> values) {
+            addCriterion("category not in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("category between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("category not between", value1, value2, "category");
             return (Criteria) this;
         }
     }

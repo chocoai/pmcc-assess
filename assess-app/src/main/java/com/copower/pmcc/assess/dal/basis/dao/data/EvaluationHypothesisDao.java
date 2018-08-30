@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesis;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesisExample;
-import com.copower.pmcc.assess.dal.basis.mapper.EvaluationHypothesisMapper;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesisExample;
+import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationHypothesisMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,29 +17,29 @@ import java.util.List;
 public class EvaluationHypothesisDao {
 
     @Autowired
-    private EvaluationHypothesisMapper evaluationHypothesisMapper;
+    private DataEvaluationHypothesisMapper evaluationHypothesisMapper;
 
-    public boolean addHypothesis(EvaluationHypothesis evaluationHypothesis) {
+    public boolean addHypothesis(DataEvaluationHypothesis evaluationHypothesis) {
         return evaluationHypothesisMapper.insertSelective(evaluationHypothesis) == 1;
     }
 
 
-    public boolean updateHypothesis(EvaluationHypothesis evaluationHypothesis) {
+    public boolean updateHypothesis(DataEvaluationHypothesis evaluationHypothesis) {
         return evaluationHypothesisMapper.updateByPrimaryKey(evaluationHypothesis) == 1;
     }
 
-    public List<EvaluationHypothesis> getHypothesisList(String name) {
-        EvaluationHypothesisExample example = new EvaluationHypothesisExample();
-        EvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationHypothesis> getHypothesisList(String name) {
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(name)){
             criteria.andNameLike(String.format("%%%s%%",name));
         }
         return evaluationHypothesisMapper.selectByExample(example);
     }
 
-    public List<EvaluationHypothesis> getHypothesisList(String method,String purpose) {
-        EvaluationHypothesisExample example = new EvaluationHypothesisExample();
-        EvaluationHypothesisExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationHypothesis> getHypothesisList(String method,String purpose) {
+        DataEvaluationHypothesisExample example = new DataEvaluationHypothesisExample();
+        DataEvaluationHypothesisExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(method)){
             criteria.andMethodLike(String.format("%%%s%%",method));
         }
@@ -55,7 +53,7 @@ public class EvaluationHypothesisDao {
         return evaluationHypothesisMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public EvaluationHypothesis getHypothesis(Integer id) {
+    public DataEvaluationHypothesis getHypothesis(Integer id) {
         return evaluationHypothesisMapper.selectByPrimaryKey(id);
     }
 

@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinkingExample;
-import com.copower.pmcc.assess.dal.basis.mapper.EvaluationThinkingMapper;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinkingExample;
+import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationThinkingMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,29 +17,29 @@ import java.util.List;
 public class EvaluationThinkingDao {
 
     @Autowired
-    private EvaluationThinkingMapper evaluationThinkingMapper;
+    private DataEvaluationThinkingMapper evaluationThinkingMapper;
 
-    public boolean addThinking(EvaluationThinking evaluationThinking) {
+    public boolean addThinking(DataEvaluationThinking evaluationThinking) {
         return evaluationThinkingMapper.insertSelective(evaluationThinking) == 1;
     }
 
 
-    public boolean updateThinking(EvaluationThinking evaluationThinking) {
+    public boolean updateThinking(DataEvaluationThinking evaluationThinking) {
         return evaluationThinkingMapper.updateByPrimaryKey(evaluationThinking) == 1;
     }
 
-    public List<EvaluationThinking> getThinkingList(String name) {
-        EvaluationThinkingExample example = new EvaluationThinkingExample();
-        EvaluationThinkingExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationThinking> getThinkingList(String name) {
+        DataEvaluationThinkingExample example = new DataEvaluationThinkingExample();
+        DataEvaluationThinkingExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(name)){
             criteria.andNameLike(String.format("%%%s%%",name));
         }
         return evaluationThinkingMapper.selectByExample(example);
     }
 
-    public List<EvaluationThinking> getThinkingListByMethod(String method) {
-        EvaluationThinkingExample example = new EvaluationThinkingExample();
-        EvaluationThinkingExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationThinking> getThinkingListByMethod(String method) {
+        DataEvaluationThinkingExample example = new DataEvaluationThinkingExample();
+        DataEvaluationThinkingExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(method)){
             criteria.andMethodLike(String.format("%%%s%%",method));
         }
@@ -50,7 +50,7 @@ public class EvaluationThinkingDao {
         return evaluationThinkingMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public EvaluationThinking getThinking(Integer id) {
+    public DataEvaluationThinking getThinking(Integer id) {
         return evaluationThinkingMapper.selectByPrimaryKey(id);
     }
 }

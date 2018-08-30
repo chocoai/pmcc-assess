@@ -2,22 +2,26 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class EvaluationThinking {
+public class DataEvaluationPrinciple {
     private Integer id;
 
     private String name;
 
     private String method;
 
-    private String applicableReason;
+    private String entrustmentPurpose;
 
-    private String notApplicableReason;
+    private String template;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer type;
+
+    private Integer category;
 
     public Integer getId() {
         return id;
@@ -43,20 +47,20 @@ public class EvaluationThinking {
         this.method = method == null ? null : method.trim();
     }
 
-    public String getApplicableReason() {
-        return applicableReason;
+    public String getEntrustmentPurpose() {
+        return entrustmentPurpose;
     }
 
-    public void setApplicableReason(String applicableReason) {
-        this.applicableReason = applicableReason == null ? null : applicableReason.trim();
+    public void setEntrustmentPurpose(String entrustmentPurpose) {
+        this.entrustmentPurpose = entrustmentPurpose == null ? null : entrustmentPurpose.trim();
     }
 
-    public String getNotApplicableReason() {
-        return notApplicableReason;
+    public String getTemplate() {
+        return template;
     }
 
-    public void setNotApplicableReason(String notApplicableReason) {
-        this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
+    public void setTemplate(String template) {
+        this.template = template == null ? null : template.trim();
     }
 
     public String getCreator() {
@@ -81,5 +85,21 @@ public class EvaluationThinking {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }

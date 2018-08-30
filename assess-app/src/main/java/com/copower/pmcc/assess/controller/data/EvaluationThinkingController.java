@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -52,7 +52,7 @@ public class EvaluationThinkingController {
     @ResponseBody
     @RequestMapping(value = "/getThinkingList", name = "根据评估方法获取数据列表", method = RequestMethod.GET)
     public HttpResult getThinkingList(Integer method) {
-        List<EvaluationThinking> hypothesisList = evaluationThinkingService.getThinkingList(method);
+        List<DataEvaluationThinking> hypothesisList = evaluationThinkingService.getThinkingList(method);
         return HttpResult.newCorrectResult(hypothesisList);
     }
 
@@ -69,7 +69,7 @@ public class EvaluationThinkingController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(EvaluationThinking evaluationThinking) {
+    public HttpResult save(DataEvaluationThinking evaluationThinking) {
         try {
             evaluationThinkingService.saveAndUpdate(evaluationThinking);
         } catch (Exception e) {

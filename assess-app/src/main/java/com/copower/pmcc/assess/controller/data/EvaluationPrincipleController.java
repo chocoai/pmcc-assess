@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
 import com.copower.pmcc.assess.dal.basis.entity.EvaluationPrinciple;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
@@ -54,7 +55,7 @@ public class EvaluationPrincipleController {
     @ResponseBody
     @RequestMapping(value = "/getPrincipleList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
     public HttpResult getPrincipleList(Integer method, Integer purpose) {
-        List<EvaluationPrinciple> hypothesisList = evaluationPrincipleService.getPrincipleList(method, purpose);
+        List<DataEvaluationPrinciple> hypothesisList = evaluationPrincipleService.getPrincipleList(method, purpose);
         return HttpResult.newCorrectResult(hypothesisList);
     }
 
@@ -71,7 +72,7 @@ public class EvaluationPrincipleController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(EvaluationPrinciple evaluationPrinciple) {
+    public HttpResult save(DataEvaluationPrinciple evaluationPrinciple) {
         try {
             evaluationPrincipleService.saveAndUpdate(evaluationPrinciple);
         } catch (Exception e) {

@@ -2,22 +2,26 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class EvaluationPrinciple {
+public class DataEvaluationMethod {
     private Integer id;
 
     private String name;
 
-    private String method;
+    private Integer method;
 
-    private String entrustmentPurpose;
+    private String applicableReason;
 
-    private String template;
+    private String notApplicableReason;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer type;
+
+    private Integer category;
 
     public Integer getId() {
         return id;
@@ -35,28 +39,28 @@ public class EvaluationPrinciple {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getMethod() {
+    public Integer getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
-        this.method = method == null ? null : method.trim();
+    public void setMethod(Integer method) {
+        this.method = method;
     }
 
-    public String getEntrustmentPurpose() {
-        return entrustmentPurpose;
+    public String getApplicableReason() {
+        return applicableReason;
     }
 
-    public void setEntrustmentPurpose(String entrustmentPurpose) {
-        this.entrustmentPurpose = entrustmentPurpose == null ? null : entrustmentPurpose.trim();
+    public void setApplicableReason(String applicableReason) {
+        this.applicableReason = applicableReason == null ? null : applicableReason.trim();
     }
 
-    public String getTemplate() {
-        return template;
+    public String getNotApplicableReason() {
+        return notApplicableReason;
     }
 
-    public void setTemplate(String template) {
-        this.template = template == null ? null : template.trim();
+    public void setNotApplicableReason(String notApplicableReason) {
+        this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
     }
 
     public String getCreator() {
@@ -81,5 +85,21 @@ public class EvaluationPrinciple {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }
