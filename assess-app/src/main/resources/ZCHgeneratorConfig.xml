@@ -41,9 +41,37 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+        <table tableName="tb_data_evaluation_thinking" domainObjectName="EvaluationThinking">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <table tableName="tb_data_evaluation_principle" domainObjectName="EvaluationPrinciple">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_data_evaluation_method" domainObjectName="EvaluationMethod">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_data_evaluation_hypothesis" domainObjectName="EvaluationHypothesis">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_data_evaluation_basis" domainObjectName="EvaluationBasis">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_data_best_use_description" domainObjectName="DataBestUseDescription">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
