@@ -154,6 +154,13 @@ public class ExamineBuildingService {
                     vo.setPropertyName(dataProperty.getName());
                 }
             }
+            if (examineBuilding.getPropertyType() != null){
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getPropertyType());
+                if (baseDataDic != null){
+                    vo.setPropertyTypeName(baseDataDic.getName());
+                }
+            }
+
         }
         return vo;
     }

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineEstateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstate;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineEstateVo;
@@ -54,6 +55,7 @@ public class ExamineEstateService {
 
     public ExamineEstateVo getExamineEstateVo(ExamineEstate examineEstate) {
         if (examineEstate == null) return null;
+        BaseDataDic sysDataDicTemp = null;
         ExamineEstateVo examineEstateVo = new ExamineEstateVo();
         BeanUtils.copyProperties(examineEstate, examineEstateVo);
         if (examineEstate.getDeveloperId()!=null){
@@ -64,6 +66,12 @@ public class ExamineEstateService {
                 }
             } catch (Exception e1) {
                 logger.error(String.format("没有找到实体 == >%s",e1.getMessage()));
+            }
+        }
+        if (examineEstate.getTotalBuildingType() != null){
+            sysDataDicTemp  = baseDataDicService.getDataDicById(examineEstate.getTotalBuildingType());
+            if (sysDataDicTemp!=null){
+                examineEstateVo.setTotalBuildingTypeName(sysDataDicTemp.getName());
             }
         }
         return examineEstateVo;

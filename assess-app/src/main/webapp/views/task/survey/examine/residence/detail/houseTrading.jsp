@@ -25,7 +25,7 @@
                 <label class="col-sm-1 control-label">交易类型<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="交易类型" readonly="readonly"
-                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" data-rule-number='true'
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTypeName}"
                            name="tradingPrice"
                            class="form-control">
                 </div>
@@ -87,7 +87,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">说明事项类型<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" readonly="readonly" placeholder="说明事项类型"  class="form-control" name="descriptionType" value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}">
+                    <input type="text" readonly="readonly" placeholder="说明事项类型"  class="form-control" name="descriptionType" value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionTypeName}">
                 </div>
             </div>
 
@@ -107,7 +107,6 @@
 <script type="text/javascript">
     $(function () {
         examineHouseTrading.prototype.select2Init();
-        examineHouseTrading.prototype.init();
     });
 </script>
 
@@ -119,8 +118,6 @@
         select2Init:function () {
             //页面保存数据后 展示数据
             $("#"+examineHouseTrading.prototype.config().frm+" .tradingTime").val(formatDate("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}"));
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
-
             var tradingTypeID = "${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" ;
             if (examineHouseTrading.prototype.select2IsNotNull(tradingTypeID)){
                 AssessCommon.getDataDicInfo(tradingTypeID,function (data) {
@@ -226,34 +223,7 @@
         },
 
         init: function () {
-            //第一次加载
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
-            })
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
-            })
 
-            $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
-                var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
-                var tradingType = null;
-                AssessCommon.getDataDicInfo(tradingID,function (data) {
-                    tradingType = data.fieldName;
-                    $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
-                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
-                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
-                    }
-                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
-                    }
-                })
-            });
         }
     };
 

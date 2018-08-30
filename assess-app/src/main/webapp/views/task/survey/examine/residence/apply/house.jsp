@@ -30,9 +30,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="户型选择"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.huxingId}" name="huxingId"
-                       class="form-control">
+                <select class="form-control search-select select2 huxingId" name="huxingId" required="required">
+                </select>
             </div>
         </div>
 
@@ -48,8 +47,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text"  placeholder="最新户型"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}" name="newsHuxing" class="form-control">
+                <select class="form-control search-select select2 newsHuxing" name="newsHuxing" required="required">
+                </select>
             </div>
         </div>
 
@@ -67,16 +66,16 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">证载用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text"  placeholder="证载用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.certUse}" name="certUse" class="form-control">
+                <select class="form-control search-select select2 certUse" name="certUse" required="required">
+                </select>
             </div>
         </div>
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">实际用途<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text"  placeholder="证载用途"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.practicalUse}" name="practicalUse" class="form-control">
+                <select class="form-control search-select select2 practicalUse" name="practicalUse" required="required">
+                </select>
             </div>
         </div>
 
@@ -95,7 +94,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" name="description">
+                <textarea class="form-control" name="description" required="required">
                     ${surveyExamineDataInfoVo.examineHouseVo.description}
                 </textarea>
             </div>
@@ -215,7 +214,6 @@
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + houseFun.prototype.config().frm + " .newsHuxing").html(option);
-                                // $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2({minimumResultsForSearch: -1});//加载样式
                                 $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2();//加载样式
                             }
                         }
