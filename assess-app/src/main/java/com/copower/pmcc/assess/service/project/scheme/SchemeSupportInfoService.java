@@ -77,10 +77,10 @@ public class SchemeSupportInfoService {
         int count = schemeSupportInfoDao.getCountByPlanDetailsId(planDetailsId);
         if (count > 0) return;
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(methodType);
-        List<EvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(baseDataDic.getId(), purpose);//原则
+        List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(baseDataDic.getId(), purpose);//原则
         SchemeSupportInfo schemeSupportInfo = null;
         if (CollectionUtils.isNotEmpty(principleList)) {
-            for (EvaluationPrinciple evaluationPrinciple : principleList) {
+            for (DataEvaluationPrinciple evaluationPrinciple : principleList) {
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationPrinciple.getName());
@@ -92,9 +92,9 @@ public class SchemeSupportInfoService {
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<EvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(baseDataDic.getId(), purpose);//假设
+        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(baseDataDic.getId(), purpose);//假设
         if (CollectionUtils.isNotEmpty(hypothesisList)) {
-            for (EvaluationHypothesis evaluationHypothesis : hypothesisList) {
+            for (DataEvaluationHypothesis evaluationHypothesis : hypothesisList) {
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationHypothesis.getName());
@@ -106,9 +106,9 @@ public class SchemeSupportInfoService {
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<EvaluationBasis> basisList = evaluationBasisService.getBasisList(baseDataDic.getId(), purpose);//依据
+        List<DataEvaluationBasis> basisList = evaluationBasisService.getBasisList(baseDataDic.getId(), purpose);//依据
         if (CollectionUtils.isNotEmpty(basisList)) {
-            for (EvaluationBasis evaluationBasis : basisList) {
+            for (DataEvaluationBasis evaluationBasis : basisList) {
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationBasis.getName());

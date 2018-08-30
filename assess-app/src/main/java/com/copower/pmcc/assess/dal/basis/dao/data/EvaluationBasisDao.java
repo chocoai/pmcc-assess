@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.dal.basis.dao.data;
 
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasis;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationBasisExample;
-import com.copower.pmcc.assess.dal.basis.mapper.EvaluationBasisMapper;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasisExample;
+import com.copower.pmcc.assess.dal.basis.mapper.DataEvaluationBasisMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,29 +16,29 @@ import java.util.List;
 @Repository
 public class EvaluationBasisDao {
     @Autowired
-    private EvaluationBasisMapper evaluationBasisMapper;
+    private DataEvaluationBasisMapper evaluationBasisMapper;
 
-    public boolean addBasis(EvaluationBasis evaluationBasis) {
+    public boolean addBasis(DataEvaluationBasis evaluationBasis) {
         return evaluationBasisMapper.insertSelective(evaluationBasis) == 1;
     }
 
 
-    public boolean updateBasis(EvaluationBasis evaluationBasis) {
+    public boolean updateBasis(DataEvaluationBasis evaluationBasis) {
         return evaluationBasisMapper.updateByPrimaryKey(evaluationBasis) == 1;
     }
 
-    public List<EvaluationBasis> getBasisList(String name) {
-        EvaluationBasisExample example = new EvaluationBasisExample();
-        EvaluationBasisExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationBasis> getBasisList(String name) {
+        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
+        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(name)){
             criteria.andNameLike(String.format("%%%s%%",name));
         }
         return evaluationBasisMapper.selectByExample(example);
     }
 
-    public List<EvaluationBasis> getBasisList(String method,String purpose) {
-        EvaluationBasisExample example = new EvaluationBasisExample();
-        EvaluationBasisExample.Criteria criteria = example.createCriteria();
+    public List<DataEvaluationBasis> getBasisList(String method,String purpose) {
+        DataEvaluationBasisExample example = new DataEvaluationBasisExample();
+        DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(method)){
             criteria.andMethodLike(String.format("%%%s%%",method));
         }
@@ -52,7 +52,7 @@ public class EvaluationBasisDao {
         return evaluationBasisMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public EvaluationBasis getBasis(Integer id) {
+    public DataEvaluationBasis getBasis(Integer id) {
         return evaluationBasisMapper.selectByPrimaryKey(id);
     }
 }

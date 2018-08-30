@@ -9,7 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupport;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
-import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeSelfSupportCostVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -105,7 +105,7 @@ public class MdIncomeService {
 
         List<MdIncomeSelfSupportCost> selfSupportCostList = mdIncomeSelfSupportCostDao.getSelfSupportCostList(where);
         List<MdIncomeSelfSupportCostVo> vos = LangUtils.transform(selfSupportCostList, p -> getSelfSupportCostVo(p));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }

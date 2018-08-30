@@ -41,33 +41,33 @@
         <!-- 具体表 -->
 
 
-        <table tableName="tb_data_evaluation_thinking" domainObjectName="EvaluationThinking">
+        <table tableName="tb_data_evaluation_thinking" domainObjectName="DataEvaluationThinking">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_evaluation_principle" domainObjectName="EvaluationPrinciple">
+        <table tableName="tb_data_evaluation_principle" domainObjectName="DataEvaluationPrinciple">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_evaluation_method" domainObjectName="EvaluationMethod">
+        <table tableName="tb_data_evaluation_method" domainObjectName="DataEvaluationMethod">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_evaluation_hypothesis" domainObjectName="EvaluationHypothesis">
+        <table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_evaluation_basis" domainObjectName="EvaluationBasis">
+        <table tableName="tb_data_evaluation_basis" domainObjectName="DataEvaluationBasis">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_best_use_description" domainObjectName="DataBestUseDescription">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_best_use_description" domainObjectName="DataBestUseDescription">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

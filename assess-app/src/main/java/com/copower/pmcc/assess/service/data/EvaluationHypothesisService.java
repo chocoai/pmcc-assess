@@ -3,8 +3,8 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationHypothesisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesis;
-import com.copower.pmcc.assess.dto.output.data.EvaluationHypothesisVo;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
+import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -46,7 +46,7 @@ public class EvaluationHypothesisService {
      *
      * @param evaluationHypothesis
      */
-    public void saveAndUpdate(EvaluationHypothesis evaluationHypothesis) {
+    public void saveAndUpdate(DataEvaluationHypothesis evaluationHypothesis) {
         if (evaluationHypothesis.getId() != null && evaluationHypothesis.getId() > 0) {
             evaluationHypothesisDao.updateHypothesis(evaluationHypothesis);
         } else {
@@ -71,7 +71,7 @@ public class EvaluationHypothesisService {
      * @param id
      * @return
      */
-    public EvaluationHypothesis getHypothesis(Integer id) {
+    public DataEvaluationHypothesis getHypothesis(Integer id) {
         return evaluationHypothesisDao.getHypothesis(id);
     }
 
@@ -86,9 +86,9 @@ public class EvaluationHypothesisService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationHypothesis> hypothesisList = evaluationHypothesisDao.getHypothesisList(name);
-        List<EvaluationHypothesisVo> vos = LangUtils.transform(hypothesisList, p -> getHypothesisVo(p));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationHypothesisVo>() : vos);
+        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisDao.getHypothesisList(name);
+        List<DataEvaluationHypothesisVo> vos = LangUtils.transform(hypothesisList, p -> getHypothesisVo(p));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -100,7 +100,7 @@ public class EvaluationHypothesisService {
      * @param purpose
      * @return
      */
-    public List<EvaluationHypothesis> getHypothesisList(Integer method, Integer purpose) {
+    public List<DataEvaluationHypothesis> getHypothesisList(Integer method, Integer purpose) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -113,19 +113,33 @@ public class EvaluationHypothesisService {
     }
 
 
-    public EvaluationHypothesisVo getHypothesisVo(EvaluationHypothesis evaluationHypothesis) {
+    public DataEvaluationHypothesisVo getHypothesisVo(DataEvaluationHypothesis evaluationHypothesis) {
         if (evaluationHypothesis == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
-        EvaluationHypothesisVo evaluationHypothesisVo = new EvaluationHypothesisVo();
-        BeanUtils.copyProperties(evaluationHypothesis, evaluationHypothesisVo);
+        DataEvaluationHypothesisVo vo = new DataEvaluationHypothesisVo();
+        BeanUtils.copyProperties(evaluationHypothesis, vo);
         if (StringUtils.isNotBlank(evaluationHypothesis.getMethod())) {
-            evaluationHypothesisVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationHypothesis.getMethod()));
+            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationHypothesis.getMethod()));
         }
         if (StringUtils.isNotBlank(evaluationHypothesis.getEntrustmentPurpose())) {
-            evaluationHypothesisVo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationHypothesis.getEntrustmentPurpose()));
+            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationHypothesis.getEntrustmentPurpose()));
         }
-        return evaluationHypothesisVo;
+        BaseDataDic baseDataDic = null;
+        if (evaluationHypothesis.getType() != null){
+            baseDataDic = baseDataDicService.getDataDicById(evaluationHypothesis.getType());
+            if (baseDataDic !=null){
+                vo.setTypeName(baseDataDic.getName());
+                baseDataDic = null;
+            }
+        }
+        if (evaluationHypothesis.getCategory() != null){
+            baseDataDic = baseDataDicService.getDataDicById(evaluationHypothesis.getCategory());
+            if (baseDataDic != null){
+                vo.setCategoryName(baseDataDic.getName());
+            }
+        }
+        return vo;
     }
 
 

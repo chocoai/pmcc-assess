@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class EvaluationHypothesis {
+public class DataEvaluationHypothesis {
     private Integer id;
 
     private String name;
@@ -18,6 +18,10 @@ public class EvaluationHypothesis {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private Integer type;
+
+    private Integer category;
 
     public Integer getId() {
         return id;
@@ -81,5 +85,21 @@ public class EvaluationHypothesis {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }
