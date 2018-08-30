@@ -2,12 +2,12 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class SurveyAssetTemplate {
+public class SurveyAssetInventoryContent {
     private Integer id;
 
     private Integer projectId;
 
-    private Integer planDetailId;
+    private Integer planDetailsId;
 
     private Integer inventoryContent;
 
@@ -33,10 +33,6 @@ public class SurveyAssetTemplate {
 
     private Date gmtModified;
 
-    private String spareField;
-
-    private Integer pid;
-
     public Integer getId() {
         return id;
     }
@@ -53,12 +49,12 @@ public class SurveyAssetTemplate {
         this.projectId = projectId;
     }
 
-    public Integer getPlanDetailId() {
-        return planDetailId;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setPlanDetailId(Integer planDetailId) {
-        this.planDetailId = planDetailId;
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getInventoryContent() {
@@ -155,21 +151,5 @@ public class SurveyAssetTemplate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getSpareField() {
-        return spareField;
-    }
-
-    public void setSpareField(String spareField) {
-        this.spareField = spareField == null ? null : spareField.trim();
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 }

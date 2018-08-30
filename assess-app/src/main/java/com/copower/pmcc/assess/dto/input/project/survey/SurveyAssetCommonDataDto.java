@@ -1,36 +1,30 @@
 package com.copower.pmcc.assess.dto.input.project.survey;
 
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
+
 import java.util.List;
 
 /**
  * Created by zly on 2018/5/10.
  */
 public class SurveyAssetCommonDataDto {
-    private SurveyAssetInventoryDto surveyAssetInventoryDto;
-//    private SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto;
-    private List<SurveyAssetTemplateDto> surveyAssetTemplateDtos;
+    private SurveyAssetInventory surveyAssetInventory;
+    private List<SurveyAssetInventoryContent> assetInventoryContentList;
 
-    public SurveyAssetInventoryDto getSurveyAssetInventoryDto() {
-        return surveyAssetInventoryDto;
+    public SurveyAssetInventory getSurveyAssetInventory() {
+        return surveyAssetInventory;
     }
 
-    public void setSurveyAssetInventoryDto(SurveyAssetInventoryDto surveyAssetInventoryDto) {
-        this.surveyAssetInventoryDto = surveyAssetInventoryDto;
+    public void setSurveyAssetInventory(SurveyAssetInventory surveyAssetInventory) {
+        this.surveyAssetInventory = surveyAssetInventory;
     }
 
-//    public SurveyAssetOtherTemplateDto getSurveyAssetOtherTemplateDto() {
-//        return surveyAssetOtherTemplateDto;
-//    }
-//
-//    public void setSurveyAssetOtherTemplateDto(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto) {
-//        this.surveyAssetOtherTemplateDto = surveyAssetOtherTemplateDto;
-//    }
-
-    public List<SurveyAssetTemplateDto> getSurveyAssetTemplateDtos() {
-        return surveyAssetTemplateDtos;
+    public List<SurveyAssetInventoryContent> getAssetInventoryContentList() {
+        return assetInventoryContentList;
     }
 
-    public void setSurveyAssetTemplateDtos(List<SurveyAssetTemplateDto> surveyAssetTemplateDtos) {
-        this.surveyAssetTemplateDtos = surveyAssetTemplateDtos;
+    public void setAssetInventoryContentList(List<SurveyAssetInventoryContent> assetInventoryContentList) {
+        this.assetInventoryContentList = assetInventoryContentList;
     }
 }

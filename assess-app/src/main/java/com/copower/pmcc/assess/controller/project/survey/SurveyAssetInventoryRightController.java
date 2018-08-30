@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetOtherTemplateDto;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetOtherTemplateService;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by zly on 2018/6/11.
  */
 @Controller
-@RequestMapping(value="/surveyAssetOtherTemplate")
-public class SurveyAssetOtherTemplateController {
+@RequestMapping(value="/surveyAssetInventoryRight")
+public class SurveyAssetInventoryRightController {
 
     @Autowired
-    private SurveyAssetOtherTemplateService surveyAssetOtherTemplateService;
+    private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
 
     @ResponseBody
     @RequestMapping(value = "/list", name = "取得他项权利详情", method = RequestMethod.GET)
-    public BootstrapTableVo list(Integer pid) {
-        BootstrapTableVo vo = surveyAssetOtherTemplateService.getList(pid);
+    public BootstrapTableVo list(Integer planDetailId) {
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getList(planDetailId);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/save", name = "新增和修改他项权利", method = RequestMethod.POST)
-    public HttpResult save(SurveyAssetOtherTemplateDto surveyAssetOtherTemplateDto, Integer pid) {
+    public HttpResult save(SurveyAssetInventoryRight surveyAssetInventoryRight) {
         try {
-            surveyAssetOtherTemplateService.save(surveyAssetOtherTemplateDto,pid);
+            surveyAssetInventoryRightService.save(surveyAssetInventoryRight);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -43,7 +43,7 @@ public class SurveyAssetOtherTemplateController {
     @RequestMapping(value = "/delete", name = "删除他项权利", method = RequestMethod.POST)
     public HttpResult delete(@RequestParam(value = "id") Integer id) {
         try {
-            surveyAssetOtherTemplateService.delete(id);
+            surveyAssetInventoryRightService.delete(id);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.dto.output.project.survey;
 
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetOtherTemplate;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 
 /**
  * Created by zly on 2018/6/12.
  */
-public class SurveyAssetOtherTemplateVo extends SurveyAssetOtherTemplate{
+public class SurveyAssetInventoryRightVo extends SurveyAssetInventoryRight {
     private String typeName;
 
     public String getTypeName() {
