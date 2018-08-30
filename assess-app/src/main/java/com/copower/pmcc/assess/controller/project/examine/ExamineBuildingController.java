@@ -1,8 +1,7 @@
 package com.copower.pmcc.assess.controller.project.examine;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineBuildingDto;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -11,6 +10,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -206,6 +207,13 @@ public class ExamineBuildingController {
                 }
                 if (Objects.equal(type, "DataDeveloper")) {
                     return HttpResult.newCorrectResult(examineBuildingService.getDataDeveloperList());
+                }
+                if (Objects.equal("type",type)){
+                    Map<Object,Object> map = Maps.newHashMap();
+                    map.put(DataDeveloper.class.getSimpleName(),examineBuildingService.getDataDeveloperList());
+                    map.put(DataProperty.class.getSimpleName(),examineBuildingService.getDataPropertyList());
+                    map.put(DataBuilder.class.getSimpleName(),examineBuildingService.getDataBuilderList());
+                    return HttpResult.newCorrectResult(map);
                 }
             }
             return null;

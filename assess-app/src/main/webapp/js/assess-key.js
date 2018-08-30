@@ -35,6 +35,13 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 var AssessDicKey = {}
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)
+AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
+AssessDicKey.examine_building_property_structure = "building.building_structure";//建筑结构
+AssessDicKey.examine_building_property_category = "building.building_category";//建筑类别
+AssessDicKey.examine_building_decorating_material = "building.decorating_material";//装修材料
+AssessDicKey.examine_building_material_price = "building.material_price";//材料价格区间
+AssessDicKey.examine_building_construction_technology = "building.construction_technology";//施工工艺
+AssessDicKey.examine_building_decoration_part = "building.decoration_part";//装修部位
 
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
