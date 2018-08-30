@@ -469,9 +469,7 @@ public class ProjectPlanService {
 
                 }
             }
-
         }
-
     }
 
     /**

@@ -80,24 +80,22 @@
                         <table class="table" id="tb_surveyList">
                             <thead>
                             <tr>
-                                <th>序号</th>
-                                <th>清查内容</th>
-                                <th>是否一致</th>
-                                <th>登记面积</th>
-                                <th>实际面积</th>
-                                <th>差异原因</th>
-                                <th>证明文件</th>
-                                <th>证明文件附件</th>
-                                <th>证明人</th>
-                                <th>调查时间</th>
-                                <th>操作</th>
+                                <th style="width: 10%">清查内容</th>
+                                <th style="width: 6%">是否一致</th>
+                                <th style="width: 10%">登记</th>
+                                <th style="width: 10%">实际</th>
+                                <th style="width: 10%">差异原因</th>
+                                <th style="width: 10%">证明文件</th>
+                                <th style="width: 10%">证明文件附件</th>
+                                <th style="width: 5%">证明人</th>
+                                <th style="width: 6%">调查时间</th>
+                                <th style="width: 10%">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
                                 <tr>
                                     <input type="hidden" id="id" name="id" value="${items.id}">
-                                    <td>${s.index + 1}</td>
                                     <td name="inventoryContent"
                                         dic-id="${items.inventoryContent}">${items.inventoryContentName}</td>
                                     <td>
@@ -109,7 +107,7 @@
                                     </td>
                                     <td>
                                         <div class="x-valid">
-                                            <input type="text" data-rule-maxlength="50" placeholder="登记面积" required
+                                            <input type="text" data-rule-maxlength="50" placeholder="登记" required
                                                    id="registrationAddress${items.id}"
                                                    name="registrationAddress${items.id}"
                                                    class="form-control showHidden" value="${items.registrationAddress}">
@@ -117,7 +115,7 @@
                                     </td>
                                     <td>
                                         <div class="x-valid">
-                                            <input type="text" data-rule-maxlength="50" placeholder="实际面积" required
+                                            <input type="text" data-rule-maxlength="50" placeholder="实际" required
                                                    id="actualAddress${items.id}" name="actualAddress${items.id}"
                                                    class="form-control showHidden" value="${items.actualAddress}">
                                         </div>
@@ -274,7 +272,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -289,74 +286,31 @@
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control" required id="category" name="category">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="items" items="${otherRightTypeList}">
+                                                    <option value="${items.id}">${items.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            他权登记人<span class="symbol required"></span>
+                                            他权证编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="他权登记人" required
-                                                   id="otherRightsRegistrar" name="otherRightsRegistrar"
+                                            <input type="text" placeholder="他权证编号" required
+                                                   id="number" name="number"
                                                    class="form-control">
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            实际行权人<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="实际行权人" required
-                                                   id="rightHander" name="rightHander" class="form-control">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            登记面积<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="登记面积" required
-                                                   id="registerArea" name="registerArea" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            实际面积<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="实际面积" required
-                                                   id="actualArea" name="actualArea" class="form-control">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            登记用途<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="登记用途" required
-                                                   id="registerPurpose" name="registerPurpose" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            实际用途<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" placeholder="实际用途" required
-                                                   id="actualPurpose" name="actualPurpose" class="form-control">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">登记日期<span class="symbol required"></span></label>
                                         <div class="col-sm-4">
@@ -365,32 +319,83 @@
                                                    class="form-control date-picker dbdate" readonly="readonly">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">到期日<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">
+                                            义务人<span class="symbol required"></span>
+                                        </label>
                                         <div class="col-sm-4">
-                                            <input required="required" placeholder="到期日" id="dueDate" name="dueDate"
-                                                   data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate" readonly="readonly">
+                                            <input type="text" placeholder="义务人" required
+                                                   id="obligor" name="obligor"
+                                                   class="form-control">
                                         </div>
                                     </div>
-
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            权利人<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="权利人" required
+                                                   id="obligee" name="obligee" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">实际行权人行权日期<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">
+                                            登记金额
+                                        </label>
                                         <div class="col-sm-4">
-                                            <input required="required" placeholder="实际行权人行权日期" id="exerciseDate"
-                                                   name="exerciseDate" data-date-format="yyyy-mm-dd"
+                                            <input type="text" placeholder="登记金额"
+                                                   id="registerAmount" name="registerAmount" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            行权金额
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="行权金额"
+                                                   id="actualAmount" name="actualAmount" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            登记面积
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="登记面积"
+                                                   id="registerArea" name="registerArea" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            他权级次
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="他权级次"
+                                                   id="rightRank" name="rightRank" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">开始日期</label>
+                                        <div class="col-sm-4">
+                                            <input placeholder="开始日期" id="beginDate"
+                                                   name="beginDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate" readonly="readonly">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">预计到期日<span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">结束日期</label>
                                         <div class="col-sm-4">
-                                            <input required="required" placeholder="预计到期日" id="predictDueDate"
-                                                   name="predictDueDate" data-date-format="yyyy-mm-dd"
+                                            <input placeholder="结束日期" id="endDate"
+                                                   name="endDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate" readonly="readonly">
                                         </div>
                                     </div>
@@ -529,8 +534,8 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetOtherTemplate/list", cols, {
-            pid: ${empty surveyAssetInventory?0:surveyAssetInventory.id}
+        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetInventoryRight/list", cols, {
+            planDetailId: '${projectPlanDetails.id}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -637,11 +642,10 @@
         var data = formParams("frm");
         data.projectId = ${projectPlanDetails.projectId};
         data.planDetailId = ${projectPlanDetails.id};
-        data.pid = ${empty surveyAssetInventory?0:surveyAssetInventory.id};
         if ($("#frm").valid()) {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyAssetOtherTemplate/save",
+                url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/save",
                 type: "post",
                 dataType: "json",
                 data: data,

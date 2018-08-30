@@ -2,12 +2,12 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetTemplateDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetTemplate;
-import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetTemplateVo;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -31,11 +31,11 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private SurveyAssetTemplateDao surveyAssetTemplateDao;
+    private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
-    private SurveyAssetTemplateService surveyAssetTemplateService;
+    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -43,29 +43,29 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CHECK_CONTENT);
         List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
-        List<SurveyAssetTemplate> list = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
+        List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(0);
         if(list.size() == 0){
             for (BaseDataDic baseDataDic : baseDataDicList) {
                 Integer inventoryContent = baseDataDic.getId();
                 Integer projectId = projectPlanDetails.getProjectId();
                 Integer planDetailId = projectPlanDetails.getPlanId();
-                SurveyAssetTemplate surveyAssetTemplate = new SurveyAssetTemplate();
-                surveyAssetTemplate.setProjectId(projectId);
-                surveyAssetTemplate.setPlanDetailId(planDetailId);
-                surveyAssetTemplate.setInventoryContent(inventoryContent);
-                surveyAssetTemplateDao.save(surveyAssetTemplate);
+                SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
+                surveyAssetInventoryContent.setProjectId(projectId);
+                surveyAssetInventoryContent.setPlanDetailsId(planDetailId);
+                surveyAssetInventoryContent.setInventoryContent(inventoryContent);
+                surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
             }
         }
         Integer id = projectPlanDetails.getPid();
         ProjectPlanDetails parentProject = projectPlanDetailsDao.getProjectPlanDetailsById(id);
 
-        List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(0);
-        List<SurveyAssetTemplateVo> surveyAssetTemplateVos = surveyAssetTemplateService.getVoList(surveyAssetTemplates);
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(0);
+        List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("otherRightTypeList", otherRightTypeList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
         modelAndView.addObject("parentProject",parentProject);
-        modelAndView.addObject("surveyAssetTemplateVos",surveyAssetTemplateVos);
+        modelAndView.addObject("surveyAssetInventoryContentVos",surveyAssetInventoryContentVos);
         return modelAndView;
     }
 
@@ -106,11 +106,11 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByPlanDetailsId(projectPlanDetails.getId());
         List<BaseDataDic> otherRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.OTHER_RIGHT_TYPE);
-        List<SurveyAssetTemplate> surveyAssetTemplates = surveyAssetTemplateDao.getSurveyAssetTemplate(surveyAssetInventory.getId());
-        List<SurveyAssetTemplateVo> surveyAssetTemplateVos = surveyAssetTemplateService.getVoList(surveyAssetTemplates);
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(surveyAssetInventory.getPlanDetailId());
+        List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
 
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
-        modelAndView.addObject("surveyAssetTemplateVos",surveyAssetTemplateVos);
+        modelAndView.addObject("surveyAssetInventoryContentVos",surveyAssetInventoryContentVos);
         modelAndView.addObject("otherRightTypeList",otherRightTypeList);
     }
 

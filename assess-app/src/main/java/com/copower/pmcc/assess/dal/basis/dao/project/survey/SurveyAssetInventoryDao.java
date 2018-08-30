@@ -19,8 +19,8 @@ public class SurveyAssetInventoryDao {
     @Autowired
     private SurveyAssetInventoryMapper surveyAssetInventoryMapper;
 
-    public boolean update(SurveyAssetInventoryDto surveyAssetInventoryDto) {
-        int i = surveyAssetInventoryMapper.updateByPrimaryKeySelective(surveyAssetInventoryDto);
+    public boolean update(SurveyAssetInventory surveyAssetInventory) {
+        int i = surveyAssetInventoryMapper.updateByPrimaryKeySelective(surveyAssetInventory);
         return i > 0;
     }
 

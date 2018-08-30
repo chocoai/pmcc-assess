@@ -1,0 +1,42 @@
+package com.copower.pmcc.assess.dal.basis.dao.project.survey;
+
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContentExample;
+import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryContentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class SurveyAssetInventoryContentDao {
+
+    @Autowired
+    private SurveyAssetInventoryContentMapper surveyAssetInventoryContentMapper;
+
+    public List<SurveyAssetInventoryContent> getSurveyAssetInventoryContent(Integer planDetailsId) {
+        SurveyAssetInventoryContentExample example = new SurveyAssetInventoryContentExample();
+        if (planDetailsId != null) {
+            example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        }
+        example.setOrderByClause("id desc");
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentMapper.selectByExample(example);
+
+        return surveyAssetInventoryContents;
+    }
+
+    public boolean update(SurveyAssetInventoryContent surveyAssetInventoryContent) {
+        int i = surveyAssetInventoryContentMapper.updateByPrimaryKeySelective(surveyAssetInventoryContent);
+        return i > 0;
+    }
+
+    public boolean save(SurveyAssetInventoryContent surveyAssetInventoryContent) {
+        int i = surveyAssetInventoryContentMapper.insertSelective(surveyAssetInventoryContent);
+        return i > 0;
+    }
+
+    public boolean delete(Integer id) {
+        int i = surveyAssetInventoryContentMapper.deleteByPrimaryKey(id);
+        return i > 0;
+    }
+}

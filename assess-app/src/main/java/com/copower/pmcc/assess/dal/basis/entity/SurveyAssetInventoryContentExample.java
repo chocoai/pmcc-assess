@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SurveyAssetTemplateExample {
+public class SurveyAssetInventoryContentExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SurveyAssetTemplateExample() {
+    public SurveyAssetInventoryContentExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -225,63 +225,63 @@ public class SurveyAssetTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNull() {
-            addCriterion("plan_detail_id is null");
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIsNotNull() {
-            addCriterion("plan_detail_id is not null");
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdEqualTo(Integer value) {
-            addCriterion("plan_detail_id =", value, "planDetailId");
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotEqualTo(Integer value) {
-            addCriterion("plan_detail_id <>", value, "planDetailId");
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThan(Integer value) {
-            addCriterion("plan_detail_id >", value, "planDetailId");
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id >=", value, "planDetailId");
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThan(Integer value) {
-            addCriterion("plan_detail_id <", value, "planDetailId");
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_detail_id <=", value, "planDetailId");
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdIn(List<Integer> values) {
-            addCriterion("plan_detail_id in", values, "planDetailId");
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotIn(List<Integer> values) {
-            addCriterion("plan_detail_id not in", values, "planDetailId");
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id between", value1, value2, "planDetailId");
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanDetailIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_detail_id not between", value1, value2, "planDetailId");
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
             return (Criteria) this;
         }
 
@@ -1082,136 +1082,6 @@ public class SurveyAssetTemplateExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldIsNull() {
-            addCriterion("spare_field is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldIsNotNull() {
-            addCriterion("spare_field is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldEqualTo(String value) {
-            addCriterion("spare_field =", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldNotEqualTo(String value) {
-            addCriterion("spare_field <>", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldGreaterThan(String value) {
-            addCriterion("spare_field >", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldGreaterThanOrEqualTo(String value) {
-            addCriterion("spare_field >=", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldLessThan(String value) {
-            addCriterion("spare_field <", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldLessThanOrEqualTo(String value) {
-            addCriterion("spare_field <=", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldLike(String value) {
-            addCriterion("spare_field like", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldNotLike(String value) {
-            addCriterion("spare_field not like", value, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldIn(List<String> values) {
-            addCriterion("spare_field in", values, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldNotIn(List<String> values) {
-            addCriterion("spare_field not in", values, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldBetween(String value1, String value2) {
-            addCriterion("spare_field between", value1, value2, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andSpareFieldNotBetween(String value1, String value2) {
-            addCriterion("spare_field not between", value1, value2, "spareField");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidEqualTo(Integer value) {
-            addCriterion("pid =", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotEqualTo(Integer value) {
-            addCriterion("pid <>", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThan(Integer value) {
-            addCriterion("pid >", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("pid >=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThan(Integer value) {
-            addCriterion("pid <", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidLessThanOrEqualTo(Integer value) {
-            addCriterion("pid <=", value, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidIn(List<Integer> values) {
-            addCriterion("pid in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotIn(List<Integer> values) {
-            addCriterion("pid not in", values, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidBetween(Integer value1, Integer value2) {
-            addCriterion("pid between", value1, value2, "pid");
-            return (Criteria) this;
-        }
-
-        public Criteria andPidNotBetween(Integer value1, Integer value2) {
-            addCriterion("pid not between", value1, value2, "pid");
             return (Criteria) this;
         }
     }
