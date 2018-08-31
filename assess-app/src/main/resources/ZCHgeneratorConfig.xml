@@ -61,7 +61,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_data_best_use_description" domainObjectName="DataBestUseDescription">
+        <table tableName="tb_examine_building" domainObjectName="ExamineBuilding">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

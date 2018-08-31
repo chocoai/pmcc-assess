@@ -30,6 +30,10 @@ public class ExamineUnitHuxing {
 
     private Date gmtModified;
 
+    private String houseCategory;
+
+    private String name;
+
     public Integer getId() {
         return id;
     }
@@ -132,5 +136,21 @@ public class ExamineUnitHuxing {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getHouseCategory() {
+        return houseCategory;
+    }
+
+    public void setHouseCategory(String houseCategory) {
+        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 }

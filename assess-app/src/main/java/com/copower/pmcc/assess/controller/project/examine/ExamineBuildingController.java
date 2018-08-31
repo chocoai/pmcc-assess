@@ -70,7 +70,7 @@ public class ExamineBuildingController {
     public HttpResult getFirstData(Integer examineType, Integer declareId) {
         ExamineBuilding examineBuilding = null;
         try {
-           examineBuilding = examineBuildingService.getOneAndTwoData(examineType,declareId,1);
+           examineBuilding = examineBuildingService.getNumberData(examineType,declareId,1);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
@@ -83,12 +83,24 @@ public class ExamineBuildingController {
     public HttpResult getTwoData(Integer examineType, Integer declareId) {
         ExamineBuilding examineBuilding = null;
         try {
-            examineBuilding = examineBuildingService.getOneAndTwoData(examineType,declareId,2);
+            examineBuilding = examineBuildingService.getNumberData(examineType,declareId,2);
         } catch (Exception e1) {
             logger.error( e1.getMessage(), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(examineBuildingService.getExamineBuildingVo(examineBuilding));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getByNumberData", method = {RequestMethod.GET}, name = "获取 第number楼栋基础 (获取第2栋等 number表示未知数)")
+    public HttpResult getNumberData(Integer examineType, Integer declareId,int number) {
+        ExamineBuilding examineBuilding = null;
+        examineBuilding = examineBuildingService.getNumberData(examineType,declareId,number);
+        if (examineBuilding != null){
+            return HttpResult.newCorrectResult(examineBuildingService.getExamineBuildingVo(examineBuilding));
+        }else {
+            return HttpResult.newErrorResult("未获取到数据!");
+        }
     }
 
     @ResponseBody
@@ -100,7 +112,7 @@ public class ExamineBuildingController {
             if (!ObjectUtils.isEmpty(examineType)) {
                 examineBuilding.setExamineType(examineType);
             }
-            if (declareId != null && declareId.equals(0)) {
+            if (!ObjectUtils.isEmpty(declareId) ) {
                 examineBuilding.setDeclareId(declareId);
             }
             vo = examineBuildingService.getExamineBuildingLists(examineBuilding);

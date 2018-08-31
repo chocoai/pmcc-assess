@@ -7,27 +7,40 @@
     <form class="form-horizontal">
         <div class="form-group">
             <div class="x-valid">
+                <div class="col-sm-12">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
                 <label class="col-sm-1 control-label">
                 </label>
                 <div class="col-sm-3">
-                    <button type="button" class="btn btn-default"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.firstData(this);"> 第一栋
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.saveData()"> 保存
-                    </button>
+                    <label class="btn btn-success" onclick="examineBuilding_.prototype.getByNumberData(1,this)">楼栋基础(第一部分)</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                 </label>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-default"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.twoData(this);"> 第二栋
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            data-toggle="modal" href="#divBox" onclick="examineBuilding_.prototype.saveData()"> 保存
-                    </button>
+                <div class="col-sm-4">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            复制上部分
+                        </label>
+                        <label class="btn btn-primary" onclick="examineBuilding_.prototype.nav.prev(this)">
+                            上一部分
+                        </label>
+                        <label class="btn btn-primary" onclick="examineBuilding_.prototype.nav.next(this)">
+                            下一部分<span class="badge navTotal">总:0</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                </label>
+                <div class="col-sm-2">
+                    当前第<span class="badge navPageNum">1</span>部分
                 </div>
             </div>
         </div>
@@ -228,8 +241,8 @@
                 </label>
                 <div class="col-sm-3">
                     <select id="frmExamineBuilding_buildingStructure"
-                            name="buildingstructurepid"
-                            class="form-control search-select select2 buildingstructurepid">
+                            name="buildingStructurePid"
+                            class="form-control search-select select2 buildingstructurePid">
                         <option>请先选择建筑结构上级</option>
                     </select>
                 </div>
@@ -278,19 +291,28 @@
                     <div id="_building_floor_plan"></div>
                 </div>
             </div>
-
         </div>
 
-
-
-
+        <div class="form-group">
+            <div class="x-valid">
+                <div class="col-sm-5">
+                </div>
+                <div class="col-sm-2">
+                    <label class="btn btn-success" onclick="examineBuilding_.prototype.saveData();">保存或者更新 <i
+                            class="fa fa-user"></i></label>
+                </div>
+                <div class="col-sm-5">
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 <div class="x_content">
     <div class="x_title">
         <h3>
             楼栋外装
-            <button type="button" class="btn btn-success" data-toggle="modal" onclick="examineBuilding_.prototype.subShowModelData()"> 新增
+            <button type="button" class="btn btn-success" data-toggle="modal"
+                    onclick="examineBuilding_.prototype.subShowModelData()"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -305,7 +327,8 @@
     <div class="x_title">
         <h3>
             层面结构
-            <button type="button" class="btn btn-success" data-toggle="modal" onclick="examineBuilding_.prototype.examineBuildingSurfaceShowModelData()"> 新增
+            <button type="button" class="btn btn-success" data-toggle="modal"
+                    onclick="examineBuilding_.prototype.examineBuildingSurfaceShowModelData()"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -320,7 +343,8 @@
     <div class="x_title">
         <h3>
             维护结构
-            <button type="button" class="btn btn-success" data-toggle="modal" onclick="examineBuilding_.prototype.examineBuildingMaintenanceShowModelData()"> 新增
+            <button type="button" class="btn btn-success" data-toggle="modal"
+                    onclick="examineBuilding_.prototype.examineBuildingMaintenanceShowModelData()"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -341,7 +365,7 @@
 </script>
 <script type="application/javascript">
 
-    var examineBuilding_ ;
+    var examineBuilding_;
     (function () {
         //配置的局部变量用做 对象属性 (初始化标识符)
         var flag = true;
@@ -352,31 +376,31 @@
 
         };
         examineBuilding_.prototype = {
-            select2IsNotNull:function (data) {
-                if (data == null){
+            select2IsNotNull: function (data) {
+                if (data == null) {
                     return false;
                 }
-                if (data == ''){
+                if (data == '') {
                     return false;
                 }
-                if (data == ""){
+                if (data == "") {
                     return false;
                 }
-                if (data == 0){
+                if (data == 0) {
                     return false;
                 }
                 return true;
             },
-            setExamineBuildingSurfaceFlag:function (flag_) {
+            setExamineBuildingSurfaceFlag: function (flag_) {
                 examineBuildingSurfaceFlag = flag_;
             },
-            getExamineBuildingSurfaceFlag:function () {
+            getExamineBuildingSurfaceFlag: function () {
                 return examineBuildingSurfaceFlag;
             },
-            setExamineBuildingMaintenanceFlag:function (flag_) {
+            setExamineBuildingMaintenanceFlag: function (flag_) {
                 examineBuildingMaintenanceFlag = flag_;
             },
-            getExamineBuildingMaintenanceFlag:function () {
+            getExamineBuildingMaintenanceFlag: function () {
                 return examineBuildingMaintenanceFlag;
             },
             setFlag: function (flag_) {
@@ -391,142 +415,66 @@
             getSonFlag: function () {
                 return sonFlag;
             },
-            getBuildId:function () {
-                var data =  formParams(examineBuilding_.prototype.config().frm);
+            getBuildId: function () {
+                var data = formParams(examineBuilding_.prototype.config().frm);
                 var id = data.id;
-                if (id == 0){
+                if (id == 0) {
                     return 0;
                 }
-                if (id == ''){
+                if (id == '') {
                     return 0;
                 }
-                if (id == null){
+                if (id == null) {
                     return 0;
                 }
                 return id;
             },
-            isEmpty:function (item) {
-                if (item == null){
+            isEmpty: function (item) {
+                if (item == null) {
                     return false;
                 }
-                if (item == ""){
+                if (item == "") {
                     return false;
                 }
-                if (item == ''){
+                if (item == '') {
                     return false;
                 }
                 return true;
             },
+            objectWriteSelectData: function (frm, data, name) {
+                if (examineBuilding_.prototype.isEmpty(data)) {
+                    $("#" + frm + " ." + name).val(data).trigger("change");
+                } else {
+                    $("#" + frm + " ." + name).val(null).trigger("change");
+                }
+            },
             /**
-            * @author:  zch
-            * 描述:第二栋或者第一栋写数据
-            * @date:
-            **/
-            firstAndTwoWrite:function (result) {
-                var objectWrite = new Object();
-                objectWrite.write = function (item,name) {
-                    if (examineBuilding_.prototype.isEmpty(item)){
-                        $("#" + examineBuilding_.prototype.config().frm + " ."+name).val(item).trigger("change");
-                    }else {
-                        $("#" + examineBuilding_.prototype.config().frm + " ."+name).val(null).trigger("change");
-                    }
-                };
+             * @author:  zch
+             * 描述:第一栋或者其它栋写数据
+             * @date:
+             **/
+            dataNumberWrite: function (result) {
                 $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                $("#" + examineBuilding_.prototype.config().frm+" .openTime").val(formatDate(result.data.openTime));
-                $("#" + examineBuilding_.prototype.config().frm+" .roomTime").val(formatDate(result.data.roomTime));
-                objectWrite.write(result.data.buildingCategory,"buildingCategory");
-                objectWrite.write(result.data.buildingStructure,"buildingStructure");
-                objectWrite.write(result.data.buildingstructurepid,"buildingstructurepid");
-                objectWrite.write(result.data.propertyType,"propertyType");
-                objectWrite.write(result.data.builderId,"builderId");
-                objectWrite.write(result.data.propertyId,"propertyId");
+                $("#" + examineBuilding_.prototype.config().frm + " .openTime").val(formatDate(result.data.openTime));
+                $("#" + examineBuilding_.prototype.config().frm + " .roomTime").val(formatDate(result.data.roomTime));
+                var frm = examineBuilding_.prototype.config().frm;
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingCategory, "buildingCategory");
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingStructure, "buildingStructure");
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingstructurePid, "buildingstructurePid");
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.propertyType, "propertyType");
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.builderId, "builderId");
+                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.propertyId, "propertyId");
             },
             /**
-            * @author:  zch
-            * 描述:第二栋
-            * @date:
-            **/
-            twoData:function (target) {
-                var data = {};
-                if ($("#declareId").size() > 0){
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#examineType").size() > 0){
-                    data.examineType = $("#examineType").val();
-                }
-                $("#" + examineBuilding_.prototype.config().frm).clearAll();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/getTwoData",
-                    type: "get",
-                    data:data,
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            if (result.data != null){
-                                //改变按钮颜色
-                                $(target).removeClass();
-                                $(target).addClass("btn btn-primary");
-                                examineBuilding_.prototype.firstAndTwoWrite(result);
-                            }
-                            examineBuilding_.prototype.showFiles();
-                            examineBuilding_.prototype.subLoadDataList();
-                            examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
-                            examineBuilding_.prototype.examineBuildingSurfaceLoadList();
-                        };
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            },
-            /**
-            * @author:  zch
-            * 描述:第一栋
-            * @date:
-            **/
-            firstData:function (target) {
-                var data = {};
-                if ($("#declareId").size() > 0){
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#examineType").size() > 0){
-                    data.examineType = $("#examineType").val();
-                }
-                $("#" + examineBuilding_.prototype.config().frm).clearAll();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/getFirstData",
-                    type: "get",
-                    data:data,
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            if (result.data != null){
-                                //改变按钮颜色
-                                $(target).removeClass();
-                                $(target).addClass("btn btn-primary");
-                                examineBuilding_.prototype.firstAndTwoWrite(result);
-                            }
-                            examineBuilding_.prototype.showFiles();
-                            examineBuilding_.prototype.subLoadDataList();
-                            examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
-                            examineBuilding_.prototype.examineBuildingSurfaceLoadList();
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            },
-            /**
-            * @author:  zch
-            * 描述:
-            * @date: 页面 初始化
-            **/
+             * @author:  zch
+             * 描述:
+             * @date: 页面 初始化
+             **/
             viewInit: function () {
-                // examineBuilding_.prototype.loadDataDicList();
-                if (examineBuilding_.prototype.getFlag()){
+                if (examineBuilding_.prototype.getFlag()) {
                     examineBuilding_.prototype.init();
                     examineBuilding_.prototype.initRemoveExamineBuildingOutfit();
+                    examineBuilding_.prototype.nav.startWrite();
                     examineBuilding_.prototype.setFlag(false);
                 }
                 examineBuilding_.prototype.subLoadDataList();
@@ -534,10 +482,10 @@
                 examineBuilding_.prototype.examineBuildingSurfaceLoadList();
             },
             /**
-            * @author:  zch
-            * 描述:配置文件
-            * @date:
-            **/
+             * @author:  zch
+             * 描述:配置文件
+             * @date:
+             **/
             config: function () {
                 var data = {};
                 data.table = "ExamineBuilding_List";
@@ -547,13 +495,13 @@
                 data.sonTable = "ExamineBuildingOutfitList";
                 data.sonFrm = "frmExamineBuildingOutfit";
 
-                data.examineBuildingSurfaceTable = "ExamineBuildingSurfaceList" ;
-                data.examineBuildingSurfaceFrm = "ExamineBuildingSurfaceFrm" ;
-                data.examineBuildingSurfaceBox = "divBoxExamineBuildingSurface" ;
+                data.examineBuildingSurfaceTable = "ExamineBuildingSurfaceList";
+                data.examineBuildingSurfaceFrm = "ExamineBuildingSurfaceFrm";
+                data.examineBuildingSurfaceBox = "divBoxExamineBuildingSurface";
 
-                data.examineBuildingMaintenanceTable = "ExamineBuildingMaintenanceList" ;
-                data.examineBuildingMaintenanceFrm = "ExamineBuildingMaintenanceFrm" ;
-                data.examineBuildingMaintenanceBox = "divBoxExamineBuildingMaintenance" ;
+                data.examineBuildingMaintenanceTable = "ExamineBuildingMaintenanceList";
+                data.examineBuildingMaintenanceFrm = "ExamineBuildingMaintenanceFrm";
+                data.examineBuildingMaintenanceBox = "divBoxExamineBuildingMaintenance";
 
                 data.type = "null";//
                 data.database_Table = AssessDBKey.ExamineBuilding;//
@@ -563,34 +511,112 @@
                 return data;
             },
             /**
-            * @author:  zch
-            * 描述:楼栋外装 保存
-            * @date:
-            **/
-            subDataSave:function () {
-                if (!$("#"+examineBuilding_.prototype.config().sonFrm).valid()){
+             * @author:  zch
+             * 描述:更新导航栏数据信息
+             * @date:
+             **/
+            nav: {
+                startWrite: function () {
+                    var data = {};
+                    if ($("#declareId").size() > 0) {
+                        data.declareId = $("#declareId").val();
+                    }
+                    if ($("#examineType").size() > 0) {
+                        data.examineType = $("#examineType").val();
+                    }
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingList",
+                        type: "get",
+                        dataType: "json",
+                        data: data,
+                        success: function (result) {
+                            $(".navTotal").html("总:" + result.total);
+                            examineBuilding_.prototype.nav.writePageNum("0");
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
+                },
+                writePageNum: function (num) {
+                    $(".navPageNum").html(num);
+                },
+                //下一部分
+                next: function (item) {
+                    var number = parseInt($(".navPageNum").html()) + 1;
+                    examineBuilding_.prototype.getByNumberData(number,item);
+                },
+                //上一部分
+                prev: function (item) {
+                    var number = parseInt($(".navPageNum").html()) - 1;
+                    examineBuilding_.prototype.getByNumberData(number,item);
+                }
+            },
+            getByNumberData: function (number, item) {
+                var data = {};
+                if ($("#declareId").size() > 0) {
+                    data.declareId = $("#declareId").val();
+                }
+                if ($("#examineType").size() > 0) {
+                    data.examineType = $("#examineType").val();
+                }
+                data.number = number;
+                console.log(data);
+                $("#" + examineBuilding_.prototype.config().frm).clearAll();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/getByNumberData",
+                    type: "get",
+                    data: data,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            if (result.data != null) {
+                                console.log(result);
+                                //改变按钮颜色
+                                $(item).removeClass();
+                                $(item).addClass("btn btn-primary");
+                                examineBuilding_.prototype.dataNumberWrite(result);
+                            }else {
+                                toastr.success('请重新选择!');
+                            }
+                            examineBuilding_.prototype.showFiles();
+                            examineBuilding_.prototype.subLoadDataList();
+                            examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
+                            examineBuilding_.prototype.examineBuildingSurfaceLoadList();
+                            examineBuilding_.prototype.nav.writePageNum(data.number);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
+            /**
+             * @author:  zch
+             * 描述:楼栋外装 保存
+             * @date:
+             **/
+            subDataSave: function () {
+                if (!$("#" + examineBuilding_.prototype.config().sonFrm).valid()) {
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().sonFrm);
                 data.buildingId = examineBuilding_.prototype.getBuildId();
-                if ($("#declareId").size() > 0){
+                if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
-                if ($("#examineType").size() > 0){
-                    data.examineType = $("#examineType").val();
-                }
-                if ($("#examineType").size() > 0){
+                if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/saveAndUpdateExamineBuildingOutfit",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/saveAndUpdateExamineBuildingOutfit",
                     type: "post",
                     dataType: "json",
                     data: data,
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('保存成功');
-                            $('#'+examineBuilding_.prototype.config().sonBox).modal('hide');
+                            $('#' + examineBuilding_.prototype.config().sonBox).modal('hide');
                             examineBuilding_.prototype.subLoadDataList();
                         }
                         else {
@@ -603,16 +629,16 @@
                 })
             },
             /**
-            * @author:  zch
-            * 描述: 楼栋外装 删除
-            * @date:
-            **/
-            subDataRemove:function (id) {
+             * @author:  zch
+             * 描述: 楼栋外装 删除
+             * @date:
+             **/
+            subDataRemove: function (id) {
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/deleteExamineBuildingOutfitById",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/deleteExamineBuildingOutfitById",
                     type: "post",
                     dataType: "json",
-                    data: {id:id},
+                    data: {id: id},
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
@@ -628,33 +654,33 @@
                 })
             },
             /**
-            * @author:  zch
-            * 描述: 楼栋外装 获取 并且在页面上赋值
-            * @date:
-            **/
-            subGetAndInit:function (id) {
+             * @author:  zch
+             * 描述: 楼栋外装 获取 并且在页面上赋值
+             * @date:
+             **/
+            subGetAndInit: function (id) {
                 var objectWrite = new Object();
-                objectWrite.write = function (item,name) {
-                    if (examineBuilding_.prototype.isEmpty(item)){
-                        $("#" + examineBuilding_.prototype.config().sonFrm + " ."+name).val(item).trigger("change");
-                    }else {
-                        $("#" + examineBuilding_.prototype.config().sonFrm + " ."+name).val(null).trigger("change");
+                objectWrite.write = function (item, name) {
+                    if (examineBuilding_.prototype.isEmpty(item)) {
+                        $("#" + examineBuilding_.prototype.config().sonFrm + " ." + name).val(item).trigger("change");
+                    } else {
+                        $("#" + examineBuilding_.prototype.config().sonFrm + " ." + name).val(null).trigger("change");
                     }
                 };
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitById",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitById",
                     type: "get",
                     dataType: "json",
-                    data: {id:id},
+                    data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            $("#"+examineBuilding_.prototype.config().sonFrm).clearAll();
+                            $("#" + examineBuilding_.prototype.config().sonFrm).clearAll();
                             $("#" + examineBuilding_.prototype.config().sonFrm).initForm(result.data);
-                            objectWrite.write(result.data.decoratingMaterial,"decoratingMaterial");
-                            objectWrite.write(result.data.materialPrice,"materialPrice");
-                            objectWrite.write(result.data.constructionTechnology,"constructionTechnology");
-                            objectWrite.write(result.data.decorationPart,"decorationPart");
-                            $('#'+examineBuilding_.prototype.config().sonBox).modal("show");
+                            objectWrite.write(result.data.decoratingMaterial, "decoratingMaterial");
+                            objectWrite.write(result.data.materialPrice, "materialPrice");
+                            objectWrite.write(result.data.constructionTechnology, "constructionTechnology");
+                            objectWrite.write(result.data.decorationPart, "decorationPart");
+                            $('#' + examineBuilding_.prototype.config().sonBox).modal("show");
                         }
                     },
                     error: function (result) {
@@ -663,41 +689,41 @@
                 })
             },
             /**
-            * @author:  zch
-            * 描述:楼栋外装 显示添加框
-            * @date:
-            **/
-            subShowModelData:function () {
-                $("#"+examineBuilding_.prototype.config().sonFrm).clearAll();
-                if (examineBuilding_.prototype.getSonFlag()){
+             * @author:  zch
+             * 描述:楼栋外装 显示添加框
+             * @date:
+             **/
+            subShowModelData: function () {
+                $("#" + examineBuilding_.prototype.config().sonFrm).clearAll();
+                if (examineBuilding_.prototype.getSonFlag()) {
                     examineBuilding_.prototype.subDataInit();
                     examineBuilding_.prototype.setSonFlag(false);
                 }
-                $('#'+examineBuilding_.prototype.config().sonBox).modal("show");
+                $('#' + examineBuilding_.prototype.config().sonBox).modal("show");
             },
-            examineBuildingMaintenanceShowModelData:function () {
-                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).clearAll();
-                if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()){
+            examineBuildingMaintenanceShowModelData: function () {
+                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).clearAll();
+                if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()) {
                     examineBuilding_.prototype.examineBuildingMaintenanceInit();
                     examineBuilding_.prototype.setExamineBuildingMaintenanceFlag(false);
                 }
-                $('#'+examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal("show");
+                $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal("show");
             },
-            examineBuildingSurfaceShowModelData:function () {
-                $("#"+examineBuilding_.prototype.config().examineBuildingSurfaceFrm).clearAll();
-                if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()){
+            examineBuildingSurfaceShowModelData: function () {
+                $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).clearAll();
+                if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()) {
                     examineBuilding_.prototype.examineBuildingSurfaceInit();
                     examineBuilding_.prototype.setExamineBuildingSurfaceFlag(false);
                 }
-                $('#'+examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal("show");
+                $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal("show");
             },
-            examineBuildingMaintenanceGetAndInit:function (id) {
+            examineBuildingMaintenanceGetAndInit: function (id) {
                 var objectWrite = new Object();
-                objectWrite.write = function (data,name) {
-                    if (examineBuilding_.prototype.isEmpty(data)){
-                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " ."+name).val(data).trigger("change");
-                    }else {
-                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " ."+name).val(null).trigger("change");
+                objectWrite.write = function (data, name) {
+                    if (examineBuilding_.prototype.isEmpty(data)) {
+                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " ." + name).val(data).trigger("change");
+                    } else {
+                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " ." + name).val(null).trigger("change");
                     }
                 };
                 $.ajax({
@@ -707,14 +733,14 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()){
+                            if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()) {
                                 examineBuilding_.prototype.examineBuildingMaintenanceInit();
                                 examineBuilding_.prototype.setExamineBuildingMaintenanceFlag(false);
                             }
                             $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).clearAll();
                             $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).initForm(result.data);
-                            objectWrite.write(result.data.category,'category');
-                            objectWrite.write(result.data.materialQuality,'materialQuality');
+                            objectWrite.write(result.data.category, 'category');
+                            objectWrite.write(result.data.materialQuality, 'materialQuality');
                             $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal("show");
                         }
                     },
@@ -723,13 +749,13 @@
                     }
                 })
             },
-            examineBuildingSurfaceGetAndInit:function (id) {
+            examineBuildingSurfaceGetAndInit: function (id) {
                 var objectWrite = new Object();
-                objectWrite.write = function (data,name) {
-                    if (examineBuilding_.prototype.isEmpty(data)){
-                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " ."+name).val(data).trigger("change");
-                    }else {
-                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " ."+name).val(null).trigger("change");
+                objectWrite.write = function (data, name) {
+                    if (examineBuilding_.prototype.isEmpty(data)) {
+                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " ." + name).val(data).trigger("change");
+                    } else {
+                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " ." + name).val(null).trigger("change");
                     }
                 };
                 $.ajax({
@@ -739,13 +765,13 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()){
+                            if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()) {
                                 examineBuilding_.prototype.examineBuildingSurfaceInit();
                                 examineBuilding_.prototype.setExamineBuildingSurfaceFlag(false);
                             }
                             $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).clearAll();
                             $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).initForm(result.data);
-                            objectWrite.write(result.data.structure,'structure');
+                            objectWrite.write(result.data.structure, 'structure');
                             $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal("show");
                         }
                     },
@@ -754,12 +780,12 @@
                     }
                 })
             },
-            examineBuildingMaintenanceRemove:function (id) {
+            examineBuildingMaintenanceRemove: function (id) {
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingMaintenance/deleteExamineBuildingMaintenanceById",
+                    url: "${pageContext.request.contextPath}/examineBuildingMaintenance/deleteExamineBuildingMaintenanceById",
                     type: "post",
                     dataType: "json",
-                    data: {id:id},
+                    data: {id: id},
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
@@ -774,12 +800,12 @@
                     }
                 });
             },
-            examineBuildingSurfaceRemove:function (id) {
+            examineBuildingSurfaceRemove: function (id) {
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingSurface/deleteExamineBuildingSurfaceById",
+                    url: "${pageContext.request.contextPath}/examineBuildingSurface/deleteExamineBuildingSurfaceById",
                     type: "post",
                     dataType: "json",
-                    data: {id:id},
+                    data: {id: id},
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
@@ -794,30 +820,30 @@
                     }
                 });
             },
-            examineBuildingMaintenanceSave:function () {
-                if (!$("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).valid()){
+            examineBuildingMaintenanceSave: function () {
+                if (!$("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).valid()) {
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().examineBuildingMaintenanceFrm);
                 data.buildingId = examineBuilding_.prototype.getBuildId();
-                if ($("#declareId").size() > 0){
+                if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
-                if ($("#examineType").size() > 0){
+                if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
-                if ($("#examineType").size() > 0){
+                if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingMaintenance/saveAndUpdateExamineBuildingMaintenance",
+                    url: "${pageContext.request.contextPath}/examineBuildingMaintenance/saveAndUpdateExamineBuildingMaintenance",
                     type: "post",
                     dataType: "json",
                     data: data,
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('保存成功');
-                            $('#'+examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal('hide');
+                            $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal('hide');
                             examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
                         }
                         else {
@@ -829,30 +855,30 @@
                     }
                 })
             },
-            examineBuildingSurfaceSave:function () {
-                if (!$("#"+examineBuilding_.prototype.config().examineBuildingSurfaceFrm).valid()){
+            examineBuildingSurfaceSave: function () {
+                if (!$("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).valid()) {
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().examineBuildingSurfaceFrm);
                 data.buildingId = examineBuilding_.prototype.getBuildId();
-                if ($("#declareId").size() > 0){
+                if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
-                if ($("#examineType").size() > 0){
+                if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
-                if ($("#examineType").size() > 0){
+                if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingSurface/saveAndUpdateExamineBuildingSurface",
+                    url: "${pageContext.request.contextPath}/examineBuildingSurface/saveAndUpdateExamineBuildingSurface",
                     type: "post",
                     dataType: "json",
                     data: data,
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('保存成功');
-                            $('#'+examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal('hide');
+                            $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal('hide');
                             examineBuilding_.prototype.examineBuildingSurfaceLoadList();
                         }
                         else {
@@ -864,9 +890,9 @@
                     }
                 })
             },
-            examineBuildingMaintenanceInit:function () {
+            examineBuildingMaintenanceInit: function () {
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingMaintenance/examine_building_maintenance_category",
+                    url: "${pageContext.request.contextPath}/examineBuildingMaintenance/examine_building_maintenance_category",
                     type: "get",
                     dataType: "json",
                     async: false,
@@ -875,12 +901,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm+" .category").html(option);
-                                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm+" .category").select2();//加载样式
+                                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").html(option);
+                                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").select2();//加载样式
                             }
                         }
                     },
@@ -889,7 +915,7 @@
                     }
                 });
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingMaintenance/examine_building_materialquality",
+                    url: "${pageContext.request.contextPath}/examineBuildingMaintenance/examine_building_materialquality",
                     type: "get",
                     async: false,
                     dataType: "json",
@@ -898,37 +924,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm+" .materialQuality").html(option);
-                                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceFrm+" .materialQuality").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            },
-            examineBuildingSurfaceInit:function () {
-                $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingSurface/examine_building_structure",
-                    type: "get",
-                    async: false,
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
-                                }
-                                $("#"+examineBuilding_.prototype.config().examineBuildingSurfaceFrm+" .structure").html(option);
-                                $("#"+examineBuilding_.prototype.config().examineBuildingSurfaceFrm+" .structure").select2();//加载样式
+                                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").html(option);
+                                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").select2();//加载样式
                             }
                         }
                     },
@@ -937,7 +938,32 @@
                     }
                 });
             },
-            examineBuildingSurfaceLoadList:function () {
+            examineBuildingSurfaceInit: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuildingSurface/examine_building_structure",
+                    type: "get",
+                    async: false,
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").html(option);
+                                $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").select2();//加载样式
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
+            examineBuildingSurfaceLoadList: function () {
                 var cols = [];
                 cols.push({field: 'structureName', title: '层面结构'});
                 cols.push({field: 'description', title: '描述'});
@@ -950,11 +976,11 @@
                         return str;
                     }
                 });
-                $("#"+examineBuilding_.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
+                $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                 TableInit(examineBuilding_.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/examineBuildingSurface/getExamineBuildingSurfaceList", cols, {
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val(),
-                    buildingId:examineBuilding_.prototype.getBuildId()
+                    declareId: $("#declareId").val(),
+                    examineType: $("#examineType").val(),
+                    buildingId: examineBuilding_.prototype.getBuildId()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -964,7 +990,7 @@
                     }
                 });
             },
-            examineBuildingMaintenanceLoadList:function () {
+            examineBuildingMaintenanceLoadList: function () {
                 var cols = [];
                 cols.push({field: 'categoryName', title: '类别'});
                 cols.push({field: 'materialQualityName', title: '材质'});
@@ -978,11 +1004,11 @@
                         return str;
                     }
                 });
-                $("#"+examineBuilding_.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
+                $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                 TableInit(examineBuilding_.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/examineBuildingMaintenance/getExamineBuildingMaintenanceList", cols, {
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val(),
-                    buildingId:examineBuilding_.prototype.getBuildId()
+                    declareId: $("#declareId").val(),
+                    examineType: $("#examineType").val(),
+                    buildingId: examineBuilding_.prototype.getBuildId()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -992,9 +1018,9 @@
                     }
                 });
             },
-            subDataInit:function () {
+            subDataInit: function () {
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_decorating_material",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_decorating_material",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -1002,12 +1028,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .decoratingMaterial").html(option);
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .decoratingMaterial").select2({ minimumResultsForSearch: -1 });//加载样式
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").html(option);
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
                             }
                         }
                     },
@@ -1016,7 +1042,7 @@
                     }
                 });
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_material_price",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_material_price",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -1024,12 +1050,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .materialPrice").html(option);
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .materialPrice").select2({ minimumResultsForSearch: -1 });//加载样式
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").html(option);
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
                             }
                         }
                     },
@@ -1038,7 +1064,7 @@
                     }
                 });
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_construction_technology",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_construction_technology",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -1046,12 +1072,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .constructionTechnology").html(option);
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .constructionTechnology").select2({ minimumResultsForSearch: -1 });//加载样式
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").html(option);
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
                             }
                         }
                     },
@@ -1060,7 +1086,7 @@
                     }
                 });
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_decoration_part",
+                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/examine_building_decoration_part",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -1068,12 +1094,12 @@
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .decorationPart").html(option);
-                                $("#"+examineBuilding_.prototype.config().sonFrm+" .decorationPart").select2({ minimumResultsForSearch: -1 });//加载样式
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").html(option);
+                                $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
                             }
                         }
                     },
@@ -1082,7 +1108,7 @@
                     }
                 })
             },
-            subLoadDataList:function () {
+            subLoadDataList: function () {
                 var cols = [];
                 cols.push({field: 'decorationPartName', title: '装修部位'});
                 cols.push({field: 'decoratingMaterialName', title: '装修材料'});
@@ -1097,11 +1123,11 @@
                         return str;
                     }
                 });
-                $("#"+examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
+                $("#" + examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
                 TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val(),
-                    buildingId:examineBuilding_.prototype.getBuildId()
+                    declareId: $("#declareId").val(),
+                    examineType: $("#examineType").val(),
+                    buildingId: examineBuilding_.prototype.getBuildId()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1174,9 +1200,6 @@
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
-                if ($("#examineType").size() > 0){
-                    data.examineType = $("#examineType").val();
-                }
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/saveAndUpdateExamineBuilding",
                     type: "post",
@@ -1185,8 +1208,6 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('保存成功');
-                            // $('#' + examineBuilding_.prototype.config().box).modal('hide');
-                            // examineBuilding_.prototype.loadDataDicList();
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -1215,14 +1236,13 @@
                     }
                 })
             },
-            initRemoveExamineBuildingOutfit:function () {
+            initRemoveExamineBuildingOutfit: function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuildingOutfit/initRemoveExamineBuildingOutfit",
                     type: "post",
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('楼栋外装初始化成功');
                         }
                     },
                     error: function (result) {
@@ -1231,52 +1251,13 @@
                 });
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/estate_examineBuilding_category",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(option);
-                                // $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2({minimumResultsForSearch: -1});//加载样式
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
+                AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
+                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(html);
+                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2();//加载样式
                 });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/estate_building_structure",
-                    type: "get",
-                    dataType: "json",
-                    async:false,
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(option);
-                                // $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
-                                $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
+                AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, null, function (html, data) {
+                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(html);
+                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2();//加载样式
                 });
                 $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
                 $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").change(function () {
@@ -1285,112 +1266,57 @@
                      **/
                     var id = $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").eq(1).val();
                     if (id != null && id != '' && id != 0) {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/examineBuilding/getBasisList",
-                            dataType: "JSON",
-                            data: {'id': id},
-                            async:false,
-                            type: "GET",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        // $("#"+examineBuilding_.prototype.config().frm+"buildingStructure").empty();
-                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(option);
-                                        // $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
-                                        $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2();//加载样式
-                                    }
-
-                                }
-                            },
-                            error: function (e) {
-                                Alert("调用服务端方法失败，失败原因:" + e);
-                            }
+                        AssessCommon.loadDataDicByPid(id, null, function (html, data) {
+                            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(html);
+                            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2();//加载样式
                         });
                     }
                 });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuilding/estate_building_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+                AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, null, function (html, data) {
+                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(html);
+                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2();//加载样式
+                });
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
                     type: "get",
                     dataType: "json",
-                    data: {type: "DataBuilder"},
+                    data: {type: "type"},
                     success: function (result) {
                         if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
+                            var item = result.data;
+                            var option = "";
+                            if (item.DataBuilder.length > 0) {
+                                option = "<option value=''>请选择</option>";
+                                var data = item.DataBuilder;
+                                for (var i = 0; i < item.DataBuilder.length; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#" + examineBuilding_.prototype.config().frm + " .builderId").html(option);
-                                // $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2({minimumResultsForSearch: -1});//加载样式
                                 $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2();//加载样式
+                                option = "";
                             }
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-                                type: "get",
-                                dataType: "json",
-                                data: {type: "DataProperty"},
-                                success: function (result) {
-                                    if (result.ret) {
-                                        var data = result.data;
-                                        var gradeNum = data.length;
-                                        var option = "<option value=''>请选择</option>";
-                                        if (gradeNum > 0) {
-                                            for (var i = 0; i < gradeNum; i++) {
-                                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                            }
-                                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").html(option);
-                                            $("#" + examineBuilding_.prototype.config().frm + " .propertyId").select2({minimumResultsForSearch: -1});//加载样式
-                                        }
-                                    }
-                                },
-                                error: function (result) {
-                                    Alert("调用服务端方法失败，失败原因:" + result);
+                            if (item.DataProperty.length > 0) {
+                                option = "<option value=''>请选择</option>";
+                                var data = item.DataProperty;
+                                for (var i = 0; i < item.DataProperty.length; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                            })
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").html(option);
+                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").select2();//加载样式
+                            }
                         }
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                })
-
+                });
             },
-            uploadFiles:function () {
+            uploadFiles: function () {
                 FileUtils.uploadFiles({
                     target: examineBuilding_.prototype.config().building_floor_plan,
                     disabledTarget: "btn_submit",
                     formData: {
-                        fieldsName:examineBuilding_.prototype.config().building_floor_plan,
+                        fieldsName: examineBuilding_.prototype.config().building_floor_plan,
                         tableName: examineBuilding_.prototype.config().database_Table,
                         tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
@@ -1400,11 +1326,11 @@
                 });
                 examineBuilding_.prototype.showFiles();
             },
-            showFiles:function () {
+            showFiles: function () {
                 FileUtils.getFileShows({
                     target: examineBuilding_.prototype.config().building_floor_plan,
                     formData: {
-                        fieldsName:examineBuilding_.prototype.config().building_floor_plan,
+                        fieldsName: examineBuilding_.prototype.config().building_floor_plan,
                         tableName: examineBuilding_.prototype.config().database_Table,
                         tableId: examineBuilding_.prototype.getBuildId(),
                         projectId: 0,
@@ -1418,7 +1344,8 @@
 
 </script>
 
-<div id="divBoxExamineBuildingOutfit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxExamineBuildingOutfit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1428,7 +1355,7 @@
                 <h3 class="modal-title">楼栋外装情况</h3>
             </div>
             <form id="frmExamineBuildingOutfit" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -1439,7 +1366,8 @@
                                             装修部位
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="decorationPart" class="form-control search-select select2 decorationPart">
+                                            <select required="required" name="decorationPart"
+                                                    class="form-control search-select select2 decorationPart">
                                             </select>
                                         </div>
                                     </div>
@@ -1450,7 +1378,8 @@
                                             施工工艺
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="constructionTechnology" class="form-control search-select select2 constructionTechnology">
+                                            <select required="required" name="constructionTechnology"
+                                                    class="form-control search-select select2 constructionTechnology">
                                             </select>
                                         </div>
                                     </div>
@@ -1462,7 +1391,8 @@
                                             材料价格区间
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="materialPrice" class="form-control search-select select2 materialPrice">
+                                            <select required="required" name="materialPrice"
+                                                    class="form-control search-select select2 materialPrice">
                                             </select>
                                         </div>
                                     </div>
@@ -1473,7 +1403,8 @@
                                             装修材料
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="decoratingMaterial" class="form-control search-select select2 decoratingMaterial">
+                                            <select required="required" name="decoratingMaterial"
+                                                    class="form-control search-select select2 decoratingMaterial">
                                             </select>
                                         </div>
                                     </div>
@@ -1495,7 +1426,8 @@
     </div>
 </div>
 
-<div id="divBoxExamineBuildingMaintenance" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxExamineBuildingMaintenance" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1505,7 +1437,7 @@
                 <h3 class="modal-title">维护结构</h3>
             </div>
             <form id="ExamineBuildingMaintenanceFrm" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -1527,7 +1459,8 @@
                                             分类
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="category" class="form-control search-select select2 category">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
                                             </select>
                                         </div>
                                     </div>
@@ -1538,7 +1471,8 @@
                                             材质
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="materialQuality" class="form-control search-select select2 materialQuality">
+                                            <select required="required" name="materialQuality"
+                                                    class="form-control search-select select2 materialQuality">
                                             </select>
                                         </div>
                                     </div>
@@ -1551,7 +1485,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="examineBuilding_.prototype.examineBuildingMaintenanceSave()">
+                    <button type="button" class="btn btn-primary"
+                            onclick="examineBuilding_.prototype.examineBuildingMaintenanceSave()">
                         保存
                     </button>
                 </div>
@@ -1561,7 +1496,8 @@
 </div>
 
 
-<div id="divBoxExamineBuildingSurface" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxExamineBuildingSurface" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1571,7 +1507,7 @@
                 <h3 class="modal-title">层面结构</h3>
             </div>
             <form id="ExamineBuildingSurfaceFrm" class="form-horizontal">
-                <input type="hidden"  name="id">
+                <input type="hidden" name="id">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -1582,7 +1518,8 @@
                                             层面结构
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="structure" class="form-control search-select select2 structure">
+                                            <select required="required" name="structure"
+                                                    class="form-control search-select select2 structure">
                                             </select>
                                         </div>
                                     </div>
@@ -1607,7 +1544,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="examineBuilding_.prototype.examineBuildingSurfaceSave()">
+                    <button type="button" class="btn btn-primary"
+                            onclick="examineBuilding_.prototype.examineBuildingSurfaceSave()">
                         保存
                     </button>
                 </div>

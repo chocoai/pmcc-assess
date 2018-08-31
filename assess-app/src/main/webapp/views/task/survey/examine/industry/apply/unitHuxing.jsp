@@ -9,7 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>户型信息
+        <h3>房型信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -111,6 +111,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'description', title: '描述'});
+                cols.push({field: 'name', title: '房型名称'});
                 cols.push({field: 'houseLayoutName', title: '房型'});
                 cols.push({field: 'spanLength', title: '跨长'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
@@ -275,6 +276,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            房型名称
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="房型名称" name="name"
+                                                   class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             面积
                                         </label>
                                         <div class="col-sm-10">
@@ -330,7 +342,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型内容
+                                            户型
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="houseLayout"

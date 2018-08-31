@@ -64,6 +64,10 @@ public class ExamineBuilding {
 
     private Date gmtModified;
 
+    private String jsonContent;
+
+    private String buildNumber;
+
     public Integer getId() {
         return id;
     }
@@ -302,5 +306,21 @@ public class ExamineBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }
