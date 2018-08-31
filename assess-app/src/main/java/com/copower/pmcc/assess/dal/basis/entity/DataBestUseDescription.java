@@ -17,7 +17,7 @@ public class DataBestUseDescription {
 
     private Integer type;
 
-    private String category;
+    private Integer category;
 
     public Integer getId() {
         return id;
@@ -75,11 +75,11 @@ public class DataBestUseDescription {
         this.type = type;
     }
 
-    public String getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category == null ? null : category.trim();
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }

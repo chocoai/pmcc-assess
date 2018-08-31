@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -41,6 +43,8 @@ public class EvaluationThinkingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationThinkingDao evaluationThinkingDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 保存数据
@@ -110,15 +114,34 @@ public class EvaluationThinkingService {
     }
 
 
-    public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking evaluationThinking) {
-        if (evaluationThinking == null) return null;
+    public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking oo) {
+        if (oo == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        DataEvaluationThinkingVo evaluationThinkingVo = new DataEvaluationThinkingVo();
-        BeanUtils.copyProperties(evaluationThinking, evaluationThinkingVo);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationThinking.getMethod())) {
-            evaluationThinkingVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationThinking.getMethod()));
+        DataEvaluationThinkingVo vo = new DataEvaluationThinkingVo();
+        BeanUtils.copyProperties(oo, vo);
+        try {
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {
+                vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, oo.getMethod()));
+            }
+        } catch (Exception e1) {
+            logger.error("exception:%s",e1.getMessage());
         }
-        return evaluationThinkingVo;
+        BaseProjectClassify baseProjectClassify = null;
+        if (oo.getCategory() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
+            if (baseProjectClassify != null){
+                vo.setCategoryName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        if (oo.getType() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
+            if (baseProjectClassify != null){
+                vo.setTypeName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        return vo;
     }
 
     /**

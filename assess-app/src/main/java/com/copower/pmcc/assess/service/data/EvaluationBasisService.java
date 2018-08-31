@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationBasis;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -38,6 +40,8 @@ public class EvaluationBasisService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationBasisDao evaluationBasisDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 保存数据
@@ -111,30 +115,31 @@ public class EvaluationBasisService {
     }
 
 
-    public DataEvaluationBasisVo getBasisVo(DataEvaluationBasis evaluationBasis) {
-        if (evaluationBasis == null) return null;
+    public DataEvaluationBasisVo getBasisVo(DataEvaluationBasis oo) {
+        if (oo == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
         DataEvaluationBasisVo vo = new DataEvaluationBasisVo();
-        BeanUtils.copyProperties(evaluationBasis, vo);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationBasis.getMethod())) {
-            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationBasis.getMethod()));
+        BeanUtils.copyProperties(oo, vo);
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {
+            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, oo.getMethod()));
         }
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationBasis.getEntrustmentPurpose())) {
-            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationBasis.getEntrustmentPurpose()));
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getEntrustmentPurpose())) {
+            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, oo.getEntrustmentPurpose()));
         }
-        BaseDataDic baseDataDic = null;
-        if (evaluationBasis.getType() != null){
-            baseDataDic = baseDataDicService.getDataDicById(evaluationBasis.getType());
-            if (baseDataDic != null){
-                vo.setTypeName(baseDataDic.getName());
-                baseDataDic = null;
+        BaseProjectClassify baseProjectClassify = null;
+        if (oo.getCategory() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
+            if (baseProjectClassify != null){
+                vo.setCategoryName(baseProjectClassify.getName());
+                baseProjectClassify = null;
             }
         }
-        if (evaluationBasis.getCategory() != null){
-            baseDataDic = baseDataDicService.getDataDicById(evaluationBasis.getCategory());
-            if (baseDataDic != null){
-                vo.setCategoryName(baseDataDic.getName());
+        if (oo.getType() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
+            if (baseProjectClassify != null){
+                vo.setTypeName(baseProjectClassify.getName());
+                baseProjectClassify = null;
             }
         }
         return vo;

@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,8 @@ import java.util.List;
  */
 @Service
 public class DataCommonService {
-
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     /**
      * 获取集合中对应名称
      * @param dataDicList
@@ -32,5 +35,18 @@ public class DataCommonService {
             }
         }
         return result.replaceAll(",$","");
+    }
+
+
+
+    public String getBaseDataDicName(Integer id){
+        BaseDataDic baseDataDic = null;
+        if (id != null){
+            baseDataDic = baseDataDicService.getDataDicById(id);
+            if (baseDataDic != null){
+                return baseDataDic.getName();
+            }
+        }
+        return null;
     }
 }

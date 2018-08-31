@@ -175,6 +175,8 @@
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'description', title: '描述'});
 
         cols.push({

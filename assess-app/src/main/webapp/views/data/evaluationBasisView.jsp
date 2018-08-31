@@ -204,6 +204,8 @@
     function loadBasisList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
         cols.push({field: 'methodStr', title: '评估方法'});
         cols.push({field: 'template', title: '模板', width: '50%'});
