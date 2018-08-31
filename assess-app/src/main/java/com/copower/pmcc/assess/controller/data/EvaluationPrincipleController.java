@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationPrinciple;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationPrincipleService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
