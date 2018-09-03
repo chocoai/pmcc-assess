@@ -203,6 +203,7 @@ public class ProjectInfoService {
             //如果没有设置项目经理，则由部门领导分派项目经理
             if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
                 //发起流程
+                List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
                 String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
                 BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
@@ -214,6 +215,8 @@ public class ProjectInfoService {
                 processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
                 processInfo.setBoxId(boxReDto.getId());
                 processInfo.setStartUser(commonService.thisUserAccount());
+                processInfo.setWorkStage(projectWorkStages.get(0).getWorkStageName());
+                processInfo.setWorkStageId(projectWorkStages.get(0).getId());
                 processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
                 processInfo.setTableId(projectInfo.getId());
                 //取审批人
