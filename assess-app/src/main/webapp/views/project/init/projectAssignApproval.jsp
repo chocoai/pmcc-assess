@@ -17,7 +17,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2> 审批信息</h2>
+                    <h2> 设置项目经理</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -54,9 +54,8 @@
                             </div>
                             <div class="col-sm-5" id="div_bisNext">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="chk_bisNext"><label for="chk_bisNext">下级分派</label>
+                                    <input type="checkbox" id="chk_bisNext"><label for="chk_bisNext">继续分派</label>
                                 </label>
-
                             </div>
                         </div>
                         <div class="form-group">
@@ -64,45 +63,22 @@
                                 说明
                             </label>
                             <div class="col-sm-11">
-                                <c:if test="${approvalReview==1}">
-                                    <c:forEach var="item" items="${boxReviewTemplate}">
-                                        <div class="form-group">
-                                            <div class="x-valid">
-                                                <label class="col-sm-11" for="op_${item.id}">
-                                                        ${item.content}(${item.standard})
-                                                </label>
-                                                <div class="col-sm-11">
-                                        <textarea required placeholder="${item.content}" name="op_${item.id}"
-                                                  class="form-control approvalFlog"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </c:if>
-                                <c:if test="${approvalReview==0}">
-                                    <div class="x-valid">
-                                        <textarea placeholder="说明" id="opinionsTemp" name="opinionsTemp" class="form-control"></textarea>
-                                    </div>
-                                </c:if>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                审批文件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="file_upload" name="file_upload" type="file" multiple="false">
-                                <div id="_file_upload">
+                                <div class="x-valid">
+                                    <textarea placeholder="说明" id="opinionsTemp" name="opinionsTemp"
+                                              class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="form-group">
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </div>
 
                     </form>
+
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_content">
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-5">
                             <button class="btn btn-default" onclick="window.close()">
@@ -126,30 +102,6 @@
 <script type="application/javascript">
     $(function () {
         $("#frm_approval").validate();
-        FileUtils.uploadFiles({
-            target: "file_upload",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.BoxApprovalLog,
-                processInsId: "${processInsId}",
-                reActivityName: "${activityReName}",
-                fieldsName: "log",
-                processTaskId: "${taskId}"
-            },
-            deleteFlag: true
-        });
-
-        FileUtils.getFileShows({
-            target: "file_upload",
-            formData: {
-                tableName: AssessDBKey.BoxApprovalLog,
-                processInsId: "${processInsId}",
-                reActivityName: "${activityReName}",
-                fieldsName: "log",
-                processTaskId: "${taskId}"
-            },
-            deleteFlag: true
-        })
     })
     // 项目经理
     function selectUserAccountManager() {
@@ -164,9 +116,11 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formApproval.getFormData();
+        var data = formParams("frm_approval");
+        ;
         data.bisNext = $("#chk_bisNext").is(':checked') ? "1" : "0";
         data.appointUserAccount = $("#appointUserAccount").val();
+        data.opinions = $("#opinionsTemp").val();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectInfo/projectApprovalAssignSubmit",
