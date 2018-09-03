@@ -26,7 +26,7 @@ public class ProjectPlanCompileAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planCompileIndex", "", 0, "-1", "");
         compileReportService.initializePlan(projectPlan);
         return modelAndView;
     }

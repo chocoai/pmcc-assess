@@ -225,7 +225,7 @@ public class ProjectPlanService {
         ProjectPlanDetailsDto projectPlanDetailsDto = JSON.parseObject(ds, ProjectPlanDetailsDto.class);
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         BeanUtils.copyProperties(projectPlanDetailsDto, projectPlanDetails);
-        if (projectPlanDetails.getId() > 0) {
+        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         } else {
 
@@ -327,7 +327,7 @@ public class ProjectPlanService {
          * 4、保存项目计划
          */
 
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(),ProcessStatusEnum.NOPROCESS.getValue());
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
         //数据效性验证
         StringBuilder sb = new StringBuilder();
         for (ProjectPlanDetails item : projectPlanDetails) {
@@ -407,7 +407,7 @@ public class ProjectPlanService {
              * 4、保存项目计划
              */
 
-            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(),ProcessStatusEnum.NOPROCESS.getValue());
+            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
             //数据效性验证
             StringBuilder sb = new StringBuilder();
             for (ProjectPlanDetails item : projectPlanDetails) {

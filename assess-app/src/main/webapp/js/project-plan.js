@@ -5,10 +5,15 @@ var treeGridJson = {};
 var treeGridJsonData = {};
 $(function () {
     getPlanItemList();
-    DatepickerUtils.sectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
     DatepickerUtils.sectionChoose($("#planStartDate"), $("#planEndDate"));
+
     if ($("#projectPhaseId").hasClass('select2')) {
         $("#projectPhaseId").select2();
+        $("#projectPhaseId").on("change", function (e) {
+            if ($("#projectPhaseName").length > 0 && $("#projectPhaseName").val().length <= 0) {
+                $("#projectPhaseName").val($(this).find('option:selected').text());
+            }
+        })
     }
 });
 
@@ -201,9 +206,9 @@ function addPlan(id) {
     var row = $('#PlanItemListed').treegrid('find', id);
     $("#pid").val(row["id"]);
     $("#firstPid").val(row["firstPid"]);
-    if($("#projectPhaseId").hasClass('select2')){
+    if ($("#projectPhaseId").hasClass('select2')) {
         $("#projectPhaseId").select2('val', row.projectPhaseId)
-    }else{
+    } else {
         $("#projectPhaseId").val(row.projectPhaseId);
     }
     $("#planDetailsId").val(0);
@@ -219,9 +224,9 @@ function editPlan(id) {
     $("#planDetailsId").val(row["id"]);
     $("#planStartDate").val(formatDate(row["planStartDate"]));
     $("#planEndDate").val(formatDate(row["planEndDate"]));
-    if($("#projectPhaseId").hasClass('select2')){
+    if ($("#projectPhaseId").hasClass('select2')) {
         $("#projectPhaseId").select2('val', row.projectPhaseId)
-    }else{
+    } else {
         $("#projectPhaseId").val(row.projectPhaseId);
     }
     $('#div_plan').modal({backdrop: 'static', keyboard: false});

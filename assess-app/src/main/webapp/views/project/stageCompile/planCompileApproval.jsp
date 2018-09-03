@@ -28,28 +28,6 @@
                     <div id="frm_plan" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                计划名称
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${projectPlan.planName}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                开始日期<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanStart}"
-                                                                            pattern="yyyy-MM-dd"/></label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                结束日期<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanEnd}"
-                                                                            pattern="yyyy-MM-dd"/></label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
                                 说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-11">
