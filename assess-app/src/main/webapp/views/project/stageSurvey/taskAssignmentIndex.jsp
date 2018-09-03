@@ -17,9 +17,9 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="page-title" style="margin: 0px">
                 <div class="title_left">
-                    <h3>
-                        ${declareRecord.name}
-                    </h3>
+                    <h1>
+                        ${declareRecord.name}-任务分派
+                    </h1>
                 </div>
             </div>
             <div class="clearfix"></div>

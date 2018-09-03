@@ -9,20 +9,20 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
 <div class="x_panel">
-    <div class="x_title">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
         <h2>
             项目信息
             <small>
-                <button type="button"
-                        onclick="window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');return false;"
-                        class="btn btn-success btn-xs">查看更多...
-                </button>
+                <input type="button" id="btnViewProjectInfoMore" class="btn btn-success btn-xs" value="查看更多..."/>
             </small>
             <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
         </h2>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content" style="display: none;">
         <div class="form-horizontal">
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
@@ -152,9 +152,9 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $(function () {
-        //---------
+        //显示附件
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
@@ -162,6 +162,12 @@
                 tableId: '${empty projectInfo.id?0:projectInfo.id}'
             },
             deleteFlag: false
+        })
+        //查看更多
+        $("#btnViewProjectInfoMore").click(function (e) {
+            window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');
+            e.preventDefault();
+            e.stopPropagation();
         })
     });
 </script>

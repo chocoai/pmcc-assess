@@ -6,12 +6,14 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,13 +40,15 @@ public class SurveyAssetInventoryService {
      * @param surveyAssetCommonDataDto
      * @throws BusinessException
      */
+    @Transactional(rollbackFor = Exception.class)
     public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         Integer projectId = projectPlanDetails.getProjectId();
         Integer planDetailsId = projectPlanDetails.getId();
         if (surveyAssetCommonDataDto != null) {
-
             SurveyAssetInventory surveyAssetInventory = surveyAssetCommonDataDto.getSurveyAssetInventory();
-            if (surveyAssetInventory != null) {
+            if (surveyAssetInventory == null)
+                throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+            if (surveyAssetInventory.getId() != null && surveyAssetInventory.getId() > 0) {
                 surveyAssetInventoryDao.update(surveyAssetInventory);
             } else {
                 surveyAssetInventory.setProjectId(projectId);
@@ -53,7 +57,6 @@ public class SurveyAssetInventoryService {
                 surveyAssetInventory.setCreator(commonService.thisUserAccount());
                 surveyAssetInventoryDao.save(surveyAssetInventory);
             }
-
             List<SurveyAssetInventoryContent> assetInventoryContentList = surveyAssetCommonDataDto.getAssetInventoryContentList();
             if (CollectionUtils.isNotEmpty(assetInventoryContentList)) {
                 for (SurveyAssetInventoryContent surveyAssetInventoryContent : assetInventoryContentList) {

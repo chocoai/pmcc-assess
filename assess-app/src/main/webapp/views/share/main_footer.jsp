@@ -64,7 +64,7 @@
     mainObj.getDiffHours = function () {
         var ms = new Date().getTime() - mainObj.currDate.getTime();
         if (ms < 0) return 0;
-        return (ms/1000/60/60).toFixed(2);
+        return (ms/1000/60/60).toFixed(4);
     }
 </script>
 

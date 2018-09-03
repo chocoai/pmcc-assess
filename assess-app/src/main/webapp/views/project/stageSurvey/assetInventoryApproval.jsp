@@ -20,7 +20,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}:${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>${declareRecord.name}:${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -71,7 +71,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${surveyAssetTemplateVos}" var="items" varStatus="s">
+                        <c:forEach items="${surveyAssetInventoryContentVos}" var="items" varStatus="s">
                             <tr>
                                     <%--<input type="hidden" id="id" name="id" value="${items.id}">--%>
                                 <td>${s.index + 1}</td>
@@ -105,13 +105,15 @@
                                     </label>
                                 </td>
                             </tr>
+                            <script type="text/javascript">
+                                $(function () {
+                                    //清查内容附件加载
+                                    showFileCommon("${items.id}");
+                                })
+                            </script>
                         </c:forEach>
                         </tbody>
                     </table>
-
-                    <%--<table class="table table-bordered" id="tb_List">--%>
-                    <%--<!-- cerare document add ajax data-->--%>
-                    <%--</table>--%>
 
                     <div class="x_title collapse-link">
                         <ul class="nav navbar-right panel_toolbox">
@@ -127,46 +129,6 @@
                     </table>
                 </div>
             </div>
-
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}工作成果</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                实际工时
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${projectPlanDetails.actualHours}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果描述
-                            </label>
-                            <div class="col-sm-11">
-                                <label class="form-control">${projectPlanDetails.taskRemarks}</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果文件
-                            </label>
-                            <div class="col-sm-11">
-                                <div id="_file_upload_task"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
@@ -177,23 +139,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
-        loadDataList();
-
-        showFileCommon("${surveyAssetTemplateVos.get(0).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(1).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(2).id}");
-        showFileCommon("${surveyAssetTemplateVos.get(3).id}");
-
-        FileUtils.getFileShows({
-            target: "file_upload_task",
-            formData: {
-                tableName: AssessDBKey.ProjectPlanDetails,
-                tableId: ${projectPlanDetails.id},
-                fieldsName: "apply",
-                projectId: "${projectPlanDetails.projectId}"
-            },
-            deleteFlag: false
-        })
+        loadAssetOtherRightList();
     })
 
     //显示附件通用
@@ -215,39 +161,35 @@
         saveApprovalform("");
     }
 
-    function loadDataList() {
+    function loadAssetOtherRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'otherRightsRegistrar', title: '他权登记人'});
-        cols.push({field: 'rightHander', title: '实际行权人'});
+        cols.push({field: 'categoryName', title: '类型'});
+        cols.push({field: 'number', title: '他权证编号'});
+        cols.push({field: 'obligor', title: '义务人'});
+        cols.push({field: 'obligee', title: '权利人'});
         cols.push({field: 'registerArea', title: '登记面积'});
-        cols.push({field: 'actualArea', title: '实际面积'});
-        cols.push({field: 'registerPurpose', title: '登记用途'});
-        cols.push({field: 'actualPurpose', title: '实际用途'});
-
+        cols.push({field: 'rightRank', title: '他权级次'});
+        cols.push({field: 'registerAmount', title: '登记金额'});
+        cols.push({field: 'actualAmount', title: '行权金额'});
         cols.push({
             field: 'registerDate', title: '登记日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         cols.push({
-            field: 'dueDate', title: '到期日', formatter: function (value, row, index) {
+            field: 'beginDate', title: '实际行权人行权日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         cols.push({
-            field: 'exerciseDate', title: '实际行权人行权日期', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({
-            field: 'predictDueDate', title: '预计到期日', formatter: function (value, row, index) {
+            field: 'endDate', title: '预计到期日', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         $("#tb_OtherList").bootstrapTable('destroy');
-        TableInit("tb_OtherList", "${pageContext.request.contextPath}/surveyAssetOtherTemplate/list", cols, {
-            pid: ${surveyAssetInventory.id}
+        TableInit("tb_OtherList", "${pageContext.request.contextPath}/surveyAssetInventoryRight/list", cols, {
+            planDetailsId: '${projectPlanDetails.id}'
         }, {
             showColumns: false,
             showRefresh: false,
