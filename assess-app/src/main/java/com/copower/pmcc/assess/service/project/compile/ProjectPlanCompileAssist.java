@@ -26,7 +26,7 @@ public class ProjectPlanCompileAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planIndex", "", 0, "-1", "");
         compileReportService.initializePlan(projectPlan);
         return modelAndView;
     }
@@ -34,19 +34,19 @@ public class ProjectPlanCompileAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/compile/planCompileApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planCompileApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/compile/planCompileIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planCompileIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/compile/planCompileApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/planCompileApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

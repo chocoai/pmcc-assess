@@ -23,7 +23,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${panelTitle}阶段工作计划</h2>
+                    <h2>工作计划说明</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -32,24 +32,25 @@
                         <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
                         <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
                         <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
-                        <input type="hidden" id="processInsId" value="${processInsId}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     说明
                                 </label>
                                 <div class="col-sm-11">
-                                        <textarea placeholder="说明" name="planRemarks" class="form-control">${projectPlan.planRemarks}</textarea>
+                                        <textarea placeholder="说明" name="planRemarks"
+                                                  class="form-control">${projectPlan.planRemarks}</textarea>
                                 </div>
                             </div>
                         </div>
                         <c:if test="${processInsId!=0}">
+                            <input type="hidden" id="opinions" name="opinions" value="0">
+                            <input type="hidden" id="bisNext" name="bisNext" value="0">
                             <%@include file="/views/share/ApprovalVariable.jsp" %>
                         </c:if>
                     </form>
                 </div>
             </div>
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -63,12 +64,6 @@
                 </div>
             </div>
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -85,7 +80,6 @@
     </div>
 </div>
 </body>
-
 
 <div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
      aria-hidden="true">
@@ -105,7 +99,128 @@
                                 <input type="hidden" id="firstPid" name="firstPid"/>
                                 <input type="hidden" id="projectPhaseId" name="projectPhaseId"
                                        value="${projectPhases.get(0).id}"/>
-                                <div id="plan_content"></div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            工作内容<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="工作内容" required maxlength="50"
+                                                   name="projectPhaseName"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            申报表
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <input type="hidden" id="declareFormId" name="declareFormId"/>
+                                                <input type="text" id="declareFormName" name="declareFormName"
+                                                       readonly="readonly"
+                                                       placeholder="申报表" class="form-control"
+                                                       onclick="selectDeclareForm(this);">
+                                                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="selectDeclareForm(this);">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-default docs-tooltip"
+                                                    onclick="$(this).closest('.input-group').find('input').val('');"
+                                                    data-toggle="tooltip" data-original-title="清除">
+                                            <i class="fa fa-trash-o"></i>
+                                            </button>
+                     </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            开始时间
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
+                                                   id="planStartDate" name="planStartDate"
+                                                   class="form-control dbdate">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            结束时间
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
+                                                   id="planEndDate" name="planEndDate"
+                                                   class="form-control dbdate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        责任人
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="hidden" placeholder="责任人" maxlength="50"
+                                               id="executeUserAccount"
+                                               name="executeUserAccount" class="form-control">
+                                        <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
+                                               name="executeUserName" class="form-control" readonly="readonly"
+                                               onclick="selEmployee()">
+                                    </div>
+                                    <label class="col-sm-2 control-label">
+                                        责任部门
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <input type="hidden" placeholder="责任部门" maxlength="50"
+                                               id="executeDepartmentId"
+                                               name="executeDepartmentId" class="form-control">
+                                        <input type="text" placeholder="责任部门" maxlength="50"
+                                               id="executeDepartmentName"
+                                               name="executeDepartmentName" class="form-control" onclick="selDept()"
+                                               readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            计划工时
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="计划工时" data-rule-number='true'
+                                                   maxlength="5"
+                                                   id="planHours" name="planHours"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            权重占比
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="权重占比" data-rule-number='true'
+                                                   maxlength="5"
+                                                   id="proportion" name="proportion"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" placeholder="说明" maxlength="50" id="planRemarks"
+                                               name="planRemarks"
+                                               class="form-control">
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -123,159 +238,6 @@
         </div>
     </div>
 </div>
-
-<script type="text/html" id="singleAssetsHtml">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                工作内容<span class="symbol required"></span>
-            </label>
-            <div class="col-sm-10">
-                <input type="text" placeholder="工作内容" required maxlength="50"
-                       name="projectPhaseName"
-                       class="form-control">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                申报表
-            </label>
-            <div class="col-sm-10">
-                <div class="input-group">
-                    <input type="hidden" id="declareFormId" name="declareFormId"/>
-                    <input type="text" id="declareFormName" name="declareFormName" readonly="readonly"
-                           placeholder="申报表" class="form-control" onclick="selectDeclareForm(this);">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="selectDeclareForm(this);">
-                                            <i class="fa fa-search"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="$(this).closest('.input-group').find('input').val('');"
-                                                    data-toggle="tooltip" data-original-title="清除">
-                                            <i class="fa fa-trash-o"></i>
-                                            </button>
-                     </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                开始时间
-            </label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
-                       id="planStartDate" name="planStartDate"
-                       class="form-control dbdate">
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                结束时间
-            </label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
-                       id="planEndDate" name="planEndDate"
-                       class="form-control dbdate">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">
-            责任人
-        </label>
-        <div class="col-sm-4">
-            <input type="hidden" placeholder="责任人" maxlength="50"
-                   id="executeUserAccount"
-                   name="executeUserAccount" class="form-control">
-            <input type="text" placeholder="责任人" maxlength="50" id="executeUserName"
-                   name="executeUserName" class="form-control" readonly="readonly"
-                   onclick="selEmployee()">
-        </div>
-        <label class="col-sm-2 control-label">
-            责任部门
-        </label>
-        <div class="col-sm-4">
-            <input type="hidden" placeholder="责任部门" maxlength="50"
-                   id="executeDepartmentId"
-                   name="executeDepartmentId" class="form-control">
-            <input type="text" placeholder="责任部门" maxlength="50"
-                   id="executeDepartmentName"
-                   name="executeDepartmentName" class="form-control" onclick="selDept()"
-                   readonly="readonly">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                计划工时
-            </label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="计划工时" data-rule-number='true'
-                       maxlength="5"
-                       id="planHours" name="planHours"
-                       class="form-control">
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                权重占比
-            </label>
-            <div class="col-sm-4">
-                <input type="text" placeholder="权重占比" data-rule-number='true'
-                       maxlength="5"
-                       id="proportion" name="proportion"
-                       class="form-control">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">
-            说明
-        </label>
-        <div class="col-sm-10">
-            <input type="text" placeholder="说明" maxlength="50" id="planRemarks"
-                   name="planRemarks"
-                   class="form-control">
-        </div>
-    </div>
-</script>
-
-<script type="text/html" id="comprehensiveAssetsHtml">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                公司名称<span class="symbol required"></span>
-            </label>
-            <div class="col-sm-10">
-                <input type="text" placeholder="公司名称" required maxlength="50"
-                       name="projectPhaseName"
-                       class="form-control">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-2 control-label">
-                公司性质
-            </label>
-            <div class="col-sm-10">
-                <select name="companyNature" id="companyNature" class="form-control">
-                    <option value="">-请选择-</option>
-                    <c:forEach var="item" items="${companyNatureList}">
-                        <option value="${item.id}">${item.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-    </div>
-</script>
 
 <div id="tb" style="padding:5px;height:auto;display: none;">
     <div style=" margin-bottom:5px">

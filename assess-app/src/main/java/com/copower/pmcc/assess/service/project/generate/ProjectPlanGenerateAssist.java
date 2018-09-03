@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.assist;
+package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planGenerateIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", "", 0, "-1", "");
         //获取报告类型
         List<BaseDataDic> reportTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_TYPE);
         modelAndView.addObject("reportTypeList",reportTypeList);
@@ -45,19 +44,19 @@ public class ProjectPlanGenerateAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planGenerateIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/planGenerateApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 

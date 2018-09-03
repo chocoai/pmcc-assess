@@ -394,6 +394,11 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
+        approvalModelDto.setWorkStageId(projectWorkStage.getId());
+        approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
@@ -435,7 +440,7 @@ public class ProjectInfoService {
     public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
         projectPlanList.remove(0);//去除立项阶段
-        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=",applicationConstant.getAppKey());
+        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=", applicationConstant.getAppKey());
         List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> {
             ProjectPlanVo projectPlanVo = new ProjectPlanVo();
             BeanUtils.copyProperties(projectPlan, projectPlanVo);
@@ -444,7 +449,7 @@ public class ProjectInfoService {
                 switch (projectStatusEnum) {
                     case FINISH:
                     case TASK:
-                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
                     case PLAN:
                         //判断有没有发起流程 如果发起了流程 则取待办 没有发起流程 则取任务
                         if (StringUtils.equals(projectPlan.getProcessInsId(), "-1")) {
@@ -458,7 +463,7 @@ public class ProjectInfoService {
                                 projectPlanVo.setPlanExecutor(publicService.getUserNameByAccount(projectTask.getUserAccount()));
                                 projectPlanVo.setPlanCanExecut(StringUtils.equals(commonService.thisUserAccount(), projectTask.getUserAccount()));
                                 projectPlanVo.setPlanExecutUrl(projectTask.getUrl());
-                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
                             }
                         } else {
                             List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
@@ -636,22 +641,22 @@ public class ProjectInfoService {
         return vo;
     }
 
-    public BootstrapTableVo crmContacts(String name){
+    public BootstrapTableVo crmContacts(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CrmCustomerLinkmanDto> crmCustomerLinkmanDtos = Lists.newArrayList();
-        if (org.springframework.util.StringUtils.isEmpty(name)){
+        if (org.springframework.util.StringUtils.isEmpty(name)) {
             List<CrmCustomerDto> crmCustomerDtoList = crmCustomerService.getCustomerList(new CrmCustomerDto());
-            if (!ObjectUtils.isEmpty(crmCustomerDtoList)){
-                for (CrmCustomerDto crmCustomerDto:crmCustomerDtoList){
+            if (!ObjectUtils.isEmpty(crmCustomerDtoList)) {
+                for (CrmCustomerDto crmCustomerDto : crmCustomerDtoList) {
                     List<CrmCustomerLinkmanDto> oos = crmCustomerService.getCustomerLinkmanList(crmCustomerDto.getId());
-                    if (!ObjectUtils.isEmpty(oos)){
+                    if (!ObjectUtils.isEmpty(oos)) {
                         crmCustomerLinkmanDtos.addAll(oos);
                     }
                 }
             }
-        }else {
+        } else {
             CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
             crmCustomerLinkmanDto.setName(name);
             crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanList(crmCustomerLinkmanDto);
@@ -671,8 +676,8 @@ public class ProjectInfoService {
         return initiateContactsService.add(dto);
     }
 
-    public void addContacts(List<InitiateContactsDto> dtos){
-        for (InitiateContactsDto dto:dtos){
+    public void addContacts(List<InitiateContactsDto> dtos) {
+        for (InitiateContactsDto dto : dtos) {
             this.addContacts(dto);
         }
     }

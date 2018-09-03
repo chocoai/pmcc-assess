@@ -39,7 +39,7 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planSchemeIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/planSchemeIndex", "", 0, "-1", "");
         modelAndView.addObject("bestusedescriptionList", dataBestUseDescriptionService.dataBestUseDescriptionList());
         modelAndView.addObject("dataList", declareRecordService.getSchemeGroup(projectPlan.getProjectId()));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD));
@@ -51,19 +51,19 @@ public class ProjectPlanSchemeAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planSchemeApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/planSchemeApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planSchemeIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/planSchemeIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planSchemeApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/planSchemeApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 }

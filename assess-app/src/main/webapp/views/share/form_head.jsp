@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="page-title" style="margin: 0px">
     <div class="title_left">
-        <h3>
-            <i class="fa ${boxprocessIcon}" style="margin-right: 20px;"></i>
+        <h1>
             ${boxCnName}
             <small>
                 <label>${boxdescription}</label>
@@ -18,7 +17,7 @@
                 <label class="label label-primary"><i class="fa fa-user"
                                                       style="margin-right: 8px"></i>${currUserName}</label>
             </small>
-        </h3>
+        </h1>
     </div>
     <c:if test="${Steps!=null && Steps!='' && Steps!='[]'}">
         <div class="title_right">

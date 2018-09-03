@@ -25,6 +25,7 @@ public class ProjectPhaseDao {
     public List<ProjectPhase> getProjectPhaseByCategoryId(Integer categoryId) {
         ProjectPhaseExample example = new ProjectPhaseExample();
         example.createCriteria().andBisEnableEqualTo(true).andProjectCategoryIdEqualTo(categoryId);
+        example.setOrderByClause("work_stage_id,phase_sort");
         return projectPhaseMapper.selectByExample(example);
 
     }
@@ -88,6 +89,7 @@ public class ProjectPhaseDao {
     public List<ProjectPhase> getProjectPhaseByWorkStageId(Integer workStageId){
         ProjectPhaseExample example = new ProjectPhaseExample();
         example.createCriteria().andBisEnableEqualTo(true).andWorkStageIdEqualTo(workStageId);
+        example.setOrderByClause("work_stage_id,phase_sort");
         return projectPhaseMapper.selectByExample(example);
 
     }

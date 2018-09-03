@@ -29,46 +29,10 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_plan" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    计划名称
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="hidden" id="bisChildren" value="${bisChildren}">
-                                    <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
-                                    <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
-                                    <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
-                                    <label class="form-control">${projectPlan.planName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    开始日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="开始日期"
-                                           value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                           id="projectPlanStart" name="projectPlanStart"
-                                           data-date-format='yyyy-mm-dd'
-                                           class="form-control dbdate">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    结束日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="结束日期"
-                                           value="<fmt:formatDate value="${projectPlan.projectPlanEnd}" pattern="yyyy-MM-dd"/>"
-                                           id="projectPlanEnd" name="projectPlanEnd"
-                                           data-date-format='yyyy-mm-dd'
-                                           class="form-control dbdate">
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" id="bisChildren" value="${bisChildren}">
+                        <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
+                        <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
+                        <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -80,34 +44,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <c:if test="${detailsPlan==1}"> <%--是否允许下级修改计划--%>
-                            <input type="hidden" id="detailsPlan" name="detailsPlan" value="${detailsPlan}">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        细分计划
-                                    </label>
-                                    <div class="col-sm-5">
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" id="chk_isNext" name="chk_isNext">
-                                            细分计划
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        责任人
-                                    </label>
-                                    <div class="col-sm-5">
-                                        <input type="hidden" id="nextApproval" name="nextApproval">
-                                        <input type="text" required id="nextApprovalName" name="nextApprovalName"
-                                               onclick="nextEmployee()"
-                                               class="form-control" readonly="readonly">
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
                         <c:if test="${processInsId!=0}">
                             <input type="hidden" id="opinions" name="opinions" value="0">
                             <input type="hidden" id="bisNext" name="bisNext" value="0">
