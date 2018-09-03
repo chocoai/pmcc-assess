@@ -138,15 +138,9 @@
             Alert('还未填写报告使用单位联系人信息');
             return false;
         }
-        var bisNextUser = false;
-        //如果没有设置项目经理则必须先进行下级分派
-        if ($("#userAccountMemberCheckBox").is(':checked') || !$("#userAccountManager").val()) {
-            bisNextUser = true;
-        }
         var data = {};
         data.formData = JSON.stringify(getFormData());
         data.projectInfoId = $("#projectInfoId").val();
-        data.bisNextUser=bisNextUser;
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";

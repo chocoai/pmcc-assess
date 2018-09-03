@@ -212,15 +212,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">
-                                    <span class="checkbox-inline">
-                                        <input type="checkbox" id="userAccountMemberCheckBox">
-                                        <label for="userAccountMemberCheckBox">下级分派</label>
-                                    </span>
-            </label>
-        </div>
     </div>
     <div class="form-group">
         <div class="x-valid">

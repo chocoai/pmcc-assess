@@ -200,9 +200,8 @@ public class ProjectInfoService {
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
 
-            //判断是否需要下级再进行任务分派 //20180621 Calvin
-            //如果可以下级分派，则先走任务分派流程
-            if (Boolean.TRUE == bisNextUser) {
+            //如果没有设置项目经理，则由部门领导分派项目经理
+            if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
                 //发起流程
                 String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
