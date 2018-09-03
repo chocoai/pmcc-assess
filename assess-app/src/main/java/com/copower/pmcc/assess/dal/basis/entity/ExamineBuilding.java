@@ -66,7 +66,7 @@ public class ExamineBuilding {
 
     private String jsonContent;
 
-    private String buildNumber;
+    private String identifier;
 
     public Integer getId() {
         return id;
@@ -316,11 +316,11 @@ public class ExamineBuilding {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
-    public String getBuildNumber() {
-        return buildNumber;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setBuildNumber(String buildNumber) {
-        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier == null ? null : identifier.trim();
     }
 }
