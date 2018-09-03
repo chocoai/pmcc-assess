@@ -35,10 +35,8 @@ public class AssessDataDicKeyConstant {
     /*
      * 项目查勘
      */
-    public static final String CHECK_CONTENT = "check.content"; //清查内容
-    public static final String OTHER_RIGHT_TYPE = "other.right.type";   //他权类型
-    public static final String CASE_TYPE = "case.type";  //案例类型
-    public static final String CASE_INFO_SOURCE = "case.info.source";  //案例来源
+    public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
+    public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
 
     /**
      * 评估方法

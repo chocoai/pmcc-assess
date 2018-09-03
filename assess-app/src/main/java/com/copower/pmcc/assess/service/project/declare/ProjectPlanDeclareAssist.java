@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.assist;
+package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
@@ -34,7 +34,7 @@ public class ProjectPlanDeclareAssist implements ProjectPlanInterface {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Override
     public ModelAndView applyView(ProjectPlan projectPlan) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planDeclareIndex", "", 0, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/planDeclareIndex", "", 0, "-1", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectClassId());
         if(projectClassify!=null&& StringUtils.equals(projectClassify.getFieldName(), AssessProjectClassifyConstant.COMPREHENSIVE)){
@@ -49,19 +49,19 @@ public class ProjectPlanDeclareAssist implements ProjectPlanInterface {
 
     @Override
     public ModelAndView approvalView(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planDeclareApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/planDeclareApproval", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalEdit(ProjectPlan projectPlan, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planDeclareIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/planDeclareIndex", projectPlan.getProcessInsId(), boxId, taskId, agentUserAccount);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlan projectPlan, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/plan/planDeclareApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/planDeclareApproval", projectPlan.getProcessInsId(), boxId, "-1", "");
         return modelAndView;
     }
 }

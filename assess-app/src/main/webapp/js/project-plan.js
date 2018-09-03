@@ -5,10 +5,11 @@ var treeGridJson = {};
 var treeGridJsonData = {};
 $(function () {
     getPlanItemList();
-    $("#projectPhaseId").select2();
     DatepickerUtils.sectionChoose($("#projectPlanStart"), $("#projectPlanEnd"));
     DatepickerUtils.sectionChoose($("#planStartDate"), $("#planEndDate"));
-
+    if ($("#projectPhaseId").hasClass('select2')) {
+        $("#projectPhaseId").select2();
+    }
 });
 
 function nextEmployee() {
@@ -80,7 +81,7 @@ function selDept() {
     });
 }
 
-
+//快速设置选择责任人
 function selFastEmployee() {
     erpEmployee.select({
         onSelected: function (data) {
@@ -132,6 +133,7 @@ function clearFastValue(obj) {
     }
 }
 
+//保存计划明细数据
 function savePlanDtails() {
     if (!$("#frm_planDetails").valid()) {
         return false;
@@ -199,7 +201,11 @@ function addPlan(id) {
     var row = $('#PlanItemListed').treegrid('find', id);
     $("#pid").val(row["id"]);
     $("#firstPid").val(row["firstPid"]);
-    $("#projectPhaseId").val(row["projectPhaseId"]);
+    if($("#projectPhaseId").hasClass('select2')){
+        $("#projectPhaseId").select2('val', row.projectPhaseId)
+    }else{
+        $("#projectPhaseId").val(row.projectPhaseId);
+    }
     $("#planDetailsId").val(0);
     $('#div_plan').modal({backdrop: 'static', keyboard: false});
 
@@ -213,7 +219,11 @@ function editPlan(id) {
     $("#planDetailsId").val(row["id"]);
     $("#planStartDate").val(formatDate(row["planStartDate"]));
     $("#planEndDate").val(formatDate(row["planEndDate"]));
-    $("#projectPhaseId").val(row.projectPhaseId);
+    if($("#projectPhaseId").hasClass('select2')){
+        $("#projectPhaseId").select2('val', row.projectPhaseId)
+    }else{
+        $("#projectPhaseId").val(row.projectPhaseId);
+    }
     $('#div_plan').modal({backdrop: 'static', keyboard: false});
 }
 function deletePlan(id) {
@@ -408,7 +418,7 @@ function treeGridload() {
                 {field: "declareFormName", title: "declareFormName", align: "center", hidden: true},
                 {
                     field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
-                    if (row.bisEnable&&row.status=='none') {
+                    if (row.bisEnable && row.status == 'none') {
                         var s = "";
                         if ($("#planDetailsIds").val()) {
                             //如果不为空则说明是子计划，如果为子计划，则只允许新增项或编辑当前项

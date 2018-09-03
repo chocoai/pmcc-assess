@@ -22,7 +22,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${parentProject.projectPhaseName}-${projectPlanDetails.projectPhaseName}</h2>
+                    <h2>${declareRecord.name}-${projectPlanDetails.projectPhaseName}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -80,7 +80,7 @@
                         <table class="table" id="tb_surveyList">
                             <thead>
                             <tr>
-                                <th style="width: 10%">清查内容</th>
+                                <th style="width: 10%">一致性内容</th>
                                 <th style="width: 6%">是否一致</th>
                                 <th style="width: 10%">登记</th>
                                 <th style="width: 10%">实际</th>
@@ -230,7 +230,7 @@
                                         <div class="col-sm-4">
                                             <select class="form-control" required id="type" name="type">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${otherRightTypeList}">
+                                                <c:forEach var="items" items="${inventoryRightTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -243,7 +243,7 @@
                                         <div class="col-sm-4">
                                             <select class="form-control" required id="category" name="category">
                                                 <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${otherRightTypeList}">
+                                                <c:forEach var="items" items="${inventoryRightTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
                                                 </c:forEach>
                                             </select>
@@ -372,7 +372,7 @@
 <script type="application/javascript">
 
     $(function () {
-        loadAssetOtherList();
+        loadAssetOtherRightList();
     });
 
     //上传附件通用
@@ -403,7 +403,7 @@
     }
 
     //加载 他项权利列表
-    function loadAssetOtherList() {
+    function loadAssetOtherRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类型'});
@@ -554,7 +554,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadAssetOtherList();
+                        loadAssetOtherRightList();
                         $('#divBox').modal('hide');
                     }
                     else {
@@ -590,7 +590,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadAssetOtherList();//重载 (刷新)
+                        loadAssetOtherRightList();//重载 (刷新)
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
