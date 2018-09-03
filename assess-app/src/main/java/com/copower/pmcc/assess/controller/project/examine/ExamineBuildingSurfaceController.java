@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,7 +51,7 @@ public class ExamineBuildingSurfaceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingSurfaceList",method = {RequestMethod.GET},name = "层面结构列表")
-    public BootstrapTableVo getExamineBuildingSurfaceList(Integer examineType, Integer declareId,Integer planDetailsId,Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingSurfaceList(Integer examineType, Integer declareId,Integer planDetailsId,Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
@@ -65,6 +66,9 @@ public class ExamineBuildingSurfaceController {
             }
             if (buildingId!=null ){
                 examineBuildingSurface.setBuildingId(buildingId);
+            }
+            if (!StringUtils.isEmpty(buildNumber)){
+                examineBuildingSurface.setBuildNumber(buildNumber);
             }
             vo = examineBuildingSurfaceService.getExamineBuildingSurfaceLists(examineBuildingSurface);
         } catch (Exception e1) {

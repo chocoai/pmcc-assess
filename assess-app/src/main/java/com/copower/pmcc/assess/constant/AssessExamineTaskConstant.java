@@ -17,6 +17,8 @@ public class AssessExamineTaskConstant {
     public static final String FC_INDUSTRY_BLOCK_BASE = "fc.industry.block.base";//版块基础信息
     public static final String FC_RESIDENCE_ESTATE_BASE = "fc.residence.estate.base";//楼盘基础信息
     public static final String FC_INDUSTRY_ESTATE_BASE = "fc.industry.estate.base";//楼盘基础信息
+    public static final String FC_INDUSTRY_BUILDING_BASE = "fc.industry.building.base";//楼栋基础信息
+    public static final String FC_RESIDENCE_BUILDING_BASE = "fc.residence.building.base";//楼栋基础信息
     public static final String FC_RESIDENCE_ESTATE_LAND_STATE = "fc.residence.estate.land.state";//土地实体情况
     public static final String FC_INDUSTRY_ESTATE_LAND_STATE = "fc.industry.estate.land.state";//土地实体情况
     public static final String FC_RESIDENCE_UNIT_BASE = "fc.residence.unit.base";//单元基础信息

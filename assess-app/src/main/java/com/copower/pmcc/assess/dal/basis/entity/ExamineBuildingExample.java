@@ -2016,73 +2016,73 @@ public class ExamineBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberIsNull() {
-            addCriterion("build_number is null");
+        public Criteria andIdentifierIsNull() {
+            addCriterion("identifier is null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberIsNotNull() {
-            addCriterion("build_number is not null");
+        public Criteria andIdentifierIsNotNull() {
+            addCriterion("identifier is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberEqualTo(String value) {
-            addCriterion("build_number =", value, "buildNumber");
+        public Criteria andIdentifierEqualTo(String value) {
+            addCriterion("identifier =", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberNotEqualTo(String value) {
-            addCriterion("build_number <>", value, "buildNumber");
+        public Criteria andIdentifierNotEqualTo(String value) {
+            addCriterion("identifier <>", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberGreaterThan(String value) {
-            addCriterion("build_number >", value, "buildNumber");
+        public Criteria andIdentifierGreaterThan(String value) {
+            addCriterion("identifier >", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("build_number >=", value, "buildNumber");
+        public Criteria andIdentifierGreaterThanOrEqualTo(String value) {
+            addCriterion("identifier >=", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberLessThan(String value) {
-            addCriterion("build_number <", value, "buildNumber");
+        public Criteria andIdentifierLessThan(String value) {
+            addCriterion("identifier <", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberLessThanOrEqualTo(String value) {
-            addCriterion("build_number <=", value, "buildNumber");
+        public Criteria andIdentifierLessThanOrEqualTo(String value) {
+            addCriterion("identifier <=", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberLike(String value) {
-            addCriterion("build_number like", value, "buildNumber");
+        public Criteria andIdentifierLike(String value) {
+            addCriterion("identifier like", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberNotLike(String value) {
-            addCriterion("build_number not like", value, "buildNumber");
+        public Criteria andIdentifierNotLike(String value) {
+            addCriterion("identifier not like", value, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberIn(List<String> values) {
-            addCriterion("build_number in", values, "buildNumber");
+        public Criteria andIdentifierIn(List<String> values) {
+            addCriterion("identifier in", values, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberNotIn(List<String> values) {
-            addCriterion("build_number not in", values, "buildNumber");
+        public Criteria andIdentifierNotIn(List<String> values) {
+            addCriterion("identifier not in", values, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberBetween(String value1, String value2) {
-            addCriterion("build_number between", value1, value2, "buildNumber");
+        public Criteria andIdentifierBetween(String value1, String value2) {
+            addCriterion("identifier between", value1, value2, "identifier");
             return (Criteria) this;
         }
 
-        public Criteria andBuildNumberNotBetween(String value1, String value2) {
-            addCriterion("build_number not between", value1, value2, "buildNumber");
+        public Criteria andIdentifierNotBetween(String value1, String value2) {
+            addCriterion("identifier not between", value1, value2, "identifier");
             return (Criteria) this;
         }
     }

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
@@ -89,6 +90,9 @@ public class SurveyExamineTaskService {
     private ExamineHouseTradingService examineHouseTradingService;
     @Autowired
     private ExamineUnitService examineUnitService;
+    @Autowired
+    private ExamineBuildingService examineBuildingService;
+
     /**
      * 获取调查任务
      *
@@ -116,7 +120,7 @@ public class SurveyExamineTaskService {
      * @return
      */
     public int getRuningTaskCount(Integer planDetailsId) {
-        return surveyExamineTaskDao.getTaskCountByStatus(planDetailsId,ProjectStatusEnum.WAIT.getKey());
+        return surveyExamineTaskDao.getTaskCountByStatus(planDetailsId, ProjectStatusEnum.WAIT.getKey());
     }
 
     public List<CustomSurveyExamineTask> getCustomeExamineTaskList(Integer planDetailsId, String userAccount) {
@@ -506,6 +510,14 @@ public class SurveyExamineTaskService {
                     case AssessExamineTaskConstant.FC_RESIDENCE_BLOCK_BASE:
                         ExamineBlock examineBlock = JSON.parseObject(keyValueDto.getValue(), ExamineBlock.class);
                         examineBlockService.saveBlock(examineBlock);
+                        break;
+                    case AssessExamineTaskConstant.FC_INDUSTRY_BUILDING_BASE:
+                    case AssessExamineTaskConstant.FC_RESIDENCE_BUILDING_BASE:
+                        try {
+                            List<ExamineBuilding> examineBuildings = JSONObject.parseArray(keyValueDto.getValue(),ExamineBuilding.class);
+                        } catch (Exception e1) {
+                            //待处理
+                        }
                         break;
                     case AssessExamineTaskConstant.FC_RESIDENCE_ESTATE_BASE:
                     case AssessExamineTaskConstant.FC_INDUSTRY_ESTATE_BASE:

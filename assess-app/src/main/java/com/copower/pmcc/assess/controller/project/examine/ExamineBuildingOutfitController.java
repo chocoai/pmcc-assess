@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +54,7 @@ public class ExamineBuildingOutfitController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitList",method = {RequestMethod.GET},name = "楼栋外装情况列表")
-    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
@@ -68,6 +69,9 @@ public class ExamineBuildingOutfitController {
             }
             if (buildingId != null) {
                 examineBuildingOutfit.setBuildingId(buildingId);
+            }
+            if (!StringUtils.isEmpty(buildNumber)){
+                examineBuildingOutfit.setBuildNumber(buildNumber);
             }
             vo = examineBuildingOutfitService.getExamineBuildingOutfitLists(examineBuildingOutfit);
         } catch (Exception e1) {

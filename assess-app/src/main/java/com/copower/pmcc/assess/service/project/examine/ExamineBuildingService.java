@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,6 +179,23 @@ public class ExamineBuildingService {
             }
         }
         return builder.toString();
+    }
+
+    public void saveExamineBuilding(List<ExamineBuilding> examineBuildings) {
+        Integer id = 0;
+        try {
+            if (!StringUtils.isEmpty(examineBuildings)) {
+                for (ExamineBuilding oo : examineBuildings) {
+                    oo.setCreator(commonService.thisUserAccount());
+                    id = examineBuildingDao.addBuilding(oo);
+                }
+                updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(), id);
+                updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName(), id);
+                updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName(), id);
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
+        }
     }
 
     /**

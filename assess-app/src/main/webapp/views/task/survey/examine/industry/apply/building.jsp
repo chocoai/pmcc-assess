@@ -5,6 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
     <form class="form-horizontal" id="navButtonBuild">
+    <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
         <div class="form-group">
             <div class="x-valid">
                 <div class="col-sm-12">
@@ -30,7 +31,8 @@
                 </label>
                 <div class="col-sm-2">
                     <div class="btn-group" data-toggle="buttons">
-                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,2)">
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,2)">
                             复制上部分
                         </button>
                         <button class="btn btn-default"
@@ -46,7 +48,8 @@
                 </label>
                 <div class="col-sm-2">
                     <div class="btn-group" data-toggle="buttons">
-                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,3)">
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,3)">
                             复制上部分
                         </button>
                         <button class="btn btn-default"
@@ -62,7 +65,8 @@
                 </label>
                 <div class="col-sm-2">
                     <div class="btn-group" data-toggle="buttons">
-                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,4)">
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,4)">
                             复制上部分
                         </button>
                         <button class="btn btn-default"
@@ -129,15 +133,17 @@
                            data-rule-number='true' class="form-control">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    编号
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="编号" name="identifier"
-                           readonly="readonly" class="form-control">
-                </div>
-            </div>
+            <input type="hidden" placeholder="编号" name="identifier"
+                   readonly="readonly" class="form-control">
+            <%--<div class="x-valid">--%>
+            <%--<label class="col-sm-1 control-label">--%>
+            <%--编号--%>
+            <%--</label>--%>
+            <%--<div class="col-sm-3">--%>
+            <%--<input type="text" placeholder="编号" name="identifier"--%>
+            <%--readonly="readonly" class="form-control">--%>
+            <%--</div>--%>
+            <%--</div>--%>
         </div>
 
         <div class="form-group">
@@ -388,6 +394,7 @@
         //两个方法 都可以假如选项卡载入时 初始化
         ContainerFunForInit.building.push(examineBuilding_.prototype.viewInit);//初始化方法写入容器
         ContainerFunForInit.building.push(examineBuilding_.prototype.uploadFiles);//初始化方法写入容器
+        ContainerFunForGetData.push(examineBuilding_.prototype.getFormData);//获取数据方法写入容器
     });
 </script>
 <script type="application/javascript">
@@ -405,11 +412,34 @@
 
         };
         examineBuilding_.prototype = {
+            /**
+             * @author:  zch
+             * 描述:获取所有临时数据
+             * @date:2018-09-03
+             **/
+            getFormData: function () {
+                var keyValueDto = {};
+                keyValueDto.key = $("#navButtonBuild").find('[data-name="fieldName"]').val();
+                keyValueDto.value = objArray;
+                return keyValueDto;
+            },
+            /**
+             * @author:  zch
+             * 描述:根据索引获取数据
+             * @date:2018-09-03
+             **/
             getObjArray: function (index) {
+                var data = null;
                 if (examineBuilding_.prototype.isEmpty(index)) {
-                    return objArray[index];
+                    data = objArray[index];
+                    return data;
                 }
             },
+            /**
+             * @author:  zch
+             * 描述:设置数据
+             * @date:2018-09-03
+             **/
             setObjArrayElement: function (index, data) {
                 objArray[index] = data;
             },
@@ -442,6 +472,14 @@
             },
             getSonFlag: function () {
                 return sonFlag;
+            },
+            getIdentifier: function () {
+                var data = formParams(examineBuilding_.prototype.config().frm);
+                var identifier = data.identifier;
+                if (examineBuilding_.prototype.isEmpty(identifier)) {
+                    return identifier;
+                }
+                return "0";
             },
             getBuildId: function () {
                 var data = formParams(examineBuilding_.prototype.config().frm);
@@ -476,13 +514,13 @@
              * @date:
              **/
             dataNumberWrite: function (result) {
-                var data = result.data ;
-                if (examineBuilding_.prototype.isEmpty(data)){
+                var data = result.data;
+                if (examineBuilding_.prototype.isEmpty(data)) {
                     $("#" + examineBuilding_.prototype.config().frm).initForm(data);
-                    if (examineBuilding_.prototype.isEmpty(data.openTime)){
+                    if (examineBuilding_.prototype.isEmpty(data.openTime)) {
                         $("#" + examineBuilding_.prototype.config().frm + " .openTime").val(formatDate(data.openTime));
                     }
-                    if (examineBuilding_.prototype.isEmpty(data.roomTime)){
+                    if (examineBuilding_.prototype.isEmpty(data.roomTime)) {
                         $("#" + examineBuilding_.prototype.config().frm + " .roomTime").val(formatDate(data.roomTime));
                     }
                     var frm = examineBuilding_.prototype.config().frm;
@@ -556,8 +594,13 @@
                         //使触发机制失效!
                         examineBuilding_.prototype.setNavButtonBuildFlag(false);
                     }
+                    //-----------------||---------------
                     //清除数据
                     examineBuilding_.prototype.navButtonBuild.clearAll();
+                    examineBuilding_.prototype.showFiles();
+                    examineBuilding_.prototype.subLoadDataList();
+                    examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
+                    examineBuilding_.prototype.examineBuildingSurfaceLoadList();
                     $.each($("#navButtonBuild button"), function (i, n) {
                         $(n).removeClass();
                         $(n).addClass("btn btn-default");
@@ -570,24 +613,50 @@
                     examineBuilding_.prototype.navButtonBuild.initData(identifierNumber);
                 },
                 //复制数据
-                copyData:function (target,identifierNumber) {
+                copyData: function (target, identifierNumber) {
+                    var number = "";
+                    $.each($("#navButtonBuild button"), function (i, n) {
+                        if ($(n).attr("class") == "btn btn-primary") {
+                            number = i;
+                        }
+                    });
+                    if (examineBuilding_.prototype.getNavButtonBuildFlag()) {//校验机制被触发 (页面被编辑或者被复制)
+                        if (!$("#" + examineBuilding_.prototype.config().frm).valid()) {
+                            return false;
+                        }
+                        //保存临时数据
+                        examineBuilding_.prototype.navButtonBuild.especiallyData(number);
+                        //使触发机制失效!
+                        examineBuilding_.prototype.setNavButtonBuildFlag(false);
+                    }
+                    //-----------------||---------------
                     var data = examineBuilding_.prototype.getObjArray(identifierNumber - 1);
-                    if (examineBuilding_.prototype.isEmpty(data)){
+                    if (examineBuilding_.prototype.isEmpty(data)) {
 
-                    }else {
+                    } else {
                         toastr.success('没有能复制的部分!');
                         return false;
                     }
-                    if ("buildingNumber" in data){
+                    //对象copy (原因是对象之间直接赋值复制的是引用 修改一个对象会对另一个对象造成影响)
+                    var newObj = {};
+                    for (var attr in data) {
+                        newObj[attr] = data[attr];
+                    }
+                    if ("buildingNumber" in newObj) {//判断期望对象是否存在 (newObj很可能存在但是期望值不存在就认为不存在)
                         //清除数据
                         examineBuilding_.prototype.navButtonBuild.clearAll();
-                        data.identifier = examineBuilding_.prototype.navButtonBuild.rule(identifierNumber) ;
-                        examineBuilding_.prototype.setObjArrayElement(identifierNumber,data);
+                        var item = examineBuilding_.prototype.getObjArray(identifierNumber);
+                        if (examineBuilding_.prototype.isEmpty(item)) {
+                            newObj.identifier = item.identifier;
+                        } else {
+                            newObj.identifier = examineBuilding_.prototype.navButtonBuild.rule(identifierNumber);
+                        }
+                        examineBuilding_.prototype.setObjArrayElement(identifierNumber, newObj);
                         //赋值
                         examineBuilding_.prototype.navButtonBuild.initData(identifierNumber);
-                        $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber+"部分");
-                        $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber+"部分");
-                        $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber+"部分");
+                        $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber + "部分");
+                        $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber + "部分");
+                        $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber + "部分");
                         //使触发机制生效!
                         examineBuilding_.prototype.setNavButtonBuildFlag(true);
                         $.each($("#navButtonBuild button"), function (i, n) {
@@ -597,7 +666,7 @@
                         //改变按钮颜色
                         $(target).removeClass();
                         $(target).addClass("btn btn-primary");
-                    }else {
+                    } else {
                         toastr.success('没有能复制的部分!');
                         return false;
                     }
@@ -613,9 +682,9 @@
                         examineBuilding_.prototype.setObjArrayElement(identifierNumber, {identifier: examineBuilding_.prototype.navButtonBuild.rule(identifierNumber)});
                     }
                     $("#" + examineBuilding_.prototype.config().frm + " " + "input[name='" + "identifier" + "']").val(identifier);
-                    $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber+"部分");
-                    $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber+"部分");
-                    $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber+"部分");
+                    $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber + "部分");
+                    $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber + "部分");
+                    $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber + "部分");
                     console.log("identifierNumber:" + identifierNumber);
                     console.log("identifier:" + identifier);
                     console.log("number:" + number);
@@ -624,17 +693,23 @@
                 /**特别处理数据!**/
                 especiallyData: function (number) {
                     var data = formParams(examineBuilding_.prototype.config().frm);
+                    if ($("#declareId").size() > 0) {
+                        data.declareId = $("#declareId").val();
+                    }
+                    if ($("#examineType").size() > 0) {
+                        data.examineType = $("#examineType").val();
+                    }
                     var temp = examineBuilding_.prototype.navButtonBuild.especiallyNumber(number);
                     var item = examineBuilding_.prototype.getObjArray(temp);
-                    if (examineBuilding_.prototype.isEmpty(item)){
+                    if (examineBuilding_.prototype.isEmpty(item)) {
                         data.identifier = item.identifier;
-                    }else {
-                        data.identifier = examineBuilding_.prototype.navButtonBuild.rule(temp) ;
+                    } else {
+                        data.identifier = examineBuilding_.prototype.navButtonBuild.rule(temp);
                     }
-                    examineBuilding_.prototype.setObjArrayElement(temp,data);
+                    examineBuilding_.prototype.setObjArrayElement(temp, data);
                 },
                 //清除数据
-                clearAll:function () {
+                clearAll: function () {
                     var frm = examineBuilding_.prototype.config().frm;
                     $("#" + frm).clearAll();
                     examineBuilding_.prototype.objectWriteSelectData(frm, null, "buildingCategory");
@@ -645,10 +720,10 @@
                     examineBuilding_.prototype.objectWriteSelectData(frm, null, "propertyId");
                 },
                 //赋值
-                initData:function (identifierNumber) {
+                initData: function (identifierNumber) {
                     var data = examineBuilding_.prototype.getObjArray(identifierNumber);
                     if (examineBuilding_.prototype.isEmpty(data)) {
-                        examineBuilding_.prototype.dataNumberWrite({data:data});
+                        examineBuilding_.prototype.dataNumberWrite({data: data});
                     }
                     examineBuilding_.prototype.showFiles();
                     examineBuilding_.prototype.subLoadDataList();
@@ -656,11 +731,11 @@
                     examineBuilding_.prototype.examineBuildingSurfaceLoadList();
                 },
                 //编号 规则
-                rule:function (identifierNumber) {
+                rule: function (identifierNumber) {
                     var date = new Date();
                     var identifier = "";
                     // identifier = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()  ;
-                    identifier = examineBuilding_.prototype.navButtonBuild.randomNum(10000,900000);
+                    identifier = examineBuilding_.prototype.navButtonBuild.randomNum(10000, 900000);
                     identifier += ":" + identifierNumber;
                     return identifier;
                 },
@@ -695,13 +770,13 @@
                     return 1;
                 },
                 //生成从minNum到maxNum的随机数 (请尽量设置大一些 以免重复)
-                randomNum:function (minNum,maxNum) {
-                    switch(arguments.length){
+                randomNum: function (minNum, maxNum) {
+                    switch (arguments.length) {
                         case 1:
-                            return parseInt(Math.random()*minNum+1,10);
+                            return parseInt(Math.random() * minNum + 1, 10);
                             break;
                         case 2:
-                            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                            return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
                             break;
                         default:
                             return 0;
@@ -740,7 +815,6 @@
                             examineBuilding_.prototype.subLoadDataList();
                             examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
                             examineBuilding_.prototype.examineBuildingSurfaceLoadList();
-                            examineBuilding_.prototype.nav.writePageNum(data.number);
                         }
                     },
                     error: function (result) {
@@ -758,7 +832,8 @@
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().sonFrm);
-                data.buildingId = examineBuilding_.prototype.getBuildId();
+                // data.buildingId = examineBuilding_.prototype.getBuildId();
+                data.buildNumber = examineBuilding_.prototype.getIdentifier();
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
@@ -982,7 +1057,8 @@
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().examineBuildingMaintenanceFrm);
-                data.buildingId = examineBuilding_.prototype.getBuildId();
+                // data.buildingId = examineBuilding_.prototype.getBuildId();
+                data.buildNumber = examineBuilding_.prototype.getIdentifier();
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
@@ -1017,7 +1093,8 @@
                     return false;
                 }
                 var data = formParams(examineBuilding_.prototype.config().examineBuildingSurfaceFrm);
-                data.buildingId = examineBuilding_.prototype.getBuildId();
+                // data.buildingId = examineBuilding_.prototype.getBuildId();
+                data.buildNumber = examineBuilding_.prototype.getIdentifier();
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
@@ -1137,7 +1214,7 @@
                 TableInit(examineBuilding_.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/examineBuildingSurface/getExamineBuildingSurfaceList", cols, {
                     declareId: $("#declareId").val(),
                     examineType: $("#examineType").val(),
-                    buildingId: examineBuilding_.prototype.getBuildId()
+                    buildNumber: examineBuilding_.prototype.getIdentifier()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1165,7 +1242,7 @@
                 TableInit(examineBuilding_.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/examineBuildingMaintenance/getExamineBuildingMaintenanceList", cols, {
                     declareId: $("#declareId").val(),
                     examineType: $("#examineType").val(),
-                    buildingId: examineBuilding_.prototype.getBuildId()
+                    buildNumber: examineBuilding_.prototype.getIdentifier()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -1284,7 +1361,7 @@
                 TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/examineBuildingOutfit/getExamineBuildingOutfitList", cols, {
                     declareId: $("#declareId").val(),
                     examineType: $("#examineType").val(),
-                    buildingId: examineBuilding_.prototype.getBuildId()
+                    buildNumber: examineBuilding_.prototype.getIdentifier()
                 }, {
                     showColumns: false,
                     showRefresh: false,
