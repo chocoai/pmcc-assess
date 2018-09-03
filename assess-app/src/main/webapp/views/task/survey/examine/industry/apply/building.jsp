@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="navButtonBuild">
         <div class="form-group">
             <div class="x-valid">
                 <div class="col-sm-12">
@@ -15,32 +15,61 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                 </label>
-                <div class="col-sm-3">
-                    <label class="btn btn-success" onclick="examineBuilding_.prototype.getByNumberData(1,this)">楼栋基础(第一部分)</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                </label>
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
-                            复制上部分
-                        </label>
-                        <label class="btn btn-primary" onclick="examineBuilding_.prototype.nav.prev(this)">
-                            上一部分
-                        </label>
-                        <label class="btn btn-primary" onclick="examineBuilding_.prototype.nav.next(this)">
-                            下一部分<span class="badge navTotal">总:0</span>
-                        </label>
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.btnWrite(this,1);">
+                            楼栋基础
+                        </button>
                     </div>
                 </div>
             </div>
+
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                 </label>
                 <div class="col-sm-2">
-                    当前第<span class="badge navPageNum">1</span>部分
+                    <div class="btn-group" data-toggle="buttons">
+                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,2)">
+                            复制上部分
+                        </button>
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.btnWrite(this,2);">
+                            第二部分
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                </label>
+                <div class="col-sm-2">
+                    <div class="btn-group" data-toggle="buttons">
+                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,3)">
+                            复制上部分
+                        </button>
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.btnWrite(this,3);">
+                            第三部分
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                </label>
+                <div class="col-sm-2">
+                    <div class="btn-group" data-toggle="buttons">
+                        <button class="btn btn-default" onclick="examineBuilding_.prototype.navButtonBuild.copyData(this,4)">
+                            复制上部分
+                        </button>
+                        <button class="btn btn-default"
+                                onclick="examineBuilding_.prototype.navButtonBuild.btnWrite(this,4);">
+                            第四部分
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,8 +84,9 @@
                     楼栋号
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼栋号" name="buildingNumber"
-                           class="form-control" required="required">
+                    <input type="text" placeholder="楼栋号 (在这触发验证机制)" name="buildingNumber"
+                           class="form-control" required="required"
+                           onblur="examineBuilding_.prototype.setNavButtonBuildFlag(true)">
                 </div>
             </div>
             <div class="x-valid">
@@ -97,6 +127,15 @@
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼层起(数字)" name="floorStart"
                            data-rule-number='true' class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    编号
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="编号" name="identifier"
+                           readonly="readonly" class="form-control">
                 </div>
             </div>
         </div>
@@ -293,24 +332,12 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <div class="col-sm-5">
-                </div>
-                <div class="col-sm-2">
-                    <label class="btn btn-success" onclick="examineBuilding_.prototype.saveData();">保存或者更新 <i
-                            class="fa fa-user"></i></label>
-                </div>
-                <div class="col-sm-5">
-                </div>
-            </div>
-        </div>
     </form>
 </div>
 <div class="x_content">
     <div class="x_title">
         <h3>
-            楼栋外装
+            楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
                     onclick="examineBuilding_.prototype.subShowModelData()"> 新增
             </button>
@@ -326,7 +353,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            层面结构
+            层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
                     onclick="examineBuilding_.prototype.examineBuildingSurfaceShowModelData()"> 新增
             </button>
@@ -342,7 +369,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            维护结构
+            维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
                     onclick="examineBuilding_.prototype.examineBuildingMaintenanceShowModelData()"> 新增
             </button>
@@ -372,24 +399,25 @@
         var sonFlag = true;
         var examineBuildingMaintenanceFlag = true;
         var examineBuildingSurfaceFlag = true;
+        var navButtonBuildFlag = false;//触发校验机制
+        var objArray = new Array();
         examineBuilding_ = function () {
 
         };
         examineBuilding_.prototype = {
-            select2IsNotNull: function (data) {
-                if (data == null) {
-                    return false;
+            getObjArray: function (index) {
+                if (examineBuilding_.prototype.isEmpty(index)) {
+                    return objArray[index];
                 }
-                if (data == '') {
-                    return false;
-                }
-                if (data == "") {
-                    return false;
-                }
-                if (data == 0) {
-                    return false;
-                }
-                return true;
+            },
+            setObjArrayElement: function (index, data) {
+                objArray[index] = data;
+            },
+            setNavButtonBuildFlag: function (flag_) {
+                navButtonBuildFlag = flag_;
+            },
+            getNavButtonBuildFlag: function () {
+                return navButtonBuildFlag;
             },
             setExamineBuildingSurfaceFlag: function (flag_) {
                 examineBuildingSurfaceFlag = flag_;
@@ -430,16 +458,10 @@
                 return id;
             },
             isEmpty: function (item) {
-                if (item == null) {
-                    return false;
+                if (item) {
+                    return true;
                 }
-                if (item == "") {
-                    return false;
-                }
-                if (item == '') {
-                    return false;
-                }
-                return true;
+                return false;
             },
             objectWriteSelectData: function (frm, data, name) {
                 if (examineBuilding_.prototype.isEmpty(data)) {
@@ -454,16 +476,23 @@
              * @date:
              **/
             dataNumberWrite: function (result) {
-                $("#" + examineBuilding_.prototype.config().frm).initForm(result.data);
-                $("#" + examineBuilding_.prototype.config().frm + " .openTime").val(formatDate(result.data.openTime));
-                $("#" + examineBuilding_.prototype.config().frm + " .roomTime").val(formatDate(result.data.roomTime));
-                var frm = examineBuilding_.prototype.config().frm;
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingCategory, "buildingCategory");
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingStructure, "buildingStructure");
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.buildingstructurePid, "buildingstructurePid");
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.propertyType, "propertyType");
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.builderId, "builderId");
-                examineBuilding_.prototype.objectWriteSelectData(frm, result.data.propertyId, "propertyId");
+                var data = result.data ;
+                if (examineBuilding_.prototype.isEmpty(data)){
+                    $("#" + examineBuilding_.prototype.config().frm).initForm(data);
+                    if (examineBuilding_.prototype.isEmpty(data.openTime)){
+                        $("#" + examineBuilding_.prototype.config().frm + " .openTime").val(formatDate(data.openTime));
+                    }
+                    if (examineBuilding_.prototype.isEmpty(data.roomTime)){
+                        $("#" + examineBuilding_.prototype.config().frm + " .roomTime").val(formatDate(data.roomTime));
+                    }
+                    var frm = examineBuilding_.prototype.config().frm;
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingCategory, "buildingCategory");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingStructure, "buildingStructure");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingstructurePid, "buildingstructurePid");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.propertyType, "propertyType");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.builderId, "builderId");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.propertyId, "propertyId");
+                }
             },
             /**
              * @author:  zch
@@ -474,7 +503,6 @@
                 if (examineBuilding_.prototype.getFlag()) {
                     examineBuilding_.prototype.init();
                     examineBuilding_.prototype.initRemoveExamineBuildingOutfit();
-                    examineBuilding_.prototype.nav.startWrite();
                     examineBuilding_.prototype.setFlag(false);
                 }
                 examineBuilding_.prototype.subLoadDataList();
@@ -495,13 +523,13 @@
                 data.sonTable = "ExamineBuildingOutfitList";
                 data.sonFrm = "frmExamineBuildingOutfit";
 
+                data.examineBuildingSurfaceBox = "divBoxExamineBuildingSurface";
                 data.examineBuildingSurfaceTable = "ExamineBuildingSurfaceList";
                 data.examineBuildingSurfaceFrm = "ExamineBuildingSurfaceFrm";
-                data.examineBuildingSurfaceBox = "divBoxExamineBuildingSurface";
 
+                data.examineBuildingMaintenanceBox = "divBoxExamineBuildingMaintenance";
                 data.examineBuildingMaintenanceTable = "ExamineBuildingMaintenanceList";
                 data.examineBuildingMaintenanceFrm = "ExamineBuildingMaintenanceFrm";
-                data.examineBuildingMaintenanceBox = "divBoxExamineBuildingMaintenance";
 
                 data.type = "null";//
                 data.database_Table = AssessDBKey.ExamineBuilding;//
@@ -510,46 +538,175 @@
                 data.building_floor_Appearance_figure = "building_floor_Appearance_figure";//外观图id和字段
                 return data;
             },
-            /**
-             * @author:  zch
-             * 描述:更新导航栏数据信息
-             * @date:
-             **/
-            nav: {
-                startWrite: function () {
-                    var data = {};
-                    if ($("#declareId").size() > 0) {
-                        data.declareId = $("#declareId").val();
-                    }
-                    if ($("#examineType").size() > 0) {
-                        data.examineType = $("#examineType").val();
-                    }
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingList",
-                        type: "get",
-                        dataType: "json",
-                        data: data,
-                        success: function (result) {
-                            $(".navTotal").html("总:" + result.total);
-                            examineBuilding_.prototype.nav.writePageNum("0");
-                        },
-                        error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+            navButtonBuild: {
+                //入口
+                btnWrite: function (target, identifierNumber) {
+                    var number = "";
+                    $.each($("#navButtonBuild button"), function (i, n) {
+                        if ($(n).attr("class") == "btn btn-primary") {
+                            number = i;
                         }
-                    })
+                    });
+                    if (examineBuilding_.prototype.getNavButtonBuildFlag()) {//校验机制被触发 (页面被编辑或者被复制)
+                        if (!$("#" + examineBuilding_.prototype.config().frm).valid()) {
+                            return false;
+                        }
+                        //保存临时数据
+                        examineBuilding_.prototype.navButtonBuild.especiallyData(number);
+                        //使触发机制失效!
+                        examineBuilding_.prototype.setNavButtonBuildFlag(false);
+                    }
+                    //清除数据
+                    examineBuilding_.prototype.navButtonBuild.clearAll();
+                    $.each($("#navButtonBuild button"), function (i, n) {
+                        $(n).removeClass();
+                        $(n).addClass("btn btn-default");
+                    });
+                    //改变按钮颜色
+                    $(target).removeClass();
+                    $(target).addClass("btn btn-primary");
+                    examineBuilding_.prototype.navButtonBuild.identifier(number, identifierNumber);
+                    //赋值
+                    examineBuilding_.prototype.navButtonBuild.initData(identifierNumber);
                 },
-                writePageNum: function (num) {
-                    $(".navPageNum").html(num);
+                //复制数据
+                copyData:function (target,identifierNumber) {
+                    var data = examineBuilding_.prototype.getObjArray(identifierNumber - 1);
+                    if (examineBuilding_.prototype.isEmpty(data)){
+
+                    }else {
+                        toastr.success('没有能复制的部分!');
+                        return false;
+                    }
+                    if ("buildingNumber" in data){
+                        //清除数据
+                        examineBuilding_.prototype.navButtonBuild.clearAll();
+                        data.identifier = examineBuilding_.prototype.navButtonBuild.rule(identifierNumber) ;
+                        examineBuilding_.prototype.setObjArrayElement(identifierNumber,data);
+                        //赋值
+                        examineBuilding_.prototype.navButtonBuild.initData(identifierNumber);
+                        $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber+"部分");
+                        $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber+"部分");
+                        $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber+"部分");
+                        //使触发机制生效!
+                        examineBuilding_.prototype.setNavButtonBuildFlag(true);
+                        $.each($("#navButtonBuild button"), function (i, n) {
+                            $(n).removeClass();
+                            $(n).addClass("btn btn-default");
+                        });
+                        //改变按钮颜色
+                        $(target).removeClass();
+                        $(target).addClass("btn btn-primary");
+                    }else {
+                        toastr.success('没有能复制的部分!');
+                        return false;
+                    }
                 },
-                //下一部分
-                next: function (item) {
-                    var number = parseInt($(".navPageNum").html()) + 1;
-                    examineBuilding_.prototype.getByNumberData(number,item);
+                //编号处理
+                identifier: function (number, identifierNumber) {
+                    number = examineBuilding_.prototype.navButtonBuild.especiallyNumber(number);
+                    var data = examineBuilding_.prototype.getObjArray(identifierNumber);
+                    var identifier = null;
+                    if (examineBuilding_.prototype.isEmpty(data)) {
+                        identifier = data.identifier;
+                    } else {
+                        examineBuilding_.prototype.setObjArrayElement(identifierNumber, {identifier: examineBuilding_.prototype.navButtonBuild.rule(identifierNumber)});
+                    }
+                    $("#" + examineBuilding_.prototype.config().frm + " " + "input[name='" + "identifier" + "']").val(identifier);
+                    $("." + examineBuilding_.prototype.config().sonTable).html(identifierNumber+"部分");
+                    $("." + examineBuilding_.prototype.config().examineBuildingSurfaceTable).html(identifierNumber+"部分");
+                    $("." + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).html(identifierNumber+"部分");
+                    console.log("identifierNumber:" + identifierNumber);
+                    console.log("identifier:" + identifier);
+                    console.log("number:" + number);
+                    console.log(objArray);
                 },
-                //上一部分
-                prev: function (item) {
-                    var number = parseInt($(".navPageNum").html()) - 1;
-                    examineBuilding_.prototype.getByNumberData(number,item);
+                /**特别处理数据!**/
+                especiallyData: function (number) {
+                    var data = formParams(examineBuilding_.prototype.config().frm);
+                    var temp = examineBuilding_.prototype.navButtonBuild.especiallyNumber(number);
+                    var item = examineBuilding_.prototype.getObjArray(temp);
+                    if (examineBuilding_.prototype.isEmpty(item)){
+                        data.identifier = item.identifier;
+                    }else {
+                        data.identifier = examineBuilding_.prototype.navButtonBuild.rule(temp) ;
+                    }
+                    examineBuilding_.prototype.setObjArrayElement(temp,data);
+                },
+                //清除数据
+                clearAll:function () {
+                    var frm = examineBuilding_.prototype.config().frm;
+                    $("#" + frm).clearAll();
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "buildingCategory");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "buildingStructure");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "buildingstructurePid");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "propertyType");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "builderId");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, null, "propertyId");
+                },
+                //赋值
+                initData:function (identifierNumber) {
+                    var data = examineBuilding_.prototype.getObjArray(identifierNumber);
+                    if (examineBuilding_.prototype.isEmpty(data)) {
+                        examineBuilding_.prototype.dataNumberWrite({data:data});
+                    }
+                    examineBuilding_.prototype.showFiles();
+                    examineBuilding_.prototype.subLoadDataList();
+                    examineBuilding_.prototype.examineBuildingMaintenanceLoadList();
+                    examineBuilding_.prototype.examineBuildingSurfaceLoadList();
+                },
+                //编号 规则
+                rule:function (identifierNumber) {
+                    var date = new Date();
+                    var identifier = "";
+                    // identifier = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()  ;
+                    identifier = examineBuilding_.prototype.navButtonBuild.randomNum(10000,900000);
+                    identifier += ":" + identifierNumber;
+                    return identifier;
+                },
+                /*编号 特别处理(处理的是button所以从0开始)*/
+                especiallyNumber: function (number) {
+                    //0-2-4-6  1-3-5  (1,2是第二部分) (3,4是第三部分)  (5,6是第四部分)
+                    if (examineBuilding_.prototype.isEmpty(number)) {
+                        if (number == 1) {
+                            return 2;
+                        }
+                        if (number == 2) {
+                            return 2;
+                        }
+                        if (number == 3) {
+                            return 3;
+                        }
+                        if (number == 4) {
+                            return 3;
+                        }
+                        if (number == 5) {
+                            return 4;
+                        }
+                        if (number == 6) {
+                            return 4;
+                        }
+                    }
+                    //由于js中0 也属于false,所以再次判断
+                    var regPos = /0/gi; //0 判断
+                    if (regPos.test(number)) {
+                        return 1;
+                    }
+                    return 1;
+                },
+                //生成从minNum到maxNum的随机数 (请尽量设置大一些 以免重复)
+                randomNum:function (minNum,maxNum) {
+                    switch(arguments.length){
+                        case 1:
+                            return parseInt(Math.random()*minNum+1,10);
+                            break;
+                        case 2:
+                            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
+                            break;
+                        default:
+                            return 0;
+                            break;
+                    }
                 }
             },
             getByNumberData: function (number, item) {
@@ -576,7 +733,7 @@
                                 $(item).removeClass();
                                 $(item).addClass("btn btn-primary");
                                 examineBuilding_.prototype.dataNumberWrite(result);
-                            }else {
+                            } else {
                                 toastr.success('请重新选择!');
                             }
                             examineBuilding_.prototype.showFiles();
