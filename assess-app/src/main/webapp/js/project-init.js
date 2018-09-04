@@ -14,6 +14,8 @@ Contacts.prototype.config = function () {
     return Contacts;
 };
 
+
+var attachmentIdInitiateConsignor = null;
 //委托人
 function CONSIGNOR() {
 
@@ -46,6 +48,13 @@ CONSIGNOR.prototype = {
             $("#no_legal_person").hide();
             $("#legal_person").show();
         }
+    },
+    setAttachmentIdInitiateConsignor:function (item) {
+        console.log("item:"+item);
+        attachmentIdInitiateConsignor = item;
+    },
+    getAttachmentIdInitiateConsignor:function () {
+        return attachmentIdInitiateConsignor;
     }
 };
 
@@ -74,6 +83,7 @@ POSSESSOR.prototype = {
                 POSSESSOR.prototype.takeOutCONSIGNOR.noLegal();
             }
             POSSESSOR.prototype.takeOutCONSIGNOR.contacts.init();
+            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.files();
         });
     }
     ,
@@ -127,7 +137,54 @@ POSSESSOR.prototype = {
         contacts:{
             init:function () {
                 var data = POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getContact();
-                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setContact(data);
+                if (data != null){
+                    if (data.length >= 1){
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setContact(data);
+                    }
+                }
+            },
+            //把委托人上传的附件给带出来
+            files:function () {
+                var data = null;
+                var attachmentIdInitiate = CONSIGNOR.prototype.getAttachmentIdInitiateConsignor();
+                if (attachmentIdInitiate != null){//说明委托人有上传附件
+                    $.ajax({
+                        type: "POST",
+                        url: Contacts.prototype.getUrl()+"/dataDeveloper/getSysAttachmentDto",
+                        data: {attachmentId:attachmentIdInitiate},
+                        success: function (result) {
+                            if (result.ret) {
+                                data = result.data ;
+                                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.saveFile(data);//copy file
+                            } else {
+                                Alert("传输数据失败，失败原因:" + result.errmsg);
+                            }
+                        }
+                    });
+                }
+            },
+            /**
+            * @author:  zch
+            * 描述:新增附件
+            * @date:2018-09-04
+            **/
+            saveFile:function (data) {
+                //替换关键数据
+                data.tableName = AssessDBKey.InitiatePossessor ;
+                data.id = null;
+                data.fieldsName = "pAttachmentProjectEnclosureId" ;
+                $.ajax({
+                    type: "POST",
+                    url: Contacts.prototype.getUrl()+"/dataDeveloper/saveAndUpdateSysAttachmentDto",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            showFileInitiatePossessor();
+                        } else {
+                            Alert("传输数据失败，失败原因:" + result.errmsg);
+                        }
+                    }
+                });
             },
             //把联系人信息数据写入到数据库中 (把从委托人获取的联系人写入到占有人中)
             setContact:function (data) {
@@ -154,6 +211,13 @@ POSSESSOR.prototype = {
             },
             getContact:function () {
                 var data = null;
+                var item = null;
+                item = $("#" + Contacts.prototype.POSSESSOR().getData().table).bootstrapTable("getData");
+                if (item != null){
+                    if (item.length >= 1){//说明已经存在数据则不再写
+                        return data ;
+                    }
+                }
                 data = $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("getData");
                 return data;
             }

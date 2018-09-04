@@ -263,6 +263,9 @@
             },
             deleteFlag: true
         });
+        showFileInitiatePossessor();
+    });
+    function showFileInitiatePossessor() {
         FileUtils.getFileShows({
             target: "pAttachmentProjectEnclosureId",
             formData: {
@@ -273,6 +276,6 @@
             },
             deleteFlag: true
         })
-    });
+    }
 </script>
 </html>

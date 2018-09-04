@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
@@ -31,6 +33,8 @@ public class DataDeveloperController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -95,5 +99,27 @@ public class DataDeveloperController {
             logger.error(String.format("exception: %s",e.getMessage()),e);
             return HttpResult.newErrorResult("保存异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getSysAttachmentDto",method = {RequestMethod.POST},name = "获取附件")
+    public HttpResult getSysAttachmentDto(Integer attachmentId){
+        SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
+        if (sysAttachmentDto != null){
+            return HttpResult.newCorrectResult(sysAttachmentDto);
+        }
+        return HttpResult.newErrorResult("异常");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveAndUpdateSysAttachmentDto",method = {RequestMethod.POST},name = "新增或者更新附件")
+    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto){
+        if (sysAttachmentDto != null){
+            if (sysAttachmentDto.getId() == null){
+                baseAttachmentService.addAttachment(sysAttachmentDto);
+                return HttpResult.newCorrectResult(sysAttachmentDto);
+            }
+        }
+        return HttpResult.newErrorResult("异常");
     }
 }

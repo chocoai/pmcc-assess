@@ -246,18 +246,43 @@
     </div>
 </div>
 <script>
+    <%--FileUtils.uploadFiles({--%>
+        <%--target: "csAttachmentProjectEnclosureId",--%>
+        <%--disabledTarget: "btn_submit",--%>
+        <%--formData: {--%>
+            <%--tableName: AssessDBKey.InitiateConsignor,--%>
+            <%--tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},--%>
+            <%--projectId: "${projectPlanDetails.projectId}",--%>
+            <%--creater: "${currUserAccount}"--%>
+        <%--},--%>
+        <%--deleteFlag: true,--%>
+        <%--success:function (data) {--%>
+            <%--console.log("测试!:"+data);--%>
+        <%--}--%>
+    <%--});--%>
     $(function () {
         FileUtils.uploadFiles({
             target: "csAttachmentProjectEnclosureId",
             disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.InitiateConsignor,
-                tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
-                projectId: "${projectPlanDetails.projectId}",
-                creater: "${currUserAccount}"
+            onUpload:function (file) {
+                var formData = {
+                    tableName: AssessDBKey.InitiateConsignor,
+                    tableId: ${empty projectInfo.consignorVo?0:projectInfo.consignorVo.id},
+                    projectId: "${projectPlanDetails.projectId}",
+                    creater: "${currUserAccount}"
+                };
+                return formData;
+            },onUploadComplete:function (result,file) {
+                CONSIGNOR.prototype.setAttachmentIdInitiateConsignor(result);
+                showFilecsAttachmentProjectEnclosureId();
             },
-            deleteFlag: true
+            deleteFlag: true,
+            success:function (data) {
+                console.log("测试!:"+data);
+            }
         });
+    });
+    function showFilecsAttachmentProjectEnclosureId() {
         FileUtils.getFileShows({
             target: "csAttachmentProjectEnclosureId",
             formData: {
@@ -268,6 +293,7 @@
             },
             deleteFlag: true
         })
-    });
+    }
+
 </script>
 </html>
