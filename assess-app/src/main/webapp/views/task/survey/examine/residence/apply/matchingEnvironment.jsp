@@ -277,18 +277,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            影响程度<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="influenceDegree"
-                                                    class="form-control search-select select2 influenceDegree">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -310,6 +298,18 @@
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
                                                     class="form-control search-select select2 category">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            影响程度<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="influenceDegree"
+                                                    class="form-control search-select select2 influenceDegree">
                                             </select>
                                         </div>
                                     </div>

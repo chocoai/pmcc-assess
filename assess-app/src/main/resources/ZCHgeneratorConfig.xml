@@ -61,9 +61,13 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_examine_building" domainObjectName="ExamineBuilding">
+        <table tableName="tb_data_land_level" domainObjectName="DataLandLevel">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
+        <!--<table tableName="tb_examine_building" domainObjectName="ExamineBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

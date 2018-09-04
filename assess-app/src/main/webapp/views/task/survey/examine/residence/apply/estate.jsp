@@ -105,10 +105,13 @@
 
     <div class="form-group">
         <div class="x-valid">
-            <label class="col-sm-1 control-label">总栋数</label>
+            <label class="col-sm-1 control-label">楼栋数</label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 totalBuildingType" name="totalBuildingType">
-                </select>
+                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="楼栋数(请输入数字)" required="required"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}" name="totalBuildingType"
+                       class="form-control">
+                <%--<select class="form-control search-select select2 totalBuildingType" name="totalBuildingType">--%>
+                <%--</select>--%>
             </div>
         </div>
     </div>
@@ -264,10 +267,10 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 })
-                AssessCommon.loadDataDicByKey(AssessDicKey.estateTotalBuildingType, "${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", function (html, data) {
-                    $("#" + Estate.config().frm + " .totalBuildingType").html(html);
-                    $("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式
-                });
+                <%--AssessCommon.loadDataDicByKey(AssessDicKey.estateTotalBuildingType, "${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", function (html, data) {--%>
+                    <%--$("#" + Estate.config().frm + " .totalBuildingType").html(html);--%>
+                    <%--$("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式--%>
+                <%--});--%>
                 estateFun.prototype.saveShowData();
             },
             viewFiles: function () {
