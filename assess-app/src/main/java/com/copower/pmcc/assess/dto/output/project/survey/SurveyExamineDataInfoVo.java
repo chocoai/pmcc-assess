@@ -1,5 +1,10 @@
 package com.copower.pmcc.assess.dto.output.project.survey;
 
+import com.google.common.collect.Maps;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by kings on 2018-7-18.
  */
@@ -10,7 +15,7 @@ public class SurveyExamineDataInfoVo {
     private ExamineUnitVo examineUnitVo;
     private ExamineHouseVo examineHouseVo;
     private ExamineHouseTradingVo examineHouseTradingVo;
-    private ExamineBuildingVo examineBuildingVo;
+    private Map<String,ExamineBuildingVo> examineBuildingVoMap = Maps.newHashMap();
 
     public ExamineBlockVo getExamineBlockVo() {
         return examineBlockVo;
@@ -60,11 +65,12 @@ public class SurveyExamineDataInfoVo {
         this.examineHouseTradingVo = examineHouseTradingVo;
     }
 
-    public ExamineBuildingVo getExamineBuildingVo() {
-        return examineBuildingVo;
+
+    public Map<String, ExamineBuildingVo> getExamineBuildingVoMap() {
+        return examineBuildingVoMap;
     }
 
-    public void setExamineBuildingVo(ExamineBuildingVo examineBuildingVo) {
-        this.examineBuildingVo = examineBuildingVo;
+    public void setExamineBuildingVoMap(Map<String, ExamineBuildingVo> examineBuildingVoMap) {
+        this.examineBuildingVoMap = examineBuildingVoMap;
     }
 }

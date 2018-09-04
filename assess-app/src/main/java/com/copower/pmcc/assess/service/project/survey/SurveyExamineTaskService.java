@@ -515,6 +515,7 @@ public class SurveyExamineTaskService {
                     case AssessExamineTaskConstant.FC_RESIDENCE_BUILDING_BASE:
                         try {
                             List<ExamineBuilding> examineBuildings = JSONObject.parseArray(keyValueDto.getValue(),ExamineBuilding.class);
+                            examineBuildingService.saveExamineBuilding(examineBuildings);
                         } catch (Exception e1) {
                             //待处理
                         }

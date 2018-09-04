@@ -137,6 +137,7 @@ public class ExamineBuildingController {
         return null;
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateExamineBuilding", method = {RequestMethod.POST}, name = "更新楼栋基础")
     public HttpResult save(ExamineBuildingDto examineBuildingDto) {
@@ -154,6 +155,34 @@ public class ExamineBuildingController {
             return HttpResult.newErrorResult("保存异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateSonMainOutfitSurface", method = {RequestMethod.POST}, name = "更新楼栋 子类")
+    public HttpResult updateSonMainOutfitSurface(String buildNumber) {
+        try {
+           if (!StringUtils.isEmpty(buildNumber)){
+               examineBuildingService.updateSonMainOutfitSurface(buildNumber);
+           }
+           return HttpResult.newErrorResult("没有传输需要的数据");
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initSonMainOutfitSurface", method = {RequestMethod.POST}, name = "初始化 子类")
+    public HttpResult initSonMainOutfitSurface() {
+        try {
+            examineBuildingService.initSonMainOutfitSurface();
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/estate_examineBuilding_category", method = {RequestMethod.GET}, name = "楼栋基础 建筑类别")

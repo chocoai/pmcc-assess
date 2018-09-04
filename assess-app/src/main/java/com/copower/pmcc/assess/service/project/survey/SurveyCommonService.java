@@ -277,9 +277,21 @@ public class SurveyCommonService {
 
         List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId, planDetailsId, examineTypeEnum.getId());
         if (!ObjectUtils.isEmpty(examineBuildings)) {
-            ExamineBuilding examineBuilding = examineBuildings.get(0);
-            ExamineBuildingVo examineBuildingVo = examineBuildingService.getExamineBuildingVo(examineBuilding);
-            surveyExamineDataInfoVo.setExamineBuildingVo(examineBuildingVo);
+           List<ExamineBuildingVo> examineBuildingVos = Lists.newArrayList();
+            for (int i = 0; i < examineBuildings.size() ; i++) {
+                if (i == 0){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("oneExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 1){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("twoExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 2){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("threeExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 4){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("fourExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+            }
         }
         return surveyExamineDataInfoVo;
     }

@@ -68,4 +68,10 @@ public class ExamineBuildingMaintenanceDao {
         return examineBuildingMaintenanceMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public void removeExamineBuildingMaintenance(ExamineBuildingMaintenance examineBuildingMaintenance){
+        ExamineBuildingMaintenanceExample example = new ExamineBuildingMaintenanceExample();
+        MybatisUtils.convertObj2Example(examineBuildingMaintenance, example);
+        examineBuildingMaintenanceMapper.deleteByExample(example);
+    }
+
 }

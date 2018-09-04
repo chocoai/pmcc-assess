@@ -510,7 +510,7 @@
             },
             /**
              * @author:  zch
-             * 描述:第一栋或者其它栋写数据
+             * 描述:楼栋写数据
              * @date:
              **/
             dataNumberWrite: function (result) {
@@ -526,7 +526,7 @@
                     var frm = examineBuilding_.prototype.config().frm;
                     examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingCategory, "buildingCategory");
                     examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingStructure, "buildingStructure");
-                    examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingstructurePid, "buildingstructurePid");
+                    examineBuilding_.prototype.objectWriteSelectData(frm, data.buildingStructurePid, "buildingStructurePid");
                     examineBuilding_.prototype.objectWriteSelectData(frm, data.propertyType, "propertyType");
                     examineBuilding_.prototype.objectWriteSelectData(frm, data.builderId, "builderId");
                     examineBuilding_.prototype.objectWriteSelectData(frm, data.propertyId, "propertyId");
@@ -540,7 +540,7 @@
             viewInit: function () {
                 if (examineBuilding_.prototype.getFlag()) {
                     examineBuilding_.prototype.init();
-                    examineBuilding_.prototype.initRemoveExamineBuildingOutfit();
+                    examineBuilding_.prototype.initSonMainOutfitSurface();
                     examineBuilding_.prototype.setFlag(false);
                 }
                 examineBuilding_.prototype.subLoadDataList();
@@ -699,6 +699,9 @@
                     if ($("#examineType").size() > 0) {
                         data.examineType = $("#examineType").val();
                     }
+                    if ($("#planDetailsId").size() > 0){
+                        data.planDetailsId = $("#planDetailsId").val();
+                    }
                     var temp = examineBuilding_.prototype.navButtonBuild.especiallyNumber(number);
                     var item = examineBuilding_.prototype.getObjArray(temp);
                     if (examineBuilding_.prototype.isEmpty(item)) {
@@ -707,6 +710,20 @@
                         data.identifier = examineBuilding_.prototype.navButtonBuild.rule(temp);
                     }
                     examineBuilding_.prototype.setObjArrayElement(temp, data);
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/examineBuilding/updateSonMainOutfitSurface",
+                        type: "post",
+                        data: {buildNumber:data.identifier},
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                toastr.success('子类更新成功!');
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    });
                 },
                 //清除数据
                 clearAll: function () {
@@ -839,6 +856,9 @@
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
+                }
+                if ($("#planDetailsId").size() > 0){
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuildingOutfit/saveAndUpdateExamineBuildingOutfit",
@@ -1065,8 +1085,8 @@
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
+                if ($("#planDetailsId").size() > 0){
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuildingMaintenance/saveAndUpdateExamineBuildingMaintenance",
@@ -1101,8 +1121,8 @@
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
+                if ($("#planDetailsId").size() > 0){
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuildingSurface/saveAndUpdateExamineBuildingSurface",
@@ -1470,13 +1490,14 @@
                     }
                 })
             },
-            initRemoveExamineBuildingOutfit: function () {
+            initSonMainOutfitSurface: function () {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineBuildingOutfit/initRemoveExamineBuildingOutfit",
+                    url: "${pageContext.request.contextPath}/examineBuilding/initSonMainOutfitSurface",
                     type: "post",
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {
+                            toastr.success('初始化成功');
                         }
                     },
                     error: function (result) {
