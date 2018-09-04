@@ -50,7 +50,6 @@ CONSIGNOR.prototype = {
         }
     },
     setAttachmentIdInitiateConsignor:function (item) {
-        console.log("item:"+item);
         attachmentIdInitiateConsignor = item;
     },
     getAttachmentIdInitiateConsignor:function () {
@@ -58,6 +57,8 @@ CONSIGNOR.prototype = {
     }
 };
 
+//带出委托人标识符附件
+var possessorTakeFile = true;
 //占有人
 function POSSESSOR() {
 
@@ -83,7 +84,9 @@ POSSESSOR.prototype = {
                 POSSESSOR.prototype.takeOutCONSIGNOR.noLegal();
             }
             POSSESSOR.prototype.takeOutCONSIGNOR.contacts.init();
-            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.files();
+            if (POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getPossessorTakeFile()){
+                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.files();
+            }
         });
     }
     ,
@@ -180,6 +183,7 @@ POSSESSOR.prototype = {
                     success: function (result) {
                         if (result.ret) {
                             showFileInitiatePossessor();
+                            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setPossessorTakeFile(false);
                         } else {
                             Alert("传输数据失败，失败原因:" + result.errmsg);
                         }
@@ -220,6 +224,12 @@ POSSESSOR.prototype = {
                 }
                 data = $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("getData");
                 return data;
+            },
+            getPossessorTakeFile:function () {
+                return possessorTakeFile;
+            },
+            setPossessorTakeFile:function (item) {
+                possessorTakeFile = item ;
             }
         }
     }
