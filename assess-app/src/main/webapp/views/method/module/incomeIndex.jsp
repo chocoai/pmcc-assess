@@ -91,10 +91,10 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            行业经经营平均利润率<span class="symbol required"></span>
+                            行业经营平均利润率<span class="symbol required"></span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="averageProfitRate" placeholder="行业经经营平均利润率" class="form-control"
+                            <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率" class="form-control"
                                    data-rule-number="true" required="required">
                         </div>
                     </div>
@@ -102,11 +102,11 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            行业经经营平均利润率取数说明
+                            行业经营平均利润率取数说明
                         </label>
                         <div class="col-sm-11">
                             <textarea name="averageProfitRateRemark" class="form-control"
-                                      placeholder="行业经经营平均利润率取数说明"></textarea>
+                                      placeholder="行业经营平均利润率取数说明"></textarea>
                         </div>
                     </div>
                 </div>
