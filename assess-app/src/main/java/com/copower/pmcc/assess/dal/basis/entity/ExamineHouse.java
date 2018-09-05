@@ -35,6 +35,8 @@ public class ExamineHouse {
 
     private Date gmtModified;
 
+    private String orientation;
+
     public Integer getId() {
         return id;
     }
@@ -161,5 +163,13 @@ public class ExamineHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 }

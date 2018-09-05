@@ -43,11 +43,13 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="dataProperty.prototype.loadDataDicList()">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="dataProperty.prototype.loadDataDicList()">
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success" onclick="dataProperty.prototype.showModel()"
+                                <button type="button" class="btn btn-success"
+                                        onclick="dataProperty.prototype.showModel()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -70,22 +72,31 @@
 <script type="text/javascript">
     $(function () {
         dataProperty.prototype.loadDataDicList();
-        dataProperty.prototype.select2();
+        dataProperty.prototype.select2Load();
     });
     var dataProperty = function () {
 
     };
     dataProperty.prototype = {
-        config:function () {
+        config: function () {
             var data = {};
-            data.table = "tb_FatherList" ;
+            data.table = "tb_FatherList";
             data.box = "divBoxFather";
             data.frm = "frmFather";
             return data;
         },
-        loadDataDicList:function () {
+        isEmpty: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'leve', title: '级别'});
+            cols.push({field: 'provinceName', title: '省'});
+            cols.push({field: 'cityName', title: '市'});
+            cols.push({field: 'districtName', title: '县'});
             cols.push({field: 'street', title: '街道'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -97,9 +108,9 @@
                     return str;
                 }
             });
-            $("#"+dataProperty.prototype.config().table).bootstrapTable('destroy');
+            $("#" + dataProperty.prototype.config().table).bootstrapTable('destroy');
             TableInit(dataProperty.prototype.config().table, "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelList", cols, {
-                leve:$("#queryName").val()
+                leve: $("#queryName").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -109,12 +120,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataLandLevel/deleteDataLandLevelById",
+                url: "${pageContext.request.contextPath}/dataLandLevel/deleteDataLandLevelById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -129,24 +140,24 @@
                 }
             })
         },
-        showModel:function () {
-            $("#"+dataProperty.prototype.config().frm).clearAll();
-            $('#'+dataProperty.prototype.config().box).modal("show");
+        showModel: function () {
+            $("#" + dataProperty.prototype.config().frm).clearAll();
+            $('#' + dataProperty.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+dataProperty.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + dataProperty.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(dataProperty.prototype.config().frm);
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevel",
+                url: "${pageContext.request.contextPath}/dataLandLevel/saveAndUpdateDataLandLevel",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+dataProperty.prototype.config().box).modal('hide');
+                        $('#' + dataProperty.prototype.config().box).modal('hide');
                         dataProperty.prototype.loadDataDicList();
                     }
                     else {
@@ -158,26 +169,48 @@
                 }
             })
         },
-        select2:function () {
+        select2Load: function () {
             $("#province").select2();
+            $("#city").select2();
+            $("#district").select2();
+            //使数据校验生效
+            $("#" + dataProperty.prototype.config().frm).validate();
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#province"),
+                cityTarget: $("#city"),
+                districtTarget: $("#district"),
+                provinceValue: '',
+                cityValue: '',
+                districtValue: ''
+            })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
+                url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+dataProperty.prototype.config().frm).clearAll();
+                        $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        $('#'+dataProperty.prototype.config().box).modal("show");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.city,"city");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.district,"district");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.province,"province");
+                        $('#' + dataProperty.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        objectWriteSelectData: function (frm, data, name) {
+            if (dataProperty.prototype.isEmpty(data)) {
+                $("#" + frm + " ." + name).val(data).trigger("change");
+            } else {
+                $("#" + frm + " ." + name).val(null).trigger("change");
+            }
         }
 
     }
@@ -200,11 +233,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            级别
+                                            级别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="leve"
-                                                   placeholder="级别" required="required">
+                                            <input type="text" class="form-control" data-rule-number='true' name="leve"
+                                                   placeholder="级别(数字)" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +246,8 @@
                                         <label class="col-sm-2 control-label">省
                                             <span class="symbol required"></span></label>
                                         <div class="col-sm-10">
-                                            <select id="province" name="province" class="form-control search-select select2"
+                                            <select id="province" name="province"
+                                                    class="form-control search-select select2"
                                                     required="required">
                                                 <option value="" name="province">-请选择-</option>
                                                 <c:forEach items="${ProvinceList}" var="item">
@@ -233,8 +267,31 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class="col-sm-2 control-label">市<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-10">
+                                            <select id="city" name="city" class="form-control search-select select2"
+                                                    required="required">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">县</label>
+                                        <div class="col-sm-10">
+                                            <select id="district" name="district"
+                                                    class="form-control search-select select2">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            街道
+                                            街道<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="street"

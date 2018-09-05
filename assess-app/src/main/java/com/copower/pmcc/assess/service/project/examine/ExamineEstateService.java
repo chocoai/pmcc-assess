@@ -68,10 +68,10 @@ public class ExamineEstateService {
                 logger.error(String.format("没有找到实体 == >%s",e1.getMessage()));
             }
         }
-        if (examineEstate.getTotalBuildingType() != null){
-            sysDataDicTemp  = baseDataDicService.getDataDicById(examineEstate.getTotalBuildingType());
-            if (sysDataDicTemp!=null){
-                examineEstateVo.setTotalBuildingTypeName(sysDataDicTemp.getName());
+        if (examineEstate.getLandLevel() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstate.getLandLevel());
+            if (sysDataDicTemp != null){
+                examineEstateVo.setLandLevelName(sysDataDicTemp.getName());
             }
         }
         return examineEstateVo;

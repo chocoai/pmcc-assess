@@ -15,18 +15,18 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="开发商" readonly="readonly"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.developerName}" name="developerId" class="form-control">
+                <input type="text"  placeholder="楼盘方位" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.position}" name="position" class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">街道</label>
+            <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
+                <input type="text" data-rule-maxlength="100" placeholder="土地级别" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.landLevelName}" name="landLevelName" class="form-control">
             </div>
         </div>
     </div>
@@ -50,13 +50,13 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">建筑面积</label>
+            <label class="col-sm-1 control-label">街道</label>
             <div class="col-sm-3">
-                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea"
-                       class="form-control">
+                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
             </div>
         </div>
+
     </div>
 
     <div class="form-group">
@@ -105,7 +105,22 @@
             <label class="col-sm-1 control-label">总栋数<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" readonly="readonly"  placeholder="总栋数"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingTypeName}" name="totalBuildingType"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.buildingNumber}" name="buildingNumber"
+                       class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" placeholder="开发商" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.developerName}" name="developerName" class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">建筑面积</label>
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea"
                        class="form-control">
             </div>
         </div>

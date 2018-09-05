@@ -10,12 +10,14 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="street" property="street" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="land_level" property="landLevel" jdbcType="INTEGER" />
     <result column="attach_number" property="attachNumber" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="volumetric_rate" property="volumetricRate" jdbcType="VARCHAR" />
     <result column="greening_rate" property="greeningRate" jdbcType="VARCHAR" />
-    <result column="total_building_type" property="totalBuildingType" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -81,8 +83,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, declare_id, plan_details_id, examine_type, developer_id, name, street, number, 
-    attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, total_building_type, 
-    description, creator, gmt_created, gmt_modified
+    land_level, attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, 
+    building_number, position, description, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateExample" >
     select
@@ -120,16 +122,18 @@
     </selectKey>
     insert into tb_examine_estate (declare_id, plan_details_id, examine_type, 
       developer_id, name, street, 
-      number, attach_number, floor_area, 
-      cover_an_area, volumetric_rate, greening_rate, 
-      total_building_type, description, creator, 
-      gmt_created, gmt_modified)
+      number, land_level, attach_number, 
+      floor_area, cover_an_area, volumetric_rate, 
+      greening_rate, building_number, position, 
+      description, creator, gmt_created, 
+      gmt_modified)
     values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
       #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{number,jdbcType=VARCHAR}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, 
-      #{totalBuildingType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -158,6 +162,9 @@
       <if test="number != null" >
         number,
       </if>
+      <if test="landLevel != null" >
+        land_level,
+      </if>
       <if test="attachNumber != null" >
         attach_number,
       </if>
@@ -173,8 +180,11 @@
       <if test="greeningRate != null" >
         greening_rate,
       </if>
-      <if test="totalBuildingType != null" >
-        total_building_type,
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="position != null" >
+        position,
       </if>
       <if test="description != null" >
         description,
@@ -211,6 +221,9 @@
       <if test="number != null" >
         #{number,jdbcType=VARCHAR},
       </if>
+      <if test="landLevel != null" >
+        #{landLevel,jdbcType=INTEGER},
+      </if>
       <if test="attachNumber != null" >
         #{attachNumber,jdbcType=VARCHAR},
       </if>
@@ -226,8 +239,11 @@
       <if test="greeningRate != null" >
         #{greeningRate,jdbcType=VARCHAR},
       </if>
-      <if test="totalBuildingType != null" >
-        #{totalBuildingType,jdbcType=INTEGER},
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
@@ -276,6 +292,9 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=VARCHAR},
       </if>
+      <if test="record.landLevel != null" >
+        land_level = #{record.landLevel,jdbcType=INTEGER},
+      </if>
       <if test="record.attachNumber != null" >
         attach_number = #{record.attachNumber,jdbcType=VARCHAR},
       </if>
@@ -291,8 +310,11 @@
       <if test="record.greeningRate != null" >
         greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.totalBuildingType != null" >
-        total_building_type = #{record.totalBuildingType,jdbcType=INTEGER},
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=VARCHAR},
       </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
@@ -321,12 +343,14 @@
       name = #{record.name,jdbcType=VARCHAR},
       street = #{record.street,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
+      land_level = #{record.landLevel,jdbcType=INTEGER},
       attach_number = #{record.attachNumber,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       volumetric_rate = #{record.volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
-      total_building_type = #{record.totalBuildingType,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=INTEGER},
+      position = #{record.position,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -359,6 +383,9 @@
       <if test="number != null" >
         number = #{number,jdbcType=VARCHAR},
       </if>
+      <if test="landLevel != null" >
+        land_level = #{landLevel,jdbcType=INTEGER},
+      </if>
       <if test="attachNumber != null" >
         attach_number = #{attachNumber,jdbcType=VARCHAR},
       </if>
@@ -374,8 +401,11 @@
       <if test="greeningRate != null" >
         greening_rate = #{greeningRate,jdbcType=VARCHAR},
       </if>
-      <if test="totalBuildingType != null" >
-        total_building_type = #{totalBuildingType,jdbcType=INTEGER},
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
@@ -401,12 +431,14 @@
       name = #{name,jdbcType=VARCHAR},
       street = #{street,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
+      land_level = #{landLevel,jdbcType=INTEGER},
       attach_number = #{attachNumber,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       volumetric_rate = #{volumetricRate,jdbcType=VARCHAR},
       greening_rate = #{greeningRate,jdbcType=VARCHAR},
-      total_building_type = #{totalBuildingType,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=INTEGER},
+      position = #{position,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

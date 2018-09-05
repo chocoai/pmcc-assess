@@ -113,26 +113,6 @@ public class ExamineHouseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examineunithuxingSelect",method = {RequestMethod.GET},name = "户型选择")
-    public HttpResult examineunithuxingSelect(Integer declareId,Integer examineType) {
-        try {
-            List<ExamineUnitHuxingVo> vos = Lists.newArrayList();
-            ExamineUnitHuxing oo = new ExamineUnitHuxing();
-            oo.setDeclareId(declareId);
-            oo.setExamineType(examineType);
-            List<ExamineUnitHuxing> examineUnitHuxings = examineUnitHuxingService.getExamineUnitHuxingList(oo);
-            if (!ObjectUtils.isEmpty(examineUnitHuxings)){
-                for (ExamineUnitHuxing examineUnitHuxing:examineUnitHuxings){
-                    vos.add(examineUnitHuxingService.getExamineUnitHuxingVo(examineUnitHuxing));
-                }
-            }
-            return HttpResult.newCorrectResult(vos);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdatetExamineHouseTradingSellAndLeaseDto",method = {RequestMethod.POST},name = "更新 出租或者出售）")

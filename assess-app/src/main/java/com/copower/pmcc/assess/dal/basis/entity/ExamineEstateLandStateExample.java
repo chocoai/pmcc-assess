@@ -415,63 +415,123 @@ public class ExamineEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandUseIsNull() {
-            addCriterion("land_use is null");
+        public Criteria andLandUseTypeIsNull() {
+            addCriterion("land_use_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseIsNotNull() {
-            addCriterion("land_use is not null");
+        public Criteria andLandUseTypeIsNotNull() {
+            addCriterion("land_use_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseEqualTo(Integer value) {
-            addCriterion("land_use =", value, "landUse");
+        public Criteria andLandUseTypeEqualTo(Integer value) {
+            addCriterion("land_use_type =", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseNotEqualTo(Integer value) {
-            addCriterion("land_use <>", value, "landUse");
+        public Criteria andLandUseTypeNotEqualTo(Integer value) {
+            addCriterion("land_use_type <>", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseGreaterThan(Integer value) {
-            addCriterion("land_use >", value, "landUse");
+        public Criteria andLandUseTypeGreaterThan(Integer value) {
+            addCriterion("land_use_type >", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseGreaterThanOrEqualTo(Integer value) {
-            addCriterion("land_use >=", value, "landUse");
+        public Criteria andLandUseTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_use_type >=", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseLessThan(Integer value) {
-            addCriterion("land_use <", value, "landUse");
+        public Criteria andLandUseTypeLessThan(Integer value) {
+            addCriterion("land_use_type <", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseLessThanOrEqualTo(Integer value) {
-            addCriterion("land_use <=", value, "landUse");
+        public Criteria andLandUseTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("land_use_type <=", value, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseIn(List<Integer> values) {
-            addCriterion("land_use in", values, "landUse");
+        public Criteria andLandUseTypeIn(List<Integer> values) {
+            addCriterion("land_use_type in", values, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseNotIn(List<Integer> values) {
-            addCriterion("land_use not in", values, "landUse");
+        public Criteria andLandUseTypeNotIn(List<Integer> values) {
+            addCriterion("land_use_type not in", values, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseBetween(Integer value1, Integer value2) {
-            addCriterion("land_use between", value1, value2, "landUse");
+        public Criteria andLandUseTypeBetween(Integer value1, Integer value2) {
+            addCriterion("land_use_type between", value1, value2, "landUseType");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseNotBetween(Integer value1, Integer value2) {
-            addCriterion("land_use not between", value1, value2, "landUse");
+        public Criteria andLandUseTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_use_type not between", value1, value2, "landUseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryIsNull() {
+            addCriterion("land_use_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryIsNotNull() {
+            addCriterion("land_use_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryEqualTo(Integer value) {
+            addCriterion("land_use_category =", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryNotEqualTo(Integer value) {
+            addCriterion("land_use_category <>", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryGreaterThan(Integer value) {
+            addCriterion("land_use_category >", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_use_category >=", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryLessThan(Integer value) {
+            addCriterion("land_use_category <", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("land_use_category <=", value, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryIn(List<Integer> values) {
+            addCriterion("land_use_category in", values, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryNotIn(List<Integer> values) {
+            addCriterion("land_use_category not in", values, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("land_use_category between", value1, value2, "landUseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_use_category not between", value1, value2, "landUseCategory");
             return (Criteria) this;
         }
 

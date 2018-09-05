@@ -13,7 +13,9 @@ public class ExamineEstateLandState {
 
     private String name;
 
-    private Integer landUse;
+    private Integer landUseType;
+
+    private Integer landUseCategory;
 
     private Integer landLevel;
 
@@ -85,12 +87,20 @@ public class ExamineEstateLandState {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getLandUse() {
-        return landUse;
+    public Integer getLandUseType() {
+        return landUseType;
     }
 
-    public void setLandUse(Integer landUse) {
-        this.landUse = landUse;
+    public void setLandUseType(Integer landUseType) {
+        this.landUseType = landUseType;
+    }
+
+    public Integer getLandUseCategory() {
+        return landUseCategory;
+    }
+
+    public void setLandUseCategory(Integer landUseCategory) {
+        this.landUseCategory = landUseCategory;
     }
 
     public Integer getLandLevel() {

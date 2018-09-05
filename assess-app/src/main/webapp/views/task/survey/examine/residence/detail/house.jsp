@@ -39,8 +39,15 @@
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>
-            <div class="col-sm-5">
+            <div class="col-sm-3">
                 <div class="house_latest_family_plan"></div>
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" value="${surveyExamineDataInfoVo.examineHouseVo.orientation}" name="orientation" class="form-control" placeholder="朝向" readonly="readonly">
             </div>
         </div>
     </div>

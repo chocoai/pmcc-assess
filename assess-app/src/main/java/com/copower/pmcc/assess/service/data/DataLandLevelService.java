@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -11,6 +12,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class DataLandLevelService {
     private DataLandLevelDao dataLandLevelDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     public Integer saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel){
         if (dataLandLevel.getId()==null){
@@ -48,6 +52,12 @@ public class DataLandLevelService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataLandLevelVo> vos = landLevels(dataLandLevel);
+        vo.setTotal(page.getTotal());
+        vo.setRows(vos);
+        return vo;
+    }
+    public  List<DataLandLevelVo> landLevels(DataLandLevel dataLandLevel){
         List<DataLandLevel> dataLandLevels = dataLandLevelDao.getDataLandLevelList(dataLandLevel);
         List<DataLandLevelVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataLandLevels)){
@@ -55,9 +65,7 @@ public class DataLandLevelService {
                 vos.add(getDataLandLevelVo(landLevel));
             }
         }
-        vo.setTotal(page.getTotal());
-        vo.setRows(vos);
-        return vo;
+        return vos;
     }
 
     public void removeDataLandLevel(DataLandLevel dataLandLevel){
@@ -75,6 +83,15 @@ public class DataLandLevelService {
     public DataLandLevelVo getDataLandLevelVo(DataLandLevel dataLandLevel){
         DataLandLevelVo vo = new DataLandLevelVo();
         BeanUtils.copyProperties(dataLandLevel,vo);
+        if (StringUtils.isNotBlank(dataLandLevel.getProvince())) {
+            vo.setProvinceName(erpAreaService.getSysAreaName(dataLandLevel.getProvince()));//省
+        }
+        if (StringUtils.isNotBlank(dataLandLevel.getCity())) {
+            vo.setCityName(erpAreaService.getSysAreaName(dataLandLevel.getCity()));//市或者县
+        }
+        if (StringUtils.isNotBlank(dataLandLevel.getDistrict())) {
+            vo.setDistrictName(erpAreaService.getSysAreaName(dataLandLevel.getDistrict()));//县
+        }
         return vo;
     }
 }

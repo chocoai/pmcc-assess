@@ -112,6 +112,7 @@
                 var cols = [];
                 cols.push({field: 'description', title: '描述'});
                 cols.push({field: 'spanLength', title: '跨长'});
+                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
                 cols.push({field: 'spanNumber', title: '跨数'});
                 cols.push({field: 'fileViewName', title: '户型图'});
@@ -502,6 +503,18 @@
                                                 <span class="input-group-addon">阳台</span>
                                                 <input type="text" name="balcony" data-rule-number='true' class="form-control">
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            朝向<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="朝向"
+                                                   name="orientation" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>

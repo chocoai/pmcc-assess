@@ -21,25 +21,26 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地用途<span class="symbol readonly"></span></label>
+                <label class="col-sm-1 control-label">土地用途类型<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" readonly="readonly" class="form-control" placeholder="土地用途" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseName}">
+                    <input type="text" readonly="readonly" class="form-control" placeholder="土地用途类型" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseTypeName}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地用途类别<span class="symbol readonly"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly" class="form-control" placeholder="土地用途类别" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseCategoryName}">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" readonly="readonly" class="form-control"  placeholder="土地级别" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevelName}">
+                    <input type="text" readonly="readonly" class="form-control" name="landLevelName"  placeholder="土地级别" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevelName}">
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">土地面积<span class="symbol readonly"></span></label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地面积(请输入数字)" readonly="readonly" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
@@ -111,6 +112,12 @@
                 <label class="col-sm-1 control-label">地形地势<span class="symbol readonly"></span></label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地形地势" readonly="readonly" name="topographicTerrain">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地面积<span class="symbol readonly"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="土地面积(请输入数字)" readonly="readonly" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
                 </div>
             </div>
         </div>

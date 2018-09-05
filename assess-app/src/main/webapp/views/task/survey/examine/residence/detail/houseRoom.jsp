@@ -81,7 +81,11 @@
                 cols.push({field: 'name', title: '房间名称'});
                 cols.push({field: 'roomTypeName', title: '房间类型'});
                 cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'orientation', title: '朝向'});
+                cols.push({field: 'sunshine', title: '日照'});
+                cols.push({field: 'lighting', title: '采光'});
+                cols.push({field: 'layerHeight', title: '层高'});
+                cols.push({field: 'opening', title: '开间'});
+                cols.push({field: 'depth', title: '进深'});
                 cols.push({field: 'aeration', title: '通风'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -312,6 +316,7 @@
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomDecorateLists", cols, {
                     type: null,
+                    planDetailsId : $("#planDetailsId").val(),
                     declareId : $("#declareId").val(),
                     examineType : $("#examineType").val()
                 }, {

@@ -114,6 +114,7 @@
                 cols.push({field: 'name', title: '房型名称'});
                 cols.push({field: 'houseLayoutName', title: '房型'});
                 cols.push({field: 'spanLength', title: '跨长'});
+                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
                 cols.push({field: 'spanNumber', title: '跨数'});
                 cols.push({field: 'fileViewName', title: '户型图'});
@@ -265,7 +266,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">户型</h3>
+                <h3 class="modal-title">房型</h3>
             </div>
             <form id="frmUnitHuxing" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -351,6 +352,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            朝向<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="朝向"
+                                                   name="orientation" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -364,6 +376,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

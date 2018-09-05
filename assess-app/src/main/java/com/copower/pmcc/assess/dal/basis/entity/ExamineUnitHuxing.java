@@ -26,13 +26,15 @@ public class ExamineUnitHuxing {
 
     private String creator;
 
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String houseCategory;
 
     private String name;
+
+    private String orientation;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -122,22 +124,6 @@ public class ExamineUnitHuxing {
         this.creator = creator == null ? null : creator.trim();
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public String getHouseCategory() {
         return houseCategory;
     }
@@ -152,5 +138,29 @@ public class ExamineUnitHuxing {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

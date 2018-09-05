@@ -28,6 +28,16 @@ public class ExamineHouseRoom {
 
     private String creator;
 
+    private String sunshine;
+
+    private String lighting;
+
+    private String opening;
+
+    private String depth;
+
+    private Double layerHeight;
+
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -126,6 +136,46 @@ public class ExamineHouseRoom {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getSunshine() {
+        return sunshine;
+    }
+
+    public void setSunshine(String sunshine) {
+        this.sunshine = sunshine == null ? null : sunshine.trim();
+    }
+
+    public String getLighting() {
+        return lighting;
+    }
+
+    public void setLighting(String lighting) {
+        this.lighting = lighting == null ? null : lighting.trim();
+    }
+
+    public String getOpening() {
+        return opening;
+    }
+
+    public void setOpening(String opening) {
+        this.opening = opening == null ? null : opening.trim();
+    }
+
+    public String getDepth() {
+        return depth;
+    }
+
+    public void setDepth(String depth) {
+        this.depth = depth == null ? null : depth.trim();
+    }
+
+    public Double getLayerHeight() {
+        return layerHeight;
+    }
+
+    public void setLayerHeight(Double layerHeight) {
+        this.layerHeight = layerHeight;
     }
 
     public Date getGmtCreated() {

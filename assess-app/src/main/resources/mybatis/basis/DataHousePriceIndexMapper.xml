@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.HousePriceIndexMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="year_month_calendar" property="yearMonthCalendar" jdbcType="DATE" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="index_calendar" property="indexCalendar" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -68,9 +71,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, year_month_calendar, index_calendar, creator, gmt_created, gmt_modified
+    id, year_month_calendar, province, district, city, index_calendar, creator, gmt_created, 
+    gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndexExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" >
     select
     <if test="distinct" >
       distinct
@@ -94,22 +98,24 @@
     delete from tb_data_house_price_index
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndexExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" >
     delete from tb_data_house_price_index
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_house_price_index (year_month_calendar, index_calendar, creator, 
+    insert into tb_data_house_price_index (year_month_calendar, province, district, 
+      city, index_calendar, creator, 
       gmt_created, gmt_modified)
-    values (#{yearMonthCalendar,jdbcType=DATE}, #{indexCalendar,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+    values (#{yearMonthCalendar,jdbcType=DATE}, #{province,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{indexCalendar,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -117,6 +123,15 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="yearMonthCalendar != null" >
         year_month_calendar,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="city != null" >
+        city,
       </if>
       <if test="indexCalendar != null" >
         index_calendar,
@@ -135,6 +150,15 @@
       <if test="yearMonthCalendar != null" >
         #{yearMonthCalendar,jdbcType=DATE},
       </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
       <if test="indexCalendar != null" >
         #{indexCalendar,jdbcType=VARCHAR},
       </if>
@@ -149,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndexExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" resultType="java.lang.Integer" >
     select count(*) from tb_data_house_price_index
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -163,6 +187,15 @@
       </if>
       <if test="record.yearMonthCalendar != null" >
         year_month_calendar = #{record.yearMonthCalendar,jdbcType=DATE},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
       </if>
       <if test="record.indexCalendar != null" >
         index_calendar = #{record.indexCalendar,jdbcType=VARCHAR},
@@ -185,6 +218,9 @@
     update tb_data_house_price_index
     set id = #{record.id,jdbcType=INTEGER},
       year_month_calendar = #{record.yearMonthCalendar,jdbcType=DATE},
+      province = #{record.province,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
       index_calendar = #{record.indexCalendar,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -193,11 +229,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     update tb_data_house_price_index
     <set >
       <if test="yearMonthCalendar != null" >
         year_month_calendar = #{yearMonthCalendar,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
       </if>
       <if test="indexCalendar != null" >
         index_calendar = #{indexCalendar,jdbcType=VARCHAR},
@@ -214,9 +259,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     update tb_data_house_price_index
     set year_month_calendar = #{yearMonthCalendar,jdbcType=DATE},
+      province = #{province,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
       index_calendar = #{indexCalendar,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

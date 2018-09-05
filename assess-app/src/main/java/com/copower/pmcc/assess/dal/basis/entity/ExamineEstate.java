@@ -20,6 +20,8 @@ public class ExamineEstate {
 
     private String number;
 
+    private Integer landLevel;
+
     private String attachNumber;
 
     private BigDecimal floorArea;
@@ -30,7 +32,9 @@ public class ExamineEstate {
 
     private String greeningRate;
 
-    private Integer totalBuildingType;
+    private Integer buildingNumber;
+
+    private String position;
 
     private String description;
 
@@ -104,6 +108,14 @@ public class ExamineEstate {
         this.number = number == null ? null : number.trim();
     }
 
+    public Integer getLandLevel() {
+        return landLevel;
+    }
+
+    public void setLandLevel(Integer landLevel) {
+        this.landLevel = landLevel;
+    }
+
     public String getAttachNumber() {
         return attachNumber;
     }
@@ -144,12 +156,20 @@ public class ExamineEstate {
         this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
-    public Integer getTotalBuildingType() {
-        return totalBuildingType;
+    public Integer getBuildingNumber() {
+        return buildingNumber;
     }
 
-    public void setTotalBuildingType(Integer totalBuildingType) {
-        this.totalBuildingType = totalBuildingType;
+    public void setBuildingNumber(Integer buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position == null ? null : position.trim();
     }
 
     public String getDescription() {

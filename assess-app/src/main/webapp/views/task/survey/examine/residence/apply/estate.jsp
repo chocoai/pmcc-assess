@@ -13,22 +13,23 @@
                        value="${surveyExamineDataInfoVo.examineEstateVo.name}" name="name" class="form-control">
             </div>
         </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" placeholder="楼盘方位" required
+                       value="${surveyExamineDataInfoVo.examineEstateVo.position}" name="position" class="form-control">
+            </div>
+        </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 developerId" name="developerId" required="required">
+                <select class="form-control search-select select2 landLevel" name="landLevel" required="required">
                 </select>
             </div>
         </div>
 
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">街道</label>
-            <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="街道"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
-            </div>
-        </div>
+
     </div>
 
     <div class="form-group">
@@ -50,15 +51,14 @@
                        class="form-control">
             </div>
         </div>
-
         <div class="x-valid">
-            <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">街道</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea" required="required"
-                       class="form-control">
+                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
             </div>
         </div>
+
     </div>
 
     <div class="form-group">
@@ -108,10 +108,24 @@
             <label class="col-sm-1 control-label">楼栋数</label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="楼栋数(请输入数字)" required="required"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}" name="totalBuildingType"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.buildingNumber}" name="buildingNumber"
                        class="form-control">
-                <%--<select class="form-control search-select select2 totalBuildingType" name="totalBuildingType">--%>
-                <%--</select>--%>
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <select class="form-control search-select select2 developerId" name="developerId" required="required">
+                </select>
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea" required="required"
+                       class="form-control">
             </div>
         </div>
     </div>
@@ -217,22 +231,18 @@
 
         }
         estateFun.prototype = {
-            saveShowData: function () {
-                estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.developerId}", "developerId");
-                estateFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", "totalBuildingType");
-            },
             select2InitMethodWrite: function (data, name) {
-                if (estateFun.prototype.select2IsNotNull(data)) {
-                    if (estateFun.prototype.select2IsNotNull(name)) {
+                if (estateFun.prototype.isEmpty(data)) {
+                    if (estateFun.prototype.isEmpty(name)) {
                         $("#" + Estate.config().frm + " ." + name).val(data).trigger("change");
                     }
                 } else {
-                    if (estateFun.prototype.select2IsNotNull(name)) {
+                    if (estateFun.prototype.isEmpty(name)) {
                         $("#" + Estate.config().frm + " ." + name).val(null).trigger("change");
                     }
                 }
             },
-            select2IsNotNull: function (data) {
+            isEmpty: function (data) {
                 if(data){
                     return true;
                 }else{
@@ -266,12 +276,55 @@
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                })
-                <%--AssessCommon.loadDataDicByKey(AssessDicKey.estateTotalBuildingType, "${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", function (html, data) {--%>
-                    <%--$("#" + Estate.config().frm + " .totalBuildingType").html(html);--%>
-                    <%--$("#" + Estate.config().frm + " .totalBuildingType").select2();//加载样式--%>
-                <%--});--%>
-                estateFun.prototype.saveShowData();
+                });
+                //主要是载入select2
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
+                    type: "get",
+                    dataType: "json",
+                    async: false,
+                    data: {province:"${projectInfo.province}",city:"${projectInfo.city}",district:"${projectInfo.district}"},
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            var gradeNum = data.length;
+                            var option = "<option value=''>请选择</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                                }
+                                if ($("#" + Estate.config().frm + " .landLevel").size() > 0) {
+                                    $("#" + Estate.config().frm + " .landLevel").html(option);
+                                    $("#" + Estate.config().frm + " .landLevel").select2();//加载样式
+                                }
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+                $("#" + Estate.config().frm + " .landLevel").change(function () {
+                    var id = $("#" + Estate.config().frm + " .landLevel").eq(1).val();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
+                        type: "get",
+                        dataType: "json",
+                        async: false,
+                        data: {id:id},
+                        success: function (result) {
+                            if (result.ret) {
+                                var data = result.data;
+                                if (estateFun.prototype.isEmpty(data)){
+                                    $("#" + Estate.config().frm + " input[name='street']").val(data.street);
+                                }
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    });
+                });
             },
             viewFiles: function () {
                 //总平面图

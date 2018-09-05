@@ -24,15 +24,27 @@
                        class="form-control">
             </div>
         </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">使用环境<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <select class="form-control search-select select2 useEnvironment" name="useEnvironment"
+                        required="required">
+                </select>
+            </div>
+        </div>
 
     </div>
 
     <div class="form-group">
         <div class="x-valid">
-            <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">房型选择<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 huxingId" name="huxingId" required="required">
-                </select>
+                <div class="input-group">
+                    <select class="form-control huxingId" name="huxingId" required="required">
+                    </select>
+                    <label class="input-group-addon btn" onclick="houseFun.prototype.huXinSelectRefresh();">刷新户型<i
+                            class="fa fa-refresh"></i></label>
+                </div>
             </div>
         </div>
 
@@ -44,10 +56,11 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">使用环境<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 useEnvironment" name="useEnvironment" required="required">
-                </select>
+                <input type="text" placeholder="朝向" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.orientation}" name="orientation"
+                       class="form-control">
             </div>
         </div>
     </div>
@@ -85,7 +98,8 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" name="description">${surveyExamineDataInfoVo.examineHouseVo.description}</textarea>
+                <textarea class="form-control"
+                          name="description">${surveyExamineDataInfoVo.examineHouseVo.description}</textarea>
             </div>
         </div>
     </div>
@@ -102,11 +116,11 @@
     </div>
 </form>
 <script>
+    //layer_height
     $(function () {
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouse.getFormData);//获取数据方法写入容器
         ContainerFunForInit.house.push(houseFun.prototype.init);//初始化方法写入容器
-        ContainerFunForInit.house.push(houseFun.prototype.select2Init);//初始化方法写入容器
         ContainerFunForInit.house.push(houseFun.prototype.files);//初始化方法写入容器
     });
 </script>
@@ -118,58 +132,22 @@
 
         };
         houseFun.prototype = {
-            select2Init:function () {
-                //页面保存数据后 展示数据
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}","huxingId");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}","certUse");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}","practicalUse");
-                houseFun.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.useEnvironment}","useEnvironment");
-                var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
-                if (houseFun.prototype.select2IsNotNull(id)){
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
-                        dataType: "JSON",
-                        data: {'id': id},
-                        type: "GET",
-                        success: function (result) {
-                            if (result.ret) {
-                                var data = result.data;
-                                if (houseFun.prototype.select2IsNotNull(data)){
-                                    $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
-                                }
-                            }
-                        },
-                        error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
-                        }
-                    });
-                }
-            },
-            select2InitMethodWrite:function (data,name) {
-                if (houseFun.prototype.select2IsNotNull(data)){
-                    if (houseFun.prototype.select2IsNotNull(name)){
-                        $("#"+houseFun.prototype.config().frm+" ."+name).val(data).trigger("change");
+            select2InitMethodWrite: function (data, name) {
+                if (houseFun.prototype.isEmpty(data)) {
+                    if (houseFun.prototype.isEmpty(name)) {
+                        $("#" + houseFun.prototype.config().frm + " ." + name).val(data).trigger("change");
                     }
-                }else {
-                    if (houseFun.prototype.select2IsNotNull(name)){
-                        $("#"+houseFun.prototype.config().frm+" ."+name).val(null).trigger("change");
+                } else {
+                    if (houseFun.prototype.isEmpty(name)) {
+                        $("#" + houseFun.prototype.config().frm + " ." + name).val(null).trigger("change");
                     }
                 }
             },
-            select2IsNotNull:function (data) {
-                if (data == null){
-                    return false;
+            isEmpty: function (data) {
+                if (data) {
+                    return true;
                 }
-                if (data == ''){
-                    return false;
-                }
-                if (data == ""){
-                    return false;
-                }
-                if (data == 0){
-                    return false;
-                }
-                return true;
+                return false;
             },
             config: function () {
                 return {
@@ -180,28 +158,20 @@
                     houseHousePlan: "house_house_plan" //房屋平面图id和字段
                 };
             },
-            init: function () {
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, "", function (html,data) {
-                    $("#" + houseFun.prototype.config().frm + " .certUse").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
-                })
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, "", function (html,data) {
-                    $("#" + houseFun.prototype.config().frm + " .practicalUse").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式
-                })
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, "", function (html,data) {
-                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").select2();//加载样式
-                })
-
+            huXinSelectRefresh: function () {
+                $("#" + houseFun.prototype.config().frm + " .huxingId").empty();
+                houseFun.prototype.examineunithuxingSelect();
+            },
+            examineunithuxingSelect: function () {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouse/examineunithuxingSelect",
+                    url: "${pageContext.request.contextPath}/examineUnitHuxing/examineunithuxingSelect",
                     type: "get",
                     dataType: "json",
-                    async:false,
-                    data:{
-                        declareId : $("#declareId").val(),
-                        examineType : $("#examineType").val()
+                    async: false,
+                    data: {
+                        declareId: $("#declareId").val(),
+                        examineType: $("#examineType").val(),
+                        planDetailsId: $("#planDetailsId").val()
                     },
                     success: function (result) {
                         if (result.ret) {
@@ -214,7 +184,6 @@
                                 }
                                 if ($("#" + houseFun.prototype.config().frm + " .huxingId").size() > 0) {
                                     $("#" + houseFun.prototype.config().frm + " .huxingId").html(option);
-                                    $("#" + houseFun.prototype.config().frm + " .huxingId").select2();//加载样式
                                 }
                             }
                         }
@@ -223,13 +192,28 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
-                houseFun.prototype.init2();
             },
-            init2:function () {
+            init: function () {
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, "", function (html, data) {
+                    $("#" + houseFun.prototype.config().frm + " .certUse").html(html);
+                    $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
+                })
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, "", function (html, data) {
+                    $("#" + houseFun.prototype.config().frm + " .practicalUse").html(html);
+                    $("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式
+                })
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, "", function (html, data) {
+                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").html(html);
+                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").select2();//加载样式
+                })
+                houseFun.prototype.examineunithuxingSelect();
+                houseFun.prototype.changeEvent();
+            },
+            changeEvent: function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {
-                    var id = $("#" + houseFun.prototype.config().frm + " .huxingId").eq(1).val();
+                    var id = $("#" + houseFun.prototype.config().frm + " .huxingId option:selected").val();
                     // 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                    if (id != null && id!=''){
+                    if (id != null && id != '') {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
                             dataType: "JSON",
@@ -239,6 +223,7 @@
                                 if (result.ret) {
                                     var data = result.data;
                                     $("#" + houseFun.prototype.config().frm + " .house_latest_family_plan").html(data.fileViewName);
+                                    $("#" + houseFun.prototype.config().frm + " input[name='orientation']").val(data.orientation);
                                 }
                             },
                             error: function (e) {
@@ -249,7 +234,6 @@
                 });
             },
             files: function () {
-
                 //房屋平面图
                 FileUtils.uploadFiles({
                     target: houseFun.prototype.config().houseHousePlan,

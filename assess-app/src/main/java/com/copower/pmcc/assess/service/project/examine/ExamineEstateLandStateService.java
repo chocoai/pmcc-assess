@@ -57,10 +57,17 @@ public class ExamineEstateLandStateService {
                 sysDataDicTemp = null;
             }
         }
-        if (examineEstateLandState.getLandUse() != null){
-            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUse());
+        if (examineEstateLandState.getLandUseType() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUseType());
             if (sysDataDicTemp != null){
-                examineEstateLandStateVo.setLandUseName(sysDataDicTemp.getName());
+                examineEstateLandStateVo.setLandUseTypeName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
+        if (examineEstateLandState.getLandUseCategory() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUseCategory());
+            if (sysDataDicTemp != null){
+                examineEstateLandStateVo.setLandUseCategoryName(sysDataDicTemp.getName());
                 sysDataDicTemp = null;
             }
         }
