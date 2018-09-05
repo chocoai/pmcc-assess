@@ -26,13 +26,23 @@ public class ExamineHouseTrading {
 
     private String descriptionContent;
 
+    private String paymentMethod;
+
+    private String normalTransaction;
+
+    private String taxBurden;
+
+    private String scopeProperty;
+
+    private String financingConditions;
+
+    private String deposit;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String deposit;
 
     public Integer getId() {
         return id;
@@ -122,6 +132,54 @@ public class ExamineHouseTrading {
         this.descriptionContent = descriptionContent == null ? null : descriptionContent.trim();
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod == null ? null : paymentMethod.trim();
+    }
+
+    public String getNormalTransaction() {
+        return normalTransaction;
+    }
+
+    public void setNormalTransaction(String normalTransaction) {
+        this.normalTransaction = normalTransaction == null ? null : normalTransaction.trim();
+    }
+
+    public String getTaxBurden() {
+        return taxBurden;
+    }
+
+    public void setTaxBurden(String taxBurden) {
+        this.taxBurden = taxBurden == null ? null : taxBurden.trim();
+    }
+
+    public String getScopeProperty() {
+        return scopeProperty;
+    }
+
+    public void setScopeProperty(String scopeProperty) {
+        this.scopeProperty = scopeProperty == null ? null : scopeProperty.trim();
+    }
+
+    public String getFinancingConditions() {
+        return financingConditions;
+    }
+
+    public void setFinancingConditions(String financingConditions) {
+        this.financingConditions = financingConditions == null ? null : financingConditions.trim();
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit == null ? null : deposit.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -144,13 +202,5 @@ public class ExamineHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(String deposit) {
-        this.deposit = deposit == null ? null : deposit.trim();
     }
 }

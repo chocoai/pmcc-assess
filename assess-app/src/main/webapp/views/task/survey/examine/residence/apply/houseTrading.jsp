@@ -11,6 +11,51 @@
         <input type="hidden" data-name="fieldName" value="<%=request.getParameter("fieldName")%>">
         <input type="hidden" name="id" value="${surveyExamineDataInfoVo.examineHouseTradingVo.id}">
 
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="财产范围" required="required"
+                           name="scopeProperty" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">融资条件<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="融资条件" required="required"
+                           name="financingConditions" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">税费负担<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 taxBurden" name="taxBurden"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">正常交易<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 normalTransaction" name="normalTransaction"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 paymentMethod" name="paymentMethod"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易时间<span class="symbol required"></span></label>
@@ -326,11 +371,23 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(html);
                 $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
-            })
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(html);
                 $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
-            })
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").select2();//加载样式
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .normalTransaction").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .normalTransaction").select2();//加载样式
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").select2();//加载样式
+            });
 
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
