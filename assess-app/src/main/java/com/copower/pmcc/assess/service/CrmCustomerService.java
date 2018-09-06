@@ -32,6 +32,10 @@ public class CrmCustomerService {
         return crmRpcCustomerService.getCustomerList(crmCustomerDto);
     }
 
+    public List<CrmCustomerLinkmanDto> getCustomerLinkmanPageList(Integer customerId,Integer pageIndex,Integer pageSize,String search){
+        return crmRpcCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,search);
+    }
+
     /**
      *
      * 功能描述: 暂时CRM系统中没有提供类似的方法

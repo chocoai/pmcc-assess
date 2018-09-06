@@ -68,6 +68,13 @@ public class ExamineHouseService {
             }
             baseDataDic = null;
         }
+        if (examineHouse.getUseEnvironment() != null){
+            baseDataDic = baseDataDicService.getDataDicById(examineHouse.getUseEnvironment());
+            if (baseDataDic != null){
+                examineHouseVo.setUseEnvironmentName(baseDataDic.getName());
+            }
+            baseDataDic = null;
+        }
         if (examineHouse.getHuxingId() != null){
             ExamineUnitHuxing examineUnitHuxing = examineUnitHuxingService.getExamineUnitHuxingById(examineHouse.getHuxingId());
             examineHouseVo.setHuxingName(examineUnitHuxing.getDescription());

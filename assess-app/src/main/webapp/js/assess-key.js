@@ -53,6 +53,7 @@ AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//�
 AssessDicKey.examineHousetaxBurden = "examine.house.tax.burden";//税费负担
 AssessDicKey.examineHouseNormalTransaction = "examine.house.normal.transaction";//正常交易
 AssessDicKey.examineHousePaymentMethod = "examine.house.payment.method";//付款方式
+AssessDicKey.examineHouseClassificationInformationSources = "examine.house.classification.information.sources";//信息来源分类
 
 AssessDicKey.estate_total_land_level = "estate.land_level" ;//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use" ;//土地用途

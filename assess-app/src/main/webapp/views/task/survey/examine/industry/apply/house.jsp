@@ -106,6 +106,25 @@
 
     <div class="form-group">
         <div class="x-valid">
+            <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <select class="form-control search-select select2 newsHuxing" name="newsHuxing" required="required">
+                </select>
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">最新户型图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <input id="house_new_latest_family_plan"
+                       required="required" placeholder="上传附件" class="form-control" type="file">
+                <div id="_house_new_latest_family_plan"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="x-valid">
             <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
             <div class="col-sm-5">
                 <input id="house_house_plan"
@@ -116,12 +135,10 @@
     </div>
 </form>
 <script>
-    //layer_height
     $(function () {
         ContainerFunForValid.push(ExamineHouse.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(ExamineHouse.getFormData);//获取数据方法写入容器
         ContainerFunForInit.house.push(houseFun.prototype.init);//初始化方法写入容器
-        ContainerFunForInit.house.push(houseFun.prototype.files);//初始化方法写入容器
     });
 </script>
 
@@ -206,8 +223,13 @@
                     $("#" + houseFun.prototype.config().frm + " .useEnvironment").html(html);
                     $("#" + houseFun.prototype.config().frm + " .useEnvironment").select2();//加载样式
                 })
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, "", function (html, data) {
+                    $("#" + houseFun.prototype.config().frm + " .newsHuxing").html(html);
+                    $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2();//加载样式
+                })
                 houseFun.prototype.examineunithuxingSelect();
                 houseFun.prototype.changeEvent();
+                houseFun.prototype.files.init();
             },
             changeEvent: function () {
                 $("#" + houseFun.prototype.config().frm + " .huxingId").change(function () {
@@ -233,31 +255,41 @@
                     }
                 });
             },
-            files: function () {
-                //房屋平面图
-                FileUtils.uploadFiles({
-                    target: houseFun.prototype.config().houseHousePlan,
-                    disabledTarget: "btn_submit",
-                    formData: {
-                        fieldsName: houseFun.prototype.config().houseHousePlan,
-                        tableName: houseFun.prototype.config().database_Table,
-                        tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                });
-                FileUtils.getFileShows({
-                    target: houseFun.prototype.config().houseHousePlan,
-                    formData: {
-                        fieldsName: houseFun.prototype.config().houseHousePlan,
-                        tableName: houseFun.prototype.config().database_Table,
-                        tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
-                        projectId: 0,
-                        creater: "${currUserAccount}"
-                    },
-                    deleteFlag: true
-                })
+            files: {
+                init:function () {
+                    houseFun.prototype.files.uploadFilesModel(houseFun.prototype.config().houseHousePlan);
+                    houseFun.prototype.files.getFileShowsModel(houseFun.prototype.config().houseHousePlan);
+
+                    houseFun.prototype.files.uploadFilesModel(houseFun.prototype.config().houseNewLatestFamilyPlan);
+                    houseFun.prototype.files.getFileShowsModel(houseFun.prototype.config().houseNewLatestFamilyPlan);
+                },
+                uploadFilesModel:function (target) {
+                    FileUtils.uploadFiles({
+                        target: target,
+                        disabledTarget: "btn_submit",
+                        formData: {
+                            fieldsName: target,
+                            tableName: houseFun.prototype.config().database_Table,
+                            tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
+                            projectId: 0,
+                            creater: "${currUserAccount}"
+                        },
+                        deleteFlag: true
+                    });
+                },
+                getFileShowsModel:function (target) {
+                    FileUtils.getFileShows({
+                        target: target,
+                        formData: {
+                            fieldsName: target,
+                            tableName: houseFun.prototype.config().database_Table,
+                            tableId: ${empty surveyExamineDataInfoVo.examineHouseVo?0:surveyExamineDataInfoVo.examineHouseVo.id},
+                            projectId: 0,
+                            creater: "${currUserAccount}"
+                        },
+                        deleteFlag: true
+                    })
+                }
             }
         };
     })();

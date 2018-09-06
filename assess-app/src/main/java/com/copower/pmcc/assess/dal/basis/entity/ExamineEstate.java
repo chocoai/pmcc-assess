@@ -44,6 +44,10 @@ public class ExamineEstate {
 
     private Date gmtModified;
 
+    private String averagePrice;
+
+    private String priceRange;
+
     public Integer getId() {
         return id;
     }
@@ -202,5 +206,21 @@ public class ExamineEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice == null ? null : averagePrice.trim();
+    }
+
+    public String getPriceRange() {
+        return priceRange;
+    }
+
+    public void setPriceRange(String priceRange) {
+        this.priceRange = priceRange == null ? null : priceRange.trim();
     }
 }

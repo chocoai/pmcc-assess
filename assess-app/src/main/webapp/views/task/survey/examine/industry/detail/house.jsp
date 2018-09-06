@@ -18,8 +18,16 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" readonly="readonly" data-rule-number='true' placeholder="所在楼层(请输入数字)"
+                <input type="text" readonly="readonly" placeholder="所在楼层(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="floor"
+                       class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">使用环境<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly" placeholder="使用环境"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.useEnvironmentName}" name="useEnvironmentName"
                        class="form-control">
             </div>
         </div>
@@ -38,26 +46,17 @@
 
         <div class="x-valid">
             <label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>
-            <div class="col-sm-5">
+            <div class="col-sm-3">
                 <div class="house_latest_family_plan"></div>
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
         <div class="x-valid">
-            <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" readonly="readonly"  placeholder="最新户型"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxingName}" name="newsHuxing"
+                <input type="text" readonly="readonly"  placeholder="朝向"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.orientation}" name="orientation"
                        class="form-control">
-            </div>
-        </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">最新户型图<span class="symbol required"></span></label>
-            <div class="col-sm-5">
-                <div id="_house_new_latest_family_plan"></div>
             </div>
         </div>
     </div>
@@ -96,12 +95,30 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" name="description" readonly="readonly">
-                    ${surveyExamineDataInfoVo.examineHouseVo.description}
-                </textarea>
+                <textarea class="form-control" name="description" readonly="readonly">${surveyExamineDataInfoVo.examineHouseVo.description}</textarea>
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">最新户型<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly"  placeholder="最新户型"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.newsHuxingName}" name="newsHuxing"
+                       class="form-control">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">最新户型图<span class="symbol required"></span></label>
+            <div class="col-sm-5">
+                <div id="_house_new_latest_family_plan"></div>
+            </div>
+        </div>
+    </div>
+
+
 
     <div class="form-group">
         <div class="x-valid">
@@ -138,13 +155,9 @@
     })();
     var house = Object.create(house_config);
     house.init = function () {
-        house.select2LoadData();
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}", "huxingId");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}", "newsHuxing");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.certUse}", "certUse");
-        house.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.practicalUse}", "practicalUse");
+        house.showFiles();
         var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
-        if (house.select2IsNotNull(id)){
+        if (house.isEmpty(id)){
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
                 dataType: "JSON",
@@ -153,7 +166,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
-                        if (house.select2IsNotNull(data)){
+                        if (house.isEmpty(data)){
                             $("#" + house.getFrm() + " .house_latest_family_plan").html(data.fileViewName);
                         }
                     }
@@ -163,32 +176,12 @@
                 }
             });
         }
-        house.showFiles();
-        $("#" + house.getFrm() + " :input").attr("readonly","readonly");
     };
-    house.select2InitMethodWrite = function (data, name) {
-        if (house.select2IsNotNull(data)) {
-            if (house.select2IsNotNull(name)) {
-                $("#" + house.getFrm() + " ." + name).val(data).trigger("change");
-            }
-        } else {
-            $("#" + house.getFrm() + " ." + name).val(null).trigger("change");
+    house.isEmpty = function (data) {
+        if (data) {
+            return true;
         }
-    };
-    house.select2IsNotNull = function (data) {
-        if (data == null) {
-            return false;
-        }
-        if (data == '') {
-            return false;
-        }
-        if (data == "") {
-            return false;
-        }
-        if (data == 0) {
-            return false;
-        }
-        return true;
+        return false;
     };
     house.showFiles = function () {
         //最新户型图
@@ -216,15 +209,9 @@
             deleteFlag: false
         });
     };
-    house.select2ChangeEvent = function () {
-
-    };
-    house.select2LoadData = function () {
-
-    };
 
     $(function () {
-        house.showFiles();
+       house.init();
     });
 </script>
 

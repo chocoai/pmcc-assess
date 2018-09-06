@@ -235,6 +235,7 @@ POSSESSOR.prototype = {
     }
 };
 
+var customerId_UNIT_INFORMATION = 0 ;
 //报告使用单位
 function UNIT_INFORMATION() {
 
@@ -252,13 +253,13 @@ UNIT_INFORMATION.prototype = {
                     $("#uUseUnit").val(nodes[0].id);
                 }
                 var id = nodes[0].id;
+                UNIT_INFORMATION.prototype.setCustomerId_UNIT_INFORMATION(id);
                 Contacts.prototype.UNIT_INFORMATION().loadDataList(null,id);
                 $.ajax({
                     type: "POST",
                     url: Contacts.prototype.getUrl()+"/projectInfo/getCRMList",
                     data: "crmId=" + id,
                     success: function (msg) {
-                        console.log(msg);
                         UNIT_INFORMATION.prototype.writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber","uUnitProperties");
                     }
                 });
@@ -276,6 +277,12 @@ UNIT_INFORMATION.prototype = {
         $("#" + id3).val(businessScope);
         $("#" + id4).val(certificateNumber);
         $("#" + id5).val(unitProperties);
+    },
+    setCustomerId_UNIT_INFORMATION:function (item) {
+        customerId_UNIT_INFORMATION = item;
+    },
+    getCustomerId_UNIT_INFORMATION:function () {
+        return customerId_UNIT_INFORMATION ;
     }
 }
 
@@ -301,14 +308,78 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         findCRMContacts:function () {
             var crmContactsName = null;
             crmContactsName = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox+" "+"input[name='" + "name" + "']").val();
-            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(crmContactsName);
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null,null,crmContactsName);
         },
         showModel:function () {
             $('#' + Contacts.prototype.UNIT_INFORMATION().getData().crmBox).modal("show");
             Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null);
         },
-        loadDataList:function (crmContactsName) {
-            var data = {};
+        next:function () {
+            var customerId = UNIT_INFORMATION.prototype.getCustomerId_UNIT_INFORMATION();
+            var pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            pageIndex = parseInt(pageIndex);
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(customerId)){
+                customerId = 0;
+            }
+            var page = 0;
+            $.ajax({
+                url: Contacts.prototype.getUrl() + "/projectInfo/findCrmProjectContactsVos",
+                type: "get",
+                dataType: "json",
+                data: {customerId: customerId,total:"total"},
+                success: function (result) {
+                    if (result.ret) {
+                       var total = result.data ;
+                       if ((total % 4) > 0){
+                           page = total / 4 ;
+                           page = parseInt(page) +1 ;
+                       }else {
+                           page = total / 4;
+                       }
+                       pageIndex += 1;
+                       console.log(page);
+                       console.log(pageIndex);
+                       if (pageIndex <= page){
+                           Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(pageIndex,4,null);
+                           $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html(pageIndex);
+                       }
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        previous:function () {
+            var pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            pageIndex = parseInt(pageIndex);
+            pageIndex = pageIndex - 1;
+            if (pageIndex >= 1){
+                Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(pageIndex,4,null);
+                $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html(pageIndex);
+            }
+        },
+        loadDataList:function (pageIndex,pageSize,search) {
+            var customerId = UNIT_INFORMATION.prototype.getCustomerId_UNIT_INFORMATION();
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(customerId)){
+                customerId = 0;
+            }
+            //默认4条记录
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(pageSize)){
+                pageSize = 4;
+            }
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(pageIndex)){
+                pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            }
+            var data = {
+                customerId:customerId,
+                pageSize:pageSize,
+                pageIndex:pageIndex,
+                search:search
+            };
+            console.log("test == >");
+            console.log(data);
             var cols = [];
             cols.push({field: 'name', title: '姓名',searchable:true});
             cols.push({field: 'department', title: '部门'});
@@ -316,22 +387,20 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             cols.push({field: 'email', title: '邮箱'});
             cols.push({field: 'id', visible: false, title: "id"});
 
-            // cols.push({
-            //     field: 'id', title: '操作', formatter: function (value, row, index) {
-            //         var str = '<div class="btn-margin">';
-            //         str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="Contacts.prototype.UNIT_INFORMATION().get(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-            //         str += '</div>';
-            //         return str;
-            //     }
-            // });
             $("#" + Contacts.prototype.UNIT_INFORMATION().getData().crmTable).bootstrapTable("destroy");
             TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
-                crmContacts: "crmContacts",crmContactsName:crmContactsName
+                crmContacts: "crmContacts",customerId:data.customerId,pageIndex:data.pageIndex,pageSize:data.pageSize,searchCrm:data.search
             }, {
                 showColumns: false,
                 showRefresh: false,
-                search: false
+                search: false,
             });
+        },
+        isEmpty:function (item) {
+            if (item){
+                return true;
+            }
+            return false;
         }
     };
     /**

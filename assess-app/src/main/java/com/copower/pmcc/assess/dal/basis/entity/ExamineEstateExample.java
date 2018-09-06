@@ -1395,6 +1395,146 @@ public class ExamineEstateExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andAveragePriceIsNull() {
+            addCriterion("average_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceIsNotNull() {
+            addCriterion("average_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceEqualTo(String value) {
+            addCriterion("average_price =", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotEqualTo(String value) {
+            addCriterion("average_price <>", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceGreaterThan(String value) {
+            addCriterion("average_price >", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceGreaterThanOrEqualTo(String value) {
+            addCriterion("average_price >=", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLessThan(String value) {
+            addCriterion("average_price <", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLessThanOrEqualTo(String value) {
+            addCriterion("average_price <=", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceLike(String value) {
+            addCriterion("average_price like", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotLike(String value) {
+            addCriterion("average_price not like", value, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceIn(List<String> values) {
+            addCriterion("average_price in", values, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotIn(List<String> values) {
+            addCriterion("average_price not in", values, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceBetween(String value1, String value2) {
+            addCriterion("average_price between", value1, value2, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceNotBetween(String value1, String value2) {
+            addCriterion("average_price not between", value1, value2, "averagePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeIsNull() {
+            addCriterion("price_range is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeIsNotNull() {
+            addCriterion("price_range is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeEqualTo(String value) {
+            addCriterion("price_range =", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeNotEqualTo(String value) {
+            addCriterion("price_range <>", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeGreaterThan(String value) {
+            addCriterion("price_range >", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeGreaterThanOrEqualTo(String value) {
+            addCriterion("price_range >=", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeLessThan(String value) {
+            addCriterion("price_range <", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeLessThanOrEqualTo(String value) {
+            addCriterion("price_range <=", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeLike(String value) {
+            addCriterion("price_range like", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeNotLike(String value) {
+            addCriterion("price_range not like", value, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeIn(List<String> values) {
+            addCriterion("price_range in", values, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeNotIn(List<String> values) {
+            addCriterion("price_range not in", values, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeBetween(String value1, String value2) {
+            addCriterion("price_range between", value1, value2, "priceRange");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeNotBetween(String value1, String value2) {
+            addCriterion("price_range not between", value1, value2, "priceRange");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

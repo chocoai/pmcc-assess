@@ -22,6 +22,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="average_price" property="averagePrice" jdbcType="VARCHAR" />
+    <result column="price_range" property="priceRange" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,7 +86,8 @@
   <sql id="Base_Column_List" >
     id, declare_id, plan_details_id, examine_type, developer_id, name, street, number, 
     land_level, attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, 
-    building_number, position, description, creator, gmt_created, gmt_modified
+    building_number, position, description, creator, gmt_created, gmt_modified, average_price, 
+    price_range
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstateExample" >
     select
@@ -126,14 +129,16 @@
       floor_area, cover_an_area, volumetric_rate, 
       greening_rate, building_number, position, 
       description, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, average_price, price_range
+      )
     values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
       #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
       #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
       #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
       #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -198,6 +203,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="averagePrice != null" >
+        average_price,
+      </if>
+      <if test="priceRange != null" >
+        price_range,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
@@ -256,6 +267,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="averagePrice != null" >
+        #{averagePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="priceRange != null" >
+        #{priceRange,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -328,6 +345,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.averagePrice != null" >
+        average_price = #{record.averagePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priceRange != null" >
+        price_range = #{record.priceRange,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -354,7 +377,9 @@
       description = #{record.description,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      average_price = #{record.averagePrice,jdbcType=VARCHAR},
+      price_range = #{record.priceRange,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -419,6 +444,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=VARCHAR},
+      </if>
+      <if test="priceRange != null" >
+        price_range = #{priceRange,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -442,7 +473,9 @@
       description = #{description,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      average_price = #{averagePrice,jdbcType=VARCHAR},
+      price_range = #{priceRange,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

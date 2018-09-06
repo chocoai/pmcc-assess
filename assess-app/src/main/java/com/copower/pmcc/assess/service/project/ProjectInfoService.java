@@ -643,28 +643,20 @@ public class ProjectInfoService {
         return vo;
     }
 
-    public BootstrapTableVo crmContacts(String name) {
+    public BootstrapTableVo crmContacts(Integer customerId,Integer pageIndex,Integer pageSize,String search) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CrmCustomerLinkmanDto> crmCustomerLinkmanDtos = Lists.newArrayList();
-        if (org.springframework.util.StringUtils.isEmpty(name)) {
-            List<CrmCustomerDto> crmCustomerDtoList = crmCustomerService.getCustomerList(new CrmCustomerDto());
-            if (!ObjectUtils.isEmpty(crmCustomerDtoList)) {
-                for (CrmCustomerDto crmCustomerDto : crmCustomerDtoList) {
-                    List<CrmCustomerLinkmanDto> oos = crmCustomerService.getCustomerLinkmanList(crmCustomerDto.getId());
-                    if (!ObjectUtils.isEmpty(oos)) {
-                        crmCustomerLinkmanDtos.addAll(oos);
-                    }
-                }
+        try {
+            if (org.springframework.util.StringUtils.isEmpty(search)) {
+                crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,null);
+            } else {
+                crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,search);
             }
-        } else {
-            CrmCustomerLinkmanDto crmCustomerLinkmanDto = new CrmCustomerLinkmanDto();
-            crmCustomerLinkmanDto.setName(name);
-            crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanList(crmCustomerLinkmanDto);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
         }
         vo.setRows(crmCustomerLinkmanDtos);
-        vo.setTotal(page.getTotal());
+        vo.setTotal(Integer.toUnsignedLong(crmCustomerLinkmanDtos.size()));
         return vo;
     }
 

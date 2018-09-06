@@ -236,8 +236,8 @@
                                             级别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" data-rule-number='true' name="leve"
-                                                   placeholder="级别(数字)" required="required">
+                                            <input type="text" class="form-control" name="leve"
+                                                   placeholder="级别" required="required">
                                         </div>
                                     </div>
                                 </div>

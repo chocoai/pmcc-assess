@@ -132,6 +132,26 @@
 
     <div class="form-group">
         <div class="x-valid">
+            <label class="col-sm-1 control-label">均价<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="均价(请输入数字)"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.averagePrice}" name="averagePrice" required="required"
+                       class="form-control">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">价格区间<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" placeholder="价格区间"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.priceRange}" name="priceRange" required="required"
+                       class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="x-valid">
             <label class="col-sm-1 control-label">总平面图</label>
             <div class="col-sm-5">
                 <input id="estate_floor_total_plan" placeholder="上传附件" class="form-control" type="file">

@@ -152,32 +152,42 @@
     })();
     var house = Object.create(house_config);
     house.init = function () {
-        house.select2LoadData();
+        var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}";
+        if (house.isEmpty(id)){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
+                dataType: "JSON",
+                data: {'id': id},
+                type: "GET",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (house.isEmpty(data)){
+                            $("#" + house.getFrm() + " .house_latest_family_plan").html(data.fileViewName);
+                        }
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
+            });
+        }
         house.showFiles();
     };
     house.select2InitMethodWrite = function (data, name) {
-        if (house.select2IsNotNull(data)) {
-            if (house.select2IsNotNull(name)) {
+        if (house.isEmpty(data)) {
+            if (house.isEmpty(name)) {
                 $("#" + house.getFrm() + " ." + name).val(data).trigger("change");
             }
         } else {
             $("#" + house.getFrm() + " ." + name).val(null).trigger("change");
         }
     };
-    house.select2IsNotNull = function (data) {
-        if (data == null) {
-            return false;
+    house.isEmpty = function (data) {
+        if (data) {
+            return true;
         }
-        if (data == '') {
-            return false;
-        }
-        if (data == "") {
-            return false;
-        }
-        if (data == 0) {
-            return false;
-        }
-        return true;
+        return false;
     };
     house.showFiles = function () {
         //最新户型图
@@ -204,11 +214,6 @@
             },
             deleteFlag: false
         });
-    };
-    house.select2ChangeEvent = function () {
-    };
-    house.select2LoadData = function () {
-
     };
 </script>
 

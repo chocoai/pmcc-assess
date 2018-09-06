@@ -162,6 +162,14 @@
                                         <!-- cerare document add ajax data-->
                                     </table>
                                 </div>
+
+                                <div class="form-group">
+                                    <ul class="pager">
+                                        <li><a href="#" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.previous()">上一页</a></li>
+                                        <li><span class="label label-info"><font color="black">当前页数:<div class="pageIndex">1</div> </font></span></li>
+                                        <li><a href="#" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.next()">下一页</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

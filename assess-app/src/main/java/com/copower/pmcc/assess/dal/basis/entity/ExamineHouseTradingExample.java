@@ -466,6 +466,76 @@ public class ExamineHouseTradingExample {
             return (Criteria) this;
         }
 
+        public Criteria andInformationTypeIsNull() {
+            addCriterion("information_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeIsNotNull() {
+            addCriterion("information_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeEqualTo(String value) {
+            addCriterion("information_type =", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeNotEqualTo(String value) {
+            addCriterion("information_type <>", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeGreaterThan(String value) {
+            addCriterion("information_type >", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("information_type >=", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeLessThan(String value) {
+            addCriterion("information_type <", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeLessThanOrEqualTo(String value) {
+            addCriterion("information_type <=", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeLike(String value) {
+            addCriterion("information_type like", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeNotLike(String value) {
+            addCriterion("information_type not like", value, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeIn(List<String> values) {
+            addCriterion("information_type in", values, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeNotIn(List<String> values) {
+            addCriterion("information_type not in", values, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeBetween(String value1, String value2) {
+            addCriterion("information_type between", value1, value2, "informationType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationTypeNotBetween(String value1, String value2) {
+            addCriterion("information_type not between", value1, value2, "informationType");
+            return (Criteria) this;
+        }
+
         public Criteria andTradingPriceIsNull() {
             addCriterion("trading_price is null");
             return (Criteria) this;
@@ -1283,6 +1353,146 @@ public class ExamineHouseTradingExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleIsNull() {
+            addCriterion("total_sale is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleIsNotNull() {
+            addCriterion("total_sale is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleEqualTo(String value) {
+            addCriterion("total_sale =", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleNotEqualTo(String value) {
+            addCriterion("total_sale <>", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleGreaterThan(String value) {
+            addCriterion("total_sale >", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleGreaterThanOrEqualTo(String value) {
+            addCriterion("total_sale >=", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleLessThan(String value) {
+            addCriterion("total_sale <", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleLessThanOrEqualTo(String value) {
+            addCriterion("total_sale <=", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleLike(String value) {
+            addCriterion("total_sale like", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleNotLike(String value) {
+            addCriterion("total_sale not like", value, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleIn(List<String> values) {
+            addCriterion("total_sale in", values, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleNotIn(List<String> values) {
+            addCriterion("total_sale not in", values, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleBetween(String value1, String value2) {
+            addCriterion("total_sale between", value1, value2, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalSaleNotBetween(String value1, String value2) {
+            addCriterion("total_sale not between", value1, value2, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationIsNull() {
+            addCriterion("information is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationIsNotNull() {
+            addCriterion("information is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationEqualTo(String value) {
+            addCriterion("information =", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationNotEqualTo(String value) {
+            addCriterion("information <>", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationGreaterThan(String value) {
+            addCriterion("information >", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationGreaterThanOrEqualTo(String value) {
+            addCriterion("information >=", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationLessThan(String value) {
+            addCriterion("information <", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationLessThanOrEqualTo(String value) {
+            addCriterion("information <=", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationLike(String value) {
+            addCriterion("information like", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationNotLike(String value) {
+            addCriterion("information not like", value, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationIn(List<String> values) {
+            addCriterion("information in", values, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationNotIn(List<String> values) {
+            addCriterion("information not in", values, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationBetween(String value1, String value2) {
+            addCriterion("information between", value1, value2, "information");
+            return (Criteria) this;
+        }
+
+        public Criteria andInformationNotBetween(String value1, String value2) {
+            addCriterion("information not between", value1, value2, "information");
             return (Criteria) this;
         }
 

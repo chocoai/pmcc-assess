@@ -11,6 +11,7 @@ public class ExamineHouseVo extends ExamineHouse {
     private String newsHuxingName;
 
     private String practicalUseName;
+    private String useEnvironmentName;
 
     public String getHuxingName() {
         return huxingName;
@@ -42,5 +43,13 @@ public class ExamineHouseVo extends ExamineHouse {
 
     public void setNewsHuxingName(String newsHuxingName) {
         this.newsHuxingName = newsHuxingName;
+    }
+
+    public String getUseEnvironmentName() {
+        return useEnvironmentName;
+    }
+
+    public void setUseEnvironmentName(String useEnvironmentName) {
+        this.useEnvironmentName = useEnvironmentName;
     }
 }

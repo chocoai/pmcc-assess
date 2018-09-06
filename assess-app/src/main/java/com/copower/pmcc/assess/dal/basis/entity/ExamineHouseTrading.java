@@ -16,6 +16,8 @@ public class ExamineHouseTrading {
 
     private Integer tradingType;
 
+    private String informationType;
+
     private BigDecimal tradingPrice;
 
     private String buyerExtraTaxFee;
@@ -39,6 +41,10 @@ public class ExamineHouseTrading {
     private String deposit;
 
     private String creator;
+
+    private String totalSale;
+
+    private String information;
 
     private Date gmtCreated;
 
@@ -90,6 +96,14 @@ public class ExamineHouseTrading {
 
     public void setTradingType(Integer tradingType) {
         this.tradingType = tradingType;
+    }
+
+    public String getInformationType() {
+        return informationType;
+    }
+
+    public void setInformationType(String informationType) {
+        this.informationType = informationType == null ? null : informationType.trim();
     }
 
     public BigDecimal getTradingPrice() {
@@ -186,6 +200,22 @@ public class ExamineHouseTrading {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(String totalSale) {
+        this.totalSale = totalSale == null ? null : totalSale.trim();
+    }
+
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information == null ? null : information.trim();
     }
 
     public Date getGmtCreated() {

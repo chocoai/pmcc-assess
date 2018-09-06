@@ -4,10 +4,12 @@ import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineEstateDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstate;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineEstateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -31,6 +33,8 @@ public class ExamineEstateService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataDeveloperService dataDeveloperService;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -56,6 +60,7 @@ public class ExamineEstateService {
     public ExamineEstateVo getExamineEstateVo(ExamineEstate examineEstate) {
         if (examineEstate == null) return null;
         BaseDataDic sysDataDicTemp = null;
+        DataLandLevel dataLandLevel = null;
         ExamineEstateVo examineEstateVo = new ExamineEstateVo();
         BeanUtils.copyProperties(examineEstate, examineEstateVo);
         if (examineEstate.getDeveloperId()!=null){
@@ -69,10 +74,14 @@ public class ExamineEstateService {
             }
         }
         if (examineEstate.getLandLevel() != null){
-            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstate.getLandLevel());
-            if (sysDataDicTemp != null){
-                examineEstateVo.setLandLevelName(sysDataDicTemp.getName());
+            dataLandLevel = dataLandLevelService.getDataLandLevelById(examineEstate.getLandLevel());
+            if (dataLandLevel!=null){
+                examineEstateVo.setLandLevelName(dataLandLevel.getLeve());
             }
+//            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstate.getLandLevel());
+//            if (sysDataDicTemp != null){
+//                examineEstateVo.setLandLevelName(sysDataDicTemp.getName());
+//            }
         }
         return examineEstateVo;
     }

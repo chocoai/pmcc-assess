@@ -47,11 +47,21 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">说明事项类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 paymentMethod" name="paymentMethod"
+                    <select class="form-control search-select select2 descriptionType" name="descriptionType"
                             required="required">
                     </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">说明事项内容<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明事项内容" required="required"
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionContent}"
+                           name="descriptionContent"
+                           class="form-control">
                 </div>
             </div>
         </div>
@@ -91,9 +101,24 @@
                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="买方支付的额外税费"
-                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.buyerExtraTaxFee}"
-                           name="buyerExtraTaxFee"
-                           class="form-control">
+                           name="buyerExtraTaxFee" class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 paymentMethod" name="paymentMethod"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid totalSale" style="display: none;">
+                <label class="col-sm-1 control-label">出售总额</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="出售总额"
+                           name="totalSale" class="form-control">
                 </div>
             </div>
         </div>
@@ -117,7 +142,7 @@
 
         </div>
 
-        <div class="form-group" style="display: none">
+        <div class="form-group" id="ExamineHouseTradingLeaseAndSellTableSondiv" style="display: none">
             <div class="x-valid">
                 <div class="col-sm-1" style="text-align: right;">
                     <button type="button" class="btn btn-success" data-toggle="modal" href="#divBox" onclick="examineHouseTrading.prototype.subShowModel();"> 新增
@@ -131,22 +156,22 @@
             </div>
         </div>
 
+
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项类型<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">信息来源分类<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 descriptionType" name="descriptionType"
+                    <select class="form-control search-select select2 informationType" name="informationType"
                             required="required">
                     </select>
                 </div>
             </div>
-
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项内容<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">信息来源<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容" required="required"
-                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionContent}"
-                           name="descriptionContent"
+                    <input type="text" placeholder="信息来源" required="required"
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.information}"
+                           name="information"
                            class="form-control">
                 </div>
             </div>
@@ -167,55 +192,22 @@
 
     };
     examineHouseTrading.prototype = {
-        //页面保存数据后 展示数据
-        saveShowData:function () {
-            $("#"+examineHouseTrading.prototype.config().frm+" .tradingTime").val(formatDate("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}"));
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
-
-            var tradingTypeID = "${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" ;
-            if (examineHouseTrading.prototype.select2IsNotNull(tradingTypeID)){
-                AssessCommon.getDataDicInfo(tradingTypeID,function (data) {
-                    var  tradingType = data.fieldName;
-                    $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
-                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
-                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
-                    }
-                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
-                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
-                    }
-                })
-            }
-            examineHouseTrading.prototype.select2InitMethodWrite(tradingTypeID,"tradingType");
-        },
         select2InitMethodWrite:function (data,name) {
-            if (examineHouseTrading.prototype.select2IsNotNull(data)){
-                if (examineHouseTrading.prototype.select2IsNotNull(name)){
+            if (examineHouseTrading.prototype.isEmpty(data)){
+                if (examineHouseTrading.prototype.isEmpty(name)){
                     $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(data).trigger("change");
                 }
             }else {
-                if (examineHouseTrading.prototype.select2IsNotNull(name)){
+                if (examineHouseTrading.prototype.isEmpty(name)){
                     $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(null).trigger("change");
                 }
             }
         },
-        select2IsNotNull:function (data) {
-            if (data == null){
-                return false;
+        isEmpty:function (data) {
+            if (data){
+                return true;
             }
-            if (data == ''){
-                return false;
-            }
-            if (data == ""){
-                return false;
-            }
-            if (data == 0){
-                return false;
-            }
-            return true;
+            return false;
         },
         config: function () {
             return {
@@ -223,6 +215,7 @@
                 frmSon: "frm_ExamineHouseTradingLeaseAndSell",
                 divBoxSon: "divBoxExamineHouseTradingLeaseAndSell",
                 tableSon: "ExamineHouseTradingLeaseAndSellTableSon",
+                totalSale:"totalSale",
                 examineHouseTradingSellID: "ExamineHouseTradingSell",//根据 ExamineHouseTradingSellAndLeaseDtoTypeEnum配置(key需要与数据字典配置一致)
                 examineHouseTradingLeaseID: "ExamineHouseTradingLease"
             };
@@ -262,7 +255,7 @@
             });
             $("#" + examineHouseTrading.prototype.config().tableSon).bootstrapTable('destroy');
             TableInit(examineHouseTrading.prototype.config().tableSon, "${pageContext.request.contextPath}/examineHouse/getExamineHouseTradingSellAndLeaseDtoList", cols, {
-                type: type_,examineType:data.examineType,declareId:data.declareId
+                type: type_,examineType:data.examineType,declareId:data.declareId,planDetailsId:data.planDetailsId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -388,26 +381,66 @@
                 $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").html(html);
                 $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").select2();//加载样式
             });
-
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources,"",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm + " .informationType").html(html);
+                $("#" + examineHouseTrading.prototype.config().frm + " .informationType").select2();//加载样式
+            });
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
                 var tradingType = null;
                 AssessCommon.getDataDicInfo(tradingID,function (data) {
                     tradingType = data.fieldName;
-                    $("#"+examineHouseTrading.prototype.config().tableSon).parent().parent().parent().show();
                     if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").show();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
                         examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
                     }
                     if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").hide();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
+                        // examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
                     }
                 })
             });
-            examineHouseTrading.prototype.saveShowData();
+            $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").change(function () {
+                var id = $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").eq(1).val();
+                AssessCommon.getDataDicInfo(id,function (data){
+                    if (data.name == '一次性'){
+                        $("."+examineHouseTrading.prototype.config().totalSale).show();
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").hide();
+                    }
+                    if (data.name == '分期付款'){
+                        $("."+examineHouseTrading.prototype.config().totalSale).hide();
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").show();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
+                    }
+                });
+            });
+            $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").change(function () {
+                var id = $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").eq(1).val();
+                if (examineHouseTrading.prototype.isEmpty(id)){
+                    AssessCommon.getDataDicInfo(id,function (item){
+                       var name = item.name;
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
+                            if (name == '正常承担'){
+                                $.each(data,function (i,n) {
+                                    if (n.name == "正常"){
+                                        examineHouseTrading.prototype.select2InitMethodWrite(n.id,"normalTransaction");
+                                    }
+                                });
+                            }else {
+                                $.each(data,function (i,n) {
+                                    if (n.name == "不正常"){
+                                        examineHouseTrading.prototype.select2InitMethodWrite(n.id,"normalTransaction");
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
         }
     };
 

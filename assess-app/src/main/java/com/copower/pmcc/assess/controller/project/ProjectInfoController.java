@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateContactsVo;
+import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.manage.ProjectFollowService;
@@ -28,6 +29,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +78,8 @@ public class ProjectInfoController {
     private ProjectPlanService projectPlanService;
     @Autowired
     private ProjectTaskAllService projectTaskAllService;
+    @Autowired
+    private CrmCustomerService crmCustomerService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -144,7 +148,7 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "项目立项", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData,Boolean bisNextUser) {
+    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData), bisNextUser);
         } catch (Exception e) {
@@ -155,10 +159,10 @@ public class ProjectInfoController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/projectEditSubmit",name = "项目立项返回修改", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改", method = RequestMethod.POST)
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
         try {
-            projectInfoService.projectEditApproval(approvalModelDto, formData,projectInfoId);
+            projectInfoService.projectEditApproval(approvalModelDto, formData, projectInfoId);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -166,10 +170,8 @@ public class ProjectInfoController {
     }
 
 
-
-
     @ResponseBody
-    @RequestMapping(value = "/projectApprovalSubmit",name = "项目立项审批", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApprovalSubmit", name = "项目立项审批", method = RequestMethod.POST)
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectApproval(approvalModelDto);
@@ -180,7 +182,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectApprovalAssignSubmit",name = "分派项目经理审批", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApprovalAssignSubmit", name = "分派项目经理审批", method = RequestMethod.POST)
     public HttpResult projectApprovalAssignSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectAssignApproval(approvalModelDto);
@@ -189,7 +191,6 @@ public class ProjectInfoController {
         }
         return HttpResult.newCorrectResult();
     }
-
 
 
     @RequestMapping(value = "/projectAssignDetails", name = "分派项目经理详情")
@@ -232,7 +233,7 @@ public class ProjectInfoController {
         String detailUri = baseProjectClassify.getDetailUrl().replaceAll("^/", "");
         if (!StringUtils.equals(detailUri, uri)) {
             String forwardUrl = String.format("/%s?projectId=%s", baseProjectClassify.getDetailUrl(), projectId);
-            return "forward:"+forwardUrl;//跳转到其它请求地址
+            return "forward:" + forwardUrl;//跳转到其它请求地址
         }
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
         if (enumByName != null) {
@@ -289,8 +290,8 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getPlanDetailListByPlanId", name = "取得阶段工作成果", method = RequestMethod.GET)
-    public BootstrapTableVo getPlanDetailListByPlanId(Integer projecId,Integer planId) {
-        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getPlanDetailListByPlanId(projecId,planId);
+    public BootstrapTableVo getPlanDetailListByPlanId(Integer projecId, Integer planId) {
+        List<ProjectPlanDetailsVo> projectPlanDetailsVos = projectPlanDetailsService.getPlanDetailListByPlanId(projecId, planId);
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
@@ -300,22 +301,32 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid,String crmContacts,String crmContactsName) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid, String crmContacts, String searchCrm, Integer customerId, Integer pageIndex, Integer pageSize) {
         BootstrapTableVo vo = null;
-        vo = projectInfoService.listContactsVo(crmId, type, pid);
-        if (!org.springframework.util.StringUtils.isEmpty(crmContacts)){
-            if (org.springframework.util.StringUtils.isEmpty(crmContactsName)){
-                vo = projectInfoService.crmContacts(null);
-            }else {
-                vo = projectInfoService.crmContacts(crmContactsName);
-            }
+        //crm查询
+        if (Objects.equal("crmContacts",crmContacts)) {
+            vo = projectInfoService.crmContacts(customerId,pageIndex,pageSize,searchCrm);
+        }else {
+            vo = projectInfoService.listContactsVo(crmId, type, pid);
         }
         return vo;
     }
 
     @ResponseBody
+    @RequestMapping(value = "/findCrmProjectContactsVos", method = {RequestMethod.POST, RequestMethod.GET}, name = "crm中获取客户的联系人")
+    public HttpResult findContactsTotal( Integer customerId,String total){
+        BootstrapTableVo vo = null;
+        if (Objects.equal("total",total)){
+            if (customerId != null){
+                return HttpResult.newCorrectResult(crmCustomerService.getCustomerLinkmanList(customerId).size());
+            }
+        }
+        return HttpResult.newCorrectResult(vo);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/Contacts/save", method = {RequestMethod.POST, RequestMethod.GET}, name = "联系人 增加与修改")
-    public HttpResult addContacts(InitiateContactsDto dto,String formData) {
+    public HttpResult addContacts(InitiateContactsDto dto, String formData) {
         List<InitiateContactsDto> dtos = null;
         try {
             if (dto.getId() != null && dto.getId().intValue() != 0) {//不再使用专门的 update controller
@@ -328,11 +339,11 @@ public class ProjectInfoController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         try {
-            if (!org.springframework.util.StringUtils.isEmpty(formData)){
+            if (!org.springframework.util.StringUtils.isEmpty(formData)) {
                 JSONObject jsonObject = JSON.parseObject(formData);
                 String jsonContent = jsonObject.getString("contacts");
-                dtos = JSONObject.parseArray(jsonContent,InitiateContactsDto.class);
-                if (!ObjectUtils.isEmpty(dtos)){
+                dtos = JSONObject.parseArray(jsonContent, InitiateContactsDto.class);
+                if (!ObjectUtils.isEmpty(dtos)) {
                     projectInfoService.addContacts(dtos);
                 }
             }
