@@ -61,7 +61,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_examine_estate" domainObjectName="ExamineEstate">
+        <table tableName="tb_data_tax_rate_allocation" domainObjectName="DataTaxRateAllocation">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

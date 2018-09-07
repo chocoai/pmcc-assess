@@ -2,14 +2,8 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class DataReportAnalysis {
+public class DataTaxRateAllocation {
     private Integer id;
-
-    private String name;
-
-    private Integer reportAnalysisType;
-
-    private String template;
 
     private String creator;
 
@@ -17,15 +11,17 @@ public class DataReportAnalysis {
 
     private Date gmtModified;
 
-    private String entrustment;
-
-    private String purpose;
-
     private String province;
 
     private String city;
 
     private String district;
+
+    private String type;
+
+    private String exExplain;
+
+    private String taxRate;
 
     public Integer getId() {
         return id;
@@ -33,30 +29,6 @@ public class DataReportAnalysis {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public Integer getReportAnalysisType() {
-        return reportAnalysisType;
-    }
-
-    public void setReportAnalysisType(Integer reportAnalysisType) {
-        this.reportAnalysisType = reportAnalysisType;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template == null ? null : template.trim();
     }
 
     public String getCreator() {
@@ -83,22 +55,6 @@ public class DataReportAnalysis {
         this.gmtModified = gmtModified;
     }
 
-    public String getEntrustment() {
-        return entrustment;
-    }
-
-    public void setEntrustment(String entrustment) {
-        this.entrustment = entrustment == null ? null : entrustment.trim();
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
-    }
-
     public String getProvince() {
         return province;
     }
@@ -121,5 +77,29 @@ public class DataReportAnalysis {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public String getExExplain() {
+        return exExplain;
+    }
+
+    public void setExExplain(String exExplain) {
+        this.exExplain = exExplain == null ? null : exExplain.trim();
+    }
+
+    public String getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(String taxRate) {
+        this.taxRate = taxRate == null ? null : taxRate.trim();
     }
 }

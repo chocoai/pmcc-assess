@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
 import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -13,6 +14,8 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +34,8 @@ public class DataReportAnalysisService {
     private DataReportAnalysisDao dataReportAnalysisDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     /**
      * 保存数据
@@ -97,15 +102,44 @@ public class DataReportAnalysisService {
 
     public DataReportAnalysisVo getReportAnalysisVo(DataReportAnalysis evaluationReportAnalysis) {
         if (evaluationReportAnalysis == null) return null;
-        DataReportAnalysisVo evaluationReportAnalysisVo = new DataReportAnalysisVo();
-        BeanUtils.copyProperties(evaluationReportAnalysis, evaluationReportAnalysisVo);
+        DataReportAnalysisVo vo = new DataReportAnalysisVo();
+        BaseDataDic baseDataDic = null;
+        BeanUtils.copyProperties(evaluationReportAnalysis, vo);
         if (evaluationReportAnalysis.getReportAnalysisType() != null) {
-            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(evaluationReportAnalysis.getReportAnalysisType());
+            baseDataDic = baseDataDicService.getCacheDataDicById(evaluationReportAnalysis.getReportAnalysisType());
             if (baseDataDic != null) {
-                evaluationReportAnalysisVo.setReportAnalysisTypeName(baseDataDic.getName());
+                vo.setReportAnalysisTypeName(baseDataDic.getName());
+                baseDataDic = null;
             }
         }
-        return evaluationReportAnalysisVo;
+        if (StringUtils.isNotBlank(evaluationReportAnalysis.getProvince())) {
+            vo.setProvinceName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getProvince()));//省
+        }
+        if (StringUtils.isNotBlank(evaluationReportAnalysis.getCity())) {
+            vo.setCityName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getCity()));//市或者县
+        }
+        if (StringUtils.isNotBlank(evaluationReportAnalysis.getDistrict())) {
+            vo.setDistrictName(erpAreaService.getSysAreaName(evaluationReportAnalysis.getDistrict()));//县
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(evaluationReportAnalysis.getEntrustment())){
+            if (NumberUtils.isNumber(evaluationReportAnalysis.getEntrustment())){
+                baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(evaluationReportAnalysis.getEntrustment()));
+                if (baseDataDic != null){
+                    vo.setEntrustmentName(baseDataDic.getName());
+                    baseDataDic = null;
+                }
+            }
+        }
+        if (!org.springframework.util.StringUtils.isEmpty(evaluationReportAnalysis.getPurpose())){
+            if (NumberUtils.isNumber(evaluationReportAnalysis.getPurpose())){
+                baseDataDic = baseDataDicService.getDataDicById(Integer.parseInt(evaluationReportAnalysis.getPurpose()));
+                if (baseDataDic != null){
+                    vo.setPurposeName(baseDataDic.getName());
+                    baseDataDic = null;
+                }
+            }
+        }
+        return vo;
     }
 
 }

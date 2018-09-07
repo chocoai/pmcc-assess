@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -32,12 +33,16 @@ public class DataReportAnalysisController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataReportAnalysisService dataReportAnalysisService;
+    @Autowired
+    private ErpAreaService erpAreaService;
+
 
     @RequestMapping(value = "/view", name = "转到index页面")
     public ModelAndView index() {
         List<BaseDataDic> reportAnalysisTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY);
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataReportAnalysis");
         modelAndView.addObject("reportAnalysisTypeList", reportAnalysisTypeList);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }
 

@@ -33,6 +33,10 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
  * 数据字典key
  */
 var AssessDicKey = {}
+//基础数据
+AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//	委托目的
+AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//税率配置
+
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
@@ -64,5 +68,7 @@ AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//�
 AssessDicKey.mdIncomeSelfSupportCostTypeIncome = "md.income.self.support.cost.type.income" ;//收入类
 AssessDicKey.mdIncomeSelfSupportCostTypeCost = "md.income.self.support.cost.type.cost" ;//成本类
 AssessDicKey.mdIncomeSelfSupportCostTypeExpense = "md.income.self.support.cost.type.expense" ;//费用类
+
+AssessDicKey.workProgrammeSetUse = "work.programme.set.use" ;//设定用途
 
 AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、住宅、商业、办公、车库、地下商业、建设周期
