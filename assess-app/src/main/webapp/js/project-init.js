@@ -151,18 +151,8 @@ POSSESSOR.prototype = {
                 var data = null;
                 var attachmentIdInitiate = CONSIGNOR.prototype.getAttachmentIdInitiateConsignor();
                 if (attachmentIdInitiate != null){//说明委托人有上传附件
-                    $.ajax({
-                        type: "POST",
-                        url: Contacts.prototype.getUrl()+"/dataDeveloper/getSysAttachmentDto",
-                        data: {attachmentId:attachmentIdInitiate},
-                        success: function (result) {
-                            if (result.ret) {
-                                data = result.data ;
-                                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.saveFile(data);//copy file
-                            } else {
-                                Alert("传输数据失败，失败原因:" + result.errmsg);
-                            }
-                        }
+                    AssessCommon.getSysAttachmentDto(attachmentIdInitiate,function (data) {
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.saveFile(data);//copy file
                     });
                 }
             },
@@ -176,19 +166,12 @@ POSSESSOR.prototype = {
                 data.tableName = AssessDBKey.InitiatePossessor ;
                 data.id = null;
                 data.fieldsName = "pAttachmentProjectEnclosureId" ;
-                $.ajax({
-                    type: "POST",
-                    url: Contacts.prototype.getUrl()+"/dataDeveloper/saveAndUpdateSysAttachmentDto",
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            showFileInitiatePossessor();
-                            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setPossessorTakeFile(false);
-                        } else {
-                            Alert("传输数据失败，失败原因:" + result.errmsg);
-                        }
+                AssessCommon.saveAndUpdateSysAttachmentDto(data,function (item) {
+                    if (item != null){
+                        showFileInitiatePossessor();
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setPossessorTakeFile(false);
                     }
-                });
+                })
             },
             //把联系人信息数据写入到数据库中 (把从委托人获取的联系人写入到占有人中)
             setContact:function (data) {

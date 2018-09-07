@@ -46,6 +46,29 @@ public class PublicController {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
+    @ResponseBody
+    @RequestMapping(value = "/getSysAttachmentDto",method = {RequestMethod.GET},name = "获取附件")
+    public HttpResult getSysAttachmentDto(Integer attachmentId){
+        SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
+        if (sysAttachmentDto != null){
+            return HttpResult.newCorrectResult(sysAttachmentDto);
+        }
+        return HttpResult.newErrorResult("异常");
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveAndUpdateSysAttachmentDto",method = {RequestMethod.POST},name = "新增或者更新附件")
+    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto){
+        if (sysAttachmentDto != null){
+            if (sysAttachmentDto.getId() == null){
+                baseAttachmentService.addAttachment(sysAttachmentDto);
+            }else {
+                baseAttachmentService.updateAttachment(sysAttachmentDto);
+            }
+            return HttpResult.newCorrectResult(sysAttachmentDto);
+        }
+        return HttpResult.newErrorResult("异常");
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getAreaList", name = "获取区域信息", method = RequestMethod.POST)

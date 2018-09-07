@@ -373,6 +373,38 @@
                     }
                 }
             })
+        },
+        //获取附件信息
+        getSysAttachmentDto:function (target,callback) {
+            $.ajax({
+                url: getContextPath() + "/public/getSysAttachmentDto",
+                type: "get",
+                data: {attachmentId:target},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if(callback){
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
+        //新增或者更新附件
+        saveAndUpdateSysAttachmentDto:function (item,callback) {
+            $.ajax({
+                url: getContextPath() + "/public/saveAndUpdateSysAttachmentDto",
+                type: "POST",
+                data: item,
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if(callback){
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
         }
     };
 
