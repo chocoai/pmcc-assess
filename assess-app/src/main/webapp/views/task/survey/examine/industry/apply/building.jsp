@@ -1776,8 +1776,10 @@
                         },
                         onUploadComplete: function (result, file) {
                             //附件id
-                            examineBuilding_.prototype.setAttachmentId(result);
-                            examineBuilding_.prototype.file.getFileShowsModel(examineBuilding_.prototype.config().building_floor_plan);
+                            if (target == examineBuilding_.prototype.config().building_floor_plan){
+                                examineBuilding_.prototype.setAttachmentId(result);
+                            }
+                            examineBuilding_.prototype.file.getFileShowsModel(target);
                         },
                         deleteFlag: true
                     });
