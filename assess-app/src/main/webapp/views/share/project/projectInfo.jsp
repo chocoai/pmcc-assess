@@ -19,49 +19,16 @@
         </h2>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content" style="display: none;">
         <div class="form-horizontal">
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目名称</label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-7">
                         <label class="form-control">${projectInfo.projectName}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日</label>
-                    <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                    pattern='yyyy-MM-dd'/></label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类别</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.projectTypeName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的备注</label>
-                    <div class="col-sm-11">
-                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">紧急程度</label>
                     <div class="col-sm-3">
@@ -69,29 +36,41 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
+                                                                    pattern='yyyy-MM-dd'/></label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的描述</label>
+                    <div class="col-sm-11">
+                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">价值类型</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.valueTypeName}</label>
                     </div>
                 </div>
-
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">执业部门</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.departmentName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型备注</label>
+                    <label class="col-sm-1 control-label">价值类型描述</label>
                     <div class="col-sm-11">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">省</label>
@@ -116,6 +95,12 @@
             </div>
 
             <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">执业部门</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.departmentName}</label>
+                    </div>
+                </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">
