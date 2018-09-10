@@ -174,8 +174,19 @@ public class ExamineBuildingController {
     @RequestMapping(value = "/initSonMainOutfitSurface", method = {RequestMethod.POST}, name = "初始化 子类")
     public HttpResult initSonMainOutfitSurface() {
         try {
-            examineBuildingService.initSonMainOutfitSurface();
+            examineBuildingService.initSonMainOutfitSurfaceFunction();
             return HttpResult.newCorrectResult("success");
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/copySonMainOutfitSurfaceFunction", method = {RequestMethod.POST}, name = "获取所有 子类")
+    public HttpResult copySonMainOutfitSurfaceFunction(Integer planDetailsId,Integer examineType,Integer declareId,String newBuildNumber,String oldBuildNumber) {
+        try {
+            return HttpResult.newCorrectResult(examineBuildingService.copySonMainOutfitSurfaceFunction(planDetailsId,examineType,declareId,oldBuildNumber,newBuildNumber));
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
