@@ -72,10 +72,14 @@
     <form class="form-horizontal" id="frmExamineBuilding_">
         <input type="hidden" name="id">
         <input type="hidden" name="identifier">
-        <input type="hidden" id="oneExamineBuilding" value='${surveyExamineDataInfoVo.examineBuildingVoMap['oneExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="twoExamineBuilding" value='${surveyExamineDataInfoVo.examineBuildingVoMap['twoExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="threeExamineBuilding" value='${surveyExamineDataInfoVo.examineBuildingVoMap['threeExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="fourExamineBuilding" value='${surveyExamineDataInfoVo.examineBuildingVoMap['fourExamineBuilding'].jsonContent}'>
+        <input type="hidden" id="oneExamineBuilding"
+               value='${surveyExamineDataInfoVo.examineBuildingVoMap['oneExamineBuilding'].jsonContent}'>
+        <input type="hidden" id="twoExamineBuilding"
+               value='${surveyExamineDataInfoVo.examineBuildingVoMap['twoExamineBuilding'].jsonContent}'>
+        <input type="hidden" id="threeExamineBuilding"
+               value='${surveyExamineDataInfoVo.examineBuildingVoMap['threeExamineBuilding'].jsonContent}'>
+        <input type="hidden" id="fourExamineBuilding"
+               value='${surveyExamineDataInfoVo.examineBuildingVoMap['fourExamineBuilding'].jsonContent}'>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -284,7 +288,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼栋基础 建筑类别
+                    建筑类别
                 </label>
                 <div class="col-sm-3">
                     <input type="text" data-title="buildingCategory" value="${examineBuildingVo.buildingCategoryName}"
@@ -293,7 +297,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼栋基础 建筑公司
+                    建筑公司
                 </label>
                 <div class="col-sm-3">
                     <input type="text" data-title="builderId" value="${examineBuildingVo.builderName}"
@@ -302,7 +306,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼栋基础 物业公司
+                    物业公司
                 </label>
                 <div class="col-sm-3">
                     <input type="text" data-title="propertyId" value="${examineBuildingVo.propertyName}"
@@ -314,22 +318,8 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">平面图<span class="symbol readonly"></span></label>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                     <div id="_building_floor_plan"></div>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">外装图<span class="symbol readonly"></span></label>
-                <div class="col-sm-3">
-                    <div id="_building_figure_outside"></div>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">外观图<span class="symbol readonly"></span></label>
-                <div class="col-sm-3">
-                    <div id="_building_floor_Appearance_figure"></div>
                 </div>
             </div>
         </div>
@@ -356,9 +346,6 @@
     <div class="x_title">
         <h3>
             层面结构
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.examineBuildingSurfaceShowModelData()"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -374,14 +361,25 @@
     <div class="x_title">
         <h3>
             维护结构
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.examineBuildingMaintenanceShowModelData()"> 新增
-            </button>
         </h3>
         <div class="clearfix"></div>
     </div>
     <div>
         <table class="table table-bordered" id="ExamineBuildingMaintenanceList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <div class="x_title">
+        <h3>
+            建筑功能
+        </h3>
+        <div class="clearfix"></div>
+    </div>
+    <div>
+        <table class="table table-bordered" id="examineBuildingFunctionList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
@@ -394,6 +392,7 @@
         var sonTableID = "ExamineBuildingOutfitList";
         var examineBuildingSurfaceTable = "ExamineBuildingSurfaceList";
         var examineBuildingMaintenanceTable = "ExamineBuildingMaintenanceList";
+        var examineBuildingFunctionTable = "examineBuildingFunctionList";
         var building_floor_plan = "building_floor_plan";//平面图id和字段 (楼栋) 根据 ExamineFileUpLoadFieldEnum 配置
         var building_figure_outside = "building_figure_outside";//外装图id和字段
         var building_floor_Appearance_figure = "building_floor_Appearance_figure"; //外观图id和字段
@@ -403,6 +402,9 @@
         };
         building_config.getExamineBuildingMaintenanceTable = function () {
             return examineBuildingMaintenanceTable;
+        };
+        building_config.getExamineBuildingFunctionTable = function () {
+            return examineBuildingFunctionTable;
         };
         building_config.getFrm = function () {
             return frm;
@@ -434,7 +436,9 @@
             return id;
         };
     })();
+
     var building = Object.create(building_config);
+
     building.init = function () {
         building.showFiles();
     };
@@ -452,82 +456,60 @@
         }
         return "0";
     },
-    building.getNumberData = function (target, number) {
-        var temp = "${surveyExamineDataInfoVo.examineBuildingVoMap}".split(",");
-        if (number > temp.length) {
-            toastr.success('数据不存在!');
-            return false;
-        }
-        var data = "";
-        if (number == 1) {
-            data = $("#oneExamineBuilding").val();
-        }
-        if (number == 2) {
-            data = $("#twoExamineBuilding").val();
-        }
-        if (number == 3) {
-            data = $("#threeExamineBuilding").val();
-        }
-        if (number == 3) {
-            data = $("#fourExamineBuilding").val();
-        }
-        data =JSON.parse(data);
-        if (building.isEmpty(data)) {
-            building.writeData(data);
-        }
-        if ($("#navButtonBuild button").size() > 0){
-            $.each($("#navButtonBuild button"), function (i, n) {
-                $(n).removeClass();
-                $(n).addClass("btn btn-default");
-            });
-        }
-        if ($(target).size() > 0) {
-            $(target).removeClass();
-            $(target).addClass("btn btn-primary");
-        }
-        building.showFiles();
-        building.subLoadDataList();
-        building.examineBuildingMaintenanceLoadList();
-        building.examineBuildingSurfaceLoadList();
-    };
+        building.getNumberData = function (target, number) {
+            var temp = "${surveyExamineDataInfoVo.examineBuildingVoMap}".split(",");
+            if (number > temp.length) {
+                toastr.success('数据不存在!');
+                return false;
+            }
+            var data = "";
+            if (number == 1) {
+                data = $("#oneExamineBuilding").val();
+            }
+            if (number == 2) {
+                data = $("#twoExamineBuilding").val();
+            }
+            if (number == 3) {
+                data = $("#threeExamineBuilding").val();
+            }
+            if (number == 3) {
+                data = $("#fourExamineBuilding").val();
+            }
+            data = JSON.parse(data);
+            if (building.isEmpty(data)) {
+                building.writeData(data);
+            }
+            if ($("#navButtonBuild button").size() > 0) {
+                $.each($("#navButtonBuild button"), function (i, n) {
+                    $(n).removeClass();
+                    $(n).addClass("btn btn-default");
+                });
+            }
+            if ($(target).size() > 0) {
+                $(target).removeClass();
+                $(target).addClass("btn btn-primary");
+            }
+            building.newFileShows(building.getFloorPlan(), building.getFloorPlan() + data.identifier);
+            building.subLoadDataList();
+            building.examineBuildingMaintenanceLoadList();
+            building.examineBuildingSurfaceLoadList();
+            building.examineBuildingFunctionList();
+        };
 
 
     building.writeData = function (item) {
         if (building.isEmpty(item)) {
             $("#" + building.getFrm()).initForm(item);
-            console.log(item);
             $("#" + building.getFrm() + " .openTime").val(formatDate(item.openTime));
             $("#" + building.getFrm() + " .roomTime").val(formatDate(item.roomTime));
         }
     };
 
-    building.showFiles = function () {
+    building.newFileShows = function (target, fieldsName) {
         FileUtils.getFileShows({
-            target: building.getFloorPlan(),
+            target: target,
             formData: {
-                fieldsName: building.getFloorPlan(),
-                tableName: AssessDBKey.ExamineBuilding,
-                tableId: building.getBuildID(),
-                projectId: 0,
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: false
-        });
-        FileUtils.getFileShows({
-            target: building.getFigureOutside(),
-            formData: {
-                fieldsName: building.getFigureOutside(),
-                tableName: AssessDBKey.ExamineBuilding,
-                tableId: building.getBuildID(),
-                projectId: 0,
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: false
-        });
-        FileUtils.getFileShows({
-            target: building.getAppearanceFigure(),
-            formData: {
-                fieldsName: building.getAppearanceFigure(),
+                fieldsName: fieldsName,
                 tableName: AssessDBKey.ExamineBuilding,
                 tableId: building.getBuildID(),
                 projectId: 0,
@@ -577,13 +559,36 @@
         });
     };
     building.examineBuildingMaintenanceLoadList = function () {
-        console.log("buildNumber:"+building.getIdentifier());
         var cols = [];
         cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'materialQualityName', title: '材质'});
         cols.push({field: 'name', title: '名称'});
         $("#" + building.getExamineBuildingMaintenanceTable()).bootstrapTable('destroy');
         TableInit(building.getExamineBuildingMaintenanceTable(), "${pageContext.request.contextPath}/examineBuildingMaintenance/getExamineBuildingMaintenanceList", cols, {
+            declareId: $("#declareId").val(),
+            examineType: $("#examineType").val(),
+            planDetailsId: $("#planDetailsId").val(),
+            buildNumber: building.getIdentifier()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+    building.examineBuildingFunctionList = function () {
+        var cols = [];
+        cols.push({field: 'waterProof', title: '防水'});
+        cols.push({field: 'heatPreservation', title: '保温'});
+        cols.push({field: 'heatInsulation', title: '隔热'});
+        cols.push({field: 'decorationPartName', title: '装修部位'});
+        cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+        cols.push({field: 'materialPriceName', title: '材料价格区间'});
+        cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+        $("#" + building.getExamineBuildingFunctionTable()).bootstrapTable('destroy');
+        TableInit(building.getExamineBuildingFunctionTable(), "${pageContext.request.contextPath}/examineBuildingFunction/getExamineBuildingFunctionList", cols, {
             declareId: $("#declareId").val(),
             examineType: $("#examineType").val(),
             planDetailsId: $("#planDetailsId").val(),
