@@ -18,14 +18,41 @@
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
-            <div class="col-sm-11">
+            <div class="col-sm-7">
                 <input required placeholder="项目名称" id="projectName" name="projectName"
                        value="${projectInfo.projectName}" class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <select id="urgency" name="urgency" class="form-control" required="required">
+                    <option value="">请选择</option>
+                    <c:forEach items="${project_initiate_urgency}" var="item">
+                        <c:choose>
+                            <c:when test="${item.id==projectInfo.urgency}">
+                                <option value="${item.id}" selected="selected">${item.name}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${item.id}">${item.name}</option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </select>
             </div>
         </div>
     </div>
 
     <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input required="required" placeholder="评估基准日" id="valuationDate"
+                       name="valuationDate" data-date-format="yyyy-mm-dd"
+                       class="form-control date-picker dbdate" readonly="readonly"
+                       value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+            </div>
+        </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
             <div class="col-sm-3">
@@ -47,22 +74,11 @@
             </div>
         </div>
         <div class="x-valid">
-            <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <input required="required" placeholder="评估基准日" id="valuationDate"
-                       name="valuationDate" data-date-format="yyyy-mm-dd"
-                       class="form-control date-picker dbdate" readonly="readonly"
-                       value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
             <label class="col-sm-1 control-label">委托目的描述</label>
-            <div class="col-sm-11">
-                                     <textarea id="remarkEntrustPurpose" name="remarkEntrustPurpose"
+            <div class="col-sm-3">
+                                     <input id="remarkEntrustPurpose" name="remarkEntrustPurpose"
                                                class="form-control"
-                                               placeholder="委托目的描述">${projectInfo.remarkEntrustPurpose}</textarea>
+                                               placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
             </div>
         </div>
     </div>
@@ -87,59 +103,11 @@
             </div>
         </div>
         <div class="x-valid">
-            <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <select id="urgency" name="urgency" class="form-control" required="required">
-                    <option value="">请选择</option>
-                    <c:forEach items="${project_initiate_urgency}" var="item">
-                        <c:choose>
-                            <c:when test="${item.id==projectInfo.urgency}">
-                                <option value="${item.id}" selected="selected">${item.name}</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option value="${item.id}">${item.name}</option>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
-            <div class="col-sm-3">
-                <div class="input-group">
-                    <input type="hidden" id="departmentId" name="departmentId"
-                           value="${projectInfo.departmentId}">
-                    <input id='departmentName' class='form-control' required="required"
-                           readonly="readonly" maxlength="200" onclick="ProjectInfoInit.prototype.selectDepartment();"
-                           value="${projectInfo.departmentName}">
-                    <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="ProjectInfoInit.prototype.selectDepartment();"
-                                                        data-toggle="tooltip"
-                                                        data-original-title="选择">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                                 <button type="button" class="btn btn-default docs-tooltip"
-                                                         onclick="$(this).closest('.input-group').find('input').val('');"
-                                                         data-toggle="tooltip" data-original-title="清除">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                                </span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
             <label class="col-sm-1 control-label">价值类型备注</label>
-            <div class="col-sm-11">
-                                     <textarea id="remarkValueType" name="remarkValueType"
+            <div class="col-sm-3">
+                                     <input id="remarkValueType" name="remarkValueType"
                                                class="form-control"
-                                               placeholder="委托目的描述">${projectInfo.remarkValueType}</textarea>
+                                               placeholder="委托目的描述" value="${projectInfo.remarkValueType}"/>
             </div>
         </div>
     </div>
@@ -187,6 +155,31 @@
     </div>
     <div class="form-group">
         <div class="x-valid">
+            <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <div class="input-group">
+                    <input type="hidden" id="departmentId" name="departmentId"
+                           value="${projectInfo.departmentId}">
+                    <input id='departmentName' class='form-control' required="required"
+                           readonly="readonly" maxlength="200" onclick="ProjectInfoInit.prototype.selectDepartment();"
+                           value="${projectInfo.departmentName}">
+                    <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                        onclick="ProjectInfoInit.prototype.selectDepartment();"
+                                                        data-toggle="tooltip"
+                                                        data-original-title="选择">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                 <button type="button" class="btn btn-default docs-tooltip"
+                                                         onclick="$(this).closest('.input-group').find('input').val('');"
+                                                         data-toggle="tooltip" data-original-title="清除">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                                </span>
+                </div>
+            </div>
+        </div>
+        <div class="x-valid">
             <label class="col-sm-1 control-label">项目经理</label>
             <div class="col-sm-3">
                 <div class="input-group">
@@ -212,6 +205,17 @@
                 </div>
             </div>
         </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">项目成员</label>
+            <div class="col-sm-3">
+                <input type="hidden" id="userAccountMember" name="userAccountMember"
+                       value="${projectInfo.projectMemberVo.userAccountMember}">
+                <input type="text" id="userAccountMemberName" class="form-control"
+                       readonly="readonly"
+                       onclick="ProjectInfoInit.prototype.selectUserAccountMember();"
+                       value="${projectInfo.projectMemberVo.userAccountMemberName}">
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <div class="x-valid">
@@ -219,19 +223,6 @@
             <div class="col-sm-11">
                                     <textarea id="remarks" name="remarks"
                                               class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">项目成员</label>
-            <div class="col-sm-11">
-                <input type="hidden" id="userAccountMember" name="userAccountMember"
-                       value="${projectInfo.projectMemberVo.userAccountMember}">
-                <input type="text" id="userAccountMemberName" class="form-control"
-                       readonly="readonly"
-                       onclick="ProjectInfoInit.prototype.selectUserAccountMember();"
-                       value="${projectInfo.projectMemberVo.userAccountMemberName}">
             </div>
         </div>
     </div>
