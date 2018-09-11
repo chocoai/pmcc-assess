@@ -6,17 +6,19 @@ import java.util.Date;
 public class ProjectPlanDetails {
     private Integer id;
 
-    private Integer projectWorkStageId;
+    private Integer pid;
+
+    private String projectPhaseName;
+
+    private Integer projectId;
 
     private Integer planId;
 
-    private Integer projectId;
+    private Integer projectWorkStageId;
 
     private Integer projectPhaseId;
 
     private Integer projectPhaseDetailsId;
-
-    private String projectPhaseName;
 
     private Date planStartDate;
 
@@ -35,8 +37,6 @@ public class ProjectPlanDetails {
     private BigDecimal proportion;
 
     private Integer sorting;
-
-    private Integer pid;
 
     private Integer firstPid;
 
@@ -62,10 +62,6 @@ public class ProjectPlanDetails {
 
     private Boolean bisLastLayer;
 
-    private Integer companyNature;
-
-    private Integer declareFormId;
-
     private Integer declareRecordId;
 
     private Integer areaGroupId;
@@ -86,12 +82,28 @@ public class ProjectPlanDetails {
         this.id = id;
     }
 
-    public Integer getProjectWorkStageId() {
-        return projectWorkStageId;
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setProjectWorkStageId(Integer projectWorkStageId) {
-        this.projectWorkStageId = projectWorkStageId;
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public String getProjectPhaseName() {
+        return projectPhaseName;
+    }
+
+    public void setProjectPhaseName(String projectPhaseName) {
+        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getPlanId() {
@@ -102,12 +114,12 @@ public class ProjectPlanDetails {
         this.planId = planId;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public Integer getProjectWorkStageId() {
+        return projectWorkStageId;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setProjectWorkStageId(Integer projectWorkStageId) {
+        this.projectWorkStageId = projectWorkStageId;
     }
 
     public Integer getProjectPhaseId() {
@@ -124,14 +136,6 @@ public class ProjectPlanDetails {
 
     public void setProjectPhaseDetailsId(Integer projectPhaseDetailsId) {
         this.projectPhaseDetailsId = projectPhaseDetailsId;
-    }
-
-    public String getProjectPhaseName() {
-        return projectPhaseName;
-    }
-
-    public void setProjectPhaseName(String projectPhaseName) {
-        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
     }
 
     public Date getPlanStartDate() {
@@ -204,14 +208,6 @@ public class ProjectPlanDetails {
 
     public void setSorting(Integer sorting) {
         this.sorting = sorting;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 
     public Integer getFirstPid() {
@@ -308,22 +304,6 @@ public class ProjectPlanDetails {
 
     public void setBisLastLayer(Boolean bisLastLayer) {
         this.bisLastLayer = bisLastLayer;
-    }
-
-    public Integer getCompanyNature() {
-        return companyNature;
-    }
-
-    public void setCompanyNature(Integer companyNature) {
-        this.companyNature = companyNature;
-    }
-
-    public Integer getDeclareFormId() {
-        return declareFormId;
-    }
-
-    public void setDeclareFormId(Integer declareFormId) {
-        this.declareFormId = declareFormId;
     }
 
     public Integer getDeclareRecordId() {

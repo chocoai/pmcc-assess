@@ -25,46 +25,10 @@
                 </div>
                 <div class="x_content">
                     <form id="frm_plan" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    计划名称
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="hidden" id="bisChildren" value="${bisChildren}">
-                                    <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
-                                    <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
-                                    <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
-                                    <label class="form-control">${projectPlan.planName}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    开始日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="开始日期"
-                                           value="<fmt:formatDate value="${projectPlan.projectPlanStart}" pattern="yyyy-MM-dd"/>"
-                                           id="projectPlanStart" name="projectPlanStart"
-                                           data-date-format='yyyy-mm-dd'
-                                           class="form-control dbdate">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    结束日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="结束日期"
-                                           value="<fmt:formatDate value="${projectPlan.projectPlanEnd}" pattern="yyyy-MM-dd"/>"
-                                           id="projectPlanEnd" name="projectPlanEnd"
-                                           data-date-format='yyyy-mm-dd'
-                                           class="form-control dbdate">
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" id="bisChildren" value="${bisChildren}">
+                        <input type="hidden" id="planId" name="id" value="${projectPlan.id}">
+                        <input type="hidden" id="workStageId" value="${projectPlan.workStageId}">
+                        <input type="hidden" id="planDetailsIds" value="${planDetailsIds}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -164,20 +128,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            工作内容
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="hidden" id="planDetailsId" name="id"/>
-                                            <input type="hidden" id="pid" name="pid"/>
-                                            <input type="hidden" id="firstPid" name="firstPid"/>
-                                            <input type="text" placeholder="计划名称" required maxlength="50" id="projectPhaseName" name="projectPhaseName"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             所属工作内容
                                         </label>
                                         <div class="col-sm-10">
@@ -187,6 +137,20 @@
                                                     <option value="${item.id}">${item.projectPhaseName}</option>
                                                 </c:forEach>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            工作内容
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="hidden" id="planDetailsId" name="id"/>
+                                            <input type="hidden" id="pid" name="pid"/>
+                                            <input type="hidden" id="firstPid" name="firstPid"/>
+                                            <input type="text" placeholder="计划名称" required maxlength="50" id="projectPhaseName" name="projectPhaseName"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                 </div>

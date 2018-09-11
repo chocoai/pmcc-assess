@@ -331,12 +331,6 @@ public class ProjectPlanDetailsService {
                         projectPlanDetailsVo.setTasks(transform);
                     }
                 }
-                if (item.getDeclareFormId() != null && item.getDeclareFormId() > 0) {
-                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getDeclareFormId());
-                    if (projectClassify != null) {
-                        projectPlanDetailsVo.setDeclareFormName(projectClassify.getName());
-                    }
-                }
                 projectPlanDetailsVos.add(projectPlanDetailsVo);
             }
         }

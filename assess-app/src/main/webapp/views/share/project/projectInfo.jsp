@@ -11,7 +11,7 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
         <h2>
             项目信息
@@ -19,7 +19,7 @@
         </h2>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content" style="display: none;">
+    <div class="x_content" >
         <div class="form-horizontal">
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">委托目的描述</label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">价值类型描述</label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-3">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content " >
         <form class="form-horizontal">
             <div class="panel-body">
                 <c:choose>
@@ -265,7 +265,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content " >
         <form class="form-horizontal">
             <div class="panel-body">
                 <c:choose>
@@ -395,7 +395,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content" >
         <form class="form-horizontal">
             <div>
                 <div class="form-group">

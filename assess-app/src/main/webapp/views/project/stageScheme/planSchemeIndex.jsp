@@ -53,7 +53,7 @@
                     </form>
                 </div>
             </div>
-            <%@include file="/views/plan/schemeModule/evaluationObjectSet.jsp" %>
+            <%@include file="/views/project/stageScheme/module/evaluationObjectSet.jsp" %>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">

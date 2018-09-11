@@ -230,7 +230,6 @@
                         }
                     },
                     {field: 'planHours', align: 'center', title: '计划工时(h)', width: '5%'},
-                    {field: 'actualHours', align: 'center', title: '实际工时(h)', width: '5%'},
                     {
                         field: 'taskSubmitTime',
                         align: 'center',

@@ -29,7 +29,7 @@
                                 <div class="form-group ">
                                     <div>
                                         <label class="col-sm-1 control-label">
-                                            项目类型:
+                                            项目大类:
                                         </label>
                                         <div class="col-sm-2">
                                             <select name="classId" id="classId" class="form-control">
@@ -42,7 +42,7 @@
                                     </div>
                                     <div>
                                         <label class="col-sm-1 control-label">
-                                            项目类别:
+                                            项目类型:
                                         </label>
                                         <div class="col-sm-2">
                                             <select name="typeId" id="typeId" class="form-control">
@@ -52,7 +52,7 @@
                                     </div>
                                     <div>
                                         <label class="col-sm-1 control-label">
-                                            项目范围:
+                                            项目类别:
                                         </label>
                                         <div class="col-sm-2">
                                             <select name="categoryId" id="categoryId" class="form-control">
