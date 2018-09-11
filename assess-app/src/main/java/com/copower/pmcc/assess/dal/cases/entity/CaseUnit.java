@@ -11,6 +11,8 @@ public class CaseUnit {
 
     private String elevatorHouseholdRatio;
 
+    private Integer version;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class CaseUnit {
 
     public void setElevatorHouseholdRatio(String elevatorHouseholdRatio) {
         this.elevatorHouseholdRatio = elevatorHouseholdRatio == null ? null : elevatorHouseholdRatio.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getCreator() {

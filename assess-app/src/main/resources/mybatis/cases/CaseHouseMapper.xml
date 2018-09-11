@@ -4,14 +4,17 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="floor" property="floor" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
     <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
-    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
-    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
+    <result column="news_huxing" property="newsHuxing" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
+    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
     <result column="right_interests_restriction" property="rightInterestsRestriction" jdbcType="VARCHAR" />
     <result column="use_environment" property="useEnvironment" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
+    <result column="case_date" property="caseDate" jdbcType="DATE" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, floor, house_number, huxing_id, cert_use, practical_use, right_interests_restriction, 
-    use_environment, description, creator, gmt_created, gmt_modified
+    id, unit_id, house_number, floor, huxing_id, news_huxing, cert_use, practical_use, 
+    right_interests_restriction, use_environment, description, orientation, case_date, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample" >
     select
@@ -112,15 +116,17 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house (unit_id, floor, house_number, 
-      huxing_id, cert_use, practical_use, 
-      right_interests_restriction, use_environment, 
-      description, creator, gmt_created, 
+    insert into tb_case_house (unit_id, house_number, floor, 
+      huxing_id, news_huxing, cert_use, 
+      practical_use, right_interests_restriction, 
+      use_environment, description, orientation, 
+      case_date, creator, gmt_created, 
       gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{huxingId,jdbcType=INTEGER}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
-      #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+    values (#{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, #{floor,jdbcType=INTEGER}, 
+      #{huxingId,jdbcType=INTEGER}, #{newsHuxing,jdbcType=INTEGER}, #{certUse,jdbcType=INTEGER}, 
+      #{practicalUse,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
+      #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, 
+      #{caseDate,jdbcType=DATE}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
@@ -132,14 +138,17 @@
       <if test="unitId != null" >
         unit_id,
       </if>
-      <if test="floor != null" >
-        floor,
-      </if>
       <if test="houseNumber != null" >
         house_number,
       </if>
+      <if test="floor != null" >
+        floor,
+      </if>
       <if test="huxingId != null" >
         huxing_id,
+      </if>
+      <if test="newsHuxing != null" >
+        news_huxing,
       </if>
       <if test="certUse != null" >
         cert_use,
@@ -156,6 +165,12 @@
       <if test="description != null" >
         description,
       </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
+      <if test="caseDate != null" >
+        case_date,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -170,20 +185,23 @@
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="floor != null" >
-        #{floor,jdbcType=INTEGER},
-      </if>
       <if test="houseNumber != null" >
         #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
       </if>
       <if test="huxingId != null" >
         #{huxingId,jdbcType=INTEGER},
       </if>
+      <if test="newsHuxing != null" >
+        #{newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="certUse != null" >
-        #{certUse,jdbcType=VARCHAR},
+        #{certUse,jdbcType=INTEGER},
       </if>
       <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=VARCHAR},
+        #{practicalUse,jdbcType=INTEGER},
       </if>
       <if test="rightInterestsRestriction != null" >
         #{rightInterestsRestriction,jdbcType=VARCHAR},
@@ -193,6 +211,12 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="caseDate != null" >
+        #{caseDate,jdbcType=DATE},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -220,20 +244,23 @@
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
-      <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=INTEGER},
-      </if>
       <if test="record.houseNumber != null" >
         house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
       </if>
       <if test="record.huxingId != null" >
         huxing_id = #{record.huxingId,jdbcType=INTEGER},
       </if>
+      <if test="record.newsHuxing != null" >
+        news_huxing = #{record.newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=VARCHAR},
+        cert_use = #{record.certUse,jdbcType=INTEGER},
       </if>
       <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+        practical_use = #{record.practicalUse,jdbcType=INTEGER},
       </if>
       <if test="record.rightInterestsRestriction != null" >
         right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
@@ -243,6 +270,12 @@
       </if>
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientation != null" >
+        orientation = #{record.orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseDate != null" >
+        case_date = #{record.caseDate,jdbcType=DATE},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -262,14 +295,17 @@
     update tb_case_house
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      floor = #{record.floor,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
-      cert_use = #{record.certUse,jdbcType=VARCHAR},
-      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      news_huxing = #{record.newsHuxing,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=INTEGER},
+      practical_use = #{record.practicalUse,jdbcType=INTEGER},
       right_interests_restriction = #{record.rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{record.useEnvironment,jdbcType=INTEGER},
       description = #{record.description,jdbcType=VARCHAR},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
+      case_date = #{record.caseDate,jdbcType=DATE},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -283,20 +319,23 @@
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="floor != null" >
-        floor = #{floor,jdbcType=INTEGER},
-      </if>
       <if test="houseNumber != null" >
         house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
       </if>
       <if test="huxingId != null" >
         huxing_id = #{huxingId,jdbcType=INTEGER},
       </if>
+      <if test="newsHuxing != null" >
+        news_huxing = #{newsHuxing,jdbcType=INTEGER},
+      </if>
       <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=VARCHAR},
+        cert_use = #{certUse,jdbcType=INTEGER},
       </if>
       <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=VARCHAR},
+        practical_use = #{practicalUse,jdbcType=INTEGER},
       </if>
       <if test="rightInterestsRestriction != null" >
         right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
@@ -306,6 +345,12 @@
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="caseDate != null" >
+        case_date = #{caseDate,jdbcType=DATE},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -322,14 +367,17 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouse" >
     update tb_case_house
     set unit_id = #{unitId,jdbcType=INTEGER},
-      floor = #{floor,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=INTEGER},
       huxing_id = #{huxingId,jdbcType=INTEGER},
-      cert_use = #{certUse,jdbcType=VARCHAR},
-      practical_use = #{practicalUse,jdbcType=VARCHAR},
+      news_huxing = #{newsHuxing,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=INTEGER},
+      practical_use = #{practicalUse,jdbcType=INTEGER},
       right_interests_restriction = #{rightInterestsRestriction,jdbcType=VARCHAR},
       use_environment = #{useEnvironment,jdbcType=INTEGER},
       description = #{description,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
+      case_date = #{caseDate,jdbcType=DATE},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

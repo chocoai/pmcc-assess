@@ -1,0 +1,94 @@
+package com.copower.pmcc.assess.service.cases;
+
+import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/9/11 14:40
+ * @Description:案例 楼栋信息
+ */
+@Service
+public class CaseBuildingService {
+    @Autowired
+    private CaseBuildingDao caseBuildingDao;
+    @Autowired
+    private CommonService commonService;
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CaseBuilding> caseBuildings = getCaseBuildingList(caseBuilding);
+        vo.setRows(caseBuildings);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding){
+        if (caseBuilding==null){
+            try {
+                logger.error("传入了null");
+                throw new Exception("null point");
+            } catch (Exception e1) {
+
+            }
+        }
+        return caseBuildingDao.getBuildingList(caseBuilding);
+    }
+
+    public CaseBuilding getCaseBuildingById(Integer id){
+        if (id==null){
+            try {
+                logger.error("传入了null");
+                throw new Exception("null point");
+            } catch (Exception e1) {
+
+            }
+        }
+        return caseBuildingDao.getBuildingById(id);
+    }
+
+    public boolean saveAndUpdateCaseBuilding(CaseBuilding caseBuilding){
+        if (caseBuilding==null){
+            try {
+                logger.error("传入了null");
+                throw new Exception("null point");
+            } catch (Exception e1) {
+
+            }
+        }
+        if (caseBuilding.getId()==null || caseBuilding.getId().intValue()==0){
+            caseBuilding.setCreator(commonService.thisUserAccount());
+            return caseBuildingDao.addBuilding(caseBuilding);
+        }else {
+            return caseBuildingDao.updateBuilding(caseBuilding);
+        }
+    }
+
+    public boolean deleteCaseBuilding(Integer id){
+        if (id==null){
+            try {
+                logger.error("传入了null");
+                throw new Exception("null point");
+            } catch (Exception e1) {
+
+            }
+        }
+        return caseBuildingDao.deleteBuilding(id);
+    }
+}

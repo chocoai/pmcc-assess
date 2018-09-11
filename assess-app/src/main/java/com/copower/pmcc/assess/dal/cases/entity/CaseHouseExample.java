@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.cases.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class CaseHouseExample {
@@ -103,6 +104,32 @@ public class CaseHouseExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -225,66 +252,6 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorIsNull() {
-            addCriterion("floor is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorIsNotNull() {
-            addCriterion("floor is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorEqualTo(Integer value) {
-            addCriterion("floor =", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorNotEqualTo(Integer value) {
-            addCriterion("floor <>", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorGreaterThan(Integer value) {
-            addCriterion("floor >", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorGreaterThanOrEqualTo(Integer value) {
-            addCriterion("floor >=", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorLessThan(Integer value) {
-            addCriterion("floor <", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorLessThanOrEqualTo(Integer value) {
-            addCriterion("floor <=", value, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorIn(List<Integer> values) {
-            addCriterion("floor in", values, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorNotIn(List<Integer> values) {
-            addCriterion("floor not in", values, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorBetween(Integer value1, Integer value2) {
-            addCriterion("floor between", value1, value2, "floor");
-            return (Criteria) this;
-        }
-
-        public Criteria andFloorNotBetween(Integer value1, Integer value2) {
-            addCriterion("floor not between", value1, value2, "floor");
-            return (Criteria) this;
-        }
-
         public Criteria andHouseNumberIsNull() {
             addCriterion("house_number is null");
             return (Criteria) this;
@@ -355,6 +322,66 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andFloorIsNull() {
+            addCriterion("floor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorIsNotNull() {
+            addCriterion("floor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorEqualTo(Integer value) {
+            addCriterion("floor =", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorNotEqualTo(Integer value) {
+            addCriterion("floor <>", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorGreaterThan(Integer value) {
+            addCriterion("floor >", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorGreaterThanOrEqualTo(Integer value) {
+            addCriterion("floor >=", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorLessThan(Integer value) {
+            addCriterion("floor <", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorLessThanOrEqualTo(Integer value) {
+            addCriterion("floor <=", value, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorIn(List<Integer> values) {
+            addCriterion("floor in", values, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorNotIn(List<Integer> values) {
+            addCriterion("floor not in", values, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorBetween(Integer value1, Integer value2) {
+            addCriterion("floor between", value1, value2, "floor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorNotBetween(Integer value1, Integer value2) {
+            addCriterion("floor not between", value1, value2, "floor");
+            return (Criteria) this;
+        }
+
         public Criteria andHuxingIdIsNull() {
             addCriterion("huxing_id is null");
             return (Criteria) this;
@@ -415,6 +442,66 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andNewsHuxingIsNull() {
+            addCriterion("news_huxing is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingIsNotNull() {
+            addCriterion("news_huxing is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingEqualTo(Integer value) {
+            addCriterion("news_huxing =", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingNotEqualTo(Integer value) {
+            addCriterion("news_huxing <>", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingGreaterThan(Integer value) {
+            addCriterion("news_huxing >", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("news_huxing >=", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingLessThan(Integer value) {
+            addCriterion("news_huxing <", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingLessThanOrEqualTo(Integer value) {
+            addCriterion("news_huxing <=", value, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingIn(List<Integer> values) {
+            addCriterion("news_huxing in", values, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingNotIn(List<Integer> values) {
+            addCriterion("news_huxing not in", values, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingBetween(Integer value1, Integer value2) {
+            addCriterion("news_huxing between", value1, value2, "newsHuxing");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsHuxingNotBetween(Integer value1, Integer value2) {
+            addCriterion("news_huxing not between", value1, value2, "newsHuxing");
+            return (Criteria) this;
+        }
+
         public Criteria andCertUseIsNull() {
             addCriterion("cert_use is null");
             return (Criteria) this;
@@ -425,62 +512,52 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andCertUseEqualTo(String value) {
+        public Criteria andCertUseEqualTo(Integer value) {
             addCriterion("cert_use =", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotEqualTo(String value) {
+        public Criteria andCertUseNotEqualTo(Integer value) {
             addCriterion("cert_use <>", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThan(String value) {
+        public Criteria andCertUseGreaterThan(Integer value) {
             addCriterion("cert_use >", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThanOrEqualTo(String value) {
+        public Criteria andCertUseGreaterThanOrEqualTo(Integer value) {
             addCriterion("cert_use >=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThan(String value) {
+        public Criteria andCertUseLessThan(Integer value) {
             addCriterion("cert_use <", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThanOrEqualTo(String value) {
+        public Criteria andCertUseLessThanOrEqualTo(Integer value) {
             addCriterion("cert_use <=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLike(String value) {
-            addCriterion("cert_use like", value, "certUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseNotLike(String value) {
-            addCriterion("cert_use not like", value, "certUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertUseIn(List<String> values) {
+        public Criteria andCertUseIn(List<Integer> values) {
             addCriterion("cert_use in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotIn(List<String> values) {
+        public Criteria andCertUseNotIn(List<Integer> values) {
             addCriterion("cert_use not in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseBetween(String value1, String value2) {
+        public Criteria andCertUseBetween(Integer value1, Integer value2) {
             addCriterion("cert_use between", value1, value2, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotBetween(String value1, String value2) {
+        public Criteria andCertUseNotBetween(Integer value1, Integer value2) {
             addCriterion("cert_use not between", value1, value2, "certUse");
             return (Criteria) this;
         }
@@ -495,62 +572,52 @@ public class CaseHouseExample {
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseEqualTo(String value) {
+        public Criteria andPracticalUseEqualTo(Integer value) {
             addCriterion("practical_use =", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotEqualTo(String value) {
+        public Criteria andPracticalUseNotEqualTo(Integer value) {
             addCriterion("practical_use <>", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThan(String value) {
+        public Criteria andPracticalUseGreaterThan(Integer value) {
             addCriterion("practical_use >", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThanOrEqualTo(String value) {
+        public Criteria andPracticalUseGreaterThanOrEqualTo(Integer value) {
             addCriterion("practical_use >=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThan(String value) {
+        public Criteria andPracticalUseLessThan(Integer value) {
             addCriterion("practical_use <", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThanOrEqualTo(String value) {
+        public Criteria andPracticalUseLessThanOrEqualTo(Integer value) {
             addCriterion("practical_use <=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLike(String value) {
-            addCriterion("practical_use like", value, "practicalUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andPracticalUseNotLike(String value) {
-            addCriterion("practical_use not like", value, "practicalUse");
-            return (Criteria) this;
-        }
-
-        public Criteria andPracticalUseIn(List<String> values) {
+        public Criteria andPracticalUseIn(List<Integer> values) {
             addCriterion("practical_use in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotIn(List<String> values) {
+        public Criteria andPracticalUseNotIn(List<Integer> values) {
             addCriterion("practical_use not in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseBetween(String value1, String value2) {
+        public Criteria andPracticalUseBetween(Integer value1, Integer value2) {
             addCriterion("practical_use between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotBetween(String value1, String value2) {
+        public Criteria andPracticalUseNotBetween(Integer value1, Integer value2) {
             addCriterion("practical_use not between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
@@ -752,6 +819,136 @@ public class CaseHouseExample {
 
         public Criteria andDescriptionNotBetween(String value1, String value2) {
             addCriterion("description not between", value1, value2, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNull() {
+            addCriterion("orientation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNotNull() {
+            addCriterion("orientation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationEqualTo(String value) {
+            addCriterion("orientation =", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotEqualTo(String value) {
+            addCriterion("orientation <>", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThan(String value) {
+            addCriterion("orientation >", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThanOrEqualTo(String value) {
+            addCriterion("orientation >=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThan(String value) {
+            addCriterion("orientation <", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThanOrEqualTo(String value) {
+            addCriterion("orientation <=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLike(String value) {
+            addCriterion("orientation like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotLike(String value) {
+            addCriterion("orientation not like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIn(List<String> values) {
+            addCriterion("orientation in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotIn(List<String> values) {
+            addCriterion("orientation not in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationBetween(String value1, String value2) {
+            addCriterion("orientation between", value1, value2, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotBetween(String value1, String value2) {
+            addCriterion("orientation not between", value1, value2, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateIsNull() {
+            addCriterion("case_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateIsNotNull() {
+            addCriterion("case_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateEqualTo(Date value) {
+            addCriterionForJDBCDate("case_date =", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("case_date <>", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateGreaterThan(Date value) {
+            addCriterionForJDBCDate("case_date >", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("case_date >=", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateLessThan(Date value) {
+            addCriterionForJDBCDate("case_date <", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("case_date <=", value, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateIn(List<Date> values) {
+            addCriterionForJDBCDate("case_date in", values, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("case_date not in", values, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("case_date between", value1, value2, "caseDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseDateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("case_date not between", value1, value2, "caseDate");
             return (Criteria) this;
         }
 
