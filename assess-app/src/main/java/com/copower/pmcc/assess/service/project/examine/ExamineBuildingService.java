@@ -355,6 +355,7 @@ public class ExamineBuildingService {
                         } else {
                             //真正的更新
                             examineBuildingDao.updateBuilding(oo);
+                            oo.setJsonContent(null);
                             oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
                             examineBuildingDao.updateBuilding(oo);
                             id = oo.getId();
