@@ -345,21 +345,36 @@ public class ExamineBuildingService {
                 for (ExamineBuilding oo : examineBuildings) {
                     if (oo != null) {
                         StringBuilder builder = new StringBuilder();
-                        if (oo.getId() != null) {
+                        if (oo.getId() == null || oo.getId().intValue() == 0) {
+                            //新增
                             oo.setCreator(commonService.thisUserAccount());
                             id = examineBuildingDao.addBuilding(oo);
                             oo.setId(id);
                             oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
                             examineBuildingDao.updateBuilding(oo);
                         } else {
+                            //真正的更新
+                            examineBuildingDao.updateBuilding(oo);
+                            oo.setJsonContent(null);
+                            oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
                             examineBuildingDao.updateBuilding(oo);
                             id = oo.getId();
                         }
-                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(oo.getIdentifier()).toString(), id);
-                        builder.setLength(0);
-                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(oo.getIdentifier()).toString(), id);
-                        builder.setLength(0);
-                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(oo.getIdentifier()).toString(), id);
+                        try {
+                            if (!StringUtils.isEmpty(oo.getIdentifier())){
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(oo.getIdentifier()).toString(), id);
+                                builder.setLength(0);
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(oo.getIdentifier()).toString(), id);
+                                builder.setLength(0);
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(oo.getIdentifier()).toString(), id);
+                            }
+                        } catch (Exception e1) {
+                            try {
+                                throw e1;
+                            } catch (Exception e11) {
+
+                            }
+                        }
                     }
                 }
             }
