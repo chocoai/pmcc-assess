@@ -475,8 +475,8 @@
             if (number == 3) {
                 data = $("#fourExamineBuilding").val();
             }
-            data = JSON.parse(data);
             if (building.isEmpty(data)) {
+                data = JSON.parse(data);
                 building.writeData(data);
             }
             if ($("#navButtonBuild button").size() > 0) {
@@ -489,7 +489,9 @@
                 $(target).removeClass();
                 $(target).addClass("btn btn-primary");
             }
-            building.newFileShows(building.getFloorPlan(), building.getFloorPlan() + data.identifier);
+            if (building.isEmpty(data)) {
+                building.newFileShows(building.getFloorPlan(), building.getFloorPlan() + data.identifier);
+            }
             building.subLoadDataList();
             building.examineBuildingMaintenanceLoadList();
             building.examineBuildingSurfaceLoadList();
