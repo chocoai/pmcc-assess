@@ -7,21 +7,27 @@ public class CaseHouse {
 
     private Integer unitId;
 
-    private Integer floor;
-
     private String houseNumber;
+
+    private Integer floor;
 
     private Integer huxingId;
 
-    private String certUse;
+    private Integer newsHuxing;
 
-    private String practicalUse;
+    private Integer certUse;
+
+    private Integer practicalUse;
 
     private String rightInterestsRestriction;
 
     private Integer useEnvironment;
 
     private String description;
+
+    private String orientation;
+
+    private Date caseDate;
 
     private String creator;
 
@@ -45,20 +51,20 @@ public class CaseHouse {
         this.unitId = unitId;
     }
 
-    public Integer getFloor() {
-        return floor;
-    }
-
-    public void setFloor(Integer floor) {
-        this.floor = floor;
-    }
-
     public String getHouseNumber() {
         return houseNumber;
     }
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    }
+
+    public Integer getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Integer floor) {
+        this.floor = floor;
     }
 
     public Integer getHuxingId() {
@@ -69,20 +75,28 @@ public class CaseHouse {
         this.huxingId = huxingId;
     }
 
-    public String getCertUse() {
+    public Integer getNewsHuxing() {
+        return newsHuxing;
+    }
+
+    public void setNewsHuxing(Integer newsHuxing) {
+        this.newsHuxing = newsHuxing;
+    }
+
+    public Integer getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(String certUse) {
-        this.certUse = certUse == null ? null : certUse.trim();
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
     }
 
-    public String getPracticalUse() {
+    public Integer getPracticalUse() {
         return practicalUse;
     }
 
-    public void setPracticalUse(String practicalUse) {
-        this.practicalUse = practicalUse == null ? null : practicalUse.trim();
+    public void setPracticalUse(Integer practicalUse) {
+        this.practicalUse = practicalUse;
     }
 
     public String getRightInterestsRestriction() {
@@ -107,6 +121,22 @@ public class CaseHouse {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
+    }
+
+    public Date getCaseDate() {
+        return caseDate;
+    }
+
+    public void setCaseDate(Date caseDate) {
+        this.caseDate = caseDate;
     }
 
     public String getCreator() {

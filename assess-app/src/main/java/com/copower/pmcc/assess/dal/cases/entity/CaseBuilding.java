@@ -52,7 +52,17 @@ public class CaseBuilding {
 
     private Integer buildingStructure;
 
+    private Integer buildingStructurePid;
+
+    private String jsonContent;
+
+    private String identifier;
+
+    private Integer version;
+
     private String creator;
+
+    private String name;
 
     private Date gmtCreated;
 
@@ -250,12 +260,52 @@ public class CaseBuilding {
         this.buildingStructure = buildingStructure;
     }
 
+    public Integer getBuildingStructurePid() {
+        return buildingStructurePid;
+    }
+
+    public void setBuildingStructurePid(Integer buildingStructurePid) {
+        this.buildingStructurePid = buildingStructurePid;
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier == null ? null : identifier.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Date getGmtCreated() {
