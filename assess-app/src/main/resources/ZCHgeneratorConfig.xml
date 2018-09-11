@@ -61,7 +61,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_examine_building_function" domainObjectName="ExamineBuildingFunction">
+        <table tableName="tb_data_block" domainObjectName="DataBlock">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
