@@ -301,11 +301,11 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getProjectContactsVos", name = "取得联系人列表 crm中取得以及更改之后直接从数据库获取", method = {RequestMethod.GET})
-    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid, String crmContacts, String searchCrm, Integer customerId, Integer pageIndex, Integer pageSize) {
+    public BootstrapTableVo listContactsVo(Integer crmId, Integer type, Integer pid, String crmContacts, String searchCrm, Integer customerId) {
         BootstrapTableVo vo = null;
         //crm查询
         if (Objects.equal("crmContacts",crmContacts)) {
-            vo = projectInfoService.crmContacts(customerId,pageIndex,pageSize,searchCrm);
+            vo = projectInfoService.crmContacts(customerId,searchCrm);
         }else {
             vo = projectInfoService.listContactsVo(crmId, type, pid);
         }

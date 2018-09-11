@@ -21,14 +21,17 @@
                     </label>
                     <div class="col-sm-3">
                         <div class="input-group">
-                            <input type="hidden" name="uUseUnit" id="uUseUnit" value="${projectInfo.unitInformationVo.uUseUnit}">
+                            <input type="hidden" name="uUseUnit" id="uUseUnit"
+                                   value="${projectInfo.unitInformationVo.uUseUnit}">
                             <input type="text" id="uUseUnitX" readonly="readonly" required
-                                   placeholder="单位" class="form-control" onclick="UNIT_INFORMATION.prototype.selectCustomer();"
+                                   placeholder="单位" class="form-control"
+                                   onclick="UNIT_INFORMATION.prototype.selectCustomer();"
                                    value="${projectInfo.unitInformationVo.uUseUnitName}">
                             <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     data-toggle="tooltip"
-                                                    data-original-title="选择" onclick="UNIT_INFORMATION.prototype.selectCustomer();">
+                                                    data-original-title="选择"
+                                                    onclick="UNIT_INFORMATION.prototype.selectCustomer();">
                                             <i class="fa fa-search"></i>
                                             </button>
                                             <button type="button" class="btn btn-default docs-tooltip"
@@ -113,15 +116,22 @@
         </div>
     </form>
     <div class="x_title">
-        <h3> 联系人</h3>
+        <h3> 联系人
+            <small>
+                <button type="button" class="btn btn-primary docs-tooltip"
+                        onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
+                    查询更多<i class="fa fa-search"></i>
+                </button>
+            </small>
+        </h3>
         <div class="clearfix">
         </div>
     </div>
     <div class="x_content">
-        <button class="btn btn-success" data-toggle="modal" onclick="Contacts.prototype.UNIT_INFORMATION().showModel();">新增联系人</button>
-        <button type="button" class="btn btn-default docs-tooltip" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
-            查询crm中联系人<i class="fa fa-search"></i>
+        <button class="btn btn-success" data-toggle="modal"
+                onclick="Contacts.prototype.UNIT_INFORMATION().showModel();">新增联系人
         </button>
+
         <table class="table table-bordered" id="tb_ListUNIT_INFORMATION">
             <!-- cerare document add ajax data-->
         </table>
@@ -136,7 +146,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">CRM联系人</h3>
+                <h3 class="modal-title">联系人</h3>
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
@@ -147,13 +157,15 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <div class="col-sm-6">
-                                            <input type="text" name="name" placeholder="联系人名字"
-                                                   class="form-control" >
+                                            <input type="text" name="name" placeholder="联系人名字、电话"
+                                                   class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <div class="col-sm-6">
-                                            <input type="button" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.findCRMContacts();" class="btn btn-success" value="查询">
+                                            <input type="button"
+                                                   onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.findCRMContacts();"
+                                                   class="btn btn-success" value="查询">
                                         </div>
                                     </div>
                                 </div>
@@ -161,14 +173,6 @@
                                     <table class="table table-bordered" id="tb_ListCRMContacts">
                                         <!-- cerare document add ajax data-->
                                     </table>
-                                </div>
-
-                                <div class="form-group">
-                                    <ul class="pager">
-                                        <li><a href="#" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.previous()">上一页</a></li>
-                                        <li><span class="label label-info"><font color="black">当前页数:<div class="pageIndex">1</div> </font></span></li>
-                                        <li><a href="#" onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.next()">下一页</a></li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +188,8 @@
     </div>
 </div>
 
-<div id="divBoxUNIT_INFORMATIONContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxUNIT_INFORMATIONContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -206,7 +211,7 @@
                                             姓名<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="cName"  placeholder="姓名"
+                                            <input type="text" name="cName" placeholder="姓名"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
@@ -228,7 +233,8 @@
                                             电话号码<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="cPhone" data-rule-number='true' name="number" placeholder="号码（请输入数字）"
+                                            <input type="text" name="cPhone" data-rule-number='true' name="number"
+                                                   placeholder="号码（请输入数字）"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
@@ -252,7 +258,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="Contacts.prototype.UNIT_INFORMATION().save();">
+                    <button type="button" class="btn btn-primary"
+                            onclick="Contacts.prototype.UNIT_INFORMATION().save();">
                         保存
                     </button>
                 </div>

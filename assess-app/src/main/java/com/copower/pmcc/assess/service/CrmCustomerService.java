@@ -3,6 +3,9 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +35,9 @@ public class CrmCustomerService {
         return crmRpcCustomerService.getCustomerList(crmCustomerDto);
     }
 
-    public List<CrmCustomerLinkmanDto> getCustomerLinkmanPageList(Integer customerId,Integer pageIndex,Integer pageSize,String search){
-        return crmRpcCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,search);
-    }
-
-    /**
-     *
-     * 功能描述: 暂时CRM系统中没有提供类似的方法
-     *
-     * @param:
-     * @return:
-     * @auther: zch
-     * @date: 2018/8/29 15:14
-     */
-    public List<CrmCustomerLinkmanDto> getCustomerLinkmanList(CrmCustomerLinkmanDto crmCustomerLinkmanDto){
-        return  null;
+    public BootstrapTableVo getCustomerLinkmanPageList(Integer customerId, String search){
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        return crmRpcCustomerService.getCustomerLinkmanPageList(customerId,requestBaseParam.getOffset(),requestBaseParam.getLimit(),search);
     }
 
     /**

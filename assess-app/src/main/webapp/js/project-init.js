@@ -184,7 +184,7 @@ POSSESSOR.prototype = {
                 });
                 $.ajax({
                     type: "POST",
-                    url: Contacts.prototype.getUrl()+"/projectInfo/Contacts/save",
+                    url: getContextPath()+"/projectInfo/Contacts/save",
                     data: {formData:JSON.stringify({contacts:item})},
                     success: function (result) {
                         if (result.ret) {
@@ -240,7 +240,7 @@ UNIT_INFORMATION.prototype = {
                 Contacts.prototype.UNIT_INFORMATION().loadDataList(null,id);
                 $.ajax({
                     type: "POST",
-                    url: Contacts.prototype.getUrl()+"/projectInfo/getCRMList",
+                    url: getContextPath()+"/projectInfo/getCRMList",
                     data: "crmId=" + id,
                     success: function (msg) {
                         UNIT_INFORMATION.prototype.writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber","uUnitProperties");
@@ -306,7 +306,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             }
             var page = 0;
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/findCrmProjectContactsVos",
+                url: getContextPath() + "/projectInfo/findCrmProjectContactsVos",
                 type: "get",
                 dataType: "json",
                 data: {customerId: customerId,total:"total"},
@@ -371,7 +371,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             cols.push({field: 'id', visible: false, title: "id"});
 
             $("#" + Contacts.prototype.UNIT_INFORMATION().getData().crmTable).bootstrapTable("destroy");
-            TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+            TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
                 crmContacts: "crmContacts",customerId:data.customerId,pageIndex:data.pageIndex,pageSize:data.pageSize,searchCrm:data.search
             }, {
                 showColumns: false,
@@ -402,7 +402,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -457,7 +457,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             }
         });
         $("#" + Contacts.prototype.UNIT_INFORMATION().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.UNIT_INFORMATION().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.UNIT_INFORMATION().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid,crmId:data.crmId
         }, {
             showColumns: false,
@@ -477,7 +477,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -505,7 +505,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -561,7 +561,7 @@ Contacts.prototype.POSSESSOR = function () {
         var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -614,7 +614,7 @@ Contacts.prototype.POSSESSOR = function () {
             }
         });
         $("#" + Contacts.prototype.POSSESSOR().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.POSSESSOR().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.POSSESSOR().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
@@ -634,7 +634,7 @@ Contacts.prototype.POSSESSOR = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -662,7 +662,7 @@ Contacts.prototype.POSSESSOR = function () {
         var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         $("#" + Contacts.prototype.POSSESSOR().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -717,7 +717,7 @@ Contacts.prototype.CONSIGNOR = function () {
         var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -770,7 +770,7 @@ Contacts.prototype.CONSIGNOR = function () {
             }
         });
         $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.CONSIGNOR().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.CONSIGNOR().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
@@ -790,7 +790,7 @@ Contacts.prototype.CONSIGNOR = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -818,7 +818,7 @@ Contacts.prototype.CONSIGNOR = function () {
         var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         $("#" + Contacts.prototype.CONSIGNOR().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},

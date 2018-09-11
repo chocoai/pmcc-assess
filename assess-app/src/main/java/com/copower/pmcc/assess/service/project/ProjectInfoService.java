@@ -643,20 +643,13 @@ public class ProjectInfoService {
         return vo;
     }
 
-    public BootstrapTableVo crmContacts(Integer customerId,Integer pageIndex,Integer pageSize,String search) {
+    public BootstrapTableVo crmContacts(Integer customerId,String search) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        List<CrmCustomerLinkmanDto> crmCustomerLinkmanDtos = Lists.newArrayList();
         try {
-            if (org.springframework.util.StringUtils.isEmpty(search)) {
-                crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,null);
-            } else {
-                crmCustomerLinkmanDtos = crmCustomerService.getCustomerLinkmanPageList(customerId,pageIndex,pageSize,search);
-            }
+            vo = crmCustomerService.getCustomerLinkmanPageList(customerId,search);
         } catch (Exception e1) {
             logger.error(e1.getMessage(),e1);
         }
-        vo.setRows(crmCustomerLinkmanDtos);
-        vo.setTotal(Integer.toUnsignedLong(crmCustomerLinkmanDtos.size()));
         return vo;
     }
 
