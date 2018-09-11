@@ -9,6 +9,9 @@
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
+
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -126,6 +129,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript">
     $(function () {
         //tab注册事件

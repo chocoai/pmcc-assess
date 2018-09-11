@@ -83,31 +83,31 @@
         //初始化区域信息
 
         //版块信息自动补全
-        <%--$("#frm_block").find("[name='name']").autocomplete({--%>
-        <%--source: function (request, response) {--%>
-        <%--$.ajax({--%>
-        <%--url: "${pageContext.request.contextPath}/case/autoCompleteBlock",--%>
-        <%--type: "get",--%>
-        <%--dataType: "json",--%>
-        <%--data: {--%>
-        <%--maxRows: 10,--%>
-        <%--term: request.term--%>
-        <%--},--%>
-        <%--success: function (result) {--%>
-        <%--response($.each(result.data, function (i, item) {--%>
-        <%--return {--%>
-        <%--label: item.value,--%>
-        <%--value: item.key--%>
-        <%--}--%>
-        <%--}));--%>
-        <%--}--%>
-        <%--});--%>
-        <%--},--%>
-        <%--minLength: 2,--%>
-        <%--select: function (event, ele) {--%>
-        <%--console.log(ele.item);//直接读取案例中对应数据内容--%>
-        <%--}--%>
-        <%--});--%>
+        $("#frm_block").find("[name='name']").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/case/autoCompleteBlock",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        maxRows: 10,
+                        term: request.term
+                    },
+                    success: function (result) {
+                        response($.each(result.data, function (i, item) {
+                            return {
+                                label: item.value,
+                                value: item.key
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function (event, ele) {
+                console.log(ele.item);//直接读取案例中对应数据内容
+            }
+        });
     })
 </script>
 <script type="text/javascript">
