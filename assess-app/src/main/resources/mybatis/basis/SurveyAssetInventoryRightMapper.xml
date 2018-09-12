@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="cert_name" property="certName" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="VARCHAR" />
@@ -79,9 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, type, category, number, obligor, obligee, register_area, right_rank, 
-    register_amount, actual_amount, register_date, begin_date, end_date, creator, gmt_created, 
-    gmt_modified
+    id, plan_details_id, cert_name, type, category, number, obligor, obligee, register_area, 
+    right_rank, register_amount, actual_amount, register_date, begin_date, end_date, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightExample" >
     select
@@ -117,18 +118,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_asset_inventory_right (plan_details_id, type, category, 
-      number, obligor, obligee, 
-      register_area, right_rank, register_amount, 
-      actual_amount, register_date, begin_date, 
-      end_date, creator, gmt_created, 
-      gmt_modified)
-    values (#{planDetailsId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{number,jdbcType=VARCHAR}, #{obligor,jdbcType=VARCHAR}, #{obligee,jdbcType=VARCHAR}, 
-      #{registerArea,jdbcType=VARCHAR}, #{rightRank,jdbcType=VARCHAR}, #{registerAmount,jdbcType=VARCHAR}, 
-      #{actualAmount,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, #{beginDate,jdbcType=TIMESTAMP}, 
-      #{endDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_survey_asset_inventory_right (plan_details_id, cert_name, type, 
+      category, number, obligor, 
+      obligee, register_area, right_rank, 
+      register_amount, actual_amount, register_date, 
+      begin_date, end_date, creator, 
+      gmt_created, gmt_modified)
+    values (#{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{category,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{obligor,jdbcType=VARCHAR}, 
+      #{obligee,jdbcType=VARCHAR}, #{registerArea,jdbcType=VARCHAR}, #{rightRank,jdbcType=VARCHAR}, 
+      #{registerAmount,jdbcType=VARCHAR}, #{actualAmount,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, 
+      #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -138,6 +139,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="certName != null" >
+        cert_name,
       </if>
       <if test="type != null" >
         type,
@@ -188,6 +192,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="certName != null" >
+        #{certName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
@@ -251,6 +258,9 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="record.certName != null" >
+        cert_name = #{record.certName,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -305,6 +315,7 @@
     update tb_survey_asset_inventory_right
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      cert_name = #{record.certName,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=INTEGER},
       number = #{record.number,jdbcType=VARCHAR},
@@ -329,6 +340,9 @@
     <set >
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="certName != null" >
+        cert_name = #{certName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
@@ -381,6 +395,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight" >
     update tb_survey_asset_inventory_right
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      cert_name = #{certName,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=INTEGER},
       number = #{number,jdbcType=VARCHAR},

@@ -239,7 +239,7 @@ public class ProjectPlanDetailsService {
                                 if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
                                     approvalUrl = boxReDto.getProcessEditUrl();
                                 }
-                                approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
+                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
                                 if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
                                     projectPlanDetailsVo.setExcuteUrl(approvalUrl);
                                 }

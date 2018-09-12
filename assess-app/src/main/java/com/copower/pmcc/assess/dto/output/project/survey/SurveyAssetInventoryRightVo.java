@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
  */
 public class SurveyAssetInventoryRightVo extends SurveyAssetInventoryRight {
     private String typeName;
+    private String categoryName;
 
     public String getTypeName() {
         return typeName;
@@ -14,5 +15,13 @@ public class SurveyAssetInventoryRightVo extends SurveyAssetInventoryRight {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

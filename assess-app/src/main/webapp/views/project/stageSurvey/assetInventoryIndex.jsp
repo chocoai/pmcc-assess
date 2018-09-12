@@ -228,7 +228,7 @@
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select class="form-control" required id="type" name="type">
+                                            <select class="form-control" required id="type" name="type" onchange="typeChange(this);">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="items" items="${inventoryRightTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
@@ -242,10 +242,7 @@
                                         </label>
                                         <div class="col-sm-4">
                                             <select class="form-control" required id="category" name="category">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="items" items="${inventoryRightTypeList}">
-                                                    <option value="${items.id}">${items.name}</option>
-                                                </c:forEach>
+
                                             </select>
                                         </div>
                                     </div>
@@ -373,6 +370,7 @@
 
     $(function () {
         loadAssetOtherRightList();
+
     });
 
     //上传附件通用
@@ -382,7 +380,7 @@
             target: "credentialAccessory" + tableId,
             disabledTarget: "btn_submit",
             formData: {
-                tableName: "tb_survey_asset_template",
+                tableName: "tb_survey_asset_inventory_content",
                 tableId: tableId
             },
             deleteFlag: true
@@ -395,10 +393,18 @@
             showMode: 'table',
             target: "credentialAccessory" + tableId,
             formData: {
-                tableName: "tb_survey_asset_template",
+                tableName: "tb_survey_asset_inventory_content",
                 tableId: tableId
             },
             deleteFlag: true
+        })
+    }
+
+    //类型改变
+    function typeChange(_this) {
+        $("#category").empty();
+        AssessCommon.loadDataDicByPid($(_this).val(),'',function (html) {
+            $("#category").html(html);
         })
     }
 
@@ -420,12 +426,12 @@
             }
         });
         cols.push({
-            field: 'beginDate', title: '实际行权人行权日期', formatter: function (value, row, index) {
+            field: 'beginDate', title: '开始日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
         cols.push({
-            field: 'endDate', title: '预计到期日', formatter: function (value, row, index) {
+            field: 'endDate', title: '结束日期', formatter: function (value, row, index) {
                 return formatDate(value, false);
             }
         });
@@ -492,10 +498,10 @@
         }
         var formData = JSON.stringify(getFormData());
         if ("${processInsId}" != "0") {
-            submitEditToServer(formData, "1", "1");
+            submitEditToServer(formData);
         }
         else {
-            submitToServer(formData, "1", "1");
+            submitToServer(formData);
         }
     }
 
@@ -542,6 +548,7 @@
     //他权保存
     function saveData() {
         var data = formParams("frm");
+        data.certName='${declareRecord.name}';
         data.planDetailsId = ${projectPlanDetails.id};
         if ($("#frm").valid()) {
             Loading.progressShow();
@@ -575,6 +582,9 @@
         $("#registerDate").val(formatDate(row.registerDate, false));
         $("#beginDate").val(formatDate(row.beginDate, false));
         $("#endDate").val(formatDate(row.endDate, false));
+        AssessCommon.loadDataDicByPid(row.type,row.category,function (html) {
+            $("#category").html(html);
+        })
         $('#divBox').modal();
     }
     //他权删除

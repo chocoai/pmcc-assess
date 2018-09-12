@@ -26,7 +26,7 @@
                 </div>
                 <div class="x_content">
                     <!-- 项目基本信息 start -->
-                    <%@include file="/views/project/init/initModel/info.jsp" %>
+                    <%@include file="/views/project/stageInit/initModel/info.jsp" %>
                     <!-- 项目基本信息 end -->
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 委托人 start -->
-                <%@include file="/views/project/init/initModel/consignor.jsp" %>
+                <%@include file="/views/project/stageInit/initModel/consignor.jsp" %>
                 <!-- 委托人 end -->
             </div>
 
@@ -52,7 +52,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 占有人 start -->
-                <%@include file="/views/project/init/initModel/possessor.jsp" %>
+                <%@include file="/views/project/stageInit/initModel/possessor.jsp" %>
                 <!-- 占有人 end -->
             </div>
 
@@ -65,7 +65,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <!-- 报告使用单位 start -->
-                <%@include file="/views/project/init/initModel/unit_information.jsp" %>
+                <%@include file="/views/project/stageInit/initModel/unit_information.jsp" %>
                 <!-- 报告使用单位 end -->
             </div>
 
