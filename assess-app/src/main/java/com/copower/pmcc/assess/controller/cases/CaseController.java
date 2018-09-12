@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -28,12 +31,17 @@ public class CaseController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DataBlockService dataBlockService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
     public ModelAndView index() {
         String view = "/case/baseView" ;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("dataBlocks",dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
         return modelAndView;
     }
 

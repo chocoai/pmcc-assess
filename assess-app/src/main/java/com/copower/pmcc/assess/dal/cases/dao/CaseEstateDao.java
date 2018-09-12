@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.mapper.CaseEstateMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -46,8 +47,9 @@ public class CaseEstateDao {
      * @param caseEstate
      * @return
      */
-    public boolean addEstate(CaseEstate caseEstate) {
-        return caseEstateMapper.insertSelective(caseEstate) > 0;
+    public Integer addEstate(CaseEstate caseEstate) {
+        caseEstateMapper.insertSelective(caseEstate);
+        return caseEstate.getId();
     }
 
     /**
@@ -59,6 +61,16 @@ public class CaseEstateDao {
         return caseEstateMapper.updateByPrimaryKeySelective(caseEstate) > 0;
     }
 
+    public List<CaseEstate> autoCompleteCaseEstate(String name){
+        CaseEstateExample example = new CaseEstateExample();
+        CaseEstateExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (!StringUtils.isEmpty(name)){
+            criteria.andNameLike(String.format("%s%s%s","%",name,"%"));
+        }
+        return caseEstateMapper.selectByExample(example);
+    }
+
     /**
      * 删除
      * @param id
@@ -67,5 +79,7 @@ public class CaseEstateDao {
     public boolean deleteEstate(Integer id){
         return caseEstateMapper.deleteByPrimaryKey(id) > 0;
     }
+
+
 
 }

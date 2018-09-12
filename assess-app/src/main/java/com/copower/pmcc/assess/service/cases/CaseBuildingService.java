@@ -74,8 +74,17 @@ public class CaseBuildingService {
         }
         if (caseBuilding.getId()==null || caseBuilding.getId().intValue()==0){
             caseBuilding.setCreator(commonService.thisUserAccount());
+            caseBuilding.setVersion(0);
             return caseBuildingDao.addBuilding(caseBuilding);
         }else {
+            //更新版本
+            CaseBuilding oo = caseBuildingDao.getBuildingById(caseBuilding.getId());
+            if (oo != null){
+                if (oo.getVersion()==null){
+                    oo.setVersion(0);
+                }
+            }
+            caseBuilding.setVersion(oo.getVersion()+1);
             return caseBuildingDao.updateBuilding(caseBuilding);
         }
     }

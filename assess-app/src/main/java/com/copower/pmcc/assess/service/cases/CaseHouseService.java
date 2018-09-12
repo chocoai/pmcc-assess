@@ -74,8 +74,16 @@ public class CaseHouseService {
         }
         if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
             caseHouse.setCreator(commonService.thisUserAccount());
+            caseHouse.setVersion(0);
             return caseHouseDao.addHouse(caseHouse);
         }else {
+            CaseHouse oo = caseHouseDao.getHouseById(caseHouse.getId());
+            if (oo != null){
+                if (oo.getVersion()==null){
+                    oo.setVersion(0);
+                }
+            }
+            caseHouse.setVersion(oo.getVersion()+1);
             return caseHouseDao.updateHouse(caseHouse);
         }
     }

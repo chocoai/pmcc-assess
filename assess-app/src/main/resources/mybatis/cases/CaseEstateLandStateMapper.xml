@@ -5,7 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="land_use" property="landUse" jdbcType="INTEGER" />
+    <result column="land_use_type" property="landUseType" jdbcType="INTEGER" />
+    <result column="land_use_category" property="landUseCategory" jdbcType="INTEGER" />
     <result column="land_level" property="landLevel" jdbcType="INTEGER" />
     <result column="land_area" property="landArea" jdbcType="VARCHAR" />
     <result column="east_to" property="eastTo" jdbcType="VARCHAR" />
@@ -19,6 +20,7 @@
     <result column="soil" property="soil" jdbcType="VARCHAR" />
     <result column="topographic_terrain" property="topographicTerrain" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -81,9 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, name, land_use, land_level, land_area, east_to, south_to, west_to, 
-    north_to, shape_state, planeness, development_degree, restrictive_condition, soil, 
-    topographic_terrain, creator, gmt_created, gmt_modified
+    id, estate_id, name, land_use_type, land_use_category, land_level, land_area, east_to, 
+    south_to, west_to, north_to, shape_state, planeness, development_degree, restrictive_condition, 
+    soil, topographic_terrain, creator, version, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -119,19 +121,21 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_estate_land_state (estate_id, name, land_use, 
-      land_level, land_area, east_to, 
-      south_to, west_to, north_to, 
-      shape_state, planeness, development_degree, 
-      restrictive_condition, soil, topographic_terrain, 
-      creator, gmt_created, gmt_modified
+    insert into tb_case_estate_land_state (estate_id, name, land_use_type, 
+      land_use_category, land_level, land_area, 
+      east_to, south_to, west_to, 
+      north_to, shape_state, planeness, 
+      development_degree, restrictive_condition, 
+      soil, topographic_terrain, creator, 
+      version, gmt_created, gmt_modified
       )
-    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUse,jdbcType=INTEGER}, 
-      #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, #{eastTo,jdbcType=VARCHAR}, 
-      #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, #{northTo,jdbcType=VARCHAR}, 
-      #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, #{developmentDegree,jdbcType=VARCHAR}, 
-      #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
+      #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
+      #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
+      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, 
+      #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
+      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
@@ -146,8 +150,11 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="landUse != null" >
-        land_use,
+      <if test="landUseType != null" >
+        land_use_type,
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category,
       </if>
       <if test="landLevel != null" >
         land_level,
@@ -188,6 +195,9 @@
       <if test="creator != null" >
         creator,
       </if>
+      <if test="version != null" >
+        version,
+      </if>
       <if test="gmtCreated != null" >
         gmt_created,
       </if>
@@ -202,8 +212,11 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="landUse != null" >
-        #{landUse,jdbcType=INTEGER},
+      <if test="landUseType != null" >
+        #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        #{landUseCategory,jdbcType=INTEGER},
       </if>
       <if test="landLevel != null" >
         #{landLevel,jdbcType=INTEGER},
@@ -244,6 +257,9 @@
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -270,8 +286,11 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.landUse != null" >
-        land_use = #{record.landUse,jdbcType=INTEGER},
+      <if test="record.landUseType != null" >
+        land_use_type = #{record.landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.landUseCategory != null" >
+        land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
       </if>
       <if test="record.landLevel != null" >
         land_level = #{record.landLevel,jdbcType=INTEGER},
@@ -312,6 +331,9 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -328,7 +350,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      land_use = #{record.landUse,jdbcType=INTEGER},
+      land_use_type = #{record.landUseType,jdbcType=INTEGER},
+      land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
       land_level = #{record.landLevel,jdbcType=INTEGER},
       land_area = #{record.landArea,jdbcType=VARCHAR},
       east_to = #{record.eastTo,jdbcType=VARCHAR},
@@ -342,6 +365,7 @@
       soil = #{record.soil,jdbcType=VARCHAR},
       topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -357,8 +381,11 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="landUse != null" >
-        land_use = #{landUse,jdbcType=INTEGER},
+      <if test="landUseType != null" >
+        land_use_type = #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category = #{landUseCategory,jdbcType=INTEGER},
       </if>
       <if test="landLevel != null" >
         land_level = #{landLevel,jdbcType=INTEGER},
@@ -399,6 +426,9 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -412,7 +442,8 @@
     update tb_case_estate_land_state
     set estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      land_use = #{landUse,jdbcType=INTEGER},
+      land_use_type = #{landUseType,jdbcType=INTEGER},
+      land_use_category = #{landUseCategory,jdbcType=INTEGER},
       land_level = #{landLevel,jdbcType=INTEGER},
       land_area = #{landArea,jdbcType=VARCHAR},
       east_to = #{eastTo,jdbcType=VARCHAR},
@@ -426,6 +457,7 @@
       soil = #{soil,jdbcType=VARCHAR},
       topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

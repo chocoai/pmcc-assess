@@ -16,6 +16,9 @@ AssessDBKey.ExamineUnitHuxing = "tb_examine_unit_huxing";
 AssessDBKey.ExamineEstateParking = "tb_examine_estate_parking";
 AssessDBKey.ExamineHouseCorollaryEquipment = "tb_examine_house_corollary_equipment";
 
+AssessDBKey.CaseEstate = "tb_case_estate" ;
+AssessDBKey.CaseEstateLandState = "tb_case_estate_land_state" ;
+
 
 /**
  * 项目分类key

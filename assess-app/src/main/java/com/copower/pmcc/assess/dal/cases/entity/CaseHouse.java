@@ -31,6 +31,8 @@ public class CaseHouse {
 
     private String creator;
 
+    private Integer version;
+
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -145,6 +147,14 @@ public class CaseHouse {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Date getGmtCreated() {

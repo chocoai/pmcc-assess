@@ -9,7 +9,9 @@ public class CaseEstateLandState {
 
     private String name;
 
-    private Integer landUse;
+    private Integer landUseType;
+
+    private Integer landUseCategory;
 
     private Integer landLevel;
 
@@ -36,6 +38,8 @@ public class CaseEstateLandState {
     private String topographicTerrain;
 
     private String creator;
+
+    private Integer version;
 
     private Date gmtCreated;
 
@@ -65,12 +69,20 @@ public class CaseEstateLandState {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getLandUse() {
-        return landUse;
+    public Integer getLandUseType() {
+        return landUseType;
     }
 
-    public void setLandUse(Integer landUse) {
-        this.landUse = landUse;
+    public void setLandUseType(Integer landUseType) {
+        this.landUseType = landUseType;
+    }
+
+    public Integer getLandUseCategory() {
+        return landUseCategory;
+    }
+
+    public void setLandUseCategory(Integer landUseCategory) {
+        this.landUseCategory = landUseCategory;
     }
 
     public Integer getLandLevel() {
@@ -175,6 +187,14 @@ public class CaseEstateLandState {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Date getGmtCreated() {

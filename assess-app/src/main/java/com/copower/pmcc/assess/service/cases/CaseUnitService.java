@@ -74,8 +74,16 @@ public class CaseUnitService {
         }
         if (caseUnit.getId()==null || caseUnit.getId().intValue()==0){
             caseUnit.setCreator(commonService.thisUserAccount());
+            caseUnit.setVersion(0);
             return caseUnitDao.addUnit(caseUnit);
         }else {
+            CaseUnit oo = caseUnitDao.getUnitById(caseUnit.getId());
+            if (oo != null){
+                if (oo.getVersion()==null){
+                    oo.setVersion(0);
+                }
+            }
+            caseUnit.setVersion(oo.getVersion()+1);
             return caseUnitDao.updateUnit(caseUnit);
         }
     }
