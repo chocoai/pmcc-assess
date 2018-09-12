@@ -196,7 +196,9 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <button class="btn btn-default">新增</button>
+                                    <label class="btn btn-default" onclick="baseFun.caseBuild.addData();">
+                                        新增
+                                    </label>
                                 </div>
                                 <div class="col-sm-3">
                                     <button class="btn btn-default">地图显示</button>
@@ -522,7 +524,18 @@
 
     baseFun.caseBuild = {
         addData: function () {
-
+            var estate = formParams(baseFun.config.father.caseEstate.frm());
+            if (!baseFun.isEmpty(estate)){
+                toastr.success("请先选择楼盘");
+                return false;
+            }
+            if (!baseFun.isEmpty(estate.id)){
+                toastr.success("请先选择楼盘");
+                return false;
+            }
+            var href = "${pageContext.request.contextPath}/caseBuilding/appView";
+            href += "?estateId=" + estate.id;
+            window.open(href, "");
         },
         editData: function () {
 
@@ -534,6 +547,13 @@
 
         },
         loadDataList: function () {
+            var estate = formParams(baseFun.config.father.caseEstate.frm());
+            if (!baseFun.isEmpty(estate)){
+                estate = {id:null};
+            }
+            if (!baseFun.isEmpty(estate.id)){
+                estate = {id:null};
+            }
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'name', title: '楼栋名称'});
@@ -550,7 +570,7 @@
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getCaseBuildingList", cols, {
-                name: $("#queryName").val()
+                estateId: estate.id
             }, {
                 showColumns: false,
                 showRefresh: false,
