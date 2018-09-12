@@ -58,6 +58,11 @@ public class SurveyAssetInventoryRightService {
                 if (baseDataDic != null)
                     surveyAssetInventoryRightVo.setTypeName(baseDataDic.getName());
             }
+            if (p.getCategory() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(Integer.valueOf(p.getCategory()));
+                if (baseDataDic != null)
+                    surveyAssetInventoryRightVo.setCategoryName(baseDataDic.getName());
+            }
             return surveyAssetInventoryRightVo;
         });
     }

@@ -7,6 +7,8 @@ public class SurveyAssetInventoryRight {
 
     private Integer planDetailsId;
 
+    private String certName;
+
     private Integer type;
 
     private Integer category;
@@ -51,6 +53,14 @@ public class SurveyAssetInventoryRight {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public String getCertName() {
+        return certName;
+    }
+
+    public void setCertName(String certName) {
+        this.certName = certName == null ? null : certName.trim();
     }
 
     public Integer getType() {
