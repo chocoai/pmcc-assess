@@ -30,6 +30,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +71,8 @@ public class ProjectPauseService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private BaseParameterServcie baseParameterServcie;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @Transactional(rollbackFor = Exception.class)
     public void saveProjectSuspend(Integer projectId, String suspendReason) throws BusinessException {
@@ -91,7 +94,7 @@ public class ProjectPauseService {
         projectSuspend.setCreator(processControllerComponent.getThisUser());
         projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
         projectSuspendDao.addSuspend(projectSuspend);
-        bpmRpcProjectTaskService.updateProjectTaskPause(projectId);
+        bpmRpcProjectTaskService.updateProjectTaskPause(applicationConstant.getAppKey(),projectId);
         String boxName = baseParameterServcie.getParameterValues(AssessCacheConstant.DETAILS_PROJECT_SUSPEND);
         String processInsId = "0";
         if (StringUtils.isNotBlank(boxName)) {
@@ -200,7 +203,7 @@ public class ProjectPauseService {
             }
         }
 
-        bpmRpcProjectTaskService.updateProjectTaskRestart(projectId);
+        bpmRpcProjectTaskService.updateProjectTaskRestart(applicationConstant.getAppKey(),projectId);
     }
 
     public BootstrapTableVo getProjectSuspendHistory(Integer projectId) {
@@ -271,7 +274,7 @@ public class ProjectPauseService {
         }
         //工作事项
 
-        bpmRpcProjectTaskService.updateProjectTaskPause(projectId);
+        bpmRpcProjectTaskService.updateProjectTaskPause(applicationConstant.getAppKey(),projectId);
 
     }
 

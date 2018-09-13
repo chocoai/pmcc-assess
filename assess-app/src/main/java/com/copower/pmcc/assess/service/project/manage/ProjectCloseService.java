@@ -182,7 +182,7 @@ public class ProjectCloseService {
             }
         }
         //关闭工作成果
-        bpmRpcProjectTaskService.deleteProjectTaskByProjectid(projectInfo.getId());
+        bpmRpcProjectTaskService.deleteProjectTaskByProjectid(applicationConstant.getAppKey(),projectInfo.getId());
         //关闭项目
 
         //关闭所有与项目相关的审批流程

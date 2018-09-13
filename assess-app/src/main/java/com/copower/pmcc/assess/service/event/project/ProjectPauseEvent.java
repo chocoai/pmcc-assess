@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class ProjectPauseEvent extends BaseProcessEvent {
     private ProjectPlanDao projectPlanDao;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
@@ -61,7 +64,7 @@ public class ProjectPauseEvent extends BaseProcessEvent {
                     projectPlanDao.updateProjectPlan(item);
                 }
             }
-            bpmRpcProjectTaskService.updateProjectTaskRestart(projectInfo.getId());
+            bpmRpcProjectTaskService.updateProjectTaskRestart(applicationConstant.getAppKey(),projectInfo.getId());
         }
     }
 }
