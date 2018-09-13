@@ -42,6 +42,18 @@
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select name="blockId" class="form-control search-select select2 blockId"
+                                            required="required">
+                                        <option value="" name="blockId">-请选择-</option>
+                                        <c:forEach items="${dataBlocks}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="100" placeholder="楼盘方位" required
@@ -49,16 +61,51 @@
                                 </div>
                             </div>
 
+                        </div>
+
+                        <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">省
+                                    <span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 landLevel" name="landLevel"
+                                    <select name="province" id="province"
+                                            class="form-control search-select select2"
+                                            required="required">
+                                        <option value="" name="province">-请选择-</option>
+                                        <c:forEach items="${ProvinceList}" var="item">
+                                            <c:choose>
+                                                <c:when test="${item.areaId == projectInfo.province}">
+                                                    <option value="${item.areaId}"
+                                                            selected="selected">${item.name}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${item.areaId}">${item.name}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">市<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="city" name="city" class="form-control search-select select2"
                                             required="required">
                                     </select>
                                 </div>
                             </div>
 
-
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">县<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select id="district" name="district" class="form-control search-select select2"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -70,13 +117,12 @@
                                            required="required" value="${caseEstate.number}">
                                 </div>
                             </div>
-
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">附号<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                                           placeholder="附号(请输入数字)" value="${caseEstate.attachNumber}"
-                                           name="attachNumber" required="required" class="form-control">
+                                    <select class="form-control search-select select2 landLevel" name="landLevel"
+                                            required="required">
+                                    </select>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -172,6 +218,14 @@
                                 <div class="col-sm-3">
                                     <input type="text" placeholder="价格区间"
                                            name="priceRange" required="required" class="form-control" value="${caseEstate.priceRange}">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">附号<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                                           placeholder="附号(请输入数字)" value="${caseEstate.attachNumber}"
+                                           name="attachNumber" required="required" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -424,7 +478,6 @@
     CaseEstateFun.prototype.writeSelectData = function (frm, data, name) {
         if (CaseEstateFun.prototype.isEmpty(data)) {
             $("#" + frm + " ." + name).val(data).trigger("change");
-            // $("#" + frm + " ." + name).select2('val',data);
         } else {
             $("#" + frm + " ." + name).val(null).trigger("change");
         }
@@ -432,6 +485,18 @@
 
     CaseEstateFun.prototype.select2Event = {
         estate:function () {
+            $("#province").select2();
+            $("#city").select2();
+            $("#district").select2();
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#province"),
+                cityTarget: $("#city"),
+                districtTarget: $("#district"),
+                provinceValue: '',
+                cityValue: '',
+                districtValue: ''
+            });
+            $("#" + caseEstate.config.estate.frm() + " .blockId").select2();//加载样式
             //主要是载入select2
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
@@ -565,7 +630,7 @@
             formData: {
                 fieldsName: fieldsName,
                 tableName: table,
-                tableId: ${empty caseEstate?0:caseEstate.id},
+                tableId: ${empty caseEstate.id?0:caseEstate.id},
                 creater: "${currUserAccount}"
             },
             deleteFlag: true
@@ -577,7 +642,7 @@
             formData: {
                 fieldsName: fieldsName,
                 tableName: table,
-                tableId: ${empty caseEstate?0:caseEstate.id},
+                tableId: ${empty caseEstate.id?0:caseEstate.id},
                 creater: "${currUserAccount}"
             },
             deleteFlag: true
@@ -607,13 +672,17 @@
             //采暖平面图
             caseEstate.uploadFile(caseEstate.config.estate.heatingPlan(),AssessDBKey.CaseEstate);
             caseEstate.showFile(caseEstate.config.estate.heatingPlan(),AssessDBKey.CaseEstate);
+            //编辑时:
             caseEstate.estateModel.edit();
+            //使校验生效
+            $("#" + caseEstate.config.estate.frm()).validate();
         },
         edit:function () {
             var caseEstateObj = "${caseEstate}" ;
             if (caseEstate.isEmpty(caseEstateObj)){//修改页面显示部分数据
                 caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.landLevel}','landLevel'));
                 caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.developerId}','developerId'));
+                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.blockId}','blockId'));
             }
         }
     }
@@ -621,7 +690,10 @@
     //模块 楼盘的土地实体
     caseEstate.landStateModel = {
         init:function () {
+            //编辑时:
             caseEstate.landStateModel.edit();
+            //使校验生效
+            $("#" + caseEstate.config.landState.frm()).validate();
         },
         edit:function () {
             var caseEstateLandState = "${caseEstateLandState}";
@@ -642,14 +714,10 @@
         }
         var landState = formParams(caseEstate.config.landState.frm());
         var estate = formParams(caseEstate.config.estate.frm());
-        var blockId = "${blockId}" ;
-        if (caseEstate.isEmpty(blockId)){
-            estate.blockId = blockId;
-        }
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/caseEstate/saveAndUpdateCaseEstate",
-            data: {formData:JSON.stringify({CaseEstate:estate,CaseEstateLandState:landState})},
+            data: {formData:JSON.stringify({estate:estate,landState:landState})},
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作

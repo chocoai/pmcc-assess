@@ -33,37 +33,6 @@
                 </div>
             </div>
 
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i
-                                class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>基础板块信息
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form class="form-horizontal" id="frmCaseBlock">
-                        <input type="hidden" name="id">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">基础板块
-                                    <span class="symbol required"></span></label>
-                                <div class="col-sm-5">
-                                    <select name="blockId" class="form-control search-select select2 blockId"
-                                            required="required">
-                                        <option value="" name="blockId">-请选择-</option>
-                                        <c:forEach items="${dataBlocks}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -126,15 +95,17 @@
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <div class="col-sm-1">
-
-                                </div>
-                                <div class="col-sm-5">
+                                <label class="col-sm-1 control-label">楼盘名称<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-3">
                                     <input type="text" class="form-control" name="search"
                                            onkeyup="baseFun.caseEstate.searchInput();"/>
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <div class="col-sm-1">
+
+                                </div>
                                 <div class="col-sm-3">
                                     <label class="btn btn-default" onclick="baseFun.caseEstate.find()">
                                         查询
@@ -142,6 +113,9 @@
                                 </div>
                             </div>
                             <div class="x-valid">
+                                <div class="col-sm-1">
+
+                                </div>
                                 <div class="col-sm-3">
                                     <label class="btn btn-success" onclick="baseFun.caseEstate.newWindow(this)">
                                         新增
@@ -149,33 +123,9 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="id">
-                        <input type="hidden" name="blockId">
                         <div class="form-group">
-                            <div class="x-valid">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">楼盘名称</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" readonly="readonly" name="name" placeholder="名称">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseEstate.editData()">
-                                        编辑
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseEstate.removeData()">
-                                        删除
-                                    </label>
-                                </div>
-                            </div>
+                            <table class="table table-bordered" id="caseEstateTable">
+                            </table>
                         </div>
                     </form>
                 </div>
@@ -193,6 +143,7 @@
                 </div>
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseBuild">
+                        <input type="hidden" name="estateId">
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
@@ -201,7 +152,7 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-default">地图显示</button>
+                                    <label class="btn btn-default" onclick="baseFun.caseBuild.showMap();">地图显示</label>
                                 </div>
                                 <div class="col-sm-6">
                                 </div>
@@ -232,10 +183,11 @@
 
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseUnit">
+                        <input type="hidden" name="buildingId">
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <button class="btn btn-default">新增</button>
+                                    <label class="btn btn-default" onclick="baseFun.caseUnit.addData();">新增</label>
                                 </div>
                             </div>
                         </div>
@@ -264,10 +216,11 @@
 
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseHouse">
+                        <input type="hidden" name="unitId">
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <button class="btn btn-default">新增</button>
+                                    <label class="btn btn-default" onclick="baseFun.caseHouse.addData()">新增</label>
                                 </div>
                             </div>
                         </div>
@@ -306,7 +259,7 @@
                 frm: function () {
                     return "frmCaseEstate";//楼盘 frm
                 },
-                table:function () {
+                table: function () {
                     return "caseEstateTable";//楼盘 table
                 }
             },
@@ -372,32 +325,9 @@
                 cityValue: '',
                 districtValue: ''
             });
-            $("#" + BaseViewFun.prototype.config.father.caseBlock.frm() + " .blockId").select2();
         },
         monitor: function () {
-            $("#" + BaseViewFun.prototype.config.father.caseBlock.frm() + " .blockId").change(function () {
-                var item = $("#" + BaseViewFun.prototype.config.father.caseBlock.frm() + " .blockId").eq(1).val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/dataBlock/getDataBlockById",
-                    type: "get",
-                    dataType: "json",
-                    data: {id: item},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            if (BaseViewFun.prototype.isEmpty(data)) {
-                                $("#" + BaseViewFun.prototype.config.father.caseEstate.frm()).initForm({blockId: data.id});
-                                // BaseViewFun.prototype.WriteSelectData2(data.province, "province");
-                                // BaseViewFun.prototype.WriteSelectData2(data.city, "city");
-                                // BaseViewFun.prototype.WriteSelectData2(data.district, "district");
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            });
+
         }
     };
     var baseFun = new BaseViewFun();
@@ -409,43 +339,71 @@
     }
 
     baseFun.caseEstate = {
+        /**
+         * @author:  zch
+         * 描述:新增数据
+         * @date:2018-09-13
+         **/
         newWindow: function () {
             var href = "${pageContext.request.contextPath}/caseEstate/appView";
-            var estate = formParams(baseFun.config.father.caseEstate.frm());
-            if (baseFun.isEmpty(estate)) {
-                if (baseFun.isEmpty(estate.blockId)) {
-                    href += "?blockId=" + estate.blockId;
-                    window.open(href, "");
-                } else {
-                    toastr.success('请先选择板块');
-                }
-            }
+            window.open(href, "");
         },
-        find: function () {
-            var itemVal = $("#" + baseFun.config.father.caseEstate.frm()).find("[name='search']").val();
-            if (!baseFun.isEmpty(itemVal)){
-                toastr.success('请在输入框输入数据后 在按此按钮');
-                return false;
+        /**
+         * @author:  zch
+         * 描述:加载数据列表
+         * @date:2018-09-13
+         **/
+        loadDataList: function (flag) {
+            var estate = formParams(baseFun.config.father.caseEstate.frm());
+            if (!flag) {
+                estate = {search: null, city: null, district: null, province: null};
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateList",
-                type: "get",
-                dataType: "json",
-                async: true,
-                data: {name: itemVal},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (baseFun.isEmpty(data)){
-                            $("#" + BaseViewFun.prototype.config.father.caseEstate.frm()).initForm(data[0]);
-                        }
-                    }
+            var cols = [];
+            cols.push({field: 'number', title: '编号'});
+            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'coverAnArea', title: '占地面积'});
+            cols.push({field: 'volumetricRateName', title: '容积率'});
+            cols.push({field: 'greeningRateName', title: '绿化率'});
+            cols.push({field: 'version', title: '版本'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseEstate.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseEstate.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseEstate.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
+            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
+                name: estate.search,
+                city: estate.city,
+                district: estate.district,
+                province: estate.province
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
                 },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                onClickCell: function (field, value, row, element) {
+                    baseFun.caseBuild.loadDataList(row.id);
+                    $("#" + baseFun.config.father.caseBuild.frm()).initForm({estateId: row.id});
                 }
             });
         },
+        find: function () {
+            var itemVal = $("#" + baseFun.config.father.caseEstate.frm()).find("[name='search']").val();
+            baseFun.caseEstate.loadDataList(true);
+        },
+        /**
+         * @author:  zch
+         * 描述:自动填充
+         * @date:2018-09-13
+         **/
         searchInput: function () {
             $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").autocomplete(
                 {
@@ -469,43 +427,34 @@
                             }
                         });
                     },
-                    minLength: 2,
+                    minLength: 1,
                     select: function (event, ele) {
                     }
                 }
             );
         },
-        editData:function () {
-            var estate = formParams(baseFun.config.father.caseEstate.frm());
-            if (!baseFun.isEmpty(estate)){
-                toastr.success("请先选择楼盘");
-                return false;
-            }
-            if (!baseFun.isEmpty(estate.id)){
-                toastr.success("请先选择楼盘");
-                return false;
-            }
+        /**
+         * @author:  zch
+         * 描述:编辑数据
+         * @date:2018-09-13
+         **/
+        editData: function (id) {
             var href = "${pageContext.request.contextPath}/caseEstate/editView";
-            href += "?id=" + estate.id;
+            href += "?id=" + id;
             window.open(href, "");
         },
-        removeData:function () {
-            var estate = formParams(baseFun.config.father.caseEstate.frm());
-            if (!baseFun.isEmpty(estate)){
-                toastr.success("请先选择楼盘");
-                return false;
-            }
-            if (!baseFun.isEmpty(estate.id)){
-                toastr.success("请先选择楼盘");
-                return false;
-            }
-            console.log(estate);
+        /**
+         * @author:  zch
+         * 描述:删除数据
+         * @date:2018-09-13
+         **/
+        removeData: function (id) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseEstate/deleteCaseEstateById",
                 type: "post",
                 dataType: "json",
-                async: false,
-                data: {id: estate.id},
+                async: true,
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success(result.data);
@@ -517,46 +466,74 @@
                 }
             });
         },
+        /**
+         * @author:  zch
+         * 描述:复制数据并新增的原理是 在编辑处理逻辑里面对id和附件进行特殊处理即可
+         * @date:2018-09-13
+         **/
+        copyData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseEstate/editView";
+            href += "?id=" + id + "&copy=true";
+            window.open(href, "");
+        },
         init: function () {
         }
     };
 
 
     baseFun.caseBuild = {
+        //地图显示
+        showMap:function () {
+            toastr.success("地图显示暂未提供!");
+        },
         addData: function () {
-            var estate = formParams(baseFun.config.father.caseEstate.frm());
-            if (!baseFun.isEmpty(estate)){
+            var build = formParams(baseFun.config.father.caseBuild.frm());
+            if (!baseFun.isEmpty(build)) {
                 toastr.success("请先选择楼盘");
                 return false;
             }
-            if (!baseFun.isEmpty(estate.id)){
+            if (!baseFun.isEmpty(build.estateId)) {
                 toastr.success("请先选择楼盘");
                 return false;
             }
             var href = "${pageContext.request.contextPath}/caseBuilding/appView";
-            href += "?estateId=" + estate.id;
+            href += "?estateId=" + build.estateId;
             window.open(href, "");
         },
-        editData: function () {
-
+        editData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseBuilding/editView";
+            href += "?id=" + id;
+            window.open(href, "");
         },
-        copyData: function () {
-
+        copyData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseBuilding/editView";
+            href += "?id=" + id+"&copy=true";
+            window.open(href, "");
         },
-        removeData: function () {
-
+        removeData: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseBuilding/deleteCaseBuildingById",
+                type: "post",
+                dataType: "json",
+                async: true,
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        baseFun.caseBuild.loadDataList(result.data);
+                        toastr.success("删除成功!");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
-        loadDataList: function () {
-            var estate = formParams(baseFun.config.father.caseEstate.frm());
-            if (!baseFun.isEmpty(estate)){
-                estate = {id:null};
-            }
-            if (!baseFun.isEmpty(estate.id)){
-                estate = {id:null};
-            }
+        loadDataList: function (id) {
             var cols = [];
             cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'name', title: '楼栋名称'});
+            cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -570,13 +547,17 @@
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getCaseBuildingList", cols, {
-                estateId: estate.id
+                estateId: id
             }, {
                 showColumns: false,
                 showRefresh: false,
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                },
+                onClickCell:function (field, value, row, element) {
+                    baseFun.caseUnit.loadDataList(row.id);
+                    $("#" + baseFun.config.father.caseUnit.frm()).initForm({buildingId: row.id});
                 }
             });
         }
@@ -585,18 +566,49 @@
 
     baseFun.caseUnit = {
         addData: function () {
-
+            var unit = formParams(baseFun.config.father.caseUnit.frm());
+            if (!baseFun.isEmpty(unit)) {
+                toastr.success("请先选择楼栋");
+                return false;
+            }
+            if (!baseFun.isEmpty(unit.buildingId)) {
+                toastr.success("请先选择楼栋");
+                return false;
+            }
+            var href = "${pageContext.request.contextPath}/caseUnit/appView";
+            href += "?buildingId=" + unit.buildingId;
+            window.open(href, "");
         },
-        editData: function () {
-
+        editData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseUnit/editView";
+            href += "?id=" + id;
+            window.open(href, "");
         },
-        copyData: function () {
-
+        copyData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseUnit/editView";
+            href += "?id=" + id+"&copy=true";
+            window.open(href, "");
         },
-        removeData: function () {
-
+        removeData: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseUnit/deleteCaseUnitById",
+                type: "post",
+                dataType: "json",
+                async: true,
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        baseFun.caseUnit.loadDataList(result.data);
+                        toastr.success("删除成功!");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
-        loadDataList: function () {
+        loadDataList: function (buildingId) {
             var cols = [];
             cols.push({field: 'elevatorHouseholdRatio', title: '户梯比'});
             cols.push({field: 'unitNumber', title: '单元编号'});
@@ -613,13 +625,17 @@
             });
             $("#" + baseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                name: $("#queryName").val()
+                buildingId: buildingId
             }, {
                 showColumns: false,
                 showRefresh: false,
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
+                },
+                onClickCell:function (field, value, row, element) {
+                    baseFun.caseHouse.loadDataList(row.id);
+                    $("#" + baseFun.config.father.caseHouse.frm()).initForm({unitId: row.id});
                 }
             });
         }
@@ -627,16 +643,47 @@
 
     baseFun.caseHouse = {
         addData: function () {
-
+            var house = formParams(baseFun.config.father.caseHouse.frm());
+            if (!baseFun.isEmpty(house)) {
+                toastr.success("请先选择单元");
+                return false;
+            }
+            if (!baseFun.isEmpty(house.unitId)) {
+                toastr.success("请先选择单元");
+                return false;
+            }
+            var href = "${pageContext.request.contextPath}/caseHouse/appView";
+            href += "?unitId=" + house.unitId;
+            window.open(href, "");
         },
-        editData: function () {
-
+        editData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseHouse/editView";
+            href += "?id=" + id;
+            window.open(href, "");
         },
-        copyData: function () {
-
+        copyData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseHouse/editView";
+            href += "?id=" + id+"&copy=true";
+            window.open(href, "");
         },
-        removeData: function () {
-
+        removeData: function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseHouse/deleteCaseHouseById",
+                type: "post",
+                dataType: "json",
+                async: true,
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        baseFun.caseHouse.loadDataList(result.data);
+                        toastr.success("删除成功!");
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
         loadDataList: function () {
             var cols = [];
@@ -672,8 +719,9 @@
         baseFun.event.selectInit();
         baseFun.event.monitor();
         baseFun.caseEstate.init();
-        baseFun.caseBuild.loadDataList();
-        baseFun.caseUnit.loadDataList();
+        baseFun.caseEstate.loadDataList(false);
+        baseFun.caseBuild.loadDataList(null);
+        baseFun.caseUnit.loadDataList(null);
         baseFun.caseHouse.loadDataList();
     });
 </script>

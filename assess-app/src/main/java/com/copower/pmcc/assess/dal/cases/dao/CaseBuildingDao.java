@@ -46,8 +46,9 @@ public class CaseBuildingDao {
      * @param caseBuilding
      * @return
      */
-    public boolean addBuilding(CaseBuilding caseBuilding) {
-        return caseBuildingMapper.insertSelective(caseBuilding) > 0;
+    public Integer addBuilding(CaseBuilding caseBuilding) {
+        caseBuildingMapper.insertSelective(caseBuilding);
+        return caseBuilding.getId();
     }
 
     /**
