@@ -165,6 +165,66 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectIdIsNull() {
             addCriterion("project_id is null");
             return (Criteria) this;
@@ -562,6 +622,76 @@ public class SchemeAreaGroupExample {
 
         public Criteria andValueTimePointNotBetween(Date value1, Date value2) {
             addCriterion("value_time_point not between", value1, value2, "valueTimePoint");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainIsNull() {
+            addCriterion("time_point_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainIsNotNull() {
+            addCriterion("time_point_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainEqualTo(String value) {
+            addCriterion("time_point_explain =", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainNotEqualTo(String value) {
+            addCriterion("time_point_explain <>", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainGreaterThan(String value) {
+            addCriterion("time_point_explain >", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("time_point_explain >=", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainLessThan(String value) {
+            addCriterion("time_point_explain <", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainLessThanOrEqualTo(String value) {
+            addCriterion("time_point_explain <=", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainLike(String value) {
+            addCriterion("time_point_explain like", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainNotLike(String value) {
+            addCriterion("time_point_explain not like", value, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainIn(List<String> values) {
+            addCriterion("time_point_explain in", values, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainNotIn(List<String> values) {
+            addCriterion("time_point_explain not in", values, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainBetween(String value1, String value2) {
+            addCriterion("time_point_explain between", value1, value2, "timePointExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimePointExplainNotBetween(String value1, String value2) {
+            addCriterion("time_point_explain not between", value1, value2, "timePointExplain");
             return (Criteria) this;
         }
 

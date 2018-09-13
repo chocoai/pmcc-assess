@@ -35,6 +35,7 @@ public class DeclareRecordDao {
     public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
+        example.setOrderByClause("seat");
         return mapper.selectByExample(example);
     }
 

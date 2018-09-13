@@ -62,8 +62,8 @@ public class SchemeJudgeObjectService {
                 if (judgeObject != null) {
                     //1.先拷贝一份数据
                     judgeObject.setId(0);
-                    judgeObject.setBestUseId(schemeJudgeObject.getBestUseId());
-                    judgeObject.setGroupNumber(schemeJudgeObject.getGroupNumber());
+                    judgeObject.setBestUse(schemeJudgeObject.getBestUse());
+
                     judgeObject.setSplitNumber(schemeJudgeObject.getSplitNumber());
                     judgeObject.setEvaluationArea(schemeJudgeObject.getEvaluationArea());
                     judgeObject.setBisSplit(schemeJudgeObject.getBisSplit());
@@ -71,7 +71,6 @@ public class SchemeJudgeObjectService {
                     addSchemeJudgeObject(judgeObject);
                 }
             }
-            hashSet.add(schemeJudgeObject.getGroupNumber());
         }
 
         //清除计划任务数据

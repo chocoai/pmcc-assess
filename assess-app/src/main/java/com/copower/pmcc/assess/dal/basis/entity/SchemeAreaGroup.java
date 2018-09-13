@@ -5,6 +5,8 @@ import java.util.Date;
 public class SchemeAreaGroup {
     private Integer id;
 
+    private Integer pid;
+
     private Integer projectId;
 
     private String province;
@@ -16,6 +18,8 @@ public class SchemeAreaGroup {
     private String areaName;
 
     private Date valueTimePoint;
+
+    private String timePointExplain;
 
     private String creator;
 
@@ -29,6 +33,14 @@ public class SchemeAreaGroup {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public Integer getProjectId() {
@@ -77,6 +89,14 @@ public class SchemeAreaGroup {
 
     public void setValueTimePoint(Date valueTimePoint) {
         this.valueTimePoint = valueTimePoint;
+    }
+
+    public String getTimePointExplain() {
+        return timePointExplain;
+    }
+
+    public void setTimePointExplain(String timePointExplain) {
+        this.timePointExplain = timePointExplain == null ? null : timePointExplain.trim();
     }
 
     public String getCreator() {
