@@ -2,9 +2,9 @@ package com.copower.pmcc.assess.service.project.plan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
@@ -31,6 +31,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -82,6 +83,8 @@ public class ProjectPlanFinancialClaimService {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     public BootstrapTableVo getProjectPlanDetailsByProjectId(Integer projectId, Integer planId) {
 
@@ -420,7 +423,7 @@ public class ProjectPlanFinancialClaimService {
             //保存业务数据
 
             //更新任务状态
-            bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(item.getId());
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(),item.getId());
             //更新当前数据为最新
             if (item.getReturnDetailsId() > 0) {
                 ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(item.getReturnDetailsId());

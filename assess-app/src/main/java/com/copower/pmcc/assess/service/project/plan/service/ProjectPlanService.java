@@ -350,7 +350,7 @@ public class ProjectPlanService {
         if (sb.length() > 0) {
             throw new BusinessException(sb.toString());
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());
         //====验证结束
         if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
             //发起计划复核流程
@@ -392,7 +392,7 @@ public class ProjectPlanService {
         if (StringUtils.isNotBlank(detailsSoring)) {
             updateDetailsSorting(detailsSoring);
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());//删除待提交任务
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());//删除待提交任务
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
 
         if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
@@ -681,7 +681,7 @@ public class ProjectPlanService {
             projectPlan.setProjectPlanEnd(new Date());
         }
         projectPlanDao.updateProjectPlan(projectPlan);
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
         /**
          * 处理过程
          * 1、判断当前同等级执行阶段是否都已执行完成，如果都完成则将下个阶段的状态设置为wait
