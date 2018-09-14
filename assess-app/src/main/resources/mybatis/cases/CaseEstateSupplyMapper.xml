@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseEstateSupplyPowerMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPower" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseEstateSupplyMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="reputation" property="reputation" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="line_grade" property="lineGrade" jdbcType="VARCHAR" />
     <result column="power" property="power" jdbcType="VARCHAR" />
@@ -71,15 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, name, grade, line_grade, power, creator, gmt_created, gmt_modified
+    id, estate_id, type, name, reputation, grade, line_grade, power, creator, gmt_created, 
+    gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPowerExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_case_estate_supply_power
+    from tb_case_estate_supply
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,41 +93,49 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_case_estate_supply_power
+    from tb_case_estate_supply
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_case_estate_supply_power
+    delete from tb_case_estate_supply
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPowerExample" >
-    delete from tb_case_estate_supply_power
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample" >
+    delete from tb_case_estate_supply
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPower" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_estate_supply_power (estate_id, name, grade, 
-      line_grade, power, creator, 
-      gmt_created, gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
-      #{lineGrade,jdbcType=VARCHAR}, #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_estate_supply (estate_id, type, name, 
+      reputation, grade, line_grade, 
+      power, creator, gmt_created, 
+      gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{reputation,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{lineGrade,jdbcType=VARCHAR}, 
+      #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPower" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_estate_supply_power
+    insert into tb_case_estate_supply
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="estateId != null" >
         estate_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="reputation != null" >
+        reputation,
       </if>
       <if test="grade != null" >
         grade,
@@ -149,8 +160,14 @@
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="reputation != null" >
+        #{reputation,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         #{grade,jdbcType=VARCHAR},
@@ -172,14 +189,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPowerExample" resultType="java.lang.Integer" >
-    select count(*) from tb_case_estate_supply_power
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_estate_supply
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_case_estate_supply_power
+    update tb_case_estate_supply
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -187,8 +204,14 @@
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reputation != null" >
+        reputation = #{record.reputation,jdbcType=VARCHAR},
       </if>
       <if test="record.grade != null" >
         grade = #{record.grade,jdbcType=VARCHAR},
@@ -214,10 +237,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_case_estate_supply_power
+    update tb_case_estate_supply
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
+      reputation = #{record.reputation,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
       line_grade = #{record.lineGrade,jdbcType=VARCHAR},
       power = #{record.power,jdbcType=VARCHAR},
@@ -228,14 +253,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPower" >
-    update tb_case_estate_supply_power
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
+    update tb_case_estate_supply
     <set >
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="reputation != null" >
+        reputation = #{reputation,jdbcType=VARCHAR},
       </if>
       <if test="grade != null" >
         grade = #{grade,jdbcType=VARCHAR},
@@ -258,10 +289,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyPower" >
-    update tb_case_estate_supply_power
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
+    update tb_case_estate_supply
     set estate_id = #{estateId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      reputation = #{reputation,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
       line_grade = #{lineGrade,jdbcType=VARCHAR},
       power = #{power,jdbcType=VARCHAR},

@@ -81,3 +81,4 @@ AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、�
 
 //案例数据维护
 AssessDicKey.casesHouseTransactionType = "cases.house.transaction.type";//交易类型
+AssessDicKey.casesEstateViewModel = "cases.estate.view.model";//案例维护楼盘

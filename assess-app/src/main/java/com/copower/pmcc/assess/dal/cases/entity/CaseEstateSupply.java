@@ -2,14 +2,20 @@ package com.copower.pmcc.assess.dal.cases.entity;
 
 import java.util.Date;
 
-public class CaseEstateSuppyHeating {
+public class CaseEstateSupply {
     private Integer id;
 
     private Integer estateId;
 
+    private String type;
+
     private String name;
 
     private String reputation;
+
+    private String grade;
+
+    private String lineGrade;
 
     private String power;
 
@@ -35,6 +41,14 @@ public class CaseEstateSuppyHeating {
         this.estateId = estateId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
     public String getName() {
         return name;
     }
@@ -49,6 +63,22 @@ public class CaseEstateSuppyHeating {
 
     public void setReputation(String reputation) {
         this.reputation = reputation == null ? null : reputation.trim();
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade == null ? null : grade.trim();
+    }
+
+    public String getLineGrade() {
+        return lineGrade;
+    }
+
+    public void setLineGrade(String lineGrade) {
+        this.lineGrade = lineGrade == null ? null : lineGrade.trim();
     }
 
     public String getPower() {

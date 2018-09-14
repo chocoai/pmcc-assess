@@ -22,7 +22,7 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>
-                        楼盘
+                        楼盘 <label class="btn btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
                     </h2>
                     <div class="clearfix"></div>
                 </div>
@@ -158,7 +158,8 @@
                                 <label class="col-sm-1 control-label">绿化率<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                                           placeholder="绿化率(请输入数字)" required="required" value="${caseEstate.greeningRate}"
+                                           placeholder="绿化率(请输入数字)" required="required"
+                                           value="${caseEstate.greeningRate}"
                                            name="greeningRate" class="form-control">
                                 </div>
                             </div>
@@ -217,7 +218,8 @@
                                 <label class="col-sm-1 control-label">价格区间<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <input type="text" placeholder="价格区间"
-                                           name="priceRange" required="required" class="form-control" value="${caseEstate.priceRange}">
+                                           name="priceRange" required="required" class="form-control"
+                                           value="${caseEstate.priceRange}">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -300,23 +302,28 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地名称<span class="symbol required"></span></label>
                                 <div class="col-sm-11">
-                                    <input type="text" class="form-control" required="required" name="name" placeholder="名称" value="${caseEstateLandState.soil}">
+                                    <input type="text" class="form-control" required="required" name="name"
+                                           placeholder="名称" value="${caseEstateLandState.soil}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">土地用途类型<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">土地用途类型<span
+                                        class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 landUseType" name="landUseType" required="required">
+                                    <select class="form-control search-select select2 landUseType" name="landUseType"
+                                            required="required">
                                     </select>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">土地用途类别<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">土地用途类别<span
+                                        class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 landUseCategory" name="landUseCategory" required="required">
+                                    <select class="form-control search-select select2 landUseCategory"
+                                            name="landUseCategory" required="required">
                                         <option>请先选择土地用途类型</option>
                                     </select>
                                 </div>
@@ -324,7 +331,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 landLevel" name="landLevel" required="required">
+                                    <select class="form-control search-select select2 landLevel" name="landLevel"
+                                            required="required">
                                     </select>
                                 </div>
                             </div>
@@ -335,19 +343,22 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">东至<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="东至" required="required" name="eastTo" value="${caseEstateLandState.eastTo}">
+                                    <input type="text" class="form-control" placeholder="东至" required="required"
+                                           name="eastTo" value="${caseEstateLandState.eastTo}">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">南至<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="南至" required="required" name="southTo" value="${caseEstateLandState.southTo}">
+                                    <input type="text" class="form-control" placeholder="南至" required="required"
+                                           name="southTo" value="${caseEstateLandState.southTo}">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">西至<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="西至" required="required" name="westTo" value="${caseEstateLandState.westTo}">
+                                    <input type="text" class="form-control" placeholder="西至" required="required"
+                                           name="westTo" value="${caseEstateLandState.westTo}">
                                 </div>
                             </div>
                         </div>
@@ -356,41 +367,51 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">北至<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="北至" required="required" name="northTo" value="${caseEstateLandState.northTo}">
+                                    <input type="text" class="form-control" placeholder="北至" required="required"
+                                           name="northTo" value="${caseEstateLandState.northTo}">
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">土地形状状况<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">土地形状状况<span
+                                        class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState" value="${caseEstateLandState.shapeState}">
+                                    <input type="text" class="form-control" placeholder="土地形状状况" required="required"
+                                           name="shapeState" value="${caseEstateLandState.shapeState}">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness" value="${caseEstateLandState.planeness}">
+                                    <input type="text" class="form-control" placeholder="土地平整度" required="required"
+                                           name="planeness" value="${caseEstateLandState.planeness}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">土地开发程度<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">土地开发程度<span
+                                        class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="土地开发程度" required="required" name="developmentDegree" value="${caseEstateLandState.developmentDegree}">
+                                    <input type="text" class="form-control" placeholder="土地开发程度" required="required"
+                                           name="developmentDegree" value="${caseEstateLandState.developmentDegree}">
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">开发限制条件<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">开发限制条件<span
+                                        class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="开发限制条件" required="required" name="restrictiveCondition" value="${caseEstateLandState.restrictiveCondition}">
+                                    <input type="text" class="form-control" placeholder="开发限制条件" required="required"
+                                           name="restrictiveCondition"
+                                           value="${caseEstateLandState.restrictiveCondition}">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土壤<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil" value="${caseEstateLandState.soil}">
+                                    <input type="text" class="form-control" placeholder="土壤" required="required"
+                                           name="soil" value="${caseEstateLandState.soil}">
                                 </div>
                             </div>
                         </div>
@@ -399,14 +420,18 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" value="${caseEstateLandState.topographicTerrain}" placeholder="地形地势" required="required" name="topographicTerrain">
+                                    <input type="text" class="form-control"
+                                           value="${caseEstateLandState.topographicTerrain}" placeholder="地形地势"
+                                           required="required" name="topographicTerrain">
                                 </div>
                             </div>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea" value="${caseEstateLandState.landArea}">
+                                    <input type="text" class="form-control" data-rule-number='true'
+                                           placeholder="土地面积(请输入数字)" required="required" name="landArea"
+                                           value="${caseEstateLandState.landArea}">
                                 </div>
                             </div>
                         </div>
@@ -442,28 +467,36 @@
             frm: function () {
                 return "frm_estate";//楼盘基本信息frm
             },
-            filePlanTotal:function () {
+            filePlanTotal: function () {
                 return "estate_floor_total_plan";//总平面图id和字段
             },
-            waterSupplyPlan:function () {
+            waterSupplyPlan: function () {
                 return "water_supply_plan";//供水平面图id和字段
             },
-            powerSupplyPlan:function () {
+            powerSupplyPlan: function () {
                 return "power_supply_plan";//供电平面图id和字段
             },
-            airSupplyPlan:function () {
+            airSupplyPlan: function () {
                 return "air_supply_plan";//供气平面图id和字段
             },
-            heatingPlan:function () {
+            heatingPlan: function () {
                 return "heating_plan";//采暖平面图id和字段
             },
-            fileAppearance:function () {
+            fileAppearance: function () {
                 return "estate_floor_Appearance_figure";//外观图id和字段
             }
         },
-        landState:{
-            frm:function () {
-                return "frm_estateLandState" ;//土地实体情况
+        landState: {
+            frm: function () {
+                return "frm_estateLandState";//土地实体情况
+            }
+        },
+        other: {
+            box: function () {
+                return "otherDivBox";//其它信息box
+            },
+            frm: function () {
+                return "frmOther";//其它信息frm
             }
         }
     }
@@ -484,7 +517,7 @@
     }
 
     CaseEstateFun.prototype.select2Event = {
-        estate:function () {
+        estate: function () {
             $("#province").select2();
             $("#city").select2();
             $("#district").select2();
@@ -577,9 +610,9 @@
                 });
             });
         },
-        landState:function () {
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html,data) {
-                if ($("#" +caseEstate.config.landState.frm()  + " .landUseType").size() > 0) {
+        landState: function () {
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
+                if ($("#" + caseEstate.config.landState.frm() + " .landUseType").size() > 0) {
                     $("#" + caseEstate.config.landState.frm() + " .landUseType").html(html);
                     $("#" + caseEstate.config.landState.frm() + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式
                 }
@@ -588,7 +621,7 @@
             $("#" + caseEstate.config.landState.frm() + " .landUseType").change(function () {
                 var id = $("#" + caseEstate.config.landState.frm() + " .landUseType").eq(1).val();
                 $("#" + caseEstate.config.landState.frm() + " .landUseCategory").eq(0).remove();
-                AssessCommon.loadDataDicByPid(id,null,function (html,data) {
+                AssessCommon.loadDataDicByPid(id, null, function (html, data) {
                     if ($("#" + caseEstate.config.landState.frm() + " .landUseCategory").size() > 0) {
                         $("#" + caseEstate.config.landState.frm() + " .landUseCategory").html(html);
                         $("#" + caseEstate.config.landState.frm() + " .landUseCategory").select2();//加载样式
@@ -600,7 +633,11 @@
                 type: "get",
                 dataType: "json",
                 async: false,
-                data: {province:"${projectInfo.province}",city:"${projectInfo.city}",district:"${projectInfo.district}"},
+                data: {
+                    province: "${projectInfo.province}",
+                    city: "${projectInfo.city}",
+                    district: "${projectInfo.district}"
+                },
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -653,54 +690,102 @@
 
     //模块 楼盘基本信息
     caseEstate.estateModel = {
-        init:function () {
+        init: function () {
             //总平面图
-            caseEstate.uploadFile(caseEstate.config.estate.filePlanTotal(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.filePlanTotal(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.filePlanTotal(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.filePlanTotal(), AssessDBKey.CaseEstate);
             //外观图
-            caseEstate.uploadFile(caseEstate.config.estate.fileAppearance(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.fileAppearance(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.fileAppearance(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.fileAppearance(), AssessDBKey.CaseEstate);
             //供水平面图
-            caseEstate.uploadFile(caseEstate.config.estate.waterSupplyPlan(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.waterSupplyPlan(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.waterSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.waterSupplyPlan(), AssessDBKey.CaseEstate);
             //供电平面图
-            caseEstate.uploadFile(caseEstate.config.estate.powerSupplyPlan(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.powerSupplyPlan(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.powerSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.powerSupplyPlan(), AssessDBKey.CaseEstate);
             //供气平面图
-            caseEstate.uploadFile(caseEstate.config.estate.airSupplyPlan(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.airSupplyPlan(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.airSupplyPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.airSupplyPlan(), AssessDBKey.CaseEstate);
             //采暖平面图
-            caseEstate.uploadFile(caseEstate.config.estate.heatingPlan(),AssessDBKey.CaseEstate);
-            caseEstate.showFile(caseEstate.config.estate.heatingPlan(),AssessDBKey.CaseEstate);
+            caseEstate.uploadFile(caseEstate.config.estate.heatingPlan(), AssessDBKey.CaseEstate);
+            caseEstate.showFile(caseEstate.config.estate.heatingPlan(), AssessDBKey.CaseEstate);
             //编辑时:
             caseEstate.estateModel.edit();
             //使校验生效
             $("#" + caseEstate.config.estate.frm()).validate();
         },
-        edit:function () {
-            var caseEstateObj = "${caseEstate}" ;
-            if (caseEstate.isEmpty(caseEstateObj)){//修改页面显示部分数据
-                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.landLevel}','landLevel'));
-                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.developerId}','developerId'));
-                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(),'${caseEstate.blockId}','blockId'));
+        edit: function () {
+            var caseEstateObj = "${caseEstate}";
+            if (caseEstate.isEmpty(caseEstateObj)) {//修改页面显示部分数据
+                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(), '${caseEstate.landLevel}', 'landLevel'));
+                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(), '${caseEstate.developerId}', 'developerId'));
+                caseEstate.writeSelectData(caseEstate.writeSelectData(caseEstate.config.estate.frm(), '${caseEstate.blockId}', 'blockId'));
             }
         }
     }
 
     //模块 楼盘的土地实体
     caseEstate.landStateModel = {
-        init:function () {
+        init: function () {
             //编辑时:
             caseEstate.landStateModel.edit();
             //使校验生效
             $("#" + caseEstate.config.landState.frm()).validate();
         },
-        edit:function () {
+        edit: function () {
             var caseEstateLandState = "${caseEstateLandState}";
-            if (caseEstate.isEmpty(caseEstateLandState)){//修改页面显示部分数据
+            if (caseEstate.isEmpty(caseEstateLandState)) {//修改页面显示部分数据
                 <%--caseEstate.writeSelectData(caseEstate.config.landState.frm(),'${caseEstateLandState.landUseType}',"landUseType");--%>
-                caseEstate.writeSelectData(caseEstate.config.landState.frm(),'${caseEstateLandState.landLevel}',"landLevel");
+                caseEstate.writeSelectData(caseEstate.config.landState.frm(), '${caseEstateLandState.landLevel}', "landLevel");
             }
+        }
+    }
+
+    var otherFlag = true;
+    caseEstate.other = {
+        showBoxDiv: function () {
+            if (caseEstate.other.getOtherFlag()) {
+                caseEstate.other.selectInit();
+                caseEstate.other.setOtherFlag(false);
+            }
+            $("#" + caseEstate.config.other.box()).modal("show");
+        },
+        getOtherFlag: function () {
+            return otherFlag;
+        },
+        setOtherFlag: function (item) {
+            otherFlag = item;
+        },
+        selectInit: function () {
+            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateViewModel, "", function (html, data) {
+                var resetHtml = "";
+                var k = 0;
+                $.each(data, function (i, n) {
+                    if (i % 4 == 0) {
+                        k++;
+                    }
+                });
+                console.log(k);
+                for (var i = 0; i < k; i++) {
+                    console.log("dgsdg" + i);
+                    resetHtml += "<div class='form-group'>";
+                    resetHtml += "<div class='col-sm-12'>";
+                    resetHtml += "<span class='checkbox-inline'>";
+                    for (var j = i * 4; j < i * 4 + 4; j++) {
+                        if (j < data.length) {
+                            resetHtml += "<input type='checkbox' name='esate' value='" + data[j].id + "'" + ">";
+                            resetHtml += data[j].name;
+                        }
+                    }
+                    resetHtml += "</span>";
+                    resetHtml += "</div>";
+                    resetHtml += "</div>";
+                }
+                console.log(resetHtml);
+                console.log(data);
+                //HTML
+                $("#"+caseEstate.config.other.frm()+"HTML").append(resetHtml);
+            });
         }
     }
 
@@ -717,7 +802,7 @@
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/caseEstate/saveAndUpdateCaseEstate",
-            data: {formData:JSON.stringify({estate:estate,landState:landState})},
+            data: {formData: JSON.stringify({estate: estate, landState: landState})},
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
@@ -744,3 +829,45 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
+<div id="otherDivBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">评估技术思路</h3>
+            </div>
+            <form id="frmOther" class="form-horizontal">
+                <input type="hidden" id="id" name="id" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <!--xxx -->
+
+                               <div id="frmOtherHTML">
+
+                               </div>
+
+
+
+
+                                <!--xxx -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveThinking()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
