@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -47,9 +48,10 @@ public class CaseHouseTradingLeaseService {
 
             }
         }
-        if (caseHouseTradingLease != null && caseHouseTradingLease.getId().intValue() != 0) {
+        if (caseHouseTradingLease.getId() == null || caseHouseTradingLease.getId().intValue() == 0) {
             caseHouseTradingLease.setCreator(commonService.thisUserAccount());
             caseHouseTradingLease.setVersion(0);
+            caseHouseTradingLease.setHouseId(0);
             id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(caseHouseTradingLease);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
@@ -67,22 +69,24 @@ public class CaseHouseTradingLeaseService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(CaseHouseTradingLease caseHouseTradingLease){
+    public BootstrapTableVo getBootstrapTableVo(CaseHouseTradingLease caseHouseTradingLease,String type){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseHouseTradingLeaseVo> vos = caseHouseTradingLeaseList(caseHouseTradingLease);
+        List<CaseHouseTradingLeaseVo> vos = caseHouseTradingLeaseList(caseHouseTradingLease,type);
         vo.setRows(vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseList(CaseHouseTradingLease caseHouseTradingLease){
+    public List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseList(CaseHouseTradingLease caseHouseTradingLease,String type){
         List<CaseHouseTradingLeaseVo> vos = Lists.newArrayList();
         List<CaseHouseTradingLease> caseHouseTradingLeases = caseHouseTradingLeaseDao.getCaseHouseTradingLeaseList(caseHouseTradingLease);
         if (!ObjectUtils.isEmpty(caseHouseTradingLeases)){
             for (CaseHouseTradingLease oo :caseHouseTradingLeases){
-                vos.add(getCaseHouseTradingLeaseVo(oo));
+                CaseHouseTradingLeaseVo vo = getCaseHouseTradingLeaseVo(oo);
+                vo.setTradingType(type);
+                vos.add(vo);
             }
         }
         return vos;
@@ -113,6 +117,12 @@ public class CaseHouseTradingLeaseService {
     public CaseHouseTradingLeaseVo getCaseHouseTradingLeaseVo(CaseHouseTradingLease caseHouseTradingLease){
         CaseHouseTradingLeaseVo vo = new CaseHouseTradingLeaseVo();
         BeanUtils.copyProperties(caseHouseTradingLease,vo);
+        if (caseHouseTradingLease.getRentPaymentTimeEnd() != null){
+            vo.setRentPaymentTimeEndName(DateHelp.getDateHelp().printDate(caseHouseTradingLease.getRentPaymentTimeEnd()));
+        }
+        if (caseHouseTradingLease.getRentPaymentTimeStart() != null){
+            vo.setRentPaymentTimeStartName(DateHelp.getDateHelp().printDate(caseHouseTradingLease.getRentPaymentTimeStart()));
+        }
         return vo;
     }
 }

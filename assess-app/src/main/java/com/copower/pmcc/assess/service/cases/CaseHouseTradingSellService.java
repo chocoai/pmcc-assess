@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingSellDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
@@ -19,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -47,9 +49,10 @@ public class CaseHouseTradingSellService {
 
             }
         }
-        if (caseHouseTradingSell != null && caseHouseTradingSell.getId().intValue() != 0) {
+        if (caseHouseTradingSell.getId() == null || caseHouseTradingSell.getId().intValue() == 0) {
             caseHouseTradingSell.setCreator(commonService.thisUserAccount());
             caseHouseTradingSell.setVersion(0);
+            caseHouseTradingSell.setHouseId(0);
             id = caseHouseTradingSellDao.addCaseHouseTradingSell(caseHouseTradingSell);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
@@ -67,22 +70,26 @@ public class CaseHouseTradingSellService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(CaseHouseTradingSell caseHouseTradingSell){
+    public BootstrapTableVo getBootstrapTableVo(CaseHouseTradingSell caseHouseTradingSell,String type){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseHouseTradingSellVo> vos = caseHouseTradingSellList(caseHouseTradingSell);
+        List<CaseHouseTradingSellVo> vos = caseHouseTradingSellList(caseHouseTradingSell,type);
         vo.setRows(vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public List<CaseHouseTradingSellVo> caseHouseTradingSellList(CaseHouseTradingSell caseHouseTradingSell){
+    public List<CaseHouseTradingSellVo> caseHouseTradingSellList(CaseHouseTradingSell caseHouseTradingSell,String type){
         List<CaseHouseTradingSellVo> vos = Lists.newArrayList();
         List<CaseHouseTradingSell> caseHouseTradingSells = caseHouseTradingSellDao.getCaseHouseTradingSellList(caseHouseTradingSell);
         if (!ObjectUtils.isEmpty(caseHouseTradingSells)){
             for (CaseHouseTradingSell oo :caseHouseTradingSells){
-                vos.add(getCaseHouseTradingSellVo(oo));
+                CaseHouseTradingSellVo vo = getCaseHouseTradingSellVo(oo);
+                if (!StringUtils.isEmpty(type)){
+                    vo.setTradingType(type);
+                }
+                vos.add(vo);
             }
         }
         return vos;
@@ -113,6 +120,12 @@ public class CaseHouseTradingSellService {
     public CaseHouseTradingSellVo getCaseHouseTradingSellVo(CaseHouseTradingSell caseHouseTradingSell){
         CaseHouseTradingSellVo vo = new CaseHouseTradingSellVo();
         BeanUtils.copyProperties(caseHouseTradingSell,vo);
+        if (caseHouseTradingSell.getInstalmentPeriodStart() != null){
+            vo.setInstalmentPeriodStartName(DateHelp.getDateHelp().printDate(caseHouseTradingSell.getInstalmentPeriodStart()));
+        }
+        if (caseHouseTradingSell.getInstalmentPeriodEnd() != null){
+            vo.setInstalmentPeriodEndName(DateHelp.getDateHelp().printDate(caseHouseTradingSell.getInstalmentPeriodEnd()));
+        }
         return vo;
     }
 }

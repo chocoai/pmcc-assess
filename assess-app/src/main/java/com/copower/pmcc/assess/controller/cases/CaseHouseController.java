@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
+import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.cases.CaseHouseService;
+import com.copower.pmcc.assess.service.cases.CaseHouseTradingLeaseAndSellDtoService;
 import com.copower.pmcc.assess.service.cases.CaseHouseTradingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,6 +42,8 @@ public class CaseHouseController {
     private CaseHouseTradingService caseHouseTradingService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private CaseHouseTradingLeaseAndSellDtoService caseHouseTradingLeaseAndSellDtoService;
 
     @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
     public ModelAndView appView(Integer unitId) {
@@ -150,6 +156,46 @@ public class CaseHouseController {
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCaseHouseTradingLeaseAndSellDtoVos", method = {RequestMethod.GET}, name = "获取案例 房屋 出租或者出售 列表")
+    public BootstrapTableVo getCaseHouseTradingLeaseAndSellDtoVos(String type, CaseHouseTradingLease caseHouseTradingLease, CaseHouseTradingSell caseHouseTradingSell){
+        if (caseHouseTradingLease == null){
+            caseHouseTradingLease = new CaseHouseTradingLease();
+            caseHouseTradingLease.setHouseId(0);
+        }
+        if (caseHouseTradingSell == null){
+            caseHouseTradingSell = new CaseHouseTradingSell();
+            caseHouseTradingSell.setHouseId(0);
+        }
+        BootstrapTableVo vo = null;
+        vo = caseHouseTradingLeaseAndSellDtoService.getVoList(type, caseHouseTradingLease, caseHouseTradingSell);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveCaseHouseTradingLeaseAndSellDto", method = {RequestMethod.POST}, name = "更新案例 房屋 出租或者出售")
+    public HttpResult saveCaseHouseTradingLeaseAndSellDto(CaseHouseTradingLeaseAndSellDto caseHouseTradingLeaseAndSellDto){
+        try {
+            caseHouseTradingLeaseAndSellDtoService.saveCaseHouseTradingLeaseAndSellDto(caseHouseTradingLeaseAndSellDto);
+            return HttpResult.newCorrectResult("保存 success!");
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s",e.getMessage()),e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/removeCaseHouseTradingLeaseAndSellDto", method = {RequestMethod.POST}, name = "删除案例 房屋 出租或者出售")
+    public HttpResult removeCaseHouseTradingLeaseAndSellDto(Integer id,String type){
+        try {
+            caseHouseTradingLeaseAndSellDtoService.remove(type, id);
+            return HttpResult.newCorrectResult("success!");
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s",e.getMessage()),e);
+            return HttpResult.newErrorResult("异常");
         }
     }
 }

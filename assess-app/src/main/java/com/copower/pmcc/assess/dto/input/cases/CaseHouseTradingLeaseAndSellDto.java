@@ -6,27 +6,30 @@ import java.util.Date;
 
 /**
  * @Auther: zch
- * @Date: 2018/9/13 17:57
+ * @Date: 2018/9/14 11:03
  * @Description:
  */
-public class CaseHouseTradingSellDto {
+public class CaseHouseTradingLeaseAndSellDto {
     private Integer id;
-
     private Integer houseId;
+    private String tradingType;
+
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    private Date rentPaymentTimeStart;
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    private Date rentPaymentTimeEnd;
+    private String rentGrowthRate;
+
+
+
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date instalmentPeriodStart;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date instalmentPeriodEnd;
-
     private String instalmentInterest;
 
     private Integer version;
-
     private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -42,6 +45,38 @@ public class CaseHouseTradingSellDto {
 
     public void setHouseId(Integer houseId) {
         this.houseId = houseId;
+    }
+
+    public String getTradingType() {
+        return tradingType;
+    }
+
+    public void setTradingType(String tradingType) {
+        this.tradingType = tradingType;
+    }
+
+    public Date getRentPaymentTimeStart() {
+        return rentPaymentTimeStart;
+    }
+
+    public void setRentPaymentTimeStart(Date rentPaymentTimeStart) {
+        this.rentPaymentTimeStart = rentPaymentTimeStart;
+    }
+
+    public Date getRentPaymentTimeEnd() {
+        return rentPaymentTimeEnd;
+    }
+
+    public void setRentPaymentTimeEnd(Date rentPaymentTimeEnd) {
+        this.rentPaymentTimeEnd = rentPaymentTimeEnd;
+    }
+
+    public String getRentGrowthRate() {
+        return rentGrowthRate;
+    }
+
+    public void setRentGrowthRate(String rentGrowthRate) {
+        this.rentGrowthRate = rentGrowthRate;
     }
 
     public Date getInstalmentPeriodStart() {
@@ -65,7 +100,7 @@ public class CaseHouseTradingSellDto {
     }
 
     public void setInstalmentInterest(String instalmentInterest) {
-        this.instalmentInterest = instalmentInterest == null ? null : instalmentInterest.trim();
+        this.instalmentInterest = instalmentInterest;
     }
 
     public Integer getVersion() {
@@ -81,22 +116,6 @@ public class CaseHouseTradingSellDto {
     }
 
     public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+        this.creator = creator;
     }
 }

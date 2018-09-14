@@ -78,3 +78,6 @@ AssessDicKey.mdIncomeSelfSupportCostTypeExpense = "md.income.self.support.cost.t
 AssessDicKey.workProgrammeSetUse = "work.programme.set.use" ;//设定用途
 
 AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、住宅、商业、办公、车库、地下商业、建设周期
+
+//案例数据维护
+AssessDicKey.casesHouseTransactionType = "cases.house.transaction.type";//交易类型
