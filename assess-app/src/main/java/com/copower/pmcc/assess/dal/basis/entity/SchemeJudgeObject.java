@@ -8,11 +8,11 @@ public class SchemeJudgeObject {
 
     private Integer pid;
 
-    private Integer sourceId;
-
     private Integer projectId;
 
     private Integer areaGroupId;
+
+    private Integer originalAreaGroupId;
 
     private Integer declareRecordId;
 
@@ -36,9 +36,13 @@ public class SchemeJudgeObject {
 
     private BigDecimal floorArea;
 
-    private String evaluationArea;
+    private BigDecimal evaluationArea;
 
     private Boolean bisSplit;
+
+    private Boolean bisMerge;
+
+    private Boolean bisEnable;
 
     private Integer sorting;
 
@@ -64,14 +68,6 @@ public class SchemeJudgeObject {
         this.pid = pid;
     }
 
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
-    }
-
     public Integer getProjectId() {
         return projectId;
     }
@@ -86,6 +82,14 @@ public class SchemeJudgeObject {
 
     public void setAreaGroupId(Integer areaGroupId) {
         this.areaGroupId = areaGroupId;
+    }
+
+    public Integer getOriginalAreaGroupId() {
+        return originalAreaGroupId;
+    }
+
+    public void setOriginalAreaGroupId(Integer originalAreaGroupId) {
+        this.originalAreaGroupId = originalAreaGroupId;
     }
 
     public Integer getDeclareRecordId() {
@@ -176,12 +180,12 @@ public class SchemeJudgeObject {
         this.floorArea = floorArea;
     }
 
-    public String getEvaluationArea() {
+    public BigDecimal getEvaluationArea() {
         return evaluationArea;
     }
 
-    public void setEvaluationArea(String evaluationArea) {
-        this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
+    public void setEvaluationArea(BigDecimal evaluationArea) {
+        this.evaluationArea = evaluationArea;
     }
 
     public Boolean getBisSplit() {
@@ -190,6 +194,22 @@ public class SchemeJudgeObject {
 
     public void setBisSplit(Boolean bisSplit) {
         this.bisSplit = bisSplit;
+    }
+
+    public Boolean getBisMerge() {
+        return bisMerge;
+    }
+
+    public void setBisMerge(Boolean bisMerge) {
+        this.bisMerge = bisMerge;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Integer getSorting() {

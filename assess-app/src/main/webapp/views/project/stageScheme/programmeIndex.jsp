@@ -23,16 +23,23 @@
             <c:forEach items="${areaGroups}" var="item">
                 <div class="x_panel area_panel">
                     <input type="hidden" name="areaGroupId" value="${item.id}">
-                    <div class="x_title collapse-link" onclick="firstLoadJudgeObjectList(this,${item.id});">
+                    <div class="x_title collapse-link" onclick="programme.loadJudgeObjectList(this);">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         </ul>
                         <h2>
-                                ${item.areaName}
+                            <label>${item.areaName}</label>
                             <small>
-                                <button class="btn btn-xs btn-warning" onclick="programme.areaMerge()">
-                                    合并
-                                </button>
+                                <c:if test="${item.bisMerge eq true}">
+                                    <button class="btn btn-xs btn-warning btn-area-merge-cancel">
+                                        取消合并
+                                    </button>
+                                </c:if>
+                                <c:if test="${item.bisMerge ne true}">
+                                    <button class="btn btn-xs btn-warning btn-area-merge">
+                                        合并
+                                    </button>
+                                </c:if>
                             </small>
                         </h2>
                         <div class="clearfix"></div>
@@ -290,33 +297,6 @@
         </div>
     </div>
 </div>
-
-<div id="areaMergeModal" style="display: none;">
-    <ul class="to_do">
-        <li>
-            <p>
-                Schedule meeting with new client
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">-</span></button>
-            </p>
-        </li>
-        <li>
-            <p>
-                Schedule meeting with new client </p>
-        </li>
-        <li>
-            <p>
-                Schedule meeting with new client </p>
-        </li>
-    </ul>
-    <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-default">
-            取消
-        </button>
-        <button type="button" class="btn btn-primary" onclick="savesEvaluationMethod()">
-            确认合并
-        </button>
-    </div>
-</div>
 <!--动态字段-->
 <script type="text/html" id="dynamicFieldHtml">
     <label class="col-sm-2 control-label">
@@ -334,14 +314,13 @@
         <td>
             <input type="hidden" data-name="id" value="{id}">
             <input type="hidden" data-name="bisSplit" value="{bisSplit}">
-            <input type="hidden" data-name="sourceId" value="{sourceId}">
             <input type="hidden" data-name="number" value="{number}">
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <td>
             <label class="form-control" data-name="name">
-                {name}
+                <span>{name}</span>
                 <a href="javascript://" onclick="viewExamineInfo('{declareId}','{name}');"
                    class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
             </label>
@@ -380,8 +359,16 @@
             </div>
         </td>
         <td>
-            <a href="javascript://" onclick="splitJudgeObject(this);" class="btn btn-xs btn-success tooltips"><i
-                    class="fa fa-white fa-exchange"></i>拆分</a>
+            <a href="javascript://" onclick="programme.splitJudge(this);"
+               class="btn btn-xs btn-success judge-split tooltips">拆分</a>
+            <a href="javascript://" onclick="programme.delSplitJudge(this);"
+               class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
+            <a href="javascript://" onclick="programme.mergeJudge(this);"
+               class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
+            <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+               class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
+            <a href="javascript://" onclick="programme.splitJudge(this);"
+               class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
         </td>
     </tr>
 </script>
@@ -393,39 +380,329 @@
     $(function () {
 
         //阻止合并按钮的冒泡
+        $(".btn-area-merge").click(function (e) {
+            programme.areaMerge(this);
+            e.stopPropagation();
+        })
+        //阻止合并按钮的冒泡
+        $(".btn-area-merge-cancel").click(function (e) {
+            programme.areaMergeCancel($(this).closest('.area_panel').find('[name=areaGroupId]').val());
+            e.stopPropagation();
+        })
     })
-
-    //保存方案
-    function saveProgramme() {
-
-    }
 
     //方案
     var programme = {
-        //区域合并
-        areaMerge: function (e) {
-            //先验证该区域是否可以参与合并
+            config: {
+                areaPopIndex: 0,//区域弹框index
+                judgePopIndex: 0,//委估对象弹框index
+                //区域合并项html
+                areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+                //委估对象合并项html
+                judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>'
+            },
 
-//            layer.open({
-//                type: 1,
-//                shade: false,
-//                content: $('#areaMergeModal'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-//                cancel: function(){
-//                    layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', {time: 5000, icon:6});
-//                }
-//            });
+            //加载区域下的委估对象列表
+            loadJudgeObjectList: function (_this) {
+                var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
+                tbody.empty();
+                var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
+                    data: {
+                        areaGroupId: areaGroupId
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            $.each(result.data, function (i, item) {
+                                var html = $("#judgeObjectHtml").html();
+                                html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
+                                html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
+                                html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
+                                html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
+                                if (item.splitNumber) {
+                                    html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
+                                } else {
+                                    html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);
+                                }
+                                html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
+                                html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
+                                html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
+                                html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
+                                html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
+                                tbody.append(html);
+                                //设值
+                                var lastTr = tbody.find("tr:last");
+                                lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
+                                lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
+                                tbody.find("tr:last").find('[data-name="bestUseId"]').val(item.bestUseId);
+                            })
+                        }
+                    },
+                    error: function (result) {
+                        alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
 
-            layer.open({
-                type: 1,
-                title:"区域合并",
-                offset: 't',
-                shade: false,
-                area: ['420px', '240px'], //宽高
-                content: $('#areaMergeModal').html()
-            });
-            //$("#areaMergeModal").modal('show');
+            //合并项移除
+            mergeItemRemove: function (_this) {
+                $(_this).closest('li').remove();
+            },
+
+            //区域合并
+            areaMerge: function (_this) {
+                var areaName = $(_this).closest('h2').find('label').text();
+                var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+                var html = programme.config.areaItemHtml;
+                if (programme.config.areaPopIndex <= 0) {
+                    layer.closeAll();
+                    programme.config.areaPopIndex = layer.open({
+                        title: "区域合并",
+                        offset: 't',
+                        shade: false,
+                        zIndex: 998,
+                        area: ['320px', '300px'], //宽高
+                        content: '<ul id="area-merge-ul" class="to_do"></ul>',
+                        yes: function (index, layero) {
+                            programme.areaMergeSubmit();
+                        },
+                        end: function () {
+                            programme.config.areaPopIndex = 0;
+                        },
+                        success: function () {
+                            $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
+                        }
+                    });
+                } else {
+                    //该区域已添加则直接返回
+                    var isExist = false;
+                    $("#area-merge-ul").find('li').each(function () {
+                        if ($(this).attr('data-areaGroupId') == areaGroupId) {
+                            isExist = true;
+                            return;
+                        }
+                    })
+                    if (!isExist) {
+                        $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
+                    }
+                }
+            },
+
+            //区域合并提交
+            areaMergeSubmit: function () {
+                var areaGroupIdArray = [];
+                $("#area-merge-ul").find('li').each(function () {
+                    areaGroupIdArray.push($(this).attr('data-areaGroupId'));
+                })
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMerge',
+                    data: {
+                        projectId: '${projectInfo.id}',
+                        areaGroupIds: areaGroupIdArray.join()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            Alert("区域合并成功", 1, null, function () {
+                                window.location.href = window.location.href;
+                            })
+                        } else {
+                            Alert("区域合并失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+            },
+
+            //区域合并取消
+            areaMergeCancel: function (id) {
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMergeCancel',
+                    data: {
+                        id: id
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            Alert("区域合并取消成功", 1, null, function () {
+                                window.location.href = window.location.href;
+                            })
+                        } else {
+                            Alert("区域合并取消失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+            },
+
+            //委估对象拆分
+            splitJudge: function (_this) {
+                //后台添加数据
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
+                    data: {
+                        projectId: '${projectInfo.id}',
+                        areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                        id: $(_this).closest('tr').find('[data-name="id"]').val()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                        } else {
+                            Alert("委估对象拆分失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+
+
+            },
+
+            //删除拆分出来的委估对象
+            delSplitJudge: function (_this) {
+                //后台添加数据
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/delSplitJudge',
+                    data: {
+                        projectId: '${projectInfo.id}',
+                        areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                        id: $(_this).closest('tr').find('[data-name="id"]').val()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                        } else {
+                            Alert("委估对象删除失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+            },
+
+            //委估对象合并
+            mergeJudge: function (_this) {
+                var name = $(_this).closest('tr').find('[data-name="name"]').find('span').text();
+                var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
+                var html = programme.config.judgeItemHtml;
+                if (programme.config.judgePopIndex <= 0) {
+                    programme.config.judgePopIndex = layer.open({
+                        title: "委估对象合并",
+                        offset: 't',
+                        shade: false,
+                        zIndex: 999,
+                        area: ['320px', '300px'], //宽高
+                        content: '<ul id="judge-merge-ul" class="to_do"></ul>',
+                        yes: function (index, layero) {
+                            programme.mergeJudgeSubmit(_this,$(_this).closest('.area_panel'));
+                        },
+                        end: function () {
+                            programme.config.judgePopIndex = 0;
+                        },
+                        success: function () {
+                            $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+                        }
+                    });
+                } else {
+                    //该区域已添加则直接返回
+                    var isExist = false;
+                    $("#judge-merge-ul").find('li').each(function () {
+                        if ($(this).attr('data-judgeId') == judgeId) {
+                            isExist = true;
+                            return;
+                        }
+                    })
+                    if (!isExist) {
+                        $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+                    }
+                }
+            },
+
+            //委估对象合并提交
+            mergeJudgeSubmit: function (_this,panel) {
+                var judgeIdArray = [];
+                $("#judge-merge-ul").find('li').each(function () {
+                    judgeIdArray.push($(this).attr('data-judgeId'));
+                })
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudge',
+                    data: {
+                        ids: judgeIdArray.join()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('委估对象合并成功');
+                            layer.close(programme.config.judgePopIndex);
+                            programme.loadJudgeObjectList(panel);
+                        } else {
+                            Alert("委估对象合并失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+
+
+            },
+
+            //取消委估对象合并
+            mergeJudgeCancel: function (_this) {
+                //后台添加数据
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
+                    data: {
+                        id: $(_this).closest('tr').find('[data-name="id"]').val()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            toastr.success('委估对象取消合并成功');
+                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                        } else {
+                            Alert("权证拆分失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+            }
+
+
         }
-    };
+    ;
 
 </script>
 <script type="text/javascript">

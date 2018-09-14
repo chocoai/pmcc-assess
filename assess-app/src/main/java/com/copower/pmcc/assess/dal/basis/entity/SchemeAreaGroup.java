@@ -21,6 +21,10 @@ public class SchemeAreaGroup {
 
     private String timePointExplain;
 
+    private Boolean bisEnable;
+
+    private Boolean bisMerge;
+
     private String creator;
 
     private Date gmtCreated;
@@ -97,6 +101,22 @@ public class SchemeAreaGroup {
 
     public void setTimePointExplain(String timePointExplain) {
         this.timePointExplain = timePointExplain == null ? null : timePointExplain.trim();
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
+    }
+
+    public Boolean getBisMerge() {
+        return bisMerge;
+    }
+
+    public void setBisMerge(Boolean bisMerge) {
+        this.bisMerge = bisMerge;
     }
 
     public String getCreator() {

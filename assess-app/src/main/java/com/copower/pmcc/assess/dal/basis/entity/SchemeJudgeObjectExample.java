@@ -226,66 +226,6 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andSourceIdIsNull() {
-            addCriterion("source_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdIsNotNull() {
-            addCriterion("source_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdEqualTo(Integer value) {
-            addCriterion("source_id =", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdNotEqualTo(Integer value) {
-            addCriterion("source_id <>", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdGreaterThan(Integer value) {
-            addCriterion("source_id >", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("source_id >=", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdLessThan(Integer value) {
-            addCriterion("source_id <", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdLessThanOrEqualTo(Integer value) {
-            addCriterion("source_id <=", value, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdIn(List<Integer> values) {
-            addCriterion("source_id in", values, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdNotIn(List<Integer> values) {
-            addCriterion("source_id not in", values, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdBetween(Integer value1, Integer value2) {
-            addCriterion("source_id between", value1, value2, "sourceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andSourceIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("source_id not between", value1, value2, "sourceId");
-            return (Criteria) this;
-        }
-
         public Criteria andProjectIdIsNull() {
             addCriterion("project_id is null");
             return (Criteria) this;
@@ -403,6 +343,66 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
             addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdIsNull() {
+            addCriterion("original_area_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdIsNotNull() {
+            addCriterion("original_area_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdEqualTo(Integer value) {
+            addCriterion("original_area_group_id =", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdNotEqualTo(Integer value) {
+            addCriterion("original_area_group_id <>", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdGreaterThan(Integer value) {
+            addCriterion("original_area_group_id >", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("original_area_group_id >=", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdLessThan(Integer value) {
+            addCriterion("original_area_group_id <", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("original_area_group_id <=", value, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdIn(List<Integer> values) {
+            addCriterion("original_area_group_id in", values, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdNotIn(List<Integer> values) {
+            addCriterion("original_area_group_id not in", values, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("original_area_group_id between", value1, value2, "originalAreaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalAreaGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("original_area_group_id not between", value1, value2, "originalAreaGroupId");
             return (Criteria) this;
         }
 
@@ -1116,62 +1116,52 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaEqualTo(String value) {
+        public Criteria andEvaluationAreaEqualTo(BigDecimal value) {
             addCriterion("evaluation_area =", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaNotEqualTo(String value) {
+        public Criteria andEvaluationAreaNotEqualTo(BigDecimal value) {
             addCriterion("evaluation_area <>", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaGreaterThan(String value) {
+        public Criteria andEvaluationAreaGreaterThan(BigDecimal value) {
             addCriterion("evaluation_area >", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaGreaterThanOrEqualTo(String value) {
+        public Criteria andEvaluationAreaGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("evaluation_area >=", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaLessThan(String value) {
+        public Criteria andEvaluationAreaLessThan(BigDecimal value) {
             addCriterion("evaluation_area <", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaLessThanOrEqualTo(String value) {
+        public Criteria andEvaluationAreaLessThanOrEqualTo(BigDecimal value) {
             addCriterion("evaluation_area <=", value, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaLike(String value) {
-            addCriterion("evaluation_area like", value, "evaluationArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationAreaNotLike(String value) {
-            addCriterion("evaluation_area not like", value, "evaluationArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andEvaluationAreaIn(List<String> values) {
+        public Criteria andEvaluationAreaIn(List<BigDecimal> values) {
             addCriterion("evaluation_area in", values, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaNotIn(List<String> values) {
+        public Criteria andEvaluationAreaNotIn(List<BigDecimal> values) {
             addCriterion("evaluation_area not in", values, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaBetween(String value1, String value2) {
+        public Criteria andEvaluationAreaBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("evaluation_area between", value1, value2, "evaluationArea");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationAreaNotBetween(String value1, String value2) {
+        public Criteria andEvaluationAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("evaluation_area not between", value1, value2, "evaluationArea");
             return (Criteria) this;
         }
@@ -1233,6 +1223,126 @@ public class SchemeJudgeObjectExample {
 
         public Criteria andBisSplitNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_split not between", value1, value2, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIsNull() {
+            addCriterion("bis_merge is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIsNotNull() {
+            addCriterion("bis_merge is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeEqualTo(Boolean value) {
+            addCriterion("bis_merge =", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotEqualTo(Boolean value) {
+            addCriterion("bis_merge <>", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeGreaterThan(Boolean value) {
+            addCriterion("bis_merge >", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_merge >=", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeLessThan(Boolean value) {
+            addCriterion("bis_merge <", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_merge <=", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIn(List<Boolean> values) {
+            addCriterion("bis_merge in", values, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotIn(List<Boolean> values) {
+            addCriterion("bis_merge not in", values, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_merge between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_merge not between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
 

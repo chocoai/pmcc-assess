@@ -38,9 +38,21 @@ public class SchemeAreaGroupDao {
         return mapper.deleteByPrimaryKey(id)==1;
     }
 
+    public List<SchemeAreaGroup> getSchemeAreaGroupByIds(List<Integer> ids) {
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andIdIn(ids);
+        return mapper.selectByExample(example);
+    }
+
+    public List<SchemeAreaGroup> getSchemeAreaGroupByPid(Integer pid) {
+        SchemeAreaGroupExample example = new SchemeAreaGroupExample();
+        example.createCriteria().andPidEqualTo(pid);
+        return mapper.selectByExample(example);
+    }
+
     public List<SchemeAreaGroup> getSchemeAreaGroupByProjectId(Integer projectId) {
         SchemeAreaGroupExample example = new SchemeAreaGroupExample();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true);
         return mapper.selectByExample(example);
     }
 }

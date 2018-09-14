@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="source_id" property="sourceId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
+    <result column="original_area_group_id" property="originalAreaGroupId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="split_number" property="splitNumber" jdbcType="INTEGER" />
@@ -18,8 +18,10 @@
     <result column="set_use" property="setUse" jdbcType="INTEGER" />
     <result column="best_use" property="bestUse" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
-    <result column="evaluation_area" property="evaluationArea" jdbcType="VARCHAR" />
+    <result column="evaluation_area" property="evaluationArea" jdbcType="DECIMAL" />
     <result column="bis_split" property="bisSplit" jdbcType="BIT" />
+    <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -84,9 +86,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, source_id, project_id, area_group_id, declare_record_id, number, split_number, 
-    name, ownership, seat, cert_use, practical_use, set_use, best_use, floor_area, evaluation_area, 
-    bis_split, sorting, creator, gmt_created, gmt_modified
+    id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, number, 
+    split_number, name, ownership, seat, cert_use, practical_use, set_use, best_use, 
+    floor_area, evaluation_area, bis_split, bis_merge, bis_enable, sorting, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
     select
@@ -122,22 +125,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_judge_object (pid, source_id, project_id, 
-      area_group_id, declare_record_id, number, 
+    insert into tb_scheme_judge_object (pid, project_id, area_group_id, 
+      original_area_group_id, declare_record_id, number, 
       split_number, name, ownership, 
       seat, cert_use, practical_use, 
       set_use, best_use, floor_area, 
-      evaluation_area, bis_split, sorting, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{pid,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
-      #{areaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+      evaluation_area, bis_split, bis_merge, 
+      bis_enable, sorting, creator, 
+      gmt_created, gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
+      #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
       #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
-      #{evaluationArea,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{evaluationArea,jdbcType=DECIMAL}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,14 +151,14 @@
       <if test="pid != null" >
         pid,
       </if>
-      <if test="sourceId != null" >
-        source_id,
-      </if>
       <if test="projectId != null" >
         project_id,
       </if>
       <if test="areaGroupId != null" >
         area_group_id,
+      </if>
+      <if test="originalAreaGroupId != null" >
+        original_area_group_id,
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
@@ -196,6 +199,12 @@
       <if test="bisSplit != null" >
         bis_split,
       </if>
+      <if test="bisMerge != null" >
+        bis_merge,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
       <if test="sorting != null" >
         sorting,
       </if>
@@ -213,14 +222,14 @@
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="sourceId != null" >
-        #{sourceId,jdbcType=INTEGER},
-      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
       <if test="areaGroupId != null" >
         #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="originalAreaGroupId != null" >
+        #{originalAreaGroupId,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
@@ -256,10 +265,16 @@
         #{floorArea,jdbcType=DECIMAL},
       </if>
       <if test="evaluationArea != null" >
-        #{evaluationArea,jdbcType=VARCHAR},
+        #{evaluationArea,jdbcType=DECIMAL},
       </if>
       <if test="bisSplit != null" >
         #{bisSplit,jdbcType=BIT},
+      </if>
+      <if test="bisMerge != null" >
+        #{bisMerge,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
@@ -290,14 +305,14 @@
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.sourceId != null" >
-        source_id = #{record.sourceId,jdbcType=INTEGER},
-      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
       <if test="record.areaGroupId != null" >
         area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.originalAreaGroupId != null" >
+        original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
       </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
@@ -333,10 +348,16 @@
         floor_area = #{record.floorArea,jdbcType=DECIMAL},
       </if>
       <if test="record.evaluationArea != null" >
-        evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
+        evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
       </if>
       <if test="record.bisSplit != null" >
         bis_split = #{record.bisSplit,jdbcType=BIT},
+      </if>
+      <if test="record.bisMerge != null" >
+        bis_merge = #{record.bisMerge,jdbcType=BIT},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
@@ -359,9 +380,9 @@
     update tb_scheme_judge_object
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      source_id = #{record.sourceId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       number = #{record.number,jdbcType=VARCHAR},
       split_number = #{record.splitNumber,jdbcType=INTEGER},
@@ -373,8 +394,10 @@
       set_use = #{record.setUse,jdbcType=INTEGER},
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
-      evaluation_area = #{record.evaluationArea,jdbcType=VARCHAR},
+      evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
       bis_split = #{record.bisSplit,jdbcType=BIT},
+      bis_merge = #{record.bisMerge,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -389,14 +412,14 @@
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="sourceId != null" >
-        source_id = #{sourceId,jdbcType=INTEGER},
-      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
       <if test="areaGroupId != null" >
         area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="originalAreaGroupId != null" >
+        original_area_group_id = #{originalAreaGroupId,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
@@ -432,10 +455,16 @@
         floor_area = #{floorArea,jdbcType=DECIMAL},
       </if>
       <if test="evaluationArea != null" >
-        evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
+        evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
       </if>
       <if test="bisSplit != null" >
         bis_split = #{bisSplit,jdbcType=BIT},
+      </if>
+      <if test="bisMerge != null" >
+        bis_merge = #{bisMerge,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
@@ -455,9 +484,9 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     update tb_scheme_judge_object
     set pid = #{pid,jdbcType=INTEGER},
-      source_id = #{sourceId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      original_area_group_id = #{originalAreaGroupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       number = #{number,jdbcType=VARCHAR},
       split_number = #{splitNumber,jdbcType=INTEGER},
@@ -469,8 +498,10 @@
       set_use = #{setUse,jdbcType=INTEGER},
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},
-      evaluation_area = #{evaluationArea,jdbcType=VARCHAR},
+      evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
       bis_split = #{bisSplit,jdbcType=BIT},
+      bis_merge = #{bisMerge,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
