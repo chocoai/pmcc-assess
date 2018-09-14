@@ -194,6 +194,8 @@
                 treeField: 'projectPhaseName',
                 datatype: 'json',
                 lines: true,
+                autoRowHeight: false,
+                fitColumns: false,
                 width: 'auto',
                 method: "get",
                 rownumbers: true,
