@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.service.cases.CaseHouseService;
 import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 /**
  * @Auther: zch
  * @Date: 2018/9/11 18:01
@@ -26,6 +30,8 @@ public class CaseUnitController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseHouseService caseHouseService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
@@ -89,8 +95,15 @@ public class CaseUnitController {
     @RequestMapping(value = "/deleteCaseUnitById", method = {RequestMethod.POST}, name = "删除案例 单元")
     public HttpResult deleteCaseUnitById(Integer id) {
         CaseUnit caseUnit = null;
+        List<CaseHouse> caseHouseList = null;
+        CaseHouse caseHouse = new CaseHouse();
         try {
             if (id != null) {
+                caseHouse.setUnitId(id);
+                caseHouseList = caseHouseService.getCaseHouseList(caseHouse);
+                if (caseHouseList.size() >= 1){
+                    return HttpResult.newErrorResult("请删除此单元下的房屋之后在删除此单元! remove fail");
+                }
                 caseUnit = caseUnitService.getCaseUnitById(id);
                 caseUnitService.deleteCaseUnit(id);
                 return HttpResult.newCorrectResult(caseUnit.getBuildingId());

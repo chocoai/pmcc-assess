@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dto.input.cases.CaseBuildingDto;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 /**
  * @Auther: zch
  * @Date: 2018/9/11 18:02
@@ -28,6 +32,8 @@ public class CaseBuildingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private CaseUnitService caseUnitService;
     @Autowired
     private CaseBuildingService caseBuildingService;
 
@@ -90,8 +96,15 @@ public class CaseBuildingController {
     @ResponseBody
     @RequestMapping(value = "/deleteCaseBuildingById", method = {RequestMethod.POST}, name = "删除案例 楼栋")
     public HttpResult deleteCaseBuildingById(Integer id) {
+        List<CaseUnit> caseUnitList = null;
+        CaseUnit caseUnit = new CaseUnit();
         try {
             if (id != null) {
+                caseUnit.setBuildingId(id);
+                caseUnitList = caseUnitService.getCaseUnitList(caseUnit);
+                if (caseUnitList.size() >= 1){
+                    return HttpResult.newErrorResult("请删除此楼栋下的单元之后在删除此楼栋! remove fail");
+                }
                 Integer estateId = null;
                 estateId = caseBuildingService.getCaseBuildingById(id).getEstateId();
                 caseBuildingService.deleteCaseBuilding(id);

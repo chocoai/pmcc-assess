@@ -370,7 +370,7 @@
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseEstate.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseEstate.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseEstate.removeData(' + row.id + ','+index+')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseEstate.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
                     str += '</div>';
                     return str;
@@ -448,16 +448,20 @@
          * 描述:删除数据
          * @date:2018-09-13
          **/
-        removeData: function (id) {
+        removeData: function (item,index) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseEstate/deleteCaseEstateById",
                 type: "post",
                 dataType: "json",
                 async: true,
-                data: {id: id},
+                data: {id: item},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success(result.data);
+                        $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('remove',{field: 'id', values: [item]});
+                        toastr.success("删除成功!");
+                    }
+                    if (!result.ret){
+                        toastr.success(result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -521,6 +525,9 @@
                     if (result.ret) {
                         baseFun.caseBuild.loadDataList(result.data);
                         toastr.success("删除成功!");
+                    }
+                    if (!result.ret){
+                        toastr.success(result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -601,6 +608,9 @@
                         baseFun.caseUnit.loadDataList(result.data);
                         toastr.success("删除成功!");
                     }
+                    if (!result.ret){
+                        toastr.success(result.errmsg);
+                    }
                 },
                 error: function (result) {
                     console.log(result);
@@ -678,6 +688,9 @@
                         baseFun.caseHouse.loadDataList(result.data);
                         toastr.success("删除成功!");
                     }
+                    if (!result.ret){
+                        toastr.success(result.errmsg);
+                    }
                 },
                 error: function (result) {
                     console.log(result);
@@ -685,7 +698,7 @@
                 }
             });
         },
-        loadDataList: function () {
+        loadDataList: function (unitId) {
             var cols = [];
             cols.push({field: 'floor', title: '所在楼层'});
             cols.push({field: 'houseNumber', title: '房号'});
@@ -702,7 +715,7 @@
             });
             $("#" + baseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseList", cols, {
-                name: $("#queryName").val()
+                unitId: unitId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -722,6 +735,6 @@
         baseFun.caseEstate.loadDataList(false);
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);
-        baseFun.caseHouse.loadDataList();
+        baseFun.caseHouse.loadDataList(null);
     });
 </script>

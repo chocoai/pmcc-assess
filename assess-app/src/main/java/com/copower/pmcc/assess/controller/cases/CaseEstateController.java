@@ -123,17 +123,18 @@ public class CaseEstateController {
     @RequestMapping(value = "/deleteCaseEstateById", method = {RequestMethod.POST}, name = "删除案例 楼盘")
     public HttpResult deleteCaseEstateById(Integer id) {
         List<CaseBuilding> caseBuildingList = null;
+        CaseEstate caseEstate = null;
         CaseBuilding caseBuilding = new CaseBuilding();
         try {
             if (id != null && id.intValue() != 0) {
+                caseEstate = caseEstateService.getCaseEstateById(id);
                 caseBuilding.setEstateId(id);
                 caseBuildingList = caseBuildingService.getCaseBuildingList(caseBuilding);
                 if (caseBuildingList.size() >= 1) {
-                    return HttpResult.newCorrectResult("请删除此楼盘下的楼栋之后在删除此楼盘! remove fail");
-                } else {
-                    caseEstateService.deleteCaseEstate(id);
-                    return HttpResult.newCorrectResult("remove success");
+                    return HttpResult.newErrorResult("请删除此楼盘下的楼栋之后在删除此楼盘! remove fail");
                 }
+                caseEstateService.deleteCaseEstate(id);
+                return HttpResult.newCorrectResult(caseEstate.getBlockId());
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);

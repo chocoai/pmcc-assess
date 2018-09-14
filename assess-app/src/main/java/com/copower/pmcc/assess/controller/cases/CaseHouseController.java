@@ -109,6 +109,9 @@ public class CaseHouseController {
         CaseHouse caseHouse = null;
         try {
             if (id != null) {
+                CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
+                caseHouseTrading.setHouseId(id);
+                caseHouseTradingService.deleteCaseHouseTrading(caseHouseTrading);
                 caseHouse = caseHouseService.getCaseHouseById(id);
                 caseHouseService.deleteCaseHouse(id);
                 return HttpResult.newCorrectResult(caseHouse.getUnitId());
@@ -138,7 +141,10 @@ public class CaseHouseController {
                 logger.error(String.format("exception: %s", e1.getMessage()), e1);
                 return HttpResult.newErrorResult("解析异常");
             }
-            caseHouseService.saveAndUpdateCaseHouse(caseHouse);
+            Integer id = caseHouseService.saveAndUpdateCaseHouse(caseHouse);
+            if (caseHouseTrading != null){
+                caseHouseTrading.setHouseId(id);
+            }
             caseHouseTradingService.saveAndUpdateCaseHouseTrading(caseHouseTrading);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {

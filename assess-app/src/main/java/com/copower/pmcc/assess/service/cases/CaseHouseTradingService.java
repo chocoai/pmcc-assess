@@ -47,12 +47,13 @@ public class CaseHouseTradingService {
 
             }
         }
-        if (caseHouseTrading != null && caseHouseTrading.getId().intValue() != 0) {
+        if (caseHouseTrading.getId() == null || caseHouseTrading.getId().intValue() == 0) {
             caseHouseTrading.setCreator(commonService.thisUserAccount());
             caseHouseTrading.setVersion(0);
             id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTrading.class), id);
+            caseHouseTrading.setId(id);
             return id;
         }else {
             CaseHouseTrading oo = caseHouseTradingDao.getCaseHouseTradingById(caseHouseTrading.getId());
