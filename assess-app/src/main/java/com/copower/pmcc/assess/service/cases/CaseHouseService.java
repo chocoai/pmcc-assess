@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +29,8 @@ public class CaseHouseService {
     private CaseHouseDao caseHouseDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse){
@@ -63,7 +67,8 @@ public class CaseHouseService {
         return caseHouseDao.getHouseById(id);
     }
 
-    public boolean saveAndUpdateCaseHouse(CaseHouse caseHouse){
+    public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse){
+        Integer id = null ;
         if (caseHouse==null){
             try {
                 logger.error("传入了null");
@@ -75,7 +80,10 @@ public class CaseHouseService {
         if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
             caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
-            return caseHouseDao.addHouse(caseHouse);
+            id =  caseHouseDao.addHouse(caseHouse);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
+            return id;
         }else {
             CaseHouse oo = caseHouseDao.getHouseById(caseHouse.getId());
             if (oo != null){
@@ -84,7 +92,8 @@ public class CaseHouseService {
                 }
             }
             caseHouse.setVersion(oo.getVersion()+1);
-            return caseHouseDao.updateHouse(caseHouse);
+            caseHouseDao.updateHouse(caseHouse);
+            return  null;
         }
     }
 

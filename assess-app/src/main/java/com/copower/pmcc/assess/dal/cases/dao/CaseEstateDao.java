@@ -61,12 +61,21 @@ public class CaseEstateDao {
         return caseEstateMapper.updateByPrimaryKeySelective(caseEstate) > 0;
     }
 
-    public List<CaseEstate> autoCompleteCaseEstate(String name){
+    public List<CaseEstate> autoCompleteCaseEstate(String name, String province, String city, String district){
         CaseEstateExample example = new CaseEstateExample();
         CaseEstateExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         if (!StringUtils.isEmpty(name)){
             criteria.andNameLike(String.format("%s%s%s","%",name,"%"));
+        }
+        if (!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if (!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if (!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
         }
         return caseEstateMapper.selectByExample(example);
     }

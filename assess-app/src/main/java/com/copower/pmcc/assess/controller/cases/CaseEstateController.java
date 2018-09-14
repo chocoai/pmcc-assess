@@ -2,15 +2,19 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseEstateLandStateService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
@@ -22,6 +26,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,27 +51,55 @@ public class CaseEstateController {
     private CaseBuildingService caseBuildingService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DataBlockService dataBlockService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
-    public ModelAndView appView(Integer blockId) {
+    public ModelAndView appView() {
         String view = "/case/caseEstate/apply/caseEstateView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("blockId", blockId);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("dataBlocks", dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
         return modelAndView;
     }
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id) {
+    public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
         String view = "/case/caseEstate/apply/caseEstateView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         if (id != null && id.intValue() != 0) {
+            //楼盘 土地实体情况
             CaseEstateLandState caseEstateLandState = new CaseEstateLandState();
             caseEstateLandState.setEstateId(id);
             List<CaseEstateLandState> caseEstateLandStateList = caseEstateLandStateService.getCaseEstateLandStateList(caseEstateLandState);
             if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
-                modelAndView.addObject("caseEstateLandState", caseEstateLandStateList.get(0));
+                caseEstateLandState = null;
+                caseEstateLandState = caseEstateLandStateList.get(0);
+                if (copy) {
+                    //复制数据 需要把id设为null
+                    if (caseEstateLandState != null) {
+                        caseEstateLandState.setId(null);
+                    }
+                    //处理附件,所有附件则把附件复制后保存后的id传入页面显示
+                    //附件暂且不处理
+                }
+                modelAndView.addObject("caseEstateLandState", caseEstateLandState);
             }
-            modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(id));
+            //楼盘 基本信息
+            CaseEstate caseEstate = caseEstateService.getCaseEstateById(id);
+            if (copy) {
+                //复制数据 需要把id设为null
+                if (caseEstate != null) {
+                    caseEstate.setId(null);
+                }
+                //处理附件,所有附件则把附件复制后保存后的id传入页面显示
+                //附件暂且不处理
+            }
+            modelAndView.addObject("caseEstate", caseEstate);
+            modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+            modelAndView.addObject("dataBlocks", dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
         }
         return modelAndView;
     }
@@ -90,17 +123,18 @@ public class CaseEstateController {
     @RequestMapping(value = "/deleteCaseEstateById", method = {RequestMethod.POST}, name = "删除案例 楼盘")
     public HttpResult deleteCaseEstateById(Integer id) {
         List<CaseBuilding> caseBuildingList = null;
+        CaseEstate caseEstate = null;
         CaseBuilding caseBuilding = new CaseBuilding();
         try {
             if (id != null && id.intValue() != 0) {
+                caseEstate = caseEstateService.getCaseEstateById(id);
                 caseBuilding.setEstateId(id);
                 caseBuildingList = caseBuildingService.getCaseBuildingList(caseBuilding);
                 if (caseBuildingList.size() >= 1) {
-                    return HttpResult.newCorrectResult("请删除此楼盘下的楼栋之后在删除此楼盘! remove fail");
-                } else {
-                    caseEstateService.deleteCaseEstate(id);
-                    return HttpResult.newCorrectResult("remove success");
+                    return HttpResult.newErrorResult("请删除此楼盘下的楼栋之后在删除此楼盘! remove fail");
                 }
+                caseEstateService.deleteCaseEstate(id);
+                return HttpResult.newCorrectResult(caseEstate.getBlockId());
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
@@ -118,10 +152,10 @@ public class CaseEstateController {
         String jsonContent = null;
         try {
             try {
-                jsonContent = jsonObject.getString(CaseEstate.class.getSimpleName());
+                jsonContent = jsonObject.getString("estate");
                 caseEstate = JSONObject.parseObject(jsonContent, CaseEstate.class);
                 jsonContent = null;
-                jsonContent = jsonObject.getString(CaseEstateLandState.class.getSimpleName());
+                jsonContent = jsonObject.getString("landState");
                 caseEstateLandState = JSONObject.parseObject(jsonContent, CaseEstateLandState.class);
             } catch (Exception e1) {
                 logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -160,6 +194,28 @@ public class CaseEstateController {
         }
         List<CaseEstate> caseEstateList = caseEstateService.getCaseEstateList(caseEstate);
         return HttpResult.newCorrectResult(caseEstateList);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCaseEstateVos", method = {RequestMethod.GET}, name = "获取案例 楼盘列表")
+    public BootstrapTableVo getCaseEstateVos(String name, String province, String city, String district) {
+        CaseEstate caseEstate = new CaseEstate();
+        if (!StringUtils.isEmpty(name)) {
+            caseEstate.setName(name);
+        }
+        if (!StringUtils.isEmpty(province)) {
+            caseEstate.setProvince(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            caseEstate.setCity(city);
+        }
+        if (!StringUtils.isEmpty(district)) {
+            caseEstate.setDistrict(district);
+        }
+        if (StringUtils.isEmpty(name) && StringUtils.isEmpty(province) && StringUtils.isEmpty(city) && StringUtils.isEmpty(district)) {
+            return new BootstrapTableVo();
+        }
+        return caseEstateService.getCaseEstateVos(caseEstate);
     }
 
     @ResponseBody

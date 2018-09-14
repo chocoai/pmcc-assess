@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +29,11 @@ public class CaseBuildingService {
     private CaseBuildingDao caseBuildingDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding){
+    public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -39,8 +43,8 @@ public class CaseBuildingService {
         return vo;
     }
 
-    public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding){
-        if (caseBuilding==null){
+    public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding) {
+        if (caseBuilding == null) {
             try {
                 logger.error("传入了null");
                 throw new Exception("null point");
@@ -51,8 +55,8 @@ public class CaseBuildingService {
         return caseBuildingDao.getBuildingList(caseBuilding);
     }
 
-    public CaseBuilding getCaseBuildingById(Integer id){
-        if (id==null){
+    public CaseBuilding getCaseBuildingById(Integer id) {
+        if (id == null) {
             try {
                 logger.error("传入了null");
                 throw new Exception("null point");
@@ -63,8 +67,9 @@ public class CaseBuildingService {
         return caseBuildingDao.getBuildingById(id);
     }
 
-    public boolean saveAndUpdateCaseBuilding(CaseBuilding caseBuilding){
-        if (caseBuilding==null){
+    public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
+        Integer id = null;
+        if (caseBuilding == null) {
             try {
                 logger.error("传入了null");
                 throw new Exception("null point");
@@ -72,25 +77,29 @@ public class CaseBuildingService {
 
             }
         }
-        if (caseBuilding.getId()==null || caseBuilding.getId().intValue()==0){
+        if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
-            return caseBuildingDao.addBuilding(caseBuilding);
-        }else {
+            id = caseBuildingDao.addBuilding(caseBuilding);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
+            return id;
+        } else {
             //更新版本
             CaseBuilding oo = caseBuildingDao.getBuildingById(caseBuilding.getId());
-            if (oo != null){
-                if (oo.getVersion()==null){
+            if (oo != null) {
+                if (oo.getVersion() == null) {
                     oo.setVersion(0);
                 }
             }
-            caseBuilding.setVersion(oo.getVersion()+1);
-            return caseBuildingDao.updateBuilding(caseBuilding);
+            caseBuilding.setVersion(oo.getVersion() + 1);
+            caseBuildingDao.updateBuilding(caseBuilding);
+            return null;
         }
     }
 
-    public boolean deleteCaseBuilding(Integer id){
-        if (id==null){
+    public boolean deleteCaseBuilding(Integer id) {
+        if (id == null) {
             try {
                 logger.error("传入了null");
                 throw new Exception("null point");

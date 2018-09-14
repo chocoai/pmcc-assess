@@ -18,6 +18,9 @@ AssessDBKey.ExamineHouseCorollaryEquipment = "tb_examine_house_corollary_equipme
 
 AssessDBKey.CaseEstate = "tb_case_estate" ;
 AssessDBKey.CaseEstateLandState = "tb_case_estate_land_state" ;
+AssessDBKey.CaseBuilding = "tb_case_building" ;
+AssessDBKey.CaseHouse = "tb_case_house" ;
+AssessDBKey.CaseHouseTrading = "tb_case_house_trading" ;
 
 
 /**

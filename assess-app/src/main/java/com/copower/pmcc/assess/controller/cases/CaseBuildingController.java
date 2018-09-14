@@ -1,18 +1,25 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.dto.input.cases.CaseBuildingDto;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -26,6 +33,8 @@ public class CaseBuildingController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
+    private CaseUnitService caseUnitService;
+    @Autowired
     private CaseBuildingService caseBuildingService;
 
     @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
@@ -37,10 +46,18 @@ public class CaseBuildingController {
     }
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id) {
+    public ModelAndView editView(Integer id,@RequestParam(defaultValue = "false") boolean copy) {
         String view = "/case/caseBuild/apply/caseBuildingView";
+        CaseBuilding caseBuilding = null;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("caseBuilding",caseBuildingService.getCaseBuildingById(id));
+        caseBuilding = caseBuildingService.getCaseBuildingById(id) ;
+        if (copy){
+            //复制数据 需要把id设为null
+            caseBuilding.setId(null);
+            //处理附件,所有附件则把附件复制后保存后的id传入页面显示
+            //附件暂且不处理
+        }
+        modelAndView.addObject("caseBuilding",caseBuilding);
         return modelAndView;
     }
 
@@ -79,10 +96,19 @@ public class CaseBuildingController {
     @ResponseBody
     @RequestMapping(value = "/deleteCaseBuildingById", method = {RequestMethod.POST}, name = "删除案例 楼栋")
     public HttpResult deleteCaseBuildingById(Integer id) {
+        List<CaseUnit> caseUnitList = null;
+        CaseUnit caseUnit = new CaseUnit();
         try {
             if (id != null) {
+                caseUnit.setBuildingId(id);
+                caseUnitList = caseUnitService.getCaseUnitList(caseUnit);
+                if (caseUnitList.size() >= 1){
+                    return HttpResult.newErrorResult("请删除此楼栋下的单元之后在删除此楼栋! remove fail");
+                }
+                Integer estateId = null;
+                estateId = caseBuildingService.getCaseBuildingById(id).getEstateId();
                 caseBuildingService.deleteCaseBuilding(id);
-                return HttpResult.newCorrectResult();
+                return HttpResult.newCorrectResult(estateId);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
@@ -93,7 +119,9 @@ public class CaseBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateCaseBuilding", method = {RequestMethod.POST}, name = "更新案例 楼栋")
-    public HttpResult saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
+    public HttpResult saveAndUpdateCaseBuilding(CaseBuildingDto caseBuildingDto) {
+        CaseBuilding caseBuilding = new CaseBuilding();
+        BeanUtils.copyProperties(caseBuildingDto,caseBuilding);
         try {
             caseBuildingService.saveAndUpdateCaseBuilding(caseBuilding);
             return HttpResult.newCorrectResult("保存 success!");

@@ -46,8 +46,9 @@ public class CaseHouseDao {
      * @param caseHouse
      * @return
      */
-    public boolean addHouse(CaseHouse caseHouse) {
-        return caseHouseMapper.insertSelective(caseHouse) > 0;
+    public Integer addHouse(CaseHouse caseHouse) {
+        caseHouseMapper.insertSelective(caseHouse);
+        return caseHouse.getId();
     }
 
     /**
