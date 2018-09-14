@@ -36,9 +36,9 @@ public class ExamineBlockDao {
      * @param declareId
      * @return
      */
-    public ExamineBlock getBlockByDeclareId(Integer declareId,Integer examineType) {
+    public ExamineBlock getBlockByDeclareId(Integer declareId,Integer planDetailsId,Integer examineType) {
         ExamineBlockExample example = new ExamineBlockExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
+        example.createCriteria().andDeclareIdEqualTo(declareId).andPlanDetailsIdEqualTo(planDetailsId).andExamineTypeEqualTo(examineType);
         List<ExamineBlock> blockList = examineBlockMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
         return null;

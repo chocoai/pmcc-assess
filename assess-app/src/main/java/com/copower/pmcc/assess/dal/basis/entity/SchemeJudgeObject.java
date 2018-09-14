@@ -6,25 +6,41 @@ import java.util.Date;
 public class SchemeJudgeObject {
     private Integer id;
 
+    private Integer pid;
+
+    private Integer sourceId;
+
     private Integer projectId;
 
     private Integer areaGroupId;
 
     private Integer declareRecordId;
 
-    private Integer number;
+    private String number;
 
     private Integer splitNumber;
-
-    private Integer groupNumber;
 
     private String name;
 
     private String ownership;
 
-    private Integer bestUseId;
+    private String seat;
+
+    private Integer certUse;
+
+    private Integer practicalUse;
+
+    private Integer setUse;
+
+    private Integer bestUse;
 
     private BigDecimal floorArea;
+
+    private String evaluationArea;
+
+    private Boolean bisSplit;
+
+    private Integer sorting;
 
     private String creator;
 
@@ -32,20 +48,28 @@ public class SchemeJudgeObject {
 
     private Date gmtModified;
 
-    private String evaluationArea;
-
-    private Boolean bisSplit;
-
-    private String seat;
-
-    private Integer sourceId;
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 
     public Integer getProjectId() {
@@ -72,12 +96,12 @@ public class SchemeJudgeObject {
         this.declareRecordId = declareRecordId;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setNumber(String number) {
+        this.number = number == null ? null : number.trim();
     }
 
     public Integer getSplitNumber() {
@@ -86,14 +110,6 @@ public class SchemeJudgeObject {
 
     public void setSplitNumber(Integer splitNumber) {
         this.splitNumber = splitNumber;
-    }
-
-    public Integer getGroupNumber() {
-        return groupNumber;
-    }
-
-    public void setGroupNumber(Integer groupNumber) {
-        this.groupNumber = groupNumber;
     }
 
     public String getName() {
@@ -112,12 +128,44 @@ public class SchemeJudgeObject {
         this.ownership = ownership == null ? null : ownership.trim();
     }
 
-    public Integer getBestUseId() {
-        return bestUseId;
+    public String getSeat() {
+        return seat;
     }
 
-    public void setBestUseId(Integer bestUseId) {
-        this.bestUseId = bestUseId;
+    public void setSeat(String seat) {
+        this.seat = seat == null ? null : seat.trim();
+    }
+
+    public Integer getCertUse() {
+        return certUse;
+    }
+
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
+    }
+
+    public Integer getPracticalUse() {
+        return practicalUse;
+    }
+
+    public void setPracticalUse(Integer practicalUse) {
+        this.practicalUse = practicalUse;
+    }
+
+    public Integer getSetUse() {
+        return setUse;
+    }
+
+    public void setSetUse(Integer setUse) {
+        this.setUse = setUse;
+    }
+
+    public Integer getBestUse() {
+        return bestUse;
+    }
+
+    public void setBestUse(Integer bestUse) {
+        this.bestUse = bestUse;
     }
 
     public BigDecimal getFloorArea() {
@@ -126,6 +174,30 @@ public class SchemeJudgeObject {
 
     public void setFloorArea(BigDecimal floorArea) {
         this.floorArea = floorArea;
+    }
+
+    public String getEvaluationArea() {
+        return evaluationArea;
+    }
+
+    public void setEvaluationArea(String evaluationArea) {
+        this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
+    }
+
+    public Boolean getBisSplit() {
+        return bisSplit;
+    }
+
+    public void setBisSplit(Boolean bisSplit) {
+        this.bisSplit = bisSplit;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public String getCreator() {
@@ -150,37 +222,5 @@ public class SchemeJudgeObject {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getEvaluationArea() {
-        return evaluationArea;
-    }
-
-    public void setEvaluationArea(String evaluationArea) {
-        this.evaluationArea = evaluationArea == null ? null : evaluationArea.trim();
-    }
-
-    public Boolean getBisSplit() {
-        return bisSplit;
-    }
-
-    public void setBisSplit(Boolean bisSplit) {
-        this.bisSplit = bisSplit;
-    }
-
-    public String getSeat() {
-        return seat;
-    }
-
-    public void setSeat(String seat) {
-        this.seat = seat == null ? null : seat.trim();
-    }
-
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
     }
 }

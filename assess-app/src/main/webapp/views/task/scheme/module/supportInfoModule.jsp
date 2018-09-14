@@ -39,7 +39,7 @@
                                 wellFields += '</div><div class="form-group">';
                             }
                             var supportInfoFieldHtml = $("#supportInfoField").html();
-                            console.log(fieldArray[j]);
+                            // console.log(fieldArray[j]);
                             supportInfoFieldHtml = supportInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
                             wellFields += supportInfoFieldHtml;
                         }

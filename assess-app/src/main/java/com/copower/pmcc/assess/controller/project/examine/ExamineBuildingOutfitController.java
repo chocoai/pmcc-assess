@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -36,13 +36,6 @@ public class ExamineBuildingOutfitController {
     private ProcessControllerComponent processControllerComponent;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//    @Deprecated
-//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-//    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/examineBuildingOutfit" ;
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-//        return modelAndView;
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitById",method = {RequestMethod.GET},name = "获取楼栋外装情况")
@@ -61,7 +54,7 @@ public class ExamineBuildingOutfitController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingOutfitList",method = {RequestMethod.GET},name = "楼栋外装情况列表")
-    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId, Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingOutfitList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
@@ -71,8 +64,14 @@ public class ExamineBuildingOutfitController {
             if (declareId != null ) {
                 examineBuildingOutfit.setDeclareId(declareId);
             }
+            if (planDetailsId != null ) {
+                examineBuildingOutfit.setPlanDetailsId(planDetailsId);
+            }
             if (buildingId != null) {
                 examineBuildingOutfit.setBuildingId(buildingId);
+            }
+            if (!StringUtils.isEmpty(buildNumber)){
+                examineBuildingOutfit.setBuildNumber(buildNumber);
             }
             vo = examineBuildingOutfitService.getExamineBuildingOutfitLists(examineBuildingOutfit);
         } catch (Exception e1) {

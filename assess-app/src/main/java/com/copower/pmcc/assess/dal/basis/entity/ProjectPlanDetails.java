@@ -6,17 +6,19 @@ import java.util.Date;
 public class ProjectPlanDetails {
     private Integer id;
 
-    private Integer projectWorkStageId;
+    private Integer pid;
+
+    private String projectPhaseName;
+
+    private Integer projectId;
 
     private Integer planId;
 
-    private Integer projectId;
+    private Integer projectWorkStageId;
 
     private Integer projectPhaseId;
 
     private Integer projectPhaseDetailsId;
-
-    private String projectPhaseName;
 
     private Date planStartDate;
 
@@ -36,8 +38,6 @@ public class ProjectPlanDetails {
 
     private Integer sorting;
 
-    private Integer pid;
-
     private Integer firstPid;
 
     private Boolean bisStart;
@@ -50,13 +50,7 @@ public class ProjectPlanDetails {
 
     private BigDecimal actualHours;
 
-    private Boolean bisAllSubmit;
-
-    private Boolean bisAgainSubmit;
-
     private String status;
-
-    private Boolean bisPartake;
 
     private Integer returnDetailsId;
 
@@ -68,15 +62,17 @@ public class ProjectPlanDetails {
 
     private Boolean bisLastLayer;
 
-    private Integer companyNature;
-
-    private Integer declareFormId;
-
     private Integer declareRecordId;
 
     private Integer areaGroupId;
 
     private Integer groupNumber;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -86,12 +82,28 @@ public class ProjectPlanDetails {
         this.id = id;
     }
 
-    public Integer getProjectWorkStageId() {
-        return projectWorkStageId;
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setProjectWorkStageId(Integer projectWorkStageId) {
-        this.projectWorkStageId = projectWorkStageId;
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public String getProjectPhaseName() {
+        return projectPhaseName;
+    }
+
+    public void setProjectPhaseName(String projectPhaseName) {
+        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getPlanId() {
@@ -102,12 +114,12 @@ public class ProjectPlanDetails {
         this.planId = planId;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public Integer getProjectWorkStageId() {
+        return projectWorkStageId;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setProjectWorkStageId(Integer projectWorkStageId) {
+        this.projectWorkStageId = projectWorkStageId;
     }
 
     public Integer getProjectPhaseId() {
@@ -124,14 +136,6 @@ public class ProjectPlanDetails {
 
     public void setProjectPhaseDetailsId(Integer projectPhaseDetailsId) {
         this.projectPhaseDetailsId = projectPhaseDetailsId;
-    }
-
-    public String getProjectPhaseName() {
-        return projectPhaseName;
-    }
-
-    public void setProjectPhaseName(String projectPhaseName) {
-        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
     }
 
     public Date getPlanStartDate() {
@@ -206,14 +210,6 @@ public class ProjectPlanDetails {
         this.sorting = sorting;
     }
 
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
     public Integer getFirstPid() {
         return firstPid;
     }
@@ -262,36 +258,12 @@ public class ProjectPlanDetails {
         this.actualHours = actualHours;
     }
 
-    public Boolean getBisAllSubmit() {
-        return bisAllSubmit;
-    }
-
-    public void setBisAllSubmit(Boolean bisAllSubmit) {
-        this.bisAllSubmit = bisAllSubmit;
-    }
-
-    public Boolean getBisAgainSubmit() {
-        return bisAgainSubmit;
-    }
-
-    public void setBisAgainSubmit(Boolean bisAgainSubmit) {
-        this.bisAgainSubmit = bisAgainSubmit;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
-    }
-
-    public Boolean getBisPartake() {
-        return bisPartake;
-    }
-
-    public void setBisPartake(Boolean bisPartake) {
-        this.bisPartake = bisPartake;
     }
 
     public Integer getReturnDetailsId() {
@@ -334,22 +306,6 @@ public class ProjectPlanDetails {
         this.bisLastLayer = bisLastLayer;
     }
 
-    public Integer getCompanyNature() {
-        return companyNature;
-    }
-
-    public void setCompanyNature(Integer companyNature) {
-        this.companyNature = companyNature;
-    }
-
-    public Integer getDeclareFormId() {
-        return declareFormId;
-    }
-
-    public void setDeclareFormId(Integer declareFormId) {
-        this.declareFormId = declareFormId;
-    }
-
     public Integer getDeclareRecordId() {
         return declareRecordId;
     }
@@ -372,5 +328,29 @@ public class ProjectPlanDetails {
 
     public void setGroupNumber(Integer groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

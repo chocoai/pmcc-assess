@@ -13,7 +13,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: zch
@@ -55,7 +54,7 @@ public class ExamineUnitElevatorController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineUnitElevatorList",method = {RequestMethod.GET},name = "获取配备电梯列表")
-    public BootstrapTableVo getExamineUnitElevatorList(Integer examineType,Integer declareId) {
+    public BootstrapTableVo getExamineUnitElevatorList(Integer examineType,Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineUnitElevator examineUnitElevator = new ExamineUnitElevator();
@@ -64,6 +63,9 @@ public class ExamineUnitElevatorController {
             }
             if (!ObjectUtils.isEmpty(declareId)){
                 examineUnitElevator.setDeclareId(declareId);
+            }
+            if (!ObjectUtils.isEmpty(planDetailsId)){
+                examineUnitElevator.setPlanDetailsId(planDetailsId);
             }
             vo = examineUnitElevatorService.getExamineUnitElevatorList(examineUnitElevator);
         } catch (Exception e1) {

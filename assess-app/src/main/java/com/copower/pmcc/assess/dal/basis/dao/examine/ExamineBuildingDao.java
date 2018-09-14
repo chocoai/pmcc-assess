@@ -30,12 +30,15 @@ public class ExamineBuildingDao {
         return examineBuildingMapper.selectByPrimaryKey(id);
     }
 
-    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer examineType){
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId,Integer planDetailsId,Integer examineType){
         ExamineBuildingExample examineBuildingExample = new ExamineBuildingExample();
         ExamineBuildingExample.Criteria criteria = examineBuildingExample.createCriteria();
         criteria.andIdIsNotNull();
         if (declareId!=null){
             criteria.andDeclareIdEqualTo(declareId);
+        }
+        if (planDetailsId!=null){
+            criteria.andPlanDetailsIdEqualTo(planDetailsId);
         }
         if (examineType != null){
             criteria.andExamineTypeEqualTo(examineType);

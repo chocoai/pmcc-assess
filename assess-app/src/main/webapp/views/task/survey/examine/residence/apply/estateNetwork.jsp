@@ -80,8 +80,9 @@
                 });
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkList", cols, {
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val()
+                    declareId: $("#declareId").val(),
+                    planDetailsId: $("#planDetailsId").val(),
+                    examineType: $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -122,6 +123,9 @@
                 var data = formParams(estateNetwork.prototype.config().frm);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();

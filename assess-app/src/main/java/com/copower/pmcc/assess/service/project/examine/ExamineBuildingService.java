@@ -1,9 +1,12 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingFunctionVo;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -20,7 +23,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,11 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -61,11 +63,194 @@ public class ExamineBuildingService {
     private ExamineBuildingMaintenanceService examineBuildingMaintenanceService;
     @Autowired
     private ExamineBuildingSurfaceService examineBuildingSurfaceService;
+    @Autowired
+    private ExamineBuildingFunctionService examineBuildingFunctionService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer examineType) {
-        return examineBuildingDao.getByDeclareIdAndExamineType(declareId, examineType);
+    public Map<String, Object> copyBuildFileData(String formData) {
+        Map<String, Object> objectMap = Maps.newHashMap();
+        JSONObject jsonObject = JSON.parseObject(formData);
+        SysAttachmentDto sysAttachmentDto = null;
+        StringBuilder builder = new StringBuilder();
+        if (jsonObject != null) {
+            String identifier = jsonObject.getString("identifier");
+            if (!StringUtils.isEmpty(identifier)) {
+                String floorPlanAttachmentId = jsonObject.getString("floorPlanAttachmentId");
+                String figureOutsideAttachmentId = jsonObject.getString("figureOutsideAttachmentId");
+                String floorAppearanceFigureAttachmentId = jsonObject.getString("floorAppearanceFigureAttachmentId");
+                if (!StringUtils.isEmpty(floorPlanAttachmentId)) {
+                    if (NumberUtils.isNumber(floorPlanAttachmentId)) {
+                        sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(Integer.parseInt(floorPlanAttachmentId));
+                        if (sysAttachmentDto != null) {
+                            builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(identifier);
+                            sysAttachmentDto.setId(null);
+                            sysAttachmentDto.setFieldsName(builder.toString());
+                            baseAttachmentService.addAttachment(sysAttachmentDto);
+                            objectMap.put("floorPlanAttachmentId", sysAttachmentDto);
+                            sysAttachmentDto = null;
+                            builder.setLength(0);
+                        }
+                    }
+                }
+                if (!StringUtils.isEmpty(figureOutsideAttachmentId)) {
+                    if (NumberUtils.isNumber(figureOutsideAttachmentId)) {
+                        sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(Integer.parseInt(figureOutsideAttachmentId));
+                        if (sysAttachmentDto != null) {
+                            builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(identifier);
+                            sysAttachmentDto.setId(null);
+                            sysAttachmentDto.setFieldsName(builder.toString());
+                            baseAttachmentService.addAttachment(sysAttachmentDto);
+                            objectMap.put("figureOutsideAttachmentId", sysAttachmentDto);
+                            sysAttachmentDto = null;
+                            builder.setLength(0);
+                        }
+                    }
+                }
+                if (!StringUtils.isEmpty(floorAppearanceFigureAttachmentId)) {
+                    if (NumberUtils.isNumber(floorAppearanceFigureAttachmentId)) {
+                        sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(Integer.parseInt(floorAppearanceFigureAttachmentId));
+                        if (sysAttachmentDto != null) {
+                            builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(identifier);
+                            sysAttachmentDto.setId(null);
+                            sysAttachmentDto.setFieldsName(builder.toString());
+                            baseAttachmentService.addAttachment(sysAttachmentDto);
+                            objectMap.put("floorAppearanceFigureAttachmentId", sysAttachmentDto);
+                        }
+                    }
+                }
+            }
+
+        }
+        return objectMap;
+    }
+
+    public boolean copySonMainOutfitSurfaceFunction(Integer planDetailsId, Integer examineType, Integer declareId, String oldBuildNumber, String newBuildNumber) {
+        ExamineBuildingOutfit buildingOutfit = new ExamineBuildingOutfit();
+        if (planDetailsId != null) {
+            buildingOutfit.setPlanDetailsId(planDetailsId);
+        }
+        if (examineType != null) {
+            buildingOutfit.setExamineType(examineType);
+        }
+        if (declareId != null) {
+            buildingOutfit.setDeclareId(declareId);
+        }
+        if (!StringUtils.isEmpty(oldBuildNumber)) {
+            buildingOutfit.setBuildNumber(oldBuildNumber);
+        }
+        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(buildingOutfit);
+        //由于上面四个参数 子类都有,因此
+        ExamineBuildingMaintenance maintenance = new ExamineBuildingMaintenance();
+        BeanUtils.copyProperties(buildingOutfit, maintenance);
+        List<ExamineBuildingMaintenance> examineBuildingMaintenances = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(maintenance);
+        ExamineBuildingSurface buildingSurface = new ExamineBuildingSurface();
+        BeanUtils.copyProperties(buildingOutfit, buildingSurface);
+        List<ExamineBuildingSurface> buildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(buildingSurface);
+        ExamineBuildingFunction function = new ExamineBuildingFunction();
+        BeanUtils.copyProperties(buildingOutfit, function);
+        List<ExamineBuildingFunctionVo> buildingFunctions = examineBuildingFunctionService.getExamineBuildingFunctionList(function);
+
+        try {
+            if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
+                for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
+                    oo.setBuildNumber(newBuildNumber);
+                    oo.setId(null);
+                    examineBuildingOutfitService.addExamineBuildingOutfit(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(examineBuildingMaintenances)) {
+                for (ExamineBuildingMaintenance oo : examineBuildingMaintenances) {
+                    oo.setBuildNumber(newBuildNumber);
+                    oo.setId(null);
+                    examineBuildingMaintenanceService.addExamineBuildingMaintenance(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(buildingSurfaceList)) {
+                for (ExamineBuildingSurface oo : buildingSurfaceList) {
+                    oo.setBuildNumber(newBuildNumber);
+                    oo.setId(null);
+                    examineBuildingSurfaceService.addExamineBuildingSurface(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(buildingFunctions)) {
+                for (ExamineBuildingFunctionVo oo : buildingFunctions) {
+                    oo.setBuildNumber(newBuildNumber);
+                    oo.setId(null);
+                    examineBuildingFunctionService.saveAndUpdateExamineBuildingFunction(oo);
+                }
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("%s%s", "异常! ==>", e1.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    public void initSonMainOutfitSurfaceFunction() {
+        ExamineBuildingOutfit buildingOutfit = new ExamineBuildingOutfit();
+        buildingOutfit.setBuildNumber("0");
+        ExamineBuildingMaintenance maintenance = new ExamineBuildingMaintenance();
+        maintenance.setBuildNumber("0");
+        ExamineBuildingSurface buildingSurface = new ExamineBuildingSurface();
+        buildingSurface.setBuildNumber("0");
+        ExamineBuildingFunction function = new ExamineBuildingFunction();
+        function.setBuildNumber("0");
+        boolean f1 = examineBuildingOutfitService.removeExamineBuildingOutfit(buildingOutfit);
+        boolean f2 = examineBuildingMaintenanceService.removeExamineBuildingMaintenance(maintenance);
+        boolean f3 = examineBuildingSurfaceService.removeExamineBuildingSurface(buildingSurface);
+        boolean f4 = examineBuildingFunctionService.removeExamineBuildingFunction(function);
+        if (f1 && f2 && f3 && f4) {
+        } else {
+            try {
+                throw new Exception("其中某一个删除数据出问题了");
+            } catch (Exception e1) {
+
+            }
+        }
+    }
+
+    public void updateSonMainOutfitSurface(String buildNumber) {
+        ExamineBuildingMaintenance maintenance = new ExamineBuildingMaintenance();
+        maintenance.setBuildNumber("0");
+        List<ExamineBuildingMaintenance> buildingMaintenanceList = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(maintenance);
+        if (!ObjectUtils.isEmpty(buildingMaintenanceList)) {
+            for (ExamineBuildingMaintenance buildingMaintenance : buildingMaintenanceList) {
+                buildingMaintenance.setBuildNumber(buildNumber);
+                examineBuildingMaintenanceService.updateExamineBuildingMaintenance(buildingMaintenance);
+            }
+        }
+        ExamineBuildingOutfit buildingOutfit = new ExamineBuildingOutfit();
+        buildingOutfit.setBuildNumber("0");
+        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(buildingOutfit);
+        if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
+            for (ExamineBuildingOutfit examineBuildingOutfit : examineBuildingOutfitList) {
+                examineBuildingOutfit.setBuildNumber(buildNumber);
+                examineBuildingOutfitService.updateExamineBuildingOutfit(examineBuildingOutfit);
+            }
+        }
+        ExamineBuildingSurface buildingSurface = new ExamineBuildingSurface();
+        buildingSurface.setBuildNumber("0");
+        List<ExamineBuildingSurface> examineBuildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(buildingSurface);
+        if (!ObjectUtils.isEmpty(examineBuildingSurfaceList)) {
+            for (ExamineBuildingSurface examineBuildingSurface : examineBuildingSurfaceList) {
+                examineBuildingSurface.setBuildNumber(buildNumber);
+                examineBuildingSurfaceService.updateExamineBuildingSurface(examineBuildingSurface);
+            }
+        }
+        ExamineBuildingFunction function = new ExamineBuildingFunction();
+        function.setBuildNumber("0");
+        List<ExamineBuildingFunctionVo> functionList = examineBuildingFunctionService.getExamineBuildingFunctionList(function);
+        if (!ObjectUtils.isEmpty(functionList)) {
+            for (ExamineBuildingFunction oo : functionList) {
+                oo.setBuildNumber(buildNumber);
+                examineBuildingFunctionService.saveAndUpdateExamineBuildingFunction(oo);
+            }
+        }
+    }
+
+    public List<ExamineBuilding> getByDeclareIdAndExamineType(Integer declareId, Integer planDetailsId, Integer examineType) {
+        return examineBuildingDao.getByDeclareIdAndExamineType(declareId, planDetailsId, examineType);
     }
 
     /**
@@ -79,33 +264,6 @@ public class ExamineBuildingService {
         return examineBuildingVo;
     }
 
-    public ExamineBuilding getOneAndTwoData(Integer examineType, Integer declareId, Integer number) {
-        ExamineBuilding oo = new ExamineBuilding();
-        oo.setExamineType(examineType);
-        oo.setDeclareId(declareId);
-        List<ExamineBuilding> examineBuildings = getExamineBuildingList(oo);
-        if (!ObjectUtils.isEmpty(examineBuildings)) {
-            Ordering<ExamineBuilding> firstOrdering = Ordering.from(new Comparator<ExamineBuilding>() {
-                @Override
-                public int compare(ExamineBuilding o1, ExamineBuilding o2) {
-                    return o1.getGmtCreated().compareTo(o2.getGmtCreated());
-                }
-//            }).reverse();//排序 并且反转
-            });//排序 并且反转
-            Collections.sort(examineBuildings, firstOrdering);
-            ExamineBuilding examineBuilding = null;
-            if (number.equals(1)) {
-                examineBuilding = examineBuildings.get(0);
-            }
-            if (examineBuildings.size() >= 2){
-                if (number.equals(2)) {
-                    examineBuilding = examineBuildings.get(1);
-                }
-            }
-            return examineBuilding;
-        }
-        return null;
-    }
 
     /**
      * 获取数据列表
@@ -130,7 +288,7 @@ public class ExamineBuildingService {
 
     public ExamineBuildingVo getExamineBuildingVo(ExamineBuilding examineBuilding) {
         ExamineBuildingVo vo = new ExamineBuildingVo();
-        if (examineBuilding != null){
+        if (examineBuilding != null) {
             BeanUtils.copyProperties(examineBuilding, vo);
             if (examineBuilding.getBuildingStructure() != null) {
                 BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructure());
@@ -154,6 +312,13 @@ public class ExamineBuildingService {
                     vo.setPropertyName(dataProperty.getName());
                 }
             }
+            if (examineBuilding.getPropertyType() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getPropertyType());
+                if (baseDataDic != null) {
+                    vo.setPropertyTypeName(baseDataDic.getName());
+                }
+            }
+
         }
         return vo;
     }
@@ -173,114 +338,63 @@ public class ExamineBuildingService {
         return builder.toString();
     }
 
-    /**
-     * 新增
-     *
-     * @param examineBuilding
-     * @return
-     */
-    @Transactional
-    public boolean addExamineBuilding(ExamineBuilding examineBuilding) {
-        examineBuilding.setCreator(commonService.thisUserAccount());
-        //以后需要删除掉
-        if (ObjectUtils.isEmpty(examineBuilding.getDeclareId())) {
-            examineBuilding.setDeclareId(0);
-        }
-        if (ObjectUtils.isEmpty(examineBuilding.getExamineType())) {
-            examineBuilding.setExamineType(0);
-        }
-        ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
-        examineBuildingOutfit.setDeclareId(examineBuilding.getDeclareId());
-        examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
-        examineBuildingOutfit.setBuildingId(0);
-        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
-        ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
-        examineBuildingMaintenance.setBuildingId(0);
-        List<ExamineBuildingMaintenance> examineBuildingMaintenances = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(examineBuildingMaintenance);
-        ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
-        examineBuildingSurface.setBuildingId(0);
-        List<ExamineBuildingSurface> examineBuildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(examineBuildingSurface);
+    public void saveExamineBuilding(List<ExamineBuilding> examineBuildings) {
+        Integer id = 0;
         try {
-            int id = examineBuildingDao.addBuilding(examineBuilding);
-            if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
-                for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
-                    oo.setBuildingId(id);
-                    examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
+            if (!ObjectUtils.isEmpty(examineBuildings)) {
+                for (ExamineBuilding oo : examineBuildings) {
+                    if (oo != null) {
+                        StringBuilder builder = new StringBuilder();
+                        if (oo.getId() == null || oo.getId().intValue() == 0) {
+                            //新增
+                            oo.setCreator(commonService.thisUserAccount());
+                            id = examineBuildingDao.addBuilding(oo);
+                            oo.setId(id);
+                            oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
+                            examineBuildingDao.updateBuilding(oo);
+                        } else {
+                            //真正的更新
+                            examineBuildingDao.updateBuilding(oo);
+                            oo.setJsonContent(null);
+                            oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
+                            examineBuildingDao.updateBuilding(oo);
+                            id = oo.getId();
+                        }
+                        try {
+                            if (!StringUtils.isEmpty(oo.getIdentifier())){
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(oo.getIdentifier()).toString(), id);
+                                builder.setLength(0);
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(oo.getIdentifier()).toString(), id);
+                                builder.setLength(0);
+                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(oo.getIdentifier()).toString(), id);
+                            }
+                        } catch (Exception e1) {
+                            try {
+                                throw e1;
+                            } catch (Exception e11) {
+
+                            }
+                        }
+                    }
                 }
             }
-            if (!ObjectUtils.isEmpty(examineBuildingMaintenances)){
-                for (ExamineBuildingMaintenance maintenance:examineBuildingMaintenances){
-                    maintenance.setBuildingId(id);
-                    examineBuildingMaintenanceService.updateExamineBuildingMaintenance(maintenance);
-                }
-            }
-            if (!ObjectUtils.isEmpty(examineBuildingSurfaceList)){
-                for (ExamineBuildingSurface buildingSurface:examineBuildingSurfaceList){
-                    buildingSurface.setBuildingId(id);
-                    examineBuildingSurfaceService.updateExamineBuildingSurface(buildingSurface);
-                }
-            }
-            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),id);
-            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName(),id);
-            updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName(),id);
-            return true;
         } catch (Exception e1) {
-            logger.error(String.format("%s%s", "异常! ===>", e1.getMessage()), e1);
-            return false;
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
         }
     }
 
-    private void updateSysAttachmentDto(String fileName,Integer id){
+    private void updateSysAttachmentDto(String fileName, Integer id) {
         List<SysAttachmentDto> sysAttachmentDtoList = null;
-        sysAttachmentDtoList = baseAttachmentService.getByField_tableId(0, fileName, FormatUtils.entityNameConvertToTableName(ExamineBuilding.class));
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
-            for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
-                sysAttachmentDto.setTableId(id);
-                baseAttachmentService.updateAttachment(sysAttachmentDto);
+        try {
+            sysAttachmentDtoList = baseAttachmentService.getByField_tableId(0, fileName, FormatUtils.entityNameConvertToTableName(ExamineBuilding.class));
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                    sysAttachmentDto.setTableId(id);
+                    baseAttachmentService.updateAttachment(sysAttachmentDto);
+                }
             }
+        } catch (Exception e1) {
         }
-    }
-
-    /**
-     * 编辑
-     *
-     * @param examineBuilding
-     * @return
-     */
-    public boolean updateExamineBuilding(ExamineBuilding examineBuilding) {
-        ExamineBuildingOutfit examineBuildingOutfit = new ExamineBuildingOutfit();
-        examineBuildingOutfit.setDeclareId(examineBuilding.getDeclareId());
-        examineBuildingOutfit.setExamineType(examineBuilding.getExamineType());
-        examineBuildingOutfit.setBuildingId(0);
-        List<ExamineBuildingOutfit> examineBuildingOutfitList = examineBuildingOutfitService.getExamineBuildingOutfitList(examineBuildingOutfit);
-        ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
-        examineBuildingMaintenance.setBuildingId(0);
-        List<ExamineBuildingMaintenance> examineBuildingMaintenances = examineBuildingMaintenanceService.getExamineBuildingMaintenanceList(examineBuildingMaintenance);
-        ExamineBuildingSurface examineBuildingSurface = new ExamineBuildingSurface();
-        examineBuildingSurface.setBuildingId(0);
-        List<ExamineBuildingSurface> examineBuildingSurfaceList = examineBuildingSurfaceService.getExamineBuildingSurfaceList(examineBuildingSurface);
-        if (!ObjectUtils.isEmpty(examineBuildingOutfitList)) {
-            for (ExamineBuildingOutfit oo : examineBuildingOutfitList) {
-                oo.setBuildingId(examineBuilding.getId());
-                examineBuildingOutfitService.updateExamineBuildingOutfit(oo);
-            }
-        }
-        if (!ObjectUtils.isEmpty(examineBuildingMaintenances)){
-            for (ExamineBuildingMaintenance maintenance:examineBuildingMaintenances){
-                maintenance.setBuildingId(examineBuilding.getId());
-                examineBuildingMaintenanceService.updateExamineBuildingMaintenance(maintenance);
-            }
-        }
-        if (!ObjectUtils.isEmpty(examineBuildingSurfaceList)){
-            for (ExamineBuildingSurface buildingSurface:examineBuildingSurfaceList){
-                buildingSurface.setBuildingId(examineBuilding.getId());
-                examineBuildingSurfaceService.updateExamineBuildingSurface(buildingSurface);
-            }
-        }
-        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName(),examineBuilding.getId());
-        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName(),examineBuilding.getId());
-        updateSysAttachmentDto(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName(),examineBuilding.getId());
-        return examineBuildingDao.updateBuilding(examineBuilding);
     }
 
     /**

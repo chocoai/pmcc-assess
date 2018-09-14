@@ -79,7 +79,7 @@
                 url: "${pageContext.request.contextPath}/ProjectWorkStageRestart/approvalWorkStageRestart",
                 type: "post",
                 dataType: "json",
-                data: formParams("frm_approval"),
+                data: formApproval.getFormData(),
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {

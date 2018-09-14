@@ -26,11 +26,37 @@
         },
 
         //对象不存在则返回空串
-        toString:function (o) {
-            if (!o)return "";
+        toString: function (o) {
+            if (!o) return "";
             return o;
         },
 
+        //判断数据是否为数字
+        isNumber: function (val) {
+            if (val === '' || val == undefined || val == null) return false;
+            if (isNaN(Number(val))) return false;
+            val = Number(val);
+            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if (regPos.test(val) || regNeg.test(val)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        //百分数转小数
+        toPoint: function () {
+            var str = percent.replace("%", "");
+            str = str / 100;
+            return str;
+        },
+        /*
+        *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
+        toPercent: function () {
+            var str = Number(point * 100).toFixed(1);
+            str += "%";
+            return str;
+        },
         //提取字段
         extractField: function (text) {
             if (!text) return text;
@@ -226,13 +252,13 @@
 
             if ($.type(defaults.cityTarget) === "string") {
                 defaults.cityTarget = $("#" + defaults.cityTarget);
-            }else {
+            } else {
                 defaults.cityTarget = $(defaults.cityTarget);
             }
 
             if ($.type(defaults.districtTarget) === "string") {
                 defaults.districtTarget = $("#" + defaults.districtTarget);
-            }else {
+            } else {
                 defaults.districtTarget = $(defaults.districtTarget);
             }
 
@@ -329,6 +355,55 @@
                         that.prop('checked', true);
                     }
                 })
+            })
+        },
+
+        //获取用户部门信息
+        getUserDepartmentInfo:function (userAccount,callback) {
+            $.ajax({
+                url: getContextPath() + "/RpcErpService/getDepartmentByUserAccount",
+                type: "get",
+                data: {userAccount: userAccount},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                       if(callback){
+                           callback(result.data);
+                       }
+                    }
+                }
+            })
+        },
+        //获取附件信息
+        getSysAttachmentDto:function (target,callback) {
+            $.ajax({
+                url: getContextPath() + "/public/getSysAttachmentDto",
+                type: "get",
+                data: {attachmentId:target},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if(callback){
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
+        //新增或者更新附件
+        saveAndUpdateSysAttachmentDto:function (item,callback) {
+            $.ajax({
+                url: getContextPath() + "/public/saveAndUpdateSysAttachmentDto",
+                type: "POST",
+                data: item,
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if(callback){
+                            callback(result.data);
+                        }
+                    }
+                }
             })
         }
     };

@@ -84,6 +84,7 @@
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/examineMatchingMedical/getExamineMatchingMedicalList", cols, {
                     type: matchingMedical.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

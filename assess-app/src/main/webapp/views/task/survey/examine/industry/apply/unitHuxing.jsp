@@ -9,7 +9,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h3>户型信息
+        <h3>房型信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -111,8 +111,10 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'description', title: '描述'});
+                cols.push({field: 'name', title: '房型名称'});
                 cols.push({field: 'houseLayoutName', title: '房型'});
                 cols.push({field: 'spanLength', title: '跨长'});
+                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
                 cols.push({field: 'spanNumber', title: '跨数'});
                 cols.push({field: 'fileViewName', title: '户型图'});
@@ -129,6 +131,7 @@
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingList", cols, {
                     type: unitHuxing.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
@@ -174,6 +177,9 @@
                 var data = formParams(unitHuxing.prototype.config().frm);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
@@ -260,7 +266,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">户型</h3>
+                <h3 class="modal-title">房型</h3>
             </div>
             <form id="frmUnitHuxing" class="form-horizontal">
                 <input type="hidden" name="id">
@@ -268,6 +274,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            房型名称
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="房型名称" name="name"
+                                                   class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -326,12 +343,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型内容
+                                            户型
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="houseLayout"
                                                     class="form-control search-select select2 houseLayout">
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            朝向<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="朝向"
+                                                   name="orientation" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -348,6 +376,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

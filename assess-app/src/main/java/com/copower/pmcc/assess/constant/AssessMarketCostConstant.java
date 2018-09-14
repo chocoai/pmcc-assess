@@ -15,4 +15,7 @@ public class AssessMarketCostConstant {
     public static final String DECORATE_ENGINEERING_PROJECT = "decorate.engineering.project.market.cost" ; //装饰工程
     public static final String SUBSIDIARY_ENGINEERING_PROJECT = "subsidiary.engineering.project.market.cost" ; //附属工程
     public static final String TWOLOADING_ENGINEERING_PROJECT = "twoLoading.engineering.project.market.cost" ; //二装工程
+
+
+    public static final String BUILD_ADDEDVALUEADDITIONALTAXRATE = "build.addedValueAdditionalTaxRate" ; //增值及附加税率
 }

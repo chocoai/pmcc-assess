@@ -226,6 +226,66 @@ public class ExamineUnitHuxingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andExamineTypeIsNull() {
             addCriterion("examine_type is null");
             return (Criteria) this;
@@ -723,6 +783,216 @@ public class ExamineUnitHuxingExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryIsNull() {
+            addCriterion("house_category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryIsNotNull() {
+            addCriterion("house_category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryEqualTo(String value) {
+            addCriterion("house_category =", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryNotEqualTo(String value) {
+            addCriterion("house_category <>", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryGreaterThan(String value) {
+            addCriterion("house_category >", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryGreaterThanOrEqualTo(String value) {
+            addCriterion("house_category >=", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryLessThan(String value) {
+            addCriterion("house_category <", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryLessThanOrEqualTo(String value) {
+            addCriterion("house_category <=", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryLike(String value) {
+            addCriterion("house_category like", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryNotLike(String value) {
+            addCriterion("house_category not like", value, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryIn(List<String> values) {
+            addCriterion("house_category in", values, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryNotIn(List<String> values) {
+            addCriterion("house_category not in", values, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryBetween(String value1, String value2) {
+            addCriterion("house_category between", value1, value2, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseCategoryNotBetween(String value1, String value2) {
+            addCriterion("house_category not between", value1, value2, "houseCategory");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNull() {
+            addCriterion("orientation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNotNull() {
+            addCriterion("orientation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationEqualTo(String value) {
+            addCriterion("orientation =", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotEqualTo(String value) {
+            addCriterion("orientation <>", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThan(String value) {
+            addCriterion("orientation >", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThanOrEqualTo(String value) {
+            addCriterion("orientation >=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThan(String value) {
+            addCriterion("orientation <", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThanOrEqualTo(String value) {
+            addCriterion("orientation <=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLike(String value) {
+            addCriterion("orientation like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotLike(String value) {
+            addCriterion("orientation not like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIn(List<String> values) {
+            addCriterion("orientation in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotIn(List<String> values) {
+            addCriterion("orientation not in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationBetween(String value1, String value2) {
+            addCriterion("orientation between", value1, value2, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotBetween(String value1, String value2) {
+            addCriterion("orientation not between", value1, value2, "orientation");
             return (Criteria) this;
         }
 

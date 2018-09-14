@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.dal.basis.entity.HousePriceIndex;
-import com.copower.pmcc.assess.dto.input.data.HousePriceIndexDto;
-import com.copower.pmcc.assess.service.data.HousePriceIndexService;
+import com.copower.pmcc.assess.common.DateHelp;
+import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
+import com.copower.pmcc.assess.dto.input.data.DataHousePriceIndexDto;
+import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,38 +15,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
-@RequestMapping(value = "/housePriceIndex")
+@RequestMapping(value = "/housePriceIndex",name = "房价指数")
 @Controller
 public class HousePriceIndexController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-
     @Autowired
-    private HousePriceIndexService housePriceIndexService;
+    private ErpAreaService erpAreaService;
+    @Autowired
+    private DataHousePriceIndexService housePriceIndexService;
 
     @RequestMapping(value = "/view")
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/housePriceIndex");
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }
 
-    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public@ResponseBody
-
-    BootstrapTableVo list(@RequestParam(value = "startTime") String startTime, @RequestParam(value = "endTime") String endTime) {
+    @ResponseBody
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST},name = "房价指数 列表")
+    public BootstrapTableVo list(String startTime,String endTime) {
         BootstrapTableVo vo = null;
         try {
-            if ((startTime == "" ) && (endTime == "" )) {
-                return housePriceIndexService.getListVo(null, null);
-            } else {
-                return housePriceIndexService.getListVo(housePriceIndexService.change(startTime), housePriceIndexService.change(endTime));
-            }
+            vo = housePriceIndexService.getDataHousePriceIndexListVos(DateHelp.getDateHelp().parse(startTime,null),DateHelp.getDateHelp().parse(endTime,null));
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -51,27 +49,22 @@ public class HousePriceIndexController {
     }
 
     @RequestMapping(value = "/get")
-    public Object get(@RequestParam(value = "id") Integer id) {
-        HousePriceIndex housePriceIndex = null;
+    public HttpResult get(Integer id) {
+        DataHousePriceIndexVo dataHousePriceIndexVo = null;
         try {
-            housePriceIndex = housePriceIndexService.get(id);
+            dataHousePriceIndexVo = housePriceIndexService.getDataHousePriceIndexVo(housePriceIndexService.getDataHousePriceIndexById(id));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return housePriceIndex;
+        return HttpResult.newCorrectResult(dataHousePriceIndexVo);
     }
 
-    @RequestMapping(value = "/save",method = {RequestMethod.POST,RequestMethod.GET})
-    public
     @ResponseBody
-    HttpResult add(HousePriceIndexDto housePriceIndexDto) {
+    @RequestMapping(value = "/saveAndUpdate",method = {RequestMethod.POST},name = "房价指数 更新")
+    public HttpResult add(DataHousePriceIndexDto housePriceIndexDto) {
         try {
-            if (housePriceIndexDto.getId() != null && housePriceIndexDto.getId() != 0) {//不再使用专门的 update controller
-                housePriceIndexService.update(housePriceIndexDto);
-            } else {
-                housePriceIndexService.addHousePriceIndex(housePriceIndexDto);
-            }
+            housePriceIndexService.saveAndUpdateDataHousePriceIndex(housePriceIndexDto);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -79,12 +72,17 @@ public class HousePriceIndexController {
         return HttpResult.newCorrectResult();
     }
 
-    @RequestMapping(value = "/delete")
-    public
     @ResponseBody
-    HttpResult delete(@RequestParam(value = "id") Integer id) {
+    @RequestMapping(value = "/delete",method = {RequestMethod.POST},name = "房价指数 删除")
+    public HttpResult delete( Integer id) {
         try {
-            housePriceIndexService.removeHousePriceIndeX(id);
+            if (id != null){
+                if (id.intValue() != 0){
+                    DataHousePriceIndex dataHousePriceIndex = new DataHousePriceIndex();
+                    dataHousePriceIndex.setId(id);
+                    housePriceIndexService.removeDataHousePriceIndex(dataHousePriceIndex);
+                }
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

@@ -136,4 +136,13 @@ public class ExamineBuildingSurfaceService {
     public boolean deleteExamineBuildingSurface(Integer id) {
         return examineBuildingSurfaceDao.deleteBuildingSurface(id);
     }
+
+    public boolean removeExamineBuildingSurface(ExamineBuildingSurface examineBuildingSurface){
+        try {
+            examineBuildingSurfaceDao.removeExamineBuildingSurface(examineBuildingSurface);
+            return  true;
+        } catch (Exception e1) {
+            return false;
+        }
+    }
 }

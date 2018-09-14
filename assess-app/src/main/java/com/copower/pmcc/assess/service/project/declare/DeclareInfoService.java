@@ -115,15 +115,7 @@ public class DeclareInfoService {
         List<BaseFormModuleVo> baseFormModuleVos = Lists.newArrayList();
         List<DeclareUseClassify> useClassifyList = declareUseClassifyDao.getDeclareUseClassifyList(projectId, planDetailsId);
         if (CollectionUtils.isEmpty(useClassifyList)) {
-            //查看计划是否设置到范围
-            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            if (projectPlanDetails != null && projectPlanDetails.getDeclareFormId() != null) {
-                BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectPlanDetails.getDeclareFormId());
-                if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
-                    setBaseFormModuleVo(baseFormModuleVos, baseProjectClassify);
-                    addDeclareUserClassify(projectId,planDetailsId,baseProjectClassify.getId());
-                }
-            }
+
         }else{
             for (DeclareUseClassify declareUseClassify : useClassifyList) {
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareUseClassify.getProjectClassifyId());

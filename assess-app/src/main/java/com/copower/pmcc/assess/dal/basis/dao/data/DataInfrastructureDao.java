@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 import com.copower.pmcc.assess.dal.basis.entity.InfrastructureExample;
 import com.copower.pmcc.assess.dal.basis.mapper.InfrastructureMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,13 @@ import java.util.List;
 public class DataInfrastructureDao {
     @Autowired
     private InfrastructureMapper infrastructureMapper;
+
+    /**查询发文单位*/
+    public List<Infrastructure> getInfrastructureList(Infrastructure infrastructure){
+        InfrastructureExample example = new InfrastructureExample();
+        MybatisUtils.convertObj2Example(infrastructure, example);
+        return infrastructureMapper.selectByExample(example) ;
+    }
 
     /**查询发文单位*/
     public List<Infrastructure> getInfrastructureList(String name){

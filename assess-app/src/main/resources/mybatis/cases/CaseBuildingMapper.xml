@@ -15,7 +15,7 @@
     <result column="floor_start" property="floorStart" jdbcType="INTEGER" />
     <result column="floor_end" property="floorEnd" jdbcType="INTEGER" />
     <result column="building_height" property="buildingHeight" jdbcType="DECIMAL" />
-    <result column="building area" property="buildingArea" jdbcType="DECIMAL" />
+    <result column="building_area" property="buildingArea" jdbcType="DECIMAL" />
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="building_category" property="buildingCategory" jdbcType="INTEGER" />
     <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
@@ -26,7 +26,12 @@
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
+    <result column="building_structure_pid" property="buildingStructurePid" jdbcType="INTEGER" />
+    <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -91,9 +96,9 @@
   <sql id="Base_Column_List" >
     id, estate_id, builder_id, property_Id, building_number, property_type, floor_count, 
     unit_interval, property_fee, facilities_use_fee, floor_start, floor_end, building_height, 
-    "building area", cover_an_area, building_category, open_time, room_time, floor_height, 
-    diameter_depth, land_use_year, location, net_height, building_structure, creator, 
-    gmt_created, gmt_modified
+    building_area, cover_an_area, building_category, open_time, room_time, floor_height, 
+    diameter_depth, land_use_year, location, net_height, building_structure, building_structure_pid, 
+    json_content, identifier, version, creator, name, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -133,11 +138,13 @@
       building_number, property_type, floor_count, 
       unit_interval, property_fee, facilities_use_fee, 
       floor_start, floor_end, building_height, 
-      "building area", cover_an_area, building_category, 
+      building_area, cover_an_area, building_category, 
       open_time, room_time, floor_height, 
       diameter_depth, land_use_year, location, 
-      net_height, building_structure, creator, 
-      gmt_created, gmt_modified)
+      net_height, building_structure, building_structure_pid, 
+      json_content, identifier, version, 
+      creator, name, gmt_created, 
+      gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, 
       #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
@@ -145,8 +152,10 @@
       #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
       #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
       #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
-      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructurePid,jdbcType=INTEGER}, 
+      #{jsonContent,jdbcType=CHAR}, #{identifier,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -191,7 +200,7 @@
         building_height,
       </if>
       <if test="buildingArea != null" >
-        "building area",
+        building_area,
       </if>
       <if test="coverAnArea != null" >
         cover_an_area,
@@ -223,8 +232,23 @@
       <if test="buildingStructure != null" >
         building_structure,
       </if>
+      <if test="buildingStructurePid != null" >
+        building_structure_pid,
+      </if>
+      <if test="jsonContent != null" >
+        json_content,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
       <if test="creator != null" >
         creator,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -303,8 +327,23 @@
       <if test="buildingStructure != null" >
         #{buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="buildingStructurePid != null" >
+        #{buildingStructurePid,jdbcType=INTEGER},
+      </if>
+      <if test="jsonContent != null" >
+        #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -363,7 +402,7 @@
         building_height = #{record.buildingHeight,jdbcType=DECIMAL},
       </if>
       <if test="record.buildingArea != null" >
-        "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+        building_area = #{record.buildingArea,jdbcType=DECIMAL},
       </if>
       <if test="record.coverAnArea != null" >
         cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
@@ -395,8 +434,23 @@
       <if test="record.buildingStructure != null" >
         building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="record.buildingStructurePid != null" >
+        building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      </if>
+      <if test="record.jsonContent != null" >
+        json_content = #{record.jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="record.identifier != null" >
+        identifier = #{record.identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -424,7 +478,7 @@
       floor_start = #{record.floorStart,jdbcType=INTEGER},
       floor_end = #{record.floorEnd,jdbcType=INTEGER},
       building_height = #{record.buildingHeight,jdbcType=DECIMAL},
-      "building area" = #{record.buildingArea,jdbcType=DECIMAL},
+      building_area = #{record.buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       building_category = #{record.buildingCategory,jdbcType=INTEGER},
       open_time = #{record.openTime,jdbcType=TIMESTAMP},
@@ -435,7 +489,12 @@
       location = #{record.location,jdbcType=VARCHAR},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
+      building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      json_content = #{record.jsonContent,jdbcType=CHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -482,7 +541,7 @@
         building_height = #{buildingHeight,jdbcType=DECIMAL},
       </if>
       <if test="buildingArea != null" >
-        "building area" = #{buildingArea,jdbcType=DECIMAL},
+        building_area = #{buildingArea,jdbcType=DECIMAL},
       </if>
       <if test="coverAnArea != null" >
         cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
@@ -514,8 +573,23 @@
       <if test="buildingStructure != null" >
         building_structure = #{buildingStructure,jdbcType=INTEGER},
       </if>
+      <if test="buildingStructurePid != null" >
+        building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      </if>
+      <if test="jsonContent != null" >
+        json_content = #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="identifier != null" >
+        identifier = #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -540,7 +614,7 @@
       floor_start = #{floorStart,jdbcType=INTEGER},
       floor_end = #{floorEnd,jdbcType=INTEGER},
       building_height = #{buildingHeight,jdbcType=DECIMAL},
-      "building area" = #{buildingArea,jdbcType=DECIMAL},
+      building_area = #{buildingArea,jdbcType=DECIMAL},
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       building_category = #{buildingCategory,jdbcType=INTEGER},
       open_time = #{openTime,jdbcType=TIMESTAMP},
@@ -551,7 +625,12 @@
       location = #{location,jdbcType=VARCHAR},
       net_height = #{netHeight,jdbcType=DECIMAL},
       building_structure = #{buildingStructure,jdbcType=INTEGER},
+      building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      json_content = #{jsonContent,jdbcType=CHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

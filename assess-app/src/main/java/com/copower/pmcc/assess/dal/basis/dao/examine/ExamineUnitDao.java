@@ -39,9 +39,9 @@ public class ExamineUnitDao {
      * @param declareId
      * @return
      */
-    public ExamineUnit getUnitByDeclareId(Integer declareId,Integer examineType) {
+    public ExamineUnit getUnitByDeclareId(Integer declareId,Integer planDetailsId,Integer examineType) {
         ExamineUnitExample example = new ExamineUnitExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
+        example.createCriteria().andDeclareIdEqualTo(declareId).andPlanDetailsIdEqualTo(planDetailsId).andExamineTypeEqualTo(examineType);
         List<ExamineUnit> blockList = examineUnitMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
         return null;

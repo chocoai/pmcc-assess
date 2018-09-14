@@ -46,8 +46,8 @@ public class ExamineBlockService {
      * @param declareId
      * @return
      */
-    public ExamineBlock getBlockByDeclareId(Integer declareId, ExamineTypeEnum examineTypeEnum) {
-        return examineBlockDao.getBlockByDeclareId(declareId, examineTypeEnum.getId());
+    public ExamineBlock getBlockByDeclareId(Integer declareId,Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
+        return examineBlockDao.getBlockByDeclareId(declareId,planDetailsId, examineTypeEnum.getId());
     }
 
     public ExamineBlockVo getExamineBlockVo(ExamineBlock examineBlock) {
@@ -58,10 +58,10 @@ public class ExamineBlockService {
             examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getProvince()));
         }
         if (StringUtils.isNotBlank(examineBlock.getCity())) {
-            examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getCity()));
+            examineBlockVo.setCityName(erpAreaService.getSysAreaName(examineBlock.getCity()));
         }
         if (StringUtils.isNotBlank(examineBlock.getDistrict())) {
-            examineBlockVo.setProvinceName(erpAreaService.getSysAreaName(examineBlock.getDistrict()));
+            examineBlockVo.setDistrictName(erpAreaService.getSysAreaName(examineBlock.getDistrict()));
         }
         if (examineBlock.getRegionalNature() != null && examineBlock.getRegionalNature() > 0) {
             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(examineBlock.getRegionalNature());

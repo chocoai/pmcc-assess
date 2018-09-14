@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeInfoExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SchemeInfoMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,7 @@ public class SchemeInfoDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -28,7 +30,22 @@ public class SchemeInfoDao {
     }
 
     /**
+     * 获取数据
+     *
+     * @param schemeInfo
+     * @return
+     */
+    public SchemeInfo getSchemeInfo(SchemeInfo schemeInfo) {
+        SchemeInfoExample example = new SchemeInfoExample();
+        MybatisUtils.convertObj2Example(schemeInfo, example);
+        List<SchemeInfo> schemeInfos = schemeInfoMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(schemeInfos)) return schemeInfos.get(0);
+        return null;
+    }
+
+    /**
      * 获取数据列表
+     *
      * @param examineInfo
      * @return
      */
@@ -40,6 +57,7 @@ public class SchemeInfoDao {
 
     /**
      * 新增
+     *
      * @param examineInfo
      * @return
      */
@@ -49,6 +67,7 @@ public class SchemeInfoDao {
 
     /**
      * 编辑
+     *
      * @param examineInfo
      * @return
      */
@@ -58,12 +77,13 @@ public class SchemeInfoDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteInfo(Integer id){
+    public boolean deleteInfo(Integer id) {
         return schemeInfoMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    
+
 }

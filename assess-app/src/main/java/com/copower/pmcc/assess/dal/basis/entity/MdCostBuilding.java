@@ -12,13 +12,19 @@ public class MdCostBuilding {
 
     private Date gmtModified;
 
-    private String synthesisRate;
+    private String newRate;
 
-    private BigDecimal valuationPrice;
+    private BigDecimal assessPrice;
 
     private BigDecimal constructionInstallationEngineeringFee;
 
     private String jsonContent;
+
+    private Integer costId;
+
+    private Integer engineeringId;
+
+    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -52,20 +58,20 @@ public class MdCostBuilding {
         this.gmtModified = gmtModified;
     }
 
-    public String getSynthesisRate() {
-        return synthesisRate;
+    public String getNewRate() {
+        return newRate;
     }
 
-    public void setSynthesisRate(String synthesisRate) {
-        this.synthesisRate = synthesisRate == null ? null : synthesisRate.trim();
+    public void setNewRate(String newRate) {
+        this.newRate = newRate == null ? null : newRate.trim();
     }
 
-    public BigDecimal getValuationPrice() {
-        return valuationPrice;
+    public BigDecimal getAssessPrice() {
+        return assessPrice;
     }
 
-    public void setValuationPrice(BigDecimal valuationPrice) {
-        this.valuationPrice = valuationPrice;
+    public void setAssessPrice(BigDecimal assessPrice) {
+        this.assessPrice = assessPrice;
     }
 
     public BigDecimal getConstructionInstallationEngineeringFee() {
@@ -82,5 +88,29 @@ public class MdCostBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Integer getCostId() {
+        return costId;
+    }
+
+    public void setCostId(Integer costId) {
+        this.costId = costId;
+    }
+
+    public Integer getEngineeringId() {
+        return engineeringId;
+    }
+
+    public void setEngineeringId(Integer engineeringId) {
+        this.engineeringId = engineeringId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

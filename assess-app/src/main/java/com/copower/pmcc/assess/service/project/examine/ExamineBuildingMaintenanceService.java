@@ -140,4 +140,13 @@ public class ExamineBuildingMaintenanceService {
         return examineBuildingMaintenanceDao.deleteBuildingMaintenance(id);
     }
 
+    public boolean removeExamineBuildingMaintenance(ExamineBuildingMaintenance examineBuildingMaintenance){
+        try {
+            examineBuildingMaintenanceDao.removeExamineBuildingMaintenance(examineBuildingMaintenance);
+            return  true;
+        } catch (Exception e1) {
+            return  false;
+        }
+    }
+
 }

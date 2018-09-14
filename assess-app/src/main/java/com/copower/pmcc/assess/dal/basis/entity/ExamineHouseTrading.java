@@ -8,11 +8,15 @@ public class ExamineHouseTrading {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private Date tradingTime;
 
     private Integer tradingType;
+
+    private String informationType;
 
     private BigDecimal tradingPrice;
 
@@ -24,13 +28,27 @@ public class ExamineHouseTrading {
 
     private String descriptionContent;
 
+    private String paymentMethod;
+
+    private String normalTransaction;
+
+    private String taxBurden;
+
+    private String scopeProperty;
+
+    private String financingConditions;
+
+    private String deposit;
+
     private String creator;
+
+    private String totalSale;
+
+    private String information;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String deposit;
 
     public Integer getId() {
         return id;
@@ -46,6 +64,14 @@ public class ExamineHouseTrading {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -70,6 +96,14 @@ public class ExamineHouseTrading {
 
     public void setTradingType(Integer tradingType) {
         this.tradingType = tradingType;
+    }
+
+    public String getInformationType() {
+        return informationType;
+    }
+
+    public void setInformationType(String informationType) {
+        this.informationType = informationType == null ? null : informationType.trim();
     }
 
     public BigDecimal getTradingPrice() {
@@ -112,12 +146,76 @@ public class ExamineHouseTrading {
         this.descriptionContent = descriptionContent == null ? null : descriptionContent.trim();
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod == null ? null : paymentMethod.trim();
+    }
+
+    public String getNormalTransaction() {
+        return normalTransaction;
+    }
+
+    public void setNormalTransaction(String normalTransaction) {
+        this.normalTransaction = normalTransaction == null ? null : normalTransaction.trim();
+    }
+
+    public String getTaxBurden() {
+        return taxBurden;
+    }
+
+    public void setTaxBurden(String taxBurden) {
+        this.taxBurden = taxBurden == null ? null : taxBurden.trim();
+    }
+
+    public String getScopeProperty() {
+        return scopeProperty;
+    }
+
+    public void setScopeProperty(String scopeProperty) {
+        this.scopeProperty = scopeProperty == null ? null : scopeProperty.trim();
+    }
+
+    public String getFinancingConditions() {
+        return financingConditions;
+    }
+
+    public void setFinancingConditions(String financingConditions) {
+        this.financingConditions = financingConditions == null ? null : financingConditions.trim();
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit == null ? null : deposit.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(String totalSale) {
+        this.totalSale = totalSale == null ? null : totalSale.trim();
+    }
+
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information == null ? null : information.trim();
     }
 
     public Date getGmtCreated() {
@@ -134,13 +232,5 @@ public class ExamineHouseTrading {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(String deposit) {
-        this.deposit = deposit == null ? null : deposit.trim();
     }
 }

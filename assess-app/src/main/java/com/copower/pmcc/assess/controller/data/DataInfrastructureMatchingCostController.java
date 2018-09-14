@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.InfrastructureMatchingCost;
 import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -23,19 +24,19 @@ public class DataInfrastructureMatchingCostController {
     @ResponseBody
     @RequestMapping(value = "/list",name = "获取公共配套设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
     public BootstrapTableVo list(String name){
-        return dataInfrastructureMatchingCostService.getInfrastructureCost(name);
+        return dataInfrastructureMatchingCostService.getDataInfrastructureCost(name);
     }
 
     @ResponseBody
     @RequestMapping(value = "/addAndEdit",name = "新增或者编辑",method = RequestMethod.POST)
-    public HttpResult addAndEdit(InfrastructureMatchingCost infrastructureMatchingCost){
+    public HttpResult addAndEdit(DataInfrastructureMatchingCost infrastructureMatchingCost){
 
         try {
             if (infrastructureMatchingCost.getId() != null && infrastructureMatchingCost.getId() > 0){
-                dataInfrastructureMatchingCostService.editInfrastructureCost(infrastructureMatchingCost);
+                dataInfrastructureMatchingCostService.editDataInfrastructureCost(infrastructureMatchingCost);
             }
             else {
-                dataInfrastructureMatchingCostService.addInfrastructureCost(infrastructureMatchingCost);
+                dataInfrastructureMatchingCostService.addDataInfrastructureCost(infrastructureMatchingCost);
             }
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());

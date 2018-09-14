@@ -15,7 +15,7 @@ import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -225,7 +225,7 @@ public class ProjectPlanService {
         ProjectPlanDetailsDto projectPlanDetailsDto = JSON.parseObject(ds, ProjectPlanDetailsDto.class);
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         BeanUtils.copyProperties(projectPlanDetailsDto, projectPlanDetails);
-        if (projectPlanDetails.getId() > 0) {
+        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         } else {
 
@@ -275,7 +275,7 @@ public class ProjectPlanService {
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
 
             if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
                 projectPlanDetails.setBisLastLayer(false);
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
@@ -286,7 +286,7 @@ public class ProjectPlanService {
 
     public void deletePlan(Integer detailsId) throws BusinessException {
 
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(detailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(detailsId);
         int pid = projectPlanDetails.getPid();
 
         //删除当前行，如果当前行是目录下的最后一行，则将上级设置为一级
@@ -298,7 +298,7 @@ public class ProjectPlanService {
             projectPlanDetailsWhere.setPid(pid);
             List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
             if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(pid);
+                projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
                 projectPlanDetails.setBisLastLayer(true);
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
             }
@@ -327,7 +327,7 @@ public class ProjectPlanService {
          * 4、保存项目计划
          */
 
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId());
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
         //数据效性验证
         StringBuilder sb = new StringBuilder();
         for (ProjectPlanDetails item : projectPlanDetails) {
@@ -350,7 +350,7 @@ public class ProjectPlanService {
         if (sb.length() > 0) {
             throw new BusinessException(sb.toString());
         }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());
         //====验证结束
         if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
             //发起计划复核流程
@@ -392,9 +392,8 @@ public class ProjectPlanService {
         if (StringUtils.isNotBlank(detailsSoring)) {
             updateDetailsSorting(detailsSoring);
         }
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),projectPlan.getId());//删除待提交任务
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(projectPlan.getId());
 
         if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
         {
@@ -408,7 +407,7 @@ public class ProjectPlanService {
              * 4、保存项目计划
              */
 
-            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId());
+            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
             //数据效性验证
             StringBuilder sb = new StringBuilder();
             for (ProjectPlanDetails item : projectPlanDetails) {
@@ -470,17 +469,22 @@ public class ProjectPlanService {
 
                 }
             }
-
         }
-
     }
 
+    /**
+     * 保存项目任务数据
+     *
+     * @param item
+     * @param projectName
+     * @param workStageName
+     * @param responsibileModelEnum
+     */
     public void saveProjectPlanDetailsResponsibility(ProjectPlanDetails item, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
-
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(item.getPlanId());
         projectPlanResponsibility.setPlanDetailsId(item.getId());
-        projectPlanResponsibility.setPlanDetailsName(workStageName + " → " + item.getProjectPhaseName());
+        projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, item.getProjectPhaseName()));
         projectPlanResponsibility.setProjectId(item.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(item.getExecuteUserAccount());
@@ -489,16 +493,25 @@ public class ProjectPlanService {
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setPlanEndTime(item.getPlanEndDate());
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanResponsibility = bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
+        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+
     }
 
+    /**
+     * 保存项目任务数据
+     *
+     * @param projectPlan
+     * @param nextUser
+     * @param projectName
+     * @param workStageName
+     * @param responsibileModelEnum
+     */
     public void saveProjectPlanResponsibility(ProjectPlan projectPlan, String nextUser, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) {
-
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(projectPlan.getId());
         projectPlanResponsibility.setPlanDetailsId(0);
-        projectPlanResponsibility.setPlanDetailsName(workStageName + " → " + responsibileModelEnum.getName());
+        projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, responsibileModelEnum.getName()));
         projectPlanResponsibility.setProjectId(projectPlan.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
         projectPlanResponsibility.setUserAccount(nextUser);
@@ -506,11 +519,18 @@ public class ProjectPlanService {
         projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanResponsibility = bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
+        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+
     }
 
-    private void updateProjectTaskUrl(ResponsibileModelEnum responsibileModelEnum, ProjectResponsibilityDto projectPlanResponsibility) {
+    /**
+     * 设置项目任务的url
+     *
+     * @param responsibileModelEnum
+     * @param projectPlanResponsibility
+     */
+    public void updateProjectTaskUrl(ResponsibileModelEnum responsibileModelEnum, ProjectResponsibilityDto projectPlanResponsibility) {
         if (projectPlanResponsibility == null)
             return;
         String url = new String();
@@ -527,7 +547,6 @@ public class ProjectPlanService {
         }
         projectPlanResponsibility.setProjectDetailsUrl("/" + applicationConstant.getAppKey() + "/projectInfo/projectDetails?projectId=" + projectPlanResponsibility.getProjectId());
         projectPlanResponsibility.setUrl(url);
-        bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
     }
 
     /**
@@ -633,28 +652,14 @@ public class ProjectPlanService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectWorkStageRestart.getProjectId());
         ProjectPlan projectPlan = getProjectplanById(projectWorkStageRestart.getProjectPlanOldId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        ProjectPlan projectPlanNew = new ProjectPlan();
-        BeanUtils.copyProperties(projectPlan, projectPlanNew);
-        projectPlanNew.setPlanName(projectPlan.getPlanName() + "(重启)");
-        projectPlanNew.setProcessInsId("-1");
-        projectPlanNew.setPlanRemarks("");
-        projectPlanNew.setProjectPlanStart(null);
-        projectPlanNew.setProjectPlanEnd(null);
-        projectPlanNew.setCreated(new Date());
-        projectPlanNew.setProcessInsIdApproval(null);
-        projectPlanNew.setStatus(null);
-        projectPlanNew.setApprovalStatus(null);
-        projectPlanNew.setBisRestart(true);
-        projectPlanDao.addProjectPlan(projectPlanNew);
         String workStageUserAccounts = projectWorkStageService.getWorkStageUserAccounts(projectWorkStage.getId(), projectPlan.getProjectId());
         if (StringUtils.isNotBlank(workStageUserAccounts)) {
             List<String> strings = FormatUtils.transformString2List(workStageUserAccounts);
             for (String s : strings) {
-                saveProjectPlanResponsibility(projectPlanNew, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
+                saveProjectPlanResponsibility(projectPlan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
             }
         }
-        return projectPlanNew;
+        return projectPlan;
     }
 
     public Boolean updateProjectPlan(ProjectPlan projectPlan) {
@@ -676,7 +681,7 @@ public class ProjectPlanService {
             projectPlan.setProjectPlanEnd(new Date());
         }
         projectPlanDao.updateProjectPlan(projectPlan);
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
         /**
          * 处理过程
          * 1、判断当前同等级执行阶段是否都已执行完成，如果都完成则将下个阶段的状态设置为wait
@@ -732,6 +737,7 @@ public class ProjectPlanService {
 
     /**
      * 获取下个阶段
+     *
      * @param currStageSort
      * @param projectPlans
      * @return
@@ -754,7 +760,7 @@ public class ProjectPlanService {
         }
         List<ProjectPlan> nextStagePlanList = Lists.newArrayList();
         for (ProjectPlan plan : projectPlans) {
-            if(nextStageSort.equals(plan.getStageSort().intValue())){
+            if (nextStageSort.equals(plan.getStageSort().intValue())) {
                 nextStagePlanList.add(plan);
             }
         }
@@ -768,7 +774,7 @@ public class ProjectPlanService {
      * @param recursion
      */
     public void copyPlanDetails(Integer planDetailsId, Boolean recursion) {
-        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
+        ProjectPlanDetails planDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
         if (planDetails != null) {
             planDetails.setSorting(planDetails.getSorting().intValue() + 1);
             planDetails.setId(null);
@@ -785,7 +791,7 @@ public class ProjectPlanService {
      * @param planDetailsId
      */
     private void copyPlanDetailsRecursion(Integer planDetailsId, Integer pid) {
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPId(planDetailsId);
+        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
         if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
             for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
                 Integer sourcePlanDetailsId = projectPlanDetails.getId();
@@ -796,5 +802,6 @@ public class ProjectPlanService {
             }
         }
     }
+
 
 }

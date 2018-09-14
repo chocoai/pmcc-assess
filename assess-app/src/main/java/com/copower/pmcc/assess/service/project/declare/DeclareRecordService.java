@@ -29,7 +29,7 @@ public class DeclareRecordService {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private DeclareRecordDao dao;
+    private DeclareRecordDao declareRecordDao;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -67,6 +67,7 @@ public class DeclareRecordService {
         List<SchemeAreaGroup> schemeAreaGroups = Lists.newArrayList();
         hashSet.forEach(p -> {
             SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
+            schemeAreaGroup.setDistrict("");
             String[] areaIds = p.split("_");
             if (areaIds.length > 2)
                 schemeAreaGroup.setDistrict(areaIds[2]);
@@ -89,18 +90,18 @@ public class DeclareRecordService {
         List<SchemeAreaGroup> voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return voList;
-        List<DeclareRecord> declareRecords = dao.getDeclareRecordByProjectId(projectId);
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
         List<SchemeAreaGroup> areaGroups = groupDeclareRecord(declareRecords);
         if (CollectionUtils.isNotEmpty(areaGroups)) {
             List<DeclareRecord> removeList = Lists.newArrayList();
-
             for (SchemeAreaGroup areaGroup : areaGroups) {
                 String areaFullName = erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict());
                 areaGroup.setAreaName(areaFullName);
                 areaGroup.setProjectId(projectId);
+                areaGroup.setPid(0);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 schemeAreaGroupService.add(areaGroup);
-                int i=1;
+                int i = 1;
                 //初始化估价对象
                 for (DeclareRecord declareRecord : declareRecords) {
                     boolean isSameProvince = StringUtils.equals(declareRecord.getProvince(), areaGroup.getProvince());
@@ -110,21 +111,27 @@ public class DeclareRecordService {
                         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
                         schemeJudgeObject.setProjectId(projectId);
                         schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
-                        schemeJudgeObject.setNumber(i++);
+                        schemeJudgeObject.setNumber(String.valueOf(i));
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
                         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
                         schemeJudgeObject.setName(declareRecord.getName());
                         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+                        schemeJudgeObject.setSeat(declareRecord.getCity());
+                        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
+                        schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
+                        schemeJudgeObject.setSourceId(0);
+                        schemeJudgeObject.setPid(0);
                         schemeJudgeObject.setBisSplit(false);
+                        schemeJudgeObject.setSorting(i);
                         schemeJudgeObject.setCreator(commonService.thisUserAccount());
                         schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
-
                         //反写申报数据的区域id
                         declareRecord.setAreaGroupId(areaGroup.getId());
-                        dao.updateDeclareRecord(declareRecord);
+                        declareRecordDao.updateDeclareRecord(declareRecord);
 
                         removeList.add(declareRecord);//已被添加到区域的数据下次循环移除掉
+                        i++;
                     }
                 }
             }
@@ -134,14 +141,13 @@ public class DeclareRecordService {
     }
 
 
-
     public List<DeclareRecord> getDeclareRecordByProjectId(Integer projectId) {
-        List<DeclareRecord> declareRecords = dao.getDeclareRecordByProjectId(projectId);
+        List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
         return declareRecords;
     }
 
     public DeclareRecord getDeclareRecordById(Integer id) {
-        return dao.getDeclareRecordById(id);
+        return declareRecordDao.getDeclareRecordById(id);
     }
 
 }

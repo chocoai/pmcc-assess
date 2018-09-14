@@ -63,7 +63,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/ProjectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
+                                        <a href="${pageContext.request.contextPath}/projectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
                                            target="_blank">阶段重启</a>
                                         <a href="${pageContext.request.contextPath}/projectPlanHistory/projectPlanHistoryIndex?projectId=${projectInfo.id}"
                                            target="_blank">总体时间</a>
@@ -114,7 +114,7 @@
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         计划编制
                                                     </button>
-                                                    <button class="btn btn-sm btn-default" type="button"
+                                                    <button class="btn btn-sm btn-warning" type="button"
                                                             data-placement="top"
                                                             data-toggle="tooltip" data-original-title="查看"
                                                             onclick="window.open('${plan.planDisplayUrl}')"><i
@@ -122,22 +122,17 @@
                                                 </c:if>
                                                 <c:if test="${not empty plan.planExecutUrl}">
                                                     <button class="btn btn-sm btn-primary" type="button">
-                                                        计划编制<i class="fa fa-ellipsis-h"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-default" type="button"
-                                                            data-placement="top" data-toggle="tooltip"
-                                                            onclick="window.open('${plan.planDisplayUrl}')"
-                                                            data-original-title="查看"><i class="fa fa-search"></i>
+                                                        计划编制
                                                     </button>
                                                     <button class="btn btn-sm btn-default" type="button"
                                                             data-placement="top" data-toggle="tooltip"
                                                             data-original-title="责任人">${plan.planExecutor}
                                                     </button>
                                                     <c:if test="${plan.planCanExecut eq true}">
-                                                        <button class="btn btn-sm btn-default" type="button"
+                                                        <button class="btn btn-sm btn-success" type="button"
                                                                 data-placement="top" data-toggle="tooltip"
                                                                 onclick="projectDetails.taskOpenWin('${plan.planExecutUrl}')"
-                                                                data-original-title="处理"><i class="fa fa-edit"></i>
+                                                                data-original-title="处理"><i class="fa fa-arrow-right"></i>
                                                         </button>
                                                     </c:if>
                                                 </c:if>
@@ -210,9 +205,6 @@
                         width: '20%',
                         formatter: function (value, row) {
                             var s = value;
-                            if (row.status == 'runing') {
-                                s += ' <i class="fa fa-ellipsis-h"></i>';
-                            }
                             if (row.bisNew) {
                                 s += " <i class='clip-new' style='font-size: 15px;color: red'></i>";
                             }
@@ -238,7 +230,6 @@
                         }
                     },
                     {field: 'planHours', align: 'center', title: '计划工时(h)', width: '5%'},
-                    {field: 'actualHours', align: 'center', title: '实际工时(h)', width: '5%'},
                     {
                         field: 'taskSubmitTime',
                         align: 'center',
@@ -257,28 +248,16 @@
                         width: '20%',
                         formatter: function (value, row) {
                             var s = "";
-                            if (row.bisLastLayer) {
-                                if (row.displayUrl) {
-                                    s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                            if (row.excuteUrl) {
+                                var btnClass = 'btn-success';
+                                if (/processInsId/.test(row.excuteUrl)) {
+                                    btnClass = 'btn-primary';
                                 }
-                                if (row.canAssignment) {
-                                    var url = '${pageContext.request.contextPath}/surveyExamine/assignment?planDetailsId=' + row.id;
-                                    s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + url + "\")' href='javascript://' data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-random fa-white'></i></a>";
-                                }
-                                if (row.executeUrlList) {
-                                    $.each(row.executeUrlList,function (i,item) {
-                                        var btnClass='btn-warning';
-                                        if(/processInsId/.test(item)){
-                                            btnClass='btn-primary';
-                                        }
-                                        s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + item + "\")' href='javascript://' data-placement='top' data-original-title='提交' class='btn btn-xs "+btnClass+" tooltips' ><i class='fa fa-edit fa-white'></i></a>";
-                                    })
-
-                                }
-
+                                s += " <a target='_blank' onclick='projectDetails.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' data-placement='top' data-original-title='处理' class='btn btn-xs " + btnClass + " tooltips' ><i class='fa fa-arrow-right fa-white'></i></a>";
+                            } else if (row.displayUrl) {
+                                s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
                             }
                             return s;
-
                         }
                     }
                 ]]

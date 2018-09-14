@@ -18,6 +18,8 @@ public class MdCost {
 
     private Date gmtModified;
 
+    private String type;
+
     public Integer getId() {
         return id;
     }
@@ -72,5 +74,13 @@ public class MdCost {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 }

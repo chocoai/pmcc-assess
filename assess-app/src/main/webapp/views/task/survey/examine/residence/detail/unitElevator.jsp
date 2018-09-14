@@ -84,6 +84,7 @@
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/examineUnitElevator/getExamineUnitElevatorList", cols, {
                     name: $("#queryName").val(),
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

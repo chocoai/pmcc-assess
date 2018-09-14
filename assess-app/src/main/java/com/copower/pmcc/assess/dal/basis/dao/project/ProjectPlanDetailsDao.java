@@ -47,7 +47,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public ProjectPlanDetails getProjectPlanDetailsItemById(Integer id) {
+    public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsMapper.selectByPrimaryKey(id);
     }
 
@@ -58,9 +58,9 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsByPId(Integer pId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPid(Integer pid) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPidEqualTo(pId);
+        example.createCriteria().andPidEqualTo(pid);
         example.setOrderByClause("sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }
@@ -126,9 +126,13 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsLastLayer(Integer planId) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsLastLayer(Integer planId, String status) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andBisEnableEqualTo(true).andPlanIdEqualTo(planId).andBisLastLayerEqualTo(true);
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andBisEnableEqualTo(true).andPlanIdEqualTo(planId).andBisLastLayerEqualTo(true);
+        if (StringUtils.isNotBlank(status)) {
+            criteria.andStatusEqualTo(status);
+        }
         example.setOrderByClause(" sorting");
         return projectPlanDetailsMapper.selectByExample(example);
     }

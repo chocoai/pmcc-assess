@@ -11,7 +11,7 @@
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
         <h2>
             项目信息
@@ -25,43 +25,10 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目名称</label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-7">
                         <label class="form-control">${projectInfo.projectName}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日</label>
-                    <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                    pattern='yyyy-MM-dd'/></label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类别</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.projectTypeName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的备注</label>
-                    <div class="col-sm-11">
-                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">紧急程度</label>
                     <div class="col-sm-3">
@@ -69,29 +36,41 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
+                                                                    pattern='yyyy-MM-dd'/></label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的描述</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">价值类型</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.valueTypeName}</label>
                     </div>
                 </div>
-
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">执业部门</label>
+                    <label class="col-sm-1 control-label">价值类型描述</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.departmentName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型备注</label>
-                    <div class="col-sm-11">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">省</label>
@@ -116,6 +95,12 @@
             </div>
 
             <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">执业部门</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.departmentName}</label>
+                    </div>
+                </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">
@@ -157,7 +142,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content ">
         <form class="form-horizontal">
             <div class="panel-body">
                 <c:choose>
@@ -280,7 +265,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content ">
         <form class="form-horizontal">
             <div class="panel-body">
                 <c:choose>
@@ -410,7 +395,7 @@
         </ul>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content collapse" >
+    <div class="x_content">
         <form class="form-horizontal">
             <div>
                 <div class="form-group">
@@ -480,12 +465,68 @@
             </div>
         </form>
         <div class="x_title">
-            <h3>联系人</h3>
+            <h3>联系人
+                <small>
+                    <button type="button" class="btn btn-primary docs-tooltip"
+                            onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.showModel();">
+                        查询更多<i class="fa fa-search"></i>
+                    </button>
+                </small>
+            </h3>
         </div>
         <table class="table table-bordered" id="UNIT_INFORMATION_TableList">
         </table>
     </div>
 </div>
+<div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">联系人</h3>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <div class="col-sm-6">
+                                            <input type="text" name="name" placeholder="联系人名字、电话"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <div class="col-sm-6">
+                                            <input type="button"
+                                                   onclick="Contacts.prototype.UNIT_INFORMATION().crmContacts.findCRMContacts();"
+                                                   class="btn btn-success" value="查询">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered" id="tb_ListCRMContacts">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function () {
         //---------
@@ -533,7 +574,7 @@
             showRefresh: false,
             search: false
         });
-        console.log("id:"+id +" "+tb_List +" "+flag);
+        console.log("id:" + id + " " + tb_List + " " + flag);
     }
     function Contacts() {
     };
@@ -543,9 +584,14 @@
          * 根据此处约定设置
          * com.copower.pmcc.assess.common.enums.InitiateContactsEnum
          */
-        Contacts.CONSIGNOR = {key: "CONSIGNOR", name: "委托人", nodeKey: 1,table:"CONSIGNOR_TableList"};
-        Contacts.POSSESSOR = {key: "POSSESSOR", name: "占有人", nodeKey: 2,table:"POSSESSOR_TableList"};
-        Contacts.UNIT_INFORMATION = {key: "UNIT_INFORMATION", name: "报告使用单位", nodeKey: 3,table:"UNIT_INFORMATION_TableList"};
+        Contacts.CONSIGNOR = {key: "CONSIGNOR", name: "委托人", nodeKey: 1, table: "CONSIGNOR_TableList"};
+        Contacts.POSSESSOR = {key: "POSSESSOR", name: "占有人", nodeKey: 2, table: "POSSESSOR_TableList"};
+        Contacts.UNIT_INFORMATION = {
+            key: "UNIT_INFORMATION",
+            name: "报告使用单位",
+            nodeKey: 3,
+            table: "UNIT_INFORMATION_TableList"
+        };
         return Contacts;
     };
     //选项框
@@ -553,5 +599,8 @@
         loadInitContactsList("${projectInfo.consignorVo.id}", Contacts.prototype.config().CONSIGNOR.table, Contacts.prototype.config().CONSIGNOR.nodeKey)
         loadInitContactsList("${projectInfo.possessorVo.id}", Contacts.prototype.config().POSSESSOR.table, Contacts.prototype.config().POSSESSOR.nodeKey);
         loadInitContactsList('${projectInfo.unitInformationVo.id}', Contacts.prototype.config().UNIT_INFORMATION.table, Contacts.prototype.config().UNIT_INFORMATION.nodeKey);
+
+        //全局变量设值
+        customerId_UNIT_INFORMATION = '${projectInfo.unitInformationVo.uUseUnit}' ;
     });
 </script>

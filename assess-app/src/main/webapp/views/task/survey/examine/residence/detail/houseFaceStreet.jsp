@@ -84,6 +84,7 @@
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/examineHouseFaceStreet/getExamineHouseFaceStreetList", cols, {
                     type: houseFaceStreet.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

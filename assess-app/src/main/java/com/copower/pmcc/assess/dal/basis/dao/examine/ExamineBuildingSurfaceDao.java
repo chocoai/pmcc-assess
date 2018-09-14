@@ -68,4 +68,10 @@ public class ExamineBuildingSurfaceDao {
         return examineBuildingSurfaceMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public void removeExamineBuildingSurface(ExamineBuildingSurface examineBuildingSurface){
+        ExamineBuildingSurfaceExample example = new ExamineBuildingSurfaceExample();
+        MybatisUtils.convertObj2Example(examineBuildingSurface, example);
+        examineBuildingSurfaceMapper.deleteByExample(example);
+    }
+
 }

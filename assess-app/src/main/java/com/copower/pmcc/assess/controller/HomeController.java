@@ -80,39 +80,6 @@ public class HomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getApprovalLog", method = RequestMethod.GET)
-    public BootstrapTableVo getApprovalLog(String processInsId) {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLog(processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
-
-        List<BoxApprovalLogVo> rows = (List<BoxApprovalLogVo>) approvalLog.getRows();
-        List<String> transform = LangUtils.transform(rows, o -> o.getProcessTaskId());
-
-        List<SysAttachmentDto> approvalLogList = baseAttachmentService.getApprovalLogList(processInsId, transform);
-        if (CollectionUtils.isNotEmpty(approvalLogList)) {
-            for (BoxApprovalLogVo item : rows) {
-                List<SysAttachmentDto> filter = LangUtils.filter(approvalLogList, o -> {
-                    return o.getProcessTaskId().equals(item.getProcessTaskId());
-                });
-                if (CollectionUtils.isNotEmpty(filter)) {
-                    List<AttachmentVo> attachmentVos = LangUtils.transform(filter, o -> {
-                        AttachmentVo attachmentVo = new AttachmentVo();
-                        attachmentVo.setId(o.getId());
-                        attachmentVo.setFileName(o.getFileName());
-                        attachmentVo.setFileExtension(o.getFileExtension());
-                        attachmentVo.setHasKeep(false);
-                        return attachmentVo;
-                    });
-                    item.setAttachmentVos(attachmentVos);
-                }
-
-            }
-            approvalLog.setRows(rows);
-        }
-        return approvalLog;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getMyProcessGroup", method = RequestMethod.GET)
     public HttpResult getMyProcessGroup() {
 

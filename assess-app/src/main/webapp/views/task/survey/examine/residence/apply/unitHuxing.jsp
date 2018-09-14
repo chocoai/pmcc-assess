@@ -48,50 +48,50 @@
         unitHuxing = function () {
         };
         unitHuxing.prototype = {
-            setFlag:function (flag_) {
+            setFlag: function (flag_) {
                 flag = flag_;
             },
-            getFlag:function () {
+            getFlag: function () {
                 return flag;
             },
-            setFileID:function (id_) {
+            setFileID: function (id_) {
                 fileID = id_;
             },
-            getFileID:function () {
-                if (fileID == null || fileID == ''){
+            getFileID: function () {
+                if (fileID == null || fileID == '') {
                     return 0;
                 }
                 return fileID;
             },
             viewInit: function () {
-                if (unitHuxing.prototype.getFlag()){
+                if (unitHuxing.prototype.getFlag()) {
                     unitHuxing.prototype.init();
                     unitHuxing.prototype.setFlag(false);
                 }
                 unitHuxing.prototype.loadDataDicList();
             },
-            fileUpload:function () {
+            fileUpload: function () {
                 FileUtils.uploadFiles({
-                    target:unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                    target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                     disabledTarget: "btn_submit",
                     onUpload: function (file) {
-                        var formData={
-                            fieldsName:unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                        var formData = {
+                            fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                             tableName: AssessDBKey.ExamineUnitHuxing,
                             tableId: unitHuxing.prototype.getFileID()
                         };
                         return formData;
-                    },onUploadComplete:function () {
+                    }, onUploadComplete: function () {
                         unitHuxing.prototype.showFile();
                     },
                     deleteFlag: true
                 });
             },
-            showFile:function () {
+            showFile: function () {
                 FileUtils.getFileShows({
                     target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                     formData: {
-                        fieldsName:unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                        fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                         tableName: AssessDBKey.ExamineUnitHuxing,
                         tableId: unitHuxing.prototype.getFileID(),
                         projectId: 0
@@ -111,11 +111,20 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'description', title: '描述'});
-                cols.push({field: 'houseLayoutName', title: '房型'});
                 cols.push({field: 'spanLength', title: '跨长'});
+                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
                 cols.push({field: 'spanNumber', title: '跨数'});
                 cols.push({field: 'fileViewName', title: '户型图'});
+                cols.push({
+                    field: 'houseCategory', title: '房型', formatter: function (value, row, index) {
+                        var str = "";
+                        if (unitHuxing.prototype.isNotNull(row.houseCategory)){
+                            str = unitHuxing.prototype.rule("formatter",JSON.parse(row.houseCategory));
+                        }
+                        return str;
+                    }
+                });
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -128,8 +137,9 @@
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingList", cols, {
                     type: unitHuxing.prototype.config().type,
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val()
+                    declareId: $("#declareId").val(),
+                    planDetailsId: $("#planDetailsId").val(),
+                    examineType: $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -175,9 +185,13 @@
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
                 }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
+                }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
+                data.houseCategory = unitHuxing.prototype.rule("get",data);
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineUnitHuxing/saveAndUpdateExamineUnitHuxing",
                     type: "post",
@@ -198,6 +212,86 @@
                     }
                 })
             },
+            /**
+             * @author:  zch
+             * 描述:户型的类别填写方式【】房【】厅【】厨【】卫【】花园【】阳台
+             * @date:
+             **/
+            rule: function (flag, item) {
+                var text = "";
+                //格式化
+                if (flag == "formatter") {
+                    if (unitHuxing.prototype.isNotNull(item.house)) {
+                        text += item.house + "房-";
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.saloon)) {
+                        text += item.saloon + "客厅-";
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.kitchen)) {
+                        text += item.kitchen + "厨房-";
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.toilet)) {
+                        text += item.toilet + "卫生间-";
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.garden)) {
+                        text += item.garden + "花园-";
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.balcony)) {
+                        text += item.balcony + "阳台";
+                    }
+                    return text;
+                }
+                //转为json存入数据库
+                if (flag == "get"){
+                    var data = {};
+                    if (unitHuxing.prototype.isNotNull(item.house)) {
+                        data.house = item.house;
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.saloon)) {
+                        data.saloon = item.saloon;
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.kitchen)) {
+                        data.kitchen = item.kitchen;
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.toilet)) {
+                        data.toilet = item.toilet;
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.garden)) {
+                        data.garden = item.garden;
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.balcony)) {
+                        data.balcony = item.balcony;
+                    }
+                    return JSON.stringify(data);
+                }
+                //赋值
+                if (flag == "set"){
+                    if (unitHuxing.prototype.isNotNull(item.house)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='house']").val(item.house);
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.saloon)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='saloon']").val(item.saloon);
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.kitchen)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='kitchen']").val(item.kitchen);
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.toilet)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='toilet']").val(item.toilet);
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.garden)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='garden']").val(item.garden);
+                    }
+                    if (unitHuxing.prototype.isNotNull(item.balcony)) {
+                        $("#" + unitHuxing.prototype.config().frm + " input[name='balcony']").val(item.balcony);
+                    }
+                }
+            },
+            isNotNull: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
             getAndInit: function (id) {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
@@ -210,10 +304,16 @@
                             $("#" + unitHuxing.prototype.config().frm).initForm(result.data);
                             unitHuxing.prototype.setFileID(result.data.id);
                             unitHuxing.prototype.showFile();
-                            if (result.data.houseLayout == null || result.data.houseLayout == '') {
-                                $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(null).trigger("change");
-                            } else {
-                                $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(result.data.houseLayout).trigger("change");
+                            var data = result.data ;
+                            if (unitHuxing.prototype.isNotNull(data)){
+                                if (!unitHuxing.prototype.isNotNull(data.houseLayout)) {
+                                    $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(null).trigger("change");
+                                } else {
+                                    $("#" + unitHuxing.prototype.config().frm + " .houseLayout").val(data.houseLayout).trigger("change");
+                                }
+                                if (unitHuxing.prototype.isNotNull(data.houseCategory)){
+                                    unitHuxing.prototype.rule("set",JSON.parse(data.houseCategory));
+                                }
                             }
                             $('#' + unitHuxing.prototype.config().box).modal("show");
                         }
@@ -273,42 +373,18 @@
                                         <label class="col-sm-2 control-label">
                                             面积<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="面积(数字)" data-rule-number='true' name="area"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             跨长<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="跨长(数字)" data-rule-number='true'
                                                    name="spanLength" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            跨宽<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
-                                                   name="spanWidth" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            跨数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="跨数(数字)" data-rule-number='true'
-                                                   name="spanNumber" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -318,20 +394,127 @@
                                             户型描述<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="户型描述" name="description"
-                                                   class="form-control" required="required">
+                                            <textarea placeholder="户型描述" name="description"
+                                                      class="form-control" required="required">
+
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型内容<span class="symbol required"></span>
+                                            跨数<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="houseLayout"
-                                                    class="form-control search-select select2 houseLayout">
-                                            </select>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="跨数(数字)" data-rule-number='true'
+                                                   name="spanNumber" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            跨宽<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="跨宽(数字)" data-rule-number='true'
+                                                   name="spanWidth" class="form-control" required="required">
+                                        </div>
+                                    </div>
+                                    <%--<div class="x-valid">--%>
+                                    <%--<label class="col-sm-2 control-label">--%>
+                                    <%--户型内容<span class="symbol required"></span>--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                    <%--<select required="required" name="houseLayout"--%>
+                                    <%--class="form-control search-select select2 houseLayout">--%>
+                                    <%--</select>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (房) <span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">卧室</span>
+                                                <input type="text" name="house" data-rule-number='true' class="form-control"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (厅)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">客厅</span>
+                                                <input type="text" name="saloon" data-rule-number='true' class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (厨)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">厨房</span>
+                                                <input type="text" name="kitchen" data-rule-number='true' class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (卫) <span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">卫生间</span>
+                                                <input type="text" name="toilet" data-rule-number='true' class="form-control"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (花园)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">花园</span>
+                                                <input type="text" name="garden" data-rule-number='true' class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            户型 (阳台)
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">阳台</span>
+                                                <input type="text" name="balcony" data-rule-number='true' class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            朝向<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="朝向"
+                                                   name="orientation" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -343,7 +526,8 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input id="house_latest_family_planV" name="house_latest_family_planV"
-                                                   required="required" placeholder="上传附件" class="form-control" type="file">
+                                                   required="required" placeholder="上传附件" class="form-control"
+                                                   type="file">
                                             <div id="_house_latest_family_planV"></div>
                                         </div>
                                     </div>

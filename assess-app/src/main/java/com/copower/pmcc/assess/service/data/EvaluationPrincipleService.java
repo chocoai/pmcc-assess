@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationPrincipleDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationPrinciple;
-import com.copower.pmcc.assess.dto.output.data.EvaluationPrincipleVo;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationPrinciple;
+import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -38,13 +40,14 @@ public class EvaluationPrincipleService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationPrincipleDao evaluationPrincipleDao;
-
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
     /**
      * 保存数据
      *
      * @param evaluationPrinciple
      */
-    public void saveAndUpdate(EvaluationPrinciple evaluationPrinciple) {
+    public void saveAndUpdate(DataEvaluationPrinciple evaluationPrinciple) {
         if (evaluationPrinciple.getId() != null && evaluationPrinciple.getId() > 0) {
             evaluationPrincipleDao.updatePrinciple(evaluationPrinciple);
         } else {
@@ -69,7 +72,7 @@ public class EvaluationPrincipleService {
      * @param id
      * @return
      */
-    public EvaluationPrinciple getPrinciple(Integer id) {
+    public DataEvaluationPrinciple getPrinciple(Integer id) {
         return evaluationPrincipleDao.getPrinciple(id);
     }
 
@@ -84,9 +87,9 @@ public class EvaluationPrincipleService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationPrinciple> hypothesisList = evaluationPrincipleDao.getPrincipleList(name);
-        List<EvaluationPrincipleVo> vos = LangUtils.transform(hypothesisList, p -> getPrincipleVo(p));
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationPrincipleVo>() : vos);
+        List<DataEvaluationPrinciple> hypothesisList = evaluationPrincipleDao.getPrincipleList(name);
+        List<DataEvaluationPrincipleVo> vos = LangUtils.transform(hypothesisList, p -> getPrincipleVo(p));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationPrincipleVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -98,7 +101,7 @@ public class EvaluationPrincipleService {
      * @param purpose
      * @return
      */
-    public List<EvaluationPrinciple> getPrincipleList(Integer method, Integer purpose) {
+    public List<DataEvaluationPrinciple> getPrincipleList(Integer method, Integer purpose) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -111,19 +114,33 @@ public class EvaluationPrincipleService {
     }
 
 
-    public EvaluationPrincipleVo getPrincipleVo(EvaluationPrinciple evaluationPrinciple) {
+    public DataEvaluationPrincipleVo getPrincipleVo(DataEvaluationPrinciple evaluationPrinciple) {
         if (evaluationPrinciple == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.ENTRUSTMENT_PURPOSE);
-        EvaluationPrincipleVo evaluationPrincipleVo = new EvaluationPrincipleVo();
-        BeanUtils.copyProperties(evaluationPrinciple, evaluationPrincipleVo);
+        DataEvaluationPrincipleVo vo = new DataEvaluationPrincipleVo();
+        BeanUtils.copyProperties(evaluationPrinciple, vo);
         if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationPrinciple.getMethod())) {
-            evaluationPrincipleVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationPrinciple.getMethod()));
+            vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationPrinciple.getMethod()));
         }
         if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationPrinciple.getEntrustmentPurpose())) {
-            evaluationPrincipleVo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationPrinciple.getEntrustmentPurpose()));
+            vo.setEntrustmentPurposeStr(dataCommonService.getDataDicName(purposeDicList, evaluationPrinciple.getEntrustmentPurpose()));
         }
-        return evaluationPrincipleVo;
+        BaseProjectClassify baseProjectClassify = null;
+        if (evaluationPrinciple.getCategory() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(evaluationPrinciple.getCategory());
+            if (baseProjectClassify != null){
+                vo.setCategoryName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        if (evaluationPrinciple.getType() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(evaluationPrinciple.getType());
+            if (baseProjectClassify != null){
+                vo.setTypeName(baseProjectClassify.getName());
+            }
+        }
+        return vo;
     }
 
 }

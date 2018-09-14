@@ -23,10 +23,12 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -79,7 +81,7 @@ public class ProjectPlanDetailsService {
     private PublicService publicService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
-        return projectPlanDetailsDao.getProjectPlanDetailsItemById(id);
+        return projectPlanDetailsDao.getProjectPlanDetailsById(id);
     }
 
     public ProjectPlanDetails getProjectPlanDetailsByProcessInsId(String processInsId) {
@@ -101,12 +103,27 @@ public class ProjectPlanDetailsService {
     }
 
     /**
+     * 保存计划详情数据
+     *
+     * @param projectPlanDetails
+     */
+    public void saveProjectPlanDetails(ProjectPlanDetails projectPlanDetails) throws BusinessException {
+        if (projectPlanDetails == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+        } else {
+            projectPlanDetails.setCreator(commonService.thisUserAccount());
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
+        }
+    }
+
+    /**
      * 获取项目下所有计划详细任务
      *
      * @param projectId
      * @return
      */
-    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectid(Integer projectId) {
+    public List<ProjectPlanDetailsVo> getProjectPlanDetailsByProjectId(Integer projectId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByProjectId(projectId);
         List<ProjectPlanDetailsVo> projectPlanDetailsVos = getProjectPlanDetailsVos(projectPlanDetails, false);
 
@@ -168,12 +185,10 @@ public class ProjectPlanDetailsService {
         //获取该阶段下正在运行的待审批任务
         List<String> processInsIds = Lists.newArrayList();
         for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-            if(StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())){
+            if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
                 if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
                     processInsIds.add(projectPlanDetail.getProcessInsId());
                 }
-                //如果是查勘或案例则还需查找下级审批任务
-
             }
         }
         List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
@@ -191,50 +206,51 @@ public class ProjectPlanDetailsService {
             //如果为待审批状态 当前人与审批人相同 可审批该任务
             //其它情况再特殊处理
             //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
-            if (projectPhaseService.isExaminePhase(projectPlanDetailsVo.getProjectPhaseId()) && StringUtils.equals(projectPlanDetailsVo.getExecuteUserAccount(), commonService.thisUserAccount())) {
-                //可细项再分配
-                projectPlanDetailsVo.setCanAssignment(true);
-            }
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
             switch (sysProjectEnum) {
-                case FINISH:
-                case CLOSE:
-                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-                    break;
+                case NONE:
                 case RUNING:
-                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
                     if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
                         if (CollectionUtils.isNotEmpty(projectTaskList)) {
                             for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
                                 if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
                                     if (responsibilityDto.getUserAccount().contains(commonService.thisUserAccount())) {
                                         String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                        if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
-                                            projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
-                                        }
-                                        projectPlanDetailsVo.getExecuteUrlList().add(executeUrl);
+                                        projectPlanDetailsVo.setExcuteUrl(executeUrl);
                                     }
                                 }
                             }
                         }
                     } else {
                         if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                            ActivitiTaskNodeDto activitiTaskNodeDto = activitiTaskNodeDtos.get(0);
-                            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                            String approvalUrl = boxReDto.getProcessApprovalUrl();
-                            if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                approvalUrl = boxReDto.getProcessEditUrl();
-                            }
-                            approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                            if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
-                                if(CollectionUtils.isEmpty(projectPlanDetailsVo.getExecuteUrlList())){
-                                    projectPlanDetailsVo.setExecuteUrlList(Lists.newArrayList());
+                            String processInsId = projectPlanDetailsVo.getProcessInsId();
+                            String taskId = new String();
+                            //根据情况获取对应的审批节点数据activitiTaskNodeDto
+                            ActivitiTaskNodeDto activitiTaskNodeDto = null;
+                            for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
+                                if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
+                                    activitiTaskNodeDto = taskNodeDto;
+                                    taskId = taskNodeDto.getTaskId();
                                 }
-                                projectPlanDetailsVo.getExecuteUrlList().add(approvalUrl);
+                            }
+                            if (activitiTaskNodeDto != null) {
+                                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                                String approvalUrl = boxReDto.getProcessApprovalUrl();
+                                if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                                    approvalUrl = boxReDto.getProcessEditUrl();
+                                }
+                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
+                                if (activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount())) {
+                                    projectPlanDetailsVo.setExcuteUrl(approvalUrl);
+                                }
                             }
                         }
                     }
                     break;
+            }
+            //设置查看url
+            if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
+                projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
             }
         }
         return projectPlanDetailsVos;
@@ -283,12 +299,7 @@ public class ProjectPlanDetailsService {
         } else {
             projectPlanDetailsVo.setSorting(1000 + projectPlanDetails.getSorting());
         }
-        if (projectPlanDetails.getProjectPhaseId() != null) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if (projectPhase != null) {
-                projectPlanDetailsVo.setProjectPhaseName(projectPhase.getProjectPhaseName());
-            }
-        }
+
         return projectPlanDetailsVo;
     }
 
@@ -320,12 +331,6 @@ public class ProjectPlanDetailsService {
                         projectPlanDetailsVo.setTasks(transform);
                     }
                 }
-                if (item.getDeclareFormId() != null && item.getDeclareFormId() > 0) {
-                    BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(item.getDeclareFormId());
-                    if (projectClassify != null) {
-                        projectPlanDetailsVo.setDeclareFormName(projectClassify.getName());
-                    }
-                }
                 projectPlanDetailsVos.add(projectPlanDetailsVo);
             }
         }
@@ -349,5 +354,85 @@ public class ProjectPlanDetailsService {
 
     public void deleteProjectPlanDetails(Integer id) {
         projectPlanDetailsDao.deleteProjectPlanDetails(id);
+    }
+
+    /**
+     * 获取任务及子项任务数据
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetails> getPlanDetailsListRecursion(Integer planDetailsId, boolean containThis) {
+        List<ProjectPlanDetails> list = Lists.newArrayList();
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails != null) {
+            if (containThis)
+                list.add(projectPlanDetails);
+            getPlanDetailsSubList(projectPlanDetails.getId(), list);
+        }
+        return list;
+    }
+
+    /**
+     * 递归获取子项任务
+     *
+     * @param pid
+     * @param list
+     */
+    private void getPlanDetailsSubList(Integer pid, List<ProjectPlanDetails> list) {
+        if (pid == null) return;
+        if (list == null) return;
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pid);
+        if (CollectionUtils.isEmpty(planDetailsList)) return;
+        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            list.add(projectPlanDetails);
+            getPlanDetailsSubList(projectPlanDetails.getId(), list);
+        }
+    }
+
+    /**
+     * 判断该计划任务下的所有任务是否都已完成
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public boolean isAllFinish(Integer planDetailsId) {
+        List<ProjectPlanDetails> planDetailsList = getPlanDetailsListRecursion(planDetailsId, false);
+        if (CollectionUtils.isEmpty(planDetailsList)) return true;
+        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获取子项计划任务
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetails> getChildrenPlanDetailsList(Integer planDetailsId) {
+        return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
+    }
+
+    /**
+     * 删除计划任务
+     * @param id
+     */
+    public void deletePlanDetailsRecursion(Integer id){
+        //任务状态为关闭 则只将状态设置为不可用
+        //递归检查子项任务信息
+        //1.计划任务未启动 直接删除
+        //2.计划任务启动 但没有启动流程 检查待提交任务 一并删除
+        //3.计划任务发起了流程 关闭流程 删除任务
+    }
+
+    /**
+     * 重启计划任务
+     * @param id
+     */
+    public void restartPlanDetails(Integer id){
+
     }
 }

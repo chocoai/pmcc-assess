@@ -7,6 +7,8 @@ public class ExamineBuildingOutfit {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private Integer buildingId;
@@ -25,6 +27,8 @@ public class ExamineBuildingOutfit {
 
     private Date gmtModified;
 
+    private String buildNumber;
+
     public Integer getId() {
         return id;
     }
@@ -39,6 +43,14 @@ public class ExamineBuildingOutfit {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -111,5 +123,13 @@ public class ExamineBuildingOutfit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

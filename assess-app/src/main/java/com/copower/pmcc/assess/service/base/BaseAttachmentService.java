@@ -115,7 +115,7 @@ public class BaseAttachmentService {
 
     public void addAttachment(SysAttachmentDto sysAttachmentDto) {
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        erpRpcAttachmentService.addAttachment(sysAttachmentDto);
+        sysAttachmentDto.setId(erpRpcAttachmentService.addAttachment(sysAttachmentDto));
     }
 
     public void updateAttachment(SysAttachmentDto sysAttachment) {

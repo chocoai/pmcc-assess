@@ -9,57 +9,29 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
 <div class="x_panel">
-    <div class="x_title">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+        </ul>
         <h2>
             项目信息
-            <small><button type="button" onclick="window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');return false;" class="btn btn-success btn-xs">查看更多...</button></small>
+            <small>
+                <input type="button" id="btnViewProjectInfoMore" class="btn btn-success btn-xs" value="查看更多..."/>
+            </small>
             <small>${projectInfo.projectClassName}/${projectInfo.projectTypeName}/${projectInfo.projectCategoryName}</small>
         </h2>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content collapse" >
         <div class="form-horizontal">
             <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目名称</label>
-                    <div class="col-sm-11">
+                    <div class="col-sm-7">
                         <label class="form-control">${projectInfo.projectName}</label>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">评估基准日</label>
-                    <div class="col-sm-3">
-                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                    pattern='yyyy-MM-dd'/></label>
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">项目类别</label>
-                    <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.projectTypeName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">委托目的备注</label>
-                    <div class="col-sm-11">
-                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">紧急程度</label>
                     <div class="col-sm-3">
@@ -67,29 +39,41 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">评估基准日</label>
+                    <div class="col-sm-3">
+                        <label class="form-control"><fmt:formatDate value='${projectInfo.valuationDate}'
+                                                                    pattern='yyyy-MM-dd'/></label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.entrustPurposeName}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">委托目的描述</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.remarkEntrustPurpose}</label></div>
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">价值类型</label>
                     <div class="col-sm-3">
                         <label class="form-control">${projectInfo.valueTypeName}</label>
                     </div>
                 </div>
-
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">执业部门</label>
+                    <label class="col-sm-1 control-label">价值类型描述</label>
                     <div class="col-sm-3">
-                        <label class="form-control">${projectInfo.departmentName}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">价值类型备注</label>
-                    <div class="col-sm-11">
                         <label class="form-control">${projectInfo.remarkValueType}</label>
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">省</label>
@@ -114,6 +98,12 @@
             </div>
 
             <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">执业部门</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${projectInfo.departmentName}</label>
+                    </div>
+                </div>
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">项目经理</label>
                     <div class="col-sm-3">
@@ -147,16 +137,22 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     $(function () {
-        //---------
+        //显示附件
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
             formData: {
                 tableName: AssessDBKey.ProjectInfo,
-                tableId: ${projectInfo.id}
+                tableId: '${empty projectInfo.id?0:projectInfo.id}'
             },
             deleteFlag: false
+        })
+        //查看更多
+        $("#btnViewProjectInfoMore").click(function (e) {
+            window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');
+            e.preventDefault();
+            e.stopPropagation();
         })
     });
 </script>

@@ -80,6 +80,7 @@
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/examineEstateParking/getExamineEstateParkingList", cols, {
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

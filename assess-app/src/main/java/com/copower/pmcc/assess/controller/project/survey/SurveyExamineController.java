@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.controller.project.survey;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyExamineTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -11,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
@@ -43,7 +43,7 @@ public class SurveyExamineController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SurveyExamineInfoService surveyExamineInfoService;
     @Autowired
@@ -55,9 +55,9 @@ public class SurveyExamineController {
 
     @RequestMapping(value = "/assignment", name = "任务分派视图", method = {RequestMethod.GET})
     public ModelAndView assignment(Integer planDetailsId) {
-        String view = "/task/survey/taskAssignmentIndex";
+        String view = "/project/stageSurvey/taskAssignmentIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemById(planDetailsId);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         Integer id = projectPlanDetails.getPid();
 
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
@@ -66,17 +66,17 @@ public class SurveyExamineController {
         //确认调查类型 查勘或案例
         Integer examineType = ExamineTypeEnum.EXPLORE.getId();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)){
+        if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY)) {
             examineType = ExamineTypeEnum.CASE.getId();
         }
         modelAndView.addObject("examineType", examineType);
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(planDetailsId);
-        if(surveyExamineInfo==null){
+        if (surveyExamineInfo == null) {
             surveyExamineTaskService.deleteTaskByPlanDetailsId(planDetailsId);//清空数据
         }
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
-        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
+        modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
@@ -100,7 +100,8 @@ public class SurveyExamineController {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<CustomSurveyExamineTask> customeExamineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId, null);
         List<SurveyExamineTaskVo> taskVos = surveyExamineTaskService.getSurveyExamineTaskVos(customeExamineTaskList);
-        bootstrapTableVo.setRows(CollectionUtils.isEmpty(taskVos) ? Lists.newArrayList() : taskVos);
+        taskVos = CollectionUtils.isEmpty(taskVos) ? Lists.newArrayList() : taskVos;
+        bootstrapTableVo.setRows(taskVos);
         bootstrapTableVo.setTotal((long) taskVos.size());
         return bootstrapTableVo;
     }
@@ -188,4 +189,6 @@ public class SurveyExamineController {
             return HttpResult.newErrorResult("获取调查信息by申报id异常");
         }
     }
+
+
 }

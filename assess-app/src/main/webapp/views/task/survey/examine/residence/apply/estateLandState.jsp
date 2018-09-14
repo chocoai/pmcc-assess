@@ -21,13 +21,20 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地用途<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地用途类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 landUse" name="landUse" required="required">
+                    <select class="form-control search-select select2 landUseType" name="landUseType" required="required">
                     </select>
                 </div>
             </div>
-
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地用途类别<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control search-select select2 landUseCategory" name="landUseCategory" required="required">
+                        <option>请先选择土地用途类型</option>
+                    </select>
+                </div>
+            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -36,12 +43,6 @@
                 </div>
             </div>
 
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
@@ -115,6 +116,13 @@
                     <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地形地势" required="required" name="topographicTerrain">
                 </div>
             </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
+                </div>
+            </div>
         </div>
     </form>
 </div>
@@ -123,14 +131,14 @@
         ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
         ContainerFunForInit.estate.push(estateLandState.prototype.init);//初始化方法写入容器
-        ContainerFunForInit.estate.push(estateLandState.prototype.select2Init);//初始化方法写入容器
     })
 </script>
 <script type="text/javascript">
     function estateLandState() {
 
     }
-    estateLandState.prototype.select2Init = function () {
+    //页面保存数据后 展示数据
+    estateLandState.prototype.saveShowData = function () {
         estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");
         estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");
     };
@@ -161,39 +169,29 @@
         return true;
     };
     estateLandState.prototype.init = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_use",
-            type: "get",
-            dataType: "json",
-            async:false,
-            data: {type: "DataDeveloper"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + EstateLandState.config().frm + " .landUse").size() > 0) {
-                            $("#" + EstateLandState.config().frm + " .landUse").html(option);
-                            $("#" + EstateLandState.config().frm + " .landUse").select2({minimumResultsForSearch: -1});//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}", function (html,data) {
+            if ($("#" + EstateLandState.config().frm + " .landUseType").size() > 0) {
+                $("#" + EstateLandState.config().frm + " .landUseType").html(html);
+                $("#" + EstateLandState.config().frm + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式
             }
         });
-
+        $("#" + EstateLandState.config().frm + " .landUseCategory").select2();//加载样式
+        $("#" + EstateLandState.config().frm + " .landUseType").change(function () {
+            var id = $("#" + EstateLandState.config().frm + " .landUseType").eq(1).val();
+            $("#" + EstateLandState.config().frm + " .landUseCategory").eq(0).remove();
+            AssessCommon.loadDataDicByPid(id,null,function (html,data) {
+                if ($("#" + EstateLandState.config().frm + " .landUseCategory").size() > 0) {
+                    $("#" + EstateLandState.config().frm + " .landUseCategory").html(html);
+                    $("#" + EstateLandState.config().frm + " .landUseCategory").select2();//加载样式
+                }
+            });
+        });
         $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_land_level",
+            url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
             type: "get",
             dataType: "json",
-            async:false,
-            data: {type: "DataDeveloper"},
+            async: false,
+            data: {province:"${projectInfo.province}",city:"${projectInfo.city}",district:"${projectInfo.district}"},
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
@@ -201,11 +199,11 @@
                     var option = "<option value=''>请选择</option>";
                     if (gradeNum > 0) {
                         for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
                         }
                         if ($("#" + EstateLandState.config().frm + " .landLevel").size() > 0) {
                             $("#" + EstateLandState.config().frm + " .landLevel").html(option);
-                            $("#" + EstateLandState.config().frm + " .landLevel").select2({minimumResultsForSearch: -1});//加载样式
+                            $("#" + EstateLandState.config().frm + " .landLevel").select2();//加载样式
                         }
                     }
                 }
@@ -214,6 +212,7 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
+        estateLandState.prototype.saveShowData();
     };
 
     (function ($) {
@@ -237,6 +236,7 @@
             getFormData: function () {
                 var data = formParams(estateLandState.config().frm);
                 data.declareId = $("#declareId").val();
+                data.planDetailsId = $("#planDetailsId").val();
                 data.examineType = $("#examineType").val();
                 var keyValueDto = {};
                 keyValueDto.key = $("#" + estateLandState.config().frm).find('[data-name="fieldName"]').val();

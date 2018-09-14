@@ -87,6 +87,7 @@
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/examineHouseIntelligent/getExamineHouseIntelligentList", cols, {
                     type: houseIntelligent.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

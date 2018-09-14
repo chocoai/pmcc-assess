@@ -356,183 +356,183 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueIsNull() {
-            addCriterion("assess_value is null");
+        public Criteria andConstructionProcesAssessValueIsNull() {
+            addCriterion("construction_proces_assess_value is null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueIsNotNull() {
-            addCriterion("assess_value is not null");
+        public Criteria andConstructionProcesAssessValueIsNotNull() {
+            addCriterion("construction_proces_assess_value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueEqualTo(BigDecimal value) {
-            addCriterion("assess_value =", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueEqualTo(BigDecimal value) {
+            addCriterion("construction_proces_assess_value =", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueNotEqualTo(BigDecimal value) {
-            addCriterion("assess_value <>", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueNotEqualTo(BigDecimal value) {
+            addCriterion("construction_proces_assess_value <>", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueGreaterThan(BigDecimal value) {
-            addCriterion("assess_value >", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueGreaterThan(BigDecimal value) {
+            addCriterion("construction_proces_assess_value >", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_value >=", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_proces_assess_value >=", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueLessThan(BigDecimal value) {
-            addCriterion("assess_value <", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueLessThan(BigDecimal value) {
+            addCriterion("construction_proces_assess_value <", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_value <=", value, "assessValue");
+        public Criteria andConstructionProcesAssessValueLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_proces_assess_value <=", value, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueIn(List<BigDecimal> values) {
-            addCriterion("assess_value in", values, "assessValue");
+        public Criteria andConstructionProcesAssessValueIn(List<BigDecimal> values) {
+            addCriterion("construction_proces_assess_value in", values, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueNotIn(List<BigDecimal> values) {
-            addCriterion("assess_value not in", values, "assessValue");
+        public Criteria andConstructionProcesAssessValueNotIn(List<BigDecimal> values) {
+            addCriterion("construction_proces_assess_value not in", values, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_value between", value1, value2, "assessValue");
+        public Criteria andConstructionProcesAssessValueBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_proces_assess_value between", value1, value2, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_value not between", value1, value2, "assessValue");
+        public Criteria andConstructionProcesAssessValueNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_proces_assess_value not between", value1, value2, "constructionProcesAssessValue");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueIsNull() {
-            addCriterion("evaluation_value is null");
+        public Criteria andEvaluationValueConstructionProjectIsNull() {
+            addCriterion("evaluation_value_construction_project is null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueIsNotNull() {
-            addCriterion("evaluation_value is not null");
+        public Criteria andEvaluationValueConstructionProjectIsNotNull() {
+            addCriterion("evaluation_value_construction_project is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value =", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project =", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueNotEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value <>", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectNotEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project <>", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueGreaterThan(BigDecimal value) {
-            addCriterion("evaluation_value >", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectGreaterThan(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project >", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value >=", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project >=", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueLessThan(BigDecimal value) {
-            addCriterion("evaluation_value <", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectLessThan(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project <", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value <=", value, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project <=", value, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value in", values, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectIn(List<BigDecimal> values) {
+            addCriterion("evaluation_value_construction_project in", values, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueNotIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value not in", values, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectNotIn(List<BigDecimal> values) {
+            addCriterion("evaluation_value_construction_project not in", values, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value between", value1, value2, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluation_value_construction_project between", value1, value2, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value not between", value1, value2, "evaluationValue");
+        public Criteria andEvaluationValueConstructionProjectNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluation_value_construction_project not between", value1, value2, "evaluationValueConstructionProject");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceIsNull() {
-            addCriterion("assess_value_difference is null");
+        public Criteria andEvaluationValueConstructionProjectCorrectIsNull() {
+            addCriterion("evaluation_value_construction_project_correct is null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceIsNotNull() {
-            addCriterion("assess_value_difference is not null");
+        public Criteria andEvaluationValueConstructionProjectCorrectIsNotNull() {
+            addCriterion("evaluation_value_construction_project_correct is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceEqualTo(BigDecimal value) {
-            addCriterion("assess_value_difference =", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct =", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceNotEqualTo(BigDecimal value) {
-            addCriterion("assess_value_difference <>", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectNotEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct <>", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceGreaterThan(BigDecimal value) {
-            addCriterion("assess_value_difference >", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectGreaterThan(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct >", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_value_difference >=", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct >=", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceLessThan(BigDecimal value) {
-            addCriterion("assess_value_difference <", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectLessThan(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct <", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_value_difference <=", value, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("evaluation_value_construction_project_correct <=", value, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceIn(List<BigDecimal> values) {
-            addCriterion("assess_value_difference in", values, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectIn(List<BigDecimal> values) {
+            addCriterion("evaluation_value_construction_project_correct in", values, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceNotIn(List<BigDecimal> values) {
-            addCriterion("assess_value_difference not in", values, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectNotIn(List<BigDecimal> values) {
+            addCriterion("evaluation_value_construction_project_correct not in", values, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_value_difference between", value1, value2, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluation_value_construction_project_correct between", value1, value2, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
-        public Criteria andAssessValueDifferenceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_value_difference not between", value1, value2, "assessValueDifference");
+        public Criteria andEvaluationValueConstructionProjectCorrectNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evaluation_value_construction_project_correct not between", value1, value2, "evaluationValueConstructionProjectCorrect");
             return (Criteria) this;
         }
 
@@ -663,6 +663,186 @@ public class MdCostConstructionExample {
 
         public Criteria andJsonContentNotBetween(String value1, String value2) {
             addCriterion("json_content not between", value1, value2, "jsonContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdIsNull() {
+            addCriterion("cost_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdIsNotNull() {
+            addCriterion("cost_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdEqualTo(Integer value) {
+            addCriterion("cost_id =", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotEqualTo(Integer value) {
+            addCriterion("cost_id <>", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdGreaterThan(Integer value) {
+            addCriterion("cost_id >", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("cost_id >=", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdLessThan(Integer value) {
+            addCriterion("cost_id <", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdLessThanOrEqualTo(Integer value) {
+            addCriterion("cost_id <=", value, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdIn(List<Integer> values) {
+            addCriterion("cost_id in", values, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotIn(List<Integer> values) {
+            addCriterion("cost_id not in", values, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdBetween(Integer value1, Integer value2) {
+            addCriterion("cost_id between", value1, value2, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("cost_id not between", value1, value2, "costId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdIsNull() {
+            addCriterion("engineering_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdIsNotNull() {
+            addCriterion("engineering_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdEqualTo(Integer value) {
+            addCriterion("engineering_id =", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotEqualTo(Integer value) {
+            addCriterion("engineering_id <>", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdGreaterThan(Integer value) {
+            addCriterion("engineering_id >", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("engineering_id >=", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdLessThan(Integer value) {
+            addCriterion("engineering_id <", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdLessThanOrEqualTo(Integer value) {
+            addCriterion("engineering_id <=", value, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdIn(List<Integer> values) {
+            addCriterion("engineering_id in", values, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotIn(List<Integer> values) {
+            addCriterion("engineering_id not in", values, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdBetween(Integer value1, Integer value2) {
+            addCriterion("engineering_id between", value1, value2, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEngineeringIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("engineering_id not between", value1, value2, "engineeringId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
             return (Criteria) this;
         }
     }

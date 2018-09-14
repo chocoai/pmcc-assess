@@ -1,110 +1,112 @@
 package com.copower.pmcc.assess.service.event.project;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.constant.AssessTableNameConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyCaseStudyDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyDetail;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyDetailService;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-5-21.
  */
 @Component
 public class SurveyCaseStudyEvent extends ProjectTaskEvent {
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
+
     @Autowired
     private SurveyCaseStudyService surveyCaseStudyService;
     @Autowired
-    private SurveyCaseStudyDetailService surveyCaseStudyDetailService;
-    @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
-    private SurveyCaseStudyDetailDao surveyCaseStudyDetailDao;
-    @Autowired
-    private FormConfigureDao formConfigureDao;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private FtpUtilsExtense ftpUtilsExtense;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);
-
-        //现场查勘 如果关联了多个权证信息 则自动更新其它权证的查勘信息
-        try {
-            SurveyCaseStudy surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(processExecution.getProcessInstanceId());
-            if (surveyCaseStudy == null)
-                return;
-            List<SurveyCaseStudyDetail> detailList = surveyCaseStudyDetailService.getDetailList(surveyCaseStudy.getPlanDetailsId());
-            if (CollectionUtils.isNotEmpty(detailList)) {
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY);
-                if(projectPhase==null) return;
-                for (SurveyCaseStudyDetail surveyCaseStudyDetail : detailList) {
-                    if (StringUtils.isNotBlank(surveyCaseStudyDetail.getCorrelationCard())) {
-                        String belongWarrant = surveyCaseStudyDetail.getCorrelationCard();
-                        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(belongWarrant));
-                        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByDeclareId(integers, projectPhase.getId());//待调整
-                        if (CollectionUtils.isNotEmpty(projectPlanDetails)) {
-                            Map<String, Object> objectMap = formConfigureDao.getObjectSingle(surveyCaseStudyDetail.getDynamicTableName(), surveyCaseStudyDetail.getDynamicTableId());
-                            objectMap.remove("id");
-
-                            //找出附件信息
-                            SysAttachmentDto queryParam = new SysAttachmentDto();
-                            queryParam.setTableId(surveyCaseStudyDetail.getId());
-                            queryParam.setTableName(AssessTableNameConstant.SURVEY_CASE_STUDY_DETAIL);
-                            List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(queryParam);
-
-                            for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-                                //先将动态表单数据复制
-                                Integer id = formConfigureDao.addObject(surveyCaseStudyDetail.getDynamicTableName(), objectMap);
-                                surveyCaseStudyDetail.setDynamicTableId(id);
-                                surveyCaseStudyDetail.setPlanDetailsId(projectPlanDetail.getId());
-                                surveyCaseStudyDetail.setCorrelationCard(null);
-                                surveyCaseStudyDetailDao.save(surveyCaseStudyDetail);
-
-                                if (CollectionUtils.isNotEmpty(attachmentList)) {
-                                    for (SysAttachmentDto baseAttachment : attachmentList) {
-                                        baseAttachment.setTableId(surveyCaseStudyDetail.getId());
-                                        //拷贝真实文件
-                                        String filePath = baseAttachmentService.createFTPBasePath(SurveyCaseStudyDetail.class.getSimpleName(),
-                                                DateUtils.formatNowToYMD(), processControllerComponent.getThisUser());
-                                        ftpUtilsExtense.copyFile(baseAttachment.getFtpFileName(), baseAttachment.getFilePath(), baseAttachment.getFtpFileName(), filePath);
-                                        baseAttachment.setFilePath(filePath);
-                                        baseAttachmentService.addAttachment(baseAttachment);
-                                    }
-                                }
-                            }
-                        }
-                    }
+        SurveyCaseStudy surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(processExecution.getProcessInstanceId());
+        String jsonContent = surveyCaseStudy.getJsonContent();
+        JSONArray jsonArray = JSON.parseArray(jsonContent);
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if (Boolean.TRUE.equals(jsonObject.getBoolean("isChecked"))) {
+                try {
+                    synchronize(surveyCaseStudy.getPlanDetailsId(), jsonObject.getInteger("key"));
+                } catch (BusinessException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+    }
+
+    /**
+     * 数据同步
+     *
+     * @param declareId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void synchronize(Integer currPlanDetailsId, Integer declareId) throws BusinessException {
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setDeclareRecordId(declareId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isEmpty(planDetailsList)) return;
+        ProjectPlanDetails projectPlanDetails = null;//找到该证下的任务，为案例调查的任务
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY);
+        for (ProjectPlanDetails details : planDetailsList) {
+            if (details.getProjectPhaseId() != null && details.getProjectPhaseId().equals(projectPhase.getId())) {
+                projectPlanDetails = details;
+                break;
+            }
+        }
+        if (projectPlanDetails == null) return;
+        List<ProjectPlanDetails> listRecursion = projectPlanDetailsService.getPlanDetailsListRecursion(projectPlanDetails.getId(), false);
+        if (CollectionUtils.isNotEmpty(listRecursion)) return;
+
+        List<ProjectPlanDetails> childrenPlanDetailsList = projectPlanDetailsService.getChildrenPlanDetailsList(currPlanDetailsId);
+        if (CollectionUtils.isEmpty(childrenPlanDetailsList)) return;
+        List<String> tableList = surveyCommonService.getTableList();
+        if (CollectionUtils.isEmpty(tableList)) return;
+        StringBuilder stringBuilder = new StringBuilder();
+        int i=1;
+        for (ProjectPlanDetails details : childrenPlanDetailsList) {
+            ProjectPlanDetails casePlanDetails = new ProjectPlanDetails();
+            BeanUtils.copyProperties(projectPlanDetails,casePlanDetails);
+            casePlanDetails.setId(null);
+            casePlanDetails.setPid(projectPlanDetails.getId());
+            casePlanDetails.setSorting(i);
+            casePlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+            casePlanDetails.setProjectPhaseName(details.getProjectPhaseName());
+            projectPlanDetailsService.saveProjectPlanDetails(casePlanDetails);
+            //同步examine表数据
+            for (String tableName : tableList) {
+                stringBuilder.append(surveyCommonService.getSynchronizeSql(tableName, details.getId(), casePlanDetails.getId(), declareId));
+            }
+            i++;
+        }
+        jdbcTemplate.execute(stringBuilder.toString());
     }
 }

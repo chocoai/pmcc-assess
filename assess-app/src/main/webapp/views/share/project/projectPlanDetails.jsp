@@ -11,25 +11,11 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2> ${projectPlanDetails.projectPhaseName}工作内容</h2>
+        <h2> ${projectPlanDetails.projectPhaseName}-工作内容</h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
         <div class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    工作内容
-                </label>
-                <div class="col-sm-7">
-                    <label class="form-control">${projectPlanDetails.projectPhaseName}</label>
-                </div>
-                <label class="col-sm-1 control-label">
-                    权重占比
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control">${projectPlanDetails.proportion}</label>
-                </div>
-            </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">
                     开始时间
@@ -102,14 +88,11 @@
             </c:if>
         </div>
     </div>
-
 </div>
-<%--<%@include file="/views/share/model_employee_user_accounts.jsp" %>--%>
 <script type="application/javascript">
 
-
     //提交标识，业务数据JSON串，提交成果描述，实际工时,工作成果选择复核人
-    function submitToServer(data, taskRemarks, actualHours) {
+    function submitToServer(data) {
         var nextApproval = "";
         if ($("#nextApproval").length > 0) {
             nextApproval = $("#nextApproval").val();
@@ -120,8 +103,7 @@
             data: {
                 formData: data,
                 responsibilityId: "${responsibilityId}",
-                taskRemarks: taskRemarks,
-                actualHours: actualHours,
+                actualHours: mainObj.getDiffHours(),
                 projectDetailsId:${projectPlanDetails.id},
                 nextApproval: nextApproval
             },
@@ -144,8 +126,9 @@
             }
         });
     }
+
     //提交标识，业务数据JSON串，提交成果描述，实际工时
-    function submitEditToServer(data, taskRemarks, actualHours) {
+    function submitEditToServer(data) {
         var nextApproval = "";
         if ($("#nextApproval").length > 0) {
             nextApproval = $("#nextApproval").val();
@@ -154,7 +137,6 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/ProjectTask/submitTaskEdit",
             data: {
-
                 boxId: "${boxId}",
                 processInsId: "${processInsId}",
                 taskId: "${taskId}",
@@ -164,8 +146,7 @@
                 StepCount: "${StepCount}",
                 viewUrl: "${viewUrl}",
                 formData: data,
-                taskRemarks: taskRemarks,
-                actualHours: actualHours,
+                actualHours: mainObj.getDiffHours(),
                 projectId: "${projectId}",
                 workStageId: "${projectPhase.workStageId}",
                 nextApproval: nextApproval
@@ -196,7 +177,7 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formParams("frm_approval");
+        var data = formApproval.getFormData();
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
         Loading.progressShow();

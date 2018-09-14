@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectClose;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.service.project.ProjectCloseService;
+import com.copower.pmcc.assess.service.project.manage.ProjectCloseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;

@@ -13,7 +13,7 @@ public class AssessDataDicKeyConstant {
      */
     public static final String ENTRUSTMENT_PURPOSE = "data.entrustment.purpose";//委托目的
     public static final String EVALUATION_METHOD = "data.evaluation.method";//评估方法
-    public static final String BUILDING_NEW_RATE_USE = "databuilding.new.rate.use";//建筑成新率用途
+    public static final String BUILDING_NEW_RATE_USE = "data.building.new.rate.use";//建筑成新率用途
     public static final String EARLYWARNING_TYPE = "data.earlywarning.type";  //预警类型
     public static final String EARLYWARNING_MODE = "data.earlywarning.mode";  //预警方式
 
@@ -35,19 +35,22 @@ public class AssessDataDicKeyConstant {
     /*
      * 项目查勘
      */
-    public static final String CHECK_CONTENT = "check.content"; //清查内容
-    public static final String OTHER_RIGHT_TYPE = "other.right.type";   //他权类型
-    public static final String CASE_TYPE = "case.type";  //案例类型
-    public static final String CASE_INFO_SOURCE = "case.info.source";  //案例来源
-    
-    /*
-     * 房产查勘案例
-     */
+    public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
+    public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
 
     /**
      * 评估方法
      */
     public static final String MD_MARKET_COMPARE = "md.market.compare"; //市场比较法
     public static final String MD_INCOME = "md.income"; //收益法
+    public static final String MD_COST = "md.cost"; //成本法
+    public static final String MD_HYPOTHESIS = "md.hypothesis"; //假设开发法
+
+    /*
+     * 测算方法配置
+     */
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_INCOME = "md.income.self.support.cost.type.income"; //收入类
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_COST = "md.income.self.support.cost.type.cost"; //成本类
+    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_EXPENSE = "md.income.self.support.cost.type.expense"; //费用类
 
 }

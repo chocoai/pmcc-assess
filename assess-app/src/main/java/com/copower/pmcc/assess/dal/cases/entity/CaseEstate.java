@@ -6,15 +6,23 @@ import java.util.Date;
 public class CaseEstate {
     private Integer id;
 
+    private String province;
+
+    private String city;
+
+    private String district;
+
     private Integer blockId;
 
     private Integer developerId;
 
     private String name;
 
-    private Integer street;
+    private String street;
 
     private String number;
+
+    private Integer landLevel;
 
     private String attachNumber;
 
@@ -26,7 +34,17 @@ public class CaseEstate {
 
     private String greeningRate;
 
+    private Integer buildingNumber;
+
+    private String position;
+
     private String description;
+
+    private String averagePrice;
+
+    private String priceRange;
+
+    private Integer version;
 
     private String creator;
 
@@ -40,6 +58,30 @@ public class CaseEstate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
     }
 
     public Integer getBlockId() {
@@ -66,12 +108,12 @@ public class CaseEstate {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getStreet() {
+    public String getStreet() {
         return street;
     }
 
-    public void setStreet(Integer street) {
-        this.street = street;
+    public void setStreet(String street) {
+        this.street = street == null ? null : street.trim();
     }
 
     public String getNumber() {
@@ -80,6 +122,14 @@ public class CaseEstate {
 
     public void setNumber(String number) {
         this.number = number == null ? null : number.trim();
+    }
+
+    public Integer getLandLevel() {
+        return landLevel;
+    }
+
+    public void setLandLevel(Integer landLevel) {
+        this.landLevel = landLevel;
     }
 
     public String getAttachNumber() {
@@ -122,12 +172,52 @@ public class CaseEstate {
         this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
+    public Integer getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(Integer buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position == null ? null : position.trim();
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice == null ? null : averagePrice.trim();
+    }
+
+    public String getPriceRange() {
+        return priceRange;
+    }
+
+    public void setPriceRange(String priceRange) {
+        this.priceRange = priceRange == null ? null : priceRange.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getCreator() {

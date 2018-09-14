@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseTradingSellDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingSell;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseTradingSellAndLeaseVo;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,12 +75,10 @@ public class ExamineHouseTradingSellService {
         ExamineHouseTradingSellAndLeaseVo vo = new ExamineHouseTradingSellAndLeaseVo();
         BeanUtils.copyProperties(examineHouseTradingSell,vo);
         if (examineHouseTradingSell.getInstalmentPeriodStart() != null){
-            Date date = examineHouseTradingSell.getInstalmentPeriodStart();
-            vo.setInstalmentPeriodStartName(String.format("%d-%d-%d",date.getYear(),date.getMonth(),date.getDay()));
+            vo.setInstalmentPeriodStartName(DateHelp.getDateHelp().printDate(examineHouseTradingSell.getInstalmentPeriodStart()));
         }
         if (examineHouseTradingSell.getInstalmentPeriodEnd() != null){
-            Date date = examineHouseTradingSell.getInstalmentPeriodEnd();
-            vo.setInstalmentPeriodEndName(String.format("%d-%d-%d",date.getYear(),date.getMonth(),date.getDay()));
+            vo.setInstalmentPeriodEndName(DateHelp.getDateHelp().printDate(examineHouseTradingSell.getInstalmentPeriodEnd()));
         }
         return vo;
     }

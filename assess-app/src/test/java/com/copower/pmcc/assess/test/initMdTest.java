@@ -12,11 +12,14 @@ import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.google.common.collect.Lists;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-7-23.
@@ -30,6 +33,36 @@ public class initMdTest {
     private MdMarketCompareItemDao mdMarketCompareItemDao;
     @Autowired
     private MdMarketCompareFieldDao mdMarketCompareFieldDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+
+    @org.junit.Test
+    public void synchronize() {
+        String sql = getSynchronizeSql("tb_examine_block", 9371, 9372);
+        System.out.print(sql);
+    }
+
+    private String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId) {
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='pmcc_assess'", tableName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        //1.去除id 评出sql前半截  拼出sql后半截
+        for (Map<String, Object> map : mapList) {
+            if (map.get("column_name").equals("id")) {
+                mapList.remove(map);break;
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : mapList) {
+            stringBuilder.append(map.get("column_name")).append(",");
+        }
+        String columnString = stringBuilder.toString();
+        columnString = columnString.replaceAll(",$", "");
+
+        String resultString = MessageFormat.format("INSERT into {0}({1}) SELECT %s FROM {0} where plan_details_id={2}", tableName, columnString, String.valueOf(oldPlanDetailsId));
+        resultString = String.format(resultString, columnString.replace("plan_details_id", String.valueOf(newPlanDetailsId)));
+        return resultString;
+    }
 
 
     //初始化测试所需要的数据
@@ -230,7 +263,7 @@ public class initMdTest {
     }
 
     @org.junit.Test
-    public void initTask(){
+    public void initTask() {
 
     }
 }

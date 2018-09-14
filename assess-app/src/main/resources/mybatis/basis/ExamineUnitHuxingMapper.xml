@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="house_layout" property="houseLayout" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
@@ -12,6 +13,9 @@
     <result column="span_number" property="spanNumber" jdbcType="DECIMAL" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -74,8 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, examine_type, house_layout, area, span_length, span_width, span_number, 
-    description, creator, gmt_created, gmt_modified
+    id, declare_id, plan_details_id, examine_type, house_layout, area, span_length, span_width, 
+    span_number, description, creator, house_category, name, orientation, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxingExample" >
     select
@@ -111,14 +116,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_examine_unit_huxing (declare_id, examine_type, house_layout, 
-      area, span_length, span_width, 
-      span_number, description, creator, 
-      gmt_created, gmt_modified)
-    values (#{declareId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, #{houseLayout,jdbcType=INTEGER}, 
-      #{area,jdbcType=DECIMAL}, #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, 
-      #{spanNumber,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_examine_unit_huxing (declare_id, plan_details_id, examine_type, 
+      house_layout, area, span_length, 
+      span_width, span_number, description, 
+      creator, house_category, name, 
+      orientation, gmt_created, gmt_modified
+      )
+    values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
+      #{houseLayout,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{spanLength,jdbcType=DECIMAL}, 
+      #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{orientation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,6 +137,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         declare_id,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
       </if>
       <if test="examineType != null" >
         examine_type,
@@ -153,6 +165,15 @@
       <if test="creator != null" >
         creator,
       </if>
+      <if test="houseCategory != null" >
+        house_category,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
       <if test="gmtCreated != null" >
         gmt_created,
       </if>
@@ -163,6 +184,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="declareId != null" >
         #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
@@ -188,6 +212,15 @@
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="houseCategory != null" >
+        #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
+      </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -210,6 +243,9 @@
       </if>
       <if test="record.declareId != null" >
         declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
@@ -235,6 +271,15 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
+      <if test="record.houseCategory != null" >
+        house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientation != null" >
+        orientation = #{record.orientation,jdbcType=VARCHAR},
+      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -250,6 +295,7 @@
     update tb_examine_unit_huxing
     set id = #{record.id,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
       house_layout = #{record.houseLayout,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
@@ -258,6 +304,9 @@
       span_number = #{record.spanNumber,jdbcType=DECIMAL},
       description = #{record.description,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
+      house_category = #{record.houseCategory,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -269,6 +318,9 @@
     <set >
       <if test="declareId != null" >
         declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
@@ -294,6 +346,15 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="houseCategory != null" >
+        house_category = #{houseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -306,6 +367,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineUnitHuxing" >
     update tb_examine_unit_huxing
     set declare_id = #{declareId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
       house_layout = #{houseLayout,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
@@ -314,6 +376,9 @@
       span_number = #{spanNumber,jdbcType=DECIMAL},
       description = #{description,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
+      house_category = #{houseCategory,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

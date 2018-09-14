@@ -10,15 +10,21 @@ public class DeclareRecord {
 
     private Integer projectClassifyId;
 
-    private String name;
-
-    private String ownership;
-
     private String province;
 
     private String city;
 
     private String district;
+
+    private String name;
+
+    private String ownership;
+
+    private String seat;
+
+    private Integer certUse;
+
+    private Integer practicalUse;
 
     private Integer areaGroupId;
 
@@ -62,22 +68,6 @@ public class DeclareRecord {
         this.projectClassifyId = projectClassifyId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getOwnership() {
-        return ownership;
-    }
-
-    public void setOwnership(String ownership) {
-        this.ownership = ownership == null ? null : ownership.trim();
-    }
-
     public String getProvince() {
         return province;
     }
@@ -100,6 +90,46 @@ public class DeclareRecord {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getOwnership() {
+        return ownership;
+    }
+
+    public void setOwnership(String ownership) {
+        this.ownership = ownership == null ? null : ownership.trim();
+    }
+
+    public String getSeat() {
+        return seat;
+    }
+
+    public void setSeat(String seat) {
+        this.seat = seat == null ? null : seat.trim();
+    }
+
+    public Integer getCertUse() {
+        return certUse;
+    }
+
+    public void setCertUse(Integer certUse) {
+        this.certUse = certUse;
+    }
+
+    public Integer getPracticalUse() {
+        return practicalUse;
+    }
+
+    public void setPracticalUse(Integer practicalUse) {
+        this.practicalUse = practicalUse;
     }
 
     public Integer getAreaGroupId() {

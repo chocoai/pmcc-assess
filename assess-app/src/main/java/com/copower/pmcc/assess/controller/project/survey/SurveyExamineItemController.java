@@ -15,9 +15,9 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.project.survey.SurveyExamineItemService;
+import com.copower.pmcc.assess.service.project.survey.SurveyExamineTaskService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +50,7 @@ public class SurveyExamineItemController {
     @Autowired
     private SurveyExamineItemService surveyExamineItemService;
     @Autowired
-    private CommonService commonService;
+    private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -93,7 +93,7 @@ public class SurveyExamineItemController {
         modelAndView.addObject("buildingTaskList", mapTaskList.get(AssessExamineTaskConstant.BUILDING));
         modelAndView.addObject("unitTaskList", mapTaskList.get(AssessExamineTaskConstant.UNIT));
         modelAndView.addObject("houseTaskList", mapTaskList.get(AssessExamineTaskConstant.HOUSE));
-        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(declareRecord.getId(), examineTypeEnum));
+        modelAndView.addObject("surveyExamineDataInfoVo",surveyCommonService.getExamineDataInfoVo(declareRecord.getId(),projectPlanDetails.getPid(), examineTypeEnum));
 
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
@@ -105,7 +105,7 @@ public class SurveyExamineItemController {
     @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
     public HttpResult saveExamineDataInfo(String formData) {
         try {
-            surveyExamineItemService.saveExamineDataInfo(formData);
+            surveyExamineTaskService.saveExamineDataInfo(formData);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存调查信息", e);

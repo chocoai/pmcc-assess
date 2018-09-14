@@ -441,7 +441,7 @@
             var url = "";
             if ("${empty processInsId?"0":processInsId}" != "0") {
                 url = "${pageContext.request.contextPath}/csrProjectInfo/projectEditSubmit";
-                var approvalData = formParams("frm_approval");
+                var approvalData = formApproval.getFormData();
                 data = $.extend({}, approvalData, data);
             } else {
                 url = "${pageContext.request.contextPath}/csrProjectInfo/projectApplySubmit";

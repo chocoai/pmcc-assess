@@ -355,133 +355,133 @@ public class SurveyCaseStudyExample {
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeIsNull() {
-            addCriterion("examine_form_type is null");
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeIsNotNull() {
-            addCriterion("examine_form_type is not null");
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeEqualTo(String value) {
-            addCriterion("examine_form_type =", value, "examineFormType");
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeNotEqualTo(String value) {
-            addCriterion("examine_form_type <>", value, "examineFormType");
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeGreaterThan(String value) {
-            addCriterion("examine_form_type >", value, "examineFormType");
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("examine_form_type >=", value, "examineFormType");
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeLessThan(String value) {
-            addCriterion("examine_form_type <", value, "examineFormType");
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeLessThanOrEqualTo(String value) {
-            addCriterion("examine_form_type <=", value, "examineFormType");
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeLike(String value) {
-            addCriterion("examine_form_type like", value, "examineFormType");
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeNotLike(String value) {
-            addCriterion("examine_form_type not like", value, "examineFormType");
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeIn(List<String> values) {
-            addCriterion("examine_form_type in", values, "examineFormType");
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeNotIn(List<String> values) {
-            addCriterion("examine_form_type not in", values, "examineFormType");
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeBetween(String value1, String value2) {
-            addCriterion("examine_form_type between", value1, value2, "examineFormType");
+        public Criteria andJsonContentIsNull() {
+            addCriterion("json_content is null");
             return (Criteria) this;
         }
 
-        public Criteria andExamineFormTypeNotBetween(String value1, String value2) {
-            addCriterion("examine_form_type not between", value1, value2, "examineFormType");
+        public Criteria andJsonContentIsNotNull() {
+            addCriterion("json_content is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdIsNull() {
-            addCriterion("declare_record_id is null");
+        public Criteria andJsonContentEqualTo(String value) {
+            addCriterion("json_content =", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdIsNotNull() {
-            addCriterion("declare_record_id is not null");
+        public Criteria andJsonContentNotEqualTo(String value) {
+            addCriterion("json_content <>", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdEqualTo(Integer value) {
-            addCriterion("declare_record_id =", value, "declareRecordId");
+        public Criteria andJsonContentGreaterThan(String value) {
+            addCriterion("json_content >", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdNotEqualTo(Integer value) {
-            addCriterion("declare_record_id <>", value, "declareRecordId");
+        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
+            addCriterion("json_content >=", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdGreaterThan(Integer value) {
-            addCriterion("declare_record_id >", value, "declareRecordId");
+        public Criteria andJsonContentLessThan(String value) {
+            addCriterion("json_content <", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("declare_record_id >=", value, "declareRecordId");
+        public Criteria andJsonContentLessThanOrEqualTo(String value) {
+            addCriterion("json_content <=", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdLessThan(Integer value) {
-            addCriterion("declare_record_id <", value, "declareRecordId");
+        public Criteria andJsonContentLike(String value) {
+            addCriterion("json_content like", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdLessThanOrEqualTo(Integer value) {
-            addCriterion("declare_record_id <=", value, "declareRecordId");
+        public Criteria andJsonContentNotLike(String value) {
+            addCriterion("json_content not like", value, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdIn(List<Integer> values) {
-            addCriterion("declare_record_id in", values, "declareRecordId");
+        public Criteria andJsonContentIn(List<String> values) {
+            addCriterion("json_content in", values, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdNotIn(List<Integer> values) {
-            addCriterion("declare_record_id not in", values, "declareRecordId");
+        public Criteria andJsonContentNotIn(List<String> values) {
+            addCriterion("json_content not in", values, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdBetween(Integer value1, Integer value2) {
-            addCriterion("declare_record_id between", value1, value2, "declareRecordId");
+        public Criteria andJsonContentBetween(String value1, String value2) {
+            addCriterion("json_content between", value1, value2, "jsonContent");
             return (Criteria) this;
         }
 
-        public Criteria andDeclareRecordIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("declare_record_id not between", value1, value2, "declareRecordId");
+        public Criteria andJsonContentNotBetween(String value1, String value2) {
+            addCriterion("json_content not between", value1, value2, "jsonContent");
             return (Criteria) this;
         }
 

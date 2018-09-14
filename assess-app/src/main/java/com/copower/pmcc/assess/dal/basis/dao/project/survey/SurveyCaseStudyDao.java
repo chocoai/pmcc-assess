@@ -2,7 +2,10 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyCaseStudyMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,25 +20,24 @@ public class SurveyCaseStudyDao {
     @Autowired
     private SurveyCaseStudyMapper surveyCaseStudyMapper;
 
-    public boolean update(SurveyCaseStudy surveyCaseStudyDto) {
-        int i = surveyCaseStudyMapper.updateByPrimaryKeySelective(surveyCaseStudyDto);
+    public boolean updateSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        int i = surveyCaseStudyMapper.updateByPrimaryKeySelective(surveyCaseStudy);
         return i > 0;
     }
 
-    public boolean save(SurveyCaseStudy surveyCaseStudyDto) {
-        int i = surveyCaseStudyMapper.insertSelective(surveyCaseStudyDto);
+    public boolean addSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
+        int i = surveyCaseStudyMapper.insertSelective(surveyCaseStudy);
         return i > 0;
     }
 
-    public boolean delete(Integer id) {
+    public boolean deleteSurveyCaseStudy(Integer id) {
         int i = surveyCaseStudyMapper.deleteByPrimaryKey(id);
         return i > 0;
     }
 
-    public SurveyCaseStudy getSurveyCaseStudy(String processInsId) {
+    public SurveyCaseStudy getSurveyCaseStudy(SurveyCaseStudy surveyCaseStudy) {
         SurveyCaseStudyExample example = new SurveyCaseStudyExample();
-        example.createCriteria().andProcessInsIdEqualTo(processInsId);
-        example.setOrderByClause(" id ASC");
+        MybatisUtils.convertObj2Example(surveyCaseStudy,example);
         List<SurveyCaseStudy> surveyCaseStudys = surveyCaseStudyMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(surveyCaseStudys)){
             return surveyCaseStudys.get(0);
@@ -43,9 +45,14 @@ public class SurveyCaseStudyDao {
         return null;
     }
 
-    public List<SurveyCaseStudy> getByDeclareRecordId(Integer declareRecordId) {
+    public SurveyCaseStudy getSurveyCaseStudy(String processInsId) {
         SurveyCaseStudyExample example = new SurveyCaseStudyExample();
-        example.createCriteria().andDeclareRecordIdEqualTo(declareRecordId);
-        return surveyCaseStudyMapper.selectByExample(example);
+        example.createCriteria().andProcessInsIdEqualTo(processInsId);
+        List<SurveyCaseStudy> surveyCaseStudys = surveyCaseStudyMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(surveyCaseStudys)){
+            return surveyCaseStudys.get(0);
+        }
+        return null;
     }
+
 }

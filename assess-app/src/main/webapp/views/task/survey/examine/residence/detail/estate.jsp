@@ -9,24 +9,24 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required
+                <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" readonly="readonly"
                        value="${surveyExamineDataInfoVo.examineEstateVo.name}" name="name" class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 developerId" name="developerId" required="required">
-                </select>
+                <input type="text"  placeholder="楼盘方位" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.position}" name="position" class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">街道</label>
+            <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="街道"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
+                <input type="text" data-rule-maxlength="100" placeholder="土地级别" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.landLevelName}" name="landLevelName" class="form-control">
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">编号</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="编号(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="编号(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.number}" name="number" class="form-control">
             </div>
         </div>
@@ -43,27 +43,27 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">附号</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="附号(请输入数字)"
+                <input type="text" data-rule-maxlength="100" readonly="readonly" data-rule-number='true' placeholder="附号(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.attachNumber}" name="attachNumber"
                        class="form-control">
             </div>
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">建筑面积</label>
+            <label class="col-sm-1 control-label">街道</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea"
-                       class="form-control">
+                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
             </div>
         </div>
+
     </div>
 
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">占地面积</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="占地面积(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="占地面积(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.coverAnArea}" name="coverAnArea"
                        class="form-control">
             </div>
@@ -72,7 +72,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">容积率</label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="容积率(请输入数字)"
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="容积率(请输入数字)"
                        value="${surveyExamineDataInfoVo.examineEstateVo.volumetricRate}" name="volumetricRate"
                        class="form-control">
             </div>
@@ -81,7 +81,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">绿化率<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="绿化率(请输入数字)" required
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="绿化率(请输入数字)" required
                        value="${surveyExamineDataInfoVo.examineEstateVo.greeningRate}" name="greeningRate"
                        class="form-control">
             </div>
@@ -93,7 +93,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" required="required" name="description" placeholder="楼盘概况">
+                <textarea class="form-control" readonly="readonly" required="required" name="description" placeholder="楼盘概况">
                     ${surveyExamineDataInfoVo.examineEstateVo.description}
                 </textarea>
             </div>
@@ -104,9 +104,44 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">总栋数<span class="symbol required"></span></label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 totalBuildingType" name="totalBuildingType"
-                        required="required">
-                </select>
+                <input type="text" readonly="readonly"  placeholder="总栋数"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.buildingNumber}" name="buildingNumber"
+                       class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" placeholder="开发商" readonly="readonly"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.developerName}" name="developerName" class="form-control">
+            </div>
+        </div>
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">建筑面积</label>
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly" data-rule-maxlength="100" data-rule-number='true' placeholder="建筑面积(请输入数字)"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.floorArea}" name="floorArea"
+                       class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">均价<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" readonly="readonly" placeholder="均价(请输入数字)"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.averagePrice}" name="averagePrice" required="required"
+                       class="form-control">
+            </div>
+        </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">价格区间<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" placeholder="价格区间"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.priceRange}" name="priceRange" readonly="readonly"
+                       class="form-control">
             </div>
         </div>
     </div>
@@ -214,95 +249,12 @@
     })();
 
     var estate = Object.create(config_estate);
+
     estate.init = function () {
-        estate.select2LoadData();
-        estate.select2Init();
         estate.showFiles();
-        $("#" + estate.getFrm() + " :input").attr("readonly","readonly");
     };
-    //必须在 select2LoadData 之后
-    estate.select2Init = function () {
-        estate.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.developerId}", "developerId");
-        estate.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateVo.totalBuildingType}", "totalBuildingType");
-    };
-    estate.select2InitMethodWrite = function (data, name) {
-        if (estate.select2IsNotNull(data)) {
-            if (estate.select2IsNotNull(name)) {
-                $("#" + estate.getFrm() + " ." + name).val(data).trigger("change");
-            }
-        } else {
-            $("#" + estate.getFrm() + " ." + name).val(null).trigger("change");
-        }
-    };
-    estate.select2IsNotNull = function (data) {
-        if (data == null) {
-            return false;
-        }
-        if (data == '') {
-            return false;
-        }
-        if (data == "") {
-            return false;
-        }
-        if (data == 0) {
-            return false;
-        }
-        return true;
-    };
-    estate.select2LoadData = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/estate_total_building_type",
-            type: "get",
-            dataType: "json",
-            async: false,
-            data: {type: null},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + estate.getFrm() + " .totalBuildingType").size() > 0) {
-                            $("#" + estate.getFrm() + " .totalBuildingType").html(option);
-                            $("#" + estate.getFrm() + " .totalBuildingType").select2();//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-        $.ajax({
-            url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
-            type: "get",
-            dataType: "json",
-            async: false,
-            data: {type: "DataDeveloper"},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var gradeNum = data.length;
-                    var option = "<option value=''>请选择</option>";
-                    if (gradeNum > 0) {
-                        for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        if ($("#" + estate.getFrm() + " .developerId").size() > 0) {
-                            $("#" + estate.getFrm() + " .developerId").html(option);
-                            $("#" + estate.getFrm() + " .developerId").select2();//加载样式
-                        }
-                    }
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
-    };
+
+
     estate.showFiles = function () {
         FileUtils.getFileShows({
             target: estate.getFilePlanTotal(),
@@ -374,7 +326,7 @@
 
 
     $(function () {
-        // estate.init();
+       estate.init();
     });
 </script>
 

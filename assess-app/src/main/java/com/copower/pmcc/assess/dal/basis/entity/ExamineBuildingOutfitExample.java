@@ -225,6 +225,66 @@ public class ExamineBuildingOutfitExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andExamineTypeIsNull() {
             addCriterion("examine_type is null");
             return (Criteria) this;
@@ -772,6 +832,76 @@ public class ExamineBuildingOutfitExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberIsNull() {
+            addCriterion("build_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberIsNotNull() {
+            addCriterion("build_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberEqualTo(String value) {
+            addCriterion("build_number =", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotEqualTo(String value) {
+            addCriterion("build_number <>", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberGreaterThan(String value) {
+            addCriterion("build_number >", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("build_number >=", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLessThan(String value) {
+            addCriterion("build_number <", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLessThanOrEqualTo(String value) {
+            addCriterion("build_number <=", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberLike(String value) {
+            addCriterion("build_number like", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotLike(String value) {
+            addCriterion("build_number not like", value, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberIn(List<String> values) {
+            addCriterion("build_number in", values, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotIn(List<String> values) {
+            addCriterion("build_number not in", values, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberBetween(String value1, String value2) {
+            addCriterion("build_number between", value1, value2, "buildNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildNumberNotBetween(String value1, String value2) {
+            addCriterion("build_number not between", value1, value2, "buildNumber");
             return (Criteria) this;
         }
     }

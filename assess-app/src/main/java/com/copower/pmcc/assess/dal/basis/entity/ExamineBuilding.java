@@ -8,6 +8,8 @@ public class ExamineBuilding {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private Integer builderId;
@@ -54,13 +56,17 @@ public class ExamineBuilding {
 
     private Integer buildingStructure;
 
+    private Integer buildingStructurePid;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
 
-    private Integer buildingstructurepid;
+    private String jsonContent;
+
+    private String identifier;
 
     public Integer getId() {
         return id;
@@ -76,6 +82,14 @@ public class ExamineBuilding {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -262,6 +276,14 @@ public class ExamineBuilding {
         this.buildingStructure = buildingStructure;
     }
 
+    public Integer getBuildingStructurePid() {
+        return buildingStructurePid;
+    }
+
+    public void setBuildingStructurePid(Integer buildingStructurePid) {
+        this.buildingStructurePid = buildingStructurePid;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -286,11 +308,19 @@ public class ExamineBuilding {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getBuildingstructurepid() {
-        return buildingstructurepid;
+    public String getJsonContent() {
+        return jsonContent;
     }
 
-    public void setBuildingstructurepid(Integer buildingstructurepid) {
-        this.buildingstructurepid = buildingstructurepid;
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier == null ? null : identifier.trim();
     }
 }

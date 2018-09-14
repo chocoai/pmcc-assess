@@ -38,8 +38,8 @@ public class ExamineUnitService {
      * @param declareId
      * @return
      */
-    public ExamineUnit getUnitByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
-        return examineUnitDao.getUnitByDeclareId(declareId,examineTypeEnum.getId());
+    public ExamineUnit getUnitByDeclareId(Integer declareId,Integer planDetailsId,ExamineTypeEnum examineTypeEnum) {
+        return examineUnitDao.getUnitByDeclareId(declareId,planDetailsId,examineTypeEnum.getId());
     }
 
     public ExamineUnitVo getExamineUnitVo(ExamineUnit examineUnit) {

@@ -17,6 +17,7 @@ public class ExamineHouseTradingSellAndLeaseDto {
     private Integer declareId;
 
     private Integer examineType;
+    private Integer planDetailsId;
 
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date instalmentPeriodStart;
@@ -122,5 +123,13 @@ public class ExamineHouseTradingSellAndLeaseDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 }

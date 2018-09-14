@@ -17,7 +17,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class ExamineHouseWaterController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseWaterList",method = {RequestMethod.GET},name = "供排水情况列表")
-    public BootstrapTableVo getExamineHouseWaterList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineHouseWaterList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseWater examineHouseWater = new ExamineHouseWater();
@@ -73,6 +72,9 @@ public class ExamineHouseWaterController {
             }
             if (declareId!=null ){
                 examineHouseWater.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null ){
+                examineHouseWater.setPlanDetailsId(planDetailsId);
             }
             vo = examineHouseWaterService.getExamineHouseWaterLists(examineHouseWater);
         } catch (Exception e1) {

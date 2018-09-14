@@ -2,12 +2,13 @@ package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
 import com.copower.pmcc.assess.service.base.BaseParameterServcie;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanTaskAllEvent;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -24,6 +25,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,8 @@ public class ProjectTaskAllService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private BaseParameterServcie baseParameterServcie;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @Transactional(rollbackFor = Exception.class)
     public void startTaskAllApproval(String conclusion, Integer planId, List<ProjectTaskAllBackDto> taskAllBackDtos, String appointUserAccount) throws BusinessException {
@@ -102,7 +106,7 @@ public class ProjectTaskAllService {
             projectPlanTaskAll.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanTaskAllDao.updateObject(projectPlanTaskAll);
             //更新任务标识
-            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
             if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
                 try {
                     processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
@@ -118,7 +122,7 @@ public class ProjectTaskAllService {
             }
             //更新任务标识
 
-            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
 
             List<Integer> integers = LangUtils.transform(taskAllBackDtos, o -> o.getDetailsId());
 
@@ -174,7 +178,7 @@ public class ProjectTaskAllService {
             }
 
             //更新任务标识
-            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(planId);
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(),planId);
 
             List<Integer> integers = LangUtils.transform(taskAllBackDtos, o -> o.getDetailsId());
 

@@ -18,7 +18,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -40,13 +39,6 @@ public class ExamineHouseRoomController {
     @Autowired
     private ExamineHouseRoomDecorateService examineHouseRoomDecorateService;
 
-//    @Deprecated
-//    @RequestMapping(value = "/view", name = "转到index页面 (临时)",method = {RequestMethod.GET})
-//    public ModelAndView index() {
-//        String view = "/task/survey/examine/residence/apply/houseRoom" ;
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-//        return modelAndView;
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseRoomById",method = {RequestMethod.GET},name = "获取房间 (父类)")
@@ -65,7 +57,7 @@ public class ExamineHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseRoomList",method = {RequestMethod.GET},name = "获取房间列表 (父类)")
-    public BootstrapTableVo getExamineHouseRoomList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineHouseRoomList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseRoom examineHouseRoom = new ExamineHouseRoom();
@@ -74,6 +66,9 @@ public class ExamineHouseRoomController {
             }
             if (!ObjectUtils.isEmpty(declareId)){
                 examineHouseRoom.setDeclareId(declareId);
+            }
+            if (!ObjectUtils.isEmpty(planDetailsId)){
+                examineHouseRoom.setPlanDetailsId(planDetailsId);
             }
             vo = examineHouseRoomService.getExamineHouseRoomLists(examineHouseRoom);
         } catch (Exception e1) {
@@ -129,7 +124,7 @@ public class ExamineHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseRoomDecorateLists",method = {RequestMethod.GET},name = "获取房间装修列表 (子类)")
-    public BootstrapTableVo getExamineHouseRoomDecorateLists(Integer examineType,Integer declareId,Integer roomId) {
+    public BootstrapTableVo getExamineHouseRoomDecorateLists(Integer examineType,Integer declareId,Integer planDetailsId,Integer roomId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseRoomDecorate examineHouseRoomDecorate = new ExamineHouseRoomDecorate();
@@ -138,6 +133,9 @@ public class ExamineHouseRoomController {
             }
             if (declareId!=null){
                 examineHouseRoomDecorate.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null){
+                examineHouseRoomDecorate.setPlanDetailsId(planDetailsId);
             }
             if (roomId != null){
                 examineHouseRoomDecorate.setRoomId(roomId);

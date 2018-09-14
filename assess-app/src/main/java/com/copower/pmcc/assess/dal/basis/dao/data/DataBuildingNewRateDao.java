@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRateExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataBuildingNewRateMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,7 @@ public class DataBuildingNewRateDao {
     private DataBuildingNewRateMapper dataBuildingNewRateMapper;
 
     public boolean addDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate) {
-        int i = dataBuildingNewRateMapper.insert(dataBuildingNewRate);
-        return i > 0;
+        return dataBuildingNewRateMapper.insertSelective(dataBuildingNewRate) > 0;
     }
 
     public boolean editDataBuildingNewRate(DataBuildingNewRate dataBuildingNewRate) {
@@ -35,15 +35,10 @@ public class DataBuildingNewRateDao {
         return i > 0;
     }
 
-    public List<DataBuildingNewRate> getDataBuildingNewRateList(String buildingStructure) {
-        List<DataBuildingNewRate> dataBuildingNewRateList = null;
+    public List<DataBuildingNewRate> getDataBuildingNewRateList(DataBuildingNewRate dataBuildingNewRate) {
         DataBuildingNewRateExample example = new DataBuildingNewRateExample();
-        DataBuildingNewRateExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(buildingStructure)){
-            criteria.andBuildingStructureLike(String.format("%%%s%%",buildingStructure));
-        }
-        dataBuildingNewRateList = dataBuildingNewRateMapper.selectByExample(example);
-        return dataBuildingNewRateList;
+        MybatisUtils.convertObj2Example(dataBuildingNewRate, example);
+        return dataBuildingNewRateMapper.selectByExample(example);
     }
 
 }

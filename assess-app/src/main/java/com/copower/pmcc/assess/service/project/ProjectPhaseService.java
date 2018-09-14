@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
@@ -148,11 +149,13 @@ public class ProjectPhaseService {
     public boolean isExaminePhase(Integer phaseId){
         ProjectPhase projectPhase = getCacheProjectPhaseById(phaseId);
         if(projectPhase!=null){
-            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.LOCALE_EXPLORE) )
+            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE) )
                 return true;
             if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY) )
                 return true;
         }
         return false;
     }
+
+
 }

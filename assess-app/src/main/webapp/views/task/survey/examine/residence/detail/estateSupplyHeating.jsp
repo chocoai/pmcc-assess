@@ -87,6 +87,7 @@
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/examineEstateSupply/getExamineEstateSupplyList", cols, {
                     type: estateSupplyHeating.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

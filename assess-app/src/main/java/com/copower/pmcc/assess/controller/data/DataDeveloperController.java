@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -31,6 +32,8 @@ public class DataDeveloperController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
     public ModelAndView index() {

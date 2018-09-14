@@ -8,6 +8,8 @@ public class ExamineEstate {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private Integer developerId;
@@ -17,6 +19,8 @@ public class ExamineEstate {
     private String street;
 
     private String number;
+
+    private Integer landLevel;
 
     private String attachNumber;
 
@@ -28,7 +32,9 @@ public class ExamineEstate {
 
     private String greeningRate;
 
-    private Integer totalBuildingType;
+    private Integer buildingNumber;
+
+    private String position;
 
     private String description;
 
@@ -37,6 +43,10 @@ public class ExamineEstate {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String averagePrice;
+
+    private String priceRange;
 
     public Integer getId() {
         return id;
@@ -52,6 +62,14 @@ public class ExamineEstate {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -94,6 +112,14 @@ public class ExamineEstate {
         this.number = number == null ? null : number.trim();
     }
 
+    public Integer getLandLevel() {
+        return landLevel;
+    }
+
+    public void setLandLevel(Integer landLevel) {
+        this.landLevel = landLevel;
+    }
+
     public String getAttachNumber() {
         return attachNumber;
     }
@@ -134,12 +160,20 @@ public class ExamineEstate {
         this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
-    public Integer getTotalBuildingType() {
-        return totalBuildingType;
+    public Integer getBuildingNumber() {
+        return buildingNumber;
     }
 
-    public void setTotalBuildingType(Integer totalBuildingType) {
-        this.totalBuildingType = totalBuildingType;
+    public void setBuildingNumber(Integer buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position == null ? null : position.trim();
     }
 
     public String getDescription() {
@@ -172,5 +206,21 @@ public class ExamineEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice == null ? null : averagePrice.trim();
+    }
+
+    public String getPriceRange() {
+        return priceRange;
+    }
+
+    public void setPriceRange(String priceRange) {
+        this.priceRange = priceRange == null ? null : priceRange.trim();
     }
 }

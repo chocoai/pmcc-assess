@@ -46,8 +46,9 @@ public class CaseUnitDao {
      * @param caseUnit
      * @return
      */
-    public boolean addUnit(CaseUnit caseUnit) {
-        return caseUnitMapper.insertSelective(caseUnit) > 0;
+    public Integer addUnit(CaseUnit caseUnit) {
+        caseUnitMapper.insertSelective(caseUnit);
+        return caseUnit.getId();
     }
 
     /**

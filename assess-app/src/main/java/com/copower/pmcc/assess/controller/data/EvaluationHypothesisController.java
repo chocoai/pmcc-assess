@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationHypothesis;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationHypothesis;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationHypothesisService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -54,7 +54,7 @@ public class EvaluationHypothesisController {
     @ResponseBody
     @RequestMapping(value = "/getHypothesisList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
     public HttpResult getHypothesisList(Integer method, Integer purpose) {
-        List<EvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(method, purpose);
+        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(method, purpose);
         return HttpResult.newCorrectResult(hypothesisList);
     }
 
@@ -71,7 +71,7 @@ public class EvaluationHypothesisController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(EvaluationHypothesis evaluationHypothesis) {
+    public HttpResult save(DataEvaluationHypothesis evaluationHypothesis) {
         try {
             evaluationHypothesisService.saveAndUpdate(evaluationHypothesis);
         } catch (Exception e) {

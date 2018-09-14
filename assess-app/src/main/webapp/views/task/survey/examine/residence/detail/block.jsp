@@ -59,38 +59,5 @@
 </form>
 
 <script>
-    var config_block = {
-        frm : "frm_block",
-        getFrm:function () {
-            return this.frm;
-        }
-    }
-    var block = Object.create(config_block);
-    //加载初始化数据
-    block.init = function () {
-        block.initAreaInfo();
-        block.loadRegionalNature("${surveyExamineDataInfoVo.examineBlockVo.regionalNature}");
-        $("#"+block.getFrm()+" :input").attr("readonly","readonly");
-    };
-    //加载区域性质
-    block.loadRegionalNature = function (value) {
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineBlockRegionalNature, value, function (html, data) {
-            $("#"+block.getFrm()).find("[name='regionalNature']").append(html);
-        });
-    };
-    block.initAreaInfo = function () {
-        //初始化区域信息
-        AssessCommon.initAreaInfo({
-            provinceTarget: $("#"+block.getFrm()).find("[name='province']"),
-            cityTarget: $("#"+block.getFrm()).find("[name='city']"),
-            districtTarget: $("#"+block.getFrm()).find("[name='district']"),
-            provinceValue: "${surveyExamineDataInfoVo.examineBlockVo.province}",
-            cityValue: "${surveyExamineDataInfoVo.examineBlockVo.city}",
-            districtValue: "${surveyExamineDataInfoVo.examineBlockVo.district}"
-        })
-    };
 
-    $(function () {
-        // block.init();
-    });
 </script>

@@ -3,6 +3,9 @@ package com.copower.pmcc.assess.service;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,15 @@ public class CrmCustomerService {
      */
     public CrmCustomerDto getCustomer(Integer id) {
         return crmRpcCustomerService.getCustomer(id);
+    }
+
+    public List<CrmCustomerDto> getCustomerList(CrmCustomerDto crmCustomerDto){
+        return crmRpcCustomerService.getCustomerList(crmCustomerDto);
+    }
+
+    public BootstrapTableVo getCustomerLinkmanPageList(Integer customerId, String search){
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        return crmRpcCustomerService.getCustomerLinkmanPageList(customerId,requestBaseParam.getOffset(),requestBaseParam.getLimit(),search);
     }
 
     /**

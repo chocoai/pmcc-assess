@@ -85,6 +85,7 @@
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/examineHouseWater/getExamineHouseWaterList", cols, {
                     type: houseWater.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationMethod;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationMethod;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -52,7 +52,7 @@ public class EvaluationMethodController {
     @ResponseBody
     @RequestMapping(value = "/getMethodList", name = "根据评估方法获取数据列表", method = RequestMethod.GET)
     public HttpResult getMethodList(Integer method) {
-        List<EvaluationMethod> hypothesisList = evaluationMethodService.getMethodListByMethod(method);
+        List<DataEvaluationMethod> hypothesisList = evaluationMethodService.getMethodListByMethod(method);
         return HttpResult.newCorrectResult(hypothesisList);
     }
 
@@ -69,7 +69,7 @@ public class EvaluationMethodController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(EvaluationMethod evaluationMethod) {
+    public HttpResult save(DataEvaluationMethod evaluationMethod) {
         try {
             evaluationMethodService.saveAndUpdate(evaluationMethod);
         } catch (Exception e) {

@@ -38,11 +38,19 @@ public class ExamineHouseDao {
      * @param declareId
      * @return
      */
+    public ExamineHouse getHouseByDeclareId(Integer declareId,Integer planDetailsId,Integer examineType) {
+        ExamineHouseExample example = new ExamineHouseExample();
+        example.createCriteria().andDeclareIdEqualTo(declareId).andPlanDetailsIdEqualTo(planDetailsId).andExamineTypeEqualTo(examineType);
+        List<ExamineHouse> examineHouseList = examineHouseMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(examineHouseList)) return examineHouseList.get(0);
+        return null;
+    }
+
     public ExamineHouse getHouseByDeclareId(Integer declareId,Integer examineType) {
         ExamineHouseExample example = new ExamineHouseExample();
         example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
-        List<ExamineHouse> blockList = examineHouseMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        List<ExamineHouse> examineHouseList = examineHouseMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(examineHouseList)) return examineHouseList.get(0);
         return null;
     }
 

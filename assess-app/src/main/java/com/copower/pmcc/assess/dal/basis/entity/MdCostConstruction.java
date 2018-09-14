@@ -12,15 +12,21 @@ public class MdCostConstruction {
 
     private Date gmtModified;
 
-    private BigDecimal assessValue;
+    private BigDecimal constructionProcesAssessValue;
 
-    private BigDecimal evaluationValue;
+    private BigDecimal evaluationValueConstructionProject;
 
-    private BigDecimal assessValueDifference;
+    private BigDecimal evaluationValueConstructionProjectCorrect;
 
     private BigDecimal constructionInstallationEngineeringFee;
 
     private String jsonContent;
+
+    private Integer costId;
+
+    private Integer engineeringId;
+
+    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -54,28 +60,28 @@ public class MdCostConstruction {
         this.gmtModified = gmtModified;
     }
 
-    public BigDecimal getAssessValue() {
-        return assessValue;
+    public BigDecimal getConstructionProcesAssessValue() {
+        return constructionProcesAssessValue;
     }
 
-    public void setAssessValue(BigDecimal assessValue) {
-        this.assessValue = assessValue;
+    public void setConstructionProcesAssessValue(BigDecimal constructionProcesAssessValue) {
+        this.constructionProcesAssessValue = constructionProcesAssessValue;
     }
 
-    public BigDecimal getEvaluationValue() {
-        return evaluationValue;
+    public BigDecimal getEvaluationValueConstructionProject() {
+        return evaluationValueConstructionProject;
     }
 
-    public void setEvaluationValue(BigDecimal evaluationValue) {
-        this.evaluationValue = evaluationValue;
+    public void setEvaluationValueConstructionProject(BigDecimal evaluationValueConstructionProject) {
+        this.evaluationValueConstructionProject = evaluationValueConstructionProject;
     }
 
-    public BigDecimal getAssessValueDifference() {
-        return assessValueDifference;
+    public BigDecimal getEvaluationValueConstructionProjectCorrect() {
+        return evaluationValueConstructionProjectCorrect;
     }
 
-    public void setAssessValueDifference(BigDecimal assessValueDifference) {
-        this.assessValueDifference = assessValueDifference;
+    public void setEvaluationValueConstructionProjectCorrect(BigDecimal evaluationValueConstructionProjectCorrect) {
+        this.evaluationValueConstructionProjectCorrect = evaluationValueConstructionProjectCorrect;
     }
 
     public BigDecimal getConstructionInstallationEngineeringFee() {
@@ -92,5 +98,29 @@ public class MdCostConstruction {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Integer getCostId() {
+        return costId;
+    }
+
+    public void setCostId(Integer costId) {
+        this.costId = costId;
+    }
+
+    public Integer getEngineeringId() {
+        return engineeringId;
+    }
+
+    public void setEngineeringId(Integer engineeringId) {
+        this.engineeringId = engineeringId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }

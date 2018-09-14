@@ -1,16 +1,23 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBestUseDescriptionDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataBestUseDescription;
+import com.copower.pmcc.assess.dto.output.data.DataBestUseDescriptionVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +29,14 @@ public class DataBestUseDescriptionService {
 
     @Autowired
     private DataBestUseDescriptionDao dataBestUseDescriptionDao;
-
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataCommonService dataCommonService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     public List<DataBestUseDescription> dataBestUseDescriptionList(){
         return dataBestUseDescriptionDao.dataBestUseDescriptionList();
@@ -35,8 +47,9 @@ public class DataBestUseDescriptionService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataBestUseDescription> dataBestUseDescriptionList = dataBestUseDescriptionDao.getDataBestUseDescriptionList(name);
+        List<DataBestUseDescriptionVo> vos = LangUtils.transform(dataBestUseDescriptionList,b -> getDataBestUseDescription(b));
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(dataBestUseDescriptionList) ? new ArrayList<DataBestUseDescription>() : dataBestUseDescriptionList);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataBestUseDescriptionVo>() : vos);
         return vo;
     }
 
@@ -58,4 +71,26 @@ public class DataBestUseDescriptionService {
         flag = dataBestUseDescriptionDao.deleteDataBestUseDescription(id);
         return flag;
     }
+
+    public DataBestUseDescriptionVo getDataBestUseDescription(DataBestUseDescription oo){
+        DataBestUseDescriptionVo vo = new DataBestUseDescriptionVo();
+        BeanUtils.copyProperties(oo,vo);
+        BaseProjectClassify baseProjectClassify = null;
+        if (oo.getCategory() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
+            if (baseProjectClassify != null){
+                vo.setCategoryName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        if (oo.getType() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
+            if (baseProjectClassify != null){
+                vo.setTypeName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        return vo;
+    }
+
 }

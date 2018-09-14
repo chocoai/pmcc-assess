@@ -50,7 +50,7 @@ public class ExamineHouseCorollaryEquipmentController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseCorollaryEquipmentList", method = {RequestMethod.GET}, name = "配套设备设施列表")
-    public BootstrapTableVo getExamineHouseCorollaryEquipmentList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineHouseCorollaryEquipmentList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseCorollaryEquipment examineHouseCorollaryEquipment = new ExamineHouseCorollaryEquipment();
@@ -59,6 +59,9 @@ public class ExamineHouseCorollaryEquipmentController {
             }
             if (declareId != null) {
                 examineHouseCorollaryEquipment.setDeclareId(declareId);
+            }
+            if (planDetailsId != null) {
+                examineHouseCorollaryEquipment.setPlanDetailsId(planDetailsId);
             }
             vo = examineHouseCorollaryEquipmentService.getExamineHouseCorollaryEquipmentLists(examineHouseCorollaryEquipment);
         } catch (Exception e1) {

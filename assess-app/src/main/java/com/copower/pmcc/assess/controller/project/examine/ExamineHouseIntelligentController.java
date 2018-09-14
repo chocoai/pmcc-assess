@@ -17,7 +17,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class ExamineHouseIntelligentController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineHouseIntelligentList", method = {RequestMethod.GET}, name = "电力通讯网络列表")
-    public BootstrapTableVo getExamineHouseIntelligentList(Integer examineType, Integer declareId) {
+    public BootstrapTableVo getExamineHouseIntelligentList(Integer examineType, Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineHouseIntelligent examineHouseIntelligent = new ExamineHouseIntelligent();
@@ -73,6 +72,9 @@ public class ExamineHouseIntelligentController {
             }
             if (declareId != null ) {
                 examineHouseIntelligent.setDeclareId(declareId);
+            }
+            if (planDetailsId != null ) {
+                examineHouseIntelligent.setPlanDetailsId(planDetailsId);
             }
             vo = examineHouseIntelligentService.getExamineHouseIntelligentLists(examineHouseIntelligent);
         } catch (Exception e1) {

@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationThinkingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.EvaluationThinking;
-import com.copower.pmcc.assess.dto.output.data.EvaluationThinkingVo;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking;
+import com.copower.pmcc.assess.dto.output.data.DataEvaluationThinkingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -41,13 +43,15 @@ public class EvaluationThinkingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private EvaluationThinkingDao evaluationThinkingDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 保存数据
      *
      * @param evaluationThinking
      */
-    public void saveAndUpdate(EvaluationThinking evaluationThinking) {
+    public void saveAndUpdate(DataEvaluationThinking evaluationThinking) {
         if (evaluationThinking.getId() != null && evaluationThinking.getId() > 0) {
             evaluationThinkingDao.updateThinking(evaluationThinking);
         } else {
@@ -72,7 +76,7 @@ public class EvaluationThinkingService {
      * @param id
      * @return
      */
-    public EvaluationThinking getThinking(Integer id) {
+    public DataEvaluationThinking getThinking(Integer id) {
         return evaluationThinkingDao.getThinking(id);
     }
 
@@ -87,9 +91,9 @@ public class EvaluationThinkingService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<EvaluationThinking> hypothesisList = evaluationThinkingDao.getThinkingList(name);
-        List<EvaluationThinkingVo> vos = LangUtils.transform(hypothesisList, p -> getThinkingVo(p));
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<EvaluationThinkingVo>() : vos);
+        List<DataEvaluationThinking> hypothesisList = evaluationThinkingDao.getThinkingList(name);
+        List<DataEvaluationThinkingVo> vos = LangUtils.transform(hypothesisList, p -> getThinkingVo(p));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationThinkingVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
@@ -100,7 +104,7 @@ public class EvaluationThinkingService {
      * @param method
      * @return
      */
-    public List<EvaluationThinking> getThinkingList(Integer method) {
+    public List<DataEvaluationThinking> getThinkingList(Integer method) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -110,15 +114,34 @@ public class EvaluationThinkingService {
     }
 
 
-    public EvaluationThinkingVo getThinkingVo(EvaluationThinking evaluationThinking) {
-        if (evaluationThinking == null) return null;
+    public DataEvaluationThinkingVo getThinkingVo(DataEvaluationThinking oo) {
+        if (oo == null) return null;
         List<BaseDataDic> methodDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
-        EvaluationThinkingVo evaluationThinkingVo = new EvaluationThinkingVo();
-        BeanUtils.copyProperties(evaluationThinking, evaluationThinkingVo);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(evaluationThinking.getMethod())) {
-            evaluationThinkingVo.setMethodStr(dataCommonService.getDataDicName(methodDicList, evaluationThinking.getMethod()));
+        DataEvaluationThinkingVo vo = new DataEvaluationThinkingVo();
+        BeanUtils.copyProperties(oo, vo);
+        try {
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getMethod())) {
+                vo.setMethodStr(dataCommonService.getDataDicName(methodDicList, oo.getMethod()));
+            }
+        } catch (Exception e1) {
+            logger.error("exception:%s",e1.getMessage());
         }
-        return evaluationThinkingVo;
+        BaseProjectClassify baseProjectClassify = null;
+        if (oo.getCategory() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getCategory());
+            if (baseProjectClassify != null){
+                vo.setCategoryName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        if (oo.getType() != null){
+            baseProjectClassify = baseProjectClassifyService.getProjectClassifyById(oo.getType());
+            if (baseProjectClassify != null){
+                vo.setTypeName(baseProjectClassify.getName());
+                baseProjectClassify = null;
+            }
+        }
+        return vo;
     }
 
     /**
@@ -126,12 +149,12 @@ public class EvaluationThinkingService {
      *
      * @return
      */
-    public Map<Integer, List<EvaluationThinking>> getEvaluationThinkingMap() {
-        Map<Integer, List<EvaluationThinking>> map = Maps.newConcurrentMap();
+    public Map<Integer, List<DataEvaluationThinking>> getEvaluationThinkingMap() {
+        Map<Integer, List<DataEvaluationThinking>> map = Maps.newConcurrentMap();
         List<BaseDataDic> baseDataDics = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         if (CollectionUtils.isNotEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
-                List<EvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseDataDic.getId()));
+                List<DataEvaluationThinking> thinkingList = evaluationThinkingDao.getThinkingListByMethod(String.valueOf(baseDataDic.getId()));
                 if (CollectionUtils.isNotEmpty(thinkingList)) {
                     map.put(baseDataDic.getId(), thinkingList);
                 }

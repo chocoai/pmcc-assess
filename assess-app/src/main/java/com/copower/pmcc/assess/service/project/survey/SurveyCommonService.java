@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -7,24 +10,27 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyExamineTask;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.FormConfigureDetailDto;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineDataInfoVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyExamineTaskVo;
-import com.copower.pmcc.assess.dto.output.report.SurveyCorrelationCardVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.examine.*;
+import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -32,11 +38,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +62,7 @@ public class SurveyCommonService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private FormConfigureService formConfigureService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -61,7 +70,7 @@ public class SurveyCommonService {
     @Autowired
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
-    private SurveyExamineInfoService surveyExamineInfoService;
+    private ApplicationConstant applicationConstant;
     @Autowired
     private ExamineBlockService examineBlockService;
     @Autowired
@@ -76,36 +85,12 @@ public class SurveyCommonService {
     private ExamineUnitService examineUnitService;
     @Autowired
     private ExamineBuildingService examineBuildingService;
-
-
-    /**
-     * 获取所属权证信息
-     *
-     * @param correlationCard
-     * @param projectPlanDetails
-     * @param declareRecords
-     * @return
-     */
-    public List<SurveyCorrelationCardVo> getSurveyCorrelationCardVos(String correlationCard, ProjectPlanDetails projectPlanDetails, List<DeclareRecord> declareRecords) {
-//        if(StringUtils.isBlank(correlationCard)) return null;
-        List<SurveyCorrelationCardVo> surveyCorrelationCardVos = Lists.newArrayList();
-        List<Integer> correlationCardIds = Lists.newArrayList();
-        if (StringUtils.isNotBlank(correlationCard)) {
-            List<String> list = FormatUtils.transformString2List(correlationCard);
-            correlationCardIds = FormatUtils.ListStringToListInteger(list);
-        }
-        if (CollectionUtils.isNotEmpty(declareRecords)) {
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (declareRecord.getId().equals(projectPlanDetails.getDeclareRecordId())) continue;
-                SurveyCorrelationCardVo surveyCorrelationCardVo = new SurveyCorrelationCardVo();
-                surveyCorrelationCardVo.setId(declareRecord.getId());
-                surveyCorrelationCardVo.setName(declareRecord.getName());
-                surveyCorrelationCardVo.setBisChecked(correlationCardIds.contains(declareRecord.getId()));
-                surveyCorrelationCardVos.add(surveyCorrelationCardVo);
-            }
-        }
-        return surveyCorrelationCardVos;
-    }
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -127,8 +112,7 @@ public class SurveyCommonService {
         }
         //再将图片上传到FTP
         String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
-        String ftpDirName = baseAttachmentService.createFTPBasePath(SurveyLocaleExploreDetail.class.getSimpleName(),
-                DateUtils.formatNowToYMD(), "surveyLocaltion");
+        String ftpDirName = baseAttachmentService.createFTPBasePath();
         try {
             ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
         } catch (Exception e) {
@@ -149,25 +133,6 @@ public class SurveyCommonService {
         baseAttachmentService.addAttachment(baseAttachment);
     }
 
-    /**
-     * 保存动态表单数据
-     *
-     * @param formId
-     * @param formData
-     * @param tableName
-     * @param tableId
-     * @return
-     * @throws BusinessException
-     */
-    public Integer saveDynamicForm(Integer formId, String formData, String tableName, Integer tableId) throws BusinessException {
-        if (formId == null) return 0;
-        FormConfigureDetailDto configureDetailDto = new FormConfigureDetailDto();
-        configureDetailDto.setFormData(formData);
-        configureDetailDto.setFormModuleId(formId);
-        configureDetailDto.setTableId(tableId);
-        configureDetailDto.setTableName(tableName);
-        return formConfigureService.saveSimpleData(configureDetailDto);
-    }
 
     /**
      * 获取房产所有调查表单
@@ -206,7 +171,7 @@ public class SurveyCommonService {
         surveyExamineTask.setPlanDetailsId(planDetailsId);
         if (StringUtils.isNotBlank(userAccount))
             surveyExamineTask.setUserAccount(userAccount);
-        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId,userAccount);
+        List<CustomSurveyExamineTask> examineTaskList = surveyExamineTaskService.getCustomeExamineTaskList(planDetailsId, userAccount);
         List<SurveyExamineTaskVo> examineTaskVos = surveyExamineTaskService.getSurveyExamineTaskVos(examineTaskList);
         if (CollectionUtils.isNotEmpty(examineTaskVos)) {
             for (SurveyExamineTaskVo examineTaskVo : examineTaskVos) {
@@ -234,6 +199,7 @@ public class SurveyCommonService {
 
     /**
      * 获取该细任务的所有任务
+     *
      * @param planDetailsId
      * @return
      */
@@ -249,6 +215,7 @@ public class SurveyCommonService {
      * @param userAccount
      * @param projectStatusEnum
      */
+    @Transactional(rollbackFor = Exception.class)
     public void updateExamineTaskStatus(Integer planDetailsId, String userAccount, ProjectStatusEnum projectStatusEnum) {
         //查询条件
         SurveyExamineTask where = new SurveyExamineTask();
@@ -259,6 +226,12 @@ public class SurveyCommonService {
         surveyExamineTask.setTaskStatus(projectStatusEnum.getKey());
 
         surveyExamineTaskService.updateSurveyExamineTask(surveyExamineTask, where);
+
+        if (surveyExamineTaskService.getRuningTaskCount(planDetailsId) <= 0) {
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
+            projectPlanDetailsService.updateProjectPlanDetails(planDetails);
+        }
     }
 
     /**
@@ -281,33 +254,142 @@ public class SurveyCommonService {
      * @param declareId
      * @return
      */
-    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId,ExamineTypeEnum examineTypeEnum) {
+    public SurveyExamineDataInfoVo getExamineDataInfoVo(Integer declareId, Integer planDetailsId, ExamineTypeEnum examineTypeEnum) {
         SurveyExamineDataInfoVo surveyExamineDataInfoVo = new SurveyExamineDataInfoVo();
 
-        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, examineTypeEnum);
+        ExamineBlock examineBlock = examineBlockService.getBlockByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineBlockVo(examineBlockService.getExamineBlockVo(examineBlock));
 
-        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId,examineTypeEnum);
+        ExamineEstateLandState estateLandState = examineEstateLandStateService.getEstateLandStateByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateLandStateVo(examineEstateLandStateService.getExamineEstateLandStateVo(estateLandState));
 
-        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId,examineTypeEnum);
+        ExamineEstate examineEstate = examineEstateService.getEstateByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineEstateVo(examineEstateService.getExamineEstateVo(examineEstate));
 
-        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId,examineTypeEnum);
+        ExamineUnit examineUnit = examineUnitService.getUnitByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineUnitVo(examineUnitService.getExamineUnitVo(examineUnit));
 
-        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId,examineTypeEnum);
+        ExamineHouse examineHouse = examineHouseService.getHouseByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseVo(examineHouseService.getExamineHouseVo(examineHouse));
 
-        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId,examineTypeEnum);
+        ExamineHouseTrading examineHouseTrading = examineHouseTradingService.getHouseTradingByDeclareId(declareId, planDetailsId, examineTypeEnum);
         surveyExamineDataInfoVo.setExamineHouseTradingVo(examineHouseTradingService.getExamineHouseTradingVo(examineHouseTrading));
 
-        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId,examineTypeEnum.getId());
-        if (!ObjectUtils.isEmpty(examineBuildings)){
-            ExamineBuilding examineBuilding = examineBuildings.get(0);
-            ExamineBuildingVo examineBuildingVo = examineBuildingService.getExamineBuildingVo(examineBuilding);
-            surveyExamineDataInfoVo.setExamineBuildingVo(examineBuildingVo);
+        List<ExamineBuilding> examineBuildings = examineBuildingService.getByDeclareIdAndExamineType(declareId, planDetailsId, examineTypeEnum.getId());
+        if (!ObjectUtils.isEmpty(examineBuildings)) {
+           List<ExamineBuildingVo> examineBuildingVos = Lists.newArrayList();
+            for (int i = 0; i < examineBuildings.size() ; i++) {
+                if (i == 0){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("oneExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 1){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("twoExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 2){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("threeExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+                if (i == 4){
+                    surveyExamineDataInfoVo.getExamineBuildingVoMap().put("fourExamineBuilding",examineBuildingService.getExamineBuildingVo(examineBuildings.get(i)));
+                }
+            }
         }
         return surveyExamineDataInfoVo;
+    }
+
+    /**
+     * 获取案例调查所有任务
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
+        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
+        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
+            //获取当前人该阶段下待处理的任务
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
+            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
+            projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
+                if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
+                    projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
+                }
+                if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (responsibilityDto.getPlanDetailsId().equals(projectPlanDetailsVo.getId())) {
+                            projectPlanDetailsVo.setExcuteUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
+                        }
+                    }
+                }
+
+                //设置查看url
+                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                }
+            }
+        }
+        return planDetailsVoList;
+    }
+
+    /**
+     * 获取初始化权证json数据
+     *
+     * @param projectId
+     * @param declareId
+     * @return
+     */
+    public String getDeclareCertJson(Integer projectId, Integer declareId) {
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+        if (CollectionUtils.isEmpty(declareRecordList)) return null;
+        JSONArray jsonArray = new JSONArray();
+        for (DeclareRecord declareRecord : declareRecordList) {
+            if(declareRecord.getId().equals(declareId)) continue;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("key",declareRecord.getId());
+            jsonObject.put("isChecked",false);
+            jsonObject.put("value",declareRecord.getName());
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray.toJSONString();
+    }
+
+    public List<String> getTableList() {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        List<String> tableList = Lists.newArrayList();
+        for (Map<String, Object> map : mapList) {
+            tableList.add(String.valueOf(map.get("TABLE_NAME")));
+        }
+        return tableList;
+    }
+
+    public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
+        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        //1.去除id 评出sql前半截  拼出sql后半截
+        for (Map<String, Object> map : mapList) {
+            if (map.get("column_name").equals("id")) {
+                mapList.remove(map);
+                break;
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : mapList) {
+            stringBuilder.append(map.get("column_name")).append(",");
+        }
+        String columnString = stringBuilder.toString();
+        columnString = columnString.replaceAll(",$", "");
+
+        String resultString = MessageFormat.format("INSERT into {0}({1}) SELECT %s FROM {0} where plan_details_id={2};", tableName, columnString, String.valueOf(oldPlanDetailsId));
+        columnString = columnString.replace("plan_details_id", String.valueOf(newPlanDetailsId)).replace("declare_id", String.valueOf(newDeclareId));
+        resultString = String.format(resultString, columnString);
+        return resultString;
     }
 }

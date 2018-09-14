@@ -2,8 +2,12 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineEstateLandState;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineEstateLandStateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -21,7 +25,10 @@ public class ExamineEstateLandStateService {
     private ExamineEstateLandStateDao examineEstateLandStateDao;
     @Autowired
     private CommonService commonService;
-
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
     /**
      * 获取数据
      *
@@ -38,14 +45,41 @@ public class ExamineEstateLandStateService {
      * @param declareId
      * @return
      */
-    public ExamineEstateLandState getEstateLandStateByDeclareId(Integer declareId,ExamineTypeEnum examineTypeEnum) {
-        return examineEstateLandStateDao.getEstateLandStateByDeclareId(declareId,examineTypeEnum.getId());
+    public ExamineEstateLandState getEstateLandStateByDeclareId(Integer declareId,Integer planDetailsId,ExamineTypeEnum examineTypeEnum) {
+        return examineEstateLandStateDao.getEstateLandStateByDeclareId(declareId,planDetailsId,examineTypeEnum.getId());
     }
 
     public ExamineEstateLandStateVo getExamineEstateLandStateVo(ExamineEstateLandState examineEstateLandState) {
         if (examineEstateLandState == null) return null;
         ExamineEstateLandStateVo examineEstateLandStateVo = new ExamineEstateLandStateVo();
+        DataLandLevel dataLandLevel = null;
         BeanUtils.copyProperties(examineEstateLandState, examineEstateLandStateVo);
+        BaseDataDic sysDataDicTemp = null;
+        if (examineEstateLandState.getLandLevel() != null){
+            dataLandLevel = dataLandLevelService.getDataLandLevelById(examineEstateLandState.getLandLevel());
+            if (dataLandLevel!=null){
+                examineEstateLandStateVo.setLandLevelName(dataLandLevel.getLeve());
+            }
+//            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandLevel());
+//            if (sysDataDicTemp != null){
+//                examineEstateLandStateVo.setLandLevelName(sysDataDicTemp.getName());
+//                sysDataDicTemp = null;
+//            }
+        }
+        if (examineEstateLandState.getLandUseType() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUseType());
+            if (sysDataDicTemp != null){
+                examineEstateLandStateVo.setLandUseTypeName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
+        if (examineEstateLandState.getLandUseCategory() != null){
+            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandUseCategory());
+            if (sysDataDicTemp != null){
+                examineEstateLandStateVo.setLandUseCategoryName(sysDataDicTemp.getName());
+                sysDataDicTemp = null;
+            }
+        }
         return examineEstateLandStateVo;
     }
 

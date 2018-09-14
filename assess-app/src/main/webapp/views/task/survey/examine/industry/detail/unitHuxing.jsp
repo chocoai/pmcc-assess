@@ -114,6 +114,7 @@
                 cols.push({field: 'houseLayoutName', title: '房型'});
                 cols.push({field: 'spanLength', title: '跨长'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
+                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanNumber', title: '跨数'});
                 cols.push({field: 'fileViewName', title: '户型图'});
                 // cols.push({
@@ -129,6 +130,7 @@
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingList", cols, {
                     type: unitHuxing.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

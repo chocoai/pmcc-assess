@@ -41,13 +41,51 @@
         <!-- 具体表 -->
 
 
-        <!--<table tableName="tb_examine_building_outfit" domainObjectName="ExamineBuildingOutfit">-->
+        <!--<table tableName="tb_data_evaluation_thinking" domainObjectName="DataEvaluationThinking">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
-        <table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">
+
+        <!--<table tableName="tb_data_evaluation_principle" domainObjectName="DataEvaluationPrinciple">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_data_evaluation_method" domainObjectName="DataEvaluationMethod">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_data_evaluation_hypothesis" domainObjectName="DataEvaluationHypothesis">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_data_evaluation_basis" domainObjectName="DataEvaluationBasis">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <table tableName="tb_data_block" domainObjectName="DataBlock">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="tb_data_developer" domainObjectName="DataDeveloper">-->
+
+        <!--<table tableName="tb_examine_building" domainObjectName="ExamineBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_md_development_architectural" domainObjectName="MdDevelopmentArchitectural">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="tb_md_development_hypothesis" domainObjectName="MdDevelopmentHypothesis">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 

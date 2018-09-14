@@ -14,6 +14,8 @@ Contacts.prototype.config = function () {
     return Contacts;
 };
 
+
+var attachmentIdInitiateConsignor = null;
 //委托人
 function CONSIGNOR() {
 
@@ -46,9 +48,17 @@ CONSIGNOR.prototype = {
             $("#no_legal_person").hide();
             $("#legal_person").show();
         }
+    },
+    setAttachmentIdInitiateConsignor:function (item) {
+        attachmentIdInitiateConsignor = item;
+    },
+    getAttachmentIdInitiateConsignor:function () {
+        return attachmentIdInitiateConsignor;
     }
 };
 
+//带出委托人标识符附件
+var possessorTakeFile = true;
 //占有人
 function POSSESSOR() {
 
@@ -56,38 +66,26 @@ function POSSESSOR() {
 POSSESSOR.prototype = {
     //选项卡
     tabControl:function () {
+        /**
+        * @author:  zch
+        * 描述:这里会处理 把委托人的信息数据 带入 占有人中
+        * @date: 2018-08-29
+        **/
         $("#changeType1 input[type='radio'][name='pType']").change(function () {
             var value = $("#changeType :radio:checked").val();
             if ($(this).val() == 1) {
                 $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").hide();
-                $("#legal_person1").show();
-
-                $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
-                $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
-                if ($("#pEntrustmentUnitX").length > 0) {
-                    $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
-                }
-                $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
-                $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
-                $("#pSociologyCode").val($("#csSociologyCode").val());
-                $("#pScopeOperation").val($("#csScopeOperation").val());
-                $("#pAddress").val($("#csAddress").val());
-                var selectV = $("#csUnitProperties option:selected").val();
-                if (selectV != null && selectV != '') {
-                    $("#pUnitProperties").val(selectV);
-                }
+                POSSESSOR.prototype.takeOutCONSIGNOR.legal();
             }
             if ($(this).val() == 0) {
                 $("#changeType1 input[type='radio'][name='pType'][value='1']").removeAttr("checked");
                 $(this).attr("checked", true);
-                $("#no_legal_person1").show();
-                $("#legal_person1").hide();
-
-                $("#pName").val($("#csName").val());
-                $("#pIdcard").val($("#csIdcard").val());
-                $("#pAddress2").val($("#csAddress2").val());
+                POSSESSOR.prototype.takeOutCONSIGNOR.noLegal();
+            }
+            POSSESSOR.prototype.takeOutCONSIGNOR.contacts.init();
+            if (POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getPossessorTakeFile()){
+                POSSESSOR.prototype.takeOutCONSIGNOR.contacts.files();
             }
         });
     }
@@ -102,9 +100,125 @@ POSSESSOR.prototype = {
             $("#no_legal_person1").hide();
             $("#legal_person1").show();
         }
+    },
+    /**
+    * @author:  zch
+    * 描述:占有人 把委托人的数据带入
+    * @date:2018-08-29
+    **/
+    takeOutCONSIGNOR:{
+        //法人
+        legal:function () {
+            $("#no_legal_person1").hide();
+            $("#legal_person1").show();
+
+            $("#changeType1 input[type='radio'][name='pType'][value='1']").attr("checked", true);
+            $("#changeType1 input[type='radio'][name='pType'][value='0']").removeAttr("checked");
+            if ($("#pEntrustmentUnitX").length > 0) {
+                $("#pEntrustmentUnitX").val($("#csEntrustmentUnitX").val());
+            }
+            $("#pEntrustmentUnit").val($("#csEntrustmentUnit").val());
+            $("#pLegalRepresentative").val($("#csLegalRepresentative").val());
+            $("#pSociologyCode").val($("#csSociologyCode").val());
+            $("#pScopeOperation").val($("#csScopeOperation").val());
+            $("#pAddress").val($("#csAddress").val());
+            var selectV = $("#csUnitProperties option:selected").val();
+            if (selectV != null && selectV != '') {
+                $("#pUnitProperties").val(selectV);
+            }
+        },
+        //非法人(自然人)
+        noLegal:function () {
+            $("#no_legal_person1").show();
+            $("#legal_person1").hide();
+
+            $("#pName").val($("#csName").val());
+            $("#pIdcard").val($("#csIdcard").val());
+            $("#pAddress2").val($("#csAddress2").val());
+        },
+        //联系人
+        contacts:{
+            init:function () {
+                var data = POSSESSOR.prototype.takeOutCONSIGNOR.contacts.getContact();
+                if (data != null){
+                    if (data.length >= 1){
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setContact(data);
+                    }
+                }
+            },
+            //把委托人上传的附件给带出来
+            files:function () {
+                var data = null;
+                var attachmentIdInitiate = CONSIGNOR.prototype.getAttachmentIdInitiateConsignor();
+                if (attachmentIdInitiate != null){//说明委托人有上传附件
+                    AssessCommon.getSysAttachmentDto(attachmentIdInitiate,function (data) {
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.saveFile(data);//copy file
+                    });
+                }
+            },
+            /**
+            * @author:  zch
+            * 描述:新增附件
+            * @date:2018-09-04
+            **/
+            saveFile:function (data) {
+                //替换关键数据
+                data.tableName = AssessDBKey.InitiatePossessor ;
+                data.id = null;
+                data.fieldsName = "pAttachmentProjectEnclosureId" ;
+                AssessCommon.saveAndUpdateSysAttachmentDto(data,function (item) {
+                    if (item != null){
+                        showFileInitiatePossessor();
+                        POSSESSOR.prototype.takeOutCONSIGNOR.contacts.setPossessorTakeFile(false);
+                    }
+                })
+            },
+            //把联系人信息数据写入到数据库中 (把从委托人获取的联系人写入到占有人中)
+            setContact:function (data) {
+                var item = new Array();
+                $.each(data,function (i,n) {
+                    //write dataBase (然后处理必要的信息数据)
+                    n.cType = Contacts.prototype.config().POSSESSOR.nodeKey ;
+                    n.id = null;
+                    item.push(n);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: getContextPath()+"/projectInfo/Contacts/save",
+                    data: {formData:JSON.stringify({contacts:item})},
+                    success: function (result) {
+                        if (result.ret) {
+                            Contacts.prototype.POSSESSOR().loadDataList(null);
+                            toastr.success('成功');
+                        } else {
+                            Alert("传输数据失败，失败原因:" + result.errmsg);
+                        }
+                    }
+                });
+            },
+            getContact:function () {
+                var data = null;
+                var item = null;
+                item = $("#" + Contacts.prototype.POSSESSOR().getData().table).bootstrapTable("getData");
+                if (item != null){
+                    if (item.length >= 1){//说明已经存在数据则不再写
+                        return data ;
+                    }
+                }
+                data = $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("getData");
+                return data;
+            },
+            getPossessorTakeFile:function () {
+                return possessorTakeFile;
+            },
+            setPossessorTakeFile:function (item) {
+                possessorTakeFile = item ;
+            }
+        }
     }
 };
 
+var customerId_UNIT_INFORMATION = 0 ;
 //报告使用单位
 function UNIT_INFORMATION() {
 
@@ -122,13 +236,13 @@ UNIT_INFORMATION.prototype = {
                     $("#uUseUnit").val(nodes[0].id);
                 }
                 var id = nodes[0].id;
+                UNIT_INFORMATION.prototype.setCustomerId_UNIT_INFORMATION(id);
                 Contacts.prototype.UNIT_INFORMATION().loadDataList(null,id);
                 $.ajax({
                     type: "POST",
-                    url: Contacts.prototype.getUrl()+"/projectInfo/getCRMList",
+                    url: getContextPath()+"/projectInfo/getCRMList",
                     data: "crmId=" + id,
                     success: function (msg) {
-                        console.log(msg);
                         UNIT_INFORMATION.prototype.writeCRM(msg, "uLegalRepresentative", "uAddress", "uScopeOperation", "uCertificateNumber","uUnitProperties");
                     }
                 });
@@ -146,6 +260,12 @@ UNIT_INFORMATION.prototype = {
         $("#" + id3).val(businessScope);
         $("#" + id4).val(certificateNumber);
         $("#" + id5).val(unitProperties);
+    },
+    setCustomerId_UNIT_INFORMATION:function (item) {
+        customerId_UNIT_INFORMATION = item;
+    },
+    getCustomerId_UNIT_INFORMATION:function () {
+        return customerId_UNIT_INFORMATION ;
     }
 }
 
@@ -160,10 +280,111 @@ Contacts.prototype.UNIT_INFORMATION = function () {
     Fun.getData = function () {
         var data = {};
         data.table = "tb_ListUNIT_INFORMATION";
+        data.crmTable = "tb_ListCRMContacts";
         data.frm = "frmUNIT_INFORMATIONContacts";
         data.pid = "0";
         data.box = "divBoxUNIT_INFORMATIONContacts";
+        data.crmBox = "divBoxCRMContacts";
         return data;
+    };
+    Fun.crmContacts = {
+        findCRMContacts:function () {
+            var crmContactsName = null;
+            crmContactsName = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox+" "+"input[name='" + "name" + "']").val();
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null,null,crmContactsName);
+        },
+        showModel:function () {
+            $('#' + Contacts.prototype.UNIT_INFORMATION().getData().crmBox).modal("show");
+            Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(null);
+        },
+        next:function () {
+            var customerId = UNIT_INFORMATION.prototype.getCustomerId_UNIT_INFORMATION();
+            var pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            pageIndex = parseInt(pageIndex);
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(customerId)){
+                customerId = 0;
+            }
+            var page = 0;
+            $.ajax({
+                url: getContextPath() + "/projectInfo/findCrmProjectContactsVos",
+                type: "get",
+                dataType: "json",
+                data: {customerId: customerId,total:"total"},
+                success: function (result) {
+                    if (result.ret) {
+                       var total = result.data ;
+                       if ((total % 4) > 0){
+                           page = total / 4 ;
+                           page = parseInt(page) +1 ;
+                       }else {
+                           page = total / 4;
+                       }
+                       pageIndex += 1;
+                       console.log(page);
+                       console.log(pageIndex);
+                       if (pageIndex <= page){
+                           Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(pageIndex,4,null);
+                           $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html(pageIndex);
+                       }
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        previous:function () {
+            var pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            pageIndex = parseInt(pageIndex);
+            pageIndex = pageIndex - 1;
+            if (pageIndex >= 1){
+                Contacts.prototype.UNIT_INFORMATION().crmContacts.loadDataList(pageIndex,4,null);
+                $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html(pageIndex);
+            }
+        },
+        loadDataList:function (pageIndex,pageSize,search) {
+            var customerId = UNIT_INFORMATION.prototype.getCustomerId_UNIT_INFORMATION();
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(customerId)){
+                customerId = 0;
+            }
+            //默认4条记录
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(pageSize)){
+                pageSize = 4;
+            }
+            if (!Contacts.prototype.UNIT_INFORMATION().crmContacts.isEmpty(pageIndex)){
+                pageIndex = $("#"+Contacts.prototype.UNIT_INFORMATION().getData().crmBox +" .pageIndex").html();
+            }
+            var data = {
+                customerId:customerId,
+                pageSize:pageSize,
+                pageIndex:pageIndex,
+                search:search
+            };
+            console.log("test == >");
+            console.log(data);
+            var cols = [];
+            cols.push({field: 'name', title: '姓名',searchable:true});
+            cols.push({field: 'department', title: '部门'});
+            cols.push({field: 'phoneNumber', title: '电话号码'});
+            cols.push({field: 'email', title: '邮箱'});
+            cols.push({field: 'id', visible: false, title: "id"});
+
+            $("#" + Contacts.prototype.UNIT_INFORMATION().getData().crmTable).bootstrapTable("destroy");
+            TableInit(Contacts.prototype.UNIT_INFORMATION().getData().crmTable, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
+                crmContacts: "crmContacts",customerId:data.customerId,pageIndex:data.pageIndex,pageSize:data.pageSize,searchCrm:data.search
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+            });
+        },
+        isEmpty:function (item) {
+            if (item){
+                return true;
+            }
+            return false;
+        }
     };
     /**
      * 显示模态框
@@ -181,7 +402,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -220,7 +441,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         data.pid = pid;
         data.crmId = crmId;
         var cols = [];
-        cols.push({field: 'cName', title: '姓名'});
+        cols.push({field: 'cName', title: '姓名',searchable:true});
         cols.push({field: 'cDept', title: '部门'});
         cols.push({field: 'cPhone', title: '电话号码'});
         cols.push({field: 'cEmail', title: '邮箱'});
@@ -236,7 +457,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             }
         });
         $("#" + Contacts.prototype.UNIT_INFORMATION().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.UNIT_INFORMATION().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.UNIT_INFORMATION().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid,crmId:data.crmId
         }, {
             showColumns: false,
@@ -256,7 +477,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -284,7 +505,7 @@ Contacts.prototype.UNIT_INFORMATION = function () {
         var pid = formParams(Contacts.prototype.UNIT_INFORMATION().getData().frm).pid;
         $("#" + Contacts.prototype.UNIT_INFORMATION().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -340,7 +561,7 @@ Contacts.prototype.POSSESSOR = function () {
         var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -393,7 +614,7 @@ Contacts.prototype.POSSESSOR = function () {
             }
         });
         $("#" + Contacts.prototype.POSSESSOR().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.POSSESSOR().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.POSSESSOR().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
@@ -413,7 +634,7 @@ Contacts.prototype.POSSESSOR = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -441,7 +662,7 @@ Contacts.prototype.POSSESSOR = function () {
         var pid = formParams(Contacts.prototype.POSSESSOR().getData().frm).pid;
         $("#" + Contacts.prototype.POSSESSOR().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -496,7 +717,7 @@ Contacts.prototype.CONSIGNOR = function () {
         var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         Alert("确认要删除么？", 2, null, function () {
             $.ajax({
-                url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/delete",
+                url: getContextPath() + "/projectInfo/Contacts/delete",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -549,7 +770,7 @@ Contacts.prototype.CONSIGNOR = function () {
             }
         });
         $("#" + Contacts.prototype.CONSIGNOR().getData().table).bootstrapTable("destroy");
-        TableInit(Contacts.prototype.CONSIGNOR().getData().table, Contacts.prototype.getUrl() + "/projectInfo/getProjectContactsVos", cols, {
+        TableInit(Contacts.prototype.CONSIGNOR().getData().table, getContextPath() + "/projectInfo/getProjectContactsVos", cols, {
             type: data.flag, pid: data.pid
         }, {
             showColumns: false,
@@ -569,7 +790,7 @@ Contacts.prototype.CONSIGNOR = function () {
             data.cPid = pid ;
         }
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/save",
+            url: getContextPath() + "/projectInfo/Contacts/save",
             type: "post",
             dataType: "json",
             data: data,
@@ -597,7 +818,7 @@ Contacts.prototype.CONSIGNOR = function () {
         var pid = formParams(Contacts.prototype.CONSIGNOR().getData().frm).pid;
         $("#" + Contacts.prototype.CONSIGNOR().getData().frm).clearAll();
         $.ajax({
-            url: Contacts.prototype.getUrl() + "/projectInfo/Contacts/get",
+            url: getContextPath() + "/projectInfo/Contacts/get",
             type: "get",
             dataType: "json",
             data: {id: id},

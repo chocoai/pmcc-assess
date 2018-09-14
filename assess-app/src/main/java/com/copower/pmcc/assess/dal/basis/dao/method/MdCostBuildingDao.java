@@ -46,8 +46,9 @@ public class MdCostBuildingDao {
      * @param mdCostBuilding
      * @return
      */
-    public boolean addEstateNetwork(MdCostBuilding mdCostBuilding) {
-        return mdCostBuildingMapper.insertSelective(mdCostBuilding) > 0;
+    public Integer addEstateNetwork(MdCostBuilding mdCostBuilding) {
+        mdCostBuildingMapper.insertSelective(mdCostBuilding);
+        return mdCostBuilding.getId();
     }
 
     /**

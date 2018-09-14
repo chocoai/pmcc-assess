@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,7 +53,7 @@ public class ExamineBuildingMaintenanceController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineBuildingMaintenanceList", method = {RequestMethod.GET}, name = "维护结构列表")
-    public BootstrapTableVo getExamineBuildingMaintenanceList(Integer examineType, Integer declareId, Integer buildingId) {
+    public BootstrapTableVo getExamineBuildingMaintenanceList(Integer examineType, Integer declareId,Integer planDetailsId, Integer buildingId,String buildNumber) {
         BootstrapTableVo vo = null;
         try {
             ExamineBuildingMaintenance examineBuildingMaintenance = new ExamineBuildingMaintenance();
@@ -62,8 +63,14 @@ public class ExamineBuildingMaintenanceController {
             if (declareId != null ) {
                 examineBuildingMaintenance.setDeclareId(declareId);
             }
+            if (planDetailsId != null ) {
+                examineBuildingMaintenance.setPlanDetailsId(planDetailsId);
+            }
             if (buildingId != null ) {
                 examineBuildingMaintenance.setBuildingId(buildingId);
+            }
+            if (!StringUtils.isEmpty(buildNumber)){
+                examineBuildingMaintenance.setBuildNumber(buildNumber);
             }
             vo = examineBuildingMaintenanceService.getExamineBuildingMaintenanceLists(examineBuildingMaintenance);
         } catch (Exception e1) {

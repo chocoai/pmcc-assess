@@ -50,7 +50,7 @@ public class ExamineMatchingTrafficController {
 
     @ResponseBody
     @RequestMapping(value = "/getExamineMatchingTrafficList",method = {RequestMethod.GET},name = "交通条件列表")
-    public BootstrapTableVo getExamineMatchingTrafficList(String name, Integer examineType,String type,Integer declareId) {
+    public BootstrapTableVo getExamineMatchingTrafficList(String name, Integer examineType,String type,Integer declareId,Integer planDetailsId) {
         BootstrapTableVo vo = null;
         try {
             ExamineMatchingTraffic examineMatchingTraffic = new ExamineMatchingTraffic();
@@ -65,6 +65,9 @@ public class ExamineMatchingTrafficController {
             }
             if (declareId!=null){
                 examineMatchingTraffic.setDeclareId(declareId);
+            }
+            if (planDetailsId!=null){
+                examineMatchingTraffic.setPlanDetailsId(planDetailsId);
             }
             vo = examineMatchingTrafficService.getExamineMatchingTrafficList(examineMatchingTraffic);
         } catch (Exception e1) {

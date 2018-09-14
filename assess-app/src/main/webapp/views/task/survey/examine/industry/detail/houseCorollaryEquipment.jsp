@@ -104,6 +104,7 @@
                 TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/examineHouseCorollaryEquipment/getExamineHouseCorollaryEquipmentList", cols, {
                     type: houseCorollaryEquipment.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,

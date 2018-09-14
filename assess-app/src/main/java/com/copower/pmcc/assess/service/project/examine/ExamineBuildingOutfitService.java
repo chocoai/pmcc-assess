@@ -145,6 +145,15 @@ public class ExamineBuildingOutfitService {
         return examineBuildingOutfitDao.deleteBuildingOutfit(id);
     }
 
+    public boolean removeExamineBuildingOutfit(ExamineBuildingOutfit examineBuildingOutfit){
+        try {
+            examineBuildingOutfitDao.removeExamineBuildingOutfit(examineBuildingOutfit);
+            return  true;
+        } catch (Exception e1) {
+            return  false;
+        }
+    }
+
     public boolean initRemove(){
         try {
             examineBuildingOutfitDao.initRemove();

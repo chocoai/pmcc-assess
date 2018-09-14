@@ -13,6 +13,7 @@ public class ExamineBuildingVo extends ExamineBuilding {
     private String buildingCategoryName;
     private String buildingStructureName;
     private Integer buildingStructurePid;
+    private String propertyTypeName;
 
     public String getBuilderName() {
         return builderName;
@@ -52,5 +53,13 @@ public class ExamineBuildingVo extends ExamineBuilding {
 
     public void setBuildingStructurePid(Integer buildingStructurePid) {
         this.buildingStructurePid = buildingStructurePid;
+    }
+
+    public String getPropertyTypeName() {
+        return propertyTypeName;
+    }
+
+    public void setPropertyTypeName(String propertyTypeName) {
+        this.propertyTypeName = propertyTypeName;
     }
 }

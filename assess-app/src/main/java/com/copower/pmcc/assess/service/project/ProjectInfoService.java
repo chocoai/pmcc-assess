@@ -33,6 +33,7 @@ import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -50,6 +51,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.crm.api.dto.CrmCustomerLinkmanDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -198,20 +200,23 @@ public class ProjectInfoService {
             projectMemberDto.setCreator(commonService.thisUserAccount());
             projectMemberService.saveReturnId(projectMemberDto);
 
-            //判断是否需要下级再进行任务分派 //20180621 Calvin
-            //如果可以下级分派，则先走任务分派流程
-            if (Boolean.TRUE == bisNextUser) {
+            //如果没有设置项目经理，则由部门领导分派项目经理
+            if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
                 //发起流程
+                List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
                 String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
                 BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
                 ProcessInfo processInfo = new ProcessInfo();
+                processInfo.setProjectId(projectInfo.getId());
                 processInfo.setProcessName(boxReDto.getProcessName());
                 processInfo.setGroupName(boxReDto.getGroupName());
                 processInfo.setFolio(projectInfo.getProjectName());//流程描述
                 processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
                 processInfo.setBoxId(boxReDto.getId());
                 processInfo.setStartUser(commonService.thisUserAccount());
+                processInfo.setWorkStage(projectWorkStages.get(0).getWorkStageName());
+                processInfo.setWorkStageId(projectWorkStages.get(0).getId());
                 processInfo.setProcessEventExecutorName(ProjectAssignEvent.class.getSimpleName());
                 processInfo.setTableId(projectInfo.getId());
                 //取审批人
@@ -391,6 +396,11 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
+        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
+        List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
+        ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
+        approvalModelDto.setWorkStageId(projectWorkStage.getId());
+        approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
     }
 
@@ -432,7 +442,7 @@ public class ProjectInfoService {
     public List<ProjectPlanVo> getProjectPlanList(Integer projectId) {
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
         projectPlanList.remove(0);//去除立项阶段
-        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=",applicationConstant.getAppKey());
+        String viewUrl = String.format("/%s/ProjectPlan/planDetailsById?planId=", applicationConstant.getAppKey());
         List<ProjectPlanVo> projectPlanVos = LangUtils.transform(projectPlanList, projectPlan -> {
             ProjectPlanVo projectPlanVo = new ProjectPlanVo();
             BeanUtils.copyProperties(projectPlan, projectPlanVo);
@@ -441,7 +451,7 @@ public class ProjectInfoService {
                 switch (projectStatusEnum) {
                     case FINISH:
                     case TASK:
-                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                        projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
                     case PLAN:
                         //判断有没有发起流程 如果发起了流程 则取待办 没有发起流程 则取任务
                         if (StringUtils.equals(projectPlan.getProcessInsId(), "-1")) {
@@ -455,7 +465,7 @@ public class ProjectInfoService {
                                 projectPlanVo.setPlanExecutor(publicService.getUserNameByAccount(projectTask.getUserAccount()));
                                 projectPlanVo.setPlanCanExecut(StringUtils.equals(commonService.thisUserAccount(), projectTask.getUserAccount()));
                                 projectPlanVo.setPlanExecutUrl(projectTask.getUrl());
-                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s",viewUrl,projectPlan.getId()));
+                                projectPlanVo.setPlanDisplayUrl(String.format("%s%s", viewUrl, projectPlan.getId()));
                             }
                         } else {
                             List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
@@ -471,8 +481,8 @@ public class ProjectInfoService {
                                 if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
                                     approvalUrl = boxReDto.getProcessEditUrl();
                                 }
-                                approvalUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
-                                String displayUrl = String.format("/pmcc-%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                                approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
+                                String displayUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), boxReDto.getProcessDisplayUrl(), boxReDto.getId(), activitiTaskNodeDto.getProcessInstanceId(), activitiTaskNodeDto.getTaskId());
                                 projectPlanVo.setPlanExecutor(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
                                 projectPlanVo.setPlanCanExecut(activitiTaskNodeDto.getUsers().contains(commonService.thisUserAccount()));
                                 projectPlanVo.setPlanExecutUrl(approvalUrl);
@@ -633,6 +643,16 @@ public class ProjectInfoService {
         return vo;
     }
 
+    public BootstrapTableVo crmContacts(Integer customerId,String search) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        try {
+            vo = crmCustomerService.getCustomerLinkmanPageList(customerId,search);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+        }
+        return vo;
+    }
+
     /*联系人类型*/
     public Map<String, String> getTypeInitiateContactsMap() {
         return initiateContactsService.getTypeMap();
@@ -641,6 +661,12 @@ public class ProjectInfoService {
     //添加联系人
     public boolean addContacts(InitiateContactsDto dto) {
         return initiateContactsService.add(dto);
+    }
+
+    public void addContacts(List<InitiateContactsDto> dtos) {
+        for (InitiateContactsDto dto : dtos) {
+            this.addContacts(dto);
+        }
     }
 
     /*联系人删除*/

@@ -7,6 +7,8 @@ public class ExamineHouse {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private String houseNumber;
@@ -33,6 +35,8 @@ public class ExamineHouse {
 
     private Date gmtModified;
 
+    private String orientation;
+
     public Integer getId() {
         return id;
     }
@@ -47,6 +51,14 @@ public class ExamineHouse {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -151,5 +163,13 @@ public class ExamineHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 }

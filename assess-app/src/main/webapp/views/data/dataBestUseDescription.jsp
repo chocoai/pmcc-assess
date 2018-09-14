@@ -91,6 +91,32 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            类型<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="type"
+                                                    class="form-control search-select select2 type">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="category"
+                                                    class="form-control category search-select select2">
+                                                <option selected="selected" value="">请先选择类型</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             描述
                                         </label>
                                         <div class="col-sm-10">
@@ -142,11 +168,15 @@
 
     $(function () {
         loadDataDicList();
+        objMethod.event.init();
+        objMethod.event.change();
     })
     //加载 最佳利用 数据列表
     function loadDataDicList() {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'description', title: '描述'});
 
         cols.push({
@@ -267,6 +297,7 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
+        objMethod.event.init();
         $('#divBox').modal();
     }
 
@@ -278,6 +309,107 @@
         }
         return false;
     }
+
+    /**
+     * @author:  zch
+     * 描述:加载一些select2数据 (类型 类别)
+     * @date:2018-08-30
+     **/
+    var objMethod = new Object();
+    objMethod.flag = true;
+    objMethod.isEmpty = function (data) {
+        if (data) {
+            return true;
+        }
+        return false;
+    }
+    objMethod.writeSelect = function (frm, data, name) {
+        if (objMethod.isEmpty(data)) {
+            $("#" + frm + " ." + name).val(data).trigger("change");
+        } else {
+            $("#" + frm + " ." + name).val(null).trigger("change");
+        }
+    }
+    objMethod.event = {
+        init:function () {
+            if (objMethod.flag){
+                objMethod.event.type();
+                objMethod.flag = false;
+            }
+        },
+        //类型
+        type:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
+                type: "post",
+                dataType: "json",
+                data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (data.length >= 1) {
+                            var option = "<option value=''>请选择</option>";
+                            for (var i = 0; i < data.length; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            }
+                            $("#frm" + " .type").html(option);
+                            $("#frm" + " .type").select2();
+                            $("#frm" + " .category").select2();
+                        }
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        change:function () {
+            objMethod.event.category();
+        },
+        //类别
+        category:function () {
+            //监听change 事件 并做出......
+            $("#frm" + " .type").change(function () {
+                var pid = $("#frm" + " .type").eq(1).val();
+                if (!objMethod.isEmpty(pid)) {
+                    return false;
+                }
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
+                    type: "post",
+                    dataType: "json",
+                    data: {pid: pid},
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            if (data.length >= 1) {
+                                var option = "<option value=''>请选择</option>";
+                                for (var i = 0; i < data.length; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                }
+                                if ($("#frm" + " .category").prev(".category").size() > 0) {
+                                    $("#frm" + " .category").prev(".category").remove();
+                                }
+                                $("#frm" + " .category").empty();
+                                $("#frm" + " .category").html(option);
+                                $("#frm" + " .category").select2();
+                            }
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+        }
+    }
+
 
 
 </script>

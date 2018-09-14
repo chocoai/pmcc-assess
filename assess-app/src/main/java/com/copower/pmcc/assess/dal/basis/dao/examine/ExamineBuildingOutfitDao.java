@@ -38,6 +38,12 @@ public class ExamineBuildingOutfitDao {
         examineBuildingOutfitMapper.deleteByExample(example);
     }
 
+    public void removeExamineBuildingOutfit(ExamineBuildingOutfit examineBuildingOutfit){
+        ExamineBuildingOutfitExample example = new ExamineBuildingOutfitExample();
+        MybatisUtils.convertObj2Example(examineBuildingOutfit, example);
+        examineBuildingOutfitMapper.deleteByExample(example);
+    }
+
     /**
      * 获取数据列表
      * @param examineBuildingOutfit

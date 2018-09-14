@@ -35,17 +35,17 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>crm-api</artifactId>
-            <version>1.0.10</version>
+            <version>1.0.14</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
-            <version>1.0.96</version>
+            <version>1.0.98</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>bpm-api</artifactId>
-            <version>1.0.57</version>
+            <version>1.0.73</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.copower</groupId>
@@ -343,6 +343,12 @@
         <dependency>
             <groupId>com.zhuozhengsoft</groupId>
             <artifactId>pageoffice</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baidu.aip</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>4.1.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->

@@ -9,9 +9,10 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
-import com.copower.pmcc.assess.service.project.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +44,7 @@ public class ProjectPlanApprovalEvent extends BaseProcessEvent {
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
         projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getName());
         projectPlanService.updateProjectPlan(projectPlan);
-        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlan.getId());
+        List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlan.getId(), ProcessStatusEnum.NOPROCESS.getValue());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
         for (ProjectPlanDetails item : projectPlanDetails) {

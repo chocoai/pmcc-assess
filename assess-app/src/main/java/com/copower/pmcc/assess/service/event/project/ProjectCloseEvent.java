@@ -7,11 +7,12 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectClose;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.ProjectCloseService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.manage.ProjectCloseService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class ProjectCloseEvent extends BaseProcessEvent {
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
@@ -54,7 +57,7 @@ public class ProjectCloseEvent extends BaseProcessEvent {
                     projectPlanDao.updateProjectPlan(item);
                 }
             }
-            bpmRpcProjectTaskService.updateProjectTaskRestart(projectInfo.getId());
+            bpmRpcProjectTaskService.updateProjectTaskRestart(applicationConstant.getAppKey(),projectInfo.getId());
         }
     }
 

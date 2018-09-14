@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryMapper;
-import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetInventoryDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,8 +18,8 @@ public class SurveyAssetInventoryDao {
     @Autowired
     private SurveyAssetInventoryMapper surveyAssetInventoryMapper;
 
-    public boolean update(SurveyAssetInventoryDto surveyAssetInventoryDto) {
-        int i = surveyAssetInventoryMapper.updateByPrimaryKeySelective(surveyAssetInventoryDto);
+    public boolean update(SurveyAssetInventory surveyAssetInventory) {
+        int i = surveyAssetInventoryMapper.updateByPrimaryKeySelective(surveyAssetInventory);
         return i > 0;
     }
 

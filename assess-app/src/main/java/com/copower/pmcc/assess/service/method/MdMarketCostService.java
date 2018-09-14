@@ -1,25 +1,36 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.method.ConstructionInstallationEngineeringDto;
+import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
+import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
+import com.copower.pmcc.assess.service.data.DataInfrastructureCostService;
+import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostService;
+import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Auther: zch
@@ -39,44 +50,174 @@ public class MdMarketCostService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private DataInfrastructureCostService dataDataInfrastructureCostService;
+    @Autowired
+    private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
+    @Autowired
+    private DataBuildingNewRateService dataBuildingNewRateService;
+    @Autowired
+    private DataInfrastructureService dataInfrastructureService;
+    @Autowired
+    private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
+
+
+
+    public Integer saveAndUpdateMdCost(MdCost mdCost){
+        if (mdCost.getId() == null){
+            mdCost.setCreator(commonService.thisUserAccount());
+            return mdCostDao.addEstateNetwork(mdCost);
+        }else {
+            mdCostDao.updateEstateNetwork(mdCost);
+            return null;
+        }
+    }
+
+    public Integer saveAndUpdateMdCostBuilding(MdCostBuilding mdCostBuilding){
+        if (mdCostBuilding.getId()==null){
+            mdCostBuilding.setCreator(commonService.thisUserAccount());
+            return mdCostBuildingDao.addEstateNetwork(mdCostBuilding);
+        }else {
+            mdCostBuildingDao.updateEstateNetwork(mdCostBuilding);
+            return  null;
+        }
+    }
+
+
+
+    public Integer saveAndUpdateMdCostConstruction(MdCostConstruction mdCostConstruction) {
+        if (mdCostConstruction.getId() == null){
+            mdCostConstruction.setCreator(commonService.thisUserAccount());
+            return mdCostConstructionDao.addEstateNetwork(mdCostConstruction);
+        }else {
+            mdCostConstructionDao.updateEstateNetwork(mdCostConstruction);
+            return null;
+        }
+    }
+
+    public MdCost getByMdCostId(int id) {
+        MdCost mdCost = mdCostDao.getEstateNetworkById(id);
+        return mdCost;
+    }
+
+    public List<MdCost> getMdCostList(MdCost mdCost) {
+        return mdCostDao.getEstateNetworkList(mdCost);
+    }
+
+    public List<MdCostBuilding> mdCostBuildingList(MdCostBuilding mdCostBuilding) {
+        return mdCostBuildingDao.getEstateNetworkList(mdCostBuilding);
+    }
+
+    public MdCostBuilding getMdCostBuilding(Integer id){
+        return mdCostBuildingDao.getEstateNetworkById(id);
+    }
+
+    public MdCostConstruction getMdCostConstruction(Integer id){
+        return mdCostConstructionDao.getEstateNetworkById(id);
+    }
+
+    public List<MdCostConstruction> getMdCostConstructionList(MdCostConstruction mdCostConstruction) {
+        return mdCostConstructionDao.getEstateNetworkList(mdCostConstruction);
+    }
+
+    public List<InfrastructureVo> infrastructureList(ProjectInfo projectInfo) {
+        List<InfrastructureVo> vos = dataInfrastructureService.infrastructureList(new Infrastructure());
+        List<InfrastructureVo> tela = Lists.newArrayList();
+        if (projectInfo == null) {
+            return vos;
+        }
+        String province = projectInfo.getProvince();
+        String city = projectInfo.getCity();
+        for (InfrastructureVo vo : vos) {
+            if (Objects.equal(vo.getProvince(), province)) {
+                if (Objects.equal(vo.getCity(), city)) {
+                    tela.add(vo);
+                }
+            }
+        }
+        return tela;
+    }
+
+    public List<DataBuildingNewRateVo> dataBuildingNewRateList() {
+        return dataBuildingNewRateService.dataBuildingNewRateList();
+    }
+
+    public List<DataInfrastructureCost> infrastructureCostList() {
+        List<DataInfrastructureCost> infrastructureCosts = dataDataInfrastructureCostService.infrastructureCostList();
+        Ordering<DataInfrastructureCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureCost>() {
+            @Override
+            public int compare(DataInfrastructureCost o1, DataInfrastructureCost o2) {
+                return o1.getGmtCreated().compareTo(o2.getGmtCreated());
+            }
+        }).reverse();//排序 并且反转
+        Collections.sort(infrastructureCosts, firstOrdering);
+        List<DataInfrastructureCost> costList = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(infrastructureCosts)) {
+            costList.add(infrastructureCosts.get(0));
+        }
+        return costList;
+    }
+
+    public List<DataInfrastructureMatchingCost> infrastructureMatchingCosts() {
+        List<DataInfrastructureMatchingCost> infrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts();
+        Ordering<DataInfrastructureMatchingCost> firstOrdering = Ordering.from(new Comparator<DataInfrastructureMatchingCost>() {
+            @Override
+            public int compare(DataInfrastructureMatchingCost o1, DataInfrastructureMatchingCost o2) {
+                return o1.getGmtCreated().compareTo(o2.getGmtCreated());
+            }
+        }).reverse();//排序 并且反转
+        Collections.sort(infrastructureMatchingCosts, firstOrdering);
+        List<DataInfrastructureMatchingCost> costList = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(infrastructureMatchingCosts)) {
+            costList.add(infrastructureMatchingCosts.get(0));
+        }
+        return costList;
+    }
+
+    public List<BaseDataDic> getAddedValueAdditionalTaxRate() {
+        return baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_ADDEDVALUEADDITIONALTAXRATE);
+    }
 
     public BootstrapTableVo getBaseDicTree() {
-        List<ZtreeDto> ztreeDtos = Lists.newArrayList();
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
-        ZtreeDto ztreeDto = new ZtreeDto();
-        BeanUtils.copyProperties(baseDataDic,ztreeDto);
-        ztreeDto.setNumber("0");
-        ztreeDtos.add(ztreeDto);
+        List<ConstructionInstallationEngineeringDto> installationEngineeringDtos = Lists.newArrayList();
+//        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT);
+//        ConstructionInstallationEngineeringDto installationEngineeringDto = new ConstructionInstallationEngineeringDto();
+//        BeanUtils.copyProperties(baseDataDic,installationEngineeringDto);
+//        installationEngineeringDto.setNumber("0");
+//        installationEngineeringDtos.add(installationEngineeringDto);
         int i = 0;
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT,i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT), installationEngineeringDtos, null, i);
 
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT,++i);
-        changeZtreeDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT), ztreeDtos,AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT,++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.SOIL_ENGINEERING_PROJECT, ++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.ERECT_ENGINEERING_PROJECT, ++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.DECORATE_ENGINEERING_PROJECT, ++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.SUBSIDIARY_ENGINEERING_PROJECT, ++i);
+        changeConstructionInstallationEngineeringDto(baseDataDicService.getCacheDataDicList(AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT), installationEngineeringDtos, AssessMarketCostConstant.TWOLOADING_ENGINEERING_PROJECT, ++i);
         BootstrapTableVo vo = new BootstrapTableVo();
-        vo.setTotal(Integer.toUnsignedLong(ztreeDtos.size()));
-        vo.setRows(ztreeDtos);
+        vo.setTotal(Integer.toUnsignedLong(installationEngineeringDtos.size()));
+        vo.setRows(installationEngineeringDtos);
         return vo;
     }
 
-    private void changeZtreeDto(List<BaseDataDic> baseDataDics, List<ZtreeDto> ztreeDtos,String key,int i) {
-        Random random = new Random(System.currentTimeMillis());
+    private void changeConstructionInstallationEngineeringDto(List<BaseDataDic> baseDataDics, List<ConstructionInstallationEngineeringDto> ztreeDtos, String key, int i) {
         int v = 1;
         if (!ObjectUtils.isEmpty(baseDataDics)) {
             for (BaseDataDic baseDataDic : baseDataDics) {
-                ZtreeDto ztreeDto = new ZtreeDto();
-                BeanUtils.copyProperties(baseDataDic, ztreeDto);
-                BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
-                ztreeDto.set_parentId(dic.getId());
-                if (i!=0){
-                    ztreeDto.setNumber(String.format("%d-%d",i,v++));
-                }else {
-                    ztreeDto.setNumber(String.valueOf(v++));
+                ConstructionInstallationEngineeringDto engineeringDto = new ConstructionInstallationEngineeringDto();
+                BeanUtils.copyProperties(baseDataDic, engineeringDto);
+                if (!StringUtils.isEmpty(key)) {
+                    BaseDataDic dic = baseDataDicService.getCacheDataDicByFieldName(key);
+                    engineeringDto.set_parentId(dic.getId());
+                } else {
+                    //未传入key  说明是父节点
+                    engineeringDto.setParent(true);
                 }
-                ztreeDto.setArea(random.nextInt(100));
-                ztreeDtos.add(ztreeDto);
+                if (i != 0) {
+                    engineeringDto.setNumber(String.format("%d-%d", i, v++));
+                } else {
+                    engineeringDto.setNumber(String.valueOf(v++));
+                }
+                ztreeDtos.add(engineeringDto);
             }
         }
     }

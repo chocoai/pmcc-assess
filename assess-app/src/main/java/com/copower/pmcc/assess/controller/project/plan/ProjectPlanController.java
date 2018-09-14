@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanInterface;
 import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -173,11 +174,10 @@ public class ProjectPlanController {
         bootstrapTableVo.setTotal((long) projectPlanDetailsVos.size());
         bootstrapTableVo.setRows(projectPlanDetailsVos);
         return bootstrapTableVo;
-
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveProjectPlanDetails", name = "取得项目详情计划", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveProjectPlanDetails", name = "保存项目详情计划", method = RequestMethod.POST)
     public HttpResult saveProjectPlanDetails(String ds, Integer planId) {
         try {
             projectPlanService.saveProjectPlanDetails(ds);
@@ -343,7 +343,7 @@ public class ProjectPlanController {
         modelAndView.addObject("reviewMark", viewUrl);
         //显示数据
         modelAndView.addObject("boxCnName", projectPlan.getPlanName() + "-" + "计划详情");
-
+        modelAndView.addObject("projectInfo", projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectPlan.getProjectId())));
         return modelAndView;
     }
 

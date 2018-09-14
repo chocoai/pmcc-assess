@@ -81,7 +81,11 @@
                 cols.push({field: 'name', title: '房间名称'});
                 cols.push({field: 'roomTypeName', title: '房间类型'});
                 cols.push({field: 'area', title: '面积'});
-                cols.push({field: 'orientation', title: '朝向'});
+                cols.push({field: 'sunshine', title: '日照'});
+                cols.push({field: 'lighting', title: '采光'});
+                cols.push({field: 'layerHeight', title: '层高'});
+                cols.push({field: 'opening', title: '开间'});
+                cols.push({field: 'depth', title: '进深'});
                 cols.push({field: 'aeration', title: '通风'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -97,6 +101,7 @@
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomList", cols, {
                     type: houseRoom.prototype.config().type,
                     declareId : $("#declareId").val(),
+                    planDetailsId : $("#planDetailsId").val(),
                     examineType : $("#examineType").val()
                 }, {
                     showColumns: false,
@@ -160,6 +165,9 @@
                 var data = formParams(houseRoom.prototype.config().frmSubclass);
                 if ($("#declareId").size() > 0) {
                     data.declareId = $("#declareId").val();
+                }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
                 }
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
@@ -333,6 +341,9 @@
                 if ($("#examineType").size() > 0) {
                     data.examineType = $("#examineType").val();
                 }
+                if ($("#planDetailsId").size() > 0) {
+                    data.planDetailsId = $("#planDetailsId").val();
+                }
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineHouseRoom/saveAndUpdateExamineHouseRoom",
                     type: "post",
@@ -427,31 +438,18 @@
                                         <label class="col-sm-2 control-label">
                                             房间名称
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="房间名称" name="name" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             面积
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="面积" name="area" data-rule-number='true'
                                                    class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            朝向
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="朝向" name="orientation" class="form-control"
-                                                   required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -461,40 +459,78 @@
                                         <label class="col-sm-2 control-label">
                                             通风
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="通风" name="aeration" class="form-control"
                                                    required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            日照
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="日照" name="sunshine" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            采光
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="采光" name="lighting" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            层高
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="层高" name="layerHeight" class="form-control"
+                                            >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            光照
+                                            开间
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="光照" name="illumination" class="form-control"
-                                                   required="required">
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="开间" name="opening" class="form-control"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            进深
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" placeholder="进深" name="depth" class="form-control"
+                                            >
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             隔音
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <input type="text" placeholder="隔音" name="soundInsulation"
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             房间类型
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-4">
                                             <select required="required" name="roomType"
                                                     class="form-control search-select select2 roomType">
                                             </select>

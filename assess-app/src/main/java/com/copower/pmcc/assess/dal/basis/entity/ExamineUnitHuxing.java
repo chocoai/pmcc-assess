@@ -8,6 +8,8 @@ public class ExamineUnitHuxing {
 
     private Integer declareId;
 
+    private Integer planDetailsId;
+
     private Integer examineType;
 
     private Integer houseLayout;
@@ -23,6 +25,12 @@ public class ExamineUnitHuxing {
     private String description;
 
     private String creator;
+
+    private String houseCategory;
+
+    private String name;
+
+    private String orientation;
 
     private Date gmtCreated;
 
@@ -42,6 +50,14 @@ public class ExamineUnitHuxing {
 
     public void setDeclareId(Integer declareId) {
         this.declareId = declareId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getExamineType() {
@@ -106,6 +122,30 @@ public class ExamineUnitHuxing {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getHouseCategory() {
+        return houseCategory;
+    }
+
+    public void setHouseCategory(String houseCategory) {
+        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public Date getGmtCreated() {

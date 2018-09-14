@@ -38,13 +38,7 @@ public class SchemeJudgeObjectDao {
     public List<SchemeJudgeObject> getSchemeJudgeObjectList(Integer areaGroupId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andIdIsNotNull().andAreaGroupIdEqualTo(areaGroupId);
-        example.setOrderByClause("group_number,number");
-        return mapper.selectByExample(example);
-    }
-
-    public List<SchemeJudgeObject> getByProjectIdAndAreaGroupId(Integer ProjectId, Integer AreaGroupId, Integer groupNumber) {
-        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
-        example.createCriteria().andProjectIdEqualTo(ProjectId).andAreaGroupIdEqualTo(AreaGroupId).andGroupNumberEqualTo(groupNumber);
+        example.setOrderByClause("sorting");
         return mapper.selectByExample(example);
     }
 

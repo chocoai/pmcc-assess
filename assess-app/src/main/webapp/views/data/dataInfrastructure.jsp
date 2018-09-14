@@ -262,6 +262,7 @@
             <div class="panel-body">
                 <form id="firSubA" class="form-horizontal">
                     <div class="form-group">
+                        <input type="text" name="pid">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 名称<span class="symbol required"></span>
@@ -336,6 +337,7 @@
             <form id="firSubA1" class="form-horizontal">
                 <div class="panel-body">
                     <div class="form-group">
+                        <input type="text" name="pid">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 名称<span class="symbol required"></span>
@@ -396,7 +398,7 @@
         });
     }
     //加载基础设施费用列表
-    function loadInfratructureCost() {
+    function loadInfratructureCost(pid) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '费用'});
@@ -419,6 +421,9 @@
             showRefresh: false,
             search: false
         });
+        if (pid !=null && pid != ''){
+            $("#firSubA input[name='pid']").val(pid);
+        }
         $('#firSub1').modal();
     }
 
@@ -428,28 +433,28 @@
     }
     //新增基础设施费用
     function saveFileld() {
-        var flag = false;
-        var data = $("#firSubA").serialize();
-        if ($("#firSubA").valid()) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/infrastructureCost/addAndEdit",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        loadInfratructureCost();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+        var data = formParams("firSubA");
+        if (!$("#firSubA").valid()) {
+            return false;
         }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureCost/addAndEdit",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    loadInfratructureCost();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     //删除 基础设施费用
@@ -505,7 +510,7 @@
 
 
     //加载公共设施费用列表
-    function loadInfratructurematchingCost() {
+    function loadInfratructurematchingCost(pid) {
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'number', title: '金额'});
@@ -528,6 +533,9 @@
             showRefresh: false,
             search: false
         });
+        if (pid !=null && pid != ''){
+            $("#firSubA1 input[name='pid']").val(pid);
+        }
         $('#firSub2').modal();
     }
 
@@ -537,28 +545,28 @@
     }
     //新增公共设施费用
     function saveFileld1() {
-        var flag = false;
-        var data = $("#firSubA1").serialize();
-        if ($("#firSubA1").valid()) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/infrastructureMatchingCost/addAndEdit",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('保存成功');
-                        loadInfratructurematchingCost();
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+        var data = formParams("firSubA1");
+        if (!$("#firSubA1").valid()) {
+            return false;
         }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/infrastructureMatchingCost/addAndEdit",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    loadInfratructurematchingCost();
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
     //删除 公共设施费用
@@ -637,8 +645,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + index + ');" >基础设施费</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + index + ');" >公共配套设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructureCost(' + row.id + ');" >基础设施费</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:loadInfratructurematchingCost(' + row.id + ');" >公共配套设施费</i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="editHrProfessional(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="deleteBestUseDescription(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';

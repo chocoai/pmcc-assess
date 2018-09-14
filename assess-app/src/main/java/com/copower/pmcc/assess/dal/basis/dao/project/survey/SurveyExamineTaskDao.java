@@ -49,6 +49,19 @@ public class SurveyExamineTaskDao {
     }
 
     /**
+     * 获取某状态下任务数量
+     * @param planDetailsId
+     * @param taskStatus
+     * @return
+     */
+    public int getTaskCountByStatus(Integer planDetailsId,String taskStatus){
+        SurveyExamineTaskExample example = new SurveyExamineTaskExample();
+        SurveyExamineTaskExample.Criteria criteria = example.createCriteria();
+        criteria.andPlanDetailsIdEqualTo(planDetailsId).andPidNotEqualTo(0).andTaskStatusEqualTo(taskStatus);
+        return surveyExamineTaskMapper.countByExample(example);
+    }
+
+    /**
      * 新增
      *
      * @param surveyExamineTask

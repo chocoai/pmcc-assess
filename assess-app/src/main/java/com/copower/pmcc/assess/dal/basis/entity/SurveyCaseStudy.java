@@ -11,9 +11,9 @@ public class SurveyCaseStudy {
 
     private String processInsId;
 
-    private String examineFormType;
+    private Integer declareId;
 
-    private Integer declareRecordId;
+    private String jsonContent;
 
     private String creator;
 
@@ -53,20 +53,20 @@ public class SurveyCaseStudy {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
-    public String getExamineFormType() {
-        return examineFormType;
+    public Integer getDeclareId() {
+        return declareId;
     }
 
-    public void setExamineFormType(String examineFormType) {
-        this.examineFormType = examineFormType == null ? null : examineFormType.trim();
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
     }
 
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
+    public String getJsonContent() {
+        return jsonContent;
     }
 
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
     }
 
     public String getCreator() {

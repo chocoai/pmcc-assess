@@ -17,6 +17,16 @@ public class DataReportAnalysis {
 
     private Date gmtModified;
 
+    private String entrustment;
+
+    private String purpose;
+
+    private String province;
+
+    private String city;
+
+    private String district;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +81,45 @@ public class DataReportAnalysis {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getEntrustment() {
+        return entrustment;
+    }
+
+    public void setEntrustment(String entrustment) {
+        this.entrustment = entrustment == null ? null : entrustment.trim();
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose == null ? null : purpose.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
     }
 }

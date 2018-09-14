@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
@@ -16,6 +19,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +46,23 @@ public class DataInfrastructureService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
-
+    @Autowired
+    private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
+    @Autowired
+    private DataInfrastructureCostService dataDataInfrastructureCostService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+
+    public List<InfrastructureVo> infrastructureList(Infrastructure infrastructure) {
+        List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureList(infrastructure);
+        List<InfrastructureVo> vos = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(infrastructureList)) {
+            for (Infrastructure infrastru : infrastructureList) {
+                vos.add(change(infrastru));
+            }
+        }
+        return vos;
+    }
 
     public BootstrapTableVo getInfrastructure(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -59,7 +78,7 @@ public class DataInfrastructureService {
         return vo;
     }
 
-    public InfrastructureVo get(Integer id){
+    public InfrastructureVo get(Integer id) {
         Infrastructure infrastructure = dataInfrastructureDao.get(id);
         return change(infrastructure);
     }
@@ -70,15 +89,16 @@ public class DataInfrastructureService {
         infrastructureDto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(infrastructureDto, infrastructure);
         int id = dataInfrastructureDao.addInfrastructure(infrastructure);
-        update_SysAttachmentDto(id,InfrastructureVo.fileName);
-        return id >0;
+        update_SysAttachmentDto(id, InfrastructureVo.fileName);
+        return id > 0;
     }
+
     //修改附件中的table id 以及存附件的主表的附件id
-    public boolean update_SysAttachmentDto(int pid, String fields_name){
+    public boolean update_SysAttachmentDto(int pid, String fields_name) {
         int TEMP = 0;
-        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name,null);
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name, null);
         //一般都只有一个
-        if (baseAttachments.size()>0){
+        if (baseAttachments.size() > 0) {
             SysAttachmentDto baseAttachment = baseAttachments.get(0);
             // 更新 存附件的主表
             baseAttachment.setTableId(pid);
@@ -87,7 +107,7 @@ public class DataInfrastructureService {
             infrastructure.setFileName(baseAttachment.getFileName());
             dataInfrastructureDao.update(infrastructure);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -97,17 +117,17 @@ public class DataInfrastructureService {
         Infrastructure infrastructure = new Infrastructure();
         dto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(dto, infrastructure);
-        boolean flag = update_SysAttachmentDto(infrastructure.getId(),InfrastructureVo.fileName);
-       try {
-           InfrastructureVo vo = get(dto.getId());
-           infrastructure.setFileName(vo.getFileName());
-           infrastructure.setCreator(vo.getCreator());
-           dataInfrastructureDao.update(infrastructure);
-           flag = true;
-       }catch (Exception e){
-           flag = false;
-           logger.error("----------------->错误!");
-       }
+        boolean flag = update_SysAttachmentDto(infrastructure.getId(), InfrastructureVo.fileName);
+        try {
+            InfrastructureVo vo = get(dto.getId());
+            infrastructure.setFileName(vo.getFileName());
+            infrastructure.setCreator(vo.getCreator());
+            dataInfrastructureDao.update(infrastructure);
+            flag = true;
+        } catch (Exception e) {
+            flag = false;
+            logger.error("----------------->错误!");
+        }
         return flag;
     }
 
@@ -123,6 +143,39 @@ public class DataInfrastructureService {
         vo.setProvinceName(getProvinceName(Integer.parseInt(infrastructure.getProvince())));
         vo.setCityName(getSysArea(Integer.parseInt(infrastructure.getCity())));
         vo.setDistrictName(getSysArea(Integer.parseInt(infrastructure.getDistrict())));
+        if (!ObjectUtils.isEmpty(infrastructure.getEndDate())) {
+            vo.setEndDateName(DateHelp.getDateHelp().printDate(infrastructure.getEndDate()));
+        }
+        if (!ObjectUtils.isEmpty(infrastructure.getStartDate())) {
+            vo.setStartDateName(DateHelp.getDateHelp().printDate(infrastructure.getStartDate()));
+        }
+        DataInfrastructureCost dataInfrastructureCost = new DataInfrastructureCost();
+        DataInfrastructureMatchingCost dataInfrastructureMatchingCost = new DataInfrastructureMatchingCost();
+        dataInfrastructureCost.setPid(infrastructure.getId());
+        dataInfrastructureMatchingCost.setPid(infrastructure.getId());
+        List<DataInfrastructureCost> dataInfrastructureCosts = dataDataInfrastructureCostService.getDataInfrastructureCostList(dataInfrastructureCost);
+        List<DataInfrastructureMatchingCost> dataInfrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts(dataInfrastructureMatchingCost);
+        double temp = 0.0;
+        if (!ObjectUtils.isEmpty(dataInfrastructureCosts)){
+            for (DataInfrastructureCost cost : dataInfrastructureCosts) {
+                if (cost != null) {
+                    if (cost.getNumber()!=null){
+                        temp += cost.getNumber().doubleValue();
+                    }
+                }
+            }
+        }
+        vo.setPriceCost(temp);
+        if (!ObjectUtils.isEmpty(dataInfrastructureMatchingCosts)){
+            for (DataInfrastructureMatchingCost cost : dataInfrastructureMatchingCosts) {
+                if (cost != null) {
+                    if (cost.getNumber()!=null){
+                        temp += cost.getNumber().doubleValue();
+                    }
+                }
+            }
+        }
+        vo.setPriceMarch(temp);
         return vo;
     }
 

@@ -62,18 +62,21 @@ public class ExamineUnitHuxingService {
      * @param examineUnitHuxing
      * @return
      */
-    public List<ExamineUnitHuxing> getExamineUnitHuxingList(ExamineUnitHuxing examineUnitHuxing) {
-        return examineUnitHuxingDao.getUnitHuxingList(examineUnitHuxing);
+    public List<ExamineUnitHuxingVo> getExamineUnitHuxingList(ExamineUnitHuxing examineUnitHuxing) {
+        List<ExamineUnitHuxing> examineUnitHuxingList = examineUnitHuxingDao.getUnitHuxingList(examineUnitHuxing);
+        List<ExamineUnitHuxingVo> vos = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(examineUnitHuxingList)) {
+            examineUnitHuxingList.forEach(oo -> vos.add(getExamineUnitHuxingVo(oo)));
+        }
+        return vos;
     }
 
     public BootstrapTableVo getExamineUnitHuxingLists(ExamineUnitHuxing examineUnitHuxing) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ExamineUnitHuxingVo> vos = Lists.newArrayList();
-        getExamineUnitHuxingList(examineUnitHuxing).stream().forEach(oo -> vos.add(getExamineUnitHuxingVo(oo)));
         vo.setTotal(page.getTotal());
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<ExamineUnitHuxingVo>() : vos);
+        vo.setRows(getExamineUnitHuxingList(examineUnitHuxing));
         return vo;
     }
 
@@ -83,12 +86,12 @@ public class ExamineUnitHuxingService {
         if (examineUnitHuxing.getHouseLayout() != null) {
             vo.setHouseLayoutName(getValue(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_LAYOUT, examineUnitHuxing.getHouseLayout()));
         }
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(examineUnitHuxing.getId(), ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName(),FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(examineUnitHuxing.getId(), ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName(), FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class));
         StringBuilder builder = new StringBuilder();
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
-            if (sysAttachmentDtos.size() >= 1){
-                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtos){
-                    if (sysAttachmentDto != null){
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
                         builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
                         builder.append(" ");
                     }
@@ -131,9 +134,9 @@ public class ExamineUnitHuxingService {
         }
         try {
             int id = examineUnitHuxingDao.saveReturnID(examineUnitHuxing);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class),id);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ExamineUnitHuxing.class), id);
         } catch (Exception e1) {
-            logger.error(String.format("异常! %s",e1.getMessage()),e1);
+            logger.error(String.format("异常! %s", e1.getMessage()), e1);
             return false;
         }
         return true;

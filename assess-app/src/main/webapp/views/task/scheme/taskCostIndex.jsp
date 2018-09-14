@@ -14,8 +14,9 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/task/scheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入成本法模块 -->
-            <jsp:include page="/views/method/module/marketCostIndex.jsp"></jsp:include>
+            <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -78,13 +79,18 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
+    <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript">
     $(function () {
-
+        //支撑信息初始化
+        supportInfoModule.init({
+            supportInfo: JSON.parse($("#supportInfosJSON").val())
+        });
     })
 </script>
 <script type="application/javascript">
@@ -111,6 +117,7 @@
             }
         });
     });
+
     //显示附件
     function loadUploadFiles() {
         FileUtils.getFileShows({
@@ -127,10 +134,15 @@
 
     //提交
     function submit() {
-        if (!supportInfoModule.valid()) {
+
+        if (!$("#frmBuild").valid()) {
             return false;
         }
-        if (!marketCompare.valid()) {
+        if (!$("#frmConstruction").valid()) {
+            return false;
+        }
+
+        if (!supportInfoModule.valid()) {
             return false;
         }
         if (!$("#frm_task").valid()) {
@@ -139,7 +151,9 @@
 
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
-        data.marketCompare = marketCompare.getData();
+        data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
+        data.mdCostConstruction = optionsBuildBox.getMdCostConstruction();
+        console.log(data.mdCostConstruction);
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
