@@ -5,8 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectApplyDto;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
@@ -166,20 +165,45 @@ public class SchemeProgrammeController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/saveProgrammeArea", name = "保存区域下方案 ", method = RequestMethod.POST)
+    public HttpResult saveProgrammeArea(String formData) {
+        try {
+            if (StringUtils.isNotBlank(formData)) {
+                SchemeProgrammeDto applyDto = JSON.parseObject(formData, SchemeProgrammeDto.class);
+                schemeJudgeObjectService.saveProgrammeArea(applyDto);
+            }
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error("保存区域下方案", e);
+            return HttpResult.newErrorResult("保存区域下方案异常");
+        }
+    }
 
-
-
-
-
-
-
-
+    @ResponseBody
+    @RequestMapping(value = "/saveProgrammeAll", name = "保存方案所有内容 ", method = RequestMethod.POST)
+    public HttpResult saveProgrammeAll(String formData) {
+        try {
+            if (StringUtils.isNotBlank(formData)) {
+                List<SchemeProgrammeDto> applyDto = JSON.parseArray(formData, SchemeProgrammeDto.class);
+                schemeJudgeObjectService.saveProgrammeAll(applyDto);
+            }
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error("保存方案所有内容", e);
+            return HttpResult.newErrorResult("保存方案所有内容异常");
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getSchemeJudgeFunctions", name = "获取估价对象设置的评估方法 ", method = RequestMethod.GET)
-    public Object getSchemeJudgeFunctions(Integer areaGroupId,Integer groupNumber) {
+    public Object getSchemeJudgeFunctions(Integer judgeObjectId) {
         try {
-            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getSchemeJudgeFunctions(areaGroupId,groupNumber);
+            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getSchemeJudgeFunctions(judgeObjectId);
             return HttpResult.newCorrectResult(judgeFunctions);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -191,8 +215,8 @@ public class SchemeProgrammeController {
     @RequestMapping(value = "/saveJudgeFunction", name = "评估方法 保存 ", method = RequestMethod.POST)
     public HttpResult saveJudgeFunction(String formData) {
         try {
-            SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto= JSON.parseObject(formData,SchemeJudgeFunctionApplyDto.class);
-            schemeJudgeFunctionService.saveJudgeFunction(schemeJudgeFunctionApplyDto);
+            List<SchemeJudgeFunction> judgeFunctionList= JSON.parseArray(formData,SchemeJudgeFunction.class);
+            schemeJudgeFunctionService.saveJudgeFunction(judgeFunctionList);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -201,18 +225,5 @@ public class SchemeProgrammeController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/saveEvaluationObject", name = "保存估价对象 ", method = RequestMethod.POST)
-    public HttpResult saveEvaluationObject(String formData) {
-        try {
-            if (StringUtils.isNotBlank(formData)) {
-                SchemeJudgeObjectApplyDto applyDto = JSON.parseObject(formData, SchemeJudgeObjectApplyDto.class);
-                schemeJudgeObjectService.saveEvaluationObject(applyDto);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
+
 }

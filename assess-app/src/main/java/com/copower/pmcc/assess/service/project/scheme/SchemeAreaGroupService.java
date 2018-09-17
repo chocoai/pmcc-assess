@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -100,7 +101,7 @@ public class SchemeAreaGroupService {
     @Transactional
     public void areaGroupMergeCancel(Integer id) throws BusinessException {
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByPid(id);
-        if(CollectionUtils.isNotEmpty(schemeAreaGroupList)){
+        if (CollectionUtils.isNotEmpty(schemeAreaGroupList)) {
             for (SchemeAreaGroup areaGroup : schemeAreaGroupList) {
                 areaGroup.setPid(0);
                 areaGroup.setBisEnable(true);
@@ -111,8 +112,21 @@ public class SchemeAreaGroupService {
         schemeAreaGroupDao.remove(id);
     }
 
-
-
+    /**
+     * 保存区域分组
+     *
+     * @param schemeAreaGroup
+     */
+    public void saveAreaGroup(SchemeAreaGroup schemeAreaGroup) throws BusinessException {
+        if (schemeAreaGroup == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        if (schemeAreaGroup.getId() != null && schemeAreaGroup.getId() > 0) {
+            schemeAreaGroupDao.update(schemeAreaGroup);
+        } else {
+            schemeAreaGroup.setCreator(commonService.thisUserAccount());
+            schemeAreaGroupDao.add(schemeAreaGroup);
+        }
+    }
 
 
     public boolean remove(Integer id) {

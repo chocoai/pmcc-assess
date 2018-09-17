@@ -5,6 +5,8 @@ import java.util.Date;
 public class SurveyAssetInventoryRight {
     private Integer id;
 
+    private Integer projectId;
+
     private Integer planDetailsId;
 
     private String certName;
@@ -45,6 +47,14 @@ public class SurveyAssetInventoryRight {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getPlanDetailsId() {

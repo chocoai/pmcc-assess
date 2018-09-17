@@ -10,22 +10,12 @@ import java.util.List;
 /**
  * Created by 13426 on 2018/5/21.
  */
-public class SchemeJudgeObjectApplyDto  {
-    private Integer planId;
+public class SchemeProgrammeDto {
     private Integer areaGroupId;
-    private String areaGroupName;
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date valueTimePoint;
-
+    private String timePointExplain;
     List<SchemeJudgeObject> schemeJudgeObjects;
-
-    public Integer getPlanId() {
-        return planId;
-    }
-
-    public void setPlanId(Integer planId) {
-        this.planId = planId;
-    }
 
     public Integer getAreaGroupId() {
         return areaGroupId;
@@ -33,14 +23,6 @@ public class SchemeJudgeObjectApplyDto  {
 
     public void setAreaGroupId(Integer areaGroupId) {
         this.areaGroupId = areaGroupId;
-    }
-
-    public String getAreaGroupName() {
-        return areaGroupName;
-    }
-
-    public void setAreaGroupName(String areaGroupName) {
-        this.areaGroupName = areaGroupName;
     }
 
     public Date getValueTimePoint() {
@@ -57,5 +39,13 @@ public class SchemeJudgeObjectApplyDto  {
 
     public void setSchemeJudgeObjects(List<SchemeJudgeObject> schemeJudgeObjects) {
         this.schemeJudgeObjects = schemeJudgeObjects;
+    }
+
+    public String getTimePointExplain() {
+        return timePointExplain;
+    }
+
+    public void setTimePointExplain(String timePointExplain) {
+        this.timePointExplain = timePointExplain;
     }
 }

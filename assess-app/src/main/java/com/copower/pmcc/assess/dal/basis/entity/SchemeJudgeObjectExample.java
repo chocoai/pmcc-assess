@@ -1346,6 +1346,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisSetFunctionIsNull() {
+            addCriterion("bis_set_function is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionIsNotNull() {
+            addCriterion("bis_set_function is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionEqualTo(Boolean value) {
+            addCriterion("bis_set_function =", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionNotEqualTo(Boolean value) {
+            addCriterion("bis_set_function <>", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionGreaterThan(Boolean value) {
+            addCriterion("bis_set_function >", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_set_function >=", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionLessThan(Boolean value) {
+            addCriterion("bis_set_function <", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_set_function <=", value, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionIn(List<Boolean> values) {
+            addCriterion("bis_set_function in", values, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionNotIn(List<Boolean> values) {
+            addCriterion("bis_set_function not in", values, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_set_function between", value1, value2, "bisSetFunction");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSetFunctionNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_set_function not between", value1, value2, "bisSetFunction");
+            return (Criteria) this;
+        }
+
         public Criteria andSortingIsNull() {
             addCriterion("sorting is null");
             return (Criteria) this;

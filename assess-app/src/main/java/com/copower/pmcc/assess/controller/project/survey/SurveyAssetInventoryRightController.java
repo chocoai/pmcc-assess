@@ -23,9 +23,16 @@ public class SurveyAssetInventoryRightController {
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
 
     @ResponseBody
-    @RequestMapping(value = "/list", name = "取得他项权利详情", method = RequestMethod.GET)
+    @RequestMapping(value = "/getListByPlanDetailsId", name = "取得他项权利列表", method = RequestMethod.GET)
     public BootstrapTableVo list(Integer planDetailsId) {
-        BootstrapTableVo vo = surveyAssetInventoryRightService.getList(planDetailsId);
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getListByPlanDetailsId(planDetailsId);
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getListByProjectId", name = "取得他项权利列表", method = RequestMethod.GET)
+    public BootstrapTableVo get(Integer projectId) {
+        BootstrapTableVo vo = surveyAssetInventoryRightService.getListByProjectId(projectId);
         return vo;
     }
 

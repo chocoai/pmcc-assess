@@ -8,24 +8,15 @@ import java.util.List;
  * Created by 13426 on 2018/5/21.
  */
 public class SchemeJudgeFunctionApplyDto {
-    private Integer areaGroupId;
-    private Integer groupNumber;
+    private Integer judgeId;
     private List<SchemeJudgeFunction> judgeFunctionList;
 
-    public Integer getAreaGroupId() {
-        return areaGroupId;
+    public Integer getJudgeId() {
+        return judgeId;
     }
 
-    public void setAreaGroupId(Integer areaGroupId) {
-        this.areaGroupId = areaGroupId;
-    }
-
-    public Integer getGroupNumber() {
-        return groupNumber;
-    }
-
-    public void setGroupNumber(Integer groupNumber) {
-        this.groupNumber = groupNumber;
+    public void setJudgeId(Integer judgeId) {
+        this.judgeId = judgeId;
     }
 
     public List<SchemeJudgeFunction> getJudgeFunctionList() {
