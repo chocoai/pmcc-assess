@@ -17,18 +17,19 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h2>
-                        楼盘 <label class="btn btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
+                <%--<div class="x_title collapse-link">--%>
+                <%--<ul class="nav navbar-right panel_toolbox">--%>
+                <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
+                <%--</ul>--%>
+                <%--<h2>--%>
+                <%--楼盘--%>
+                <%--</h2>--%>
+                <%--<div class="clearfix"></div>--%>
+                <%--</div>--%>
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>楼盘基本信息 </h3>
+                        <h3>楼盘基本信息 <label class="btn btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
+                        </h3>
                         <div class="clearfix"></div>
                     </div>
                     <form class="form-horizontal" id="frm_estate">
@@ -439,6 +440,11 @@
                 </div>
             </div>
 
+            <!-- 网络通信 -->
+            <div class="network" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseNetwork.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -743,6 +749,43 @@
 
     var otherFlag = true;
     caseEstate.other = {
+        /**
+         * @author:  zch
+         * 描述:获取选择的子类数据
+         * @date:2018-09-17
+         **/
+        tempSave: function () {
+            if (!$("#" + caseEstate.config.other.frm()).valid()) {
+                return false;
+            }
+            var data = formParams(caseEstate.config.other.frm());
+            //处理子类显示问题
+            if (caseEstate.isEmpty(data)) {
+                var matching = data.matching.split(",");
+                var other = data.other.split(",");
+                $.each(matching, function (i, n) {
+                    AssessCommon.getDataDicInfo(n, function (item) {
+                        var fieldName = caseEstate.other.subFileName(item.fieldName);
+                        var jq = $("."+fieldName);
+                        if (jq.size() > 0){
+                            jq.toggle();
+                        }
+                        console.log(fieldName);
+                    });
+                });
+                $.each(other, function (i, n) {
+                    AssessCommon.getDataDicInfo(n, function (item) {
+                        var fieldName = caseEstate.other.subFileName(item.fieldName);
+                        var jq = $("."+fieldName);
+                        if (jq.size() > 0){
+                            jq.toggle();
+                        }
+                        console.log(fieldName);
+                    });
+                });
+            }
+            $("#" + caseEstate.config.other.box()).modal("hide");
+        },
         showBoxDiv: function () {
             if (caseEstate.other.getOtherFlag()) {
                 caseEstate.other.selectInit();
@@ -756,36 +799,69 @@
         setOtherFlag: function (item) {
             otherFlag = item;
         },
+        /**
+         * @author:  zch
+         * 描述:载入需要选择的子类信息
+         * @date:2018-09-17
+         **/
         selectInit: function () {
-            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateViewModel, "", function (html, data) {
+            var num = 6;
+            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateOther, "", function (html, data) {
                 var resetHtml = "";
                 var k = 0;
                 $.each(data, function (i, n) {
-                    if (i % 4 == 0) {
+                    if (i % num == 0) {
                         k++;
                     }
                 });
-                console.log(k);
                 for (var i = 0; i < k; i++) {
-                    console.log("dgsdg" + i);
                     resetHtml += "<div class='form-group'>";
-                    resetHtml += "<div class='col-sm-12'>";
-                    resetHtml += "<span class='checkbox-inline'>";
-                    for (var j = i * 4; j < i * 4 + 4; j++) {
+                    for (var j = i * num; j < i * num + num; j++) {
                         if (j < data.length) {
-                            resetHtml += "<input type='checkbox' name='esate' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<div class='col-sm-2'>";
+                            resetHtml += "<span class='checkbox-inline'>";
+                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
                             resetHtml += data[j].name;
+                            resetHtml += "</span>";
+                            resetHtml += "</div>";
                         }
                     }
-                    resetHtml += "</span>";
-                    resetHtml += "</div>";
                     resetHtml += "</div>";
                 }
-                console.log(resetHtml);
-                console.log(data);
                 //HTML
-                $("#"+caseEstate.config.other.frm()+"HTML").append(resetHtml);
+                $("#" + caseEstate.config.other.frm() + "HTMLOther").append(resetHtml);
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateMatching, "", function (html, data) {
+                var resetHtml = "";
+                var k = 0;
+                $.each(data, function (i, n) {
+                    if (i % num == 0) {
+                        k++;
+                    }
+                });
+                for (var i = 0; i < k; i++) {
+                    resetHtml += "<div class='form-group'>";
+                    for (var j = i * num; j < i * num + num; j++) {
+                        if (j < data.length) {
+                            resetHtml += "<div class='col-sm-2'>";
+                            resetHtml += "<span class='checkbox-inline'>";
+                            resetHtml += "<input type='checkbox' required='required' name='matching' value='" + data[j].id + "'" + ">";
+                            resetHtml += data[j].name;
+                            resetHtml += "</span>";
+                            resetHtml += "</div>";
+                        }
+                    }
+                    resetHtml += "</div>";
+                }
+                //HTML
+                $("#" + caseEstate.config.other.frm() + "HTMLMatching").append(resetHtml);
+            });
+        },
+        subFileName: function (upFileName) {
+            var index1 = upFileName.lastIndexOf(".");
+            var index2 = upFileName.length;
+            var suffix = upFileName.substring(index1 + 1, index2);//后缀名
+            return suffix;
         }
     }
 
@@ -836,7 +912,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">评估技术思路</h3>
+                <h3 class="modal-title">楼盘下属子类</h3>
             </div>
             <form id="frmOther" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -844,16 +920,25 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <h3 class="modal-title">其它信息</h3>
+                                    </div>
+                                </div>
                                 <!--xxx -->
+                                <div id="frmOtherHTMLOther">
 
-                               <div id="frmOtherHTML">
+                                </div>
+                                <!--xxx -->
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <h3 class="modal-title">配套信息</h3>
+                                    </div>
+                                </div>
+                                <!--xxx -->
+                                <div id="frmOtherHTMLMatching">
 
-                               </div>
-
-
-
-
+                                </div>
                                 <!--xxx -->
                             </div>
                         </div>
@@ -863,7 +948,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveThinking()">
+                    <button type="button" class="btn btn-primary" onclick="caseEstate.other.tempSave();">
                         保存
                     </button>
                 </div>
