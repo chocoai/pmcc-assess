@@ -46,7 +46,7 @@ public class SchemeAreaGroupService {
      * @param projectId
      * @return
      */
-    public List<SchemeAreaGroup> schemeAreaGroupVoList(Integer projectId) {
+    public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByProjectId(projectId);
         return schemeAreaGroupList;
     }

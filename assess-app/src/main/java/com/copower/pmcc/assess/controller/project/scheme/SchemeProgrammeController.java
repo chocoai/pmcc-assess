@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
@@ -61,7 +62,7 @@ public class SchemeProgrammeController {
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
-    public ModelAndView index(Integer projectId) {
+    public ModelAndView index(Integer projectId, Integer planId) {
         String view = "/project/stageScheme/programmeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeGroup(projectId);//获取分组信息
@@ -73,6 +74,7 @@ public class SchemeProgrammeController {
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("planId", planId);
         return modelAndView;
     }
 
@@ -117,9 +119,9 @@ public class SchemeProgrammeController {
 
     @ResponseBody
     @PostMapping(name = "委估对象拆分", value = "/splitJudge")
-    public HttpResult splitJudge(Integer projectId, Integer areaGroupId,Integer id) {
+    public HttpResult splitJudge(Integer projectId, Integer areaGroupId, Integer id) {
         try {
-            schemeJudgeObjectService.splitJudge(projectId, areaGroupId,id);
+            schemeJudgeObjectService.splitJudge(projectId, areaGroupId, id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("委估对象拆分", e);
@@ -129,9 +131,9 @@ public class SchemeProgrammeController {
 
     @ResponseBody
     @PostMapping(name = "删除拆分出来的委估对象", value = "/delSplitJudge")
-    public HttpResult delSplitJudge(Integer projectId,Integer areaGroupId,Integer id) {
+    public HttpResult delSplitJudge(Integer projectId, Integer areaGroupId, Integer id) {
         try {
-            schemeJudgeObjectService.delSplitJudge(projectId,areaGroupId,id);
+            schemeJudgeObjectService.delSplitJudge(projectId, areaGroupId, id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("删除拆分出来的委估对象", e);
@@ -159,7 +161,7 @@ public class SchemeProgrammeController {
         try {
             schemeJudgeObjectService.mergeJudgeCancel(id);
             return HttpResult.newCorrectResult();
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logger.error("取消合并的委估对象", e);
             return HttpResult.newErrorResult("取消合并的委估对象异常");
         }
@@ -212,10 +214,10 @@ public class SchemeProgrammeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveJudgeFunction", name = "评估方法 保存 ", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveJudgeFunction", name = "评估方法保存 ", method = RequestMethod.POST)
     public HttpResult saveJudgeFunction(String formData) {
         try {
-            List<SchemeJudgeFunction> judgeFunctionList= JSON.parseArray(formData,SchemeJudgeFunction.class);
+            List<SchemeJudgeFunction> judgeFunctionList = JSON.parseArray(formData, SchemeJudgeFunction.class);
             schemeJudgeFunctionService.saveJudgeFunction(judgeFunctionList);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -224,6 +226,24 @@ public class SchemeProgrammeController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/submitProgramme", name = "工作方案提交", method = RequestMethod.POST)
+    public HttpResult submitProgramme(Integer projectId, Integer planId, String formData) {
+        try {
+            List<SchemeProgrammeDto> applyDto = JSON.parseArray(formData, SchemeProgrammeDto.class);
+            schemeJudgeObjectService.submitProgramme(projectId, planId, applyDto);
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error("工作方案提交", e);
+            return HttpResult.newErrorResult("工作方案提交异常");
+        }
+    }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/getJudgeObjectListByPid", name = "获取合并的委估对象明细", method = RequestMethod.GET)
+    public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
+        return schemeJudgeObjectService.getJudgeObjectListByPid(pid);
+    }
 }

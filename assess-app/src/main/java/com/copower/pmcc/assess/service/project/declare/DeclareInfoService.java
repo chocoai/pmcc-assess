@@ -7,7 +7,7 @@ import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Lists;

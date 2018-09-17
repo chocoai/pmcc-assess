@@ -1,17 +1,27 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.google.common.collect.Sets;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +31,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 估价对象
@@ -34,15 +46,21 @@ public class SchemeJudgeObjectService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private SchemeEvaluationObjectService evaluationObjectService;
-    @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
-    private ProjectPlanDao projectPlanDao;
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    @Autowired
+    private SchemeJudgeFunctionService schemeJudgeFunctionService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -65,6 +83,25 @@ public class SchemeJudgeObjectService {
      */
     public List<SchemeJudgeObject> getSchemeJudgeObjectList(Integer areaGroupId) {
         return schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
+    }
+
+    /**
+     * 获取估价对象数据列表
+     *
+     * @param pid
+     * @return
+     */
+    public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        SchemeJudgeObject schemeJudgeObject=new SchemeJudgeObject();
+        schemeJudgeObject.setPid(pid);
+        schemeJudgeObject.setBisEnable(true);
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
+        vo.setTotal(page.getTotal());
+        return vo;
     }
 
     public boolean removeSchemeJudgeObject(Integer id) {
@@ -110,6 +147,7 @@ public class SchemeJudgeObjectService {
         schemeJudgeObject.setId(null);
         schemeJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
         schemeJudgeObject.setBisSplit(true);
+        schemeJudgeObject.setBisSetFunction(false);
         schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
     }
 
@@ -179,27 +217,20 @@ public class SchemeJudgeObjectService {
             if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0)
                 numberBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
             numberBuilder.append(",");
-
-            nameBuilder.append(schemeJudgeObject.getName()).append(",");
-            ownershipBuilder.append(schemeJudgeObject.getOwnership()).append(",");
-            seatBuilder.append(schemeJudgeObject.getSeat()).append(",");
-            if (schemeJudgeObject.getFloorArea() != null)
-                floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
-            if (schemeJudgeObject.getEvaluationArea() != null)
-                evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
         mergeJudgeObject.setNumber(numberBuilder.toString().replaceAll(",$", ""));
-        mergeJudgeObject.setName(nameBuilder.toString().replaceAll(",$", ""));
-        mergeJudgeObject.setOwnership(ownershipBuilder.toString().replaceAll(",$", ""));
-        mergeJudgeObject.setSeat(seatBuilder.toString().replaceAll(",$", ""));
+        mergeJudgeObject.setName("");
+        mergeJudgeObject.setOwnership("");
+        mergeJudgeObject.setSeat("");
         mergeJudgeObject.setFloorArea(floorAreaTotal);
         mergeJudgeObject.setEvaluationArea(evaluationAreaTotal);
         mergeJudgeObject.setBisSplit(false);
         mergeJudgeObject.setBisEnable(true);
         mergeJudgeObject.setBisMerge(true);
+        mergeJudgeObject.setBisSetFunction(false);
         mergeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObjectDao.addSchemeJudgeObject(mergeJudgeObject);
 
@@ -244,8 +275,10 @@ public class SchemeJudgeObjectService {
         List<SchemeJudgeObject> schemeJudgeObjects = schemeProgrammeDto.getSchemeJudgeObjects();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjects) {
-                if (schemeJudgeObject.getId() != null && schemeJudgeObject.getId() > 0)
+                if (schemeJudgeObject.getId() != null && schemeJudgeObject.getId() > 0) {
+                    schemeJudgeObject.setGmtModified(new Date());
                     schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+                }
             }
         }
     }
@@ -266,83 +299,92 @@ public class SchemeJudgeObjectService {
 
 
     /**
-     * 创建方案对应任务
+     * 提交方案
      *
-     * @param applyDto
+     * @param schemeProgrammeDtos
      */
-    public void createProgrammePlanDetails(SchemeProgrammeDto applyDto) {
-        //1.保存估价对象信息 2.根据测算号生成委估对象 3.根据委估信息生成对应的计划目录
+    @Transactional
+    public void submitProgramme(Integer projectId, Integer planId, List<SchemeProgrammeDto> schemeProgrammeDtos) throws BusinessException {
+        //1.验证数据的完整性与准确性，查看评估方法是否都已设置
+        //2.清除该计划下的所有任务，保存方案数据
+        //3.生成计划任务
+        int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectId);
+        if (count > 0)
+            throw new BusinessException("还是委估对象未设置评估方法请检查");
+        saveProgrammeAll(schemeProgrammeDtos);
+        projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
+        if (CollectionUtils.isNotEmpty(areaGroupList)) {
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+            int i = 0;
+            Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap();
+            for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
+                ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+                projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
+                projectPlanDetails.setPlanId(projectPlan.getId());
+                projectPlanDetails.setProjectId(projectPlan.getProjectId());
+                projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
+                projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                projectPlanDetails.setBisLastLayer(false);
+                projectPlanDetails.setSorting(i++);
+                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
 
-        List<SchemeJudgeObject> schemeJudgeObjects = applyDto.getSchemeJudgeObjects();
-        ProjectPlan projectPlan = null;
+                List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectList(schemeAreaGroup.getId());
+                if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                    int j = 0;
+                    for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+                        ProjectPlanDetails planDetails = new ProjectPlanDetails();
+                        planDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
+                        planDetails.setPlanId(projectPlan.getId());
+                        planDetails.setProjectId(projectPlan.getProjectId());
+                        StringBuilder phaseName = new StringBuilder(schemeJudgeObject.getNumber());
+                        if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
+                            phaseName.append("-").append(schemeJudgeObject.getSplitNumber());
+                        }
+                        phaseName.append("号委估对象");
+                        planDetails.setProjectPhaseName(phaseName.toString());
+                        planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                        planDetails.setPid(projectPlanDetails.getId());
+                        planDetails.setBisLastLayer(false);
+                        planDetails.setSorting(j++);
+                        projectPlanDetailsDao.addProjectPlanDetails(planDetails);
 
-        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(applyDto.getAreaGroupId());
-        schemeAreaGroup.setValueTimePoint(applyDto.getValueTimePoint());
-        schemeAreaGroupService.update(schemeAreaGroup);
-        HashSet<Integer> hashSet = Sets.newHashSet();
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjects) {
-            if (schemeJudgeObject.getId() != null && schemeJudgeObject.getId() > 0) {
-                updateSchemeJudgeObject(schemeJudgeObject);
-            } else {
-
+                        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
+                        if (CollectionUtils.isNotEmpty(judgeFunctions)) {
+                            int k = 0;
+                            for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                                ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
+                                ProjectPlanDetails details = new ProjectPlanDetails();
+                                details.setProjectWorkStageId(projectPlan.getWorkStageId());
+                                details.setPlanId(projectPlan.getId());
+                                details.setProjectId(projectPlan.getProjectId());
+                                details.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                                details.setProjectPhaseId(projectPhase.getId());
+                                details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                                details.setPid(planDetails.getId());
+                                details.setBisLastLayer(true);
+                                details.setSorting(k++);
+                                projectPlanDetailsDao.addProjectPlanDetails(details);
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        //清除计划任务数据
-        ProjectPlanDetails where = new ProjectPlanDetails();
-        where.setProjectWorkStageId(projectPlan.getWorkStageId());
-        where.setPlanId(projectPlan.getId());
-        where.setProjectId(projectPlan.getProjectId());
-        where.setAreaGroupId(applyDto.getAreaGroupId());
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(where);
-        if (CollectionUtils.isNotEmpty(planDetailsList)) {
-            for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-                projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
-            }
+
+    }
+
+    private Map<Integer, ProjectPhase> getProjectPhaseMap() {
+        //1.取得该阶段所有事项 2.取得方法下字典数据配置
+        Map<Integer, ProjectPhase> map = Maps.newHashMap();
+        List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
+        for (BaseDataDic method : methodList) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName());
+            if (projectPhase != null)
+                map.put(method.getId(), projectPhase);
         }
-        //清除委估对象数据
-        List<SchemeEvaluationObject> evaluationObjectList = evaluationObjectService.getDataListByGroupId(applyDto.getAreaGroupId(), projectPlan.getProjectId());
-        if (CollectionUtils.isNotEmpty(evaluationObjectList)) {
-            for (SchemeEvaluationObject schemeEvaluationObject : evaluationObjectList) {
-                evaluationObjectService.remove(schemeEvaluationObject.getId());
-            }
-        }
-
-        //生成数据
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-        projectPlanDetails.setPlanId(projectPlan.getId());
-        projectPlanDetails.setProjectId(projectPlan.getProjectId());
-        projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
-        projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-        projectPlanDetails.setBisLastLayer(false);
-        projectPlanDetails.setSorting(0);
-        projectPlanDetails.setAreaGroupId(applyDto.getAreaGroupId());
-        projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-
-        hashSet.forEach(p -> {
-            SchemeEvaluationObject schemeEvaluationObject = new SchemeEvaluationObject();
-            schemeEvaluationObject.setProjectId(projectPlan.getProjectId());
-            schemeEvaluationObject.setAreaGroupId(applyDto.getAreaGroupId());
-            schemeEvaluationObject.setName(String.format("%s号委估对象", p));
-            schemeEvaluationObject.setGroupNumber(p);
-            schemeEvaluationObject.setCreator(commonService.thisUserAccount());
-            evaluationObjectService.add(schemeEvaluationObject);
-
-            ProjectPlanDetails details = new ProjectPlanDetails();
-            details.setProjectWorkStageId(projectPlan.getWorkStageId());
-            details.setPlanId(projectPlan.getId());
-            details.setProjectId(projectPlan.getProjectId());
-            details.setProjectPhaseName(schemeEvaluationObject.getName());
-            details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            details.setGroupNumber(schemeEvaluationObject.getGroupNumber());
-            details.setPid(projectPlanDetails.getId());
-            details.setBisLastLayer(false);
-            details.setSorting(p);
-            details.setAreaGroupId(applyDto.getAreaGroupId());
-            projectPlanDetailsDao.addProjectPlanDetails(details);
-
-        });
+        return map;
     }
 
 }

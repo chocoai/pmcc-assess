@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.survey;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRightExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryRightMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,9 +39,14 @@ public class SurveyAssetInventoryRightDao {
         return surveyAssetInventoryRights;
     }
 
-    public List<SurveyAssetInventoryRight> getListByProjectId(Integer projectId) {
+    public List<SurveyAssetInventoryRight> getListByProjectId(Integer projectId,String certName) {
         SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        SurveyAssetInventoryRightExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId);
+        if(StringUtils.isNotBlank(certName)){
+            criteria.andCertNameLike(String.format("%%%s%%",certName));
+        }
+
         example.setOrderByClause("id desc");
         List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
         return surveyAssetInventoryRights;

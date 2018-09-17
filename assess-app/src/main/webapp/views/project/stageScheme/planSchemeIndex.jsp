@@ -28,7 +28,7 @@
                         ${panelTitle}阶段工作计划
                         <small>
                             <button class="btn btn-xs btn-success"
-                                    onclick="window.open('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}')">
+                                    onclick="window.open('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}&planId=${projectPlan.id}')">
                                 方案设置
                             </button>
                         </small>
