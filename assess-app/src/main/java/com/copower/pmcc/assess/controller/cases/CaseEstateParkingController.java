@@ -53,12 +53,15 @@ public class CaseEstateParkingController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateParkingList",method = {RequestMethod.GET},name = "车位列表")
-    public BootstrapTableVo getCaseEstateParkingList(String location) {
+    public BootstrapTableVo getCaseEstateParkingList(String location,Integer estateId) {
         BootstrapTableVo vo = null;
         try {
             CaseEstateParking caseEstateParking = new CaseEstateParking();
             if (!StringUtils.isEmpty(location)){
                 caseEstateParking.setLocation(location);
+            }
+            if (estateId != null){
+                caseEstateParking.setEstateId(estateId);
             }
             vo = caseEstateParkingService.getExamineEstateNetworkList(caseEstateParking);
         } catch (Exception e1) {

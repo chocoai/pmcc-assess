@@ -49,7 +49,7 @@ public class CaseEstateSupplyController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateSupplyList",method = {RequestMethod.GET},name = "供应信息列表")
-    public BootstrapTableVo getCaseEstateSupplyList(String name,  String type) {
+    public BootstrapTableVo getCaseEstateSupplyList(String name,  String type,Integer estateId) {
         BootstrapTableVo vo = null;
         try {
             CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
@@ -58,6 +58,9 @@ public class CaseEstateSupplyController {
             }
             if (!StringUtils.isEmpty(type)){
                 caseEstateSupply.setType(type);
+            }
+            if (estateId != null){
+                caseEstateSupply.setEstateId(estateId);
             }
             vo = caseEstateSupplyService.getExamineEstateNetworkList(caseEstateSupply);
         } catch (Exception e1) {
