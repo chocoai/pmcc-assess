@@ -769,22 +769,22 @@
                 for (var i = 0; i < k; i++) {
                     console.log("dgsdg" + i);
                     resetHtml += "<div class='form-group'>";
-                    resetHtml += "<div class='col-sm-12'>";
-                    resetHtml += "<span class='checkbox-inline'>";
                     for (var j = i * 4; j < i * 4 + 4; j++) {
                         if (j < data.length) {
+                            resetHtml += "<div class='col-sm-2'>";
+                            resetHtml += "<span class='checkbox-inline'>";
                             resetHtml += "<input type='checkbox' name='esate' value='" + data[j].id + "'" + ">";
                             resetHtml += data[j].name;
+                            resetHtml += "</span>";
+                            resetHtml += "</div>";
                         }
                     }
-                    resetHtml += "</span>";
-                    resetHtml += "</div>";
                     resetHtml += "</div>";
                 }
                 console.log(resetHtml);
                 console.log(data);
                 //HTML
-                $("#"+caseEstate.config.other.frm()+"HTML").append(resetHtml);
+                $("#" + caseEstate.config.other.frm() + "HTML").append(resetHtml);
             });
         }
     }
@@ -836,7 +836,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">评估技术思路</h3>
+                <h3 class="modal-title">其它信息</h3>
             </div>
             <form id="frmOther" class="form-horizontal">
                 <input type="hidden" id="id" name="id" value="0">
@@ -847,11 +847,9 @@
 
                                 <!--xxx -->
 
-                               <div id="frmOtherHTML">
+                                <div id="frmOtherHTML">
 
-                               </div>
-
-
+                                </div>
 
 
                                 <!--xxx -->
@@ -863,7 +861,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="saveThinking()">
+                    <button type="button" class="btn btn-primary" onclick="">
                         保存
                     </button>
                 </div>
