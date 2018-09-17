@@ -510,6 +510,31 @@
                 <%@include file="/views/case/caseEstate/apply/caseMatchingMedical.jsp" %>
             </div>
 
+            <!-- 公交 -->
+            <div class="transit" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingTransit.jsp" %>
+            </div>
+
+            <!-- 公交 -->
+            <div class="metro" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMetro.jsp" %>
+            </div>
+
+            <!-- 主干道 -->
+            <div class="mainroad" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMainRoad.jsp" %>
+            </div>
+
+            <!-- 主要转换 -->
+            <div class="mainconversion" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMainConversion.jsp" %>
+            </div>
+
+            <!-- 交通枢纽 -->
+            <div class="trafficHub" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingTrafficHub.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
