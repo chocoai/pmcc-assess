@@ -4,11 +4,11 @@ package com.copower.pmcc.assess.service.project.compile;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeEvaluationObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataReportAnalysisService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -38,9 +38,9 @@ public class CompileReportService {
     @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
-    private SchemeEvaluationObjectDao schemeEvaluationObjectDao;
-    @Autowired
     private ProjectPlanDetailsDao projectPlanDetailsDao;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     /**
      * 初始化计划信息
@@ -74,17 +74,17 @@ public class CompileReportService {
 
                 int j = 1;
                 Integer pid = 0;
-                Integer groupId = schemeAreaGroup.getId();
-                List<SchemeEvaluationObject> evaluationObjects = schemeEvaluationObjectDao.getDataListByGroupId(groupId, projectId);
+
+                List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getSchemeJudgeObjectList(schemeAreaGroup.getId());
                 //二级分类 评估对象
                 pid = projectPlanDetails.getId();
 
                 String name = "";
                 Integer projectPhaseId = 0;
-                if (CollectionUtils.isNotEmpty(evaluationObjects)) {
-                    for (SchemeEvaluationObject evaluationObject : evaluationObjects) {
-                        name = evaluationObject.getName();
-                        projectPhaseId = evaluationObject.getId();
+                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+                    for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                        name = schemeJudgeObject.getName();
+                        projectPhaseId = schemeJudgeObject.getId();
                         ProjectPlanDetails projectPlanDetailTwo = new ProjectPlanDetails();
                         projectPlanDetailTwo.setProjectWorkStageId(workStageId);
                         projectPlanDetailTwo.setPlanId(planId);

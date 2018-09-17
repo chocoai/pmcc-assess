@@ -96,12 +96,12 @@
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h2>他项权利</h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content collapse">
                     <table class="table table-bordered" id="tb_inventory_right_list">
                         <!-- cerare document add ajax data-->
                     </table>
@@ -113,10 +113,10 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-warning" onclick="saveProgramme();">
+                        <button class="btn btn-warning" onclick="programme.saveProgrammeAll();">
                             保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
-                        <button id="commit_btn" class="btn btn-success" onclick="saveProgramme();">
+                        <button id="commit_btn" class="btn btn-success" onclick="programme.submitProgramme();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
@@ -291,6 +291,131 @@
         </div>
     </div>
 </div>
+<!--查看他项权利信息-->
+<div id="viewInventoryRightModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">他项权利信息</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">类型</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="typeName"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">类别</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="categoryName"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">他权证编号</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="number"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">登记日期</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="registerDate"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        义务人
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="obligor"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        权利人
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="obligee"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        登记金额
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="registerAmount"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        行权金额
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="actualAmount"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        登记面积
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="registerArea"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        他权级次
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="rightRank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">开始日期</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="beginDate"></label>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">结束日期</label>
+                                    <div class="col-sm-4">
+                                        <label class="form-control" data-name="endDate"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--查看调查信息-->
 <div id="viewExamineInfoModal" class="modal fade bs-example-modal-xs" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-xs">
@@ -309,6 +434,24 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--查看合并的委估对象明细-->
+<div id="viewMergeJudgeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tb_judge_detail_list">
+                    <!-- cerare document add ajax data-->
+                </table>
             </div>
         </div>
     </div>
@@ -337,7 +480,7 @@
         <td>
             <label class="form-control" data-name="name">
                 <span>{name}</span>
-                <a href="javascript://" onclick="viewExamineInfo('{declareId}','{name}');"
+                <a href="javascript://" onclick="programme.viewExamineInfo('{bisMerge},{declareId}','{name}');"
                    class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
             </label>
 
@@ -394,6 +537,9 @@
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
 <script type="text/javascript">
     $(function () {
+        $(".area_panel .x_title").each(function () {
+            $(this).trigger('click');
+        })
         programme.loadInventoryRightList();
 
         //阻止合并按钮的冒泡
@@ -416,7 +562,8 @@
                 //区域合并项html
                 areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
                 //委估对象合并项html
-                judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>'
+                judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+                currJudgeMethodButton: undefined //当前评估方法button
             },
 
             //加载区域下的委估对象列表
@@ -437,6 +584,7 @@
                                 var html = $("#judgeObjectHtml").html();
                                 html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
                                 html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
+                                html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
                                 html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
                                 html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
                                 if (item.splitNumber) {
@@ -771,24 +919,24 @@
 
             //保存区域下方案
             saveProgrammeAll: function (_this) {
-
-
-                //后台添加数据
+                var data = [];
+                $(".area_panel").each(function () {
+                    data.push(programme.getProgrammeAreaData($(this)));
+                })
                 Loading.progressShow();
                 $.ajax({
                     url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeAll',
                     data: {
-                        id: $(_this).closest('tr').find('[data-name="id"]').val()
+                        formData: JSON.stringify(data)
                     },
                     type: "post",
                     dataType: "json",
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            toastr.success('委估对象取消合并成功');
-                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                            toastr.success('保存成功');
                         } else {
-                            Alert("权证拆分失败:" + result.errmsg);
+                            Alert("保存成功失败:" + result.errmsg);
                         }
                     },
                     error: function (result) {
@@ -797,36 +945,129 @@
                 });
             },
 
-
-            //查看估计对象调查信息
-            viewExamineInfo: function (declareId, name) {
-                if (declareId) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/surveyExamine/getPlanDetailsByDeclareId",
-                        data: {
-                            declareId: declareId
-                        },
-                        type: "get",
-                        dataType: "json",
-                        success: function (result) {
-                            if (result.ret) {
-                                $("#viewExamineInfoModal .x_content").empty();
-                                $.each(result.data, function (i, item) {
-                                    var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
-                                    $("#viewExamineInfoModal .x_content").append(html);
-                                })
-                                $("#viewExamineInfoModal").find('.modal-title').text(name);
-                                $("#viewExamineInfoModal").modal();
-                            }
+            //提交方案
+            submitProgramme: function () {
+                //前端验证
+                var isPass = true;
+                $("form[id^=frmJudgeObject]").each(function () {
+                    var that = $(this);
+                    var options = {
+                        msg: "请检查【" + that.closest('.area_panel').find('h2').find('label').text() + "】填写的信息",
+                        hiddenValid: true
+                    };
+                    if (!$(this).valid(options)) {
+                        isPass = false;
+                        return false;
+                    }
+                })
+                if (!isPass) return false;
+                var data = [];
+                $(".area_panel").each(function () {
+                    data.push(programme.getProgrammeAreaData($(this)));
+                })
+                Loading.progressShow();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schemeProgramme/submitProgramme',
+                    data: {
+                        projectId: '${projectInfo.id}',
+                        planId: '${planId}',
+                        formData: JSON.stringify(data)
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            Alert("提交方案成功", 1, null, function () {
+                                window.close();
+                            });
+                        } else {
+                            Alert("提交方案失败:" + result.errmsg);
                         }
-                    })
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                });
+            },
+
+            //加载合并对象的明细
+            loadJudgeDetailList: function (pid) {
+                var cols = [];
+                cols.push({field: 'number', title: '编号'});
+                cols.push({field: 'name', title: '权证号'});
+                cols.push({field: 'ownership', title: '所有权人'});
+                cols.push({field: 'seat', title: '坐落'});
+                cols.push({field: 'certUse', title: '证载用途'});
+                cols.push({field: 'practicalUse', title: '实际用途'});
+                cols.push({field: 'floorArea', title: '证载面积'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+                $("#tb_judge_detail_list").bootstrapTable('destroy');
+                TableInit("tb_judge_detail_list", "${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid", cols, {
+                    pid: pid
+                }, {
+                    showColumns: false,
+                    showRefresh: true,
+                    search: true,
+                    onLoadSuccess: function () {
+                        $(".tooltips").tooltip();   //提示
+                    }
+                });
+            },
+
+            //查看他项信息
+            viewInventoryRightInfo: function (index) {
+                var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
+                $("#viewInventoryRightModal").find('[data-name]').each(function () {
+                    $(this).text('').text(row[$(this).attr('data-name')]);
+                })
+                $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
+                $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
+                $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
+                $("#viewInventoryRightModal").modal();
+            },
+
+            //查看委估对象调查信息
+            viewExamineInfo: function (bisMerge, declareId, name) {
+                if (bisMerge) {
+                    programme.loadJudgeDetailList(309);
+                    $("#viewMergeJudgeModal").modal();
+                } else {
+                    if (declareId) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/surveyExamine/getPlanDetailsByDeclareId",
+                            data: {
+                                declareId: declareId
+                            },
+                            type: "get",
+                            dataType: "json",
+                            success: function (result) {
+                                if (result.ret) {
+                                    $("#viewExamineInfoModal .x_content").empty();
+                                    $.each(result.data, function (i, item) {
+                                        var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
+                                        $("#viewExamineInfoModal .x_content").append(html);
+                                    })
+                                    $("#viewExamineInfoModal").find('.modal-title').text(name);
+                                    $("#viewExamineInfoModal").modal();
+                                }
+                            }
+                        })
+                    }
                 }
             },
 
             //加载他项权利
-            loadInventoryRightList:function () {
+            loadInventoryRightList: function () {
                 var cols = [];
-                cols.push({field: 'typeName', title: '权证号'});
+                cols.push({field: 'certName', title: '权证号'});
                 cols.push({field: 'typeName', title: '类型'});
                 cols.push({field: 'categoryName', title: '类型'});
                 cols.push({field: 'number', title: '他权证编号'});
@@ -834,44 +1075,28 @@
                 cols.push({field: 'obligee', title: '权利人'});
                 cols.push({field: 'registerArea', title: '登记面积'});
                 cols.push({field: 'rightRank', title: '他权级次'});
-                cols.push({field: 'registerAmount', title: '登记金额'});
-                cols.push({field: 'actualAmount', title: '行权金额'});
-                cols.push({
-                    field: 'registerDate', title: '登记日期', formatter: function (value, row, index) {
-                        return formatDate(value, false);
-                    }
-                });
-                cols.push({
-                    field: 'beginDate', title: '开始日期', formatter: function (value, row, index) {
-                        return formatDate(value, false);
-                    }
-                });
-                cols.push({
-                    field: 'endDate', title: '结束日期', formatter: function (value, row, index) {
-                        return formatDate(value, false);
-                    }
-                });
-
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
                         str += '</div>';
                         return str;
                     }
                 });
                 $("#tb_inventory_right_list").bootstrapTable('destroy');
-                TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/list", cols, {
+                TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByProjectId", cols, {
                     projectId: '${projectInfo.id}'
                 }, {
                     showColumns: false,
-                    showRefresh: false,
+                    showRefresh: true,
                     search: true,
                     onLoadSuccess: function () {
                         $(".tooltips").tooltip();   //提示
                     }
                 });
             }
+
+
         }
     ;
 
@@ -995,7 +1220,8 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    toastr.success('评估方法保存成功');
+                    programme.config.currJudgeMethodButton.removeClass('btn-success').addClass('btn-primary');
                     $('#divBoxMethodExtend').modal('hide');
                 } else {
                     Alert("保存失败:" + result.errmsg);
@@ -1024,6 +1250,7 @@
     function setEvaluationMethod(_this) {
         var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
         $("#myTabContent").find('[name="judgeObjectId"]').val(judgeObjectId);
+        programme.config.currJudgeMethodButton = $(_this);
         //还原数据状态
         cleanEvaluationMethod();
         //如果该估计对象已经设置过评估方法，则将数据填充回去

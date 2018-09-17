@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.CsrContract;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrContractVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;

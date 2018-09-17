@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.service;
+package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
@@ -116,8 +116,6 @@ public class ProjectPlanService {
         List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> {
             return o.getWorkStageId().equals(projectPlan.getWorkStageId());
         });
-
-        // String sql="";
 
         for (ProjectPhase item : filter) {
             ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();

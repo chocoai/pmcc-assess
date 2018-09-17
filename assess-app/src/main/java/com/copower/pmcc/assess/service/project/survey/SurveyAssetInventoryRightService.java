@@ -52,7 +52,7 @@ public class SurveyAssetInventoryRightService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByProjectId(projectId);
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByProjectId(projectId,requestBaseParam.getSearch());
         List<SurveyAssetInventoryRightVo> surveyAssetInventoryRightVoList = getVoList(surveyAssetInventoryRightList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryRightVoList) ? new ArrayList<SurveyAssetInventoryRight>() : surveyAssetInventoryRightVoList);

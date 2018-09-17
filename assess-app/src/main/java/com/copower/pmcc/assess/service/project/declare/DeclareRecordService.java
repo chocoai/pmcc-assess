@@ -87,7 +87,7 @@ public class DeclareRecordService {
      * @return
      */
     public List<SchemeAreaGroup> getSchemeGroup(Integer projectId) {
-        List<SchemeAreaGroup> voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
+        List<SchemeAreaGroup> voList = schemeAreaGroupService.getAreaGroupList(projectId);
         if (CollectionUtils.isNotEmpty(voList))
             return voList;
         List<DeclareRecord> declareRecords = declareRecordDao.getDeclareRecordByProjectId(projectId);
@@ -136,7 +136,7 @@ public class DeclareRecordService {
                 }
             }
         }
-        voList = schemeAreaGroupService.schemeAreaGroupVoList(projectId);
+        voList = schemeAreaGroupService.getAreaGroupList(projectId);
         return voList;
     }
 

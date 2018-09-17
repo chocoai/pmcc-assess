@@ -141,4 +141,11 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public Boolean deletePlanDetailsByPlanId(Integer planId) {
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
+        criteria.andPlanIdEqualTo(planId);
+        return projectPlanDetailsMapper.deleteByExample(example) > 0;
+    }
+
 }

@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.project.taks.assist.financialClaim;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.plan.service.ProjectPlanFinancialClaimService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;

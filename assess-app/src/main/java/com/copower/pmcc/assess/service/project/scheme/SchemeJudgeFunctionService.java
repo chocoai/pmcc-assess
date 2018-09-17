@@ -36,6 +36,18 @@ public class SchemeJudgeFunctionService {
         return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
     }
 
+    /**
+     * 获取委估对象适用方法
+     * @param judgeId
+     * @return
+     */
+    public List<SchemeJudgeFunction> getApplicableJudgeFunctions(Integer judgeId) {
+        SchemeJudgeFunction schemeJudgeFunction = new SchemeJudgeFunction();
+        schemeJudgeFunction.setJudgeObjectId(judgeId);
+        schemeJudgeFunction.setBisApplicable(true);
+        return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
+    }
+
 
     public boolean updateSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
         return schemeJudgeFunctionDao.updateSchemeJudgeFunction(schemeJudgeFunction);

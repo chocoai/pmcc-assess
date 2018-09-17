@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.plan.service;
+package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
@@ -204,8 +204,6 @@ public class ProjectPlanDetailsService {
             // 如果任务是在审批或完成状态可查看详情
             //如果为待提交状态 当前人与任务执行人相同 可提交任务
             //如果为待审批状态 当前人与审批人相同 可审批该任务
-            //其它情况再特殊处理
-            //判断是否为查勘或案例 并且 当前登录人为 planDetails任务的执行人
             SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
             switch (sysProjectEnum) {
                 case NONE:
@@ -417,22 +415,11 @@ public class ProjectPlanDetailsService {
     }
 
     /**
-     * 删除计划任务
-     * @param id
+     * 删除阶段下的所有任务
+     *
+     * @param planId
      */
-    public void deletePlanDetailsRecursion(Integer id){
-        //任务状态为关闭 则只将状态设置为不可用
-        //递归检查子项任务信息
-        //1.计划任务未启动 直接删除
-        //2.计划任务启动 但没有启动流程 检查待提交任务 一并删除
-        //3.计划任务发起了流程 关闭流程 删除任务
-    }
-
-    /**
-     * 重启计划任务
-     * @param id
-     */
-    public void restartPlanDetails(Integer id){
-
+    public void deletePlanDetailsByPlanId(Integer planId) {
+        projectPlanDetailsDao.deletePlanDetailsByPlanId(planId);
     }
 }
