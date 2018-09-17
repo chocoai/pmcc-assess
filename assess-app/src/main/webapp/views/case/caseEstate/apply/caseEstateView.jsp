@@ -470,6 +470,46 @@
                 <%@include file="/views/case/caseEstate/apply/caseSupplyWater.jsp" %>
             </div>
 
+            <!-- 教育 -->
+            <div class="education" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingEducation.jsp" %>
+            </div>
+
+            <!-- 环境 -->
+            <div class="environment" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingEnvironment.jsp" %>
+            </div>
+
+            <!-- 金融 -->
+            <div class="finance" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingFinance.jsp" %>
+            </div>
+
+            <!-- 购物商场 -->
+            <div class="matchingMarket" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMarket.jsp" %>
+            </div>
+
+            <!-- 休闲娱乐 -->
+            <div class="matchingRecreation" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingRecreation.jsp" %>
+            </div>
+
+            <!-- 餐饮 -->
+            <div class="matchingRestaurant" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingRestaurant.jsp" %>
+            </div>
+
+            <!-- 原材料及销售条件 -->
+            <div class="material" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMaterial.jsp" %>
+            </div>
+
+            <!-- 医养条件 -->
+            <div class="medical" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseMatchingMedical.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
