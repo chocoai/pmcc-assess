@@ -7,11 +7,11 @@ public class CaseMatchingEnvironment {
 
     private Integer estateId;
 
-    private Integer type;
+    private String type;
 
     private Integer category;
 
-    private String influenceDegree;
+    private Integer influenceDegree;
 
     private String creator;
 
@@ -35,12 +35,12 @@ public class CaseMatchingEnvironment {
         this.estateId = estateId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getCategory() {
@@ -51,12 +51,12 @@ public class CaseMatchingEnvironment {
         this.category = category;
     }
 
-    public String getInfluenceDegree() {
+    public Integer getInfluenceDegree() {
         return influenceDegree;
     }
 
-    public void setInfluenceDegree(String influenceDegree) {
-        this.influenceDegree = influenceDegree == null ? null : influenceDegree.trim();
+    public void setInfluenceDegree(Integer influenceDegree) {
+        this.influenceDegree = influenceDegree;
     }
 
     public String getCreator() {

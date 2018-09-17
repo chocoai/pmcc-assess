@@ -1,11 +1,9 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
+import com.copower.pmcc.assess.dto.output.cases.CaseMatchingFinanceVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -46,6 +44,20 @@ public class CaseEstateService {
     private CaseEstateSupplyService caseEstateSupplyService;
     @Autowired
     private CaseEstateNetworkService caseEstateNetworkService;
+    @Autowired
+    private CaseMatchingTrafficService caseMatchingTrafficService;
+    @Autowired
+    private CaseMatchingMedicalService caseMatchingMedicalService;
+    @Autowired
+    private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
+    @Autowired
+    private CaseMatchingMaterialService caseMatchingMaterialService;
+    @Autowired
+    private CaseMatchingFinanceService caseMatchingFinanceService;
+    @Autowired
+    private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
+    @Autowired
+    private CaseMatchingEducationService caseMatchingEducationService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate){
@@ -104,9 +116,30 @@ public class CaseEstateService {
         caseEstateNetwork.setEstateId(0);
         CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
         caseEstateSupply.setEstateId(0);
+        CaseMatchingTraffic caseMatchingTraffic = new CaseMatchingTraffic();
+        caseMatchingTraffic.setEstateId(0);
+        CaseMatchingMedical caseMatchingMedical = new CaseMatchingMedical();
+        caseMatchingMedical.setEstateId(0);
+        CaseMatchingMaterial caseMatchingMaterial = new CaseMatchingMaterial();
+        caseMatchingMaterial.setEstateId(0);
+        CaseMatchingLeisurePlace caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
+        caseMatchingLeisurePlace.setEstateId(0);
+        CaseMatchingFinance caseMatchingFinance = new CaseMatchingFinance();
+        caseMatchingFinance.setEstateId(0);
+        CaseMatchingEnvironment caseMatchingEnvironment = new CaseMatchingEnvironment();
+        caseMatchingEnvironment.setEstateId(0);
+        CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation() ;
+        caseMatchingEducation.setEstateId(0);
         List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
         List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
         List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
+        List<CaseMatchingTraffic> caseMatchingTraffics = caseMatchingTrafficService.getMatchingTrafficList(caseMatchingTraffic);
+        List<CaseMatchingMedical> caseMatchingMedicals = caseMatchingMedicalService.getCaseMatchingMedicalList(caseMatchingMedical);
+        List<CaseMatchingMaterial> caseMatchingMaterials = caseMatchingMaterialService.getCaseMatchingMaterialList(caseMatchingMaterial);
+        List<CaseMatchingLeisurePlace> caseMatchingLeisurePlaces = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceList(caseMatchingLeisurePlace);
+        List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
+        List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
+        List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
         if (id==null){//初始化
             if (!ObjectUtils.isEmpty(caseEstateParkings)){
                 for (CaseEstateParking caseEstateParking:caseEstateParkings){
@@ -121,6 +154,41 @@ public class CaseEstateService {
             if (!ObjectUtils.isEmpty(caseEstateSupplies)){
                 for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
                     caseEstateSupplyService.deleteCaseEstateSupply(caseEstateSupply1.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingTraffics)){
+                for (CaseMatchingTraffic oo :caseMatchingTraffics){
+                    caseMatchingTrafficService.deleteMatchingTraffic(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingMedicals)){
+                for (CaseMatchingMedical oo :caseMatchingMedicals){
+                    caseMatchingMedicalService.deleteCaseMatchingMedical(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingMaterials)){
+                for (CaseMatchingMaterial oo :caseMatchingMaterials){
+                    caseMatchingMaterialService.deleteCaseMatchingMaterial(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)){
+                for (CaseMatchingLeisurePlace oo :caseMatchingLeisurePlaces){
+                    caseMatchingLeisurePlaceService.deleteCaseMatchingLeisurePlace(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingFinances)){
+                for (CaseMatchingFinance oo :caseMatchingFinances){
+                    caseMatchingFinanceService.deleteCaseMatchingFinance(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)){
+                for (CaseMatchingEnvironment oo :caseMatchingEnvironments){
+                    caseMatchingEnvironmentService.deleteCaseMatchingEnvironment(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingEducations)){
+                for (CaseMatchingEducation oo :caseMatchingEducations){
+                    caseMatchingEducationService.deleteCaseMatchingEducation(oo.getId());
                 }
             }
         }else {//修改子类
@@ -140,6 +208,48 @@ public class CaseEstateService {
                 for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
                     caseEstateSupply1.setEstateId(id);
                     caseEstateSupplyService.updateCaseEstateSupply(caseEstateSupply1);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingTraffics)){
+                for (CaseMatchingTraffic oo :caseMatchingTraffics){
+                    oo.setEstateId(id);
+                    caseMatchingTrafficService.updateMatchingTraffic(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingMedicals)){
+                for (CaseMatchingMedical oo :caseMatchingMedicals){
+                    oo.setEstateId(id);
+                    caseMatchingMedicalService.updateCaseMatchingMedical(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingMaterials)){
+                for (CaseMatchingMaterial oo :caseMatchingMaterials){
+                    oo.setEstateId(id);
+                    caseMatchingMaterialService.updateCaseMatchingMaterial(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)){
+                for (CaseMatchingLeisurePlace oo :caseMatchingLeisurePlaces){
+                    oo.setEstateId(id);
+                    caseMatchingLeisurePlaceService.updateCaseMatchingLeisurePlace(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingFinances)){
+                for (CaseMatchingFinance oo :caseMatchingFinances){
+                    oo.setEstateId(id);
+                    caseMatchingFinanceService.updateCaseMatchingFinance(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)){
+                for (CaseMatchingEnvironment oo :caseMatchingEnvironments){
+                    oo.setEstateId(id);
+                    caseMatchingEnvironmentService.updateCaseMatchingEnvironment(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseMatchingEducations)){
+                for (CaseMatchingEducation oo :caseMatchingEducations){
+                    oo.setEstateId(id);
+                    caseMatchingEducationService.updateCaseMatchingEducation(oo);
                 }
             }
         }

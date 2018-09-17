@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEnvironment" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="Influence_degree" property="influenceDegree" jdbcType="VARCHAR" />
+    <result column="Influence_degree" property="influenceDegree" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -109,8 +109,8 @@
     insert into tb_case_matching_environment (estate_id, type, category, 
       Influence_degree, creator, gmt_created, 
       gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
-      #{influenceDegree,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{influenceDegree,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEnvironment" >
@@ -146,13 +146,13 @@
         #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
       </if>
       <if test="influenceDegree != null" >
-        #{influenceDegree,jdbcType=VARCHAR},
+        #{influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -181,13 +181,13 @@
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
       <if test="record.influenceDegree != null" >
-        Influence_degree = #{record.influenceDegree,jdbcType=VARCHAR},
+        Influence_degree = #{record.influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -207,9 +207,9 @@
     update tb_case_matching_environment
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
-      Influence_degree = #{record.influenceDegree,jdbcType=VARCHAR},
+      Influence_degree = #{record.influenceDegree,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -224,13 +224,13 @@
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
       </if>
       <if test="influenceDegree != null" >
-        Influence_degree = #{influenceDegree,jdbcType=VARCHAR},
+        Influence_degree = #{influenceDegree,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -247,9 +247,9 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEnvironment" >
     update tb_case_matching_environment
     set estate_id = #{estateId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
-      Influence_degree = #{influenceDegree,jdbcType=VARCHAR},
+      Influence_degree = #{influenceDegree,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

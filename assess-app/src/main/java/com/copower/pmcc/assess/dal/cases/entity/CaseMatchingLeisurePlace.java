@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.dal.cases.entity;
 
 import java.util.Date;
 
-public class CaseMatchingTraffic {
+public class CaseMatchingLeisurePlace {
     private Integer id;
 
     private Integer estateId;
@@ -11,11 +11,11 @@ public class CaseMatchingTraffic {
 
     private String name;
 
+    private Integer category;
+
+    private Integer grade;
+
     private Integer distance;
-
-    private String lineName;
-
-    private String theLine;
 
     private String creator;
 
@@ -55,28 +55,28 @@ public class CaseMatchingTraffic {
         this.name = name == null ? null : name.trim();
     }
 
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
     public Integer getDistance() {
         return distance;
     }
 
     public void setDistance(Integer distance) {
         this.distance = distance;
-    }
-
-    public String getLineName() {
-        return lineName;
-    }
-
-    public void setLineName(String lineName) {
-        this.lineName = lineName == null ? null : lineName.trim();
-    }
-
-    public String getTheLine() {
-        return theLine;
-    }
-
-    public void setTheLine(String theLine) {
-        this.theLine = theLine == null ? null : theLine.trim();
     }
 
     public String getCreator() {
