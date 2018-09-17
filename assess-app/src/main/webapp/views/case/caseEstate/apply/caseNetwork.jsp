@@ -79,10 +79,8 @@
                     }
                 });
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
-                TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkList", cols, {
-                    declareId: $("#declareId").val(),
-                    planDetailsId: $("#planDetailsId").val(),
-                    examineType: $("#examineType").val()
+                TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/caseEstateNetwork/getCaseEstateNetworkList", cols, {
+                    estateId: ${empty caseEstate.id?0:caseEstate.id},
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -94,7 +92,7 @@
             },
             removeData: function (id) {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineEstateNetwork/deleteExamineEstateNetworkById",
+                    url: "${pageContext.request.contextPath}/caseEstateNetwork/deleteCaseEstateNetworkById",
                     type: "post",
                     dataType: "json",
                     data: {id: id},
@@ -121,17 +119,9 @@
                     return false;
                 }
                 var data = formParams(estateNetwork.prototype.config().frm);
-                if ($("#declareId").size() > 0) {
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#planDetailsId").size() > 0) {
-                    data.planDetailsId = $("#planDetailsId").val();
-                }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
-                }
+                data.estateId = '${empty caseEstate.id?0:caseEstate.id}' ;
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineEstateNetwork/saveAndUpdateExamineEstateNetwork",
+                    url: "${pageContext.request.contextPath}/caseEstateNetwork/saveAndUpdateCaseEstateNetwork",
                     type: "post",
                     dataType: "json",
                     data: data,
@@ -152,7 +142,7 @@
             },
             getAndInit: function (id) {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineEstateNetwork/getExamineEstateNetworkById",
+                    url: "${pageContext.request.contextPath}/caseEstateNetwork/getCaseEstateNetworkById",
                     type: "get",
                     dataType: "json",
                     data: {id: id},

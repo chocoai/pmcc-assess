@@ -2,6 +2,9 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParking;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,7 +41,11 @@ public class CaseEstateService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private CaseBuildingService caseBuildingService;
+    private CaseEstateParkingService caseEstateParkingService;
+    @Autowired
+    private CaseEstateSupplyService caseEstateSupplyService;
+    @Autowired
+    private CaseEstateNetworkService caseEstateNetworkService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate){
@@ -81,6 +88,63 @@ public class CaseEstateService {
         return caseEstateDao.getEstateById(id);
     }
 
+    /**
+     *
+     * 功能描述: 初始化子类
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2018/9/17 15:12
+     */
+    public void initAndUpdateSon(Integer id){
+        CaseEstateParking estateParking = new CaseEstateParking();
+        estateParking.setEstateId(0);
+        CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
+        caseEstateNetwork.setEstateId(0);
+        CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
+        caseEstateSupply.setEstateId(0);
+        List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
+        List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
+        List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
+        if (id==null){//初始化
+            if (!ObjectUtils.isEmpty(caseEstateParkings)){
+                for (CaseEstateParking caseEstateParking:caseEstateParkings){
+                    caseEstateParkingService.deleteEstateParking(caseEstateParking.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseEstateNetworks)){
+                for (CaseEstateNetwork caseEstateNetwork1:caseEstateNetworks){
+                    caseEstateNetworkService.deleteEstateNetwork(caseEstateNetwork1.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseEstateSupplies)){
+                for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
+                    caseEstateSupplyService.deleteCaseEstateSupply(caseEstateSupply1.getId());
+                }
+            }
+        }else {//修改子类
+            if (!ObjectUtils.isEmpty(caseEstateParkings)){
+                for (CaseEstateParking caseEstateParking:caseEstateParkings){
+                    caseEstateParking.setEstateId(id);
+                    caseEstateParkingService.updateEstateParking(caseEstateParking);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseEstateNetworks)){
+                for (CaseEstateNetwork caseEstateNetwork1:caseEstateNetworks){
+                    caseEstateNetwork1.setEstateId(id);
+                    caseEstateNetworkService.updateEstateNetwork(caseEstateNetwork1);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseEstateSupplies)){
+                for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
+                    caseEstateSupply1.setEstateId(id);
+                    caseEstateSupplyService.updateCaseEstateSupply(caseEstateSupply1);
+                }
+            }
+        }
+    }
+
     public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
         if (caseEstate == null) {
             try {
@@ -93,7 +157,10 @@ public class CaseEstateService {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
-            return caseEstateDao.addEstate(caseEstate);
+            int id = caseEstateDao.addEstate(caseEstate) ;
+            //
+            this.initAndUpdateSon(id);
+            return id;
         } else {
             //更新版本
             CaseEstate oo = caseEstateDao.getEstateById(caseEstate.getId());

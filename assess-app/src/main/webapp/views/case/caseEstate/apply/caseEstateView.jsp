@@ -445,6 +445,31 @@
                 <%@include file="/views/case/caseEstate/apply/caseNetwork.jsp" %>
             </div>
 
+            <!-- 车位信息 -->
+            <div class="parking" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseParking.jsp" %>
+            </div>
+
+            <!-- 供气 -->
+            <div class="supplygas" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseSupplyGas.jsp" %>
+            </div>
+
+            <!-- 供热 -->
+            <div class="supplyheating" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseSupplyHeating.jsp" %>
+            </div>
+
+            <!-- 供电 -->
+            <div class="supplypower" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseSupplyPower.jsp" %>
+            </div>
+
+            <!-- 供水 -->
+            <div class="supplywater" style="display: none;">
+                <%@include file="/views/case/caseEstate/apply/caseSupplyWater.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -614,6 +639,19 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+            });
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/caseEstate/initAndUpdateSon",
+                data: {},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('初始化成功');
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
             });
         },
         landState: function () {
