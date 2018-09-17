@@ -412,7 +412,7 @@
     function loadAssetOtherRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'categoryName', title: '类型'});
+        cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'number', title: '他权证编号'});
         cols.push({field: 'obligor', title: '义务人'});
         cols.push({field: 'obligee', title: '权利人'});
@@ -446,7 +446,7 @@
             }
         });
         $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetInventoryRight/list", cols, {
+        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByPlanDetailsId", cols, {
             planDetailsId: '${projectPlanDetails.id}'
         }, {
             showColumns: false,
@@ -548,6 +548,7 @@
     //他权保存
     function saveData() {
         var data = formParams("frm");
+        data.projectId='${projectId}';
         data.certName='${declareRecord.name}';
         data.planDetailsId = ${projectPlanDetails.id};
         if ($("#frm").valid()) {

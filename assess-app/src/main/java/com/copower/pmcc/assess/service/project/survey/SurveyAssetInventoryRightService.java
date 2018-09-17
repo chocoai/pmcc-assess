@@ -37,11 +37,22 @@ public class SurveyAssetInventoryRightService {
     @Autowired
     private BaseDataDicService baseDataDicService;
 
-    public BootstrapTableVo getList(Integer planDetailsId) {
+    public BootstrapTableVo getListByPlanDetailsId(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getSurveyAssetTemplate(planDetailsId);
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByPlanDetailsId(planDetailsId);
+        List<SurveyAssetInventoryRightVo> surveyAssetInventoryRightVoList = getVoList(surveyAssetInventoryRightList);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryRightVoList) ? new ArrayList<SurveyAssetInventoryRight>() : surveyAssetInventoryRightVoList);
+        return vo;
+    }
+
+    public BootstrapTableVo getListByProjectId(Integer projectId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRightList = surveyAssetInventoryRightDao.getListByProjectId(projectId);
         List<SurveyAssetInventoryRightVo> surveyAssetInventoryRightVoList = getVoList(surveyAssetInventoryRightList);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryRightVoList) ? new ArrayList<SurveyAssetInventoryRight>() : surveyAssetInventoryRightVoList);

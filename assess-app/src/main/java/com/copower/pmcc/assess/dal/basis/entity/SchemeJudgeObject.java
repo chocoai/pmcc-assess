@@ -44,6 +44,8 @@ public class SchemeJudgeObject {
 
     private Boolean bisEnable;
 
+    private Boolean bisSetFunction;
+
     private Integer sorting;
 
     private String creator;
@@ -210,6 +212,14 @@ public class SchemeJudgeObject {
 
     public void setBisEnable(Boolean bisEnable) {
         this.bisEnable = bisEnable;
+    }
+
+    public Boolean getBisSetFunction() {
+        return bisSetFunction;
+    }
+
+    public void setBisSetFunction(Boolean bisSetFunction) {
+        this.bisSetFunction = bisSetFunction;
     }
 
     public Integer getSorting() {

@@ -5,9 +5,7 @@ import java.util.Date;
 public class SchemeJudgeFunction {
     private Integer id;
 
-    private Integer areaGroupId;
-
-    private Integer groupNumber;
+    private Integer judgeObjectId;
 
     private String name;
 
@@ -37,20 +35,12 @@ public class SchemeJudgeFunction {
         this.id = id;
     }
 
-    public Integer getAreaGroupId() {
-        return areaGroupId;
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
     }
 
-    public void setAreaGroupId(Integer areaGroupId) {
-        this.areaGroupId = areaGroupId;
-    }
-
-    public Integer getGroupNumber() {
-        return groupNumber;
-    }
-
-    public void setGroupNumber(Integer groupNumber) {
-        this.groupNumber = groupNumber;
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public String getName() {

@@ -30,11 +30,17 @@ public class SurveyAssetInventoryRightDao {
     }
 
 
-    public List<SurveyAssetInventoryRight> getSurveyAssetTemplate(Integer planDetailsId) {
+    public List<SurveyAssetInventoryRight> getListByPlanDetailsId(Integer planDetailsId) {
         SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
-        if (planDetailsId != null) {
-            example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
-        }
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        example.setOrderByClause("id desc");
+        List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
+        return surveyAssetInventoryRights;
+    }
+
+    public List<SurveyAssetInventoryRight> getListByProjectId(Integer projectId) {
+        SurveyAssetInventoryRightExample example = new SurveyAssetInventoryRightExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
         example.setOrderByClause("id desc");
         List<SurveyAssetInventoryRight> surveyAssetInventoryRights = surveyAssetInventoryRightMapper.selectByExample(example);
         return surveyAssetInventoryRights;
