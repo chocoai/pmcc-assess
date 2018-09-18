@@ -8,7 +8,7 @@ public class CaseUnitHuxing {
 
     private Integer unitId;
 
-    private String houseLayout;
+    private Integer houseLayout;
 
     private BigDecimal area;
 
@@ -21,6 +21,12 @@ public class CaseUnitHuxing {
     private String description;
 
     private String creator;
+
+    private String houseCategory;
+
+    private String name;
+
+    private String orientation;
 
     private Date gmtCreated;
 
@@ -42,12 +48,12 @@ public class CaseUnitHuxing {
         this.unitId = unitId;
     }
 
-    public String getHouseLayout() {
+    public Integer getHouseLayout() {
         return houseLayout;
     }
 
-    public void setHouseLayout(String houseLayout) {
-        this.houseLayout = houseLayout == null ? null : houseLayout.trim();
+    public void setHouseLayout(Integer houseLayout) {
+        this.houseLayout = houseLayout;
     }
 
     public BigDecimal getArea() {
@@ -96,6 +102,30 @@ public class CaseUnitHuxing {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getHouseCategory() {
+        return houseCategory;
+    }
+
+    public void setHouseCategory(String houseCategory) {
+        this.houseCategory = houseCategory == null ? null : houseCategory.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public Date getGmtCreated() {

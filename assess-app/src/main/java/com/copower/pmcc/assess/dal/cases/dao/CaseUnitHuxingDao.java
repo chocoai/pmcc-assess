@@ -46,8 +46,9 @@ public class CaseUnitHuxingDao {
      * @param caseUnitHuxing
      * @return
      */
-    public boolean addUnitHuxing(CaseUnitHuxing caseUnitHuxing) {
-        return caseUnitHuxingMapper.insertSelective(caseUnitHuxing) > 0;
+    public Integer addUnitHuxing(CaseUnitHuxing caseUnitHuxing) {
+       caseUnitHuxingMapper.insertSelective(caseUnitHuxing);
+       return caseUnitHuxing.getId();
     }
 
     /**

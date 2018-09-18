@@ -565,6 +565,19 @@
 
     CaseHouseModelFun.prototype.select2 = {
         house: function () {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/caseHouse/initAndUpdateSon",
+                data: {},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('初始化成功');
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
                 $("#" + CaseHouseModelFun.prototype.config.house.frm() + " .certUse").html(html);
                 $("#" + CaseHouseModelFun.prototype.config.house.frm() + " .certUse").select2();//加载样式

@@ -4,10 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="decoration_part" property="decorationPart" jdbcType="VARCHAR" />
-    <result column="decorating_material" property="decoratingMaterial" jdbcType="VARCHAR" />
-    <result column="material_price_range" property="materialPriceRange" jdbcType="VARCHAR" />
-    <result column="construction_technology" property="constructionTechnology" jdbcType="VARCHAR" />
+    <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
+    <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
+    <result column="material_price_range" property="materialPriceRange" jdbcType="INTEGER" />
+    <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -112,8 +112,8 @@
       material_price_range, construction_technology, 
       creator, gmt_created, gmt_modified
       )
-    values (#{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=VARCHAR}, #{decoratingMaterial,jdbcType=VARCHAR}, 
-      #{materialPriceRange,jdbcType=VARCHAR}, #{constructionTechnology,jdbcType=VARCHAR}, 
+    values (#{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
+      #{materialPriceRange,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -153,16 +153,16 @@
         #{unitId,jdbcType=INTEGER},
       </if>
       <if test="decorationPart != null" >
-        #{decorationPart,jdbcType=VARCHAR},
+        #{decorationPart,jdbcType=INTEGER},
       </if>
       <if test="decoratingMaterial != null" >
-        #{decoratingMaterial,jdbcType=VARCHAR},
+        #{decoratingMaterial,jdbcType=INTEGER},
       </if>
       <if test="materialPriceRange != null" >
-        #{materialPriceRange,jdbcType=VARCHAR},
+        #{materialPriceRange,jdbcType=INTEGER},
       </if>
       <if test="constructionTechnology != null" >
-        #{constructionTechnology,jdbcType=VARCHAR},
+        #{constructionTechnology,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -191,16 +191,16 @@
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
       <if test="record.decorationPart != null" >
-        decoration_part = #{record.decorationPart,jdbcType=VARCHAR},
+        decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       </if>
       <if test="record.decoratingMaterial != null" >
-        decorating_material = #{record.decoratingMaterial,jdbcType=VARCHAR},
+        decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       </if>
       <if test="record.materialPriceRange != null" >
-        material_price_range = #{record.materialPriceRange,jdbcType=VARCHAR},
+        material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
       </if>
       <if test="record.constructionTechnology != null" >
-        construction_technology = #{record.constructionTechnology,jdbcType=VARCHAR},
+        construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -220,10 +220,10 @@
     update tb_case_unit_decorate
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      decoration_part = #{record.decorationPart,jdbcType=VARCHAR},
-      decorating_material = #{record.decoratingMaterial,jdbcType=VARCHAR},
-      material_price_range = #{record.materialPriceRange,jdbcType=VARCHAR},
-      construction_technology = #{record.constructionTechnology,jdbcType=VARCHAR},
+      decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
+      material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
+      construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -238,16 +238,16 @@
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
       <if test="decorationPart != null" >
-        decoration_part = #{decorationPart,jdbcType=VARCHAR},
+        decoration_part = #{decorationPart,jdbcType=INTEGER},
       </if>
       <if test="decoratingMaterial != null" >
-        decorating_material = #{decoratingMaterial,jdbcType=VARCHAR},
+        decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       </if>
       <if test="materialPriceRange != null" >
-        material_price_range = #{materialPriceRange,jdbcType=VARCHAR},
+        material_price_range = #{materialPriceRange,jdbcType=INTEGER},
       </if>
       <if test="constructionTechnology != null" >
-        construction_technology = #{constructionTechnology,jdbcType=VARCHAR},
+        construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -264,10 +264,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
     update tb_case_unit_decorate
     set unit_id = #{unitId,jdbcType=INTEGER},
-      decoration_part = #{decorationPart,jdbcType=VARCHAR},
-      decorating_material = #{decoratingMaterial,jdbcType=VARCHAR},
-      material_price_range = #{materialPriceRange,jdbcType=VARCHAR},
-      construction_technology = #{constructionTechnology,jdbcType=VARCHAR},
+      decoration_part = #{decorationPart,jdbcType=INTEGER},
+      decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
+      material_price_range = #{materialPriceRange,jdbcType=INTEGER},
+      construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
