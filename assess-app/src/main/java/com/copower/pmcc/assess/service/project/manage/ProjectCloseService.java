@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.project.manage;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectCloseDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectCloseDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
