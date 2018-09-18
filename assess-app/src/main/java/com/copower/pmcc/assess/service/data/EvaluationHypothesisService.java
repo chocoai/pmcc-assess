@@ -104,7 +104,7 @@ public class EvaluationHypothesisService {
      * @param purpose
      * @return
      */
-    public List<DataEvaluationHypothesis> getHypothesisList(Integer method, Integer purpose) {
+    public List<DataEvaluationHypothesis> getHypothesisList(Integer type,Integer category,Integer method, Integer purpose) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -113,7 +113,7 @@ public class EvaluationHypothesisService {
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationHypothesisDao.getHypothesisList(methodStr, purposeStr);
+        return evaluationHypothesisDao.getHypothesisList(type,category,methodStr, purposeStr);
     }
 
 

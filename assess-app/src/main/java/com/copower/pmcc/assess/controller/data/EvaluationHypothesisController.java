@@ -52,13 +52,6 @@ public class EvaluationHypothesisController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getHypothesisList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
-    public HttpResult getHypothesisList(Integer method, Integer purpose) {
-        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(method, purpose);
-        return HttpResult.newCorrectResult(hypothesisList);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
     public HttpResult get(@RequestParam(value = "id") Integer id) {
         try {

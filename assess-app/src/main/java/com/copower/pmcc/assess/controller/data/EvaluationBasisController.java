@@ -52,13 +52,6 @@ public class EvaluationBasisController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasisList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
-    public HttpResult getBasisList(Integer method, Integer purpose) {
-        List<DataEvaluationBasis> hypothesisList = evaluationBasisService.getBasisList(method, purpose);
-        return HttpResult.newCorrectResult(hypothesisList);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
     public HttpResult get(@RequestParam(value = "id") Integer id) {
         try {

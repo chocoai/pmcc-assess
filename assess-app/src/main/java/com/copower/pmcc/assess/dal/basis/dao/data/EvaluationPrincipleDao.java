@@ -30,20 +30,21 @@ public class EvaluationPrincipleDao {
     public List<DataEvaluationPrinciple> getPrincipleList(String name) {
         DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
         DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(name)){
-            criteria.andNameLike(String.format("%%%s%%",name));
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
         }
         return evaluationPrincipleMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationPrinciple> getPrincipleList(String method,String purpose) {
+    public List<DataEvaluationPrinciple> getPrincipleList(Integer type, Integer category, String method, String purpose) {
         DataEvaluationPrincipleExample example = new DataEvaluationPrincipleExample();
         DataEvaluationPrincipleExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(method)){
-            criteria.andMethodLike(String.format("%%%s%%",method));
+        criteria.andTypeEqualTo(type).andCategoryEqualTo(category);
+        if (StringUtils.isNotBlank(method)) {
+            criteria.andMethodLike(String.format("%%%s%%", method));
         }
-        if(StringUtils.isNotBlank(purpose)){
-            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",purpose));
+        if (StringUtils.isNotBlank(purpose)) {
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }
         return evaluationPrincipleMapper.selectByExample(example);
     }

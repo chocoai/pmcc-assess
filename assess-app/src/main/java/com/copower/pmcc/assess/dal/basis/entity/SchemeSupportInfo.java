@@ -5,7 +5,11 @@ import java.util.Date;
 public class SchemeSupportInfo {
     private Integer id;
 
+    private Integer judgeObjectId;
+
     private Integer planDetailsId;
+
+    private Integer supportDataId;
 
     private Integer supportType;
 
@@ -33,12 +37,28 @@ public class SchemeSupportInfo {
         this.id = id;
     }
 
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
+    }
+
     public Integer getPlanDetailsId() {
         return planDetailsId;
     }
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getSupportDataId() {
+        return supportDataId;
+    }
+
+    public void setSupportDataId(Integer supportDataId) {
+        this.supportDataId = supportDataId;
     }
 
     public Integer getSupportType() {

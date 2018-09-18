@@ -45,7 +45,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
 
         //初始化支撑数据
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

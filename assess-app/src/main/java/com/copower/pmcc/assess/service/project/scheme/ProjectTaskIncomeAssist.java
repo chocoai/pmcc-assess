@@ -49,8 +49,9 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskIncomeIndex", 0);
         //初始化支撑数据
+
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        schemeSupportInfoService.initSupportInfo(projectPlanDetails.getId(), projectInfo.getEntrustPurpose(), AssessDataDicKeyConstant.MD_INCOME);
+        schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_INCOME);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

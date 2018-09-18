@@ -344,6 +344,7 @@ public class SchemeJudgeObjectService {
                         planDetails.setProjectPhaseName(phaseName.toString());
                         planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                         planDetails.setPid(projectPlanDetails.getId());
+                        planDetails.setJudgeObjectId(schemeJudgeObject.getId());
                         planDetails.setBisLastLayer(false);
                         planDetails.setSorting(j++);
                         projectPlanDetailsDao.addProjectPlanDetails(planDetails);
@@ -359,6 +360,7 @@ public class SchemeJudgeObjectService {
                                 details.setProjectId(projectPlan.getProjectId());
                                 details.setProjectPhaseName(projectPhase.getProjectPhaseName());
                                 details.setProjectPhaseId(projectPhase.getId());
+                                details.setJudgeObjectId(schemeJudgeObject.getId());
                                 details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
                                 details.setPid(planDetails.getId());
                                 details.setBisLastLayer(true);

@@ -52,13 +52,6 @@ public class EvaluationPrincipleController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getPrincipleList", name = "根据委估目的及评估方法获取数据列表", method = RequestMethod.GET)
-    public HttpResult getPrincipleList(Integer method, Integer purpose) {
-        List<DataEvaluationPrinciple> hypothesisList = evaluationPrincipleService.getPrincipleList(method, purpose);
-        return HttpResult.newCorrectResult(hypothesisList);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/get", name = "获取", method = {RequestMethod.GET})
     public HttpResult get(@RequestParam(value = "id") Integer id) {
         try {
