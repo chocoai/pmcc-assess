@@ -559,6 +559,7 @@
         })
         //---------
     });
+
     function loadInitContactsList(id, tb_List, flag) {
         var cols = [];
         cols.push({field: 'cName', title: '姓名'});
@@ -576,29 +577,30 @@
         });
         console.log("id:" + id + " " + tb_List + " " + flag);
     }
-    function Contacts() {
-    };
-    Contacts.prototype.config = function () {
-        var Contacts = {};
+
+    var config = {
         /**
          * 根据此处约定设置
          * com.copower.pmcc.assess.common.enums.InitiateContactsEnum
          */
-        Contacts.CONSIGNOR = {key: "CONSIGNOR", name: "委托人", nodeKey: 1, table: "CONSIGNOR_TableList"};
-        Contacts.POSSESSOR = {key: "POSSESSOR", name: "占有人", nodeKey: 2, table: "POSSESSOR_TableList"};
-        Contacts.UNIT_INFORMATION = {
+        CONSIGNOR: {
+            key: "CONSIGNOR", name: "委托人", nodeKey: 1, table: "CONSIGNOR_TableList"
+        },
+        POSSESSOR: {
+            key: "POSSESSOR", name: "占有人", nodeKey: 2, table: "POSSESSOR_TableList"
+        },
+        UNIT_INFORMATION: {
             key: "UNIT_INFORMATION",
             name: "报告使用单位",
             nodeKey: 3,
             table: "UNIT_INFORMATION_TableList"
-        };
-        return Contacts;
-    };
+        }
+    }
     //选项框
     $(document).ready(function () {
-        loadInitContactsList("${projectInfo.consignorVo.id}", Contacts.prototype.config().CONSIGNOR.table, Contacts.prototype.config().CONSIGNOR.nodeKey)
-        loadInitContactsList("${projectInfo.possessorVo.id}", Contacts.prototype.config().POSSESSOR.table, Contacts.prototype.config().POSSESSOR.nodeKey);
-        loadInitContactsList('${projectInfo.unitInformationVo.id}', Contacts.prototype.config().UNIT_INFORMATION.table, Contacts.prototype.config().UNIT_INFORMATION.nodeKey);
+        loadInitContactsList("${projectInfo.consignorVo.id}", config.CONSIGNOR.table, config.CONSIGNOR.nodeKey);
+        loadInitContactsList("${projectInfo.possessorVo.id}", config.POSSESSOR.table, config.POSSESSOR.nodeKey);
+        loadInitContactsList('${projectInfo.unitInformationVo.id}',config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
 
         //全局变量设值
         customerId_UNIT_INFORMATION = '${projectInfo.unitInformationVo.uUseUnit}' ;
