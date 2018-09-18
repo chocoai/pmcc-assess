@@ -102,7 +102,7 @@ public class EvaluationBasisService {
      * @param purpose
      * @return
      */
-    public List<DataEvaluationBasis> getBasisList(Integer method, Integer purpose) {
+    public List<DataEvaluationBasis> getBasisList(Integer type, Integer category,Integer method, Integer purpose) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -111,7 +111,7 @@ public class EvaluationBasisService {
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationBasisDao.getBasisList(methodStr, purposeStr);
+        return evaluationBasisDao.getBasisList(type,category,methodStr, purposeStr);
     }
 
 

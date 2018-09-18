@@ -3,7 +3,9 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeSupportInfoMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="support_data_id" property="supportDataId" jdbcType="INTEGER" />
     <result column="support_type" property="supportType" jdbcType="INTEGER" />
     <result column="support_type_name" property="supportTypeName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -73,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, support_type, support_type_name, name, template, content, json_content, 
-    creator, gmt_created, gmt_modified
+    id, judge_object_id, plan_details_id, support_data_id, support_type, support_type_name, 
+    name, template, content, json_content, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfoExample" >
     select
@@ -110,14 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_support_info (plan_details_id, support_type, support_type_name, 
-      name, template, content, 
-      json_content, creator, gmt_created, 
-      gmt_modified)
-    values (#{planDetailsId,jdbcType=INTEGER}, #{supportType,jdbcType=INTEGER}, #{supportTypeName,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_support_info (judge_object_id, plan_details_id, support_data_id, 
+      support_type, support_type_name, name, 
+      template, content, json_content, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{supportDataId,jdbcType=INTEGER}, 
+      #{supportType,jdbcType=INTEGER}, #{supportTypeName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{template,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,8 +129,14 @@
     </selectKey>
     insert into tb_scheme_support_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="judgeObjectId != null" >
+        judge_object_id,
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id,
+      </if>
+      <if test="supportDataId != null" >
+        support_data_id,
       </if>
       <if test="supportType != null" >
         support_type,
@@ -157,8 +167,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="judgeObjectId != null" >
+        #{judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="supportDataId != null" >
+        #{supportDataId,jdbcType=INTEGER},
       </if>
       <if test="supportType != null" >
         #{supportType,jdbcType=INTEGER},
@@ -201,8 +217,14 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.judgeObjectId != null" >
+        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.supportDataId != null" >
+        support_data_id = #{record.supportDataId,jdbcType=INTEGER},
       </if>
       <if test="record.supportType != null" >
         support_type = #{record.supportType,jdbcType=INTEGER},
@@ -239,7 +261,9 @@
   <update id="updateByExample" parameterType="map" >
     update tb_scheme_support_info
     set id = #{record.id,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      support_data_id = #{record.supportDataId,jdbcType=INTEGER},
       support_type = #{record.supportType,jdbcType=INTEGER},
       support_type_name = #{record.supportTypeName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -256,8 +280,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo" >
     update tb_scheme_support_info
     <set >
+      <if test="judgeObjectId != null" >
+        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="supportDataId != null" >
+        support_data_id = #{supportDataId,jdbcType=INTEGER},
       </if>
       <if test="supportType != null" >
         support_type = #{supportType,jdbcType=INTEGER},
@@ -291,7 +321,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSupportInfo" >
     update tb_scheme_support_info
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      support_data_id = #{supportDataId,jdbcType=INTEGER},
       support_type = #{supportType,jdbcType=INTEGER},
       support_type_name = #{supportTypeName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.manage;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanHistoryDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectPlanHistoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanHistory;

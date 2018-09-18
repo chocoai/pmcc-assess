@@ -30,20 +30,21 @@ public class EvaluationBasisDao {
     public List<DataEvaluationBasis> getBasisList(String name) {
         DataEvaluationBasisExample example = new DataEvaluationBasisExample();
         DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(name)){
-            criteria.andNameLike(String.format("%%%s%%",name));
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
         }
         return evaluationBasisMapper.selectByExample(example);
     }
 
-    public List<DataEvaluationBasis> getBasisList(String method,String purpose) {
+    public List<DataEvaluationBasis> getBasisList(Integer type, Integer category, String method, String purpose) {
         DataEvaluationBasisExample example = new DataEvaluationBasisExample();
         DataEvaluationBasisExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(method)){
-            criteria.andMethodLike(String.format("%%%s%%",method));
+        criteria.andTypeEqualTo(type).andCategoryEqualTo(category);
+        if (StringUtils.isNotBlank(method)) {
+            criteria.andMethodLike(String.format("%%%s%%", method));
         }
-        if(StringUtils.isNotBlank(purpose)){
-            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",purpose));
+        if (StringUtils.isNotBlank(purpose)) {
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%", purpose));
         }
         return evaluationBasisMapper.selectByExample(example);
     }

@@ -79,4 +79,9 @@ public class SchemeSupportInfoDao {
         return schemeSupportInfoMapper.countByExample(example);
     }
 
+    public int getCountByJudgeObjectId(Integer judgeObjectId,Integer supportType,Integer supportDataId){
+        SchemeSupportInfoExample example = new SchemeSupportInfoExample();
+        example.createCriteria().andJudgeObjectIdEqualTo(judgeObjectId).andSupportTypeEqualTo(supportType).andSupportDataIdEqualTo(supportDataId);
+        return schemeSupportInfoMapper.countByExample(example);
+    }
 }

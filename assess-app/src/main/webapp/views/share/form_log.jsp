@@ -44,7 +44,6 @@
             processInsId: "${empty processInsId?0:processInsId}",
             processLogUrl: "${pageContext.request.contextPath}/public/getApprovalLog",
             projectLogUrl: "${pageContext.request.contextPath}/public/getApprovalLogByProject"
-
         },
 
         //初始化加载数据
@@ -52,7 +51,7 @@
             //1.如果项目id为空 则直接加载流程日志
             //2.如果项目id不为空 流程id为空 则直接加载项目日志
             //3.项目id与流程id都不为空 则优先加载流程日志
-            if (formLog.config.projectId != "0" && formLog.config.processInsId == "0") {
+            if (formLog.config.projectId != "0" && (formLog.config.processInsId == "0" || formLog.config.processInsId == "-1")) {
                 $("#formLogProject").trigger('click');
             } else {
                 $("#formLogProcess").trigger('click');

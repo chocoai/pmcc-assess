@@ -4,6 +4,12 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 <body class="nav-md footer_fixed">
@@ -473,14 +479,16 @@
         <td>
             <input type="hidden" data-name="id" value="{id}">
             <input type="hidden" data-name="bisSplit" value="{bisSplit}">
+            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
             <input type="hidden" data-name="number" value="{number}">
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
+            <input type="hidden" data-name="declareId" value="{declareId}">
             <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
         </td>
         <td>
             <label class="form-control" data-name="name">
                 <span>{name}</span>
-                <a href="javascript://" onclick="programme.viewExamineInfo('{bisMerge},{declareId}','{name}');"
+                <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
                    class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
             </label>
 
@@ -534,6 +542,7 @@
 </body>
 </html>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -555,550 +564,581 @@
     })
 
     //方案
-    var programme = {
-            config: {
-                areaPopIndex: 0,//区域弹框index
-                judgePopIndex: 0,//委估对象弹框index
-                //区域合并项html
-                areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
-                //委估对象合并项html
-                judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
-                currJudgeMethodButton: undefined //当前评估方法button
-            },
+    var programme = {};
+    programme.config = {
+        areaPopIndex: 0,//区域弹框index
+        judgePopIndex: 0,//委估对象弹框index
+        //区域合并项html
+        areaItemHtml: '<li data-areaGroupId="{areaGroupId}"> <p> <label>{areaName}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+        //委估对象合并项html
+        judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
+        currJudgeMethodButton: undefined //当前评估方法button
+    };
 
-            //加载区域下的委估对象列表
-            loadJudgeObjectList: function (_this) {
-                var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
-                tbody.empty();
-                var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
-                    data: {
-                        areaGroupId: areaGroupId
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            $.each(result.data, function (i, item) {
-                                var html = $("#judgeObjectHtml").html();
-                                html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
-                                html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
-                                html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
-                                html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
-                                html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
-                                if (item.splitNumber) {
-                                    html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
-                                } else {
-                                    html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);
-                                }
-                                html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
-                                html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
-                                html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
-                                html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
-                                html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
-                                html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
-                                html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
-                                html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
-                                tbody.append(html);
-                                //设值
-                                var lastTr = tbody.find("tr:last");
-                                lastTr.find('[data-name="setUse"]').val(item.setUse);
-                                lastTr.find('[data-name="bestUse"]').val(item.bestUse);
-                                lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
-                                lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
-                                if (item.bisSetFunction) {
-                                    lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
-                                }
-                            })
+    //加载区域下的委估对象列表
+    programme.loadJudgeObjectList = function (_this) {
+        var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
+        tbody.empty();
+        var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
+            data: {
+                areaGroupId: areaGroupId
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    $.each(result.data, function (i, item) {
+                        var html = $("#judgeObjectHtml").html();
+                        html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
+                        html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
+                        html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);
+                        html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);
+                        html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);
+                        if (item.splitNumber) {
+                            html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);
+                        } else {
+                            html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);
                         }
-                    },
-                    error: function (result) {
-                        alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            },
-
-            //合并项移除
-            mergeItemRemove: function (_this) {
-                $(_this).closest('li').remove();
-            },
-
-            //区域合并
-            areaMerge: function (_this) {
-                var areaName = $(_this).closest('h2').find('label').text();
-                var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
-                var html = programme.config.areaItemHtml;
-                if (programme.config.areaPopIndex <= 0) {
-                    layer.closeAll();
-                    programme.config.areaPopIndex = layer.open({
-                        title: "区域合并",
-                        offset: 't',
-                        shade: false,
-                        zIndex: 998,
-                        area: ['320px', '300px'], //宽高
-                        content: '<ul id="area-merge-ul" class="to_do"></ul>',
-                        yes: function (index, layero) {
-                            programme.areaMergeSubmit();
-                        },
-                        end: function () {
-                            programme.config.areaPopIndex = 0;
-                        },
-                        success: function () {
-                            $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
+                        html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);
+                        html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);
+                        html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : item.ownership);
+                        html = html.replace(/{seat}/g, item.seat == undefined ? "" : item.seat);
+                        html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
+                        html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
+                        html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
+                        html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
+                        tbody.append(html);
+                        //设值
+                        var lastTr = tbody.find("tr:last");
+                        lastTr.find('[data-name="setUse"]').val(item.setUse);
+                        lastTr.find('[data-name="bestUse"]').val(item.bestUse);
+                        lastTr.find('td:last').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
+                        lastTr.find('td:last').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
+                        if (item.bisSetFunction) {
+                            lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
+                    })
+                }
+            },
+            error: function (result) {
+                alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
+
+    //合并项移除
+    programme.mergeItemRemove = function (_this) {
+        $(_this).closest('li').remove();
+    };
+
+    //区域合并
+    programme.areaMerge = function (_this) {
+        var areaName = $(_this).closest('h2').find('label').text();
+        var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+        var html = programme.config.areaItemHtml;
+        if (programme.config.areaPopIndex <= 0) {
+            layer.closeAll();
+            programme.config.areaPopIndex = layer.open({
+                title: "区域合并",
+                offset: 't',
+                shade: false,
+                zIndex: 998,
+                area: ['320px', '300px'], //宽高
+                content: '<ul id="area-merge-ul" class="to_do"></ul>',
+                yes: function (index, layero) {
+                    programme.areaMergeSubmit();
+                },
+                end: function () {
+                    programme.config.areaPopIndex = 0;
+                },
+                success: function () {
+                    $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
+                }
+            });
+        } else {
+            //该区域已添加则直接返回
+            var isExist = false;
+            $("#area-merge-ul").find('li').each(function () {
+                if ($(this).attr('data-areaGroupId') == areaGroupId) {
+                    isExist = true;
+                    return;
+                }
+            })
+            if (!isExist) {
+                $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
+            }
+        }
+    };
+
+    //区域合并提交
+    programme.areaMergeSubmit = function () {
+        var areaGroupIdArray = [];
+        $("#area-merge-ul").find('li').each(function () {
+            areaGroupIdArray.push($(this).attr('data-areaGroupId'));
+        })
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMerge',
+            data: {
+                projectId: '${projectInfo.id}',
+                areaGroupIds: areaGroupIdArray.join()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("区域合并成功", 1, null, function () {
+                        window.location.href = window.location.href;
+                    })
+                } else {
+                    Alert("区域合并失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //区域合并取消
+    programme.areaMergeCancel = function (id) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMergeCancel',
+            data: {
+                id: id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("区域合并取消成功", 1, null, function () {
+                        window.location.href = window.location.href;
+                    })
+                } else {
+                    Alert("区域合并取消失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //委估对象拆分
+    programme.splitJudge = function (_this) {
+        programme.saveProgrammeArea($(_this).closest('.area_panel'));
+        //后台添加数据
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
+            data: {
+                projectId: '${projectInfo.id}',
+                areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                id: $(_this).closest('tr').find('[data-name="id"]').val()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                } else {
+                    Alert("委估对象拆分失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //删除拆分出来的委估对象
+    programme.delSplitJudge = function (_this) {
+        programme.saveProgrammeArea($(_this).closest('.area_panel'));
+        //后台添加数据
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/delSplitJudge',
+            data: {
+                projectId: '${projectInfo.id}',
+                areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                id: $(_this).closest('tr').find('[data-name="id"]').val()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                } else {
+                    Alert("委估对象删除失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //委估对象合并
+    programme.mergeJudge = function (_this) {
+        programme.saveProgrammeArea($(_this).closest('.area_panel'));
+        var name = $(_this).closest('tr').find('[data-name="name"]').find('span').text();
+        var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
+        var html = programme.config.judgeItemHtml;
+        if (programme.config.judgePopIndex <= 0) {
+            programme.config.judgePopIndex = layer.open({
+                title: "委估对象合并",
+                offset: 't',
+                shade: false,
+                zIndex: 999,
+                area: ['320px', '300px'], //宽高
+                content: '<ul id="judge-merge-ul" class="to_do"></ul>',
+                yes: function (index, layero) {
+                    programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
+                },
+                end: function () {
+                    programme.config.judgePopIndex = 0;
+                },
+                success: function () {
+                    $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+                }
+            });
+        } else {
+            //该区域已添加则直接返回
+            var isExist = false;
+            $("#judge-merge-ul").find('li').each(function () {
+                if ($(this).attr('data-judgeId') == judgeId) {
+                    isExist = true;
+                    return;
+                }
+            })
+            if (!isExist) {
+                $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
+            }
+        }
+    };
+
+    //委估对象合并提交
+    programme.mergeJudgeSubmit = function (_this, panel) {
+        var judgeIdArray = [];
+        $("#judge-merge-ul").find('li').each(function () {
+            judgeIdArray.push($(this).attr('data-judgeId'));
+        })
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudge',
+            data: {
+                ids: judgeIdArray.join()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('委估对象合并成功');
+                    layer.close(programme.config.judgePopIndex);
+                    programme.loadJudgeObjectList(panel);
+                } else {
+                    Alert("委估对象合并失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //取消委估对象合并
+    programme.mergeJudgeCancel = function (_this) {
+        programme.saveProgrammeArea($(_this).closest('.area_panel'));
+        //后台添加数据
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
+            data: {
+                id: $(_this).closest('tr').find('[data-name="id"]').val()
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('委估对象取消合并成功');
+                    programme.loadJudgeObjectList($(_this).closest('.area_panel'));
+                } else {
+                    Alert("权证拆分失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //获取区域下的方案数据
+    programme.getProgrammeAreaData = function (areaPanel) {
+        var data = {}; //找出需要保存的数据
+        data.areaGroupId = $(areaPanel).find('[name="areaGroupId"]').val();
+        data.valueTimePoint = $(areaPanel).find('[name="valueTimePoint"]').val();
+        data.timePointExplain = $(areaPanel).find('[name="timePointExplain"]').val();
+        data.schemeJudgeObjects = [];
+
+        var trs = $(areaPanel).find(".table").find("tbody").find('tr');
+        if (trs && trs.length > 0) {
+            $.each(trs, function (i, tr) {
+                var schemeJudgeObject = {};
+                schemeJudgeObject.id = $(tr).find('[data-name="id"]').val();
+                schemeJudgeObject.setUse = $(tr).find('[data-name="setUse"]').val();
+                schemeJudgeObject.bestUse = $(tr).find('[data-name="bestUse"]').val();
+                schemeJudgeObject.evaluationArea = $(tr).find('[data-name="evaluationArea"]').val();
+                data.schemeJudgeObjects.push(schemeJudgeObject);
+            })
+        }
+        return data;
+    };
+
+    //保存区域下方案
+    programme.saveProgrammeArea = function (areaPanel) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeArea',
+            data: {
+                formData: JSON.stringify(programme.getProgrammeAreaData(areaPanel))
+            },
+            async: false,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                //不做任何信息提示
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //保存区域下方案
+    programme.saveProgrammeAll = function (_this) {
+        var data = [];
+        $(".area_panel").each(function () {
+            data.push(programme.getProgrammeAreaData($(this)));
+        })
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeAll',
+            data: {
+                formData: JSON.stringify(data)
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                } else {
+                    Alert("保存成功失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+    //提交方案
+    programme.submitProgramme = function () {
+        //前端验证
+        var isPass = true;
+        $("form[id^=frmJudgeObject]").each(function () {
+            var that = $(this);
+            var options = {
+                msg: "请检查【" + that.closest('.area_panel').find('h2').find('label').text() + "】填写的信息",
+                hiddenValid: true
+            };
+            if (!$(this).valid(options)) {
+                isPass = false;
+                return false;
+            }
+        })
+        if (!isPass) return false;
+        var data = [];
+        $(".area_panel").each(function () {
+            data.push(programme.getProgrammeAreaData($(this)));
+        })
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/submitProgramme',
+            data: {
+                projectId: '${projectInfo.id}',
+                planId: '${planId}',
+                formData: JSON.stringify(data)
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交方案成功", 1, null, function () {
+                        window.close();
                     });
                 } else {
-                    //该区域已添加则直接返回
-                    var isExist = false;
-                    $("#area-merge-ul").find('li').each(function () {
-                        if ($(this).attr('data-areaGroupId') == areaGroupId) {
-                            isExist = true;
-                            return;
-                        }
-                    })
-                    if (!isExist) {
-                        $("#area-merge-ul").prepend(html.replace(/{areaName}/g, areaName).replace(/{areaGroupId}/g, areaGroupId));
-                    }
+                    Alert("提交方案失败:" + result.errmsg);
                 }
             },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
 
-            //区域合并提交
-            areaMergeSubmit: function () {
-                var areaGroupIdArray = [];
-                $("#area-merge-ul").find('li').each(function () {
-                    areaGroupIdArray.push($(this).attr('data-areaGroupId'));
-                })
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMerge',
-                    data: {
-                        projectId: '${projectInfo.id}',
-                        areaGroupIds: areaGroupIdArray.join()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            Alert("区域合并成功", 1, null, function () {
-                                window.location.href = window.location.href;
-                            })
-                        } else {
-                            Alert("区域合并失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
+    //加载合并对象的明细
+    programme.loadJudgeDetailList = function (pid) {
+        var cols = [];
+        cols.push({field: 'number', title: '编号'});
+        cols.push({field: 'name', title: '权证号'});
+        cols.push({field: 'ownership', title: '所有权人'});
+        cols.push({field: 'seat', title: '坐落'});
+        cols.push({field: 'certUse', title: '证载用途'});
+        cols.push({field: 'practicalUse', title: '实际用途'});
+        cols.push({field: 'floorArea', title: '证载面积'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewJudgeDetailExamineInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_judge_detail_list").bootstrapTable('destroy');
+        TableInit("tb_judge_detail_list", "${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid", cols, {
+            pid: pid
+        }, {
+            showColumns: false,
+            showRefresh: true,
+            search: true,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
+            }
+        });
+    };
 
-            //区域合并取消
-            areaMergeCancel: function (id) {
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupMergeCancel',
-                    data: {
-                        id: id
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            Alert("区域合并取消成功", 1, null, function () {
-                                window.location.href = window.location.href;
-                            })
-                        } else {
-                            Alert("区域合并取消失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
+    //查看他项信息
+    programme.viewInventoryRightInfo = function (index) {
+        var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
+        $("#viewInventoryRightModal").find('[data-name]').each(function () {
+            $(this).text('').text(row[$(this).attr('data-name')]);
+        })
+        $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
+        $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
+        $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
+        $("#viewInventoryRightModal").modal();
+    };
 
-            //委估对象拆分
-            splitJudge: function (_this) {
-                programme.saveProgrammeArea($(_this).closest('.area_panel'));
-                //后台添加数据
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/splitJudge',
-                    data: {
-                        projectId: '${projectInfo.id}',
-                        areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
-                        id: $(_this).closest('tr').find('[data-name="id"]').val()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
-                        } else {
-                            Alert("委估对象拆分失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
+    //查看委估对象明细
+    programme.viewJudgeDetailExamineInfo = function (index) {
+        var row = $("#tb_judge_detail_list").bootstrapTable('getData')[index];
+        programme.viewExamineInfo(row.declareRecordId);
+    };
 
+    //查看委估对象相关信息
+    programme.viewJudgeInfo = function (_this) {
+        var tr = $(_this).closest('tr');
+        var bisMerge = tr.find('[data-name=bisMerge]').val();
+        if (bisMerge == 'true') {
+            var pid = tr.find('[data-name=id]').val();
+            programme.loadJudgeDetailList(pid);
+            $("#viewMergeJudgeModal").modal();
+        } else {
+            programme.viewExamineInfo(tr.find('[data-name=declareId]').val());
+        }
+    };
 
-            },
-
-            //删除拆分出来的委估对象
-            delSplitJudge: function (_this) {
-                programme.saveProgrammeArea($(_this).closest('.area_panel'));
-                //后台添加数据
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/delSplitJudge',
-                    data: {
-                        projectId: '${projectInfo.id}',
-                        areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
-                        id: $(_this).closest('tr').find('[data-name="id"]').val()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
-                        } else {
-                            Alert("委估对象删除失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
-
-            //委估对象合并
-            mergeJudge: function (_this) {
-                programme.saveProgrammeArea($(_this).closest('.area_panel'));
-                var name = $(_this).closest('tr').find('[data-name="name"]').find('span').text();
-                var judgeId = $(_this).closest('tr').find('[data-name="id"]').val();
-                var html = programme.config.judgeItemHtml;
-                if (programme.config.judgePopIndex <= 0) {
-                    programme.config.judgePopIndex = layer.open({
-                        title: "委估对象合并",
-                        offset: 't',
-                        shade: false,
-                        zIndex: 999,
-                        area: ['320px', '300px'], //宽高
-                        content: '<ul id="judge-merge-ul" class="to_do"></ul>',
-                        yes: function (index, layero) {
-                            programme.mergeJudgeSubmit(_this, $(_this).closest('.area_panel'));
+    //查看委估对象调查信息
+    programme.viewExamineInfo = function (declareId) {
+        layer.open({
+            type: 1,
+            title: "调查信息",
+            offset: 't',
+            shade: false,
+            area: ['720px', '450px'], //宽高
+            content: '<table id="examine_list" class="table table-bordered" style="max-height: auto;"></table>',
+            success: function () {
+                $("#examine_list").treegrid({
+                        url: '${pageContext.request.contextPath}/schemeProgramme/getPlanDetailsByDeclareId?declareId=' + declareId,
+                        method: 'get',
+                        idField: 'id',
+                        treeField: 'projectPhaseName',
+                        datatype: 'json',
+                        lines: true,
+                        width: 'auto',
+                        rownumbers: true,
+                        onLoadSuccess: function () {
+                            $(".tooltips").tooltip();
                         },
-                        end: function () {
-                            programme.config.judgePopIndex = 0;
-                        },
-                        success: function () {
-                            $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
-                        }
-                    });
-                } else {
-                    //该区域已添加则直接返回
-                    var isExist = false;
-                    $("#judge-merge-ul").find('li').each(function () {
-                        if ($(this).attr('data-judgeId') == judgeId) {
-                            isExist = true;
-                            return;
-                        }
-                    })
-                    if (!isExist) {
-                        $("#judge-merge-ul").prepend(html.replace(/{name}/g, name).replace(/{judgeId}/g, judgeId));
-                    }
-                }
-            },
-
-            //委估对象合并提交
-            mergeJudgeSubmit: function (_this, panel) {
-                var judgeIdArray = [];
-                $("#judge-merge-ul").find('li').each(function () {
-                    judgeIdArray.push($(this).attr('data-judgeId'));
-                })
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudge',
-                    data: {
-                        ids: judgeIdArray.join()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success('委估对象合并成功');
-                            layer.close(programme.config.judgePopIndex);
-                            programme.loadJudgeObjectList(panel);
-                        } else {
-                            Alert("委估对象合并失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-
-
-            },
-
-            //取消委估对象合并
-            mergeJudgeCancel: function (_this) {
-                programme.saveProgrammeArea($(_this).closest('.area_panel'));
-                //后台添加数据
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/mergeJudgeCancel',
-                    data: {
-                        id: $(_this).closest('tr').find('[data-name="id"]').val()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success('委估对象取消合并成功');
-                            programme.loadJudgeObjectList($(_this).closest('.area_panel'));
-                        } else {
-                            Alert("权证拆分失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
-
-            //获取区域下的方案数据
-            getProgrammeAreaData: function (areaPanel) {
-                var data = {}; //找出需要保存的数据
-                data.areaGroupId = $(areaPanel).find('[name="areaGroupId"]').val();
-                data.valueTimePoint = $(areaPanel).find('[name="valueTimePoint"]').val();
-                data.timePointExplain = $(areaPanel).find('[name="timePointExplain"]').val();
-                data.schemeJudgeObjects = [];
-
-                var trs = $(areaPanel).find(".table").find("tbody").find('tr');
-                if (trs && trs.length > 0) {
-                    $.each(trs, function (i, tr) {
-                        var schemeJudgeObject = {};
-                        schemeJudgeObject.id = $(tr).find('[data-name="id"]').val();
-                        schemeJudgeObject.setUse = $(tr).find('[data-name="setUse"]').val();
-                        schemeJudgeObject.bestUse = $(tr).find('[data-name="bestUse"]').val();
-                        schemeJudgeObject.evaluationArea = $(tr).find('[data-name="evaluationArea"]').val();
-                        data.schemeJudgeObjects.push(schemeJudgeObject);
-                    })
-                }
-                return data;
-            },
-
-            //保存区域下方案
-            saveProgrammeArea: function (areaPanel) {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeArea',
-                    data: {
-                        formData: JSON.stringify(programme.getProgrammeAreaData(areaPanel))
-                    },
-                    async: false,
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        //不做任何信息提示
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
-
-            //保存区域下方案
-            saveProgrammeAll: function (_this) {
-                var data = [];
-                $(".area_panel").each(function () {
-                    data.push(programme.getProgrammeAreaData($(this)));
-                })
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/saveProgrammeAll',
-                    data: {
-                        formData: JSON.stringify(data)
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success('保存成功');
-                        } else {
-                            Alert("保存成功失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
-
-            //提交方案
-            submitProgramme: function () {
-                //前端验证
-                var isPass = true;
-                $("form[id^=frmJudgeObject]").each(function () {
-                    var that = $(this);
-                    var options = {
-                        msg: "请检查【" + that.closest('.area_panel').find('h2').find('label').text() + "】填写的信息",
-                        hiddenValid: true
-                    };
-                    if (!$(this).valid(options)) {
-                        isPass = false;
-                        return false;
-                    }
-                })
-                if (!isPass) return false;
-                var data = [];
-                $(".area_panel").each(function () {
-                    data.push(programme.getProgrammeAreaData($(this)));
-                })
-                Loading.progressShow();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schemeProgramme/submitProgramme',
-                    data: {
-                        projectId: '${projectInfo.id}',
-                        planId: '${planId}',
-                        formData: JSON.stringify(data)
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            Alert("提交方案成功", 1, null, function () {
-                                window.close();
-                            });
-                        } else {
-                            Alert("提交方案失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                });
-            },
-
-            //加载合并对象的明细
-            loadJudgeDetailList: function (pid) {
-                var cols = [];
-                cols.push({field: 'number', title: '编号'});
-                cols.push({field: 'name', title: '权证号'});
-                cols.push({field: 'ownership', title: '所有权人'});
-                cols.push({field: 'seat', title: '坐落'});
-                cols.push({field: 'certUse', title: '证载用途'});
-                cols.push({field: 'practicalUse', title: '实际用途'});
-                cols.push({field: 'floorArea', title: '证载面积'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#tb_judge_detail_list").bootstrapTable('destroy');
-                TableInit("tb_judge_detail_list", "${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid", cols, {
-                    pid: pid
-                }, {
-                    showColumns: false,
-                    showRefresh: true,
-                    search: true,
-                    onLoadSuccess: function () {
-                        $(".tooltips").tooltip();   //提示
-                    }
-                });
-            },
-
-            //查看他项信息
-            viewInventoryRightInfo: function (index) {
-                var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
-                $("#viewInventoryRightModal").find('[data-name]').each(function () {
-                    $(this).text('').text(row[$(this).attr('data-name')]);
-                })
-                $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
-                $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
-                $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
-                $("#viewInventoryRightModal").modal();
-            },
-
-            //查看委估对象调查信息
-            viewExamineInfo: function (bisMerge, declareId, name) {
-                if (bisMerge) {
-                    programme.loadJudgeDetailList(309);
-                    $("#viewMergeJudgeModal").modal();
-                } else {
-                    if (declareId) {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/surveyExamine/getPlanDetailsByDeclareId",
-                            data: {
-                                declareId: declareId
+                        columns: [[
+                            {
+                                field: "projectPhaseName",
+                                title: "工作内容",
+                                width: "70%",
+                                align: "left",
+                                formatter: function (value, row) {
+                                    return value
+                                }
                             },
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    $("#viewExamineInfoModal .x_content").empty();
-                                    $.each(result.data, function (i, item) {
-                                        var html = ' <button type="button" class="btn btn-link" onclick="window.open(\'${pageContext.request.contextPath}/ProjectTask/projectTaskDetailsById?planDetailsId=' + item.id + '\')">' + item.projectPhaseName + '</button>';
-                                        $("#viewExamineInfoModal .x_content").append(html);
-                                    })
-                                    $("#viewExamineInfoModal").find('.modal-title').text(name);
-                                    $("#viewExamineInfoModal").modal();
+                            {
+                                field: 'workStages', title: '操作', width: '30%', formatter: function (value, row) {
+                                if (row.bisEnable) {
+                                    var s = "";
+                                    if (row.displayUrl) {
+                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                    }
+                                    return s;
                                 }
                             }
-                        })
+                            }
+                        ]]
                     }
-                }
-            },
-
-            //加载他项权利
-            loadInventoryRightList: function () {
-                var cols = [];
-                cols.push({field: 'certName', title: '权证号'});
-                cols.push({field: 'typeName', title: '类型'});
-                cols.push({field: 'categoryName', title: '类型'});
-                cols.push({field: 'number', title: '他权证编号'});
-                cols.push({field: 'obligor', title: '义务人'});
-                cols.push({field: 'obligee', title: '权利人'});
-                cols.push({field: 'registerArea', title: '登记面积'});
-                cols.push({field: 'rightRank', title: '他权级次'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#tb_inventory_right_list").bootstrapTable('destroy');
-                TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByProjectId", cols, {
-                    projectId: '${projectInfo.id}'
-                }, {
-                    showColumns: false,
-                    showRefresh: true,
-                    search: true,
-                    onLoadSuccess: function () {
-                        $(".tooltips").tooltip();   //提示
-                    }
-                });
+                );
             }
+        });
+    };
 
-
-        }
-    ;
+    //加载他项权利
+    programme.loadInventoryRightList = function () {
+        var cols = [];
+        cols.push({field: 'certName', title: '权证号'});
+        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'categoryName', title: '类型'});
+        cols.push({field: 'number', title: '他权证编号'});
+        cols.push({field: 'obligor', title: '义务人'});
+        cols.push({field: 'obligee', title: '权利人'});
+        cols.push({field: 'registerArea', title: '登记面积'});
+        cols.push({field: 'rightRank', title: '他权级次'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_inventory_right_list").bootstrapTable('destroy');
+        TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByProjectId", cols, {
+            projectId: '${projectInfo.id}'
+        }, {
+            showColumns: false,
+            showRefresh: true,
+            search: true,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
+            }
+        });
+    };
 
 </script>
 <script type="text/javascript">

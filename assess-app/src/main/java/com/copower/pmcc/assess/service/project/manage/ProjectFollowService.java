@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.manage;
 
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectFollowDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectFollowDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;

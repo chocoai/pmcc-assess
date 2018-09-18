@@ -64,9 +64,7 @@ public class ProjectPlanDetails {
 
     private Integer declareRecordId;
 
-    private Integer areaGroupId;
-
-    private Integer groupNumber;
+    private Integer judgeObjectId;
 
     private String creator;
 
@@ -314,20 +312,12 @@ public class ProjectPlanDetails {
         this.declareRecordId = declareRecordId;
     }
 
-    public Integer getAreaGroupId() {
-        return areaGroupId;
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
     }
 
-    public void setAreaGroupId(Integer areaGroupId) {
-        this.areaGroupId = areaGroupId;
-    }
-
-    public Integer getGroupNumber() {
-        return groupNumber;
-    }
-
-    public void setGroupNumber(Integer groupNumber) {
-        this.groupNumber = groupNumber;
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public String getCreator() {

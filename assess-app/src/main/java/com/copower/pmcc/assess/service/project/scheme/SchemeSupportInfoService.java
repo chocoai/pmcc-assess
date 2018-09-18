@@ -54,11 +54,12 @@ public class SchemeSupportInfoService {
 
     /**
      * 获取支持数据列表
+     *
      * @param planDetailsId
      * @return
      */
-    public List<SchemeSupportInfo> getSupportInfoList(Integer planDetailsId){
-        SchemeSupportInfo where=new SchemeSupportInfo();
+    public List<SchemeSupportInfo> getSupportInfoList(Integer planDetailsId) {
+        SchemeSupportInfo where = new SchemeSupportInfo();
         where.setPlanDetailsId(planDetailsId);
         return schemeSupportInfoDao.getSupportInfoList(where);
     }
@@ -66,21 +67,30 @@ public class SchemeSupportInfoService {
     /**
      * 初始化该任务所需要的支撑信息
      *
-     * @param planDetailsId
+     * @param projectPlanDetails
+     * @param projectInfo
+     * @param methodType
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initSupportInfo(Integer planDetailsId, Integer purpose, String methodType) {
+    public void initSupportInfo(ProjectPlanDetails projectPlanDetails, ProjectInfo projectInfo, String methodType) {
         //先检查该任务是否已有初始话数据
         //1.根据项目的委托目的，当前方法的类型;分别到 评估假设、评估依据、评估原则（最佳利用描述、价值时点说明）找出与之关联的模板
         //2.将模板数据初始话到支撑信息表中，方便后续处理
 
-        int count = schemeSupportInfoDao.getCountByPlanDetailsId(planDetailsId);
+        int count = schemeSupportInfoDao.getCountByPlanDetailsId(projectPlanDetails.getId());
         if (count > 0) return;
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(methodType);
-        List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(baseDataDic.getId(), purpose);//原则
+        Integer type = projectInfo.getProjectTypeId();//项目类型
+        Integer category = projectInfo.getProjectCategoryId();//项目类别
+        Integer purpose = projectInfo.getEntrustPurpose();//委托目的
+        Integer medhod = baseDataDic.getId();//评估方法
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();//评估方法
+        List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(type, category, medhod, purpose);//原则
         SchemeSupportInfo schemeSupportInfo = null;
         if (CollectionUtils.isNotEmpty(principleList)) {
             for (DataEvaluationPrinciple evaluationPrinciple : principleList) {
+                //先判断该委估对象是否已产生填写该配置数据项
+                if(schemeSupportInfoDao.getCountByJudgeObjectId(judgeObjectId,SchemeSupportTypeEnum.PRINCIPLE.getId(),evaluationPrinciple.getId())>0) continue;
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationPrinciple.getName());
@@ -88,13 +98,16 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.PRINCIPLE.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.PRINCIPLE.getName());
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationPrinciple.getTemplate()));
-                schemeSupportInfo.setPlanDetailsId(planDetailsId);
+                schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setJudgeObjectId(judgeObjectId);
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(baseDataDic.getId(), purpose);//假设
+        List<DataEvaluationHypothesis> hypothesisList = evaluationHypothesisService.getHypothesisList(type, category, medhod, purpose);//假设
         if (CollectionUtils.isNotEmpty(hypothesisList)) {
             for (DataEvaluationHypothesis evaluationHypothesis : hypothesisList) {
+                //先判断该委估对象是否已产生填写该配置数据项
+                if(schemeSupportInfoDao.getCountByJudgeObjectId(judgeObjectId,SchemeSupportTypeEnum.HYPOTHESIS.getId(),evaluationHypothesis.getId())>0) continue;
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationHypothesis.getName());
@@ -102,13 +115,16 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.HYPOTHESIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.HYPOTHESIS.getName());
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationHypothesis.getTemplate()));
-                schemeSupportInfo.setPlanDetailsId(planDetailsId);
+                schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setJudgeObjectId(judgeObjectId);
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
-        List<DataEvaluationBasis> basisList = evaluationBasisService.getBasisList(baseDataDic.getId(), purpose);//依据
+        List<DataEvaluationBasis> basisList = evaluationBasisService.getBasisList(type, category, medhod, purpose);//依据
         if (CollectionUtils.isNotEmpty(basisList)) {
             for (DataEvaluationBasis evaluationBasis : basisList) {
+                //先判断该委估对象是否已产生填写该配置数据项
+                if(schemeSupportInfoDao.getCountByJudgeObjectId(judgeObjectId,SchemeSupportTypeEnum.BASIS.getId(),evaluationBasis.getId())>0) continue;
                 schemeSupportInfo = new SchemeSupportInfo();
                 schemeSupportInfo.setCreator(commonService.thisUserAccount());
                 schemeSupportInfo.setName(evaluationBasis.getName());
@@ -116,10 +132,12 @@ public class SchemeSupportInfoService {
                 schemeSupportInfo.setSupportType(SchemeSupportTypeEnum.BASIS.getId());
                 schemeSupportInfo.setSupportTypeName(SchemeSupportTypeEnum.BASIS.getName());
                 schemeSupportInfo.setJsonContent(publicService.extractField(evaluationBasis.getTemplate()));
-                schemeSupportInfo.setPlanDetailsId(planDetailsId);
+                schemeSupportInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeSupportInfo.setJudgeObjectId(judgeObjectId);
                 schemeSupportInfoDao.addSupportInfo(schemeSupportInfo);
             }
         }
 
     }
+
 }

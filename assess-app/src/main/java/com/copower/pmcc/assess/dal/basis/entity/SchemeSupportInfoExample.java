@@ -165,6 +165,66 @@ public class SchemeSupportInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andJudgeObjectIdIsNull() {
+            addCriterion("judge_object_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdIsNotNull() {
+            addCriterion("judge_object_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdEqualTo(Integer value) {
+            addCriterion("judge_object_id =", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
+            addCriterion("judge_object_id <>", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
+            addCriterion("judge_object_id >", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id >=", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdLessThan(Integer value) {
+            addCriterion("judge_object_id <", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id <=", value, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdIn(List<Integer> values) {
+            addCriterion("judge_object_id in", values, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
+            addCriterion("judge_object_id not in", values, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
+            return (Criteria) this;
+        }
+
         public Criteria andPlanDetailsIdIsNull() {
             addCriterion("plan_details_id is null");
             return (Criteria) this;
@@ -222,6 +282,66 @@ public class SchemeSupportInfoExample {
 
         public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
             addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdIsNull() {
+            addCriterion("support_data_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdIsNotNull() {
+            addCriterion("support_data_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdEqualTo(Integer value) {
+            addCriterion("support_data_id =", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdNotEqualTo(Integer value) {
+            addCriterion("support_data_id <>", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdGreaterThan(Integer value) {
+            addCriterion("support_data_id >", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("support_data_id >=", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdLessThan(Integer value) {
+            addCriterion("support_data_id <", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdLessThanOrEqualTo(Integer value) {
+            addCriterion("support_data_id <=", value, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdIn(List<Integer> values) {
+            addCriterion("support_data_id in", values, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdNotIn(List<Integer> values) {
+            addCriterion("support_data_id not in", values, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdBetween(Integer value1, Integer value2) {
+            addCriterion("support_data_id between", value1, value2, "supportDataId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupportDataIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("support_data_id not between", value1, value2, "supportDataId");
             return (Criteria) this;
         }
 

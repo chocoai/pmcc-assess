@@ -27,10 +27,7 @@
                     <h2>
                         ${panelTitle}阶段工作计划
                         <small>
-                            <button class="btn btn-xs btn-success"
-                                    onclick="window.open('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}&planId=${projectPlan.id}')">
-                                方案设置
-                            </button>
+                            <input type="button" class="btn btn-xs btn-success" onclick="setProgramme();" value="设置方案"/>
                         </small>
                     </h2>
                     <div class="clearfix"></div>
@@ -236,7 +233,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">快速设置</h4>
+                <h3 class="modal-title">快速设置</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -402,6 +399,17 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/project-plan.js"></script>
 <script type="text/javascript">
+    $(function () {
+
+    })
+
+    //设置方案
+    function setProgramme() {
+        openWin('${pageContext.request.contextPath}/schemeProgramme/index?projectId=${projectId}&planId=${projectPlan.id}', function () {
+            window.location.href = window.location.href;
+        })
+    }
+
     //重写任务列表方法
     function treeGridload() {
         $("#PlanItemListed").treegrid({

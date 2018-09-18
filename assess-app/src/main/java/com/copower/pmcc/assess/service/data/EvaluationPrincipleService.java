@@ -101,7 +101,7 @@ public class EvaluationPrincipleService {
      * @param purpose
      * @return
      */
-    public List<DataEvaluationPrinciple> getPrincipleList(Integer method, Integer purpose) {
+    public List<DataEvaluationPrinciple> getPrincipleList(Integer type, Integer category,Integer method, Integer purpose) {
         String methodStr = new String();
         String purposeStr = new String();
         if (method != null && method > 0) {
@@ -110,7 +110,7 @@ public class EvaluationPrincipleService {
         if (purpose != null && purpose > 0) {
             purposeStr = String.format(",%s,", purpose);
         }
-        return evaluationPrincipleDao.getPrincipleList(methodStr, purposeStr);
+        return evaluationPrincipleDao.getPrincipleList(type,category,methodStr, purposeStr);
     }
 
 
