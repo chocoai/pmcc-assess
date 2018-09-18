@@ -18,19 +18,21 @@
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="x_panel">
 
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h2>
-                        房屋
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
+                <%--<div class="x_title collapse-link">--%>
+                <%--<ul class="nav navbar-right panel_toolbox">--%>
+                <%--<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>--%>
+                <%--</ul>--%>
+                <%--<h2>--%>
+                <%--房屋--%>
+                <%--</h2>--%>
+                <%--<div class="clearfix"></div>--%>
+                <%--</div>--%>
 
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>房屋基本信息 </h3>
+                        <h3>房屋基本信息 <label class="btn btn-primary"
+                                          onclick="CaseHouseModelFun.prototype.otherModel.showBoxDiv()">其它信息</label>
+                        </h3>
                         <div class="clearfix"></div>
                     </div>
                     <form class="form-horizontal" id="frm_house">
@@ -57,7 +59,8 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">使用环境<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 useEnvironment" name="useEnvironment" required="required">
+                                    <select class="form-control search-select select2 useEnvironment"
+                                            name="useEnvironment" required="required">
                                     </select>
                                 </div>
                             </div>
@@ -223,7 +226,8 @@
                                 <div class="col-sm-3">
                                     <input required="required" placeholder="交易时间"
                                            name="tradingTime" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate tradingTime" value="<fmt:formatDate value='${caseHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
+                                           class="form-control date-picker dbdate tradingTime"
+                                           value="<fmt:formatDate value='${caseHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
 
@@ -251,14 +255,16 @@
                                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                                 <div class="col-sm-3">
                                     <input type="text" placeholder="买方支付的额外税费"
-                                           name="buyerExtraTaxFee" class="form-control" value="${caseHouseTrading.buyerExtraTaxFee}">
+                                           name="buyerExtraTaxFee" class="form-control"
+                                           value="${caseHouseTrading.buyerExtraTaxFee}">
                                 </div>
                             </div>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">付款方式<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <select class="form-control search-select select2 paymentMethod" name="paymentMethod"
+                                    <select class="form-control search-select select2 paymentMethod"
+                                            name="paymentMethod"
                                             required="required">
                                     </select>
                                 </div>
@@ -278,13 +284,15 @@
                                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                                 <div class="col-sm-3">
                                     <input type="text" placeholder="承租方支付的额外税费"
-                                           value="${caseHouseTrading.rentingExtraTaxFee}" name="rentingExtraTaxFee" class="form-control">
+                                           value="${caseHouseTrading.rentingExtraTaxFee}" name="rentingExtraTaxFee"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">押金</label>
                                 <div class="col-sm-3">
-                                    <input type="text" placeholder="押金"  class="form-control" name="deposit" value="${caseHouseTrading.deposit}">
+                                    <input type="text" placeholder="押金" class="form-control" name="deposit"
+                                           value="${caseHouseTrading.deposit}">
                                 </div>
                             </div>
                         </div>
@@ -292,7 +300,8 @@
                         <div class="form-group" id="CaseHouseTradingLeaseAndSellDtoTableSonDiv" style="display: none">
                             <div class="x-valid">
                                 <div class="col-sm-1" style="text-align: right;">
-                                    <button type="button" class="btn btn-success" data-toggle="modal" href="#divBox" onclick="CaseHouseModelFun.prototype.subShowModel();"> 新增
+                                    <button type="button" class="btn btn-success" data-toggle="modal" href="#divBox"
+                                            onclick="CaseHouseModelFun.prototype.subShowModel();"> 新增
                                     </button>
                                 </div>
                                 <div class="col-sm-11">
@@ -326,7 +335,11 @@
 
                     </form>
                 </div>
+            </div>
 
+            <!-- 临街 -->
+            <div class="street" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseFaceStreet.jsp" %>
             </div>
 
             <div class="x_panel">
@@ -390,17 +403,25 @@
             examineHouseTradingSellID: function () {
                 return "CaseHouseTradingSell";//房屋出售
             },
-            totalSale:function () {
+            totalSale: function () {
                 return "totalSale";//出售总额
             },
-            divBoxSon:function () {
+            divBoxSon: function () {
                 return "divBoxCaseHouseTradingLeaseAndSellDto";//
             },
-            tableSon:function () {
-                return "CaseHouseTradingLeaseAndSellDtoTableSon" ;
+            tableSon: function () {
+                return "CaseHouseTradingLeaseAndSellDtoTableSon";
             },
-            frmSon:function () {
+            frmSon: function () {
                 return "frmCaseHouseTradingLeaseAndSellDto";
+            }
+        },
+        other: {
+            box: function () {
+                return "otherDivBox";
+            },
+            frm: function () {
+                return "frmOther";
             }
         }
 
@@ -408,7 +429,7 @@
     CaseHouseModelFun.prototype.subShowModel = function () {
         var tradingID = $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " .tradingType").eq(1).val();
         var tradingType = null;
-        AssessCommon.getDataDicInfo(tradingID,function (data) {
+        AssessCommon.getDataDicInfo(tradingID, function (data) {
             tradingType = data.fieldName;
             $("#" + CaseHouseModelFun.prototype.config.trading.frmSon()).clearAll();
             $("#" + CaseHouseModelFun.prototype.config.trading.divBoxSon()).modal("show");
@@ -453,12 +474,12 @@
             }
         })
     }
-    CaseHouseModelFun.prototype.subRemove = function (id,type) {
+    CaseHouseModelFun.prototype.subRemove = function (id, type) {
         $.ajax({
             url: "${pageContext.request.contextPath}/caseHouse/removeCaseHouseTradingLeaseAndSellDto",
             type: "post",
             dataType: "json",
-            data: {id:id,type:type},
+            data: {id: id, type: type},
             success: function (result) {
                 if (result.ret) {
                     toastr.success('删除成功');
@@ -488,8 +509,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' "+"onclick=CaseHouseModelFun.prototype.subRemove("+row.id+",'"+row.tradingType+"'"+")"+">"  ;
-                str += "<i class='fa fa-minus fa-white'>" +"</i>" ;
+                str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' " + "onclick=CaseHouseModelFun.prototype.subRemove(" + row.id + ",'" + row.tradingType + "'" + ")" + ">";
+                str += "<i class='fa fa-minus fa-white'>" + "</i>";
                 str += "</a>";
                 str += '</div>';
                 return str;
@@ -584,31 +605,31 @@
             $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " .tradingType").change(function () {
                 var tradingID = $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " .tradingType").eq(1).val();
                 var tradingType = null;
-                AssessCommon.getDataDicInfo(tradingID,function (data) {
+                AssessCommon.getDataDicInfo(tradingID, function (data) {
                     tradingType = data.fieldName;
                     if (tradingType == CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID()) {
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm() +" ."+CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID()).hide();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm() +" ."+CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID()).show();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.tableSon()+"Div").show();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID()).hide();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID()).show();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.tableSon() + "Div").show();
                         CaseHouseModelFun.prototype.subLoadList(CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID());
                     }
                     if (tradingType == CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID()) {
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm() +" ."+CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID()).show();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm() +" ."+CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID()).hide();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.tableSon()+"Div").hide();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID()).show();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.examineHouseTradingLeaseID()).hide();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.tableSon() + "Div").hide();
                     }
                 })
             });
             $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " .paymentMethod").change(function () {
                 var id = $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " .paymentMethod").eq(1).val();
-                AssessCommon.getDataDicInfo(id,function (data){
-                    if (data.name == '一次性'){
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm()+" ."+CaseHouseModelFun.prototype.config.trading.totalSale()).show();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.tableSon()+"Div").hide();
+                AssessCommon.getDataDicInfo(id, function (data) {
+                    if (data.name == '一次性') {
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.totalSale()).show();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.tableSon() + "Div").hide();
                     }
-                    if (data.name == '分期付款'){
-                        $("#"+CaseHouseModelFun.prototype.config.trading.frm()+" ."+CaseHouseModelFun.prototype.config.trading.totalSale()).hide();
-                        $("#"+CaseHouseModelFun.prototype.config.trading.tableSon()+"Div").show();
+                    if (data.name == '分期付款') {
+                        $("#" + CaseHouseModelFun.prototype.config.trading.frm() + " ." + CaseHouseModelFun.prototype.config.trading.totalSale()).hide();
+                        $("#" + CaseHouseModelFun.prototype.config.trading.tableSon() + "Div").show();
                         CaseHouseModelFun.prototype.subLoadList(CaseHouseModelFun.prototype.config.trading.examineHouseTradingSellID());
                     }
                 });
@@ -669,6 +690,78 @@
         }
     }
 
+    var otherFlag = true;
+    CaseHouseModelFun.prototype.otherModel = {
+        tempSave: function () {
+            if (!$("#" + CaseHouseModelFun.prototype.config.other.frm()).valid()) {
+                return false;
+            }
+            var data = formParams(CaseHouseModelFun.prototype.config.other.frm());
+            //处理子类显示问题
+            if (CaseHouseModelFun.prototype.isEmpty(data)) {
+                var other = data.other.split(",");
+                $.each(other, function (i, n) {
+                    AssessCommon.getDataDicInfo(n, function (item) {
+                        var fieldName = CaseHouseModelFun.prototype.otherModel.subFileName(item.fieldName);
+                        var jq = $("." + fieldName);
+                        if (jq.size() > 0) {
+                            jq.toggle();
+                        }
+                        console.log(fieldName);
+                    });
+                });
+            }
+            $("#" + CaseHouseModelFun.prototype.config.other.box()).modal("hide");
+        },
+        showBoxDiv: function () {
+            if (CaseHouseModelFun.prototype.otherModel.getOtherFlag()) {
+                CaseHouseModelFun.prototype.otherModel.selectInit();
+                CaseHouseModelFun.prototype.otherModel.setOtherFlag(false);
+            }
+            $("#" + CaseHouseModelFun.prototype.config.other.box()).modal("show");
+        },
+        getOtherFlag: function () {
+            return otherFlag;
+        },
+        setOtherFlag: function (item) {
+            otherFlag = item;
+        },
+        selectInit: function () {
+            var num = 6;
+            AssessCommon.loadDataDicByKey(AssessDicKey.casesHouseMatching, "", function (html, data) {
+                var resetHtml = "";
+                var k = 0;
+                $.each(data, function (i, n) {
+                    if (i % num == 0) {
+                        k++;
+                    }
+                });
+                for (var i = 0; i < k; i++) {
+                    resetHtml += "<div class='form-group'>";
+                    for (var j = i * num; j < i * num + num; j++) {
+                        if (j < data.length) {
+                            resetHtml += "<div class='col-sm-2'>";
+                            resetHtml += "<span class='checkbox-inline'>";
+                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml += data[j].name;
+                            resetHtml += "</span>";
+                            resetHtml += "</div>";
+                        }
+                    }
+                    resetHtml += "</div>";
+                }
+                //HTML
+                $("#" + CaseHouseModelFun.prototype.config.other.frm() + "HTMLOther").append(resetHtml);
+            });
+        },
+        subFileName: function (upFileName) {
+            var index1 = upFileName.lastIndexOf(".");
+            var index2 = upFileName.length;
+            var suffix = upFileName.substring(index1 + 1, index2);//后缀名
+            return suffix;
+        }
+    }
+
 
     //提交
     CaseHouseModelFun.prototype.submit = function () {
@@ -706,19 +799,19 @@
 
     //编辑或者是复制空数据时
     CaseHouseModelFun.prototype.edit = function () {
-        var caseHouse = "${caseHouse}" ;
-        if (CaseHouseModelFun.prototype.isEmpty(caseHouse)){
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(),"${caseHouse.useEnvironment}","useEnvironment");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(),"${caseHouse.certUse}","certUse");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(),"${caseHouse.practicalUse}","practicalUse");
+        var caseHouse = "${caseHouse}";
+        if (CaseHouseModelFun.prototype.isEmpty(caseHouse)) {
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(), "${caseHouse.useEnvironment}", "useEnvironment");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(), "${caseHouse.certUse}", "certUse");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.house.frm(), "${caseHouse.practicalUse}", "practicalUse");
         }
-        var caseHouseTrading = "${caseHouseTrading}" ;
-        if (CaseHouseModelFun.prototype.isEmpty(caseHouseTrading)){
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(),"${caseHouseTrading.taxBurden}","taxBurden");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(),"${caseHouseTrading.normalTransaction}","normalTransaction");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(),"${caseHouseTrading.descriptionType}","descriptionType");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(),"${caseHouseTrading.paymentMethod}","paymentMethod");
-            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(),"${caseHouseTrading.informationType}","informationType");
+        var caseHouseTrading = "${caseHouseTrading}";
+        if (CaseHouseModelFun.prototype.isEmpty(caseHouseTrading)) {
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(), "${caseHouseTrading.taxBurden}", "taxBurden");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(), "${caseHouseTrading.normalTransaction}", "normalTransaction");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(), "${caseHouseTrading.descriptionType}", "descriptionType");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(), "${caseHouseTrading.paymentMethod}", "paymentMethod");
+            CaseHouseModelFun.prototype.writeSelectData(CaseHouseModelFun.prototype.config.trading.frm(), "${caseHouseTrading.informationType}", "informationType");
         }
     };
 
@@ -837,6 +930,48 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="CaseHouseModelFun.prototype.subSaveModel()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="otherDivBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">房屋下属子类</h3>
+            </div>
+            <form id="frmOther" class="form-horizontal">
+                <input type="hidden" id="id" name="id" value="0">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <h3 class="modal-title">其它信息</h3>
+                                    </div>
+                                </div>
+                                <!--xxx -->
+                                <div id="frmOtherHTMLOther">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="CaseHouseModelFun.prototype.otherModel.tempSave();">
                         保存
                     </button>
                 </div>

@@ -11,9 +11,9 @@ public class CaseHouseFaceStreet {
 
     private Integer streetLevel;
 
-    private String trafficFlow;
+    private Integer trafficFlow;
 
-    private String visitorsFlowrate;
+    private Integer visitorsFlowrate;
 
     private String creator;
 
@@ -53,20 +53,20 @@ public class CaseHouseFaceStreet {
         this.streetLevel = streetLevel;
     }
 
-    public String getTrafficFlow() {
+    public Integer getTrafficFlow() {
         return trafficFlow;
     }
 
-    public void setTrafficFlow(String trafficFlow) {
-        this.trafficFlow = trafficFlow == null ? null : trafficFlow.trim();
+    public void setTrafficFlow(Integer trafficFlow) {
+        this.trafficFlow = trafficFlow;
     }
 
-    public String getVisitorsFlowrate() {
+    public Integer getVisitorsFlowrate() {
         return visitorsFlowrate;
     }
 
-    public void setVisitorsFlowrate(String visitorsFlowrate) {
-        this.visitorsFlowrate = visitorsFlowrate == null ? null : visitorsFlowrate.trim();
+    public void setVisitorsFlowrate(Integer visitorsFlowrate) {
+        this.visitorsFlowrate = visitorsFlowrate;
     }
 
     public String getCreator() {

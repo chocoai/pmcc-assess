@@ -6,8 +6,8 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="street_name" property="streetName" jdbcType="VARCHAR" />
     <result column="street_level" property="streetLevel" jdbcType="INTEGER" />
-    <result column="traffic_flow" property="trafficFlow" jdbcType="VARCHAR" />
-    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="VARCHAR" />
+    <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
+    <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -112,7 +112,7 @@
       traffic_flow, visitors_flowrate, creator, 
       gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{streetName,jdbcType=VARCHAR}, #{streetLevel,jdbcType=INTEGER}, 
-      #{trafficFlow,jdbcType=VARCHAR}, #{visitorsFlowrate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseFaceStreet" >
@@ -157,10 +157,10 @@
         #{streetLevel,jdbcType=INTEGER},
       </if>
       <if test="trafficFlow != null" >
-        #{trafficFlow,jdbcType=VARCHAR},
+        #{trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="visitorsFlowrate != null" >
-        #{visitorsFlowrate,jdbcType=VARCHAR},
+        #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -195,10 +195,10 @@
         street_level = #{record.streetLevel,jdbcType=INTEGER},
       </if>
       <if test="record.trafficFlow != null" >
-        traffic_flow = #{record.trafficFlow,jdbcType=VARCHAR},
+        traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="record.visitorsFlowrate != null" >
-        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=VARCHAR},
+        visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -220,8 +220,8 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       street_name = #{record.streetName,jdbcType=VARCHAR},
       street_level = #{record.streetLevel,jdbcType=INTEGER},
-      traffic_flow = #{record.trafficFlow,jdbcType=VARCHAR},
-      visitors_flowrate = #{record.visitorsFlowrate,jdbcType=VARCHAR},
+      traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -242,10 +242,10 @@
         street_level = #{streetLevel,jdbcType=INTEGER},
       </if>
       <if test="trafficFlow != null" >
-        traffic_flow = #{trafficFlow,jdbcType=VARCHAR},
+        traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       </if>
       <if test="visitorsFlowrate != null" >
-        visitors_flowrate = #{visitorsFlowrate,jdbcType=VARCHAR},
+        visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -264,8 +264,8 @@
     set house_id = #{houseId,jdbcType=INTEGER},
       street_name = #{streetName,jdbcType=VARCHAR},
       street_level = #{streetLevel,jdbcType=INTEGER},
-      traffic_flow = #{trafficFlow,jdbcType=VARCHAR},
-      visitors_flowrate = #{visitorsFlowrate,jdbcType=VARCHAR},
+      traffic_flow = #{trafficFlow,jdbcType=INTEGER},
+      visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

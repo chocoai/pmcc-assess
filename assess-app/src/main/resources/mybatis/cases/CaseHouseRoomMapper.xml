@@ -12,6 +12,11 @@
     <result column="Illumination" property="illumination" jdbcType="VARCHAR" />
     <result column="sound_insulation" property="soundInsulation" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="sunshine" property="sunshine" jdbcType="VARCHAR" />
+    <result column="lighting" property="lighting" jdbcType="VARCHAR" />
+    <result column="opening" property="opening" jdbcType="VARCHAR" />
+    <result column="depth" property="depth" jdbcType="VARCHAR" />
+    <result column="layer_height" property="layerHeight" jdbcType="DOUBLE" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -75,7 +80,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, room_type, name, area, orientation, aeration, Illumination, sound_insulation, 
-    creator, gmt_created, gmt_modified
+    creator, sunshine, lighting, opening, depth, layer_height, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoomExample" >
     select
@@ -114,11 +119,15 @@
     insert into tb_case_house_room (house_id, room_type, name, 
       area, orientation, aeration, 
       Illumination, sound_insulation, creator, 
-      gmt_created, gmt_modified)
+      sunshine, lighting, opening, 
+      depth, layer_height, gmt_created, 
+      gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{sunshine,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, 
+      #{depth,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DOUBLE}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -152,6 +161,21 @@
       </if>
       <if test="creator != null" >
         creator,
+      </if>
+      <if test="sunshine != null" >
+        sunshine,
+      </if>
+      <if test="lighting != null" >
+        lighting,
+      </if>
+      <if test="opening != null" >
+        opening,
+      </if>
+      <if test="depth != null" >
+        depth,
+      </if>
+      <if test="layerHeight != null" >
+        layer_height,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -187,6 +211,21 @@
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="sunshine != null" >
+        #{sunshine,jdbcType=VARCHAR},
+      </if>
+      <if test="lighting != null" >
+        #{lighting,jdbcType=VARCHAR},
+      </if>
+      <if test="opening != null" >
+        #{opening,jdbcType=VARCHAR},
+      </if>
+      <if test="depth != null" >
+        #{depth,jdbcType=VARCHAR},
+      </if>
+      <if test="layerHeight != null" >
+        #{layerHeight,jdbcType=DOUBLE},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -235,6 +274,21 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
+      <if test="record.sunshine != null" >
+        sunshine = #{record.sunshine,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lighting != null" >
+        lighting = #{record.lighting,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opening != null" >
+        opening = #{record.opening,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depth != null" >
+        depth = #{record.depth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.layerHeight != null" >
+        layer_height = #{record.layerHeight,jdbcType=DOUBLE},
+      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -258,6 +312,11 @@
       Illumination = #{record.illumination,jdbcType=VARCHAR},
       sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
+      sunshine = #{record.sunshine,jdbcType=VARCHAR},
+      lighting = #{record.lighting,jdbcType=VARCHAR},
+      opening = #{record.opening,jdbcType=VARCHAR},
+      depth = #{record.depth,jdbcType=VARCHAR},
+      layer_height = #{record.layerHeight,jdbcType=DOUBLE},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -294,6 +353,21 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="sunshine != null" >
+        sunshine = #{sunshine,jdbcType=VARCHAR},
+      </if>
+      <if test="lighting != null" >
+        lighting = #{lighting,jdbcType=VARCHAR},
+      </if>
+      <if test="opening != null" >
+        opening = #{opening,jdbcType=VARCHAR},
+      </if>
+      <if test="depth != null" >
+        depth = #{depth,jdbcType=VARCHAR},
+      </if>
+      <if test="layerHeight != null" >
+        layer_height = #{layerHeight,jdbcType=DOUBLE},
+      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -314,6 +388,11 @@
       Illumination = #{illumination,jdbcType=VARCHAR},
       sound_insulation = #{soundInsulation,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
+      sunshine = #{sunshine,jdbcType=VARCHAR},
+      lighting = #{lighting,jdbcType=VARCHAR},
+      opening = #{opening,jdbcType=VARCHAR},
+      depth = #{depth,jdbcType=VARCHAR},
+      layer_height = #{layerHeight,jdbcType=DOUBLE},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

@@ -54,26 +54,26 @@ public class CaseHouseController {
     }
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id,@RequestParam(defaultValue = "false") boolean copy) {
+    public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
         String view = "/case/caseHouse/apply/caseHouseView";
         CaseHouse caseHouse = null;
         CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
         caseHouseTrading.setHouseId(id);
         List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingList(caseHouseTrading);
-        if (!ObjectUtils.isEmpty(caseHouseTradingList)){
+        if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
             caseHouseTrading = caseHouseTradingList.get(0);
         }
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        caseHouse = caseHouseService.getCaseHouseById(id) ;
-        if (copy){
+        caseHouse = caseHouseService.getCaseHouseById(id);
+        if (copy) {
             //复制数据 需要把id设为null
             caseHouse.setId(null);
             caseHouseTrading.setId(null);
             //处理附件,所有附件则把附件复制后保存后的id传入页面显示
             //附件暂且不处理
         }
-        modelAndView.addObject("caseHouse",caseHouse);
-        modelAndView.addObject("caseHouseTrading",caseHouseTrading);
+        modelAndView.addObject("caseHouse", caseHouse);
+        modelAndView.addObject("caseHouseTrading", caseHouseTrading);
         return modelAndView;
     }
 
@@ -148,7 +148,10 @@ public class CaseHouseController {
                 return HttpResult.newErrorResult("解析异常");
             }
             Integer id = caseHouseService.saveAndUpdateCaseHouse(caseHouse);
-            if (caseHouseTrading != null){
+            if (id != null) {
+                caseHouseService.initAndUpdateSon(id);
+            }
+            if (caseHouseTrading != null) {
                 caseHouseTrading.setHouseId(id);
             }
             caseHouseTradingService.saveAndUpdateCaseHouseTrading(caseHouseTrading);
@@ -161,12 +164,12 @@ public class CaseHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseTradingLeaseAndSellDtoVos", method = {RequestMethod.GET}, name = "获取案例 房屋 出租或者出售 列表")
-    public BootstrapTableVo getCaseHouseTradingLeaseAndSellDtoVos(String type, CaseHouseTradingLease caseHouseTradingLease, CaseHouseTradingSell caseHouseTradingSell){
-        if (caseHouseTradingLease == null){
+    public BootstrapTableVo getCaseHouseTradingLeaseAndSellDtoVos(String type, CaseHouseTradingLease caseHouseTradingLease, CaseHouseTradingSell caseHouseTradingSell) {
+        if (caseHouseTradingLease == null) {
             caseHouseTradingLease = new CaseHouseTradingLease();
             caseHouseTradingLease.setHouseId(0);
         }
-        if (caseHouseTradingSell == null){
+        if (caseHouseTradingSell == null) {
             caseHouseTradingSell = new CaseHouseTradingSell();
             caseHouseTradingSell.setHouseId(0);
         }
@@ -177,24 +180,35 @@ public class CaseHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveCaseHouseTradingLeaseAndSellDto", method = {RequestMethod.POST}, name = "更新案例 房屋 出租或者出售")
-    public HttpResult saveCaseHouseTradingLeaseAndSellDto(CaseHouseTradingLeaseAndSellDto caseHouseTradingLeaseAndSellDto){
+    public HttpResult saveCaseHouseTradingLeaseAndSellDto(CaseHouseTradingLeaseAndSellDto caseHouseTradingLeaseAndSellDto) {
         try {
             caseHouseTradingLeaseAndSellDtoService.saveCaseHouseTradingLeaseAndSellDto(caseHouseTradingLeaseAndSellDto);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/removeCaseHouseTradingLeaseAndSellDto", method = {RequestMethod.POST}, name = "删除案例 房屋 出租或者出售")
-    public HttpResult removeCaseHouseTradingLeaseAndSellDto(Integer id,String type){
+    public HttpResult removeCaseHouseTradingLeaseAndSellDto(Integer id, String type) {
         try {
             caseHouseTradingLeaseAndSellDtoService.remove(type, id);
             return HttpResult.newCorrectResult("success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
+    public HttpResult initAndUpdateSon() {
+        try {
+            caseHouseService.initAndUpdateSon(null);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
     }

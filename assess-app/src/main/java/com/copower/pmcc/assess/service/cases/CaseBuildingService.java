@@ -31,6 +31,14 @@ public class CaseBuildingService {
     private CommonService commonService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private CaseBuildingFunctionService caseBuildingFunctionService;
+    @Autowired
+    private CaseBuildingMaintenanceService caseBuildingMaintenanceService;
+    @Autowired
+    private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
+    @Autowired
+    private CaseHouseTradingSellService caseHouseTradingSellService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
@@ -41,6 +49,15 @@ public class CaseBuildingService {
         vo.setRows(caseBuildings);
         vo.setTotal(page.getTotal());
         return vo;
+    }
+
+    public void initAndUpdateSon(Integer id) {
+        if (id == null) {
+
+        }
+        if (id != null) {
+
+        }
     }
 
     public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding) {

@@ -7,17 +7,13 @@ public class CaseHouseEquipment {
 
     private Integer houseId;
 
-    private Integer type;
+    private String type;
 
     private Integer category;
 
-    private String name;
+    private String equipment;
 
-    private String use;
-
-    private String parameterIndex;
-
-    private Integer price;
+    private Integer equipmentPrice;
 
     private String creator;
 
@@ -41,12 +37,12 @@ public class CaseHouseEquipment {
         this.houseId = houseId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getCategory() {
@@ -57,36 +53,20 @@ public class CaseHouseEquipment {
         this.category = category;
     }
 
-    public String getName() {
-        return name;
+    public String getEquipment() {
+        return equipment;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setEquipment(String equipment) {
+        this.equipment = equipment == null ? null : equipment.trim();
     }
 
-    public String getUse() {
-        return use;
+    public Integer getEquipmentPrice() {
+        return equipmentPrice;
     }
 
-    public void setUse(String use) {
-        this.use = use == null ? null : use.trim();
-    }
-
-    public String getParameterIndex() {
-        return parameterIndex;
-    }
-
-    public void setParameterIndex(String parameterIndex) {
-        this.parameterIndex = parameterIndex == null ? null : parameterIndex.trim();
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setEquipmentPrice(Integer equipmentPrice) {
+        this.equipmentPrice = equipmentPrice;
     }
 
     public String getCreator() {
