@@ -126,4 +126,15 @@ public class CaseUnitController {
             return HttpResult.newErrorResult("保存异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
+    public HttpResult initAndUpdateSon() {
+        try {
+            caseUnitService.initAndUpdateSon(null);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
 }

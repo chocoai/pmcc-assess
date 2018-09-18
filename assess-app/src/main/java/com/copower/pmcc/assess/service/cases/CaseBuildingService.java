@@ -1,7 +1,8 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
+import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.output.cases.CaseBuildingFunctionVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -36,9 +38,9 @@ public class CaseBuildingService {
     @Autowired
     private CaseBuildingMaintenanceService caseBuildingMaintenanceService;
     @Autowired
-    private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
+    private CaseBuildingOutfitService caseBuildingOutfitService;
     @Autowired
-    private CaseHouseTradingSellService caseHouseTradingSellService;
+    private CaseBuildingSurfaceService caseBuildingSurfaceService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {
@@ -52,11 +54,69 @@ public class CaseBuildingService {
     }
 
     public void initAndUpdateSon(Integer id) {
+        final int  num = 0;
+        CaseBuildingFunction caseBuildingFunction = new CaseBuildingFunction();
+        caseBuildingFunction.setBuildingId(num);
+        CaseBuildingMaintenance caseBuildingMaintenance = new CaseBuildingMaintenance();
+        caseBuildingMaintenance.setBuildingId(num);
+        CaseBuildingOutfit caseBuildingOutfit = new CaseBuildingOutfit();
+        caseBuildingOutfit.setBuildingId(num);
+        CaseBuildingSurface caseBuildingSurface = new CaseBuildingSurface();
+        caseBuildingSurface.setBuildingId(num);
+        List<CaseBuildingFunctionVo> caseBuildingFunctions = caseBuildingFunctionService.getCaseBuildingFunctionList(caseBuildingFunction);
+        List<CaseBuildingMaintenance> caseBuildingMaintenances = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(caseBuildingMaintenance);
+        List<CaseBuildingOutfit> caseBuildingOutfits = caseBuildingOutfitService.getCaseBuildingOutfitList(caseBuildingOutfit);
+        List<CaseBuildingSurface> caseBuildingSurfaces = caseBuildingSurfaceService.getCaseBuildingSurfaceList(caseBuildingSurface);
         if (id == null) {
-
+            if (!ObjectUtils.isEmpty(caseBuildingFunctions)){
+                for (CaseBuildingFunctionVo oo:caseBuildingFunctions){
+                    CaseBuildingFunction caseBuildingFunction1 = new CaseBuildingFunction();
+                    caseBuildingFunction1.setId(oo.getId());
+                    caseBuildingFunctionService.removeCaseBuildingFunction(caseBuildingFunction1);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingMaintenances)){
+                for (CaseBuildingMaintenance oo:caseBuildingMaintenances){
+                    caseBuildingMaintenanceService.deleteCaseBuildingMaintenance(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingOutfits)){
+                for (CaseBuildingOutfit oo:caseBuildingOutfits){
+                    caseBuildingOutfitService.deleteCaseBuildingOutfit(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingSurfaces)){
+                for (CaseBuildingSurface oo:caseBuildingSurfaces){
+                    caseBuildingSurfaceService.deleteCaseBuildingSurface(oo.getId());
+                }
+            }
         }
-        if (id != null) {
 
+        if (id != null) {
+            if (!ObjectUtils.isEmpty(caseBuildingFunctions)){
+                for (CaseBuildingFunctionVo oo:caseBuildingFunctions){
+                    oo.setBuildingId(id);
+                    caseBuildingFunctionService.saveAndUpdateCaseBuildingFunction(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingMaintenances)){
+                for (CaseBuildingMaintenance oo:caseBuildingMaintenances){
+                    oo.setBuildingId(id);
+                    caseBuildingMaintenanceService.updateCaseBuildingMaintenance(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingOutfits)){
+                for (CaseBuildingOutfit oo:caseBuildingOutfits){
+                    oo.setBuildingId(id);
+                    caseBuildingOutfitService.updateCaseBuildingOutfit(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingSurfaces)){
+                for (CaseBuildingSurface oo:caseBuildingSurfaces){
+                    oo.setBuildingId(id);
+                    caseBuildingSurfaceService.updateCaseBuildingSurface(oo);
+                }
+            }
         }
     }
 
@@ -98,6 +158,7 @@ public class CaseBuildingService {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
             id = caseBuildingDao.addBuilding(caseBuilding);
+            this.initAndUpdateSon(id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             return id;

@@ -7,19 +7,21 @@ public class CaseBuildingOutfit {
 
     private Integer buildingId;
 
-    private String decorationPart;
+    private Integer decorationPart;
 
-    private String decoratingMaterial;
+    private Integer decoratingMaterial;
 
-    private String materialPrice;
+    private Integer materialPrice;
 
-    private String constructionTechnology;
+    private Integer constructionTechnology;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String buildNumber;
 
     public Integer getId() {
         return id;
@@ -37,36 +39,36 @@ public class CaseBuildingOutfit {
         this.buildingId = buildingId;
     }
 
-    public String getDecorationPart() {
+    public Integer getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(String decorationPart) {
-        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
+    public void setDecorationPart(Integer decorationPart) {
+        this.decorationPart = decorationPart;
     }
 
-    public String getDecoratingMaterial() {
+    public Integer getDecoratingMaterial() {
         return decoratingMaterial;
     }
 
-    public void setDecoratingMaterial(String decoratingMaterial) {
-        this.decoratingMaterial = decoratingMaterial == null ? null : decoratingMaterial.trim();
+    public void setDecoratingMaterial(Integer decoratingMaterial) {
+        this.decoratingMaterial = decoratingMaterial;
     }
 
-    public String getMaterialPrice() {
+    public Integer getMaterialPrice() {
         return materialPrice;
     }
 
-    public void setMaterialPrice(String materialPrice) {
-        this.materialPrice = materialPrice == null ? null : materialPrice.trim();
+    public void setMaterialPrice(Integer materialPrice) {
+        this.materialPrice = materialPrice;
     }
 
-    public String getConstructionTechnology() {
+    public Integer getConstructionTechnology() {
         return constructionTechnology;
     }
 
-    public void setConstructionTechnology(String constructionTechnology) {
-        this.constructionTechnology = constructionTechnology == null ? null : constructionTechnology.trim();
+    public void setConstructionTechnology(Integer constructionTechnology) {
+        this.constructionTechnology = constructionTechnology;
     }
 
     public String getCreator() {
@@ -91,5 +93,13 @@ public class CaseBuildingOutfit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

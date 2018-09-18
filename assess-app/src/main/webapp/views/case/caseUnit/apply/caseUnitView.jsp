@@ -53,7 +53,21 @@
                         </div>
                     </form>
                 </div>
+            </div>
 
+            <!-- 楼栋内装信息	 -->
+            <div>
+                <%@include file="/views/case/caseUnit/apply/caseUnitDecorate.jsp" %>
+            </div>
+
+            <!-- 电梯信息 -->
+            <div>
+                <%@include file="/views/case/caseUnit/apply/caseUnitElevator.jsp" %>
+            </div>
+
+            <!-- 户型信息 -->
+            <div>
+                <%@include file="/views/case/caseUnit/apply/caseUnitHuxing.jsp" %>
             </div>
 
             <div class="x_panel">
@@ -132,6 +146,22 @@
             }
         });
     }
+
+    $(function () {
+        $.ajax({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/caseUnit/initAndUpdateSon",
+            data: {},
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('初始化成功');
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    });
 
 
 </script>

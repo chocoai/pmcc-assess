@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseUnitDecorateMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseCorollaryEquipmentMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
-    <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
-    <result column="material_price_range" property="materialPriceRange" jdbcType="INTEGER" />
-    <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="use_h" property="useH" jdbcType="VARCHAR" />
+    <result column="parameter_index_h" property="parameterIndexH" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="maintenance_status" property="maintenanceStatus" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,16 +74,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, decoration_part, decorating_material, material_price_range, construction_technology, 
+    id, house_id, type, category, name, use_h, parameter_index_h, price, maintenance_status, 
     creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorateExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipmentExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_case_unit_decorate
+    from tb_case_house_corollary_equipment
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,52 +94,61 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_case_unit_decorate
+    from tb_case_house_corollary_equipment
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_case_unit_decorate
+    delete from tb_case_house_corollary_equipment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorateExample" >
-    delete from tb_case_unit_decorate
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipmentExample" >
+    delete from tb_case_house_corollary_equipment
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_unit_decorate (unit_id, decoration_part, decorating_material, 
-      material_price_range, construction_technology, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
-      #{materialPriceRange,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_case_house_corollary_equipment (house_id, type, category, 
+      name, use_h, parameter_index_h, 
+      price, maintenance_status, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{useH,jdbcType=VARCHAR}, #{parameterIndexH,jdbcType=VARCHAR}, 
+      #{price,jdbcType=INTEGER}, #{maintenanceStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_unit_decorate
+    insert into tb_case_house_corollary_equipment
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="unitId != null" >
-        unit_id,
+      <if test="houseId != null" >
+        house_id,
       </if>
-      <if test="decorationPart != null" >
-        decoration_part,
+      <if test="type != null" >
+        type,
       </if>
-      <if test="decoratingMaterial != null" >
-        decorating_material,
+      <if test="category != null" >
+        category,
       </if>
-      <if test="materialPriceRange != null" >
-        material_price_range,
+      <if test="name != null" >
+        name,
       </if>
-      <if test="constructionTechnology != null" >
-        construction_technology,
+      <if test="useH != null" >
+        use_h,
+      </if>
+      <if test="parameterIndexH != null" >
+        parameter_index_h,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="maintenanceStatus != null" >
+        maintenance_status,
       </if>
       <if test="creator != null" >
         creator,
@@ -149,20 +161,29 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="unitId != null" >
-        #{unitId,jdbcType=INTEGER},
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="decorationPart != null" >
-        #{decorationPart,jdbcType=INTEGER},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
-      <if test="decoratingMaterial != null" >
-        #{decoratingMaterial,jdbcType=INTEGER},
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
       </if>
-      <if test="materialPriceRange != null" >
-        #{materialPriceRange,jdbcType=INTEGER},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="constructionTechnology != null" >
-        #{constructionTechnology,jdbcType=INTEGER},
+      <if test="useH != null" >
+        #{useH,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterIndexH != null" >
+        #{parameterIndexH,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="maintenanceStatus != null" >
+        #{maintenanceStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -175,32 +196,41 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorateExample" resultType="java.lang.Integer" >
-    select count(*) from tb_case_unit_decorate
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipmentExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_house_corollary_equipment
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_case_unit_decorate
+    update tb_case_house_corollary_equipment
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.unitId != null" >
-        unit_id = #{record.unitId,jdbcType=INTEGER},
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.decorationPart != null" >
-        decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.decoratingMaterial != null" >
-        decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
       </if>
-      <if test="record.materialPriceRange != null" >
-        material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionTechnology != null" >
-        construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
+      <if test="record.useH != null" >
+        use_h = #{record.useH,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parameterIndexH != null" >
+        parameter_index_h = #{record.parameterIndexH,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=INTEGER},
+      </if>
+      <if test="record.maintenanceStatus != null" >
+        maintenance_status = #{record.maintenanceStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -217,13 +247,16 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_case_unit_decorate
+    update tb_case_house_corollary_equipment
     set id = #{record.id,jdbcType=INTEGER},
-      unit_id = #{record.unitId,jdbcType=INTEGER},
-      decoration_part = #{record.decorationPart,jdbcType=INTEGER},
-      decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
-      material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
-      construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      use_h = #{record.useH,jdbcType=VARCHAR},
+      parameter_index_h = #{record.parameterIndexH,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=INTEGER},
+      maintenance_status = #{record.maintenanceStatus,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -231,23 +264,32 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
-    update tb_case_unit_decorate
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment" >
+    update tb_case_house_corollary_equipment
     <set >
-      <if test="unitId != null" >
-        unit_id = #{unitId,jdbcType=INTEGER},
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="decorationPart != null" >
-        decoration_part = #{decorationPart,jdbcType=INTEGER},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="decoratingMaterial != null" >
-        decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
       </if>
-      <if test="materialPriceRange != null" >
-        material_price_range = #{materialPriceRange,jdbcType=INTEGER},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="constructionTechnology != null" >
-        construction_technology = #{constructionTechnology,jdbcType=INTEGER},
+      <if test="useH != null" >
+        use_h = #{useH,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterIndexH != null" >
+        parameter_index_h = #{parameterIndexH,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="maintenanceStatus != null" >
+        maintenance_status = #{maintenanceStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -261,13 +303,16 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate" >
-    update tb_case_unit_decorate
-    set unit_id = #{unitId,jdbcType=INTEGER},
-      decoration_part = #{decorationPart,jdbcType=INTEGER},
-      decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
-      material_price_range = #{materialPriceRange,jdbcType=INTEGER},
-      construction_technology = #{constructionTechnology,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment" >
+    update tb_case_house_corollary_equipment
+    set house_id = #{houseId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      use_h = #{useH,jdbcType=VARCHAR},
+      parameter_index_h = #{parameterIndexH,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      maintenance_status = #{maintenanceStatus,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

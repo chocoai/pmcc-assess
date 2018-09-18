@@ -17,6 +17,8 @@ public class CaseBuildingSurface {
 
     private Date gmtModified;
 
+    private String buildNumber;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class CaseBuildingSurface {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getBuildNumber() {
+        return buildNumber;
+    }
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 }

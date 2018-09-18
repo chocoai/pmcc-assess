@@ -7,13 +7,13 @@ public class CaseUnitDecorate {
 
     private Integer unitId;
 
-    private String decorationPart;
+    private Integer decorationPart;
 
-    private String decoratingMaterial;
+    private Integer decoratingMaterial;
 
-    private String materialPriceRange;
+    private Integer materialPriceRange;
 
-    private String constructionTechnology;
+    private Integer constructionTechnology;
 
     private String creator;
 
@@ -37,36 +37,36 @@ public class CaseUnitDecorate {
         this.unitId = unitId;
     }
 
-    public String getDecorationPart() {
+    public Integer getDecorationPart() {
         return decorationPart;
     }
 
-    public void setDecorationPart(String decorationPart) {
-        this.decorationPart = decorationPart == null ? null : decorationPart.trim();
+    public void setDecorationPart(Integer decorationPart) {
+        this.decorationPart = decorationPart;
     }
 
-    public String getDecoratingMaterial() {
+    public Integer getDecoratingMaterial() {
         return decoratingMaterial;
     }
 
-    public void setDecoratingMaterial(String decoratingMaterial) {
-        this.decoratingMaterial = decoratingMaterial == null ? null : decoratingMaterial.trim();
+    public void setDecoratingMaterial(Integer decoratingMaterial) {
+        this.decoratingMaterial = decoratingMaterial;
     }
 
-    public String getMaterialPriceRange() {
+    public Integer getMaterialPriceRange() {
         return materialPriceRange;
     }
 
-    public void setMaterialPriceRange(String materialPriceRange) {
-        this.materialPriceRange = materialPriceRange == null ? null : materialPriceRange.trim();
+    public void setMaterialPriceRange(Integer materialPriceRange) {
+        this.materialPriceRange = materialPriceRange;
     }
 
-    public String getConstructionTechnology() {
+    public Integer getConstructionTechnology() {
         return constructionTechnology;
     }
 
-    public void setConstructionTechnology(String constructionTechnology) {
-        this.constructionTechnology = constructionTechnology == null ? null : constructionTechnology.trim();
+    public void setConstructionTechnology(Integer constructionTechnology) {
+        this.constructionTechnology = constructionTechnology;
     }
 
     public String getCreator() {
