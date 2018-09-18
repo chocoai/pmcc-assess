@@ -545,6 +545,276 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisCheckOriginalIsNull() {
+            addCriterion("bis_check_original is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalIsNotNull() {
+            addCriterion("bis_check_original is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalEqualTo(Boolean value) {
+            addCriterion("bis_check_original =", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalNotEqualTo(Boolean value) {
+            addCriterion("bis_check_original <>", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalGreaterThan(Boolean value) {
+            addCriterion("bis_check_original >", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_check_original >=", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalLessThan(Boolean value) {
+            addCriterion("bis_check_original <", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_check_original <=", value, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalIn(List<Boolean> values) {
+            addCriterion("bis_check_original in", values, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalNotIn(List<Boolean> values) {
+            addCriterion("bis_check_original not in", values, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_check_original between", value1, value2, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckOriginalNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_check_original not between", value1, value2, "bisCheckOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseIsNull() {
+            addCriterion("special_case is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseIsNotNull() {
+            addCriterion("special_case is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseEqualTo(String value) {
+            addCriterion("special_case =", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseNotEqualTo(String value) {
+            addCriterion("special_case <>", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseGreaterThan(String value) {
+            addCriterion("special_case >", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseGreaterThanOrEqualTo(String value) {
+            addCriterion("special_case >=", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseLessThan(String value) {
+            addCriterion("special_case <", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseLessThanOrEqualTo(String value) {
+            addCriterion("special_case <=", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseLike(String value) {
+            addCriterion("special_case like", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseNotLike(String value) {
+            addCriterion("special_case not like", value, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseIn(List<String> values) {
+            addCriterion("special_case in", values, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseNotIn(List<String> values) {
+            addCriterion("special_case not in", values, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseBetween(String value1, String value2) {
+            addCriterion("special_case between", value1, value2, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialCaseNotBetween(String value1, String value2) {
+            addCriterion("special_case not between", value1, value2, "specialCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNull() {
+            addCriterion("location is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNotNull() {
+            addCriterion("location is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationEqualTo(String value) {
+            addCriterion("location =", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotEqualTo(String value) {
+            addCriterion("location <>", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThan(String value) {
+            addCriterion("location >", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("location >=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThan(String value) {
+            addCriterion("location <", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThanOrEqualTo(String value) {
+            addCriterion("location <=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLike(String value) {
+            addCriterion("location like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotLike(String value) {
+            addCriterion("location not like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIn(List<String> values) {
+            addCriterion("location in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotIn(List<String> values) {
+            addCriterion("location not in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationBetween(String value1, String value2) {
+            addCriterion("location between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotBetween(String value1, String value2) {
+            addCriterion("location not between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -732,76 +1002,6 @@ public class SurveyAssetInventoryExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionIsNull() {
-            addCriterion("default_localtion is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionIsNotNull() {
-            addCriterion("default_localtion is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionEqualTo(String value) {
-            addCriterion("default_localtion =", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionNotEqualTo(String value) {
-            addCriterion("default_localtion <>", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionGreaterThan(String value) {
-            addCriterion("default_localtion >", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionGreaterThanOrEqualTo(String value) {
-            addCriterion("default_localtion >=", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionLessThan(String value) {
-            addCriterion("default_localtion <", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionLessThanOrEqualTo(String value) {
-            addCriterion("default_localtion <=", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionLike(String value) {
-            addCriterion("default_localtion like", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionNotLike(String value) {
-            addCriterion("default_localtion not like", value, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionIn(List<String> values) {
-            addCriterion("default_localtion in", values, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionNotIn(List<String> values) {
-            addCriterion("default_localtion not in", values, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionBetween(String value1, String value2) {
-            addCriterion("default_localtion between", value1, value2, "defaultLocaltion");
-            return (Criteria) this;
-        }
-
-        public Criteria andDefaultLocaltionNotBetween(String value1, String value2) {
-            addCriterion("default_localtion not between", value1, value2, "defaultLocaltion");
             return (Criteria) this;
         }
     }

@@ -8,6 +8,7 @@
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
+    <result column="location" property="location" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, declare_id, json_content, creator, 
-    gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, declare_id, json_content, location, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudyExample" >
     select
@@ -109,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_case_study (project_id, plan_details_id, process_ins_id, 
-      declare_id, json_content, creator, 
-      gmt_created, gmt_modified)
+      declare_id, json_content, location, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{declareId,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{declareId,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{location,jdbcType=CHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +138,9 @@
       </if>
       <if test="jsonContent != null" >
         json_content,
+      </if>
+      <if test="location != null" >
+        location,
       </if>
       <if test="creator != null" >
         creator,
@@ -161,6 +167,9 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -200,6 +209,9 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=CHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -222,6 +234,7 @@
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
+      location = #{record.location,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -247,6 +260,9 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=CHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -266,6 +282,7 @@
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       declare_id = #{declareId,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
+      location = #{location,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

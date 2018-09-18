@@ -32,9 +32,12 @@
                     <form id="frm_explore" class="form-horizontal">
                         <fieldset>
                             <legend>同步数据到其它权证</legend>
-                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.selectAll();" value="全选" />
-                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.unSelectAll();" value="全不选"/>
-                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.invertSelect();" value="反选"/>
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.selectAll();"
+                                   value="全选"/>
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.unSelectAll();"
+                                   value="全不选"/>
+                            <input type="button" class="btn btn-primary" onclick="taskExploreIndex.invertSelect();"
+                                   value="反选"/>
                             <div class="form-group">
                                 <div class="col-sm-10" id="declareCertContent">
 
@@ -65,13 +68,13 @@
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
+<span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
         taskExploreIndex.getExploreTaskList();
         taskExploreIndex.loadDeclareCert();
     });
-
 
 
     //任务提交
@@ -83,7 +86,8 @@
         var formData = {};
         formData.id = "${surveySceneExplore.id}";
         formData.jsonContent = taskExploreIndex.getDeclareCertData();
-
+        if (gaoDeMap.location)
+            formData.location = gaoDeMap.location;
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
         }
@@ -272,16 +276,16 @@
 
     //全选
     taskExploreIndex.selectAll = function () {
-        $('#declareCertContent').find(':checkbox').prop('checked',true);
+        $('#declareCertContent').find(':checkbox').prop('checked', true);
     }
     //全不选
     taskExploreIndex.unSelectAll = function () {
-        $('#declareCertContent').find(':checkbox').prop('checked',false);
+        $('#declareCertContent').find(':checkbox').prop('checked', false);
     }
     //反选
     taskExploreIndex.invertSelect = function () {
         $('#declareCertContent').find(':checkbox').each(function () {
-            $(this).prop('checked',!$(this).prop('checked'));
+            $(this).prop('checked', !$(this).prop('checked'));
         })
     }
 

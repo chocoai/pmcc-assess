@@ -15,6 +15,8 @@ public class SurveyCaseStudy {
 
     private String jsonContent;
 
+    private String location;
+
     private String creator;
 
     private Date gmtCreated;
@@ -67,6 +69,14 @@ public class SurveyCaseStudy {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public String getCreator() {
