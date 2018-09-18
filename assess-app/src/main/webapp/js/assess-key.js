@@ -23,6 +23,7 @@ AssessDBKey.CaseHouse = "tb_case_house" ;
 AssessDBKey.CaseHouseTrading = "tb_case_house_trading" ;
 AssessDBKey.CaseEstateParking = "tb_case_estate_parking" ;
 AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment" ;
+AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing" ;
 
 
 /**

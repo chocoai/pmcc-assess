@@ -306,6 +306,8 @@
                     </form>
                 </div>
 
+                <%@include file="/views/case/caseBuild/apply/sonBuildView.jsp" %>
+
 
                 <div class="x_panel">
                     <div class="x_content">
@@ -363,6 +365,19 @@
         }
 
         CaseBuildFun.prototype.select2Init = function () {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/caseBuilding/initAndUpdateSon",
+                data: {},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('初始化成功');
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
+                }
+            });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
                 $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingCategory").html(html);
                 $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingCategory").select2();//加载样式
