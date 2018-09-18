@@ -28,8 +28,6 @@
                 <div class="x_content">
                     <form id="frm_asset" class="form-horizontal">
                         <input type="hidden" name="id" value="${surveyAssetInventory.id}">
-                        <input type="hidden" id="defaultLocaltion" name="defaultLocaltion"
-                               value="${surveyAssetInventory.defaultLocaltion}">
                         <div class="form-group">
 
                             <div class="x-valid">
@@ -66,14 +64,50 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">是否查看原件<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <span class="radio-inline">
+                                        <input type="radio" required name="bisCheckOriginal" id="bisCheckOriginal0"
+                                               value="true"><label
+                                            for="bisCheckOriginal0">是</label></span>
+                                    <span class="radio-inline">
+                                        <input type="radio" name="bisCheckOriginal" id="bisCheckOriginal1"
+                                               value="false"><label
+                                            for="bisCheckOriginal1">否</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">证明文件<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-2">
+                                    <input id="checkOriginalFile" type="file" multiple="false">
+                                    <div id="_checkOriginalFile"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">说明</label>
+                                <div class="col-sm-11">
+                                    <textarea placeholder="说明" class="form-control"
+                                              name="remark">${surveyAssetInventory.remark}</textarea>
+                                </div>
+                            </div>
+                        </div>
                     </form>
-                    <form id="frm_asset_inventory" class="form-horizontal">
+                    <form id="frm_asset_inventory_content" class="form-horizontal">
                         <div class="x_title collapse-link">
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                             </ul>
                             <h2>
-                                <small><i class="fa fa-bars"></i>清查内容</small>
+                                <small>清查内容</small>
                             </h2>
                             <div class="clearfix"></div>
                         </div>
@@ -176,16 +210,50 @@
                             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
                         <h2>
-                            <small class="col-sm-1"><i class="fa fa-bars"></i>他项权利</small>
+                            <small>他项权利</small>
+                            <small>
+                                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button" aria-expanded="false">Default <span class="caret"></span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="#">Action</a>
+                                    </li>
+                                    <li><a href="#">Another action</a>
+                                    </li>
+                                    <li><a href="#">Something else here</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a>
+                                    </li>
+                                </ul>
+                            </small>
                         </h2>
-                        <button type="button" class="btn btn-success" onclick="addData()"
-                                data-toggle="modal" href="#divBox"> 新增
-                        </button>
+
                         <div class="clearfix"></div>
                     </div>
+
                     <table class="table table-bordered" id="tb_List">
                         <!-- cerare document add ajax data-->
                     </table>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">特殊情况</label>
+                            <div class="col-sm-11">
+                                    <textarea placeholder="特殊情况" class="form-control"
+                                              name="specialCase">${surveyAssetInventory.specialCase}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">特殊情况附件<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-2">
+                                <input id="specialCaseFile" type="file" multiple="false">
+                                <div id="_specialCaseFile"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="x_panel">
@@ -228,7 +296,8 @@
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select class="form-control" required id="type" name="type" onchange="typeChange(this);">
+                                            <select class="form-control" required id="type" name="type"
+                                                    onchange="typeChange(this);">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="items" items="${inventoryRightTypeList}">
                                                     <option value="${items.id}">${items.name}</option>
@@ -366,11 +435,49 @@
 </div>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
         loadAssetOtherRightList();
 
+        FileUtils.uploadFiles({
+            target: "checkOriginalFile",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventory,
+                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "checkOriginalFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventory,
+                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
+            },
+            deleteFlag: true
+        })
+
+        FileUtils.uploadFiles({
+            target: "specialCaseFile",
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventory,
+                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
+            },
+            deleteFlag: true
+        });
+
+        FileUtils.getFileShows({
+            target: "specialCaseFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventory,
+                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
+            },
+            deleteFlag: true
+        })
     });
 
     //上传附件通用
@@ -403,7 +510,7 @@
     //类型改变
     function typeChange(_this) {
         $("#category").empty();
-        AssessCommon.loadDataDicByPid($(_this).val(),'',function (html) {
+        AssessCommon.loadDataDicByPid($(_this).val(), '', function (html) {
             $("#category").html(html);
         })
     }
@@ -485,6 +592,8 @@
         });
         var data = {};
         data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
+        if (gaoDeMap.location)
+            data.surveyAssetInventory.location = gaoDeMap.location;
         data.assetInventoryContentList = dataItem;
         return data;
     }
@@ -493,10 +602,11 @@
         if (!$("#frm_asset").valid()) {
             return false;
         }
-        if (!$("#frm_asset_inventory").valid()) {
+        if (!$("#frm_asset_inventory_content").valid()) {
             return false;
         }
         var formData = JSON.stringify(getFormData());
+
         if ("${processInsId}" != "0") {
             submitEditToServer(formData);
         }
@@ -548,8 +658,8 @@
     //他权保存
     function saveData() {
         var data = formParams("frm");
-        data.projectId='${projectId}';
-        data.certName='${declareRecord.name}';
+        data.projectId = '${projectId}';
+        data.certName = '${declareRecord.name}';
         data.planDetailsId = ${projectPlanDetails.id};
         if ($("#frm").valid()) {
             Loading.progressShow();
@@ -583,7 +693,7 @@
         $("#registerDate").val(formatDate(row.registerDate, false));
         $("#beginDate").val(formatDate(row.beginDate, false));
         $("#endDate").val(formatDate(row.endDate, false));
-        AssessCommon.loadDataDicByPid(row.type,row.category,function (html) {
+        AssessCommon.loadDataDicByPid(row.type, row.category, function (html) {
             $("#category").html(html);
         })
         $('#divBox').modal();

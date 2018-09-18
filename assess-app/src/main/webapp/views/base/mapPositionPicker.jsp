@@ -11,6 +11,7 @@
 <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <div id="containerMap" style="width: 100%;height: 100%;" tabindex="0"></div>
 <script type="text/javascript">
+    var gaoDeMap = {};
     //高德地图接入定位
     AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
         var map, geolocation;
@@ -31,41 +32,14 @@
             map.addControl(geolocation);
             geolocation.getCurrentPosition();
             AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-            AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+            AMap.event.addListener(geolocation, 'error', function () {});      //返回定位出错信息
         });
+
         //解析定位结果
         function onComplete(data) {
-//            console.log(data.formattedAddress);
-            if (window.parent.onCompleteSuccess) {
-                window.parent.onCompleteSuccess(data);
-            }
+            gaoDeMap.location = data;
         }
-
-        //解析定位错误信息
-        function onError(data) {
-            if (window.parent.onCompleteFail) {
-                window.parent.onCompleteFail(data);
-            }
-        }
-
-        var positionPicker = new PositionPicker({
-            mode: 'dragMap',
-            map: map
-        });
-
-        positionPicker.on('success', function (positionResult) {
-            if (window.parent.positionPickerSuccess) {
-                window.parent.positionPickerSuccess(positionResult);
-            }
-        });
-        positionPicker.on('fail', function (positionResult) {
-            if (window.parent.positionPickerFail) {
-                window.parent.positionPickerFail(positionResult);
-            }
-        });
-        positionPicker.start();
-        map.panBy(0, 1);
-
-
     });
+
+
 </script>

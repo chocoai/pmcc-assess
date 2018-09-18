@@ -17,13 +17,19 @@ public class SurveyAssetInventory {
 
     private Date checkDate;
 
+    private Boolean bisCheckOriginal;
+
+    private String remark;
+
+    private String specialCase;
+
+    private String location;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String defaultLocaltion;
 
     public Integer getId() {
         return id;
@@ -81,6 +87,38 @@ public class SurveyAssetInventory {
         this.checkDate = checkDate;
     }
 
+    public Boolean getBisCheckOriginal() {
+        return bisCheckOriginal;
+    }
+
+    public void setBisCheckOriginal(Boolean bisCheckOriginal) {
+        this.bisCheckOriginal = bisCheckOriginal;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getSpecialCase() {
+        return specialCase;
+    }
+
+    public void setSpecialCase(String specialCase) {
+        this.specialCase = specialCase == null ? null : specialCase.trim();
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -103,13 +141,5 @@ public class SurveyAssetInventory {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getDefaultLocaltion() {
-        return defaultLocaltion;
-    }
-
-    public void setDefaultLocaltion(String defaultLocaltion) {
-        this.defaultLocaltion = defaultLocaltion == null ? null : defaultLocaltion.trim();
     }
 }
