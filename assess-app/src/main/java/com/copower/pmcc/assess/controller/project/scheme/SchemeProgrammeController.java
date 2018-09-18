@@ -7,11 +7,13 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
@@ -20,6 +22,8 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,8 @@ public class SchemeProgrammeController {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
     public ModelAndView index(Integer projectId, Integer planId) {
@@ -72,6 +78,21 @@ public class SchemeProgrammeController {
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD));
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
+        ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("planId", planId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/view", name = "方案设置视图", method = {RequestMethod.GET})
+    public ModelAndView view(Integer projectId, Integer planId) {
+        String view = "/project/stageScheme/programmeView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeGroup(projectId);//获取分组信息
+        modelAndView.addObject("areaGroups", areaGroups);
+        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
+        modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
+        modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD));
         ProjectInfoVo projectInfoVo = projectInfoService.getProjectInfoVoView(projectInfoService.getProjectInfoById(projectId));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("planId", planId);
@@ -245,5 +266,15 @@ public class SchemeProgrammeController {
     @RequestMapping(value = "/getJudgeObjectListByPid", name = "获取合并的委估对象明细", method = RequestMethod.GET)
     public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
         return schemeJudgeObjectService.getJudgeObjectListByPid(pid);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getPlanDetailsByDeclareId", name = "获取权证调查信息", method = RequestMethod.GET)
+    public BootstrapTableVo getPlanDetailsByDeclareId(Integer declareId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        List<ProjectPlanDetailsVo> caseTaskList = projectPlanDetailsService.getPlanDetailsByDeclareId(declareId);
+        bootstrapTableVo.setRows(CollectionUtils.isEmpty(caseTaskList) ? Lists.newArrayList() : caseTaskList);
+        bootstrapTableVo.setTotal((long) caseTaskList.size());
+        return bootstrapTableVo;
     }
 }

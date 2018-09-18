@@ -21,36 +21,18 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                     </ul>
-                    <h2>${projectPlan.planName}阶段工作计划</h2>
+                    <h2>${projectPlan.planName}阶段工作计划
+                        <small>
+                            <input type="button" class="btn btn-xs btn-success" onclick="viewProgramme();" value="查看方案"/>
+                        </small>
+                    </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <div id="frm_plan" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-1 control-label">
-                                计划名称
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control">${projectPlan.planName}</label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                开始日期<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanStart}"
-                                                                            pattern="yyyy-MM-dd"/></label>
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                结束日期<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control"><fmt:formatDate value="${projectPlan.projectPlanEnd}"
-                                                                            pattern="yyyy-MM-dd"/></label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                说明<span class="symbol required"></span>
+                                说明
                             </label>
                             <div class="col-sm-11">
                                 <label class="form-control">${projectPlan.planRemarks}</label>
@@ -68,7 +50,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class='treeGrid panel-body x_content' style="padding: 0px;">
-                    <table id="PlanItemListed" class="table table-bordered" style="max-height: 400px;"></table>
+                    <table id="PlanItemListed" class="table table-bordered" ></table>
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
@@ -89,6 +71,10 @@
         GetPlanItemList();
     });
 
+    //查看方案
+    function viewProgramme() {
+        window.open('${pageContext.request.contextPath}/schemeProgramme/view?projectId=${projectId}&planId=${projectPlan.id}');
+    }
 
     function GetPlanItemList() {
         Loading.progressShow();

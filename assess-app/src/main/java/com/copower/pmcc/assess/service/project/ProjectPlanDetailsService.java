@@ -97,6 +97,29 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
     }
 
+    /**
+     * 获取权证下的调查信息内容
+     * @param declareId
+     * @return
+     */
+    public List<ProjectPlanDetailsVo> getPlanDetailsByDeclareId(Integer declareId) {
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setDeclareRecordId(declareId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
+        if (CollectionUtils.isEmpty(planDetailsList)) return Lists.newArrayList();
+        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> getProjectPlanDetailsVo(o));
+        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
+            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
+            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
+                //设置查看url
+                if (projectPlanDetailsVo.getBisStart()) {
+                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
+                }
+            }
+        }
+        return planDetailsVoList;
+    }
+
     public List<ProjectPlanDetailsVo> getProjectPlanDetailsByPlanApply(Integer planId) {
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
         return getProjectPlanDetailsVos(projectPlanDetails, false);

@@ -95,7 +95,6 @@ public class SchemeJudgeObjectService {
         BootstrapTableVo vo = new BootstrapTableVo();
         SchemeJudgeObject schemeJudgeObject=new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);
-        schemeJudgeObject.setBisEnable(true);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
@@ -205,18 +204,18 @@ public class SchemeJudgeObjectService {
         }
 
         StringBuilder numberBuilder = new StringBuilder();
-        StringBuilder nameBuilder = new StringBuilder();
-        StringBuilder ownershipBuilder = new StringBuilder();
-        StringBuilder seatBuilder = new StringBuilder();
         BigDecimal floorAreaTotal = new BigDecimal("0");
         BigDecimal evaluationAreaTotal = new BigDecimal("0");
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            //权证与坐落相同部分只取一次，暂不处理
             //委估对象编号合并
             numberBuilder.append(schemeJudgeObject.getNumber());
             if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0)
                 numberBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
             numberBuilder.append(",");
+            if (schemeJudgeObject.getFloorArea() != null)
+                floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
+            if (schemeJudgeObject.getEvaluationArea() != null)
+                evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
         }
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
