@@ -35,10 +35,6 @@ public class CaseBuildingService {
     private CaseBuildingFunctionService caseBuildingFunctionService;
     @Autowired
     private CaseBuildingMaintenanceService caseBuildingMaintenanceService;
-    @Autowired
-    private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
-    @Autowired
-    private CaseHouseTradingSellService caseHouseTradingSellService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseBuildingListVos(CaseBuilding caseBuilding) {

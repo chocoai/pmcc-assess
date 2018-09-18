@@ -81,11 +81,9 @@
                     }
                 });
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');//examineHouseFaceStreet
-                TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/examineHouseFaceStreet/getExamineHouseFaceStreetList", cols, {
+                TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/caseHouseFaceStreet/getCaseHouseFaceStreetList", cols, {
                     type: houseFaceStreet.prototype.config().type,
-                    declareId : $("#declareId").val(),
-                    planDetailsId : $("#planDetailsId").val(),
-                    examineType : $("#examineType").val()
+                    houseId:'${empty caseHouse.id?0:caseHouse.id}'
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -97,7 +95,7 @@
             },
             removeData: function (id) {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/deleteExamineHouseFaceStreetById",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/deleteCaseHouseFaceStreetById",
                     type: "post",
                     dataType: "json",
                     data: {id: id},
@@ -135,17 +133,9 @@
                     return false;
                 }
                 var data = formParams(houseFaceStreet.prototype.config().frm);
-                if ($("#declareId").size() > 0) {
-                    data.declareId = $("#declareId").val();
-                }
-                if ($("#planDetailsId").size() > 0) {
-                    data.planDetailsId = $("#planDetailsId").val();
-                }
-                if ($("#examineType").size() > 0) {
-                    data.examineType = $("#examineType").val();
-                }
+                data.houseId = '${empty caseHouse.id?0:caseHouse.id}' ;
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/saveAndUpdateExamineHouseFaceStreet",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/saveAndUpdateCaseHouseFaceStreet",
                     type: "post",
                     dataType: "json",
                     data: data,
@@ -166,7 +156,7 @@
             },
             getAndInit: function (id) {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/getExamineHouseFaceStreetById",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/getCaseHouseFaceStreetById",
                     type: "get",
                     dataType: "json",
                     data: {id: id},
@@ -200,7 +190,7 @@
             },
             init: function () {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/examine_house_street_level",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/examine_house_street_level",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -222,7 +212,7 @@
                     }
                 })
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/examine_house_traffic_flow",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/examine_house_traffic_flow",
                     type: "get",
                     dataType: "json",
                     success: function (result) {
@@ -244,7 +234,7 @@
                     }
                 })
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseFaceStreet/examine_house_visitors_flowrate",
+                    url: "${pageContext.request.contextPath}/caseHouseFaceStreet/examine_house_visitors_flowrate",
                     type: "get",
                     dataType: "json",
                     success: function (result) {

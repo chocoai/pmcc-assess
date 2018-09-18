@@ -48,6 +48,8 @@ public class CaseHouseService {
     private CaseHouseRoomService caseHouseRoomService;
     @Autowired
     private CaseHouseWaterService caseHouseWaterService;
+    @Autowired
+    private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse){
@@ -76,6 +78,8 @@ public class CaseHouseService {
         caseHouseRoom.setHouseId(num);
         CaseHouseWater caseHouseWater = new CaseHouseWater();
         caseHouseWater.setHouseId(num);
+        CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+        caseHouseCorollaryEquipment.setHouseId(num);
         List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell,null);
         List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease,null);
         List<CaseHouseEquipment> caseHouseEquipments = caseHouseEquipmentService.getCaseHouseEquipmentList(caseHouseEquipment);
@@ -83,6 +87,7 @@ public class CaseHouseService {
         List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
         List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
         List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
+        List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
         if (id==null){//初始化
             if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)){
                 for (CaseHouseTradingSellVo oo:caseHouseTradingSellVos){
@@ -121,6 +126,11 @@ public class CaseHouseService {
             if (!ObjectUtils.isEmpty(caseHouseWaters)){
                 for (CaseHouseWater oo:caseHouseWaters){
                     caseHouseWaterService.deleteCaseHouseWater(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)){
+                for (CaseHouseCorollaryEquipment oo :caseHouseCorollaryEquipments){
+                    caseHouseCorollaryEquipmentService.deleteCaseHouseCorollaryEquipment(oo.getId());
                 }
             }
         }
@@ -166,6 +176,12 @@ public class CaseHouseService {
                 for (CaseHouseWater oo:caseHouseWaters){
                     oo.setHouseId(id);
                     caseHouseWaterService.updateCaseHouseWater(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)){
+                for (CaseHouseCorollaryEquipment oo :caseHouseCorollaryEquipments){
+                    oo.setHouseId(id);
+                    caseHouseCorollaryEquipmentService.updateCaseHouseCorollaryEquipment(oo);
                 }
             }
         }

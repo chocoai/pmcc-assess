@@ -67,29 +67,29 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <select class="form-control huxingId" name="huxingId">
-                                        </select>
-                                        <label class="input-group-addon btn">刷新户型<i
-                                                class="fa fa-refresh"></i></label>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div class="x-valid">--%>
+                                <%--<label class="col-sm-1 control-label">户型选择<span class="symbol required"></span></label>--%>
+                                <%--<div class="col-sm-3">--%>
+                                    <%--<div class="input-group">--%>
+                                        <%--<select class="form-control huxingId" name="huxingId">--%>
+                                        <%--</select>--%>
+                                        <%--<label class="input-group-addon btn">刷新户型<i--%>
+                                                <%--class="fa fa-refresh"></i></label>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <div class="house_latest_family_plan"></div>
-                                </div>
-                            </div>
+                            <%--<div class="x-valid">--%>
+                                <%--<label class="col-sm-1 control-label">户型图<span class="symbol required"></span></label>--%>
+                                <%--<div class="col-sm-3">--%>
+                                    <%--<div class="house_latest_family_plan"></div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
 
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">朝向<span class="symbol required"></span></label>
                                 <div class="col-sm-3">
-                                    <input type="text" placeholder="朝向" readonly="readonly"
+                                    <input type="text" placeholder="朝向"
                                            value="${caseHouse.orientation}" name="orientation"
                                            class="form-control">
                                 </div>
@@ -341,6 +341,40 @@
             <div class="street" style="display: none;">
                 <%@include file="/views/case/caseHouse/apply/caseHouseFaceStreet.jsp" %>
             </div>
+            <!-- 房屋配套设备设施 -->
+            <div class="corollary_equipment" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseCorollaryEquipment.jsp" %>
+            </div>
+
+            <!-- 电力通讯网络 -->
+            <div class="intelligent" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseIntelligent.jsp" %>
+            </div>
+
+            <!-- 房间 -->
+            <div class="room" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseRoom.jsp" %>
+            </div>
+
+            <!-- 供排水	 -->
+            <div class="water" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseWater.jsp" %>
+            </div>
+
+            <!-- 空调情况	 -->
+            <div class="airConditioner" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseAirConditioner.jsp" %>
+            </div>
+
+            <!-- 房间供暖	 -->
+            <div class="houseHeating" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseHeating.jsp" %>
+            </div>
+
+            <!-- 新风情况	 -->
+            <div class="houseNewWind" style="display: none;">
+                <%@include file="/views/case/caseHouse/apply/caseHouseNewWind.jsp" %>
+            </div>
 
             <div class="x_panel">
                 <div class="x_content">
@@ -452,7 +486,7 @@
         }
         var data = formParams(CaseHouseModelFun.prototype.config.trading.frmSon());
         data.tradingType = data.type;
-        console.log(data);
+        data.houseId = '${empty caseHouse.id?0:caseHouse.id}' ;
         var url = "${pageContext.request.contextPath}/caseHouse/saveCaseHouseTradingLeaseAndSellDto";
         $.ajax({
             url: url,
@@ -518,7 +552,7 @@
         });
         $("#" + CaseHouseModelFun.prototype.config.trading.tableSon()).bootstrapTable('destroy');
         TableInit(CaseHouseModelFun.prototype.config.trading.tableSon(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseTradingLeaseAndSellDtoVos", cols, {
-            type: type_
+            type: type_,houseId:'${empty caseHouse.id?0:caseHouse.id}'
         }, {
             showColumns: false,
             showRefresh: false,
