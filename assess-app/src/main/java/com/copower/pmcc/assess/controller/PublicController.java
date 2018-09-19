@@ -47,22 +47,22 @@ public class PublicController {
     private BaseAttachmentService baseAttachmentService;
 
     @ResponseBody
-    @RequestMapping(value = "/getSysAttachmentDto",method = {RequestMethod.GET},name = "获取附件")
-    public HttpResult getSysAttachmentDto(Integer attachmentId){
+    @RequestMapping(value = "/getSysAttachmentDto", method = {RequestMethod.GET}, name = "获取附件")
+    public HttpResult getSysAttachmentDto(Integer attachmentId) {
         SysAttachmentDto sysAttachmentDto = baseAttachmentService.getSysAttachmentDto(attachmentId);
-        if (sysAttachmentDto != null){
+        if (sysAttachmentDto != null) {
             return HttpResult.newCorrectResult(sysAttachmentDto);
         }
         return HttpResult.newErrorResult("异常");
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateSysAttachmentDto",method = {RequestMethod.POST},name = "新增或者更新附件")
-    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto){
-        if (sysAttachmentDto != null){
-            if (sysAttachmentDto.getId() == null){
+    @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
+    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
+        if (sysAttachmentDto != null) {
+            if (sysAttachmentDto.getId() == null) {
                 baseAttachmentService.addAttachment(sysAttachmentDto);
-            }else {
+            } else {
                 baseAttachmentService.updateAttachment(sysAttachmentDto);
             }
             return HttpResult.newCorrectResult(sysAttachmentDto);
@@ -83,6 +83,26 @@ public class PublicController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAreaById", name = "获取区域单个信息", method = RequestMethod.GET)
+    public HttpResult getAreaById(String id) {
+        SysAreaDto sysAreaDto = null;
+        try {
+            if (StringUtils.isNotBlank(id)) {
+                sysAreaDto = erpAreaService.getSysAreaDto(id);
+                if (sysAreaDto != null) {
+                    return HttpResult.newCorrectResult(sysAreaDto);
+                }else {
+                    return HttpResult.newErrorResult("没有获取到数据!");
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newErrorResult("没有获取到数据!");
     }
 
     @ResponseBody
@@ -125,7 +145,7 @@ public class PublicController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getApprovalLog",name = "获取流程审批日志", method = RequestMethod.GET)
+    @RequestMapping(value = "/getApprovalLog", name = "获取流程审批日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLog(String processInsId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLog(processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -149,12 +169,12 @@ public class PublicController {
 
     private List<AttachmentVo> getAttachmentVos(List<SysAttachmentDto> filter) {
         return LangUtils.transform(filter, o -> {
-                            AttachmentVo attachmentVo = new AttachmentVo();
-                            attachmentVo.setId(o.getId());
-                            attachmentVo.setFileName(o.getFileName());
-                            attachmentVo.setFileExtension(o.getFileExtension());
-                            attachmentVo.setHasKeep(false);
-                            return attachmentVo;
-                        });
+            AttachmentVo attachmentVo = new AttachmentVo();
+            attachmentVo.setId(o.getId());
+            attachmentVo.setFileName(o.getFileName());
+            attachmentVo.setFileExtension(o.getFileExtension());
+            attachmentVo.setHasKeep(false);
+            return attachmentVo;
+        });
     }
 }

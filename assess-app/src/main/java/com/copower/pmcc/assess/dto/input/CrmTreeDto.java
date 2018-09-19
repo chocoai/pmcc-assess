@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dto.output;
+package com.copower.pmcc.assess.dto.input;
 
 import java.util.List;
 

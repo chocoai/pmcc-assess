@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DeclareRealtyRealEstateCertMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="ownership" property="ownership" jdbcType="VARCHAR" />
+    <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
+    <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
+    <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
+    <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
+    <result column="nature" property="nature" jdbcType="VARCHAR" />
+    <result column="planning_use" property="planningUse" jdbcType="VARCHAR" />
+    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
+    <result column="inner_area" property="innerArea" jdbcType="DECIMAL" />
+    <result column="other" property="other" jdbcType="VARCHAR" />
+    <result column="land_no" property="landNo" jdbcType="VARCHAR" />
+    <result column="land_acquisition" property="landAcquisition" jdbcType="VARCHAR" />
+    <result column="use_start_date" property="useStartDate" jdbcType="TIMESTAMP" />
+    <result column="use_end_date" property="useEndDate" jdbcType="TIMESTAMP" />
+    <result column="public_area" property="publicArea" jdbcType="DECIMAL" />
+    <result column="other_note" property="otherNote" jdbcType="VARCHAR" />
+    <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
+    <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, plan_details_id, province, city, district, type, number, name, ownership, 
+    public_situation, street_number, attached_number, building_number, unit, floor, room_number, 
+    registration_time, nature, planning_use, floor_count, floor_area, inner_area, other, 
+    land_no, land_acquisition, use_start_date, use_end_date, public_area, other_note, 
+    registration_authority, registration_date, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_declare_realty_real_estate_cert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_declare_realty_real_estate_cert
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_declare_realty_real_estate_cert
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
+    delete from tb_declare_realty_real_estate_cert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_realty_real_estate_cert (pid, plan_details_id, province, 
+      city, district, type, 
+      number, name, ownership, 
+      public_situation, street_number, attached_number, 
+      building_number, unit, floor, 
+      room_number, registration_time, nature, 
+      planning_use, floor_count, floor_area, 
+      inner_area, other, land_no, 
+      land_acquisition, use_start_date, use_end_date, 
+      public_area, other_note, registration_authority, 
+      registration_date, creator, gmt_created, 
+      gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{publicSituation,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=INTEGER}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{nature,jdbcType=VARCHAR}, 
+      #{planningUse,jdbcType=VARCHAR}, #{floorCount,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
+      #{innerArea,jdbcType=DECIMAL}, #{other,jdbcType=VARCHAR}, #{landNo,jdbcType=VARCHAR}, 
+      #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
+      #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
+      #{registrationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_realty_real_estate_cert
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="ownership != null" >
+        ownership,
+      </if>
+      <if test="publicSituation != null" >
+        public_situation,
+      </if>
+      <if test="streetNumber != null" >
+        street_number,
+      </if>
+      <if test="attachedNumber != null" >
+        attached_number,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="roomNumber != null" >
+        room_number,
+      </if>
+      <if test="registrationTime != null" >
+        registration_time,
+      </if>
+      <if test="nature != null" >
+        nature,
+      </if>
+      <if test="planningUse != null" >
+        planning_use,
+      </if>
+      <if test="floorCount != null" >
+        floor_count,
+      </if>
+      <if test="floorArea != null" >
+        floor_area,
+      </if>
+      <if test="innerArea != null" >
+        inner_area,
+      </if>
+      <if test="other != null" >
+        other,
+      </if>
+      <if test="landNo != null" >
+        land_no,
+      </if>
+      <if test="landAcquisition != null" >
+        land_acquisition,
+      </if>
+      <if test="useStartDate != null" >
+        use_start_date,
+      </if>
+      <if test="useEndDate != null" >
+        use_end_date,
+      </if>
+      <if test="publicArea != null" >
+        public_area,
+      </if>
+      <if test="otherNote != null" >
+        other_note,
+      </if>
+      <if test="registrationAuthority != null" >
+        registration_authority,
+      </if>
+      <if test="registrationDate != null" >
+        registration_date,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null" >
+        #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="publicSituation != null" >
+        #{publicSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="streetNumber != null" >
+        #{streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedNumber != null" >
+        #{attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="roomNumber != null" >
+        #{roomNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null" >
+        #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nature != null" >
+        #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="planningUse != null" >
+        #{planningUse,jdbcType=VARCHAR},
+      </if>
+      <if test="floorCount != null" >
+        #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null" >
+        #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="innerArea != null" >
+        #{innerArea,jdbcType=DECIMAL},
+      </if>
+      <if test="other != null" >
+        #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="landNo != null" >
+        #{landNo,jdbcType=VARCHAR},
+      </if>
+      <if test="landAcquisition != null" >
+        #{landAcquisition,jdbcType=VARCHAR},
+      </if>
+      <if test="useStartDate != null" >
+        #{useStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useEndDate != null" >
+        #{useEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publicArea != null" >
+        #{publicArea,jdbcType=DECIMAL},
+      </if>
+      <if test="otherNote != null" >
+        #{otherNote,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationAuthority != null" >
+        #{registrationAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDate != null" >
+        #{registrationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" resultType="java.lang.Integer" >
+    select count(*) from tb_declare_realty_real_estate_cert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_declare_realty_real_estate_cert
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownership != null" >
+        ownership = #{record.ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicSituation != null" >
+        public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.streetNumber != null" >
+        street_number = #{record.streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attachedNumber != null" >
+        attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
+      <if test="record.roomNumber != null" >
+        room_number = #{record.roomNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrationTime != null" >
+        registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nature != null" >
+        nature = #{record.nature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planningUse != null" >
+        planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floorCount != null" >
+        floor_count = #{record.floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorArea != null" >
+        floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.innerArea != null" >
+        inner_area = #{record.innerArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.other != null" >
+        other = #{record.other,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landNo != null" >
+        land_no = #{record.landNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landAcquisition != null" >
+        land_acquisition = #{record.landAcquisition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useStartDate != null" >
+        use_start_date = #{record.useStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useEndDate != null" >
+        use_end_date = #{record.useEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.publicArea != null" >
+        public_area = #{record.publicArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherNote != null" >
+        other_note = #{record.otherNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrationAuthority != null" >
+        registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registrationDate != null" >
+        registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_declare_realty_real_estate_cert
+    set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      ownership = #{record.ownership,jdbcType=VARCHAR},
+      public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+      street_number = #{record.streetNumber,jdbcType=VARCHAR},
+      attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=INTEGER},
+      room_number = #{record.roomNumber,jdbcType=VARCHAR},
+      registration_time = #{record.registrationTime,jdbcType=TIMESTAMP},
+      nature = #{record.nature,jdbcType=VARCHAR},
+      planning_use = #{record.planningUse,jdbcType=VARCHAR},
+      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      inner_area = #{record.innerArea,jdbcType=DECIMAL},
+      other = #{record.other,jdbcType=VARCHAR},
+      land_no = #{record.landNo,jdbcType=VARCHAR},
+      land_acquisition = #{record.landAcquisition,jdbcType=VARCHAR},
+      use_start_date = #{record.useStartDate,jdbcType=TIMESTAMP},
+      use_end_date = #{record.useEndDate,jdbcType=TIMESTAMP},
+      public_area = #{record.publicArea,jdbcType=DECIMAL},
+      other_note = #{record.otherNote,jdbcType=VARCHAR},
+      registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
+      registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
+    update tb_declare_realty_real_estate_cert
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null" >
+        ownership = #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="publicSituation != null" >
+        public_situation = #{publicSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="streetNumber != null" >
+        street_number = #{streetNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedNumber != null" >
+        attached_number = #{attachedNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="roomNumber != null" >
+        room_number = #{roomNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null" >
+        registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nature != null" >
+        nature = #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="planningUse != null" >
+        planning_use = #{planningUse,jdbcType=VARCHAR},
+      </if>
+      <if test="floorCount != null" >
+        floor_count = #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null" >
+        floor_area = #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="innerArea != null" >
+        inner_area = #{innerArea,jdbcType=DECIMAL},
+      </if>
+      <if test="other != null" >
+        other = #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="landNo != null" >
+        land_no = #{landNo,jdbcType=VARCHAR},
+      </if>
+      <if test="landAcquisition != null" >
+        land_acquisition = #{landAcquisition,jdbcType=VARCHAR},
+      </if>
+      <if test="useStartDate != null" >
+        use_start_date = #{useStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useEndDate != null" >
+        use_end_date = #{useEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="publicArea != null" >
+        public_area = #{publicArea,jdbcType=DECIMAL},
+      </if>
+      <if test="otherNote != null" >
+        other_note = #{otherNote,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationAuthority != null" >
+        registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDate != null" >
+        registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
+    update tb_declare_realty_real_estate_cert
+    set pid = #{pid,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      ownership = #{ownership,jdbcType=VARCHAR},
+      public_situation = #{publicSituation,jdbcType=VARCHAR},
+      street_number = #{streetNumber,jdbcType=VARCHAR},
+      attached_number = #{attachedNumber,jdbcType=VARCHAR},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=INTEGER},
+      room_number = #{roomNumber,jdbcType=VARCHAR},
+      registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      nature = #{nature,jdbcType=VARCHAR},
+      planning_use = #{planningUse,jdbcType=VARCHAR},
+      floor_count = #{floorCount,jdbcType=INTEGER},
+      floor_area = #{floorArea,jdbcType=DECIMAL},
+      inner_area = #{innerArea,jdbcType=DECIMAL},
+      other = #{other,jdbcType=VARCHAR},
+      land_no = #{landNo,jdbcType=VARCHAR},
+      land_acquisition = #{landAcquisition,jdbcType=VARCHAR},
+      use_start_date = #{useStartDate,jdbcType=TIMESTAMP},
+      use_end_date = #{useEndDate,jdbcType=TIMESTAMP},
+      public_area = #{publicArea,jdbcType=DECIMAL},
+      other_note = #{otherNote,jdbcType=VARCHAR},
+      registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
+      registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

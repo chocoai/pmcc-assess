@@ -28,6 +28,9 @@ AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing" ;
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory" ;
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right" ;
 
+
+AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert" ;
+
 /**
  * 项目分类key
  */
@@ -46,6 +49,8 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 var AssessDicKey = {}
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//	委托目的
+AssessDicKey.projectDeclareHousePropertyCertificateType = "project.declare.house.property.certificate.type";//房产证书类型
+AssessDicKey.projectDeclareHousePropertyCertificateDeclareRealtyHouseCertCategory = "project.declare.house.property.certificate.declareRealtyHouseCert.category";//房产证 类别
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//税率配置
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
