@@ -29,6 +29,8 @@ AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory" ;
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content" ;
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right" ;
 
+AssessDBKey.BaseFileTemplate = "tb_base_file_template" ;
+
 /**
  * 项目分类key
  */
