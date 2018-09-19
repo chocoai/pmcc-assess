@@ -195,7 +195,22 @@
                 });
             }
         },
-
+        //获取区域单个信息
+        getAreaById:function (target,callback) {
+            $.ajax({
+                url: getContextPath() + "/public/getAreaById",
+                type: "get",
+                data: {id:target},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if(callback){
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
         //根据pid获取区域信息
         loadAreaInfoByPid: function (pid, callback) {
             if (pid) {
