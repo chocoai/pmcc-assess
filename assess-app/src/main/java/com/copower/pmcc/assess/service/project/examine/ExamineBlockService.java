@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineBlockDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineBlock;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineBlockVo;

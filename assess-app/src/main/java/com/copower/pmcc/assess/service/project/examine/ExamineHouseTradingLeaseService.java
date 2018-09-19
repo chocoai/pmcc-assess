@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.DateHelp;
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseTradingLeaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseTradingLease;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseTradingSellAndLeaseVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;

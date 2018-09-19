@@ -4,13 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryRightService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * Created by zly on 2018/6/11.
@@ -18,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/surveyAssetInventoryRight")
 public class SurveyAssetInventoryRightController {
-
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SurveyAssetInventoryRightService surveyAssetInventoryRightService;
 
@@ -57,6 +65,26 @@ public class SurveyAssetInventoryRightController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importData", name = "导入他项权利", method = RequestMethod.POST)
+    public HttpResult importData(SurveyAssetInventoryRight right,HttpServletRequest request) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if(multipartFile.isEmpty())
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            String s = surveyAssetInventoryRightService.importData(right,multipartFile);
+            return HttpResult.newCorrectResult(s);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(String.format("导入他项权利-%s", e.getMessage()), e);
+            return HttpResult.newErrorResult("导入他项权利异常");
+        }
+
     }
 
 }

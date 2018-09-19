@@ -12,9 +12,13 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +60,7 @@ public class BaseAttachmentService {
      * @param params
      * @return
      */
-    public String createTempBasePath(String... params) {
+    public String createTempDirPath(String... params) {
         String filePath = servletContext.getRealPath("/") + File.separator + applicationConstant.getAppKey() + File.separator + TEMP_UPLOAD_PATH;
         //清除今天、昨天以外的临时文件
         FileUtils.deleteDir(filePath, Lists.newArrayList(DateUtils.formatDate(DateUtils.addDay(new Date(), -1), DateUtils.DATE_SHORT_PATTERN), DateUtils.formatNowToYMD()));
@@ -231,5 +235,27 @@ public class BaseAttachmentService {
     public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
         SysAttachmentDto attachmentDto = erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
         return ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+    }
+
+    /**
+     * 保存上传文件到临时目录
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
+    public String saveUploadFile(MultipartFile multipartFile) throws IOException {
+        String localDirPath = createTempDirPath();
+        String fileName = createNoRepeatFileName(FileUtils.getExtName(multipartFile.getName(), '.'));
+        String fileFullPath = localDirPath + File.separator + fileName;
+        InputStream in = multipartFile.getInputStream();
+        FileOutputStream out = new FileOutputStream(localDirPath + File.separator + fileName);
+        byte buffer[] = new byte[1024];
+        int len = 0;
+        while ((len = in.read(buffer)) > 0) {
+            out.write(buffer, 0, len);
+        }
+        in.close();
+        out.close();
+        return fileFullPath;
     }
 }

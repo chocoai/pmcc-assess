@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.examine;
 
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineUnitElevatorDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineUnitElevatorDao;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineUnitElevator;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;

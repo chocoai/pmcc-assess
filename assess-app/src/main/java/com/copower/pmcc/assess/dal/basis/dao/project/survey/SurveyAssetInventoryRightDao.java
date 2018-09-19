@@ -18,7 +18,7 @@ public class SurveyAssetInventoryRightDao {
     @Autowired
     private SurveyAssetInventoryRightMapper surveyAssetInventoryRightMapper;
 
-    public boolean save(SurveyAssetInventoryRight surveyAssetInventoryRight) {
+    public boolean add(SurveyAssetInventoryRight surveyAssetInventoryRight) {
         int i = surveyAssetInventoryRightMapper.insertSelective(surveyAssetInventoryRight);
         return i > 0;
     }

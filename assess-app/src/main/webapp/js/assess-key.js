@@ -92,3 +92,10 @@ AssessDicKey.casesHouseTransactionType = "cases.common.transaction.type";//交�
 AssessDicKey.casesEstateOther = "cases.estate.other";//案例楼盘 其它信息
 AssessDicKey.casesEstateMatching = "cases.estate.matching";//案例楼盘 配套信息
 AssessDicKey.casesHouseMatching = "cases.house.matching";//案例房屋 配套信息
+
+
+/**
+ * 文件模板key
+ */
+var AssessFTKey = {}
+AssessFTKey.ftAssetInventoryRight="ft.asset.inventory.right";//他项权利

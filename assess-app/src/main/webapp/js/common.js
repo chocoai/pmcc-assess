@@ -51,7 +51,7 @@
             return str;
         },
         /*
-        *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
+         *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
         toPercent: function () {
             var str = Number(point * 100).toFixed(1);
             str += "%";
@@ -359,7 +359,7 @@
         },
 
         //获取用户部门信息
-        getUserDepartmentInfo:function (userAccount,callback) {
+        getUserDepartmentInfo: function (userAccount, callback) {
             $.ajax({
                 url: getContextPath() + "/RpcErpService/getDepartmentByUserAccount",
                 type: "get",
@@ -367,23 +367,23 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                       if(callback){
-                           callback(result.data);
-                       }
+                        if (callback) {
+                            callback(result.data);
+                        }
                     }
                 }
             })
         },
         //获取附件信息
-        getSysAttachmentDto:function (target,callback) {
+        getSysAttachmentDto: function (target, callback) {
             $.ajax({
                 url: getContextPath() + "/public/getSysAttachmentDto",
                 type: "get",
-                data: {attachmentId:target},
+                data: {attachmentId: target},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        if(callback){
+                        if (callback) {
                             callback(result.data);
                         }
                     }
@@ -391,7 +391,7 @@
             })
         },
         //新增或者更新附件
-        saveAndUpdateSysAttachmentDto:function (item,callback) {
+        saveAndUpdateSysAttachmentDto: function (item, callback) {
             $.ajax({
                 url: getContextPath() + "/public/saveAndUpdateSysAttachmentDto",
                 type: "POST",
@@ -399,9 +399,23 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        if(callback){
+                        if (callback) {
                             callback(result.data);
                         }
+                    }
+                }
+            })
+        },
+        //下载附件模板
+        downloadFileTemplate: function (key) {
+            $.ajax({
+                url: getContextPath() + "/baseFileTemplate/getAttachmentId",
+                type: "get",
+                data: {name: key},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        window.open(FileUtils.config.downloadUrl + result.data);
                     }
                 }
             })

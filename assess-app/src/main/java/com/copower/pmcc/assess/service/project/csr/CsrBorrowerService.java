@@ -161,7 +161,7 @@ public class CsrBorrowerService {
      */
     private ResponseEntity<byte[]> appleDownloadSysAttachmentDto(List<String> filePaths, String zipName, HttpServletRequest request) throws Exception {
         ResponseEntity<byte[]> responseEntity = null;
-        String localDirPath = baseAttachmentService.createTempBasePath();
+        String localDirPath = baseAttachmentService.createTempDirPath();
         String zipPathAndName =  localDirPath + zipName;
         List<File> fileList = new ArrayList<>();
         for (int i = 0; i < filePaths.size(); i++) {
@@ -210,7 +210,7 @@ public class CsrBorrowerService {
      */
     private List<String> changeSysAttachmentDto(Integer tableID){
         List<String> filePaths = new ArrayList<>();
-        String localDirPath = baseAttachmentService.createTempBasePath();
+        String localDirPath = baseAttachmentService.createTempDirPath();
         List<SysAttachmentDto> baseAttachmentList = baseAttachmentService.getByField_tableId(tableID,AssessFieldNameConstant.CSR_BORROWER_EXPORT, AssessTableNameConstant.CSR_REPORT_TEMPLATE_FILES);
         for (SysAttachmentDto baseAttachment:baseAttachmentList){
             if (!ObjectUtils.isEmpty(baseAttachment)){
@@ -425,7 +425,7 @@ public class CsrBorrowerService {
     @Deprecated
     private ResponseEntity<byte[]> writeCsrBorrowerModel(String filePath,List<Map<String, String>> mapList){
         ResponseEntity<byte[]> responseEntity = null;
-        String localDirPath = baseAttachmentService.createTempBasePath();
+        String localDirPath = baseAttachmentService.createTempDirPath();
         List<File> fileList = new ArrayList<>();
         //暂时先写死
         String suffix = "doc" ;

@@ -99,7 +99,7 @@ public class SurveyCommonService {
      * @param surveyLocaltion
      */
     public void downLoadLocationImage(String tableName, Integer tableId, String surveyLocaltion) {
-        String localDir = baseAttachmentService.createTempBasePath(commonService.thisUserAccount());
+        String localDir = baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
         String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
         String url = String.format("%s?location=%s&zoom=17&size=900*600&markers=mid,,A:%s&key=%s",
                 BaseConstant.MPA_API_URL, surveyLocaltion, surveyLocaltion, BaseConstant.MAP_WEB_SERVICE_KEY);

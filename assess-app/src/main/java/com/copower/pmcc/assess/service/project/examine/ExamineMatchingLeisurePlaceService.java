@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineMatchingLeisurePlaceDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineMatchingLeisurePlaceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingLeisurePlace;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineMatchingLeisurePlaceVo;

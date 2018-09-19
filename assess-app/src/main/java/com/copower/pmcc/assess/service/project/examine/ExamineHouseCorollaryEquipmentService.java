@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadTwoFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineHouseCorollaryEquipmentDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineHouseCorollaryEquipmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseCorollaryEquipment;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineHouseCorollaryEquipmentVo;

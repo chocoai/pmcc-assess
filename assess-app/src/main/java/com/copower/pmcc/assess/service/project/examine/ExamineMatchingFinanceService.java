@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.dao.examine.ExamineMatchingFinanceDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineMatchingFinanceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.ExamineMatchingFinance;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineMatchingFinanceVo;
