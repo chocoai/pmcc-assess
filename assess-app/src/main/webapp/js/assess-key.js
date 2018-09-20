@@ -33,6 +33,8 @@ AssessDBKey.BaseFileTemplate = "tb_base_file_template" ;
 
 
 AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert" ;
+AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert" ;
+AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert" ;
 
 /**
  * 项目分类key

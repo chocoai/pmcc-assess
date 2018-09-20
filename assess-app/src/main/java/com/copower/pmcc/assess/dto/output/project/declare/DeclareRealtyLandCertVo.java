@@ -11,6 +11,7 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
     private String provinceName;
     private String cityName;
     private String districtName;
+    private String fileViewName;
 
     public String getProvinceName() {
         return provinceName;
@@ -34,5 +35,13 @@ public class DeclareRealtyLandCertVo extends DeclareRealtyLandCert {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
     }
 }

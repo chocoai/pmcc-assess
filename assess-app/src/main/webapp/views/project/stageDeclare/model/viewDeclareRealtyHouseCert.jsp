@@ -519,6 +519,8 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+            declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId,AssessDBKey.DeclareRealtyLandCert, 0);
+            // declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId,AssessDBKey.DeclareRealtyLandCert, 0);
             $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.box).modal("show");
         },
         edit:function (id) {
@@ -694,6 +696,7 @@
             cols.push({field: 'useRightArea', title: '使用权面积'});
             cols.push({field: 'landCertName', title: '土地权证号'});
             cols.push({field: 'beLocated', title: '土地坐落'});
+            cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -1370,6 +1373,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                                <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
                                             </select>
@@ -1450,6 +1454,23 @@
                                                    name="registrationDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate roomTime" required="required">
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传土地证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="sonDeclareRealtyLandCertFileId" name="sonDeclareRealtyLandCertFileId"
+                                                   required="required" placeholder="上传土地证" class="form-control"
+                                                   type="file">
+                                            <div id="_sonDeclareRealtyLandCertFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
                                     </div>
                                 </div>
 

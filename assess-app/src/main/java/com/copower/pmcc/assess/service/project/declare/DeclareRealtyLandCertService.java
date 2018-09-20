@@ -4,10 +4,13 @@ import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCe
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -33,22 +36,26 @@ public class DeclareRealtyLandCertService {
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
-    public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
-        if (declareRealtyLandCert.getId()==null){
+    public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
+        if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
-            return declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
-        }else {
+            Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), id);
+            return id;
+        } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert);
             return null;
         }
     }
 
-    public DeclareRealtyLandCert getDeclareRealtyLandCertById(Integer id){
+    public DeclareRealtyLandCert getDeclareRealtyLandCertById(Integer id) {
         return declareRealtyLandCertDao.getDeclareRealtyLandCertById(id);
     }
 
-    public BootstrapTableVo getDeclareRealtyLandCertListVos(DeclareRealtyLandCert declareRealtyLandCert){
+    public BootstrapTableVo getDeclareRealtyLandCertListVos(DeclareRealtyLandCert declareRealtyLandCert) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -57,32 +64,33 @@ public class DeclareRealtyLandCertService {
         vo.setRows(vos);
         return vo;
     }
-    public  List<DeclareRealtyLandCertVo> landLevels(DeclareRealtyLandCert declareRealtyLandCert){
+
+    public List<DeclareRealtyLandCertVo> landLevels(DeclareRealtyLandCert declareRealtyLandCert) {
         List<DeclareRealtyLandCert> declareRealtyLandCerts = declareRealtyLandCertDao.getDeclareRealtyLandCertList(declareRealtyLandCert);
         List<DeclareRealtyLandCertVo> vos = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(declareRealtyLandCerts)){
-            for (DeclareRealtyLandCert landLevel:declareRealtyLandCerts){
+        if (!ObjectUtils.isEmpty(declareRealtyLandCerts)) {
+            for (DeclareRealtyLandCert landLevel : declareRealtyLandCerts) {
                 vos.add(getDeclareRealtyLandCertVo(landLevel));
             }
         }
         return vos;
     }
 
-    public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
+    public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
         try {
             declareRealtyLandCertDao.removeDeclareRealtyLandCert(declareRealtyLandCert);
         } catch (Exception e1) {
             try {
-                throw  new Exception();
+                throw new Exception();
             } catch (Exception e11) {
 
             }
         }
     }
 
-    public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert){
+    public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert) {
         DeclareRealtyLandCertVo vo = new DeclareRealtyLandCertVo();
-        BeanUtils.copyProperties(declareRealtyLandCert,vo);
+        BeanUtils.copyProperties(declareRealtyLandCert, vo);
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             vo.setProvinceName(erpAreaService.getSysAreaName(declareRealtyLandCert.getProvince()));//省
         }
@@ -91,6 +99,19 @@ public class DeclareRealtyLandCertService {
         }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(declareRealtyLandCert.getDistrict()));//县
+        }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareRealtyLandCert.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
         }
         return vo;
     }
