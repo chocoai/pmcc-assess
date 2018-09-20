@@ -90,7 +90,7 @@
     declareFunObj.declare = {
         init: function () {
             var num = 6;
-            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHousePropertyCertificateType, "", function (html, data) {
+            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateType, function (html, data) {
                 var resetHtml = "";
                 var k = 0;
                 $.each(data, function (i, n) {
@@ -120,7 +120,7 @@
         monitor: function () {
             $.each($("#" + config.declare.frm + " :checkbox"), function (i, n) {
                 $(n).click(function () {
-                    AssessCommon.getDataDicInfo($(n).val(), function (data) {
+                    AssessCommon.getProjectClassifyInfo($(n).val(), function (data) {
                         if (declareFunObj.isEmpty(data)) {
                             if (data.name == config.declareRealtyHouseCert.name) {
                                 declareFunObj.declareRealtyHouseCert.toggle();
