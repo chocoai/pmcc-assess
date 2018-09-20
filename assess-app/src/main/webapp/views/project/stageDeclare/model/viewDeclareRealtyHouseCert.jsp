@@ -147,7 +147,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHousePropertyCertificateDeclareRealtyHouseCertCategory, "", function (html, data) {
+        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
             $("#" + declareRealtyHouseCertConfig.frm + " .type").html(html);
             $("#" + declareRealtyHouseCertConfig.frm + " .type").select2();//加载样式
         });
@@ -257,7 +257,7 @@
                     id = "";
                 }
                 if (declareRealtyHouseCert.isEmpty(id)) {
-                    AssessCommon.getDataDicInfo(id, function (data) {
+                    AssessCommon.getProjectClassifyInfo(id, function (data) {
                         if (declareRealtyHouseCert.isEmpty(data)) {
                             var temp = location + "房权证" + data.name + "字地" + number + "号";
                             $("#" + declareRealtyHouseCertConfig.frm + " input[name='certName']").val(temp);

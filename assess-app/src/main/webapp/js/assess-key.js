@@ -45,6 +45,8 @@ AssessProjectClassifyKey.single = "single";//单项资产
 AssessProjectClassifyKey.singleCsr = "single.csr";//不良债权评估
 AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 
+AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.property.certificate.type";//房产证书类型
+AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory = "single.house.property.certificate.type.house.category";//房产证 类别
 
 /**
  * 数据字典key
@@ -52,8 +54,6 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 var AssessDicKey = {}
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//	委托目的
-AssessDicKey.projectDeclareHousePropertyCertificateType = "project.declare.house.property.certificate.type";//房产证书类型
-AssessDicKey.projectDeclareHousePropertyCertificateDeclareRealtyHouseCertCategory = "project.declare.house.property.certificate.declareRealtyHouseCert.category";//房产证 类别
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//税率配置
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";

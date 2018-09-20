@@ -80,6 +80,56 @@
             var regex = '/({' + temp + '})/g';
             return text.replace(eval(regex), value);
         },
+        //获取项目分类详细信息
+        getProjectClassifyInfo:function (id,callback) {
+            if (id){
+                $.ajax({
+                    url: getContextPath() + "/baseProjectClassify/getProjectClassifyInfo",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        id: id
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            if (callback) {
+                                callback( result.data);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+        },
+        //根据项目字段获取项目类别
+        getProjectClassifyListByFieldName:function (fieldName,callback) {
+            if (fieldName){
+                $.ajax({
+                    url: getContextPath() + "/baseProjectClassify/getProjectClassifyListByFieldName",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        fieldName: fieldName
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+        },
 
         //根据项目类型获取项目类别
         getProjectClassifyList: function (typeId, callback) {
