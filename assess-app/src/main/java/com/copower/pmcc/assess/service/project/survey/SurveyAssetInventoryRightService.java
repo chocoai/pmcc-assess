@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryRightDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
@@ -14,6 +15,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -137,36 +139,48 @@ public class SurveyAssetInventoryRightService {
         FileInputStream inputStream = new FileInputStream(filePath);
         Workbook hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
         Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
-        int rowCount = sheet.getLastRowNum();//总行数
-        int startRowNumber = 1;//读取业务数据的起始行序号
-        for (int i = startRowNumber; i < rowCount; i++) {
+        int startRowNumber = 1;//读取数据的起始行
+        int rowCount = sheet.getLastRowNum() + 1 - startRowNumber;//数据总行数
+        StringBuilder errorMsg = new StringBuilder();
+        int successCount = 0;//导入成功数据条数
+        List<BaseDataDic> typeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
+        for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
             try {
-                Row row = sheet.getRow(startRowNumber);
-                SurveyAssetInventoryRight surveyAssetInventoryRight=new SurveyAssetInventoryRight();
+                Row row = sheet.getRow(i);
+                SurveyAssetInventoryRight surveyAssetInventoryRight = new SurveyAssetInventoryRight();
                 surveyAssetInventoryRight.setProjectId(right.getProjectId());
                 surveyAssetInventoryRight.setPlanDetailsId(right.getPlanDetailsId());
                 surveyAssetInventoryRight.setCertName(right.getCertName());
                 surveyAssetInventoryRight.setCreator(commonService.thisUserAccount());
-                surveyAssetInventoryRight.setType(0);
-                surveyAssetInventoryRight.setCategory(0);
-                surveyAssetInventoryRight.setNumber(row.getCell(3).getStringCellValue());
-                surveyAssetInventoryRight.setRegisterDate(row.getCell(4).getDateCellValue());
-                surveyAssetInventoryRight.setObligor(row.getCell(5).getStringCellValue());
-                surveyAssetInventoryRight.setObligee(row.getCell(6).getStringCellValue());
-                surveyAssetInventoryRight.setRegisterAmount(row.getCell(7).getStringCellValue());
-                surveyAssetInventoryRight.setActualAmount(row.getCell(8).getStringCellValue());
-                surveyAssetInventoryRight.setRegisterArea(row.getCell(9).getStringCellValue());
-                surveyAssetInventoryRight.setRightRank(row.getCell(10).getStringCellValue());
-                surveyAssetInventoryRight.setBeginDate(row.getCell(11).getDateCellValue());
-                surveyAssetInventoryRight.setEndDate(row.getCell(12).getDateCellValue());
+                BaseDataDic typeDic = baseDataDicService.getDataDicByName(typeList, PoiUtils.getCellValue(row.getCell(1)));
+                if (typeDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                surveyAssetInventoryRight.setType(typeDic.getId());
+                List<BaseDataDic> categoryList = baseDataDicService.getCacheDataDicListByPid(typeDic.getId());
+                BaseDataDic categoryDic = baseDataDicService.getDataDicByName(categoryList, PoiUtils.getCellValue(row.getCell(2)));
+                if (categoryDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：类别与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                surveyAssetInventoryRight.setCategory(categoryDic.getId());
+                surveyAssetInventoryRight.setNumber(PoiUtils.getCellValue(row.getCell(3)));
+                surveyAssetInventoryRight.setRegisterDate(DateUtils.convertDate(PoiUtils.getCellValue(row.getCell(4))));
+                surveyAssetInventoryRight.setObligor(PoiUtils.getCellValue(row.getCell(5)));
+                surveyAssetInventoryRight.setObligee(PoiUtils.getCellValue(row.getCell(6)));
+                surveyAssetInventoryRight.setRegisterAmount(PoiUtils.getCellValue(row.getCell(7)));
+                surveyAssetInventoryRight.setActualAmount(PoiUtils.getCellValue(row.getCell(8)));
+                surveyAssetInventoryRight.setRegisterArea(PoiUtils.getCellValue(row.getCell(9)));
+                surveyAssetInventoryRight.setRightRank(PoiUtils.getCellValue(row.getCell(10)));
+                surveyAssetInventoryRight.setBeginDate(DateUtils.convertDate(PoiUtils.getCellValue(row.getCell(11))));
+                surveyAssetInventoryRight.setEndDate(DateUtils.convertDate(PoiUtils.getCellValue(row.getCell(12))));
                 surveyAssetInventoryRightDao.add(surveyAssetInventoryRight);
-            }catch (Exception e){
-
+                successCount++;
+            } catch (Exception e) {
+                errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
             }
         }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        return stringBuilder.toString();
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowCount, successCount, rowCount - successCount, errorMsg.toString());
     }
 }

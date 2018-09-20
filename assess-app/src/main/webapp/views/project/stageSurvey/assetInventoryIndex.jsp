@@ -223,7 +223,9 @@
                         </button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary">导入数据</button>
+                        <button type="button" class="btn btn-primary"
+                                onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据
+                        </button>
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
                             <span class="caret"></span>
@@ -233,7 +235,8 @@
                             <li><a href="javascript://"
                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight);">下载模板</a>
                             </li>
-                            <li><a href="#">导入数据</a>
+                            <li><a href="javascript://;"
+                                   onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据</a>
                             </li>
                         </ul>
                     </div>
@@ -446,14 +449,14 @@
         </div>
     </div>
 </div>
-<input type="file" id="ajaxFileUpload" name="file">
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <span style="display: none;"><%@include file="/views/base/mapPositionPicker.jsp" %></span>
 <script type="application/javascript">
 
     $(function () {
-        loadAssetOtherRightList();
+        loadAssetRightList();
 
         FileUtils.uploadFiles({
             target: "checkOriginalFile",
@@ -564,7 +567,7 @@
     }
 
     //加载 他项权利列表
-    function loadAssetOtherRightList() {
+    function loadAssetRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'categoryName', title: '类别'});
@@ -696,7 +699,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('保存成功');
-                        loadAssetOtherRightList();
+                        loadAssetRightList();
                         $('#divBox').modal('hide');
                     }
                     else {
@@ -736,8 +739,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        loadAssetOtherRightList();//重载 (刷新)
-                        $('#' + tbId).bootstrapTable("refresh");
+                        loadAssetRightList();//重载 (刷新)
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -753,25 +755,31 @@
 
     //导入他权数据
     function importRightData() {
+        Loading.progressShow();
         $.ajaxFileUpload({
             type: "POST",
-            url: "${pageContext.request.contextPath}/toolkit/importPicFile.do",
+            url: "${pageContext.request.contextPath}/surveyAssetInventoryRight/importData",
             data: {
+                projectId: '${projectId}',
+                certName: '${declareRecord.name}',
                 planDetailsId: ' ${projectPlanDetails.id}'
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
             fileElementId: 'ajaxFileUpload',//文件选择框的id属性
             dataType: 'json',//服务器返回的格式
             async: false,
-            success: function (data) {
-                if (data.result == 'success') {
-                    //coding
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert(result.data.replace(/\n/g, '<br/>'));
+                    loadAssetRightList();
                 } else {
-                    //coding
+                    Alert("导入数据失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (data, status, e) {
-
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
 

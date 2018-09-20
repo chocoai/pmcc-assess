@@ -130,6 +130,13 @@ public class ProjectPhaseService {
         }
     }
 
+    public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId,Integer workStageId) {
+        List<ProjectPhase> projectPhaseList = getCacheProjectPhaseByCategoryId(categoryId);
+        return LangUtils.filter(projectPhaseList, o -> {
+            return o.getWorkStageId().equals(workStageId);
+        });
+    }
+
     /**
      * 获取类别下的默认事项
      * @param typeId

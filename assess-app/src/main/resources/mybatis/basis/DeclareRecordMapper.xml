@@ -18,6 +18,7 @@
     <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
     <result column="assess_unit_price" property="assessUnitPrice" jdbcType="DECIMAL" />
     <result column="already_out_area" property="alreadyOutArea" jdbcType="DECIMAL" />
+    <result column="inventory_content_key" property="inventoryContentKey" jdbcType="VARCHAR" />
     <result column="bis_generate_all" property="bisGenerateAll" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -84,7 +85,8 @@
   <sql id="Base_Column_List" >
     id, project_id, project_classify_id, province, city, district, name, ownership, seat, 
     cert_use, practical_use, area_group_id, floor_area, assess_area, assess_unit_price, 
-    already_out_area, bis_generate_all, creator, gmt_created, gmt_modified
+    already_out_area, inventory_content_key, bis_generate_all, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
     select
@@ -125,15 +127,15 @@
       ownership, seat, cert_use, 
       practical_use, area_group_id, floor_area, 
       assess_area, assess_unit_price, already_out_area, 
-      bis_generate_all, creator, gmt_created, 
-      gmt_modified)
+      inventory_content_key, bis_generate_all, creator, 
+      gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{projectClassifyId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, 
       #{practicalUse,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
       #{assessArea,jdbcType=DECIMAL}, #{assessUnitPrice,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, 
-      #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{inventoryContentKey,jdbcType=VARCHAR}, #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -185,6 +187,9 @@
       </if>
       <if test="alreadyOutArea != null" >
         already_out_area,
+      </if>
+      <if test="inventoryContentKey != null" >
+        inventory_content_key,
       </if>
       <if test="bisGenerateAll != null" >
         bis_generate_all,
@@ -244,6 +249,9 @@
       </if>
       <if test="alreadyOutArea != null" >
         #{alreadyOutArea,jdbcType=DECIMAL},
+      </if>
+      <if test="inventoryContentKey != null" >
+        #{inventoryContentKey,jdbcType=VARCHAR},
       </if>
       <if test="bisGenerateAll != null" >
         #{bisGenerateAll,jdbcType=BIT},
@@ -316,6 +324,9 @@
       <if test="record.alreadyOutArea != null" >
         already_out_area = #{record.alreadyOutArea,jdbcType=DECIMAL},
       </if>
+      <if test="record.inventoryContentKey != null" >
+        inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisGenerateAll != null" >
         bis_generate_all = #{record.bisGenerateAll,jdbcType=BIT},
       </if>
@@ -351,6 +362,7 @@
       assess_area = #{record.assessArea,jdbcType=DECIMAL},
       assess_unit_price = #{record.assessUnitPrice,jdbcType=DECIMAL},
       already_out_area = #{record.alreadyOutArea,jdbcType=DECIMAL},
+      inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
       bis_generate_all = #{record.bisGenerateAll,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -407,6 +419,9 @@
       <if test="alreadyOutArea != null" >
         already_out_area = #{alreadyOutArea,jdbcType=DECIMAL},
       </if>
+      <if test="inventoryContentKey != null" >
+        inventory_content_key = #{inventoryContentKey,jdbcType=VARCHAR},
+      </if>
       <if test="bisGenerateAll != null" >
         bis_generate_all = #{bisGenerateAll,jdbcType=BIT},
       </if>
@@ -439,6 +454,7 @@
       assess_area = #{assessArea,jdbcType=DECIMAL},
       assess_unit_price = #{assessUnitPrice,jdbcType=DECIMAL},
       already_out_area = #{alreadyOutArea,jdbcType=DECIMAL},
+      inventory_content_key = #{inventoryContentKey,jdbcType=VARCHAR},
       bis_generate_all = #{bisGenerateAll,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

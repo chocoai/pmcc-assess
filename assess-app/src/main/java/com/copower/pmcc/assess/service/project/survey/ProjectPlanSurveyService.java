@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -27,6 +28,8 @@ public class ProjectPlanSurveyService {
     private ProjectPlanDetailsDao projectPlanDetailsDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
     /**
      * 初始化阶段任务
@@ -42,7 +45,7 @@ public class ProjectPlanSurveyService {
         Integer planId = projectPlan.getId();
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
-        List<ProjectPhase> projectPhases = projectPhaseDao.getProjectPhaseByWorkStageId(workStageId);
+        List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId(),workStageId);
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordByProjectId(projectId);
 
         int i = 1;

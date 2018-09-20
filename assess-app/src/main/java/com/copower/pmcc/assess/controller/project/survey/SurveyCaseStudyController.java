@@ -68,4 +68,16 @@ public class SurveyCaseStudyController {
         }
     }
 
+    @ResponseBody
+    @PostMapping(name = "复制案例", value = "/copyCaseStudy")
+    public HttpResult copyCaseStudy(Integer planDetailsId) {
+        try {
+            surveyCaseStudyService.copyCaseStudy(planDetailsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("复制案例", e);
+            return HttpResult.newErrorResult("复制案例异常");
+        }
+    }
+
 }

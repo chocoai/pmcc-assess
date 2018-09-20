@@ -235,7 +235,7 @@
                 },
 
                 columns: [[
-                    {field: "projectPhaseName", title: "工作内容", width: "20%", align: "left"},
+                    {field: "projectPhaseName", title: "工作内容", width: "30%", align: "left"},
                     {
                         field: "planStartDate",
                         title: "开始时间",
@@ -255,12 +255,6 @@
                         }
                     },
                     {
-                        field: "planHours",
-                        title: "计划工时",
-                        width: "5%",
-                        align: "center"
-                    },
-                    {
                         field: "executeUserName",
                         title: "责任人",
                         width: "10%",
@@ -272,13 +266,6 @@
                         width: "10%",
                         align: "center"
                     },
-                    {
-                        field: "proportion",
-                        title: "权重占比",
-                        width: "5%",
-                        align: "center"
-                    },
-
                     {
                         field: 'workStages', title: '操作', width: '10%', formatter: function (value, row) {
                         if (row.bisEnable) {
@@ -311,6 +298,7 @@
         var editHtml = "<a  data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips' target='_blank' onclick='taskCaseIndex.editCaseTask(" + id + ")'  ><i class='fa fa-edit fa-white'></i></a>";
         var deleteHtml = "<a  data-placement='top' data-original-title='删除' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.deleteCaseTask(" + id + ")'><i class='fa fa-minus fa-white'></i></a>";
         var assignmentHtml = "<a  data-placement='top' data-original-title='分派' class='btn btn-xs btn-warning tooltips' target='_blank'   onclick='taskCaseIndex.assignment(" + id + ")'><i class='fa fa-arrows-alt fa-white'></i></a>";
+        var copyHtml = " <a href='javascript://;' onclick='taskCaseIndex.copyCaseStudy(" + id + ")' data-placement='top' data-original-title='复制案例' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-copy fa-white'></i></a>";
         var viewHtml = "";
         var resultHtml = "";
         switch (status) {
@@ -318,10 +306,10 @@
                 resultHtml = editHtml + deleteHtml + assignmentHtml;
                 break
             case "runing":
-                resultHtml = viewHtml + assignmentHtml;
+                resultHtml = viewHtml + assignmentHtml + copyHtml;
                 break
             case "finish":
-                resultHtml = viewHtml;
+                resultHtml = viewHtml + copyHtml;
                 break
         }
         return resultHtml;
@@ -503,6 +491,25 @@
             keyValueArray.push(keyValue);
         })
         return JSON.stringify(keyValueArray);
+    }
+
+    //复制案例
+    taskCaseIndex.copyCaseStudy = function (id) {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/surveyCaseStudy/copyCaseStudy",
+            data: {planDetailsId: id},
+            dataType: 'json',
+            type: 'post',
+            async: false,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("复制成功");
+                    taskCaseIndex.getCaseTaskList();
+                }
+            }
+        })
     }
 
     //全选
