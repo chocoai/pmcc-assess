@@ -47,6 +47,7 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 
 AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.property.certificate.type";//房产证书类型
 AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory = "single.house.property.certificate.type.house.category";//房产证 类别
+AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory = "single.land.property.certificate.type.land.category";//土地证 类别
 
 /**
  * 数据字典key

@@ -1,11 +1,13 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
+import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyRealEstateCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -37,7 +39,7 @@ public class DeclareRealtyRealEstateCertController {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(declareRealtyRealEstateCert);
+        return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCert));
     }
 
     @ResponseBody
@@ -88,7 +90,11 @@ public class DeclareRealtyRealEstateCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyRealEstateCert", method = {RequestMethod.POST}, name = "更新不动产维护")
-    public HttpResult saveAndUpdate(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
+    public HttpResult saveAndUpdate(DeclareRealtyRealEstateCertDto declareRealtyRealEstateCertDto) {
+        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
+        if (declareRealtyRealEstateCertDto != null){
+            BeanUtils.copyProperties(declareRealtyRealEstateCertDto,declareRealtyRealEstateCert);
+        }
         try {
             declareRealtyRealEstateCertService.saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             return HttpResult.newCorrectResult("保存 success!");

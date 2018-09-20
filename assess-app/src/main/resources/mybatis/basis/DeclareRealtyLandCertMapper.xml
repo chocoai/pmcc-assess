@@ -5,11 +5,13 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="land_cert_name" property="landCertName" jdbcType="VARCHAR" />
     <result column="cert_name" property="certName" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="year" property="year" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
@@ -21,15 +23,10 @@
     <result column="floor" property="floor" jdbcType="VARCHAR" />
     <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
     <result column="land_number" property="landNumber" jdbcType="VARCHAR" />
+    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="graph_number" property="graphNumber" jdbcType="VARCHAR" />
-    <result column="residential_land" property="residentialLand" jdbcType="VARCHAR" />
-    <result column="storage_land" property="storageLand" jdbcType="VARCHAR" />
-    <result column="commercial_land" property="commercialLand" jdbcType="VARCHAR" />
-    <result column="service_land" property="serviceLand" jdbcType="VARCHAR" />
-    <result column="transportation_land" property="transportationLand" jdbcType="VARCHAR" />
+    <result column="use_right_type" property="useRightType" jdbcType="VARCHAR" />
     <result column="acquisition_price" property="acquisitionPrice" jdbcType="VARCHAR" />
-    <result column="transfer" property="transfer" jdbcType="VARCHAR" />
-    <result column="certificate" property="certificate" jdbcType="VARCHAR" />
     <result column="termination_date" property="terminationDate" jdbcType="TIMESTAMP" />
     <result column="use_right_area" property="useRightArea" jdbcType="VARCHAR" />
     <result column="acreage" property="acreage" jdbcType="VARCHAR" />
@@ -100,12 +97,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, plan_details_id, cert_name, province, city, district, type, year, number, 
-    ownership, be_located, street_number, attached_number, building_number, unit, floor, 
-    room_number, land_number, graph_number, residential_land, storage_land, commercial_land, 
-    service_land, transportation_land, acquisition_price, transfer, certificate, termination_date, 
-    use_right_area, acreage, apportionment_area, memo, registration_authority, registration_date, 
-    creator, gmt_created, gmt_modified
+    id, pid, plan_details_id, land_cert_name, cert_name, province, city, district, type, 
+    location, year, number, ownership, be_located, street_number, attached_number, building_number, 
+    unit, floor, room_number, land_number, purpose, graph_number, use_right_type, acquisition_price, 
+    termination_date, use_right_area, acreage, apportionment_area, memo, registration_authority, 
+    registration_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCertExample" >
     select
@@ -141,28 +137,26 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_realty_land_cert (pid, plan_details_id, cert_name, 
-      province, city, district, 
-      type, year, number, 
-      ownership, be_located, street_number, 
-      attached_number, building_number, unit, 
-      floor, room_number, land_number, 
-      graph_number, residential_land, storage_land, 
-      commercial_land, service_land, transportation_land, 
-      acquisition_price, transfer, certificate, 
+    insert into tb_declare_realty_land_cert (pid, plan_details_id, land_cert_name, 
+      cert_name, province, city, 
+      district, type, location, 
+      year, number, ownership, 
+      be_located, street_number, attached_number, 
+      building_number, unit, floor, 
+      room_number, land_number, purpose, 
+      graph_number, use_right_type, acquisition_price, 
       termination_date, use_right_area, acreage, 
       apportionment_area, memo, registration_authority, 
       registration_date, creator, gmt_created, 
       gmt_modified)
-    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{year,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
-      #{ownership,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
-      #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, 
-      #{graphNumber,jdbcType=VARCHAR}, #{residentialLand,jdbcType=VARCHAR}, #{storageLand,jdbcType=VARCHAR}, 
-      #{commercialLand,jdbcType=VARCHAR}, #{serviceLand,jdbcType=VARCHAR}, #{transportationLand,jdbcType=VARCHAR}, 
-      #{acquisitionPrice,jdbcType=VARCHAR}, #{transfer,jdbcType=VARCHAR}, #{certificate,jdbcType=VARCHAR}, 
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCertName,jdbcType=VARCHAR}, 
+      #{certName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{year,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+      #{roomNumber,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, 
+      #{graphNumber,jdbcType=VARCHAR}, #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=VARCHAR}, 
       #{terminationDate,jdbcType=TIMESTAMP}, #{useRightArea,jdbcType=VARCHAR}, #{acreage,jdbcType=VARCHAR}, 
       #{apportionmentArea,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
       #{registrationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -180,6 +174,9 @@
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
+      <if test="landCertName != null" >
+        land_cert_name,
+      </if>
       <if test="certName != null" >
         cert_name,
       </if>
@@ -194,6 +191,9 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="location != null" >
+        location,
       </if>
       <if test="year != null" >
         year,
@@ -228,32 +228,17 @@
       <if test="landNumber != null" >
         land_number,
       </if>
+      <if test="purpose != null" >
+        purpose,
+      </if>
       <if test="graphNumber != null" >
         graph_number,
       </if>
-      <if test="residentialLand != null" >
-        residential_land,
-      </if>
-      <if test="storageLand != null" >
-        storage_land,
-      </if>
-      <if test="commercialLand != null" >
-        commercial_land,
-      </if>
-      <if test="serviceLand != null" >
-        service_land,
-      </if>
-      <if test="transportationLand != null" >
-        transportation_land,
+      <if test="useRightType != null" >
+        use_right_type,
       </if>
       <if test="acquisitionPrice != null" >
         acquisition_price,
-      </if>
-      <if test="transfer != null" >
-        transfer,
-      </if>
-      <if test="certificate != null" >
-        certificate,
       </if>
       <if test="terminationDate != null" >
         termination_date,
@@ -293,6 +278,9 @@
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="landCertName != null" >
+        #{landCertName,jdbcType=VARCHAR},
+      </if>
       <if test="certName != null" >
         #{certName,jdbcType=VARCHAR},
       </if>
@@ -307,6 +295,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
       </if>
       <if test="year != null" >
         #{year,jdbcType=VARCHAR},
@@ -341,32 +332,17 @@
       <if test="landNumber != null" >
         #{landNumber,jdbcType=VARCHAR},
       </if>
+      <if test="purpose != null" >
+        #{purpose,jdbcType=VARCHAR},
+      </if>
       <if test="graphNumber != null" >
         #{graphNumber,jdbcType=VARCHAR},
       </if>
-      <if test="residentialLand != null" >
-        #{residentialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="storageLand != null" >
-        #{storageLand,jdbcType=VARCHAR},
-      </if>
-      <if test="commercialLand != null" >
-        #{commercialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceLand != null" >
-        #{serviceLand,jdbcType=VARCHAR},
-      </if>
-      <if test="transportationLand != null" >
-        #{transportationLand,jdbcType=VARCHAR},
+      <if test="useRightType != null" >
+        #{useRightType,jdbcType=VARCHAR},
       </if>
       <if test="acquisitionPrice != null" >
         #{acquisitionPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="transfer != null" >
-        #{transfer,jdbcType=VARCHAR},
-      </if>
-      <if test="certificate != null" >
-        #{certificate,jdbcType=VARCHAR},
       </if>
       <if test="terminationDate != null" >
         #{terminationDate,jdbcType=TIMESTAMP},
@@ -418,6 +394,9 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="record.landCertName != null" >
+        land_cert_name = #{record.landCertName,jdbcType=VARCHAR},
+      </if>
       <if test="record.certName != null" >
         cert_name = #{record.certName,jdbcType=VARCHAR},
       </if>
@@ -432,6 +411,9 @@
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
       </if>
       <if test="record.year != null" >
         year = #{record.year,jdbcType=VARCHAR},
@@ -466,32 +448,17 @@
       <if test="record.landNumber != null" >
         land_number = #{record.landNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.purpose != null" >
+        purpose = #{record.purpose,jdbcType=VARCHAR},
+      </if>
       <if test="record.graphNumber != null" >
         graph_number = #{record.graphNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.residentialLand != null" >
-        residential_land = #{record.residentialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="record.storageLand != null" >
-        storage_land = #{record.storageLand,jdbcType=VARCHAR},
-      </if>
-      <if test="record.commercialLand != null" >
-        commercial_land = #{record.commercialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="record.serviceLand != null" >
-        service_land = #{record.serviceLand,jdbcType=VARCHAR},
-      </if>
-      <if test="record.transportationLand != null" >
-        transportation_land = #{record.transportationLand,jdbcType=VARCHAR},
+      <if test="record.useRightType != null" >
+        use_right_type = #{record.useRightType,jdbcType=VARCHAR},
       </if>
       <if test="record.acquisitionPrice != null" >
         acquisition_price = #{record.acquisitionPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="record.transfer != null" >
-        transfer = #{record.transfer,jdbcType=VARCHAR},
-      </if>
-      <if test="record.certificate != null" >
-        certificate = #{record.certificate,jdbcType=VARCHAR},
       </if>
       <if test="record.terminationDate != null" >
         termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
@@ -533,11 +500,13 @@
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      land_cert_name = #{record.landCertName,jdbcType=VARCHAR},
       cert_name = #{record.certName,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
       year = #{record.year,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
@@ -549,15 +518,10 @@
       floor = #{record.floor,jdbcType=VARCHAR},
       room_number = #{record.roomNumber,jdbcType=VARCHAR},
       land_number = #{record.landNumber,jdbcType=VARCHAR},
+      purpose = #{record.purpose,jdbcType=VARCHAR},
       graph_number = #{record.graphNumber,jdbcType=VARCHAR},
-      residential_land = #{record.residentialLand,jdbcType=VARCHAR},
-      storage_land = #{record.storageLand,jdbcType=VARCHAR},
-      commercial_land = #{record.commercialLand,jdbcType=VARCHAR},
-      service_land = #{record.serviceLand,jdbcType=VARCHAR},
-      transportation_land = #{record.transportationLand,jdbcType=VARCHAR},
+      use_right_type = #{record.useRightType,jdbcType=VARCHAR},
       acquisition_price = #{record.acquisitionPrice,jdbcType=VARCHAR},
-      transfer = #{record.transfer,jdbcType=VARCHAR},
-      certificate = #{record.certificate,jdbcType=VARCHAR},
       termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
       use_right_area = #{record.useRightArea,jdbcType=VARCHAR},
       acreage = #{record.acreage,jdbcType=VARCHAR},
@@ -581,6 +545,9 @@
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
+      <if test="landCertName != null" >
+        land_cert_name = #{landCertName,jdbcType=VARCHAR},
+      </if>
       <if test="certName != null" >
         cert_name = #{certName,jdbcType=VARCHAR},
       </if>
@@ -595,6 +562,9 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
       </if>
       <if test="year != null" >
         year = #{year,jdbcType=VARCHAR},
@@ -629,32 +599,17 @@
       <if test="landNumber != null" >
         land_number = #{landNumber,jdbcType=VARCHAR},
       </if>
+      <if test="purpose != null" >
+        purpose = #{purpose,jdbcType=VARCHAR},
+      </if>
       <if test="graphNumber != null" >
         graph_number = #{graphNumber,jdbcType=VARCHAR},
       </if>
-      <if test="residentialLand != null" >
-        residential_land = #{residentialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="storageLand != null" >
-        storage_land = #{storageLand,jdbcType=VARCHAR},
-      </if>
-      <if test="commercialLand != null" >
-        commercial_land = #{commercialLand,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceLand != null" >
-        service_land = #{serviceLand,jdbcType=VARCHAR},
-      </if>
-      <if test="transportationLand != null" >
-        transportation_land = #{transportationLand,jdbcType=VARCHAR},
+      <if test="useRightType != null" >
+        use_right_type = #{useRightType,jdbcType=VARCHAR},
       </if>
       <if test="acquisitionPrice != null" >
         acquisition_price = #{acquisitionPrice,jdbcType=VARCHAR},
-      </if>
-      <if test="transfer != null" >
-        transfer = #{transfer,jdbcType=VARCHAR},
-      </if>
-      <if test="certificate != null" >
-        certificate = #{certificate,jdbcType=VARCHAR},
       </if>
       <if test="terminationDate != null" >
         termination_date = #{terminationDate,jdbcType=TIMESTAMP},
@@ -693,11 +648,13 @@
     update tb_declare_realty_land_cert
     set pid = #{pid,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      land_cert_name = #{landCertName,jdbcType=VARCHAR},
       cert_name = #{certName,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
       year = #{year,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
@@ -709,15 +666,10 @@
       floor = #{floor,jdbcType=VARCHAR},
       room_number = #{roomNumber,jdbcType=VARCHAR},
       land_number = #{landNumber,jdbcType=VARCHAR},
+      purpose = #{purpose,jdbcType=VARCHAR},
       graph_number = #{graphNumber,jdbcType=VARCHAR},
-      residential_land = #{residentialLand,jdbcType=VARCHAR},
-      storage_land = #{storageLand,jdbcType=VARCHAR},
-      commercial_land = #{commercialLand,jdbcType=VARCHAR},
-      service_land = #{serviceLand,jdbcType=VARCHAR},
-      transportation_land = #{transportationLand,jdbcType=VARCHAR},
+      use_right_type = #{useRightType,jdbcType=VARCHAR},
       acquisition_price = #{acquisitionPrice,jdbcType=VARCHAR},
-      transfer = #{transfer,jdbcType=VARCHAR},
-      certificate = #{certificate,jdbcType=VARCHAR},
       termination_date = #{terminationDate,jdbcType=TIMESTAMP},
       use_right_area = #{useRightArea,jdbcType=VARCHAR},
       acreage = #{acreage,jdbcType=VARCHAR},

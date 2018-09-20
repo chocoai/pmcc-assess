@@ -75,7 +75,8 @@ public class DeclareRealtyHouseCertDto {
 
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date useEndDate;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    private Date landRegistrationDate;
     private BigDecimal publicArea;
 
     private String otherNote;
@@ -363,5 +364,13 @@ public class DeclareRealtyHouseCertDto {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Date getLandRegistrationDate() {
+        return landRegistrationDate;
+    }
+
+    public void setLandRegistrationDate(Date landRegistrationDate) {
+        this.landRegistrationDate = landRegistrationDate;
     }
 }

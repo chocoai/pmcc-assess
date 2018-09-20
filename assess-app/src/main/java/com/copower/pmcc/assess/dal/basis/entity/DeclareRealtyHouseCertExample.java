@@ -2396,6 +2396,66 @@ public class DeclareRealtyHouseCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandRegistrationDateIsNull() {
+            addCriterion("land_registration_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateIsNotNull() {
+            addCriterion("land_registration_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateEqualTo(Date value) {
+            addCriterion("land_registration_date =", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateNotEqualTo(Date value) {
+            addCriterion("land_registration_date <>", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateGreaterThan(Date value) {
+            addCriterion("land_registration_date >", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("land_registration_date >=", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateLessThan(Date value) {
+            addCriterion("land_registration_date <", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateLessThanOrEqualTo(Date value) {
+            addCriterion("land_registration_date <=", value, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateIn(List<Date> values) {
+            addCriterion("land_registration_date in", values, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateNotIn(List<Date> values) {
+            addCriterion("land_registration_date not in", values, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateBetween(Date value1, Date value2) {
+            addCriterion("land_registration_date between", value1, value2, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRegistrationDateNotBetween(Date value1, Date value2) {
+            addCriterion("land_registration_date not between", value1, value2, "landRegistrationDate");
+            return (Criteria) this;
+        }
+
         public Criteria andRegistrationDateIsNull() {
             addCriterion("registration_date is null");
             return (Criteria) this;

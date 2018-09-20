@@ -72,6 +72,8 @@ public class DeclareRealtyHouseCert {
 
     private String registrationAuthority;
 
+    private Date landRegistrationDate;
+
     private Date registrationDate;
 
     private String creator;
@@ -350,6 +352,14 @@ public class DeclareRealtyHouseCert {
 
     public void setRegistrationAuthority(String registrationAuthority) {
         this.registrationAuthority = registrationAuthority == null ? null : registrationAuthority.trim();
+    }
+
+    public Date getLandRegistrationDate() {
+        return landRegistrationDate;
+    }
+
+    public void setLandRegistrationDate(Date landRegistrationDate) {
+        this.landRegistrationDate = landRegistrationDate;
     }
 
     public Date getRegistrationDate() {

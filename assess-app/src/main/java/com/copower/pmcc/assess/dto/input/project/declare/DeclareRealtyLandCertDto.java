@@ -1,8 +1,15 @@
-package com.copower.pmcc.assess.dal.basis.entity;
+package com.copower.pmcc.assess.dto.input.project.declare;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class DeclareRealtyLandCert {
+/**
+ * @Auther: zch
+ * @Date: 2018/9/20 10:58
+ * @Description:
+ */
+public class DeclareRealtyLandCertDto {
     private Integer id;
 
     private Integer pid;
@@ -52,7 +59,7 @@ public class DeclareRealtyLandCert {
     private String useRightType;
 
     private String acquisitionPrice;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date terminationDate;
 
     private String useRightArea;
@@ -64,14 +71,8 @@ public class DeclareRealtyLandCert {
     private String memo;
 
     private String registrationAuthority;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -102,7 +103,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setLandCertName(String landCertName) {
-        this.landCertName = landCertName == null ? null : landCertName.trim();
+        this.landCertName = landCertName;
     }
 
     public String getCertName() {
@@ -110,7 +111,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setCertName(String certName) {
-        this.certName = certName == null ? null : certName.trim();
+        this.certName = certName;
     }
 
     public String getProvince() {
@@ -118,7 +119,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+        this.province = province;
     }
 
     public String getCity() {
@@ -126,7 +127,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getDistrict() {
@@ -134,7 +135,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setDistrict(String district) {
-        this.district = district == null ? null : district.trim();
+        this.district = district;
     }
 
     public Integer getType() {
@@ -150,7 +151,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+        this.location = location;
     }
 
     public String getYear() {
@@ -158,7 +159,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setYear(String year) {
-        this.year = year == null ? null : year.trim();
+        this.year = year;
     }
 
     public String getNumber() {
@@ -166,7 +167,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
+        this.number = number;
     }
 
     public String getOwnership() {
@@ -174,7 +175,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setOwnership(String ownership) {
-        this.ownership = ownership == null ? null : ownership.trim();
+        this.ownership = ownership;
     }
 
     public String getBeLocated() {
@@ -182,7 +183,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setBeLocated(String beLocated) {
-        this.beLocated = beLocated == null ? null : beLocated.trim();
+        this.beLocated = beLocated;
     }
 
     public String getStreetNumber() {
@@ -190,7 +191,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber == null ? null : streetNumber.trim();
+        this.streetNumber = streetNumber;
     }
 
     public String getAttachedNumber() {
@@ -198,7 +199,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setAttachedNumber(String attachedNumber) {
-        this.attachedNumber = attachedNumber == null ? null : attachedNumber.trim();
+        this.attachedNumber = attachedNumber;
     }
 
     public String getBuildingNumber() {
@@ -206,7 +207,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+        this.buildingNumber = buildingNumber;
     }
 
     public String getUnit() {
@@ -214,7 +215,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setUnit(String unit) {
-        this.unit = unit == null ? null : unit.trim();
+        this.unit = unit;
     }
 
     public String getFloor() {
@@ -222,7 +223,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setFloor(String floor) {
-        this.floor = floor == null ? null : floor.trim();
+        this.floor = floor;
     }
 
     public String getRoomNumber() {
@@ -230,7 +231,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber == null ? null : roomNumber.trim();
+        this.roomNumber = roomNumber;
     }
 
     public String getLandNumber() {
@@ -238,7 +239,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setLandNumber(String landNumber) {
-        this.landNumber = landNumber == null ? null : landNumber.trim();
+        this.landNumber = landNumber;
     }
 
     public String getPurpose() {
@@ -246,7 +247,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
+        this.purpose = purpose;
     }
 
     public String getGraphNumber() {
@@ -254,7 +255,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setGraphNumber(String graphNumber) {
-        this.graphNumber = graphNumber == null ? null : graphNumber.trim();
+        this.graphNumber = graphNumber;
     }
 
     public String getUseRightType() {
@@ -262,7 +263,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setUseRightType(String useRightType) {
-        this.useRightType = useRightType == null ? null : useRightType.trim();
+        this.useRightType = useRightType;
     }
 
     public String getAcquisitionPrice() {
@@ -270,7 +271,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setAcquisitionPrice(String acquisitionPrice) {
-        this.acquisitionPrice = acquisitionPrice == null ? null : acquisitionPrice.trim();
+        this.acquisitionPrice = acquisitionPrice;
     }
 
     public Date getTerminationDate() {
@@ -286,7 +287,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setUseRightArea(String useRightArea) {
-        this.useRightArea = useRightArea == null ? null : useRightArea.trim();
+        this.useRightArea = useRightArea;
     }
 
     public String getAcreage() {
@@ -294,7 +295,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setAcreage(String acreage) {
-        this.acreage = acreage == null ? null : acreage.trim();
+        this.acreage = acreage;
     }
 
     public String getApportionmentArea() {
@@ -302,7 +303,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setApportionmentArea(String apportionmentArea) {
-        this.apportionmentArea = apportionmentArea == null ? null : apportionmentArea.trim();
+        this.apportionmentArea = apportionmentArea;
     }
 
     public String getMemo() {
@@ -310,7 +311,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setMemo(String memo) {
-        this.memo = memo == null ? null : memo.trim();
+        this.memo = memo;
     }
 
     public String getRegistrationAuthority() {
@@ -318,7 +319,7 @@ public class DeclareRealtyLandCert {
     }
 
     public void setRegistrationAuthority(String registrationAuthority) {
-        this.registrationAuthority = registrationAuthority == null ? null : registrationAuthority.trim();
+        this.registrationAuthority = registrationAuthority;
     }
 
     public Date getRegistrationDate() {
@@ -327,29 +328,5 @@ public class DeclareRealtyLandCert {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 }

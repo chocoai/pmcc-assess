@@ -1,11 +1,13 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
+import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyLandCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -88,7 +90,11 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyLandCert", method = {RequestMethod.POST}, name = "更新土地证维护")
-    public HttpResult saveAndUpdate(DeclareRealtyLandCert declareRealtyLandCert) {
+    public HttpResult saveAndUpdate(DeclareRealtyLandCertDto declareRealtyLandCertDto) {
+        DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
+        if (declareRealtyLandCertDto != null){
+            BeanUtils.copyProperties(declareRealtyLandCertDto,declareRealtyLandCert);
+        }
         try {
             declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert);
             return HttpResult.newCorrectResult("保存 success!");

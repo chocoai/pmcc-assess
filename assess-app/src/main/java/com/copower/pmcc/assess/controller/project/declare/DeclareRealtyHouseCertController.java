@@ -39,7 +39,7 @@ public class DeclareRealtyHouseCertController {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(declareRealtyHouseCert);
+        return HttpResult.newCorrectResult(declareRealtyHouseCertService.getDeclareRealtyHouseCertVo(declareRealtyHouseCert));
     }
 
     @ResponseBody

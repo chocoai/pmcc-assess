@@ -285,6 +285,76 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandCertNameIsNull() {
+            addCriterion("land_cert_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameIsNotNull() {
+            addCriterion("land_cert_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameEqualTo(String value) {
+            addCriterion("land_cert_name =", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameNotEqualTo(String value) {
+            addCriterion("land_cert_name <>", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameGreaterThan(String value) {
+            addCriterion("land_cert_name >", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameGreaterThanOrEqualTo(String value) {
+            addCriterion("land_cert_name >=", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameLessThan(String value) {
+            addCriterion("land_cert_name <", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameLessThanOrEqualTo(String value) {
+            addCriterion("land_cert_name <=", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameLike(String value) {
+            addCriterion("land_cert_name like", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameNotLike(String value) {
+            addCriterion("land_cert_name not like", value, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameIn(List<String> values) {
+            addCriterion("land_cert_name in", values, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameNotIn(List<String> values) {
+            addCriterion("land_cert_name not in", values, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameBetween(String value1, String value2) {
+            addCriterion("land_cert_name between", value1, value2, "landCertName");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCertNameNotBetween(String value1, String value2) {
+            addCriterion("land_cert_name not between", value1, value2, "landCertName");
+            return (Criteria) this;
+        }
+
         public Criteria andCertNameIsNull() {
             addCriterion("cert_name is null");
             return (Criteria) this;
@@ -622,6 +692,76 @@ public class DeclareRealtyLandCertExample {
 
         public Criteria andTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNull() {
+            addCriterion("location is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNotNull() {
+            addCriterion("location is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationEqualTo(String value) {
+            addCriterion("location =", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotEqualTo(String value) {
+            addCriterion("location <>", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThan(String value) {
+            addCriterion("location >", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("location >=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThan(String value) {
+            addCriterion("location <", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThanOrEqualTo(String value) {
+            addCriterion("location <=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLike(String value) {
+            addCriterion("location like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotLike(String value) {
+            addCriterion("location not like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIn(List<String> values) {
+            addCriterion("location in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotIn(List<String> values) {
+            addCriterion("location not in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationBetween(String value1, String value2) {
+            addCriterion("location between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotBetween(String value1, String value2) {
+            addCriterion("location not between", value1, value2, "location");
             return (Criteria) this;
         }
 
@@ -1395,6 +1535,76 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andPurposeIsNull() {
+            addCriterion("purpose is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeIsNotNull() {
+            addCriterion("purpose is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeEqualTo(String value) {
+            addCriterion("purpose =", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeNotEqualTo(String value) {
+            addCriterion("purpose <>", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeGreaterThan(String value) {
+            addCriterion("purpose >", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeGreaterThanOrEqualTo(String value) {
+            addCriterion("purpose >=", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeLessThan(String value) {
+            addCriterion("purpose <", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeLessThanOrEqualTo(String value) {
+            addCriterion("purpose <=", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeLike(String value) {
+            addCriterion("purpose like", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeNotLike(String value) {
+            addCriterion("purpose not like", value, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeIn(List<String> values) {
+            addCriterion("purpose in", values, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeNotIn(List<String> values) {
+            addCriterion("purpose not in", values, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeBetween(String value1, String value2) {
+            addCriterion("purpose between", value1, value2, "purpose");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurposeNotBetween(String value1, String value2) {
+            addCriterion("purpose not between", value1, value2, "purpose");
+            return (Criteria) this;
+        }
+
         public Criteria andGraphNumberIsNull() {
             addCriterion("graph_number is null");
             return (Criteria) this;
@@ -1465,353 +1675,73 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandIsNull() {
-            addCriterion("residential_land is null");
+        public Criteria andUseRightTypeIsNull() {
+            addCriterion("use_right_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandIsNotNull() {
-            addCriterion("residential_land is not null");
+        public Criteria andUseRightTypeIsNotNull() {
+            addCriterion("use_right_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandEqualTo(String value) {
-            addCriterion("residential_land =", value, "residentialLand");
+        public Criteria andUseRightTypeEqualTo(String value) {
+            addCriterion("use_right_type =", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandNotEqualTo(String value) {
-            addCriterion("residential_land <>", value, "residentialLand");
+        public Criteria andUseRightTypeNotEqualTo(String value) {
+            addCriterion("use_right_type <>", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandGreaterThan(String value) {
-            addCriterion("residential_land >", value, "residentialLand");
+        public Criteria andUseRightTypeGreaterThan(String value) {
+            addCriterion("use_right_type >", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandGreaterThanOrEqualTo(String value) {
-            addCriterion("residential_land >=", value, "residentialLand");
+        public Criteria andUseRightTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("use_right_type >=", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandLessThan(String value) {
-            addCriterion("residential_land <", value, "residentialLand");
+        public Criteria andUseRightTypeLessThan(String value) {
+            addCriterion("use_right_type <", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandLessThanOrEqualTo(String value) {
-            addCriterion("residential_land <=", value, "residentialLand");
+        public Criteria andUseRightTypeLessThanOrEqualTo(String value) {
+            addCriterion("use_right_type <=", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandLike(String value) {
-            addCriterion("residential_land like", value, "residentialLand");
+        public Criteria andUseRightTypeLike(String value) {
+            addCriterion("use_right_type like", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandNotLike(String value) {
-            addCriterion("residential_land not like", value, "residentialLand");
+        public Criteria andUseRightTypeNotLike(String value) {
+            addCriterion("use_right_type not like", value, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandIn(List<String> values) {
-            addCriterion("residential_land in", values, "residentialLand");
+        public Criteria andUseRightTypeIn(List<String> values) {
+            addCriterion("use_right_type in", values, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandNotIn(List<String> values) {
-            addCriterion("residential_land not in", values, "residentialLand");
+        public Criteria andUseRightTypeNotIn(List<String> values) {
+            addCriterion("use_right_type not in", values, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandBetween(String value1, String value2) {
-            addCriterion("residential_land between", value1, value2, "residentialLand");
+        public Criteria andUseRightTypeBetween(String value1, String value2) {
+            addCriterion("use_right_type between", value1, value2, "useRightType");
             return (Criteria) this;
         }
 
-        public Criteria andResidentialLandNotBetween(String value1, String value2) {
-            addCriterion("residential_land not between", value1, value2, "residentialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandIsNull() {
-            addCriterion("storage_land is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandIsNotNull() {
-            addCriterion("storage_land is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandEqualTo(String value) {
-            addCriterion("storage_land =", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandNotEqualTo(String value) {
-            addCriterion("storage_land <>", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandGreaterThan(String value) {
-            addCriterion("storage_land >", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandGreaterThanOrEqualTo(String value) {
-            addCriterion("storage_land >=", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandLessThan(String value) {
-            addCriterion("storage_land <", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandLessThanOrEqualTo(String value) {
-            addCriterion("storage_land <=", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandLike(String value) {
-            addCriterion("storage_land like", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandNotLike(String value) {
-            addCriterion("storage_land not like", value, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandIn(List<String> values) {
-            addCriterion("storage_land in", values, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandNotIn(List<String> values) {
-            addCriterion("storage_land not in", values, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandBetween(String value1, String value2) {
-            addCriterion("storage_land between", value1, value2, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andStorageLandNotBetween(String value1, String value2) {
-            addCriterion("storage_land not between", value1, value2, "storageLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandIsNull() {
-            addCriterion("commercial_land is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandIsNotNull() {
-            addCriterion("commercial_land is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandEqualTo(String value) {
-            addCriterion("commercial_land =", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandNotEqualTo(String value) {
-            addCriterion("commercial_land <>", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandGreaterThan(String value) {
-            addCriterion("commercial_land >", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandGreaterThanOrEqualTo(String value) {
-            addCriterion("commercial_land >=", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandLessThan(String value) {
-            addCriterion("commercial_land <", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandLessThanOrEqualTo(String value) {
-            addCriterion("commercial_land <=", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandLike(String value) {
-            addCriterion("commercial_land like", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandNotLike(String value) {
-            addCriterion("commercial_land not like", value, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandIn(List<String> values) {
-            addCriterion("commercial_land in", values, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandNotIn(List<String> values) {
-            addCriterion("commercial_land not in", values, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandBetween(String value1, String value2) {
-            addCriterion("commercial_land between", value1, value2, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andCommercialLandNotBetween(String value1, String value2) {
-            addCriterion("commercial_land not between", value1, value2, "commercialLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandIsNull() {
-            addCriterion("service_land is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandIsNotNull() {
-            addCriterion("service_land is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandEqualTo(String value) {
-            addCriterion("service_land =", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandNotEqualTo(String value) {
-            addCriterion("service_land <>", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandGreaterThan(String value) {
-            addCriterion("service_land >", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandGreaterThanOrEqualTo(String value) {
-            addCriterion("service_land >=", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandLessThan(String value) {
-            addCriterion("service_land <", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandLessThanOrEqualTo(String value) {
-            addCriterion("service_land <=", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandLike(String value) {
-            addCriterion("service_land like", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandNotLike(String value) {
-            addCriterion("service_land not like", value, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandIn(List<String> values) {
-            addCriterion("service_land in", values, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandNotIn(List<String> values) {
-            addCriterion("service_land not in", values, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandBetween(String value1, String value2) {
-            addCriterion("service_land between", value1, value2, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceLandNotBetween(String value1, String value2) {
-            addCriterion("service_land not between", value1, value2, "serviceLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandIsNull() {
-            addCriterion("transportation_land is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandIsNotNull() {
-            addCriterion("transportation_land is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandEqualTo(String value) {
-            addCriterion("transportation_land =", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandNotEqualTo(String value) {
-            addCriterion("transportation_land <>", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandGreaterThan(String value) {
-            addCriterion("transportation_land >", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandGreaterThanOrEqualTo(String value) {
-            addCriterion("transportation_land >=", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandLessThan(String value) {
-            addCriterion("transportation_land <", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandLessThanOrEqualTo(String value) {
-            addCriterion("transportation_land <=", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandLike(String value) {
-            addCriterion("transportation_land like", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandNotLike(String value) {
-            addCriterion("transportation_land not like", value, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandIn(List<String> values) {
-            addCriterion("transportation_land in", values, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandNotIn(List<String> values) {
-            addCriterion("transportation_land not in", values, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandBetween(String value1, String value2) {
-            addCriterion("transportation_land between", value1, value2, "transportationLand");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransportationLandNotBetween(String value1, String value2) {
-            addCriterion("transportation_land not between", value1, value2, "transportationLand");
+        public Criteria andUseRightTypeNotBetween(String value1, String value2) {
+            addCriterion("use_right_type not between", value1, value2, "useRightType");
             return (Criteria) this;
         }
 
@@ -1882,146 +1812,6 @@ public class DeclareRealtyLandCertExample {
 
         public Criteria andAcquisitionPriceNotBetween(String value1, String value2) {
             addCriterion("acquisition_price not between", value1, value2, "acquisitionPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferIsNull() {
-            addCriterion("transfer is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferIsNotNull() {
-            addCriterion("transfer is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferEqualTo(String value) {
-            addCriterion("transfer =", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferNotEqualTo(String value) {
-            addCriterion("transfer <>", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferGreaterThan(String value) {
-            addCriterion("transfer >", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferGreaterThanOrEqualTo(String value) {
-            addCriterion("transfer >=", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferLessThan(String value) {
-            addCriterion("transfer <", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferLessThanOrEqualTo(String value) {
-            addCriterion("transfer <=", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferLike(String value) {
-            addCriterion("transfer like", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferNotLike(String value) {
-            addCriterion("transfer not like", value, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferIn(List<String> values) {
-            addCriterion("transfer in", values, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferNotIn(List<String> values) {
-            addCriterion("transfer not in", values, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferBetween(String value1, String value2) {
-            addCriterion("transfer between", value1, value2, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andTransferNotBetween(String value1, String value2) {
-            addCriterion("transfer not between", value1, value2, "transfer");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateIsNull() {
-            addCriterion("certificate is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateIsNotNull() {
-            addCriterion("certificate is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateEqualTo(String value) {
-            addCriterion("certificate =", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateNotEqualTo(String value) {
-            addCriterion("certificate <>", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateGreaterThan(String value) {
-            addCriterion("certificate >", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateGreaterThanOrEqualTo(String value) {
-            addCriterion("certificate >=", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateLessThan(String value) {
-            addCriterion("certificate <", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateLessThanOrEqualTo(String value) {
-            addCriterion("certificate <=", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateLike(String value) {
-            addCriterion("certificate like", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateNotLike(String value) {
-            addCriterion("certificate not like", value, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateIn(List<String> values) {
-            addCriterion("certificate in", values, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateNotIn(List<String> values) {
-            addCriterion("certificate not in", values, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateBetween(String value1, String value2) {
-            addCriterion("certificate between", value1, value2, "certificate");
-            return (Criteria) this;
-        }
-
-        public Criteria andCertificateNotBetween(String value1, String value2) {
-            addCriterion("certificate not between", value1, value2, "certificate");
             return (Criteria) this;
         }
 

@@ -36,6 +36,7 @@
     <result column="public_area" property="publicArea" jdbcType="DECIMAL" />
     <result column="other_note" property="otherNote" jdbcType="VARCHAR" />
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
+    <result column="land_registration_date" property="landRegistrationDate" jdbcType="TIMESTAMP" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -104,8 +105,8 @@
     public_situation, be_located, street_number, attached_number, building_number, unit, 
     floor, room_number, registration_time, nature, floor_count, planning_use, floor_area, 
     location, evidence_area, inner_area, other, land_number, land_acquisition, use_start_date, 
-    use_end_date, public_area, other_note, registration_authority, registration_date, 
-    creator, gmt_created, gmt_modified
+    use_end_date, public_area, other_note, registration_authority, land_registration_date, 
+    registration_date, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample" >
     select
@@ -152,8 +153,9 @@
       inner_area, other, land_number, 
       land_acquisition, use_start_date, use_end_date, 
       public_area, other_note, registration_authority, 
-      registration_date, creator, gmt_created, 
-      gmt_modified)
+      land_registration_date, registration_date, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
@@ -165,8 +167,9 @@
       #{innerArea,jdbcType=VARCHAR}, #{other,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, 
       #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
       #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
-      #{registrationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{landRegistrationDate,jdbcType=TIMESTAMP}, #{registrationDate,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -272,6 +275,9 @@
       </if>
       <if test="registrationAuthority != null" >
         registration_authority,
+      </if>
+      <if test="landRegistrationDate != null" >
+        land_registration_date,
       </if>
       <if test="registrationDate != null" >
         registration_date,
@@ -385,6 +391,9 @@
       </if>
       <if test="registrationAuthority != null" >
         #{registrationAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="landRegistrationDate != null" >
+        #{landRegistrationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="registrationDate != null" >
         #{registrationDate,jdbcType=TIMESTAMP},
@@ -511,6 +520,9 @@
       <if test="record.registrationAuthority != null" >
         registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       </if>
+      <if test="record.landRegistrationDate != null" >
+        land_registration_date = #{record.landRegistrationDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.registrationDate != null" >
         registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       </if>
@@ -564,6 +576,7 @@
       public_area = #{record.publicArea,jdbcType=DECIMAL},
       other_note = #{record.otherNote,jdbcType=VARCHAR},
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
+      land_registration_date = #{record.landRegistrationDate,jdbcType=TIMESTAMP},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -674,6 +687,9 @@
       <if test="registrationAuthority != null" >
         registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       </if>
+      <if test="landRegistrationDate != null" >
+        land_registration_date = #{landRegistrationDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="registrationDate != null" >
         registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       </if>
@@ -724,6 +740,7 @@
       public_area = #{publicArea,jdbcType=DECIMAL},
       other_note = #{otherNote,jdbcType=VARCHAR},
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
+      land_registration_date = #{landRegistrationDate,jdbcType=TIMESTAMP},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

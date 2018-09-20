@@ -1,9 +1,16 @@
-package com.copower.pmcc.assess.dal.basis.entity;
+package com.copower.pmcc.assess.dto.input.project.declare;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DeclareRealtyRealEstateCert {
+/**
+ * @Auther: zch
+ * @Date: 2018/9/20 11:03
+ * @Description:
+ */
+public class DeclareRealtyRealEstateCertDto {
     private Integer id;
 
     private Integer pid;
@@ -37,7 +44,7 @@ public class DeclareRealtyRealEstateCert {
     private String unit;
 
     private Integer floor;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationTime;
 
     private String nature;
@@ -61,9 +68,9 @@ public class DeclareRealtyRealEstateCert {
     private String roomNumber;
 
     private String landAcquisition;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date useStartDate;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date useEndDate;
 
     private BigDecimal publicArea;
@@ -71,14 +78,8 @@ public class DeclareRealtyRealEstateCert {
     private String otherNote;
 
     private String registrationAuthority;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -109,7 +110,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+        this.province = province;
     }
 
     public String getCity() {
@@ -117,7 +118,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getDistrict() {
@@ -125,7 +126,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setDistrict(String district) {
-        this.district = district == null ? null : district.trim();
+        this.district = district;
     }
 
     public Integer getType() {
@@ -141,7 +142,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+        this.location = location;
     }
 
     public String getNumber() {
@@ -149,7 +150,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setNumber(String number) {
-        this.number = number == null ? null : number.trim();
+        this.number = number;
     }
 
     public String getName() {
@@ -157,7 +158,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getOwnership() {
@@ -165,7 +166,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setOwnership(String ownership) {
-        this.ownership = ownership == null ? null : ownership.trim();
+        this.ownership = ownership;
     }
 
     public String getPublicSituation() {
@@ -173,7 +174,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setPublicSituation(String publicSituation) {
-        this.publicSituation = publicSituation == null ? null : publicSituation.trim();
+        this.publicSituation = publicSituation;
     }
 
     public String getStreetNumber() {
@@ -181,7 +182,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber == null ? null : streetNumber.trim();
+        this.streetNumber = streetNumber;
     }
 
     public String getAttachedNumber() {
@@ -189,7 +190,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setAttachedNumber(String attachedNumber) {
-        this.attachedNumber = attachedNumber == null ? null : attachedNumber.trim();
+        this.attachedNumber = attachedNumber;
     }
 
     public String getBuildingNumber() {
@@ -197,7 +198,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+        this.buildingNumber = buildingNumber;
     }
 
     public String getUnit() {
@@ -205,7 +206,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setUnit(String unit) {
-        this.unit = unit == null ? null : unit.trim();
+        this.unit = unit;
     }
 
     public Integer getFloor() {
@@ -229,7 +230,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setNature(String nature) {
-        this.nature = nature == null ? null : nature.trim();
+        this.nature = nature;
     }
 
     public String getPlanningUse() {
@@ -237,7 +238,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setPlanningUse(String planningUse) {
-        this.planningUse = planningUse == null ? null : planningUse.trim();
+        this.planningUse = planningUse;
     }
 
     public Integer getFloorCount() {
@@ -269,7 +270,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setOther(String other) {
-        this.other = other == null ? null : other.trim();
+        this.other = other;
     }
 
     public String getLandNumber() {
@@ -277,7 +278,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setLandNumber(String landNumber) {
-        this.landNumber = landNumber == null ? null : landNumber.trim();
+        this.landNumber = landNumber;
     }
 
     public String getPurpose() {
@@ -285,7 +286,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
+        this.purpose = purpose;
     }
 
     public String getGraphNumber() {
@@ -293,7 +294,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setGraphNumber(String graphNumber) {
-        this.graphNumber = graphNumber == null ? null : graphNumber.trim();
+        this.graphNumber = graphNumber;
     }
 
     public String getRoomNumber() {
@@ -301,7 +302,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber == null ? null : roomNumber.trim();
+        this.roomNumber = roomNumber;
     }
 
     public String getLandAcquisition() {
@@ -309,7 +310,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setLandAcquisition(String landAcquisition) {
-        this.landAcquisition = landAcquisition == null ? null : landAcquisition.trim();
+        this.landAcquisition = landAcquisition;
     }
 
     public Date getUseStartDate() {
@@ -341,7 +342,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setOtherNote(String otherNote) {
-        this.otherNote = otherNote == null ? null : otherNote.trim();
+        this.otherNote = otherNote;
     }
 
     public String getRegistrationAuthority() {
@@ -349,7 +350,7 @@ public class DeclareRealtyRealEstateCert {
     }
 
     public void setRegistrationAuthority(String registrationAuthority) {
-        this.registrationAuthority = registrationAuthority == null ? null : registrationAuthority.trim();
+        this.registrationAuthority = registrationAuthority;
     }
 
     public Date getRegistrationDate() {
@@ -358,29 +359,5 @@ public class DeclareRealtyRealEstateCert {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 }
