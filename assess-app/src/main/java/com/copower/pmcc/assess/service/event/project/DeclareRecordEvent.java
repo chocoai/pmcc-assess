@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
@@ -80,6 +81,7 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
                             if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_OWNERSHIP)) {
                                 declareRecord.setOwnership(getValueFormMap(map,AssessFieldNameConstant.DECLARE_RECORD_OWNERSHIP));
                             }
+                            declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
                             declareRecord.setCreator(processControllerComponent.getThisUser());
                             declareRecordDao.addDeclareRecord(declareRecord);
                         }

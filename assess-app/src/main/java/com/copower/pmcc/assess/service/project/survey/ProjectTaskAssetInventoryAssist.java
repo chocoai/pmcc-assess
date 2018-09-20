@@ -41,7 +41,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/assetInventoryIndex", "", 0, "0", "");
-        List<BaseDataDic> inventoryContentList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_CONTENT);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        modelAndView.addObject("declareRecord", declareRecord);
+        List<BaseDataDic> inventoryContentList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
         List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
         if(CollectionUtils.isEmpty(list)){
@@ -56,9 +58,6 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
             }
             list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
         }
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        modelAndView.addObject("declareRecord", declareRecord);
-
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList); //数据字典

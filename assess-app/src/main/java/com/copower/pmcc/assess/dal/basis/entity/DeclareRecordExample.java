@@ -1126,6 +1126,76 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andInventoryContentKeyIsNull() {
+            addCriterion("inventory_content_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyIsNotNull() {
+            addCriterion("inventory_content_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyEqualTo(String value) {
+            addCriterion("inventory_content_key =", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyNotEqualTo(String value) {
+            addCriterion("inventory_content_key <>", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyGreaterThan(String value) {
+            addCriterion("inventory_content_key >", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("inventory_content_key >=", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyLessThan(String value) {
+            addCriterion("inventory_content_key <", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyLessThanOrEqualTo(String value) {
+            addCriterion("inventory_content_key <=", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyLike(String value) {
+            addCriterion("inventory_content_key like", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyNotLike(String value) {
+            addCriterion("inventory_content_key not like", value, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyIn(List<String> values) {
+            addCriterion("inventory_content_key in", values, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyNotIn(List<String> values) {
+            addCriterion("inventory_content_key not in", values, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyBetween(String value1, String value2) {
+            addCriterion("inventory_content_key between", value1, value2, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andInventoryContentKeyNotBetween(String value1, String value2) {
+            addCriterion("inventory_content_key not between", value1, value2, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
         public Criteria andBisGenerateAllIsNull() {
             addCriterion("bis_generate_all is null");
             return (Criteria) this;

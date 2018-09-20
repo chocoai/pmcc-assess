@@ -25,6 +25,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -356,6 +357,18 @@ public class SurveyCommonService {
         return jsonArray.toJSONString();
     }
 
+    /**
+     * 复制调查任务及信息
+     * @param planDetailsId
+     */
+    public void copyExamineTaskAndInfo(Integer planDetailsId) throws BusinessException {
+
+    }
+
+    /**
+     * 获取调查信息相关表
+     * @return
+     */
     public List<String> getTableList() {
         String dbName=BaseConstant.CURRENT_DATABASE_NAME;
         String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
@@ -367,6 +380,14 @@ public class SurveyCommonService {
         return tableList;
     }
 
+    /**
+     * 获取同步sql语句
+     * @param tableName
+     * @param oldPlanDetailsId
+     * @param newPlanDetailsId
+     * @param newDeclareId
+     * @return
+     */
     public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
         String dbName=BaseConstant.CURRENT_DATABASE_NAME;
         String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);

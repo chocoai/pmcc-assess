@@ -31,7 +31,6 @@
                 <label class="col-sm-1 control-label">土地用途类别<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 landUseCategory" name="landUseCategory" required="required">
-                        <option>请先选择土地用途类型</option>
                     </select>
                 </div>
             </div>
@@ -139,8 +138,8 @@
     }
     //页面保存数据后 展示数据
     estateLandState.prototype.saveShowData = function () {
-        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");
-        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");
+        <%--estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");--%>
+        <%--estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");--%>
     };
     estateLandState.prototype.select2InitMethodWrite = function (data,name) {
         if (estateLandState.prototype.select2IsNotNull(data)){
@@ -169,12 +168,12 @@
         return true;
     };
     estateLandState.prototype.init = function () {
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}", function (html,data) {
-            if ($("#" + EstateLandState.config().frm + " .landUseType").size() > 0) {
-                $("#" + EstateLandState.config().frm + " .landUseType").html(html);
-                $("#" + EstateLandState.config().frm + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式
-            }
-        });
+        <%--AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}", function (html,data) {--%>
+            <%--if ($("#" + EstateLandState.config().frm + " .landUseType").size() > 0) {--%>
+                <%--$("#" + EstateLandState.config().frm + " .landUseType").html(html);--%>
+                <%--$("#" + EstateLandState.config().frm + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式--%>
+            <%--}--%>
+        <%--});--%>
         $("#" + EstateLandState.config().frm + " .landUseCategory").select2();//加载样式
         $("#" + EstateLandState.config().frm + " .landUseType").change(function () {
             var id = $("#" + EstateLandState.config().frm + " .landUseType").eq(1).val();

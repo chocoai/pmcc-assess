@@ -36,6 +36,8 @@ public class DeclareRecord {
 
     private BigDecimal alreadyOutArea;
 
+    private String inventoryContentKey;
+
     private Boolean bisGenerateAll;
 
     private String creator;
@@ -170,6 +172,14 @@ public class DeclareRecord {
 
     public void setAlreadyOutArea(BigDecimal alreadyOutArea) {
         this.alreadyOutArea = alreadyOutArea;
+    }
+
+    public String getInventoryContentKey() {
+        return inventoryContentKey;
+    }
+
+    public void setInventoryContentKey(String inventoryContentKey) {
+        this.inventoryContentKey = inventoryContentKey == null ? null : inventoryContentKey.trim();
     }
 
     public Boolean getBisGenerateAll() {

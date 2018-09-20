@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,10 @@ public class SurveyCaseStudyService {
     private SurveyExamineTaskService surveyExamineTaskService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private SurveyExamineInfoService surveyExamineInfoService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 数据保存
@@ -60,7 +65,6 @@ public class SurveyCaseStudyService {
      */
     public boolean deleteSurveyCaseStudy(Integer id) throws BusinessException {
         if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ;
         return surveyCaseStudyDao.deleteSurveyCaseStudy(id);
 
     }
@@ -151,5 +155,49 @@ public class SurveyCaseStudyService {
         surveyCaseStudy.setCreator(commonService.thisUserAccount());
         surveyCaseStudyDao.addSurveyCaseStudy(surveyCaseStudy);
         return surveyCaseStudy;
+    }
+
+    /**
+     * 复制案例
+     * @param planDetailsId
+     */
+    @Transactional
+    public void copyCaseStudy(Integer planDetailsId) throws BusinessException {
+        //1.先复制planDetails数据 2.复制调查信息数据 3.复制所关联的附件信息
+        //分派等相关任务还需手动操作
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        projectPlanDetails.setId(null);
+        projectPlanDetails.setProjectPhaseName(String.format("%s-复制",projectPlanDetails.getProjectPhaseName()));
+        projectPlanDetails.setSorting(projectPlanDetails.getSorting()+100);
+        projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+        projectPlanDetails.setCreator(commonService.thisUserAccount());
+        projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> tableList = surveyCommonService.getTableList();
+        //同步examine表数据
+        for (String tableName : tableList) {
+            stringBuilder.append(surveyCommonService.getSynchronizeSql(tableName, planDetailsId, projectPlanDetails.getId(), projectPlanDetails.getDeclareRecordId()));
+        }
+        jdbcTemplate.execute(stringBuilder.toString());
+
+//        List<ProjectPlanDetails> childrenPlanDetailsList = projectPlanDetailsService.getChildrenPlanDetailsList(planDetailsId);
+//        if(CollectionUtils.isNotEmpty(childrenPlanDetailsList)){
+//
+//            for (ProjectPlanDetails planDetails : childrenPlanDetailsList) {
+//                planDetails.setId(null);
+//                planDetails.setPid(projectPlanDetails.getId());
+//                planDetails.setBisStart(false);
+//                planDetails.setProcessInsId("0");
+//                planDetails.setTaskSubmitTime(null);
+//                planDetails.setActualHours(null);
+//                planDetails.setStatus(ProcessStatusEnum.NOPROCESS.getName());
+//                planDetails.setCreator(commonService.thisUserAccount());
+//                projectPlanDetailsService.saveProjectPlanDetails(planDetails);
+//
+//            }
+//
+//        }
+
+        //关联附件信息
     }
 }
