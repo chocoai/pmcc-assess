@@ -20,6 +20,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String location;
 
+    private String beLocated;
+
     private String number;
 
     private String name;
@@ -54,8 +56,6 @@ public class DeclareRealtyRealEstateCert {
 
     private String landNumber;
 
-    private String purpose;
-
     private String graphNumber;
 
     private String roomNumber;
@@ -79,6 +79,22 @@ public class DeclareRealtyRealEstateCert {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String useRightType;
+
+    private BigDecimal acquisitionPrice;
+
+    private String purpose;
+
+    private Date terminationDate;
+
+    private String memo;
+
+    private String apportionmentArea;
+
+    private String acreage;
+
+    private String useRightArea;
 
     public Integer getId() {
         return id;
@@ -142,6 +158,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setLocation(String location) {
         this.location = location == null ? null : location.trim();
+    }
+
+    public String getBeLocated() {
+        return beLocated;
+    }
+
+    public void setBeLocated(String beLocated) {
+        this.beLocated = beLocated == null ? null : beLocated.trim();
     }
 
     public String getNumber() {
@@ -280,14 +304,6 @@ public class DeclareRealtyRealEstateCert {
         this.landNumber = landNumber == null ? null : landNumber.trim();
     }
 
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose == null ? null : purpose.trim();
-    }
-
     public String getGraphNumber() {
         return graphNumber;
     }
@@ -382,5 +398,69 @@ public class DeclareRealtyRealEstateCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getUseRightType() {
+        return useRightType;
+    }
+
+    public void setUseRightType(String useRightType) {
+        this.useRightType = useRightType == null ? null : useRightType.trim();
+    }
+
+    public BigDecimal getAcquisitionPrice() {
+        return acquisitionPrice;
+    }
+
+    public void setAcquisitionPrice(BigDecimal acquisitionPrice) {
+        this.acquisitionPrice = acquisitionPrice;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose == null ? null : purpose.trim();
+    }
+
+    public Date getTerminationDate() {
+        return terminationDate;
+    }
+
+    public void setTerminationDate(Date terminationDate) {
+        this.terminationDate = terminationDate;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo == null ? null : memo.trim();
+    }
+
+    public String getApportionmentArea() {
+        return apportionmentArea;
+    }
+
+    public void setApportionmentArea(String apportionmentArea) {
+        this.apportionmentArea = apportionmentArea == null ? null : apportionmentArea.trim();
+    }
+
+    public String getAcreage() {
+        return acreage;
+    }
+
+    public void setAcreage(String acreage) {
+        this.acreage = acreage == null ? null : acreage.trim();
+    }
+
+    public String getUseRightArea() {
+        return useRightArea;
+    }
+
+    public void setUseRightArea(String useRightArea) {
+        this.useRightArea = useRightArea == null ? null : useRightArea.trim();
     }
 }
