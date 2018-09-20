@@ -245,7 +245,7 @@ public class BaseAttachmentService {
      */
     public String saveUploadFile(MultipartFile multipartFile) throws IOException {
         String localDirPath = createTempDirPath();
-        String fileName = createNoRepeatFileName(FileUtils.getExtName(multipartFile.getName(), '.'));
+        String fileName = createNoRepeatFileName(FileUtils.getExtName(multipartFile.getOriginalFilename(), '.'));
         String fileFullPath = localDirPath + File.separator + fileName;
         InputStream in = multipartFile.getInputStream();
         FileOutputStream out = new FileOutputStream(localDirPath + File.separator + fileName);

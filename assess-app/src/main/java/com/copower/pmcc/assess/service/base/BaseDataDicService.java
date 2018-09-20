@@ -329,4 +329,20 @@ public class BaseDataDicService {
         return baseDataDic.getName();
     }
 
+    /**
+     * 从现有集合中根据名称找出对应数据
+     * @param list
+     * @param name
+     * @return
+     */
+    public BaseDataDic getDataDicByName(List<BaseDataDic> list,String name){
+        if(CollectionUtils.isEmpty(list)) return null;
+        if(StringUtils.isBlank(name)) return null;
+        for (BaseDataDic baseDataDic : list) {
+            if(StringUtils.equals(baseDataDic.getName(),name))
+                return baseDataDic;
+        }
+        return null;
+    }
+
 }

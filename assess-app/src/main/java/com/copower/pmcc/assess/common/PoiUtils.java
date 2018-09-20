@@ -1,28 +1,16 @@
 package com.copower.pmcc.assess.common;
 
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * 描述:
@@ -33,52 +21,40 @@ import java.util.stream.Stream;
  */
 public class PoiUtils {
 
-    /**
-     * 根据类型获取cell的值
-     *
-     * @param cell
-     * @return
-     */
     public static String getCellValue(Cell cell) {
-        String value = "";
-        try {
-            switch (cell.getCellType()) {
-                case HSSFCell.CELL_TYPE_NUMERIC: // 数字
-                    //如果为时间格式的内容
-                    double numericCellValue = cell.getNumericCellValue();
-                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                        //注：format格式 yyyy-MM-dd hh:mm:ss 中小时为12小时制，若要24小时制，则把小h变为H即可，yyyy-MM-dd HH:mm:ss
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        value = sdf.format(HSSFDateUtil.getJavaDate(numericCellValue)).toString();
-                        break;
-                    } else {
-                        value = String.valueOf(numericCellValue);
-                    }
-                    break;
-                case HSSFCell.CELL_TYPE_STRING: // 字符串
-                    value = cell.getStringCellValue();
-                    break;
-                case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
-                    value = cell.getBooleanCellValue() + "";
-                    break;
-                case HSSFCell.CELL_TYPE_FORMULA: // 公式
-                    value = cell.getCellFormula() + "";
-                    break;
-                case HSSFCell.CELL_TYPE_BLANK: // 空值
-                    value = "";
-                    break;
-                case HSSFCell.CELL_TYPE_ERROR: // 故障
-                    value = "error";
-                    break;
-                default:
-                    value = "unknown";//未知
-                    break;
-            }
-        } catch (Exception e) {
-            value = "";
-            e.printStackTrace();
+        SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DecimalFormat decimalFormat = new DecimalFormat("#.####");
+        String cellValue = "";
+        if(cell == null) {
+            return cellValue;
         }
-        return value;
+        else if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            cellValue = cell.getStringCellValue();
+        }
+
+        else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+            if(HSSFDateUtil.isCellDateFormatted(cell)) {
+                double d = cell.getNumericCellValue();
+                Date date = HSSFDateUtil.getJavaDate(d);
+                cellValue = sFormat.format(date);
+            }
+            else {
+                cellValue = decimalFormat.format((cell.getNumericCellValue()));
+            }
+        }
+        else if(cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+            cellValue = "";
+        }
+        else if(cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+            cellValue = String.valueOf(cell.getBooleanCellValue());
+        }
+        else if(cell.getCellType() == Cell.CELL_TYPE_ERROR) {
+            cellValue = "";
+        }
+        else if(cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+            cellValue = cell.getCellFormula().toString();
+        }
+        return cellValue;
     }
 
     /**
