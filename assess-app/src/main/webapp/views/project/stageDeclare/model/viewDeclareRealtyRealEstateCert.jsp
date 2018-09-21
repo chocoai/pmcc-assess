@@ -90,6 +90,142 @@
         return false;
     };
 
+    /**
+     * @author:  zch
+     * 描述:数据拼接
+     * @date:2018-09-21
+     **/
+    declareRealtyRealEstateCert.role = {
+        CertName:{
+            init:function () {
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").blur(function () {
+                    declareRealtyRealEstateCert.role.CertName.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").blur(function () {
+                    declareRealtyRealEstateCert.role.CertName.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " .type").change(function () {
+                    /**
+                     * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
+                     **/
+                    var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .type").eq(1).val();
+                    if (declareRealtyRealEstateCert.isEmpty(id)) {
+                        declareRealtyRealEstateCert.role.CertName.write();
+                    }
+                });
+            },
+            write:function () {
+                var location = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val();
+                var number = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val();
+                var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .type").eq(1).val();
+                if (!declareRealtyRealEstateCert.isEmpty(location)) {
+                    location = "";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(number)) {
+                    number = "";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(id)) {
+                    id = "";
+                }
+                if (declareRealtyRealEstateCert.isEmpty(id)) {
+                    AssessCommon.getProjectClassifyInfo(id, function (data) {
+                        if (declareRealtyRealEstateCert.isEmpty(data)) {
+                            var temp = location + "房权证" + data.name + "字地" + number + "号";
+                            $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='certName']").val(temp);
+                        }
+                    });
+                } else {
+                    var temp = location + "房权证" + id + "字地" + number + "号";
+                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='certName']").val(temp);
+                }
+            }
+        },
+        beLocated:{
+            init:function () {
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").blur(function () {
+                    declareRealtyRealEstateCert.role.beLocated.write();
+                });
+                $("#" + declareRealtyRealEstateCertConfig.frm + " .district").change(function () {
+                    /**
+                     * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
+                     **/
+                    var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .district").eq(1).val();
+                    if (declareRealtyRealEstateCert.isEmpty(id)) {
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
+                });
+            },
+            write:function () {
+                var temp = "";
+                var district = $("#" + declareRealtyRealEstateCertConfig.frm + " .district").eq(1).val();
+                var unit = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val();
+                var floor = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val();
+                var roomNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val();
+                var streetNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val();
+                var attachedNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val();
+                var buildingNumber = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val();
+                if (!declareRealtyRealEstateCert.isEmpty(unit)) {
+                    unit = "";
+                } else {
+                    unit = unit + "单元";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(floor)) {
+                    floor = "";
+                } else {
+                    floor = floor + "楼";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(roomNumber)) {
+                    roomNumber = "";
+                } else {
+                    roomNumber = roomNumber + "号";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(streetNumber)) {
+                    streetNumber = "";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(attachedNumber)) {
+                    attachedNumber = "";
+                } else {
+                    attachedNumber = attachedNumber + "附";
+                }
+                if (!declareRealtyRealEstateCert.isEmpty(buildingNumber)) {
+                    buildingNumber = "";
+                } else {
+                    buildingNumber = buildingNumber + "栋";
+                }
+                if (declareRealtyRealEstateCert.isEmpty(district)) {
+                    AssessCommon.getAreaById(district, function (data) {
+                        if (!declareRealtyRealEstateCert.isEmpty(data)) {
+                            district = "";
+                        } else {
+                            district = data.name;
+                        }
+                        temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                        $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='beLocated']").val(temp);
+                    });
+                } else {
+                    district = "";
+                    temp = district + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
+                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='beLocated']").val(temp);
+                }
+            }
+        }
+    };
+
     declareRealtyRealEstateCert.objectWriteSelectData = function (frm, data, name) {
         if (declareRealtyRealEstateCert.isEmpty(data)) {
             $("#" + frm + " ." + name).val(data).trigger("change");
@@ -122,6 +258,8 @@
             cityValue: '',
             districtValue: ''
         });
+        declareRealtyRealEstateCert.role.CertName.init();
+        declareRealtyRealEstateCert.role.beLocated.init();
     };
 
     declareRealtyRealEstateCert.showAddModel = function () {
@@ -265,6 +403,7 @@
             }
         });
     };
+
 
     $(function () {
         declareRealtyRealEstateCert.loadList();
