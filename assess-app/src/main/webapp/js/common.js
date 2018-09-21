@@ -484,6 +484,12 @@
                     }
                 }
             })
+        },
+
+        //获取调查附件上传的FieldsName
+        getExamineFieldsName:function (planDetailsId,fieldsName) {
+            var result="examine_planDetailsId_"+planDetailsId+"_"+fieldsName;
+            return result;
         }
     };
 
