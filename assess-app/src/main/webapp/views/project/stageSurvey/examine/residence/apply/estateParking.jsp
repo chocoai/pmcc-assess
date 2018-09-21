@@ -235,8 +235,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + estateParking.prototype.config().frm + " .parkingType").html(option);
-                                $("#" + estateParking.prototype.config().frm + " .parkingType").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + estateParking.prototype.config().frm).find('select.parkingType').empty().html(option).trigger('change');
                             }
                         }
                     },

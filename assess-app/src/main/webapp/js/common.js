@@ -1,6 +1,10 @@
 /**
  * Created by kings on 2018-5-21.
  */
+$(function () {
+    $(".select2").select2();//初始化出select2
+});
+
 (function ($) {
 
     //ztree获取父节点by key值
@@ -490,6 +494,48 @@
         getExamineFieldsName:function (planDetailsId,fieldsName) {
             var result="examine_planDetailsId_"+planDetailsId+"_"+fieldsName;
             return result;
+        },
+
+        //根据区域获取版块信息
+        loadBlockByArea: function (options) {
+            var defaults = {
+                province: undefined,
+                city: undefined,
+                district: undefined,
+                value: undefined,
+                success: function () {
+
+                }
+            };
+            defaults = $.extend({}, defaults, options);
+            $.ajax({
+                url: getContextPath() + "/dataBlock/getDataBlockListByArea",
+                type: "get",
+                dataType: "json",
+                data: {
+                    province: defaults.province,
+                    city: defaults.city,
+                    district: defaults.district
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        var retHtml = '<option value="" selected>-请选择-</option>';
+                        $.each(result.data, function (i, item) {
+                            if (item.id == defaults.value) {
+                                retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
+                            } else {
+                                retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
+                            }
+                        });
+                        if (defaults.success) {
+                            defaults.success(retHtml, result.data);
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     };
 

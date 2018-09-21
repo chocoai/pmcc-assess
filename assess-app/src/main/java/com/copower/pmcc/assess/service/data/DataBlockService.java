@@ -64,7 +64,7 @@ public class DataBlockService {
         if (id == null) {
             try {
                 logger.error("null point");
-                throw new Exception("exception error!");
+
             } catch (Exception e1) {
 
             }
@@ -150,5 +150,23 @@ public class DataBlockService {
             vo.setDistrictName(erpAreaService.getSysAreaName(dataBlock.getDistrict()));//县
         }
         return vo;
+    }
+
+    /**
+     * 根据区域获取版块信息
+     * @param province
+     * @param city
+     * @param distric
+     * @return
+     */
+    public List<DataBlock> getDataBlockListByArea(String province,String city,String distric){
+        if(StringUtils.isBlank(province)|| StringUtils.isBlank(city))
+            return null;
+        DataBlock dataBlock = new DataBlock() ;
+        dataBlock.setProvince(province);
+        dataBlock.setCity(city);
+        if(StringUtils.isNotBlank(distric))
+            dataBlock.setDistrict(distric);
+        return dataBlockDao.getDataBlockList(dataBlock);
     }
 }

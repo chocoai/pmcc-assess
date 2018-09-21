@@ -6,6 +6,7 @@
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
+    <result column="block_id" property="blockId" jdbcType="INTEGER" />
     <result column="developer_id" property="developerId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="street" property="street" jdbcType="VARCHAR" />
@@ -84,8 +85,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, plan_details_id, examine_type, developer_id, name, street, number, 
-    land_level, attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, 
+    id, declare_id, plan_details_id, examine_type, block_id, developer_id, name, street, 
+    number, land_level, attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, 
     building_number, position, description, creator, gmt_created, gmt_modified, average_price, 
     price_range
   </sql>
@@ -124,21 +125,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_examine_estate (declare_id, plan_details_id, examine_type, 
-      developer_id, name, street, 
-      number, land_level, attach_number, 
-      floor_area, cover_an_area, volumetric_rate, 
-      greening_rate, building_number, position, 
-      description, creator, gmt_created, 
-      gmt_modified, average_price, price_range
-      )
+      block_id, developer_id, name, 
+      street, number, land_level, 
+      attach_number, floor_area, cover_an_area, 
+      volumetric_rate, greening_rate, building_number, 
+      position, description, creator, 
+      gmt_created, gmt_modified, average_price, 
+      price_range)
     values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
-      #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
-      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}
-      )
+      #{blockId,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, 
+      #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, 
+      #{position,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{averagePrice,jdbcType=VARCHAR}, 
+      #{priceRange,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineEstate" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -154,6 +155,9 @@
       </if>
       <if test="examineType != null" >
         examine_type,
+      </if>
+      <if test="blockId != null" >
+        block_id,
       </if>
       <if test="developerId != null" >
         developer_id,
@@ -219,6 +223,9 @@
       </if>
       <if test="examineType != null" >
         #{examineType,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        #{blockId,jdbcType=INTEGER},
       </if>
       <if test="developerId != null" >
         #{developerId,jdbcType=INTEGER},
@@ -297,6 +304,9 @@
       <if test="record.examineType != null" >
         examine_type = #{record.examineType,jdbcType=INTEGER},
       </if>
+      <if test="record.blockId != null" >
+        block_id = #{record.blockId,jdbcType=INTEGER},
+      </if>
       <if test="record.developerId != null" >
         developer_id = #{record.developerId,jdbcType=INTEGER},
       </if>
@@ -362,6 +372,7 @@
       declare_id = #{record.declareId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
+      block_id = #{record.blockId,jdbcType=INTEGER},
       developer_id = #{record.developerId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       street = #{record.street,jdbcType=VARCHAR},
@@ -395,6 +406,9 @@
       </if>
       <if test="examineType != null" >
         examine_type = #{examineType,jdbcType=INTEGER},
+      </if>
+      <if test="blockId != null" >
+        block_id = #{blockId,jdbcType=INTEGER},
       </if>
       <if test="developerId != null" >
         developer_id = #{developerId,jdbcType=INTEGER},
@@ -458,6 +472,7 @@
     set declare_id = #{declareId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
+      block_id = #{blockId,jdbcType=INTEGER},
       developer_id = #{developerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       street = #{street,jdbcType=VARCHAR},

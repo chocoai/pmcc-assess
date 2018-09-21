@@ -17,6 +17,10 @@ public class DataExamineTask {
 
     private Boolean bisMust;
 
+    private Boolean bisRepeat;
+
+    private Boolean bisUpload;
+
     private Boolean bisEnable;
 
     private Boolean bisDelete;
@@ -85,6 +89,22 @@ public class DataExamineTask {
 
     public void setBisMust(Boolean bisMust) {
         this.bisMust = bisMust;
+    }
+
+    public Boolean getBisRepeat() {
+        return bisRepeat;
+    }
+
+    public void setBisRepeat(Boolean bisRepeat) {
+        this.bisRepeat = bisRepeat;
+    }
+
+    public Boolean getBisUpload() {
+        return bisUpload;
+    }
+
+    public void setBisUpload(Boolean bisUpload) {
+        this.bisUpload = bisUpload;
     }
 
     public Boolean getBisEnable() {

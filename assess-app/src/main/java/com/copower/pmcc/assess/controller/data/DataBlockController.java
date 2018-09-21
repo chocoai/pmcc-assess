@@ -105,23 +105,13 @@ public class DataBlockController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listDataBlock",method = {RequestMethod.GET},name = "基础版块维护 list")
-    public HttpResult listDataBlock(String province,String city,String district){
+    @RequestMapping(value = "/getDataBlockListByArea",method = {RequestMethod.GET},name = "获取版块信息by区域")
+    public HttpResult getDataBlockListByArea(String province,String city,String district){
         try {
-            DataBlock dataBlock = new DataBlock() ;
-            if (!StringUtils.isEmpty(province)){
-                dataBlock.setProvince(province);
-            }
-            if (!StringUtils.isEmpty(city)){
-                dataBlock.setCity(city);
-            }
-            if (!StringUtils.isEmpty(district)){
-                dataBlock.setDistrict(district);
-            }
-            return HttpResult.newCorrectResult(dataBlockService.dataBlockVos(dataBlock));
+            return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province,city,district));
         } catch (Exception e) {
             logger.error(String.format("exception: %s",e.getMessage()),e);
-            return HttpResult.newErrorResult("异常");
+            return HttpResult.newErrorResult("获取版块信息异常");
         }
     }
 }

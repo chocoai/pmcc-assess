@@ -121,7 +121,6 @@ public class SurveyAssetInventoryRightService {
      */
     public boolean delete(Integer id) throws BusinessException {
         if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ;
         return surveyAssetInventoryRightDao.delete(id);
     }
 

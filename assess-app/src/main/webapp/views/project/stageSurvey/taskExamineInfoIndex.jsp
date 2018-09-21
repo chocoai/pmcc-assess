@@ -34,11 +34,6 @@
                 </div>
                 <div class="x_content examine_content">
                     <ul class="nav nav-tabs bar_tabs task_examine_item_tab">
-                        <c:if test="${not empty blockTaskList}">
-                            <li class="tab_block">
-                                <a href="#tab_content_block" data-name="block" data-toggle="tab">版块</a>
-                            </li>
-                        </c:if>
                         <c:if test="${not empty estateTaskList}">
                             <li class="tab_estate">
                                 <a href="#tab_content_estate" data-name="estate" data-toggle="tab">楼盘</a>
@@ -61,15 +56,6 @@
                         </c:if>
                     </ul>
                     <div class="tab-content">
-                        <c:if test="${not empty blockTaskList}">
-                            <div class="tab-pane active" id="tab_content_block">
-                                <c:forEach items="${blockTaskList}" var="item">
-                                    <jsp:include page="${item.applyUrl}">
-                                        <jsp:param value="${item.fieldName}" name="fieldName"/>
-                                    </jsp:include>
-                                </c:forEach>
-                            </div>
-                        </c:if>
                         <c:if test="${not empty estateTaskList}">
                             <div class="tab-pane tab_estate" id="tab_content_estate">
                                 <c:forEach items="${estateTaskList}" var="item">

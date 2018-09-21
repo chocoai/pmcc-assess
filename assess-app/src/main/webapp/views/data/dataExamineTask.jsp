@@ -67,7 +67,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -157,7 +158,8 @@
 </div>
 
 <!--子项管理-->
-<div id="divSubDataExamineTask" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divSubDataExamineTask" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true" data-height="350" style="overflow: auto;">
     <div class="modal-dialog modal-lg" style="width: 1200px">
         <div class="modal-content">
@@ -178,8 +180,9 @@
         </div>
     </div>
 </div>
-<div id="divSubDataExamineTaskManage" class="modal fade bs-example-modal-lg" data-height="300"
-     data-backdrop="static" tabindex="-1" role="dialog" >
+<input type="hidden" id="mainId" name="mainId" value="0">
+<div id="divSubDataExamineTaskManage" class="modal fade bs-example-modal-lg"
+     data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -187,120 +190,128 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">子项管理</h3>
             </div>
-            <input type="hidden" id="mainId" name="mainId" value="0">
-            <form id="frmSub" class="form-horizontal">
-                <input type="hidden" id="subId" name="id" value="0">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="subName" name="name" class="form-control">
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            字段名称
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                                   id="subFieldName" name="fieldName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            申请url
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="申请url"
-                                                   id="applyUrl" name="applyUrl" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            详情url
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="详情url"
-                                                   id="detailUrl" name="detailUrl" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            是否启用<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-1">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
-                                                       checked="checked">
-                                            </label>
-                                        </div>
-                                        <label class="col-sm-3 control-label">
-                                            是否必填项
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="subBisMust" name="bisMust" value="true"
-                                                       checked="checked">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            排序
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="subSorting" name="sorting" class="form-control">
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-8">
-                                    <textarea placeholder="备注" id="subRemark" name="remark"
-                                              class="form-control"></textarea>
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="modal-body">
+                <form id="frmSub" class="form-horizontal">
+                    <input type="hidden" id="subId" name="id" value="0">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                名称<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                       id="subName" name="name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                字段名称
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-maxlength="100" placeholder="字段名称"
+                                       id="subFieldName" name="fieldName" class="form-control">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataExamineTask()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                申请url
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-maxlength="100" placeholder="申请url"
+                                       id="applyUrl" name="applyUrl" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                详情url
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-maxlength="100" placeholder="详情url"
+                                       id="detailUrl" name="detailUrl" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                排序
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                       id="subSorting" name="sorting" class="form-control">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否启用
+                            </label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否必填项
+                            </label>
+                            <div class="col-sm-2">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="subBisMust" name="bisMust" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否重复表
+                            </label>
+                            <div class="col-sm-2">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="subBisRepeat" name="bisRepeat" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                是否需传附件
+                            </label>
+                            <div class="col-sm-2">
+                                <label class="radio-inline">
+                                    <input type="checkbox" id="subBisUpload" name="bisUpload" value="true"
+                                           checked="checked">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                备注
+                            </label>
+                            <div class="col-sm-10">
+                                    <textarea placeholder="备注" id="subRemark" name="remark"
+                                              class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveSubDataExamineTask()">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -464,6 +475,16 @@
                 return getBoolChs(value);
             }
         });
+        cols.push({
+            field: 'bisRepeat', title: '是否重复表', formatter: function (value) {
+                return getBoolChs(value);
+            }
+        });
+        cols.push({
+            field: 'bisUpload', title: '是否传附件', formatter: function (value) {
+                return getBoolChs(value);
+            }
+        });
         cols.push({field: 'sorting', title: '排序'});
         cols.push({field: 'remark', title: '备注'});
         cols.push({
@@ -494,7 +515,7 @@
         $("#frmSub").clearAll();
         $("#subId").val("0");
         $("#subBisEnable").prop("checked", true);
-        $("#subBisMust").prop("checked", false);
+        $("#subBisMust,#subBisRepeat,#subBisUpload").prop("checked", false);
     }
 
     //编辑子项
@@ -505,6 +526,8 @@
             $("#frmSub").initForm(row);
             $("#subBisEnable").prop("checked", row.bisEnable);
             $("#subBisMust").prop("checked", row.bisMust);
+            $("#subBisRepeat").prop("checked", row.bisRepeat);
+            $("#subBisUpload").prop("checked", row.bisUpload);
         }
         $('#divSubDataExamineTaskManage').modal();
     }
@@ -517,6 +540,8 @@
             data.pid = $("#mainId").val();
             data.bisEnable = $("#subBisEnable").prop("checked");
             data.bisMust = $("#subBisMust").prop("checked");
+            data.bisRepeat = $("#subBisRepeat").prop("checked");
+            data.bisUpload = $("#subBisUpload").prop("checked");
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataExamineTask/saveDataExamineTask",
                 type: "post",
