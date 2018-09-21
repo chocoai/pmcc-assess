@@ -22,9 +22,9 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
+            <label class="col-sm-1 control-label">版块</label>
             <div class="col-sm-3">
-                <select class="form-control search-select select2 landLevel" name="landLevel" required="required">
+                <select class="form-control search-select select2 blockId" name="blockId" required="required">
                 </select>
             </div>
         </div>
@@ -33,6 +33,13 @@
     </div>
 
     <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">街道</label>
+            <div class="col-sm-3">
+                <input type="text" data-rule-maxlength="100" placeholder="街道"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
+            </div>
+        </div>
         <div class="x-valid">
             <label class="col-sm-1 control-label">编号<span class="symbol required"></span></label>
             <div class="col-sm-3">
@@ -51,14 +58,6 @@
                        class="form-control">
             </div>
         </div>
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">街道</label>
-            <div class="col-sm-3">
-                <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
-                       value="${surveyExamineDataInfoVo.examineEstateVo.street}" name="street" class="form-control">
-            </div>
-        </div>
-
     </div>
 
     <div class="form-group">
@@ -88,17 +87,6 @@
                 <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="绿化率(请输入数字)" required
                        value="${surveyExamineDataInfoVo.examineEstateVo.greeningRate}" name="greeningRate"
                        class="form-control">
-            </div>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
-            <div class="col-sm-11">
-                <textarea class="form-control" required="required" name="description"
-                          placeholder="楼盘概况">${surveyExamineDataInfoVo.examineEstateVo.description}</textarea>
             </div>
         </div>
     </div>
@@ -149,7 +137,15 @@
             </div>
         </div>
     </div>
-
+    <div class="form-group">
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
+            <div class="col-sm-11">
+                <textarea class="form-control" required="required" name="description"
+                          placeholder="楼盘概况">${surveyExamineDataInfoVo.examineEstateVo.description}</textarea>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <div class="x-valid">
             <label class="col-sm-1 control-label">总平面图</label>
@@ -216,7 +212,6 @@
     })
 </script>
 <script type="text/javascript">
-
     (function () {
         //上传附件
         function uploadFile(fieldsName) {
@@ -251,17 +246,6 @@
 
         }
         estateFun.prototype = {
-            select2InitMethodWrite: function (data, name) {
-                if (estateFun.prototype.isEmpty(data)) {
-                    if (estateFun.prototype.isEmpty(name)) {
-                        $("#" + Estate.config().frm + " ." + name).val(data).trigger("change");
-                    }
-                } else {
-                    if (estateFun.prototype.isEmpty(name)) {
-                        $("#" + Estate.config().frm + " ." + name).val(null).trigger("change");
-                    }
-                }
-            },
             isEmpty: function (data) {
                 if(data){
                     return true;
@@ -286,10 +270,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                if ($("#" + Estate.config().frm + " .developerId").size() > 0) {
-                                    $("#" + Estate.config().frm + " .developerId").html(option);
-                                    $("#" + Estate.config().frm + " .developerId").select2();//加载样式
-                                }
+                                $("#" + Estate.config().frm).find('select.developerId').empty().html(option).trigger('change');
                             }
                         }
                     },
@@ -297,53 +278,16 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
-                //主要是载入select2
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
-                    type: "get",
-                    dataType: "json",
-                    async: false,
-                    data: {province:"${projectInfo.province}",city:"${projectInfo.city}",district:"${projectInfo.district}"},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
-                                }
-                                if ($("#" + Estate.config().frm + " .landLevel").size() > 0) {
-                                    $("#" + Estate.config().frm + " .landLevel").html(option);
-                                    $("#" + Estate.config().frm + " .landLevel").select2();//加载样式
-                                }
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+
+                //加载版块信息
+                AssessCommon.loadBlockByArea({
+                    province:'${declareRecord.province}',
+                    city:'${declareRecord.city}',
+                    district:'${declareRecord.district}',
+                    value:'${surveyExamineDataInfoVo.examineEstateVo.blockId}',
+                    success:function (html,data) {
+                        $("#" + Estate.config().frm).find('select.blockId').empty().html(html).trigger('change');
                     }
-                });
-                $("#" + Estate.config().frm + " .landLevel").change(function () {
-                    var id = $("#" + Estate.config().frm + " .landLevel").eq(1).val();
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
-                        type: "get",
-                        dataType: "json",
-                        async: false,
-                        data: {id:id},
-                        success: function (result) {
-                            if (result.ret) {
-                                var data = result.data;
-                                if (estateFun.prototype.isEmpty(data)){
-                                    $("#" + Estate.config().frm + " input[name='street']").val(data.street);
-                                }
-                            }
-                        },
-                        error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
-                        }
-                    });
                 });
             },
             viewFiles: function () {

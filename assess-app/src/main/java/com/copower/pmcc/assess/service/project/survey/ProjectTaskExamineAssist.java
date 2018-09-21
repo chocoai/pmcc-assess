@@ -60,7 +60,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", "", 0, "0", "");
         SurveyExamineInfo surveyExamineInfo = surveyExamineInfoService.getExploreByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("surveyExamineInfo", surveyExamineInfo);
         setViewParam(commonService.thisUserAccount(), projectPlanDetails, modelAndView);
@@ -69,7 +69,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -77,7 +77,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoIndex", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -89,7 +89,7 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails,Integer boxId){
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineItemApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskExamineInfoApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setViewParam(projectPlanDetails.getExecuteUserAccount(), projectPlanDetails, modelAndView);
         return modelAndView;
     }

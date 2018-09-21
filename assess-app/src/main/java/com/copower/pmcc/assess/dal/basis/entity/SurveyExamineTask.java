@@ -25,6 +25,10 @@ public class SurveyExamineTask {
 
     private String taskStatus;
 
+    private Boolean bisShow;
+
+    private Boolean bisRecordData;
+
     private String creator;
 
     private Date gmtCreated;
@@ -117,6 +121,22 @@ public class SurveyExamineTask {
 
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus == null ? null : taskStatus.trim();
+    }
+
+    public Boolean getBisShow() {
+        return bisShow;
+    }
+
+    public void setBisShow(Boolean bisShow) {
+        this.bisShow = bisShow;
+    }
+
+    public Boolean getBisRecordData() {
+        return bisRecordData;
+    }
+
+    public void setBisRecordData(Boolean bisRecordData) {
+        this.bisRecordData = bisRecordData;
     }
 
     public String getCreator() {

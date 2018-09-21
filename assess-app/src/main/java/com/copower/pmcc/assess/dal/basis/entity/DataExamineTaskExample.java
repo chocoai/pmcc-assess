@@ -565,6 +565,126 @@ public class DataExamineTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisRepeatIsNull() {
+            addCriterion("bis_repeat is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatIsNotNull() {
+            addCriterion("bis_repeat is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatEqualTo(Boolean value) {
+            addCriterion("bis_repeat =", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatNotEqualTo(Boolean value) {
+            addCriterion("bis_repeat <>", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatGreaterThan(Boolean value) {
+            addCriterion("bis_repeat >", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_repeat >=", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatLessThan(Boolean value) {
+            addCriterion("bis_repeat <", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_repeat <=", value, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatIn(List<Boolean> values) {
+            addCriterion("bis_repeat in", values, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatNotIn(List<Boolean> values) {
+            addCriterion("bis_repeat not in", values, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_repeat between", value1, value2, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRepeatNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_repeat not between", value1, value2, "bisRepeat");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadIsNull() {
+            addCriterion("bis_upload is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadIsNotNull() {
+            addCriterion("bis_upload is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadEqualTo(Boolean value) {
+            addCriterion("bis_upload =", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadNotEqualTo(Boolean value) {
+            addCriterion("bis_upload <>", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadGreaterThan(Boolean value) {
+            addCriterion("bis_upload >", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_upload >=", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadLessThan(Boolean value) {
+            addCriterion("bis_upload <", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_upload <=", value, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadIn(List<Boolean> values) {
+            addCriterion("bis_upload in", values, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadNotIn(List<Boolean> values) {
+            addCriterion("bis_upload not in", values, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_upload between", value1, value2, "bisUpload");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUploadNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_upload not between", value1, value2, "bisUpload");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

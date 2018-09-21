@@ -795,6 +795,126 @@ public class SurveyExamineTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisShowIsNull() {
+            addCriterion("bis_show is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowIsNotNull() {
+            addCriterion("bis_show is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowEqualTo(Boolean value) {
+            addCriterion("bis_show =", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotEqualTo(Boolean value) {
+            addCriterion("bis_show <>", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowGreaterThan(Boolean value) {
+            addCriterion("bis_show >", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_show >=", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowLessThan(Boolean value) {
+            addCriterion("bis_show <", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_show <=", value, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowIn(List<Boolean> values) {
+            addCriterion("bis_show in", values, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotIn(List<Boolean> values) {
+            addCriterion("bis_show not in", values, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_show between", value1, value2, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisShowNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_show not between", value1, value2, "bisShow");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataIsNull() {
+            addCriterion("bis_record_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataIsNotNull() {
+            addCriterion("bis_record_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataEqualTo(Boolean value) {
+            addCriterion("bis_record_data =", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataNotEqualTo(Boolean value) {
+            addCriterion("bis_record_data <>", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataGreaterThan(Boolean value) {
+            addCriterion("bis_record_data >", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_record_data >=", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataLessThan(Boolean value) {
+            addCriterion("bis_record_data <", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_record_data <=", value, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataIn(List<Boolean> values) {
+            addCriterion("bis_record_data in", values, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataNotIn(List<Boolean> values) {
+            addCriterion("bis_record_data not in", values, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_record_data between", value1, value2, "bisRecordData");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisRecordDataNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_record_data not between", value1, value2, "bisRecordData");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -14,7 +14,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称<span class="symbol required"></span></label>
                 <div class="col-sm-11">
-                    <input type="text" class="form-control" required="required" name="name" placeholder="名称" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
+                    <input type="text" class="form-control" required="required" name="name" placeholder="名称"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
                 </div>
             </div>
         </div>
@@ -23,14 +24,16 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类型<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 landUseType" name="landUseType" required="required">
+                    <select class="form-control search-select select2 landUseType" name="landUseType"
+                            required="required">
                     </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地用途类别<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control search-select select2 landUseCategory" name="landUseCategory" required="required">
+                    <select class="form-control search-select select2 landUseCategory" name="landUseCategory"
+                            required="required">
                     </select>
                 </div>
             </div>
@@ -47,19 +50,22 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">东至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="东至" required="required" name="eastTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.eastTo}">
+                    <input type="text" class="form-control" placeholder="东至" required="required" name="eastTo"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.eastTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">南至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="南至" required="required" name="southTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.southTo}">
+                    <input type="text" class="form-control" placeholder="南至" required="required" name="southTo"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.southTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">西至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="西至" required="required" name="westTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.westTo}">
+                    <input type="text" class="form-control" placeholder="西至" required="required" name="westTo"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.westTo}">
                 </div>
             </div>
         </div>
@@ -68,19 +74,22 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">北至<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="北至" required="required" name="northTo" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.northTo}">
+                    <input type="text" class="form-control" placeholder="北至" required="required" name="northTo"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.northTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状状况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
+                    <input type="text" class="form-control" placeholder="土地形状状况" required="required" name="shapeState"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.shapeState}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
+                    <input type="text" class="form-control" placeholder="土地平整度" required="required" name="planeness"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.planeness}">
                 </div>
             </div>
         </div>
@@ -89,20 +98,25 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地开发程度" required="required" name="developmentDegree" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.developmentDegree}">
+                    <input type="text" class="form-control" placeholder="土地开发程度" required="required"
+                           name="developmentDegree"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.developmentDegree}">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">开发限制条件<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="开发限制条件" required="required" name="restrictiveCondition" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.restrictiveCondition}">
+                    <input type="text" class="form-control" placeholder="开发限制条件" required="required"
+                           name="restrictiveCondition"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.restrictiveCondition}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土壤<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
+                    <input type="text" class="form-control" placeholder="土壤" required="required" name="soil"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.soil}">
                 </div>
             </div>
         </div>
@@ -111,14 +125,18 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}" placeholder="地形地势" required="required" name="topographicTerrain">
+                    <input type="text" class="form-control"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.topographicTerrain}"
+                           placeholder="地形地势" required="required" name="topographicTerrain">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)" required="required" name="landArea" value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
+                    <input type="text" class="form-control" data-rule-number='true' placeholder="土地面积(请输入数字)"
+                           required="required" name="landArea"
+                           value="${surveyExamineDataInfoVo.examineEstateLandStateVo.landArea}">
                 </div>
             </div>
         </div>
@@ -137,51 +155,48 @@
     }
     //页面保存数据后 展示数据
     estateLandState.prototype.saveShowData = function () {
-        <%--estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}","landUse");--%>
-        <%--estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}","landLevel");--%>
+        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseType}", "landUse");
+        estateLandState.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}", "landLevel");
     };
-    estateLandState.prototype.select2InitMethodWrite = function (data,name) {
-        if (estateLandState.prototype.select2IsNotNull(data)){
-            if (estateLandState.prototype.select2IsNotNull(name)){
-                $("#"+EstateLandState.config().frm+" ."+name).val(data).trigger("change");
+    estateLandState.prototype.select2InitMethodWrite = function (data, name) {
+        if (estateLandState.prototype.select2IsNotNull(data)) {
+            if (estateLandState.prototype.select2IsNotNull(name)) {
+                $("#" + EstateLandState.config().frm + " ." + name).val(data).trigger("change");
             }
-        }else {
-            if (estateLandState.prototype.select2IsNotNull(name)){
-                $("#"+EstateLandState.config().frm+" ."+name).val(null).trigger("change");
+        } else {
+            if (estateLandState.prototype.select2IsNotNull(name)) {
+                $("#" + EstateLandState.config().frm + " ." + name).val(null).trigger("change");
             }
         }
     };
     estateLandState.prototype.select2IsNotNull = function (data) {
-        if (data == null){
+        if (data == null) {
             return false;
         }
-        if (data == ''){
+        if (data == '') {
             return false;
         }
-        if (data == ""){
+        if (data == "") {
             return false;
         }
-        if (data == 0){
+        if (data == 0) {
             return false;
         }
         return true;
     };
     estateLandState.prototype.init = function () {
-        <%--AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUse}", function (html,data) {--%>
-            <%--if ($("#" + EstateLandState.config().frm + " .landUseType").size() > 0) {--%>
-                <%--$("#" + EstateLandState.config().frm + " .landUseType").html(html);--%>
-                <%--$("#" + EstateLandState.config().frm + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式--%>
-            <%--}--%>
-        <%--});--%>
-        $("#" + EstateLandState.config().frm + " .landUseCategory").select2();//加载样式
-        $("#" + EstateLandState.config().frm + " .landUseType").change(function () {
-            var id = $("#" + EstateLandState.config().frm + " .landUseType").eq(1).val();
-            $("#" + EstateLandState.config().frm + " .landUseCategory").eq(0).remove();
-            AssessCommon.loadDataDicByPid(id,null,function (html,data) {
-                if ($("#" + EstateLandState.config().frm + " .landUseCategory").size() > 0) {
-                    $("#" + EstateLandState.config().frm + " .landUseCategory").html(html);
-                    $("#" + EstateLandState.config().frm + " .landUseCategory").select2();//加载样式
-                }
+        var landUseType = "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseType}";//土地用途类型
+        var landUseCategory = "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseType}";//土地用途类别
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, landUseType, function (html, optionArray) {
+            $("#" + EstateLandState.config().frm).find("select.landUseType").html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByPid(landUseType, landUseCategory, function (html, data) {
+            $("#" + EstateLandState.config().frm).find("select.landUseCategory").append(html).trigger('change');
+        });
+
+        $("#" + EstateLandState.config().frm).find("select.landUseType").change(function () {
+            AssessCommon.loadDataDicByPid($(this).val(), null, function (html, data) {
+                $("#" + EstateLandState.config().frm).find("select.landUseCategory").empty().html(html).trigger('change');
             });
         });
         $.ajax({
@@ -189,7 +204,11 @@
             type: "get",
             dataType: "json",
             async: false,
-            data: {province:"${projectInfo.province}",city:"${projectInfo.city}",district:"${projectInfo.district}"},
+            data: {
+                province: "${projectInfo.province}",
+                city: "${projectInfo.city}",
+                district: "${projectInfo.district}"
+            },
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
@@ -199,10 +218,7 @@
                         for (var i = 0; i < gradeNum; i++) {
                             option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
                         }
-                        if ($("#" + EstateLandState.config().frm + " .landLevel").size() > 0) {
-                            $("#" + EstateLandState.config().frm + " .landLevel").html(option);
-                            $("#" + EstateLandState.config().frm + " .landLevel").select2();//加载样式
-                        }
+                        $("#" + EstateLandState.config().frm).find("select.landLevel").empty().html(option).trigger('change');
                     }
                 }
             },
@@ -223,9 +239,9 @@
             },
             //验证
             valid: function () {
-                var options={
-                    msg:"请检查【土地实体情况】填写的信息",
-                    hiddenValid:true
+                var options = {
+                    msg: "请检查【土地实体情况】填写的信息",
+                    hiddenValid: true
                 };
                 return $("#" + estateLandState.config().frm).valid(options);
             },

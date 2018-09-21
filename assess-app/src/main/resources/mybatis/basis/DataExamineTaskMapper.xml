@@ -9,6 +9,8 @@
     <result column="apply_url" property="applyUrl" jdbcType="VARCHAR" />
     <result column="detail_url" property="detailUrl" jdbcType="VARCHAR" />
     <result column="bis_must" property="bisMust" jdbcType="BIT" />
+    <result column="bis_repeat" property="bisRepeat" jdbcType="BIT" />
+    <result column="bis_upload" property="bisUpload" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -76,8 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, field_name, apply_url, detail_url, bis_must, bis_enable, bis_delete, 
-    remark, sorting, creator, gmt_created, gmt_modified
+    id, pid, name, field_name, apply_url, detail_url, bis_must, bis_repeat, bis_upload, 
+    bis_enable, bis_delete, remark, sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataExamineTaskExample" >
     select
@@ -115,14 +117,16 @@
     </selectKey>
     insert into tb_data_examine_task (pid, name, field_name, 
       apply_url, detail_url, bis_must, 
-      bis_enable, bis_delete, remark, 
-      sorting, creator, gmt_created, 
-      gmt_modified)
+      bis_repeat, bis_upload, bis_enable, 
+      bis_delete, remark, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
       #{applyUrl,jdbcType=VARCHAR}, #{detailUrl,jdbcType=VARCHAR}, #{bisMust,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisRepeat,jdbcType=BIT}, #{bisUpload,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataExamineTask" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,6 +151,12 @@
       </if>
       <if test="bisMust != null" >
         bis_must,
+      </if>
+      <if test="bisRepeat != null" >
+        bis_repeat,
+      </if>
+      <if test="bisUpload != null" >
+        bis_upload,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -188,6 +198,12 @@
       </if>
       <if test="bisMust != null" >
         #{bisMust,jdbcType=BIT},
+      </if>
+      <if test="bisRepeat != null" >
+        #{bisRepeat,jdbcType=BIT},
+      </if>
+      <if test="bisUpload != null" >
+        #{bisUpload,jdbcType=BIT},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -242,6 +258,12 @@
       <if test="record.bisMust != null" >
         bis_must = #{record.bisMust,jdbcType=BIT},
       </if>
+      <if test="record.bisRepeat != null" >
+        bis_repeat = #{record.bisRepeat,jdbcType=BIT},
+      </if>
+      <if test="record.bisUpload != null" >
+        bis_upload = #{record.bisUpload,jdbcType=BIT},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -277,6 +299,8 @@
       apply_url = #{record.applyUrl,jdbcType=VARCHAR},
       detail_url = #{record.detailUrl,jdbcType=VARCHAR},
       bis_must = #{record.bisMust,jdbcType=BIT},
+      bis_repeat = #{record.bisRepeat,jdbcType=BIT},
+      bis_upload = #{record.bisUpload,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -308,6 +332,12 @@
       </if>
       <if test="bisMust != null" >
         bis_must = #{bisMust,jdbcType=BIT},
+      </if>
+      <if test="bisRepeat != null" >
+        bis_repeat = #{bisRepeat,jdbcType=BIT},
+      </if>
+      <if test="bisUpload != null" >
+        bis_upload = #{bisUpload,jdbcType=BIT},
       </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -341,6 +371,8 @@
       apply_url = #{applyUrl,jdbcType=VARCHAR},
       detail_url = #{detailUrl,jdbcType=VARCHAR},
       bis_must = #{bisMust,jdbcType=BIT},
+      bis_repeat = #{bisRepeat,jdbcType=BIT},
+      bis_upload = #{bisUpload,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
