@@ -275,6 +275,9 @@
     //对新增 评估技术方法 数据处理
     function addDataDic() {
         $("#frm").clearAll();
+        //$("#frm").find('select.select2').val(null).trigger('change');
+        $("#frm").find('select.category').trigger('change');
+        $("#frm").find('[id^=select2-chosen]').text($("#frm").find('select.category').find('option[value="ff"]').text());
         extractApplicableField();
         extractNotApplicableField();
     }
@@ -321,12 +324,12 @@
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
         $("#frm").initForm(row);
-        objMethod.event.init();
+        $("#frm").find('select.type').trigger('change');
+        objMethod.event.category(row.category);
         extractApplicableField();
         extractNotApplicableField();
         $('#divBox').modal();
     }
-
 
 
     /**
@@ -342,22 +345,15 @@
         }
         return false;
     }
-    objMethod.writeSelect = function (frm, data, name) {
-        if (objMethod.isEmpty(data)) {
-            $("#" + frm + " ." + name).val(data).trigger("change");
-        } else {
-            $("#" + frm + " ." + name).val(null).trigger("change");
-        }
-    }
     objMethod.event = {
-        init:function () {
-            if (objMethod.flag){
+        init: function () {
+            if (objMethod.flag) {
                 objMethod.event.type();
                 objMethod.flag = false;
             }
         },
         //类型
-        type:function () {
+        type: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
                 type: "post",
@@ -371,9 +367,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#frm" + " .type").html(option);
-                            $("#frm" + " .type").select2();
-                            $("#frm" + " .category").select2();
+                            $("#frm").find('select.type').empty().html(option).trigger('change');
                         }
                     }
                     else {
@@ -385,50 +379,43 @@
                 }
             });
         },
-        change:function () {
+        change: function () {
             objMethod.event.category();
         },
         //类别
-        category:function () {
+        category: function (value) {
             //监听change 事件 并做出......
             $("#frm" + " .type").change(function () {
-                var pid = $("#frm" + " .type").eq(1).val();
-                if (!objMethod.isEmpty(pid)) {
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
-                    type: "post",
-                    dataType: "json",
-                    data: {pid: pid},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            if (data.length >= 1) {
-                                var option = "<option value=''>请选择</option>";
-                                for (var i = 0; i < data.length; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                $("#frm").find('select.category').empty();
+                if ($(this).val()) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
+                        type: "post",
+                        dataType: "json",
+                        data: {pid: $(this).val()},
+                        success: function (result) {
+                            if (result.ret) {
+                                var data = result.data;
+                                if (data.length >= 1) {
+                                    var option = "<option value=''>请选择</option>";
+                                    for (var i = 0; i < data.length; i++) {
+                                        option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                    }
+                                    $("#frm").find('select.category').html(option).select2('val',value).trigger('change');
                                 }
-                                if ($("#frm" + " .category").prev(".category").size() > 0) {
-                                    $("#frm" + " .category").prev(".category").remove();
-                                }
-                                $("#frm" + " .category").empty();
-                                $("#frm" + " .category").html(option);
-                                $("#frm" + " .category").select2();
                             }
+                            else {
+                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
                         }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+                    })
+                }
             });
         }
     }
-
 
 
 </script>
