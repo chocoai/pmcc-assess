@@ -40,6 +40,7 @@
         table: "tableDeclareRealtyLandCert",
         box: "boxDeclareRealtyLandCert",
         fileId: "declareRealtyLandCertFileId",
+        newFileId: "declareRealtyLandCertNewFileId",
         fileView:"declareRealtyLandCertFileView",
         houseFileId:"declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId",
         houseView:"declareRealtyLandCert_declareRealtyLandCert_HouseCert_View",
@@ -278,6 +279,7 @@
         }
         $("#" + declareRealtyLandCertConfig.frm).validate();
         $('#' + declareRealtyLandCertConfig.box).modal("show");
+        declareRealtyLandCert.fileUpload(declareRealtyLandCertConfig.newFileId,AssessDBKey.DeclareRealtyLandCert,0);
     };
 
     declareRealtyLandCert.deleteData = function (id) {
@@ -398,6 +400,10 @@
         $('#' + declareRealtyLandCertConfig.fileView).modal("show");
         declareRealtyLandCert.fileUpload(declareRealtyLandCertConfig.fileId,AssessDBKey.DeclareRealtyLandCert,id);
         declareRealtyLandCert.showFile(declareRealtyLandCertConfig.fileId,AssessDBKey.DeclareRealtyLandCert,id);
+    };
+
+    declareRealtyLandCert.distinguish = function () {
+        toastr.success('暂时未提供识别!');
     };
 
     /**
@@ -652,13 +658,11 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附号<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">附号</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="附号(数字)" name="attachedNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -807,16 +811,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">记事<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <textarea class="form-control" name="memo" required="required">
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -837,6 +831,34 @@
                                                    name="registrationDate" data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate roomTime" required="required">
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">记事<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-11">
+                                            <textarea class="form-control" name="memo" required="required">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传土地证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId"
+                                                   required="required" placeholder="上传土地证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyLandCertNewFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default" onclick="declareRealtyLandCert.distinguish();">识别</label>
                                     </div>
                                 </div>
 

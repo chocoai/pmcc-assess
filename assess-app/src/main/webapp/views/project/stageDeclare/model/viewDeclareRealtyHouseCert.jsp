@@ -49,7 +49,8 @@
         table: "tableDeclareRealtyHouseCert",
         box: "boxDeclareRealtyHouseCert",
         fileId: "declareRealtyHouseCertFileId",
-        fileView:"declareRealtyHouseCertFileView",
+        fileIdNew: "declareRealtyHouseCertFileIdNew",
+        fileViewNew:"declareRealtyHouseCertFileViewNew",
         landFileId:"declareRealtyHouseCert_land_FileId",
         landFileView:"declareRealtyHouseCert_land_FileView" ,
         son: {
@@ -288,7 +289,20 @@
             },
             deleteFlag: true
         });
-    }
+    };
+    declareRealtyHouseCert.fileUploadNew = function (target,tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                projectId: "${projectPlanDetails.projectId}",
+                creater: "${currUserAccount}"
+            },
+            deleteFlag: true
+        });
+    };
 
     /**
      * @author:  zch
@@ -322,11 +336,36 @@
     };
 
     declareRealtyHouseCert.houseEnclosure = function (id) {
-        toastr.success('暂时没有提供此方法!');
+        declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.fileIdNew,AssessDBKey.DeclareRealtyHouseCert,id);
+        declareRealtyHouseCert.fileUploadNew(declareRealtyHouseCertConfig.fileIdNew,AssessDBKey.DeclareRealtyHouseCert,id);
+        $('#' + declareRealtyHouseCertConfig.fileViewNew).modal("show");
     };
 
-    declareRealtyHouseCert.landEnclosure = function (id) {
-        toastr.success('暂时没有提供此方法!');
+    declareRealtyHouseCert.landEnclosure = function (pid) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRealtyLandCert/listDeclareRealtyLandCert",
+            type: "get",
+            dataType: "json",
+            data: {pid: pid,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data ;
+                    if (declareRealtyHouseCert.isEmpty(data)){
+                        if (data.length == 0){
+                            toastr.success('没有关联土地证数据!');
+                        }else {
+                            var item = data[0] ;
+                            declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.landFileId,AssessDBKey.DeclareRealtyLandCert,item.id);
+                            declareRealtyHouseCert.fileUploadNew(declareRealtyHouseCertConfig.landFileId,AssessDBKey.DeclareRealtyLandCert,item.id);
+                            $('#' + declareRealtyHouseCertConfig.landFileView).modal("show");
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     };
 
     /**
@@ -752,13 +791,11 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附号<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">附号</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="附号(数字)" name="attachedNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1217,3 +1254,92 @@
     </div>
 </div>
 
+<!-- 土地证附件 -->
+<div id="declareRealtyHouseCert_land_FileView" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">土地证附件 &nbsp;&nbsp;&nbsp;&nbsp;
+
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传土地证附件
+                                        </label>
+                                        <div class="col-sm-11">
+                                            <input id="declareRealtyHouseCert_land_FileId" name="declareRealtyHouseCert_land_FileId"
+                                                   required="required" placeholder="上传土地证附件" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyHouseCert_land_FileId"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 房产证附件 -->
+<div id="declareRealtyHouseCertFileViewNew" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">房产证附件 &nbsp;&nbsp;&nbsp;&nbsp;
+
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传房产证附件
+                                        </label>
+                                        <div class="col-sm-11">
+                                            <input id="declareRealtyHouseCertFileIdNew" name="declareRealtyHouseCertFileIdNew"
+                                                   required="required" placeholder="上传房产证附件" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyHouseCertFileIdNew"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

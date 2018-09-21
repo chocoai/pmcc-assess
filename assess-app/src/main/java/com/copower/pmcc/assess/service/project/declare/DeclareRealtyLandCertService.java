@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -38,10 +39,50 @@ public class DeclareRealtyLandCertService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
 
     public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
+            DeclareRealtyHouseCert oo = null;
+            Integer pid = declareRealtyLandCert.getPid();
+            //处理关联数据
+            if (pid != null && pid.intValue() != 0) {
+                oo = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(pid);
+                if (oo != null) {
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getCity())){
+                        declareRealtyLandCert.setCity(oo.getCity());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getDistrict())){
+                        declareRealtyLandCert.setDistrict(oo.getDistrict());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getProvince())){
+                        declareRealtyLandCert.setProvince(oo.getProvince());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getFloor())){
+                        declareRealtyLandCert.setFloor(oo.getFloor());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getRoomNumber())){
+                        declareRealtyLandCert.setRoomNumber(oo.getRoomNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getUnit())){
+                        declareRealtyLandCert.setUnit(oo.getUnit());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBuildingNumber())){
+                        declareRealtyLandCert.setBuildingNumber(oo.getBuildingNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getAttachedNumber())){
+                        declareRealtyLandCert.setAttachedNumber(oo.getAttachedNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getStreetNumber())){
+                        declareRealtyLandCert.setStreetNumber(oo.getStreetNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBeLocated())){
+                        declareRealtyLandCert.setBeLocated(oo.getBeLocated());
+                    }
+                }
+            }
             Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), id);
             return id;

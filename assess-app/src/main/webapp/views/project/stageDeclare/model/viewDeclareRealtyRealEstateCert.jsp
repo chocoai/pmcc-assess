@@ -40,6 +40,7 @@
         table: "tableDeclareRealtyRealEstateCert",
         box: "boxDeclareRealtyRealEstateCert",
         fileId: "declareRealtyRealEstateCertFileId",
+        newFileId: "declareRealtyRealEstateCertNewFileId",
         fileView:"declareRealtyRealEstateCertFileView"
     };
 
@@ -286,6 +287,7 @@
         }
         $("#" + declareRealtyRealEstateCertConfig.frm).validate();
         $('#' + declareRealtyRealEstateCertConfig.box).modal("show");
+        declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.newFileId,AssessDBKey.DeclareRealtyRealEstateCert,0);
     };
 
 
@@ -342,6 +344,10 @@
     **/
     declareRealtyRealEstateCert.inputFile = function () {
         toastr.success('暂时没有提供批量导入!');
+    };
+
+    declareRealtyRealEstateCert.distinguish = function () {
+        toastr.success('暂时没有提供此方法!');
     };
 
 
@@ -942,7 +948,22 @@
                                     </div>
                                 </div>
 
-
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传不动产证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="declareRealtyRealEstateCertNewFileId" name="declareRealtyRealEstateCertNewFileId"
+                                                   required="required" placeholder="上传不动产证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyRealEstateCertNewFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default" onclick="declareRealtyRealEstateCert.distinguish();">识别</label>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>

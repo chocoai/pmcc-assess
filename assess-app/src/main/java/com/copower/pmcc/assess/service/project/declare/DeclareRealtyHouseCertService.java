@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -38,25 +39,65 @@ public class DeclareRealtyHouseCertService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
 
-    public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert){
-        if (declareRealtyHouseCert.getId()==null){
+    public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
+        if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
+            Integer pid = declareRealtyHouseCert.getPid();
+            DeclareRealtyLandCert oo = null;
+            //处理关联数据
+            if (pid != null && pid.intValue() != 0) {
+                oo = declareRealtyLandCertService.getDeclareRealtyLandCertById(pid);
+                if (oo != null) {
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getCity())){
+                        declareRealtyHouseCert.setCity(oo.getCity());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getDistrict())){
+                        declareRealtyHouseCert.setDistrict(oo.getDistrict());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getProvince())){
+                        declareRealtyHouseCert.setProvince(oo.getProvince());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getFloor())){
+                        declareRealtyHouseCert.setFloor(oo.getFloor());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getRoomNumber())){
+                        declareRealtyHouseCert.setRoomNumber(oo.getRoomNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getUnit())){
+                        declareRealtyHouseCert.setUnit(oo.getUnit());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBuildingNumber())){
+                        declareRealtyHouseCert.setBuildingNumber(oo.getBuildingNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getAttachedNumber())){
+                        declareRealtyHouseCert.setAttachedNumber(oo.getAttachedNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getStreetNumber())){
+                        declareRealtyHouseCert.setStreetNumber(oo.getStreetNumber());
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBeLocated())){
+                        declareRealtyHouseCert.setBeLocated(oo.getBeLocated());
+                    }
+                }
+            }
             Integer id = null;
             id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
-            return  id ;
-        }else {
+            return id;
+        } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert);
             return null;
         }
     }
 
-    public DeclareRealtyHouseCert getDeclareRealtyHouseCertById(Integer id){
+    public DeclareRealtyHouseCert getDeclareRealtyHouseCertById(Integer id) {
         return declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(id);
     }
 
-    public BootstrapTableVo getDeclareRealtyHouseCertListVos(DeclareRealtyHouseCert declareRealtyHouseCert){
+    public BootstrapTableVo getDeclareRealtyHouseCertListVos(DeclareRealtyHouseCert declareRealtyHouseCert) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -65,32 +106,33 @@ public class DeclareRealtyHouseCertService {
         vo.setRows(vos);
         return vo;
     }
-    public  List<DeclareRealtyHouseCertVo> landLevels(DeclareRealtyHouseCert declareRealtyHouseCert){
+
+    public List<DeclareRealtyHouseCertVo> landLevels(DeclareRealtyHouseCert declareRealtyHouseCert) {
         List<DeclareRealtyHouseCert> declareRealtyHouseCerts = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(declareRealtyHouseCert);
         List<DeclareRealtyHouseCertVo> vos = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(declareRealtyHouseCerts)){
-            for (DeclareRealtyHouseCert landLevel:declareRealtyHouseCerts){
+        if (!ObjectUtils.isEmpty(declareRealtyHouseCerts)) {
+            for (DeclareRealtyHouseCert landLevel : declareRealtyHouseCerts) {
                 vos.add(getDeclareRealtyHouseCertVo(landLevel));
             }
         }
         return vos;
     }
 
-    public void removeDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert){
+    public void removeDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
         try {
             declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
         } catch (Exception e1) {
             try {
-                throw  new Exception();
+                throw new Exception();
             } catch (Exception e11) {
 
             }
         }
     }
 
-    public DeclareRealtyHouseCertVo getDeclareRealtyHouseCertVo(DeclareRealtyHouseCert declareRealtyHouseCert){
+    public DeclareRealtyHouseCertVo getDeclareRealtyHouseCertVo(DeclareRealtyHouseCert declareRealtyHouseCert) {
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
-        BeanUtils.copyProperties(declareRealtyHouseCert,vo);
+        BeanUtils.copyProperties(declareRealtyHouseCert, vo);
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
             vo.setProvinceName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getProvince()));//省
         }
