@@ -99,10 +99,14 @@
         CertName:{
             init:function () {
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").blur(function () {
-                    declareRealtyRealEstateCert.role.CertName.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val())){
+                        declareRealtyRealEstateCert.role.CertName.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").blur(function () {
-                    declareRealtyRealEstateCert.role.CertName.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val())){
+                        declareRealtyRealEstateCert.role.CertName.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " .type").change(function () {
                     /**
@@ -143,22 +147,34 @@
         beLocated:{
             init:function () {
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").blur(function () {
-                    declareRealtyRealEstateCert.role.beLocated.write();
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val())){
+                        declareRealtyRealEstateCert.role.beLocated.write();
+                    }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " .district").change(function () {
                     /**
@@ -315,6 +331,7 @@
     **/
     declareRealtyRealEstateCert.enclosure = function (id) {
         declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
+        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
         $('#' + declareRealtyRealEstateCertConfig.fileView).modal("show");
     };
 

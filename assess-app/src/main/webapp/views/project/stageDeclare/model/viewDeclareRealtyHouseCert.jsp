@@ -12,6 +12,10 @@
             <h3>
                 房产证申报 &nbsp;&nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.showAddModel()"
                               data-toggle="modal"> 新增</button>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.inputFile()"
+                        data-toggle="modal"> 批量导入</button>
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -45,15 +49,10 @@
         table: "tableDeclareRealtyHouseCert",
         box: "boxDeclareRealtyHouseCert",
         fileId: "declareRealtyHouseCertFileId",
+        fileView:"declareRealtyHouseCertFileView",
+        landFileId:"declareRealtyHouseCert_land_FileId",
+        landFileView:"declareRealtyHouseCert_land_FileView" ,
         son: {
-            declareRealtyRealEstateCert:{
-                frm:"frmSonDeclareRealtyRealEstateCert",
-                box:"boxSonDeclareRealtyRealEstateCert",
-                view:"viewSonDeclareRealtyRealEstateCert",
-                fileId:"sonDeclareRealtyRealEstateCertFileId",
-                name:"不动产",
-                table:"tableSonDeclareRealtyRealEstateCert"
-            },
             declareRealtyLandCert:{
                 frm:"frmSonDeclareRealtyLandCert",
                 box:"boxSonDeclareRealtyLandCert",
@@ -247,9 +246,10 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="declareRealtyHouseCert.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyLandCert.showViewModel(' + row.id + ');" ><i class="fa fa-info">土地证</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.showViewModel(' + row.id + ');" ><i class="fa fa-info">不动产证</i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'\')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyLandCert.showViewModel(' + row.id + ');" ><i class="fa">土地证关联</i></a>';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='declareRealtyHouseCert.houseEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"房产证附件"+"</a>" ;
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='declareRealtyHouseCert.landEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"土地证附件"+"</a>" ;
                 str += '</div>';
                 return str;
             }
@@ -306,7 +306,7 @@
             },
             deleteFlag: true
         })
-    }
+    };
 
     /**
      * @author:  zch
@@ -315,7 +315,19 @@
      **/
     declareRealtyHouseCert.distinguish = function () {
         toastr.success('暂时未提供识别!');
-    }
+    };
+
+    declareRealtyHouseCert.inputFile = function () {
+        toastr.success('暂时没有提供批量导入!');
+    };
+
+    declareRealtyHouseCert.houseEnclosure = function (id) {
+        toastr.success('暂时没有提供此方法!');
+    };
+
+    declareRealtyHouseCert.landEnclosure = function (id) {
+        toastr.success('暂时没有提供此方法!');
+    };
 
     /**
      * @author:  zch
@@ -456,222 +468,8 @@
                 }
             }
         }
-    }
-
-    /**
-     * @author:  zch
-     * 描述:房产证 挂的不动产证(属子类)
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.sonDeclareRealtyRealEstateCert = {
-        showViewModel:function (pid) {
-            $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.view+" .pid").val(pid);
-            $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.view).modal("show");
-            declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.loadList();
-        },
-        showModel:function () {
-            if (declareRealtyHouseCert.sonDeclareRealtyRealEstateCert){
-                declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.init();
-                declareRealtyHouseCert.sonDeclareRealtyRealEstateCert = false;
-            }
-            var pid = $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.view+" .pid").val();
-            $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm).clearAll();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
-                type: "get",
-                dataType: "json",
-                data: {id: pid},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data ;
-                        var item = {
-                            pid:pid,
-                            city:data.city,
-                            cityName:data.cityName,
-                            district:data.district,
-                            location:data.location,
-                            districtName:data.districtName,
-                            province:data.province,
-                            provinceName:data.provinceName,
-                            beLocated:data.beLocated,
-                            streetNumber:data.streetNumber,
-                            attachedNumber:data.attachedNumber,
-                            buildingNumber:data.buildingNumber,
-                            unit:data.unit,
-                            floor:data.floor,
-                            number:data.number,
-                            certName:data.certName,
-                            roomNumber:data.roomNumber,
-                        };
-                        $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm).initForm(item);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-            declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.fileId,AssessDBKey.DeclareRealtyRealEstateCert, 0);
-            $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.box).modal("show");
-        },
-        saveAndUpdate:function () {
-            if (!$("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm).valid()) {
-                return false;
-            }
-            var data = formParams(declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm);
-            data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.loadList();
-                        toastr.success('成功!');
-                        $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.box).modal("hide");
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
-                }
-            });
-        },
-        init:function () {
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
-                $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm + " .purpose").html(html);
-                $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm + " .purpose").select2();//加载样式
-            });
-            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
-                $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm + " .type").html(html);
-                $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm + " .type").select2();//加载样式
-            });
-            $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm + " .useRightType").select2();//加载样式
-        },
-        loadList:function () {
-            var cols = [];
-            cols.push({field: 'useRightType', title: '使用权类型'});
-            cols.push({field: 'apportionmentArea', title: '分摊面积'});
-            cols.push({field: 'useRightArea', title: '使用权面积'});
-            cols.push({field: 'landCertName', title: '土地权证号'});
-            cols.push({field: 'beLocated', title: '土地坐落'});
-            cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.table).bootstrapTable('destroy');
-            TableInit(declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-                pid: $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.view+" .pid").val()
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        deleteData:function (id) {
-            if (!declareRealtyHouseCert.isEmpty(id)){
-                return false;
-            }
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.loadList();
-                        toastr.success('成功!');
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
-                }
-            });
-        }
     };
-    function sonDeclareRealtyRealEstateCertRemove() {
-        if (!declareRealtyHouseCert.isEmpty(id)){
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
-            data: {id:id},
-            success: function (result) {
-                if (result.ret) {
-                    sonDeclareRealtyRealEstateCertLoadList();
-                    toastr.success('成功!');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
-            }
-        });
-    }
-    function sonDeclareRealtyRealEstateCertLoadList() {
-        var cols = [];
-        cols.push({field: 'useRightType', title: '使用权类型'});
-        cols.push({field: 'apportionmentArea', title: '分摊面积'});
-        cols.push({field: 'useRightArea', title: '使用权面积'});
-        cols.push({field: 'landCertName', title: '土地权证号'});
-        cols.push({field: 'beLocated', title: '土地坐落'});
-        cols.push({field: 'fileViewName', title: '附件'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="sonDeclareRealtyRealEstateCertRemove(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.table).bootstrapTable('destroy');
-        TableInit(declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
-            pid: $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.view+" .pid").val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
-    //---
-   function sonDeclareRealtyRealEstateCertSaveAndUpdate() {
-       if (!$("#" + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm).valid()) {
-           return false;
-       }
-       var data = formParams(declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.frm);
-       data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
-       $.ajax({
-           type: "POST",
-           url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-           data: data,
-           success: function (result) {
-               if (result.ret) {
-                   sonDeclareRealtyRealEstateCertLoadList();
-                   toastr.success('成功!');
-                   $('#' + declareRealtyHouseCertConfig.son.declareRealtyRealEstateCert.box).modal("hide");
-               } else {
-                   Alert("保存失败:" + result.errmsg);
-               }
-           },
-           error: function (e) {
-               Alert("调用服务端方法失败，失败原因:" + e);
-           }
-       });
-   }
+
 
     /**
      * @author:  zch
@@ -680,74 +478,40 @@
      **/
     declareRealtyHouseCert.sonDeclareRealtyLandCert = {
         showViewModel:function (pid) {
-            $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.view+" .pid").val(pid);
-            $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.view).modal("show");
-            declareRealtyHouseCert.sonDeclareRealtyLandCert.loadList();
-        },
-        showModel:function () {
             if (declareRealtyHouseCert.sonDeclareRealtyLandCertFlag){
                 declareRealtyHouseCert.sonDeclareRealtyLandCert.init();
                 declareRealtyHouseCert.sonDeclareRealtyLandCertFlag = false;
             }
-            var pid = $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.view+" .pid").val();
             $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).clearAll();
             $.ajax({
-                url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+                url: "${pageContext.request.contextPath}/declareRealtyLandCert/listDeclareRealtyLandCert",
                 type: "get",
                 dataType: "json",
-                data: {id: pid},
+                data: {pid: pid,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data ;
-                        var item = {
-                            pid:pid,
-                            city:data.city,
-                            cityName:data.cityName,
-                            district:data.district,
-                            location:data.location,
-                            districtName:data.districtName,
-                            province:data.province,
-                            provinceName:data.provinceName,
-                            beLocated:data.beLocated,
-                            streetNumber:data.streetNumber,
-                            attachedNumber:data.attachedNumber,
-                            buildingNumber:data.buildingNumber,
-                            unit:data.unit,
-                            floor:data.floor,
-                            certName:data.certName,
-                            roomNumber:data.roomNumber,
-                        };
-                        $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).initForm(item);
+                        if (declareRealtyHouseCert.isEmpty(data)){
+                            if (data.length == 0){
+                                $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).initForm({pid:pid});
+                                toastr.success('没有关联土地证数据!');
+                            }else {
+                                var item = data[0] ;
+                                $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).initForm(item);
+                                $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(item.terminationDate));
+                                $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
+                                declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm,item.type,"type");
+                                declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm,item.purpose,"purpose");
+                                declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm,item.useRightType,"useRightType");
+                            }
+                        }
                     }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
-            declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId,AssessDBKey.DeclareRealtyLandCert, 0);
-            // declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId,AssessDBKey.DeclareRealtyLandCert, 0);
             $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.box).modal("show");
-        },
-        edit:function (id) {
-
-        },
-        deleteData:function (id) {
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
-                data: {id:id},
-                success: function (result) {
-                    if (result.ret) {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.loadList();
-                        toastr.success('成功!');
-                    } else {
-                        Alert("保存失败:" + result.errmsg);
-                    }
-                },
-                error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
-                }
-            });
         },
         saveAndUpdateData:function () {
             if (!$("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).valid()) {
@@ -761,8 +525,6 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        console.log(data);
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.loadList();
                         toastr.success('成功!');
                         $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.box).modal("hide");
                     } else {
@@ -785,7 +547,6 @@
             });
             $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " .useRightType").select2();//加载样式
             declareRealtyHouseCert.sonDeclareRealtyLandCert.role.landCertName.init();
-            declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.init();
         },
         role:{
             //土地权证号
@@ -827,100 +588,7 @@
                         }
                     });
                 }
-            },
-            //房屋坐落
-            beLocated:{
-                init:function () {
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='unit']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='floor']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='roomNumber']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='streetNumber']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='attachedNumber']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='buildingNumber']").blur(function () {
-                        declareRealtyHouseCert.sonDeclareRealtyLandCert.role.beLocated.write();
-                    });
-                },
-                write:function () {
-                    var districtName = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='districtName']").val();
-                    var unit = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='unit']").val();
-                    var floor = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='floor']").val();
-                    var roomNumber = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='roomNumber']").val();
-                    var streetNumber = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='streetNumber']").val();
-                    var attachedNumber = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='attachedNumber']").val();
-                    var buildingNumber = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='buildingNumber']").val();
-                    if (!declareRealtyHouseCert.isEmpty(unit)) {
-                        unit = "";
-                    } else {
-                        unit = unit + "单元";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(floor)) {
-                        floor = "";
-                    } else {
-                        floor = floor + "楼";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(roomNumber)) {
-                        roomNumber = "";
-                    } else {
-                        roomNumber = roomNumber + "号";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(streetNumber)) {
-                        streetNumber = "";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(attachedNumber)) {
-                        attachedNumber = "";
-                    } else {
-                        attachedNumber = attachedNumber + "附";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(buildingNumber)) {
-                        buildingNumber = "";
-                    } else {
-                        buildingNumber = buildingNumber + "栋";
-                    }
-                    if (!declareRealtyHouseCert.isEmpty(districtName)) {
-                        districtName = "";
-                    }
-                    var  temp = districtName + streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber;
-                    $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='beLocated']").val(temp);
-                }
             }
-        },
-        loadList:function () {
-            var cols = [];
-            cols.push({field: 'useRightType', title: '使用权类型'});
-            cols.push({field: 'apportionmentArea', title: '分摊面积'});
-            cols.push({field: 'useRightArea', title: '使用权面积'});
-            cols.push({field: 'landCertName', title: '土地权证号'});
-            cols.push({field: 'beLocated', title: '土地坐落'});
-            cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.sonDeclareRealtyLandCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.table).bootstrapTable('destroy');
-            TableInit(declareRealtyHouseCertConfig.son.declareRealtyLandCert.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
-                pid: $('#' + declareRealtyHouseCertConfig.son.declareRealtyLandCert.view+" .pid").val(),
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
         }
     };
 
@@ -1322,30 +990,6 @@
     </div>
 </div>
 
-<!-- 土地证 view -->
-<div id="viewSonDeclareRealtyLandCertCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地证 &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-success"
-                            onclick="declareRealtyHouseCert.sonDeclareRealtyLandCert.showModel()"
-                            data-toggle="modal"> 新增
-                    </button>
-                </h3>
-                <input type="hidden" name="pid" class="pid">
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tableSonDeclareRealtyLandCert">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- 土地证 add -->
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -1361,40 +1005,10 @@
             <form id="frmSonDeclareRealtyLandCert" class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="pid">
-                <input type="hidden" name="certName">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            省
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="province">
-                                            <input type="text" name="provinceName" readonly="readonly" class="form-control" placeholder="省">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            市
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="city" >
-                                            <input type="text" name="cityName" readonly="readonly" class="form-control" placeholder="市">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            县(区)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="district" >
-                                            <input type="text" name="districtName" readonly="readonly" class="form-control" placeholder="县(区)">
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
@@ -1451,83 +1065,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                    color="#6f5499" size="10"/>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋坐落<span class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <input type="text" readonly="readonly"
-                                                   placeholder="房屋坐落" name="beLocated" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">街道号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="街道号" name="streetNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="附号(数字)" name="attachedNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">栋号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="栋号(数字)" name="buildingNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">单元<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="单元(数字)" name="unit" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">楼层<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="楼层(数字)" name="floor" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="房号(数字)" name="roomNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                     color="#6f5499" size="10"/>
 
@@ -1662,22 +1199,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传土地证<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input id="sonDeclareRealtyLandCertFileId" name="sonDeclareRealtyLandCertFileId"
-                                                   required="required" placeholder="上传土地证" class="form-control"
-                                                   type="file">
-                                            <div id="_sonDeclareRealtyLandCertFileId"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
-                                    </div>
-                                </div>
 
                             </div>
                         </div>
@@ -1696,517 +1217,3 @@
     </div>
 </div>
 
-<!-- 不动产 view -->
-<div id="viewSonDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">不动产证 &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-success"
-                            onclick="declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.showModel()"
-                            data-toggle="modal"> 新增
-                    </button>
-                </h3>
-                <input type="hidden" name="pid" class="pid">
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="tableSonDeclareRealtyRealEstateCert">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 不动产 add -->
-<div id="boxSonDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">不动产证信息</h3>
-            </div>
-            <form id="frmSonDeclareRealtyRealEstateCert" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="pid">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            省
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="province">
-                                            <input type="text" name="provinceName" readonly="readonly" class="form-control" placeholder="省">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            市
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="city" >
-                                            <input type="text" name="cityName" readonly="readonly" class="form-control" placeholder="市">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            县(区)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="district" >
-                                            <input type="text" name="districtName" readonly="readonly" class="form-control" placeholder="县(区)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房产权证号<span class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <input type="text" readonly="readonly"
-                                                   placeholder="房产权证号" name="certName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">所在地<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="所在地" name="location" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">编号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                                                   placeholder="编号(数字)" name="number" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房产证类型<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select name="type" class="form-control search-select select2 type"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋所有权人<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="房屋所有权人" name="ownership" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="共有情况" name="publicSituation" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control" data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                    color="#6f5499" size="10"/>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋坐落<span class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <input type="text" readonly="readonly"
-                                                   placeholder="房屋坐落" name="beLocated" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">街道号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="街道号" name="streetNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="附号(数字)" name="attachedNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">栋号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="栋号(数字)" name="buildingNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">单元<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="单元(数字)" name="unit" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">楼层<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="楼层(数字)" name="floor" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="房号(数字)" name="roomNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                    color="#6f5499" size="10"/>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            登记时间<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input placeholder="登记时间"
-                                                   name="registrationTime" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate roomTime" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋性质<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="房屋性质" name="nature" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">规划用途<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="规划用途" name="planningUse" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">总层数<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="总层数(数字)" name="floorCount" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">证载面积<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">套内面积<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="套内面积(数字)" name="innerArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">其它<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="其它" name="other" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">土地证号<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="土地证号" name="landNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">土地取得方式<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="土地取得方式" name="landAcquisition" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            土地使用年限起<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input placeholder="土地使用年限起"
-                                                   name="useStartDate" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate roomTime" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            土地使用年限止<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input placeholder="土地使用年限止"
-                                                   name="useEndDate" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate roomTime" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">公摊面积<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="公摊面积(数字)" name="publicArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附记其它<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="附记其它" name="otherNote" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">登记机关<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="登记机关" name="registrationAuthority" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            登记日期<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input placeholder="登记日期"
-                                                   name="registrationDate" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate roomTime" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                    color="#6f5499" size="10"/>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">地号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="地号" name="landNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">图号<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="图号" name="graphNumber" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            用途
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <select required="required" name="purpose"
-                                                    class="form-control search-select select2 purpose">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">取得价格<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="取得价格" name="acquisitionPrice" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            使用权类型
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
-                                                <option value="请选择">请选择</option>
-                                                <option value="划拨" name="useRightType">划拨</option>
-                                                <option value="出证" name="useRightType">出证</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            终止日期<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input placeholder="终止日期"
-                                                   name="terminationDate" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate roomTime" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">使用权面积<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="使用权面积(数字)" name="useRightArea" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">独用面积<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="独用面积(数字)" name="acreage" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">分摊面积<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">记事<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <textarea class="form-control" name="memo" required="required">
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传不动产证<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input id="sonDeclareRealtyRealEstateCertFileId" name="sonDeclareRealtyRealEstateCertFileId"
-                                                   required="required" placeholder="上传不动产证" class="form-control"
-                                                   type="file">
-                                            <div id="_sonDeclareRealtyRealEstateCertFileId"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <label class="btn btn-primary" onclick="sonDeclareRealtyRealEstateCertSaveAndUpdate()">
-                        保存
-                    </label>
-                    <%--<button type="button" class="btn btn-primary" onclick="declareRealtyHouseCert.sonDeclareRealtyRealEstateCert.saveAndUpdateData();">--%>
-                        <%--保存--%>
-                    <%--</button>--%>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
