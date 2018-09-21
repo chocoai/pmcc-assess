@@ -107,3 +107,4 @@ AssessDicKey.casesHouseMatching = "cases.house.matching";//案例房屋 配套�
  */
 var AssessFTKey = {}
 AssessFTKey.ftAssetInventoryRight="ft.asset.inventory.right";//他项权利
+AssessFTKey.ftHouseOwnershipCertificate="ft.house.ownership.certificate";//房产证数据导入模型

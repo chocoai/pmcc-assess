@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
@@ -17,11 +18,20 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,6 +41,7 @@ import java.util.List;
  */
 @Service
 public class DeclareRealtyHouseCertService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareRealtyHouseCertDao declareRealtyHouseCertDao;
     @Autowired
@@ -42,6 +53,23 @@ public class DeclareRealtyHouseCertService {
     @Autowired
     private DeclareRealtyLandCertService declareRealtyLandCertService;
 
+    public String importData(DeclareRealtyHouseCert declareRealtyHouseCert, MultipartFile multipartFile) throws Exception {
+        Workbook hssfWorkbook = null;
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
+        int startRowNumber = 2;//读取数据的起始行
+        return null;
+    }
+
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
@@ -51,34 +79,34 @@ public class DeclareRealtyHouseCertService {
             if (pid != null && pid.intValue() != 0) {
                 oo = declareRealtyLandCertService.getDeclareRealtyLandCertById(pid);
                 if (oo != null) {
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getCity())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getCity())) {
                         declareRealtyHouseCert.setCity(oo.getCity());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getDistrict())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getDistrict())) {
                         declareRealtyHouseCert.setDistrict(oo.getDistrict());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getProvince())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getProvince())) {
                         declareRealtyHouseCert.setProvince(oo.getProvince());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getFloor())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getFloor())) {
                         declareRealtyHouseCert.setFloor(oo.getFloor());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getRoomNumber())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getRoomNumber())) {
                         declareRealtyHouseCert.setRoomNumber(oo.getRoomNumber());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getUnit())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getUnit())) {
                         declareRealtyHouseCert.setUnit(oo.getUnit());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBuildingNumber())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBuildingNumber())) {
                         declareRealtyHouseCert.setBuildingNumber(oo.getBuildingNumber());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getAttachedNumber())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getAttachedNumber())) {
                         declareRealtyHouseCert.setAttachedNumber(oo.getAttachedNumber());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getStreetNumber())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getStreetNumber())) {
                         declareRealtyHouseCert.setStreetNumber(oo.getStreetNumber());
                     }
-                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBeLocated())){
+                    if (!org.springframework.util.StringUtils.isEmpty(oo.getBeLocated())) {
                         declareRealtyHouseCert.setBeLocated(oo.getBeLocated());
                     }
                 }

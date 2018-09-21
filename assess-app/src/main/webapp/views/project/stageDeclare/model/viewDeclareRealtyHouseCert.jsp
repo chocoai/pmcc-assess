@@ -10,12 +10,21 @@
     <div class="x_content">
         <div class="x_title">
             <h3>
-                房产证申报 &nbsp;&nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.showAddModel()"
+                房产证申报 &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.showAddModel()"
                               data-toggle="modal"> 新增</button>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.inputFile()"
-                        data-toggle="modal"> 批量导入</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUpload').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
+
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -35,7 +44,8 @@
         </form>
     </div>
 </div>
-
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="declareRealtyHouseCert.inputFile();">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script>
 
     /**
@@ -332,7 +342,24 @@
     };
 
     declareRealtyHouseCert.inputFile = function () {
-        toastr.success('暂时没有提供批量导入!');
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/importData",
+            data: {
+                planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     };
 
     declareRealtyHouseCert.houseEnclosure = function (id) {
