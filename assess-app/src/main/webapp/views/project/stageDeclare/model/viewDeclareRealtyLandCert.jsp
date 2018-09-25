@@ -360,6 +360,18 @@
         cols.push({field: 'beLocated', title: '土地坐落'});
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
+            field: 'id', title: '是否关联', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                if (declareRealtyLandCert.isEmpty(row.pid)){
+                    str += "已经关联" ;
+                }else {
+                    str += "未关联" ;
+                }
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyLandCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-remove fa-white"></i></a>';
@@ -520,7 +532,27 @@
 
 
     declareRealtyLandCert.inputFileHouse = function () {
-        toastr.success("暂时未提供!");
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/declareRealtyLandCert/importDataHouse",
+            data: {
+                planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUploadLandHouse',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret){
+                    declareRealtyLandCert.loadList();
+                    toastr.success(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     };
 
     /**

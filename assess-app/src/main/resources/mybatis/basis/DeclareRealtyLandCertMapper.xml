@@ -6,7 +6,6 @@
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="land_cert_name" property="landCertName" jdbcType="VARCHAR" />
-    <result column="cert_name" property="certName" jdbcType="VARCHAR" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
@@ -97,8 +96,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, plan_details_id, land_cert_name, cert_name, province, city, district, type, 
-    location, year, number, ownership, be_located, street_number, attached_number, building_number, 
+    id, pid, plan_details_id, land_cert_name, province, city, district, type, location, 
+    year, number, ownership, be_located, street_number, attached_number, building_number, 
     unit, floor, room_number, land_number, purpose, graph_number, use_right_type, acquisition_price, 
     termination_date, use_right_area, acreage, apportionment_area, memo, registration_authority, 
     registration_date, creator, gmt_created, gmt_modified
@@ -138,29 +137,29 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_declare_realty_land_cert (pid, plan_details_id, land_cert_name, 
-      cert_name, province, city, 
-      district, type, location, 
-      year, number, ownership, 
-      be_located, street_number, attached_number, 
-      building_number, unit, floor, 
-      room_number, land_number, purpose, 
-      graph_number, use_right_type, acquisition_price, 
-      termination_date, use_right_area, acreage, 
-      apportionment_area, memo, registration_authority, 
-      registration_date, creator, gmt_created, 
-      gmt_modified)
+      province, city, district, 
+      type, location, year, 
+      number, ownership, be_located, 
+      street_number, attached_number, building_number, 
+      unit, floor, room_number, 
+      land_number, purpose, graph_number, 
+      use_right_type, acquisition_price, termination_date, 
+      use_right_area, acreage, apportionment_area, 
+      memo, registration_authority, registration_date, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCertName,jdbcType=VARCHAR}, 
-      #{certName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
-      #{year,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
-      #{roomNumber,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, 
-      #{graphNumber,jdbcType=VARCHAR}, #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, 
-      #{terminationDate,jdbcType=TIMESTAMP}, #{useRightArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, 
-      #{apportionmentArea,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
-      #{registrationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
+      #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, 
+      #{landNumber,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{graphNumber,jdbcType=VARCHAR}, 
+      #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, #{terminationDate,jdbcType=TIMESTAMP}, 
+      #{useRightArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, #{apportionmentArea,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -176,9 +175,6 @@
       </if>
       <if test="landCertName != null" >
         land_cert_name,
-      </if>
-      <if test="certName != null" >
-        cert_name,
       </if>
       <if test="province != null" >
         province,
@@ -280,9 +276,6 @@
       </if>
       <if test="landCertName != null" >
         #{landCertName,jdbcType=VARCHAR},
-      </if>
-      <if test="certName != null" >
-        #{certName,jdbcType=VARCHAR},
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
@@ -397,9 +390,6 @@
       <if test="record.landCertName != null" >
         land_cert_name = #{record.landCertName,jdbcType=VARCHAR},
       </if>
-      <if test="record.certName != null" >
-        cert_name = #{record.certName,jdbcType=VARCHAR},
-      </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
       </if>
@@ -501,7 +491,6 @@
       pid = #{record.pid,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       land_cert_name = #{record.landCertName,jdbcType=VARCHAR},
-      cert_name = #{record.certName,jdbcType=VARCHAR},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
@@ -547,9 +536,6 @@
       </if>
       <if test="landCertName != null" >
         land_cert_name = #{landCertName,jdbcType=VARCHAR},
-      </if>
-      <if test="certName != null" >
-        cert_name = #{certName,jdbcType=VARCHAR},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
@@ -649,7 +635,6 @@
     set pid = #{pid,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       land_cert_name = #{landCertName,jdbcType=VARCHAR},
-      cert_name = #{certName,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},

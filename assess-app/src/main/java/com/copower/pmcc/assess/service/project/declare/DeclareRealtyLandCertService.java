@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
@@ -54,7 +55,127 @@ public class DeclareRealtyLandCertService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private DeclareRealtyHouseCertDao declareRealtyHouseCertDao;
 
+    /**
+     * 功能描述: 关联房产证
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2018/9/25 18:31
+     */
+    public String importDataLand(DeclareRealtyLandCert declareRealtyLandCert, MultipartFile multipartFile) throws Exception {
+        Workbook workbook = null;
+        Row row = null;
+        StringBuilder builder = new StringBuilder();
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        Sheet sheet = workbook.getSheetAt(0);//只取第一个sheet
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //总列数
+        int colLength = row.getLastCellNum();
+        int startRowNumber = 1;//读取数据的起始行
+        int successCount = 0;//导入成功数据条数
+        //总行数
+        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+        if (rowLength == 0) {
+            builder.append("没有数据!");
+            return builder.toString();
+        }
+        //----------------------------||----------------------
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
+            DeclareRealtyHouseCert oo = null;
+            boolean flag = true;//标识符
+            try {
+                row = sheet.getRow(i);
+                oo = new DeclareRealtyHouseCert();
+                oo.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
+                oo.setCertName(PoiUtils.getCellValue(row.getCell(0)));
+                oo.setLocation(PoiUtils.getCellValue(row.getCell(1)));
+                oo.setNumber(PoiUtils.getCellValue(row.getCell(2)));
+                String type = PoiUtils.getCellValue(row.getCell(3));
+                if (!org.springframework.util.StringUtils.isEmpty(type)) {//类型
+                    oo.setType(type);
+                }
+                oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(4)));//土地取得方式
+                oo.setPublicSituation(PoiUtils.getCellValue(row.getCell(5)));//共有情况
+                oo.setFloorArea(PoiUtils.getCellValue(row.getCell(6)));//建筑面积
+                oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));//房屋坐落
+                oo.setStreetNumber(PoiUtils.getCellValue(row.getCell(8)));//街道号
+                oo.setAttachedNumber(PoiUtils.getCellValue(row.getCell(9)));//附号
+                oo.setBuildingNumber(PoiUtils.getCellValue(row.getCell(10)));//栋号
+                oo.setUnit(PoiUtils.getCellValue(row.getCell(11)));//单元
+                oo.setFloor(PoiUtils.getCellValue(row.getCell(12)));//楼层
+                oo.setRoomNumber(PoiUtils.getCellValue(row.getCell(13)));//房号
+
+                oo.setRegistrationTime(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)), null));//登记时间
+                oo.setRegistrationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(15)), null));//登记日期
+                oo.setPlanningUse(PoiUtils.getCellValue(row.getCell(16)));//规划用途
+                oo.setFloorCount(PoiUtils.getCellValue(row.getCell(17)));//总层数
+                oo.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));//证载面积
+                oo.setInnerArea(PoiUtils.getCellValue(row.getCell(19)));//套内面积
+                oo.setOther(PoiUtils.getCellValue(row.getCell(20)));//其它
+                oo.setLandNumber(PoiUtils.getCellValue(row.getCell(21)));//土地证号
+                oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(22)));//土地取得方式
+
+                oo.setUseStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(23)), null));//土地使用年限起
+                oo.setUseEndDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(24)), null));//土地使用年限止
+                oo.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));//公摊面积
+                oo.setOtherNote(PoiUtils.getCellValue(row.getCell(26)));//附记其它
+                oo.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(27)));//登记机关
+                oo.setNature(PoiUtils.getCellValue(row.getCell(28)));//房屋性质
+
+
+                oo.setProvince(PoiUtils.getCellValue(row.getCell(29)));//省
+                oo.setCity(PoiUtils.getCellValue(row.getCell(30)));//市
+                oo.setDistrict(PoiUtils.getCellValue(row.getCell(31)));//区/县
+            } catch (Exception e) {
+                flag = false;
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+            if (flag) {
+                //处理关联 暂时只处理权证号
+                if (!org.springframework.util.StringUtils.isEmpty(oo.getCertName())) {
+                    DeclareRealtyLandCert declareRealtyLandCert1 = new DeclareRealtyLandCert();
+                    declareRealtyLandCert1.setLandCertName(oo.getCertName());
+                    declareRealtyLandCert1.setPid(0);
+                    List<DeclareRealtyLandCertVo> voList = landLevels(declareRealtyLandCert1);
+                    if (!ObjectUtils.isEmpty(voList)) {
+                        DeclareRealtyLandCert declareRealtyLandCert2 = voList.get(0);
+                        oo.setCreator(commonService.thisUserAccount());
+                        oo.setPid(0);
+                        Integer id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
+                        declareRealtyLandCert2.setPid(id);
+                        declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert2);
+                        successCount++;
+                    } else {
+                        builder.append(String.format("\n第%s行：%s", i, "未找到匹配的房产证"));
+                    }
+                }
+            }
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+    }
+
+
+    /**
+     * 功能描述: 导入土地证
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2018/9/25 18:30
+     */
     public String importData(DeclareRealtyLandCert declareRealtyLandCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
         Row row = null;
@@ -126,6 +247,8 @@ public class DeclareRealtyLandCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
             }
             if (flag) {
+                oo.setCreator(commonService.thisUserAccount());
+                oo.setPid(0);
                 declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                 successCount++;
             }
@@ -227,21 +350,21 @@ public class DeclareRealtyLandCertService {
         if (StringUtils.isNotBlank(declareRealtyLandCert.getProvince())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getProvince())) {
                 vo.setProvinceName(erpAreaService.getSysAreaName(declareRealtyLandCert.getProvince()));//省
-            }else {
+            } else {
                 vo.setProvinceName(declareRealtyLandCert.getProvince());
             }
         }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getCity())) {
             if (NumberUtils.isNumber(declareRealtyLandCert.getCity())) {
                 vo.setCityName(erpAreaService.getSysAreaName(declareRealtyLandCert.getCity()));//市或者县
-            }else {
+            } else {
                 vo.setCityName(declareRealtyLandCert.getCity());
             }
         }
         if (StringUtils.isNotBlank(declareRealtyLandCert.getDistrict())) {
-            if (NumberUtils.isNumber(declareRealtyLandCert.getDistrict())){
+            if (NumberUtils.isNumber(declareRealtyLandCert.getDistrict())) {
                 vo.setDistrictName(erpAreaService.getSysAreaName(declareRealtyLandCert.getDistrict()));//县
-            }else {
+            } else {
                 vo.setDistrictName(declareRealtyLandCert.getDistrict());
             }
         }

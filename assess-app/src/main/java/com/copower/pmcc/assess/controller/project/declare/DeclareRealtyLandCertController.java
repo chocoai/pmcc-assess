@@ -152,6 +152,23 @@ public class DeclareRealtyLandCertController {
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importDataHouse", name = "导入房产证并且关联土地证", method = RequestMethod.POST)
+    public HttpResult importDataLand(HttpServletRequest request,DeclareRealtyLandCert declareRealtyLandCert) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = declareRealtyLandCertService.importDataLand(declareRealtyLandCert,multipartFile);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
 
     }
 }

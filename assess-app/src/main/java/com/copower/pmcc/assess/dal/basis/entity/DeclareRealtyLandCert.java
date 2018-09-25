@@ -12,8 +12,6 @@ public class DeclareRealtyLandCert {
 
     private String landCertName;
 
-    private String certName;
-
     private String province;
 
     private String city;
@@ -104,14 +102,6 @@ public class DeclareRealtyLandCert {
 
     public void setLandCertName(String landCertName) {
         this.landCertName = landCertName == null ? null : landCertName.trim();
-    }
-
-    public String getCertName() {
-        return certName;
-    }
-
-    public void setCertName(String certName) {
-        this.certName = certName == null ? null : certName.trim();
     }
 
     public String getProvince() {
