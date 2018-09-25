@@ -10,7 +10,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="year" property="year" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
@@ -26,11 +26,11 @@
     <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="graph_number" property="graphNumber" jdbcType="VARCHAR" />
     <result column="use_right_type" property="useRightType" jdbcType="VARCHAR" />
-    <result column="acquisition_price" property="acquisitionPrice" jdbcType="VARCHAR" />
+    <result column="acquisition_price" property="acquisitionPrice" jdbcType="DECIMAL" />
     <result column="termination_date" property="terminationDate" jdbcType="TIMESTAMP" />
-    <result column="use_right_area" property="useRightArea" jdbcType="VARCHAR" />
-    <result column="acreage" property="acreage" jdbcType="VARCHAR" />
-    <result column="apportionment_area" property="apportionmentArea" jdbcType="VARCHAR" />
+    <result column="use_right_area" property="useRightArea" jdbcType="DECIMAL" />
+    <result column="acreage" property="acreage" jdbcType="DECIMAL" />
+    <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
@@ -151,14 +151,14 @@
       gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCertName,jdbcType=VARCHAR}, 
       #{certName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{district,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
       #{year,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{attachedNumber,jdbcType=VARCHAR}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
       #{roomNumber,jdbcType=VARCHAR}, #{landNumber,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, 
-      #{graphNumber,jdbcType=VARCHAR}, #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=VARCHAR}, 
-      #{terminationDate,jdbcType=TIMESTAMP}, #{useRightArea,jdbcType=VARCHAR}, #{acreage,jdbcType=VARCHAR}, 
-      #{apportionmentArea,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
+      #{graphNumber,jdbcType=VARCHAR}, #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, 
+      #{terminationDate,jdbcType=TIMESTAMP}, #{useRightArea,jdbcType=DECIMAL}, #{acreage,jdbcType=DECIMAL}, 
+      #{apportionmentArea,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
       #{registrationDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -294,7 +294,7 @@
         #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
@@ -342,19 +342,19 @@
         #{useRightType,jdbcType=VARCHAR},
       </if>
       <if test="acquisitionPrice != null" >
-        #{acquisitionPrice,jdbcType=VARCHAR},
+        #{acquisitionPrice,jdbcType=DECIMAL},
       </if>
       <if test="terminationDate != null" >
         #{terminationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="useRightArea != null" >
-        #{useRightArea,jdbcType=VARCHAR},
+        #{useRightArea,jdbcType=DECIMAL},
       </if>
       <if test="acreage != null" >
-        #{acreage,jdbcType=VARCHAR},
+        #{acreage,jdbcType=DECIMAL},
       </if>
       <if test="apportionmentArea != null" >
-        #{apportionmentArea,jdbcType=VARCHAR},
+        #{apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="memo != null" >
         #{memo,jdbcType=VARCHAR},
@@ -410,7 +410,7 @@
         district = #{record.district,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
@@ -458,19 +458,19 @@
         use_right_type = #{record.useRightType,jdbcType=VARCHAR},
       </if>
       <if test="record.acquisitionPrice != null" >
-        acquisition_price = #{record.acquisitionPrice,jdbcType=VARCHAR},
+        acquisition_price = #{record.acquisitionPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.terminationDate != null" >
         termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.useRightArea != null" >
-        use_right_area = #{record.useRightArea,jdbcType=VARCHAR},
+        use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
       </if>
       <if test="record.acreage != null" >
-        acreage = #{record.acreage,jdbcType=VARCHAR},
+        acreage = #{record.acreage,jdbcType=DECIMAL},
       </if>
       <if test="record.apportionmentArea != null" >
-        apportionment_area = #{record.apportionmentArea,jdbcType=VARCHAR},
+        apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="record.memo != null" >
         memo = #{record.memo,jdbcType=VARCHAR},
@@ -505,7 +505,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       year = #{record.year,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
@@ -521,11 +521,11 @@
       purpose = #{record.purpose,jdbcType=VARCHAR},
       graph_number = #{record.graphNumber,jdbcType=VARCHAR},
       use_right_type = #{record.useRightType,jdbcType=VARCHAR},
-      acquisition_price = #{record.acquisitionPrice,jdbcType=VARCHAR},
+      acquisition_price = #{record.acquisitionPrice,jdbcType=DECIMAL},
       termination_date = #{record.terminationDate,jdbcType=TIMESTAMP},
-      use_right_area = #{record.useRightArea,jdbcType=VARCHAR},
-      acreage = #{record.acreage,jdbcType=VARCHAR},
-      apportionment_area = #{record.apportionmentArea,jdbcType=VARCHAR},
+      use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
+      acreage = #{record.acreage,jdbcType=DECIMAL},
+      apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
       memo = #{record.memo,jdbcType=VARCHAR},
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
@@ -561,7 +561,7 @@
         district = #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
@@ -609,19 +609,19 @@
         use_right_type = #{useRightType,jdbcType=VARCHAR},
       </if>
       <if test="acquisitionPrice != null" >
-        acquisition_price = #{acquisitionPrice,jdbcType=VARCHAR},
+        acquisition_price = #{acquisitionPrice,jdbcType=DECIMAL},
       </if>
       <if test="terminationDate != null" >
         termination_date = #{terminationDate,jdbcType=TIMESTAMP},
       </if>
       <if test="useRightArea != null" >
-        use_right_area = #{useRightArea,jdbcType=VARCHAR},
+        use_right_area = #{useRightArea,jdbcType=DECIMAL},
       </if>
       <if test="acreage != null" >
-        acreage = #{acreage,jdbcType=VARCHAR},
+        acreage = #{acreage,jdbcType=DECIMAL},
       </if>
       <if test="apportionmentArea != null" >
-        apportionment_area = #{apportionmentArea,jdbcType=VARCHAR},
+        apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
       </if>
       <if test="memo != null" >
         memo = #{memo,jdbcType=VARCHAR},
@@ -653,7 +653,7 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       year = #{year,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
@@ -669,11 +669,11 @@
       purpose = #{purpose,jdbcType=VARCHAR},
       graph_number = #{graphNumber,jdbcType=VARCHAR},
       use_right_type = #{useRightType,jdbcType=VARCHAR},
-      acquisition_price = #{acquisitionPrice,jdbcType=VARCHAR},
+      acquisition_price = #{acquisitionPrice,jdbcType=DECIMAL},
       termination_date = #{terminationDate,jdbcType=TIMESTAMP},
-      use_right_area = #{useRightArea,jdbcType=VARCHAR},
-      acreage = #{acreage,jdbcType=VARCHAR},
-      apportionment_area = #{apportionmentArea,jdbcType=VARCHAR},
+      use_right_area = #{useRightArea,jdbcType=DECIMAL},
+      acreage = #{acreage,jdbcType=DECIMAL},
+      apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
       memo = #{memo,jdbcType=VARCHAR},
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},

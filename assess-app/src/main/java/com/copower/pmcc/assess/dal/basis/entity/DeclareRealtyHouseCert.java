@@ -18,7 +18,7 @@ public class DeclareRealtyHouseCert {
 
     private String district;
 
-    private Integer type;
+    private String type;
 
     private String number;
 
@@ -138,12 +138,12 @@ public class DeclareRealtyHouseCert {
         this.district = district == null ? null : district.trim();
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getNumber() {

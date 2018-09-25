@@ -16,7 +16,9 @@ public class DeclareRealtyRealEstateCert {
 
     private String district;
 
-    private Integer type;
+    private String certName;
+
+    private String type;
 
     private String location;
 
@@ -49,6 +51,8 @@ public class DeclareRealtyRealEstateCert {
     private Integer floorCount;
 
     private BigDecimal floorArea;
+
+    private BigDecimal evidenceArea;
 
     private BigDecimal innerArea;
 
@@ -90,11 +94,11 @@ public class DeclareRealtyRealEstateCert {
 
     private String memo;
 
-    private String apportionmentArea;
+    private BigDecimal apportionmentArea;
 
-    private String acreage;
+    private BigDecimal acreage;
 
-    private String useRightArea;
+    private BigDecimal useRightArea;
 
     public Integer getId() {
         return id;
@@ -144,12 +148,20 @@ public class DeclareRealtyRealEstateCert {
         this.district = district == null ? null : district.trim();
     }
 
-    public Integer getType() {
+    public String getCertName() {
+        return certName;
+    }
+
+    public void setCertName(String certName) {
+        this.certName = certName == null ? null : certName.trim();
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getLocation() {
@@ -278,6 +290,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setFloorArea(BigDecimal floorArea) {
         this.floorArea = floorArea;
+    }
+
+    public BigDecimal getEvidenceArea() {
+        return evidenceArea;
+    }
+
+    public void setEvidenceArea(BigDecimal evidenceArea) {
+        this.evidenceArea = evidenceArea;
     }
 
     public BigDecimal getInnerArea() {
@@ -440,27 +460,27 @@ public class DeclareRealtyRealEstateCert {
         this.memo = memo == null ? null : memo.trim();
     }
 
-    public String getApportionmentArea() {
+    public BigDecimal getApportionmentArea() {
         return apportionmentArea;
     }
 
-    public void setApportionmentArea(String apportionmentArea) {
-        this.apportionmentArea = apportionmentArea == null ? null : apportionmentArea.trim();
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
+        this.apportionmentArea = apportionmentArea;
     }
 
-    public String getAcreage() {
+    public BigDecimal getAcreage() {
         return acreage;
     }
 
-    public void setAcreage(String acreage) {
-        this.acreage = acreage == null ? null : acreage.trim();
+    public void setAcreage(BigDecimal acreage) {
+        this.acreage = acreage;
     }
 
-    public String getUseRightArea() {
+    public BigDecimal getUseRightArea() {
         return useRightArea;
     }
 
-    public void setUseRightArea(String useRightArea) {
-        this.useRightArea = useRightArea == null ? null : useRightArea.trim();
+    public void setUseRightArea(BigDecimal useRightArea) {
+        this.useRightArea = useRightArea;
     }
 }

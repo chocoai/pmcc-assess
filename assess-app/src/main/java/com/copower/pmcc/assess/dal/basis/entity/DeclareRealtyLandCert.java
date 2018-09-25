@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeclareRealtyLandCert {
@@ -19,7 +20,7 @@ public class DeclareRealtyLandCert {
 
     private String district;
 
-    private Integer type;
+    private String type;
 
     private String location;
 
@@ -51,15 +52,15 @@ public class DeclareRealtyLandCert {
 
     private String useRightType;
 
-    private String acquisitionPrice;
+    private BigDecimal acquisitionPrice;
 
     private Date terminationDate;
 
-    private String useRightArea;
+    private BigDecimal useRightArea;
 
-    private String acreage;
+    private BigDecimal acreage;
 
-    private String apportionmentArea;
+    private BigDecimal apportionmentArea;
 
     private String memo;
 
@@ -137,12 +138,12 @@ public class DeclareRealtyLandCert {
         this.district = district == null ? null : district.trim();
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getLocation() {
@@ -265,12 +266,12 @@ public class DeclareRealtyLandCert {
         this.useRightType = useRightType == null ? null : useRightType.trim();
     }
 
-    public String getAcquisitionPrice() {
+    public BigDecimal getAcquisitionPrice() {
         return acquisitionPrice;
     }
 
-    public void setAcquisitionPrice(String acquisitionPrice) {
-        this.acquisitionPrice = acquisitionPrice == null ? null : acquisitionPrice.trim();
+    public void setAcquisitionPrice(BigDecimal acquisitionPrice) {
+        this.acquisitionPrice = acquisitionPrice;
     }
 
     public Date getTerminationDate() {
@@ -281,28 +282,28 @@ public class DeclareRealtyLandCert {
         this.terminationDate = terminationDate;
     }
 
-    public String getUseRightArea() {
+    public BigDecimal getUseRightArea() {
         return useRightArea;
     }
 
-    public void setUseRightArea(String useRightArea) {
-        this.useRightArea = useRightArea == null ? null : useRightArea.trim();
+    public void setUseRightArea(BigDecimal useRightArea) {
+        this.useRightArea = useRightArea;
     }
 
-    public String getAcreage() {
+    public BigDecimal getAcreage() {
         return acreage;
     }
 
-    public void setAcreage(String acreage) {
-        this.acreage = acreage == null ? null : acreage.trim();
+    public void setAcreage(BigDecimal acreage) {
+        this.acreage = acreage;
     }
 
-    public String getApportionmentArea() {
+    public BigDecimal getApportionmentArea() {
         return apportionmentArea;
     }
 
-    public void setApportionmentArea(String apportionmentArea) {
-        this.apportionmentArea = apportionmentArea == null ? null : apportionmentArea.trim();
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
+        this.apportionmentArea = apportionmentArea;
     }
 
     public String getMemo() {

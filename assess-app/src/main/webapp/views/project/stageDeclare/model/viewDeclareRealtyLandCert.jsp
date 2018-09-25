@@ -16,8 +16,27 @@
                         data-toggle="modal"> 新增</button>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" onclick="declareRealtyLandCert.inputFile()"
-                        data-toggle="modal"> 批量导入</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadLandHouse').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
+
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -32,7 +51,8 @@
         </form>
     </div>
 </div>
-
+<input type="file" id="ajaxFileUploadLand" name="file" style="display: none;" onchange="declareRealtyLandCert.inputFile();">
+<input type="file" id="ajaxFileUploadLandHouse" name="file" style="display: none;" onchange="declareRealtyLandCert.inputFileHouse();">
 <script>
     var declareRealtyLandCertConfig = {
         frm: "frmDeclareRealtyLandCert",
@@ -247,9 +267,9 @@
     };
 
     declareRealtyLandCert.init = function () {
-        $("#" + declareRealtyLandCertConfig.frm + "province").select2();
-        $("#" + declareRealtyLandCertConfig.frm + "city").select2();
-        $("#" + declareRealtyLandCertConfig.frm + "district").select2();
+        // $("#" + declareRealtyLandCertConfig.frm + "province").select2();
+        // $("#" + declareRealtyLandCertConfig.frm + "city").select2();
+        // $("#" + declareRealtyLandCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
@@ -259,14 +279,12 @@
             districtValue: ''
         });
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
-            $("#" + declareRealtyLandCertConfig.frm + " .type").html(html);
-            $("#" + declareRealtyLandCertConfig.frm + " .type").select2();//加载样式
+            $("#" + declareRealtyLandCertConfig.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
-            $("#" + declareRealtyLandCertConfig.frm + " .purpose").html(html);
-            $("#" + declareRealtyLandCertConfig.frm + " .purpose").select2();//加载样式
+            $("#" + declareRealtyLandCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        $("#" + declareRealtyLandCertConfig.frm + " .useRightType").select2();//加载样式
+        // $("#" + declareRealtyLandCertConfig.frm + " .useRightType").select2();//加载样式
         declareRealtyLandCert.role.CertName.init();
         declareRealtyLandCert.role.beLocated.init();
     };
@@ -501,13 +519,37 @@
     };
 
 
+    declareRealtyLandCert.inputFileHouse = function () {
+        toastr.success("暂时未提供!");
+    };
+
     /**
      * @author:  zch
      * 描述:批量导入
      * @date:2018-09-21
      **/
     declareRealtyLandCert.inputFile = function () {
-        toastr.success('暂时没有提供批量导入!');
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/declareRealtyLandCert/importData",
+            data: {
+                planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUploadLand',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret){
+                    declareRealtyLandCert.loadList();
+                    toastr.success(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     };
 
     $(function () {

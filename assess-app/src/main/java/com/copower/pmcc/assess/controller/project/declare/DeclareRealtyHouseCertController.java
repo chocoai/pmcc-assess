@@ -148,7 +148,7 @@ public class DeclareRealtyHouseCertController {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
             String str = declareRealtyHouseCertService.importData(declareRealtyHouseCert,multipartFile);
-            return HttpResult.newCorrectResult();
+            return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

@@ -9,7 +9,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
@@ -158,7 +158,7 @@
       )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{publicSituation,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
       #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
       #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, 
@@ -312,7 +312,7 @@
         #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
         #{number,jdbcType=VARCHAR},
@@ -440,7 +440,7 @@
         district = #{record.district,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.number != null" >
         number = #{record.number,jdbcType=VARCHAR},
@@ -549,7 +549,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       public_situation = #{record.publicSituation,jdbcType=VARCHAR},
@@ -607,7 +607,7 @@
         district = #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="number != null" >
         number = #{number,jdbcType=VARCHAR},
@@ -713,7 +713,7 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       public_situation = #{publicSituation,jdbcType=VARCHAR},

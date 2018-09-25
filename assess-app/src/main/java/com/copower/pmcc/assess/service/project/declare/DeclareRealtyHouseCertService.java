@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
@@ -12,15 +13,17 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -54,20 +58,88 @@ public class DeclareRealtyHouseCertService {
     private DeclareRealtyLandCertService declareRealtyLandCertService;
 
     public String importData(DeclareRealtyHouseCert declareRealtyHouseCert, MultipartFile multipartFile) throws Exception {
-        Workbook hssfWorkbook = null;
+        Workbook workbook = null;
+        Row row = null;
+        StringBuilder builder = new StringBuilder();
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
         //2.读取文件
         try {
             FileInputStream inputStream = new FileInputStream(filePath);
-            hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
-        } catch (IOException e) {
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
-        Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
-        int startRowNumber = 2;//读取数据的起始行
-        return null;
+        Sheet sheet = workbook.getSheetAt(0);//只取第一个sheet
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //总列数
+        int colLength = row.getLastCellNum();
+        int startRowNumber = 1;//读取数据的起始行
+        int successCount = 0;//导入成功数据条数
+        //总行数
+        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+        if (rowLength == 0) {
+            builder.append("没有数据!");
+            return builder.toString();
+        }
+        //----------------------------||----------------------
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
+            DeclareRealtyHouseCert oo = null;
+            boolean flag = true;//标识符
+            try {
+                row = sheet.getRow(i);
+                oo = new DeclareRealtyHouseCert();
+                oo.setPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId());
+                oo.setCertName(PoiUtils.getCellValue(row.getCell(0)));
+                oo.setLocation(PoiUtils.getCellValue(row.getCell(1)));
+                oo.setNumber(PoiUtils.getCellValue(row.getCell(2)));
+                String type = PoiUtils.getCellValue(row.getCell(3));
+                if (!org.springframework.util.StringUtils.isEmpty(type)) {//类型
+                    oo.setType(type);
+                }
+                oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(4)));//土地取得方式
+                oo.setPublicSituation(PoiUtils.getCellValue(row.getCell(5)));//共有情况
+                oo.setFloorArea(PoiUtils.getCellValue(row.getCell(6)));//建筑面积
+                oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));//房屋坐落
+                oo.setStreetNumber(PoiUtils.getCellValue(row.getCell(8)));//街道号
+                oo.setAttachedNumber(PoiUtils.getCellValue(row.getCell(9)));//附号
+                oo.setBuildingNumber(PoiUtils.getCellValue(row.getCell(10)));//栋号
+                oo.setUnit(PoiUtils.getCellValue(row.getCell(11)));//单元
+                oo.setFloor(PoiUtils.getCellValue(row.getCell(12)));//楼层
+                oo.setRoomNumber(PoiUtils.getCellValue(row.getCell(13)));//房号
+
+                oo.setRegistrationTime(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)),null));//登记时间
+                oo.setRegistrationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(15)),null));//登记日期
+                oo.setPlanningUse(PoiUtils.getCellValue(row.getCell(16)));//规划用途
+                oo.setFloorCount(PoiUtils.getCellValue(row.getCell(17)));//总层数
+                oo.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));//证载面积
+                oo.setInnerArea(PoiUtils.getCellValue(row.getCell(19)));//套内面积
+                oo.setOther(PoiUtils.getCellValue(row.getCell(20)));//其它
+                oo.setLandNumber(PoiUtils.getCellValue(row.getCell(21)));//土地证号
+                oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(22)));//土地取得方式
+
+                oo.setUseStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(23)),null));//土地使用年限起
+                oo.setUseEndDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(24)),null));//土地使用年限止
+                oo.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));//公摊面积
+                oo.setOtherNote(PoiUtils.getCellValue(row.getCell(26)));//附记其它
+                oo.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(27)));//登记机关
+                oo.setNature(PoiUtils.getCellValue(row.getCell(28)));//房屋性质
+
+
+                oo.setProvince(PoiUtils.getCellValue(row.getCell(29)));//省
+                oo.setCity(PoiUtils.getCellValue(row.getCell(30)));//市
+                oo.setDistrict(PoiUtils.getCellValue(row.getCell(31)));//区/县
+            } catch (Exception e) {
+                flag = false;
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+            if (flag) {
+                declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
+                successCount++;
+            }
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
@@ -162,13 +234,25 @@ public class DeclareRealtyHouseCertService {
         DeclareRealtyHouseCertVo vo = new DeclareRealtyHouseCertVo();
         BeanUtils.copyProperties(declareRealtyHouseCert, vo);
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getProvince())) {
-            vo.setProvinceName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getProvince()));//省
+            if (NumberUtils.isNumber(declareRealtyHouseCert.getProvince())) {
+                vo.setProvinceName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getProvince()));//省
+            }else {
+                vo.setProvinceName(declareRealtyHouseCert.getProvince());//省
+            }
         }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getCity())) {
-            vo.setCityName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getCity()));//市或者县
+            if (NumberUtils.isNumber(declareRealtyHouseCert.getCity())) {
+                vo.setCityName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getCity()));//市或者县
+            }else {
+                vo.setCityName(declareRealtyHouseCert.getCity());
+            }
         }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getDistrict())) {
-            vo.setDistrictName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getDistrict()));//县
+            if (NumberUtils.isNumber(declareRealtyHouseCert.getDistrict())) {
+                vo.setDistrictName(erpAreaService.getSysAreaName(declareRealtyHouseCert.getDistrict()));//县
+            }else {
+                vo.setDistrictName(declareRealtyHouseCert.getDistrict());
+            }
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareRealtyHouseCert.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
         StringBuilder builder = new StringBuilder();

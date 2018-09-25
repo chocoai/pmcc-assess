@@ -496,6 +496,76 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andCertNameIsNull() {
+            addCriterion("cert_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameIsNotNull() {
+            addCriterion("cert_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameEqualTo(String value) {
+            addCriterion("cert_name =", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotEqualTo(String value) {
+            addCriterion("cert_name <>", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameGreaterThan(String value) {
+            addCriterion("cert_name >", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameGreaterThanOrEqualTo(String value) {
+            addCriterion("cert_name >=", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLessThan(String value) {
+            addCriterion("cert_name <", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLessThanOrEqualTo(String value) {
+            addCriterion("cert_name <=", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameLike(String value) {
+            addCriterion("cert_name like", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotLike(String value) {
+            addCriterion("cert_name not like", value, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameIn(List<String> values) {
+            addCriterion("cert_name in", values, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotIn(List<String> values) {
+            addCriterion("cert_name not in", values, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameBetween(String value1, String value2) {
+            addCriterion("cert_name between", value1, value2, "certName");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertNameNotBetween(String value1, String value2) {
+            addCriterion("cert_name not between", value1, value2, "certName");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -506,52 +576,62 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
+        public Criteria andTypeEqualTo(String value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
+        public Criteria andTypeNotEqualTo(String value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
+        public Criteria andTypeGreaterThan(String value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
+        public Criteria andTypeLessThan(String value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andTypeLessThanOrEqualTo(String value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
+        public Criteria andTypeNotIn(List<String> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
+        public Criteria andTypeBetween(String value1, String value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andTypeNotBetween(String value1, String value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
@@ -1633,6 +1713,66 @@ public class DeclareRealtyRealEstateCertExample {
 
         public Criteria andFloorAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("floor_area not between", value1, value2, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaIsNull() {
+            addCriterion("evidence_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaIsNotNull() {
+            addCriterion("evidence_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaEqualTo(BigDecimal value) {
+            addCriterion("evidence_area =", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaNotEqualTo(BigDecimal value) {
+            addCriterion("evidence_area <>", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaGreaterThan(BigDecimal value) {
+            addCriterion("evidence_area >", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("evidence_area >=", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaLessThan(BigDecimal value) {
+            addCriterion("evidence_area <", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("evidence_area <=", value, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaIn(List<BigDecimal> values) {
+            addCriterion("evidence_area in", values, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaNotIn(List<BigDecimal> values) {
+            addCriterion("evidence_area not in", values, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evidence_area between", value1, value2, "evidenceArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andEvidenceAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("evidence_area not between", value1, value2, "evidenceArea");
             return (Criteria) this;
         }
 
@@ -2956,62 +3096,52 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaEqualTo(String value) {
+        public Criteria andApportionmentAreaEqualTo(BigDecimal value) {
             addCriterion("apportionment_area =", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaNotEqualTo(String value) {
+        public Criteria andApportionmentAreaNotEqualTo(BigDecimal value) {
             addCriterion("apportionment_area <>", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaGreaterThan(String value) {
+        public Criteria andApportionmentAreaGreaterThan(BigDecimal value) {
             addCriterion("apportionment_area >", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaGreaterThanOrEqualTo(String value) {
+        public Criteria andApportionmentAreaGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("apportionment_area >=", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaLessThan(String value) {
+        public Criteria andApportionmentAreaLessThan(BigDecimal value) {
             addCriterion("apportionment_area <", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaLessThanOrEqualTo(String value) {
+        public Criteria andApportionmentAreaLessThanOrEqualTo(BigDecimal value) {
             addCriterion("apportionment_area <=", value, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaLike(String value) {
-            addCriterion("apportionment_area like", value, "apportionmentArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andApportionmentAreaNotLike(String value) {
-            addCriterion("apportionment_area not like", value, "apportionmentArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andApportionmentAreaIn(List<String> values) {
+        public Criteria andApportionmentAreaIn(List<BigDecimal> values) {
             addCriterion("apportionment_area in", values, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaNotIn(List<String> values) {
+        public Criteria andApportionmentAreaNotIn(List<BigDecimal> values) {
             addCriterion("apportionment_area not in", values, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaBetween(String value1, String value2) {
+        public Criteria andApportionmentAreaBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("apportionment_area between", value1, value2, "apportionmentArea");
             return (Criteria) this;
         }
 
-        public Criteria andApportionmentAreaNotBetween(String value1, String value2) {
+        public Criteria andApportionmentAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("apportionment_area not between", value1, value2, "apportionmentArea");
             return (Criteria) this;
         }
@@ -3026,62 +3156,52 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andAcreageEqualTo(String value) {
+        public Criteria andAcreageEqualTo(BigDecimal value) {
             addCriterion("acreage =", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageNotEqualTo(String value) {
+        public Criteria andAcreageNotEqualTo(BigDecimal value) {
             addCriterion("acreage <>", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageGreaterThan(String value) {
+        public Criteria andAcreageGreaterThan(BigDecimal value) {
             addCriterion("acreage >", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageGreaterThanOrEqualTo(String value) {
+        public Criteria andAcreageGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("acreage >=", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageLessThan(String value) {
+        public Criteria andAcreageLessThan(BigDecimal value) {
             addCriterion("acreage <", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageLessThanOrEqualTo(String value) {
+        public Criteria andAcreageLessThanOrEqualTo(BigDecimal value) {
             addCriterion("acreage <=", value, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageLike(String value) {
-            addCriterion("acreage like", value, "acreage");
-            return (Criteria) this;
-        }
-
-        public Criteria andAcreageNotLike(String value) {
-            addCriterion("acreage not like", value, "acreage");
-            return (Criteria) this;
-        }
-
-        public Criteria andAcreageIn(List<String> values) {
+        public Criteria andAcreageIn(List<BigDecimal> values) {
             addCriterion("acreage in", values, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageNotIn(List<String> values) {
+        public Criteria andAcreageNotIn(List<BigDecimal> values) {
             addCriterion("acreage not in", values, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageBetween(String value1, String value2) {
+        public Criteria andAcreageBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("acreage between", value1, value2, "acreage");
             return (Criteria) this;
         }
 
-        public Criteria andAcreageNotBetween(String value1, String value2) {
+        public Criteria andAcreageNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("acreage not between", value1, value2, "acreage");
             return (Criteria) this;
         }
@@ -3096,62 +3216,52 @@ public class DeclareRealtyRealEstateCertExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaEqualTo(String value) {
+        public Criteria andUseRightAreaEqualTo(BigDecimal value) {
             addCriterion("use_right_area =", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaNotEqualTo(String value) {
+        public Criteria andUseRightAreaNotEqualTo(BigDecimal value) {
             addCriterion("use_right_area <>", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaGreaterThan(String value) {
+        public Criteria andUseRightAreaGreaterThan(BigDecimal value) {
             addCriterion("use_right_area >", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaGreaterThanOrEqualTo(String value) {
+        public Criteria andUseRightAreaGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("use_right_area >=", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaLessThan(String value) {
+        public Criteria andUseRightAreaLessThan(BigDecimal value) {
             addCriterion("use_right_area <", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaLessThanOrEqualTo(String value) {
+        public Criteria andUseRightAreaLessThanOrEqualTo(BigDecimal value) {
             addCriterion("use_right_area <=", value, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaLike(String value) {
-            addCriterion("use_right_area like", value, "useRightArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andUseRightAreaNotLike(String value) {
-            addCriterion("use_right_area not like", value, "useRightArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andUseRightAreaIn(List<String> values) {
+        public Criteria andUseRightAreaIn(List<BigDecimal> values) {
             addCriterion("use_right_area in", values, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaNotIn(List<String> values) {
+        public Criteria andUseRightAreaNotIn(List<BigDecimal> values) {
             addCriterion("use_right_area not in", values, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaBetween(String value1, String value2) {
+        public Criteria andUseRightAreaBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("use_right_area between", value1, value2, "useRightArea");
             return (Criteria) this;
         }
 
-        public Criteria andUseRightAreaNotBetween(String value1, String value2) {
+        public Criteria andUseRightAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("use_right_area not between", value1, value2, "useRightArea");
             return (Criteria) this;
         }

@@ -16,12 +16,23 @@
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a></li>
-                        <li><a class="btn btn-default" onclick="$('#ajaxFileUpload').val('').trigger('click')">导入</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouse').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouseLand').val('').trigger('click')">导入</a></li>
                     </ul>
                 </div>
 
@@ -44,8 +55,8 @@
         </form>
     </div>
 </div>
-<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="declareRealtyHouseCert.inputFile();">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<input type="file" id="ajaxFileUploadHouse" name="file" style="display: none;" onchange="declareRealtyHouseCert.inputFile();">
+<input type="file" id="ajaxFileUploadHouseLand" name="file" style="display: none;" onchange="declareRealtyHouseCert.inputFileLand();">
 <script>
 
     /**
@@ -232,8 +243,7 @@
             districtValue: ''
         });
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
-            $("#" + declareRealtyHouseCertConfig.frm + " .type").html(html);
-            $("#" + declareRealtyHouseCertConfig.frm + " .type").select2();//加载样式
+            $("#" + declareRealtyHouseCertConfig.frm).find('select.type').empty().html(html).trigger('change');
         });
         declareRealtyHouseCert.role.writeCertName.init();
         declareRealtyHouseCert.role.beLocated.init();
@@ -341,6 +351,10 @@
         toastr.success('暂时未提供识别!');
     };
 
+    declareRealtyHouseCert.inputFileLand = function () {
+        toastr.success('暂时未提供!');
+    };
+
     declareRealtyHouseCert.inputFile = function () {
         $.ajaxFileUpload({
             type: "POST",
@@ -349,11 +363,14 @@
                 planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
-            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+            fileElementId: 'ajaxFileUploadHouse',//文件选择框的id属性
             dataType: 'json',//服务器返回的格式
             async: false,
             success: function (result) {
-
+                if (result.ret){
+                    declareRealtyHouseCert.loadList();
+                    toastr.success(result.data);
+                }
             },
             error: function (result, status, e) {
                 Loading.progressHide();

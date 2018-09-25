@@ -16,8 +16,16 @@
                                                      data-toggle="modal"> 新增</button>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" onclick="declareRealtyRealEstateCert.inputFile()"
-                                                     data-toggle="modal"> 批量导入</button>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">批量导入数据
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate)">下载模板</a></li>
+                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadRealEstate').val('').trigger('click')">导入</a></li>
+                    </ul>
+                </div>
             </h3>
             <div class="clearfix"></div>
         </div>
@@ -32,6 +40,7 @@
         </form>
     </div>
 </div>
+<input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;" onchange="declareRealtyRealEstateCert.inputFile();">
 
 <script>
     var declareRealtyRealEstateCertConfig = {
@@ -256,17 +265,14 @@
 
     declareRealtyRealEstateCert.init = function () {
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .purpose").html(html);
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .purpose").select2();//加载样式
+            $("#" + declareRealtyRealEstateCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
         });
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .type").html(html);
-            $("#" + declareRealtyRealEstateCertConfig.frm + " .type").select2();//加载样式
+            $("#" + declareRealtyRealEstateCertConfig.frm).find('select.type').empty().html(html).trigger('change');
         });
-        $("#" + declareRealtyRealEstateCertConfig.frm + " .useRightType").select2();//加载样式
-        $("#" + declareRealtyRealEstateCertConfig.frm + "province").select2();
-        $("#" + declareRealtyRealEstateCertConfig.frm + "city").select2();
-        $("#" + declareRealtyRealEstateCertConfig.frm + "district").select2();
+        // $("#" + declareRealtyRealEstateCertConfig.frm + "province").select2();
+        // $("#" + declareRealtyRealEstateCertConfig.frm + "city").select2();
+        // $("#" + declareRealtyRealEstateCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
@@ -343,7 +349,27 @@
     * @date:2018-09-21
     **/
     declareRealtyRealEstateCert.inputFile = function () {
-        toastr.success('暂时没有提供批量导入!');
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/importData",
+            data: {
+                planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUploadRealEstate',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret){
+                    declareRealtyRealEstateCert.loadList();
+                    toastr.success(result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     };
 
     declareRealtyRealEstateCert.distinguish = function () {
@@ -355,10 +381,10 @@
     declareRealtyRealEstateCert.loadList = function () {
         var cols = [];
         cols.push({field: 'useRightType', title: '使用权类型'});
-        cols.push({field: 'apportionmentArea', title: '分摊面积'});
+        cols.push({field: 'publicArea', title: '公摊面积'});
         cols.push({field: 'useRightArea', title: '使用权面积'});
-        cols.push({field: 'landCertName', title: '土地权证号'});
-        cols.push({field: 'beLocated', title: '土地坐落'});
+        cols.push({field: 'certName', title: '权证号'});
+        cols.push({field: 'beLocated', title: '坐落'});
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {

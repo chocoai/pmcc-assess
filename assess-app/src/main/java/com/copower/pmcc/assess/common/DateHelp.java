@@ -25,7 +25,7 @@ public class DateHelp {
         return str;
     }
 
-    public Date parse(String str, String model) {
+    public Date parse(String str, String model)throws Exception {
         SimpleDateFormat sdf = null;
         if (StringUtils.isEmpty(model)){
             sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -36,11 +36,12 @@ public class DateHelp {
             if (!StringUtils.isEmpty(str)) {
                 Date date = sdf.parse(str);
                 return date;
+            }else {
+                throw new Exception("");
             }
         } catch (ParseException e) {
-
+                throw  e;
         }
-        return null;
     }
 
     private DateHelp() {
