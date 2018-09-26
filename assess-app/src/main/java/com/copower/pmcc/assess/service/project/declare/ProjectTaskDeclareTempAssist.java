@@ -43,12 +43,16 @@ public class ProjectTaskDeclareTempAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareIndex", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 
@@ -60,6 +64,8 @@ public class ProjectTaskDeclareTempAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 

@@ -25,6 +25,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -42,6 +43,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -172,13 +175,21 @@ public class DeclareRealtyHouseCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
             }
             if (flag) {
-                if (!org.springframework.util.StringUtils.isEmpty(oo.getLandCertName())) {
-                    //当导入土地证的时候首先与房屋权证号匹配 然后在于土地使用权人匹配 如果都匹配不成功那么提示导入失败 并提示原因
+                if (!org.springframework.util.StringUtils.isEmpty(oo.getGraphNumber())) {
+                    //当导入土地证的时候首先与房屋权证号匹配 然后在于土地使用权人匹配 如果都匹配不成功那么提示导入失败 并提示原因(不在使用此条匹配)
+                    //对匹配进行小修改 权证号匹配改为房产证的土地证号和土地证图号的进行匹配
                     DeclareRealtyHouseCert declareRealtyHouseCert1 = new DeclareRealtyHouseCert();
-                    declareRealtyHouseCert1.setCertName(oo.getLandCertName());
+                    declareRealtyHouseCert1.setLandNumber(oo.getGraphNumber());
                     declareRealtyHouseCert1.setPid(0);
                     List<DeclareRealtyHouseCertVo> voList = landLevels(declareRealtyHouseCert1);
                     if (!ObjectUtils.isEmpty(voList)) {
+                        Ordering<DeclareRealtyHouseCertVo> firstOrdering  = Ordering.from(new Comparator<DeclareRealtyHouseCertVo>() {
+                            @Override
+                            public int compare(DeclareRealtyHouseCertVo o1, DeclareRealtyHouseCertVo o2) {
+                                return o1.getId().compareTo(o2.getId());
+                            }
+                        }).reverse();//排序 并且反转 == > 从大到小
+                        Collections.sort(voList, firstOrdering);
                         oo.setCreator(commonService.thisUserAccount());
                         Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                         successCount++;
@@ -193,6 +204,13 @@ public class DeclareRealtyHouseCertService {
                         declareRealtyHouseCert1.setOwnership(oo.getOwnership());
                         List<DeclareRealtyHouseCert> declareRealtyHouseCerts = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(declareRealtyHouseCert1);
                         if (!ObjectUtils.isEmpty(declareRealtyHouseCerts)){
+                            Ordering<DeclareRealtyHouseCert> firstOrdering2  = Ordering.from(new Comparator<DeclareRealtyHouseCert>() {
+                                @Override
+                                public int compare(DeclareRealtyHouseCert o1, DeclareRealtyHouseCert o2) {
+                                    return o1.getId().compareTo(o2.getId());
+                                }
+                            }).reverse();//排序 并且反转 == > 从大到小
+                            Collections.sort(declareRealtyHouseCerts, firstOrdering2);
                             oo.setCreator(commonService.thisUserAccount());
                             Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                             successCount++;
@@ -202,6 +220,29 @@ public class DeclareRealtyHouseCertService {
                         }else {
                             builder.append(String.format("\n第%s行：%s", i, "未找到匹配的房产证"));
                         }
+                    }
+                }else {
+                    //所有权人如果和座落匹配那么也进行关联
+                    DeclareRealtyHouseCert declareRealtyHouseCert1 = new DeclareRealtyHouseCert();
+                    declareRealtyHouseCert1.setBeLocated(oo.getBeLocated());
+                    declareRealtyHouseCert1.setOwnership(oo.getOwnership());
+                    List<DeclareRealtyHouseCert> declareRealtyHouseCerts = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(declareRealtyHouseCert1);
+                    Ordering<DeclareRealtyHouseCert> firstOrdering2  = Ordering.from(new Comparator<DeclareRealtyHouseCert>() {
+                        @Override
+                        public int compare(DeclareRealtyHouseCert o1, DeclareRealtyHouseCert o2) {
+                            return o1.getId().compareTo(o2.getId());
+                        }
+                    }).reverse();//排序 并且反转 == > 从大到小
+                    Collections.sort(declareRealtyHouseCerts, firstOrdering2);
+                    if (!ObjectUtils.isEmpty(declareRealtyHouseCerts)){
+                        oo.setCreator(commonService.thisUserAccount());
+                        Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
+                        successCount++;
+                        DeclareRealtyHouseCert declareRealtyHouseCert2 = declareRealtyHouseCerts.get(0);
+                        declareRealtyHouseCert2.setPid(id);
+                        declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert2);
+                    }else {
+                        builder.append(String.format("\n第%s行：%s", i, "未找到匹配的房产证"));
                     }
                 }
             }
@@ -309,6 +350,7 @@ public class DeclareRealtyHouseCertService {
             if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
                 oo.setPid(0);
+                oo.setEnable("yes"); //启用 (说明不是关联数据)
                 declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
                 successCount++;
             }
@@ -364,6 +406,8 @@ public class DeclareRealtyHouseCertService {
                     oo.setPid(id);
                     declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(oo);
                 }
+            }else {
+                declareRealtyHouseCert.setEnable("yes"); //启用 (说明不是关联数据)
             }
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);

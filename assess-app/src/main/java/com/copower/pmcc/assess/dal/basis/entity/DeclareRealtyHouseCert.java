@@ -76,6 +76,8 @@ public class DeclareRealtyHouseCert {
 
     private Date registrationDate;
 
+    private String enable;
+
     private String creator;
 
     private Date gmtCreated;
@@ -368,6 +370,14 @@ public class DeclareRealtyHouseCert {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable == null ? null : enable.trim();
     }
 
     public String getCreator() {

@@ -38,6 +38,7 @@
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
     <result column="land_registration_date" property="landRegistrationDate" jdbcType="TIMESTAMP" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
+    <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -106,7 +107,7 @@
     floor, room_number, registration_time, nature, floor_count, planning_use, floor_area, 
     location, evidence_area, inner_area, other, land_number, land_acquisition, use_start_date, 
     use_end_date, public_area, other_note, registration_authority, land_registration_date, 
-    registration_date, creator, gmt_created, gmt_modified
+    registration_date, enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample" >
     select
@@ -154,8 +155,8 @@
       land_acquisition, use_start_date, use_end_date, 
       public_area, other_note, registration_authority, 
       land_registration_date, registration_date, 
-      creator, gmt_created, gmt_modified
-      )
+      enable, creator, gmt_created, 
+      gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{certName,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
@@ -168,8 +169,8 @@
       #{landAcquisition,jdbcType=VARCHAR}, #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, 
       #{publicArea,jdbcType=DECIMAL}, #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, 
       #{landRegistrationDate,jdbcType=TIMESTAMP}, #{registrationDate,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{enable,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -281,6 +282,9 @@
       </if>
       <if test="registrationDate != null" >
         registration_date,
+      </if>
+      <if test="enable != null" >
+        enable,
       </if>
       <if test="creator != null" >
         creator,
@@ -397,6 +401,9 @@
       </if>
       <if test="registrationDate != null" >
         #{registrationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -526,6 +533,9 @@
       <if test="record.registrationDate != null" >
         registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.enable != null" >
+        enable = #{record.enable,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -578,6 +588,7 @@
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       land_registration_date = #{record.landRegistrationDate,jdbcType=TIMESTAMP},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+      enable = #{record.enable,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -693,6 +704,9 @@
       <if test="registrationDate != null" >
         registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -742,6 +756,7 @@
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       land_registration_date = #{landRegistrationDate,jdbcType=TIMESTAMP},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+      enable = #{enable,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

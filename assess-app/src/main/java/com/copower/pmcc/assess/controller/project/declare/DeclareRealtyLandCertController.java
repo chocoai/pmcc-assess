@@ -69,6 +69,7 @@ public class DeclareRealtyLandCertController {
             if (pid != null) {
                 declareRealtyLandCert.setPid(pid);
             }
+            declareRealtyLandCert.setEnable("yes");
             vo = declareRealtyLandCertService.getDeclareRealtyLandCertListVos(declareRealtyLandCert);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
