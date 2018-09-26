@@ -88,6 +88,25 @@
         });
     };
 
+    declareRealtyLandCert.fileUpload2 = function (target,tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            onUpload: function (file) {
+                var formData = {
+                    fieldsName: target,
+                    tableName: tableName,
+                    tableId: id
+                };
+                return formData;
+            }, onUploadComplete: function (result,file) {
+                declareRealtyLandCert.showFile(target,tableName,id);
+                declareRealtyLandCert.loadList();
+            },
+            deleteFlag: true
+        });
+    };
+
     declareRealtyLandCert.showFile = function (target,tableName, id) {
         FileUtils.getFileShows({
             target: target,
@@ -360,7 +379,7 @@
         cols.push({field: 'beLocated', title: '土地坐落'});
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
-            field: 'id', title: '是否关联', formatter: function (value, row, index) {
+            field: 'id', title: '是否关联房产证', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 if (declareRealtyLandCert.isEmpty(row.pid)){
                     str += "已经关联" ;
@@ -428,8 +447,8 @@
      **/
     declareRealtyLandCert.landEnclosure = function (id) {
         $('#' + declareRealtyLandCertConfig.fileView).modal("show");
-        declareRealtyLandCert.fileUpload(declareRealtyLandCertConfig.fileId,AssessDBKey.DeclareRealtyLandCert,id);
         declareRealtyLandCert.showFile(declareRealtyLandCertConfig.fileId,AssessDBKey.DeclareRealtyLandCert,id);
+        declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.fileId,AssessDBKey.DeclareRealtyLandCert,id);
     };
 
     declareRealtyLandCert.distinguish = function () {
@@ -442,30 +461,32 @@
      * @date:2018-09-21
      **/
     declareRealtyLandCert.houseEnclosure = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/listDeclareRealtyHouseCert",
-            type: "get",
-            dataType: "json",
-            data: {pid: id,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (declareRealtyLandCert.isEmpty(data)){
-                        if (data.length == 0){
-                            toastr.success('请关联房产证数据!');
-                        }else {
-                            var item = data[0] ;
+        var data = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getRowByUniqueId',id);
+        if (declareRealtyLandCert.isEmpty(data.pid)){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+                type: "get",
+                dataType: "json",
+                data: {id: data.pid,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
+                success: function (result) {
+                    if (result.ret) {
+                        var item = result.data;
+                        if (declareRealtyLandCert.isEmpty(item)){
                             $('#' + declareRealtyLandCertConfig.houseView).modal("show");
-                            declareRealtyLandCert.fileUpload(declareRealtyLandCertConfig.houseFileId,AssessDBKey.DeclareRealtyHouseCert,item.id);
-                            declareRealtyLandCert.showFile(declareRealtyLandCertConfig.houseFileId,AssessDBKey.DeclareRealtyHouseCert,item.id);
+                            declareRealtyLandCert.showFile(declareRealtyLandCertConfig.houseFileId,AssessDBKey.DeclareRealtyHouseCert,item.pid);
+                            declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.houseFileId,AssessDBKey.DeclareRealtyHouseCert,item.pid);
+                        }else {
+                            toastr.success('关联数据已经被删除了!');
                         }
                     }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+            })
+        }else {
+            toastr.success('请关联房产证数据!');
+        }
     };
 
     /**
@@ -476,34 +497,36 @@
     declareRealtyLandCert.houseCard = function (id) {
         $("#" + declareRealtyLandCertConfig.HouseCert.frm).clearAll();
         $('#' + declareRealtyLandCertConfig.HouseCert.box).modal("show");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/listDeclareRealtyHouseCert",
-            type: "get",
-            dataType: "json",
-            data: {pid: id,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (declareRealtyLandCert.isEmpty(data)){
-                        if (data.length == 0){
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm).initForm({pid:id});
-                            toastr.success('没有关联房产证数据!');
+        var item = $("#" + declareRealtyLandCertConfig.table).bootstrapTable('getRowByUniqueId',id);
+        if (declareRealtyLandCert.isEmpty(item.pid)){
+            $.ajax({
+                url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
+                type: "get",
+                dataType: "json",
+                data: {id: item.pid,planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (declareRealtyLandCert.isEmpty(data)){
+                            $("#" + declareRealtyLandCertConfig.HouseCert.frm).initForm(data);
+                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
+                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
+                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
+                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
+                            declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.HouseCert.frm,data.type,"type");
                         }else {
-                            var item = data[0] ;
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm).initForm(item);
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='registrationTime']").val(formatDate(item.registrationTime));
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='useEndDate']").val(formatDate(item.useEndDate));
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='useStartDate']").val(formatDate(item.useStartDate));
-                            $("#" + declareRealtyLandCertConfig.HouseCert.frm + " input[name='registrationDate']").val(formatDate(item.registrationDate));
-                            declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.HouseCert.frm,item.type,"type");
+                            toastr.success('关联数据已经被删除了!');
+                            toastr.success('请重新填写');
                         }
                     }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+            })
+        }else {
+            $("#" + declareRealtyLandCertConfig.HouseCert.frm).initForm({pid:id});
+        }
     };
 
     declareRealtyLandCert.houseCardSaveAndUpdate = function () {
@@ -520,6 +543,7 @@
                 if (result.ret) {
                     toastr.success('成功!');
                     $('#' + declareRealtyLandCertConfig.HouseCert.box).modal("hide");
+                    declareRealtyLandCert.loadList();
                 } else {
                     Alert("保存失败:" + result.errmsg);
                 }
@@ -647,8 +671,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <select id="frmDeclareRealtyLandCertdistrict" name="district"
-                                                    class="form-control search-select select2 district"
-                                                    required="required">
+                                                    class="form-control search-select select2 district">
                                             </select>
                                         </div>
                                     </div>

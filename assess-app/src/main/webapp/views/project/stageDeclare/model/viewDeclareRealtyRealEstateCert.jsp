@@ -74,6 +74,26 @@
         });
     };
 
+    declareRealtyRealEstateCert.fileUpload2 = function (target,tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            onUpload: function (file) {
+                var formData = {
+                    fieldsName: target,
+                    tableName: tableName,
+                    tableId: id
+                };
+                return formData;
+            }, onUploadComplete: function (result,file) {
+                console.log(result);
+                declareRealtyRealEstateCert.showFile(target,tableName,id);
+                declareRealtyRealEstateCert.loadList();
+            },
+            deleteFlag: true
+        });
+    };
+
     /**
      * @author:  zch
      * 描述:房产证 文件显示
@@ -338,8 +358,9 @@
     * @date:2018-09-21
     **/
     declareRealtyRealEstateCert.enclosure = function (id) {
-        declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
+        // declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
         declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
+        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
         $('#' + declareRealtyRealEstateCertConfig.fileView).modal("show");
     };
 
@@ -382,7 +403,7 @@
         var cols = [];
         cols.push({field: 'useRightType', title: '使用权类型'});
         cols.push({field: 'publicArea', title: '公摊面积'});
-        cols.push({field: 'useRightArea', title: '使用权面积'});
+        cols.push({field: 'evidenceArea', title: '证载面积'});
         cols.push({field: 'certName', title: '权证号'});
         cols.push({field: 'beLocated', title: '坐落'});
         cols.push({field: 'fileViewName', title: '不动产附件'});
@@ -562,8 +583,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <select id="frmDeclareRealtyRealEstateCertdistrict" name="district"
-                                                    class="form-control search-select select2 district"
-                                                    required="required">
+                                                    class="form-control search-select select2 district">
                                             </select>
                                         </div>
                                     </div>
