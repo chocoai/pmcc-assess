@@ -97,17 +97,17 @@ public class ProjectTaskExamineAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         surveyExamineTaskService.saveExamineDataInfo(formData);
-        //更新父级案例信息状态为运行中
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
-        planDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetailsService.updateProjectPlanDetails(planDetails);
-
         if(StringUtils.isBlank(processInsId)){
             //更新各项表单任务状态
             surveyCommonService.updateExamineTaskStatus(projectPlanDetails.getPid(), commonService.thisUserAccount(), ProjectStatusEnum.FINISH);
+            planDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
         }else {
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyExamineTaskEvent.class.getSimpleName());//修改监听器
+            planDetails.setStatus(ProcessStatusEnum.RUN.getValue());
         }
+        //更新父级案例信息状态为运行中
+        projectPlanDetailsService.updateProjectPlanDetails(planDetails);
     }
 
     @Override

@@ -105,15 +105,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(CollectionUtils.isEmpty(supportInfoList) ? Lists.newArrayList() : supportInfoList));
         //收益法相关
         MdIncome mdIncome = null;
-        MdIncomeSelfSupport incomeSelfSupport = null;
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
-            if (mdIncome != null) {
-                incomeSelfSupport = mdIncomeService.getSelfSupportByIncomeId(mdIncome.getId());
-            }
         }
         modelAndView.addObject("mdIncomeJSON", JSON.toJSONString(mdIncome == null ? new MdIncome() : mdIncome));
-        modelAndView.addObject("incomeSelfSupportJSON", JSON.toJSONString(incomeSelfSupport == null ? new MdIncomeSelfSupport() : incomeSelfSupport));
     }
 
     /**

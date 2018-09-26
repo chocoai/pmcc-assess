@@ -14,7 +14,7 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
-            <jsp:include page="/views/method/module/incomeIndex.jsp"></jsp:include>
+            <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -44,11 +44,7 @@
             supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
 
-        //收益法数据初始化
-        income.init({
-            incomeInfo: JSON.parse($("#mdIncomeJSON").val()),
-            incomeSelfSupport: JSON.parse($("#incomeSelfSupportJSON").val())
-        })
+
     })
 </script>
 <script type="application/javascript">

@@ -16,25 +16,25 @@ AssessDBKey.ExamineUnitHuxing = "tb_examine_unit_huxing";
 AssessDBKey.ExamineEstateParking = "tb_examine_estate_parking";
 AssessDBKey.ExamineHouseCorollaryEquipment = "tb_examine_house_corollary_equipment";
 
-AssessDBKey.CaseEstate = "tb_case_estate" ;
-AssessDBKey.CaseEstateLandState = "tb_case_estate_land_state" ;
-AssessDBKey.CaseBuilding = "tb_case_building" ;
-AssessDBKey.CaseHouse = "tb_case_house" ;
-AssessDBKey.CaseHouseTrading = "tb_case_house_trading" ;
-AssessDBKey.CaseEstateParking = "tb_case_estate_parking" ;
-AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment" ;
-AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing" ;
+AssessDBKey.CaseEstate = "tb_case_estate";
+AssessDBKey.CaseEstateLandState = "tb_case_estate_land_state";
+AssessDBKey.CaseBuilding = "tb_case_building";
+AssessDBKey.CaseHouse = "tb_case_house";
+AssessDBKey.CaseHouseTrading = "tb_case_house_trading";
+AssessDBKey.CaseEstateParking = "tb_case_estate_parking";
+AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment";
+AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 
-AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory" ;
-AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content" ;
-AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right" ;
+AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
+AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
+AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
 
-AssessDBKey.BaseFileTemplate = "tb_base_file_template" ;
+AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 
 
-AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert" ;
-AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert" ;
-AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert" ;
+AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert";
+AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert";
+AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert";
 
 /**
  * 项目分类key
@@ -81,19 +81,18 @@ AssessDicKey.examineHouseNormalTransaction = "examine.house.normal.transaction";
 AssessDicKey.examineHousePaymentMethod = "examine.house.payment.method";//付款方式
 AssessDicKey.examineHouseClassificationInformationSources = "examine.house.classification.information.sources";//信息来源分类
 
-AssessDicKey.estate_total_land_level = "estate.land_level" ;//土地级别
-AssessDicKey.estate_total_land_use = "estate.land_use" ;//土地用途
+AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
+AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
 
-AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate" ;//增值及附加税率
-AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate" ;//土地取得税率
+AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率
+AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate";//土地取得税率
 
-AssessDicKey.mdIncomeSelfSupportCostTypeIncome = "md.income.self.support.cost.type.income" ;//收入类
-AssessDicKey.mdIncomeSelfSupportCostTypeCost = "md.income.self.support.cost.type.cost" ;//成本类
-AssessDicKey.mdIncomeSelfSupportCostTypeExpense = "md.income.self.support.cost.type.expense" ;//费用类
+AssessDicKey.mdIncomeHistoryTypeIncome = "md.income.history.type.income";//收入类(历史数据)
+AssessDicKey.mdIncomeHistoryTypeCost = "md.income.history.type.cost";//成本类(历史数据)
 
-AssessDicKey.workProgrammeSetUse = "work.programme.set.use" ;//设定用途
+AssessDicKey.workProgrammeSetUse = "work.programme.set.use";//设定用途
 
-AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development" ;//建设、住宅、商业、办公、车库、地下商业、建设周期
+AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development";//建设、住宅、商业、办公、车库、地下商业、建设周期
 
 //案例数据维护
 AssessDicKey.casesHouseTransactionType = "cases.common.transaction.type";//交易类型
@@ -106,7 +105,8 @@ AssessDicKey.casesHouseMatching = "cases.house.matching";//案例房屋 配套�
  * 文件模板key
  */
 var AssessFTKey = {}
-AssessFTKey.ftAssetInventoryRight="ft.asset.inventory.right";//他项权利
-AssessFTKey.ftHouseOwnershipCertificate="ft.house.ownership.certificate";//房产证数据导入模型
-AssessFTKey.ftLandOwnershipCertificate="ft.land.ownership.certificate";//土地证数据导入模型
-AssessFTKey.ftRealEstateOwnershipCertificate="ft.real.estate.ownership.certificate";//不动产模板
+AssessFTKey.ftAssetInventoryRight = "ft.asset.inventory.right";//他项权利
+AssessFTKey.ftHouseOwnershipCertificate = "ft.house.ownership.certificate";//房产证数据导入模型
+AssessFTKey.ftLandOwnershipCertificate = "ft.land.ownership.certificate";//土地证数据导入模型
+AssessFTKey.ftRealEstateOwnershipCertificate = "ft.real.estate.ownership.certificate";//不动产模板
+AssessFTKey.ftMethodIncomeHistory = "ft.method.income.history";//收益法历史数据模板

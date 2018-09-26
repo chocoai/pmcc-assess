@@ -14,14 +14,13 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
-            <jsp:include page="/views/method/module/incomeDetail.jsp"></jsp:include>
+            <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
 <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <input type="hidden" id="mdIncomeJSON" value='${mdIncomeJSON}'>
