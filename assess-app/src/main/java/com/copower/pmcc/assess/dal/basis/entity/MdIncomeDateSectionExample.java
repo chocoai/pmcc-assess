@@ -226,6 +226,66 @@ public class MdIncomeDateSectionExample {
             return (Criteria) this;
         }
 
+        public Criteria andOperationModeIsNull() {
+            addCriterion("operation_mode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeIsNotNull() {
+            addCriterion("operation_mode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeEqualTo(Integer value) {
+            addCriterion("operation_mode =", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeNotEqualTo(Integer value) {
+            addCriterion("operation_mode <>", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeGreaterThan(Integer value) {
+            addCriterion("operation_mode >", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("operation_mode >=", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeLessThan(Integer value) {
+            addCriterion("operation_mode <", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeLessThanOrEqualTo(Integer value) {
+            addCriterion("operation_mode <=", value, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeIn(List<Integer> values) {
+            addCriterion("operation_mode in", values, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeNotIn(List<Integer> values) {
+            addCriterion("operation_mode not in", values, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeBetween(Integer value1, Integer value2) {
+            addCriterion("operation_mode between", value1, value2, "operationMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperationModeNotBetween(Integer value1, Integer value2) {
+            addCriterion("operation_mode not between", value1, value2, "operationMode");
+            return (Criteria) this;
+        }
+
         public Criteria andBeginDateIsNull() {
             addCriterion("begin_date is null");
             return (Criteria) this;

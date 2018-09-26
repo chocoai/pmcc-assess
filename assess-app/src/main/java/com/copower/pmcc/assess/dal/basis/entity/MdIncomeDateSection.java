@@ -8,6 +8,8 @@ public class MdIncomeDateSection {
 
     private Integer incomeId;
 
+    private Integer operationMode;
+
     private Date beginDate;
 
     private Date endDate;
@@ -44,6 +46,14 @@ public class MdIncomeDateSection {
 
     public void setIncomeId(Integer incomeId) {
         this.incomeId = incomeId;
+    }
+
+    public Integer getOperationMode() {
+        return operationMode;
+    }
+
+    public void setOperationMode(Integer operationMode) {
+        this.operationMode = operationMode;
     }
 
     public Date getBeginDate() {

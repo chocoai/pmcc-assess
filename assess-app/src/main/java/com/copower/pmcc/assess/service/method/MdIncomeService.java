@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
@@ -7,21 +9,33 @@ import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeHistoryVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +61,10 @@ public class MdIncomeService {
     private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
     @Autowired
     private MdIncomeDateSectionDao mdIncomeDateSectionDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private MdIncomeForecastYearDao mdIncomeForecastYearDao;
 
     /**
      * 保存数据
@@ -80,6 +98,72 @@ public class MdIncomeService {
      */
     public MdIncomeHistory getHistoryById(Integer id) {
         return mdIncomeHistoryDao.getHistoryById(id);
+    }
+
+    /**
+     * 导入历史数据
+     *
+     * @param history
+     * @param multipartFile
+     * @return
+     * @throws BusinessException
+     * @throws IOException
+     */
+    public String importHistory(MdIncomeHistory history, MultipartFile multipartFile) throws BusinessException, IOException {
+        if (history == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        FileInputStream inputStream = new FileInputStream(filePath);
+        Workbook hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
+        int startRowNumber = 1;//读取数据的起始行
+        int rowCount = sheet.getLastRowNum() + 1 - startRowNumber;//数据总行数
+        StringBuilder errorMsg = new StringBuilder();
+        int successCount = 0;//导入成功数据条数
+        String key = history.getType().equals(0) ? AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_INCOME : AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_COST;
+        List<BaseDataDic> subjectList = baseDataDicService.getCacheDataDicList(key);
+        for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
+            try {
+                Row row = sheet.getRow(i);
+                MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                mdIncomeHistory.setIncomeId(history.getIncomeId());
+                mdIncomeHistory.setType(history.getType());
+                mdIncomeHistory.setCreator(commonService.thisUserAccount());
+                mdIncomeHistory.setYear(PoiUtils.getCellValue(row.getCell(1)));
+                BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(2)));
+                if (subjectDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setAccountingSubject(subjectDic.getId());
+                List<BaseDataDic> firstNoList = baseDataDicService.getCacheDataDicListByPid(subjectDic.getId());
+                BaseDataDic firstNoDic = baseDataDicService.getDataDicByName(firstNoList, PoiUtils.getCellValue(row.getCell(3)));
+                if (firstNoDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setFirstLevelNumber(firstNoDic.getId());
+                List<BaseDataDic> secondNoList = baseDataDicService.getCacheDataDicListByPid(firstNoDic.getId());
+                BaseDataDic secondNoDic = baseDataDicService.getDataDicByName(secondNoList, PoiUtils.getCellValue(row.getCell(4)));
+                if (secondNoDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setSecondLevelNumber(secondNoDic.getId());
+                mdIncomeHistory.setMonth(PoiUtils.getCellValue(row.getCell(5)));
+                mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
+                mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
+                mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(8))));
+                mdIncomeHistoryDao.addHistory(mdIncomeHistory);
+                successCount++;
+            } catch (Exception e) {
+                errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+        }
+        inputStream.close();
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowCount, successCount, rowCount - successCount, errorMsg.toString());
     }
 
     /**
@@ -130,12 +214,35 @@ public class MdIncomeService {
      * @param mdIncomeForecast
      * @return
      */
+    @Transactional
     public void saveForecast(MdIncomeForecast mdIncomeForecast) {
         if (mdIncomeForecast.getId() != null && mdIncomeForecast.getId() > 0) {
             mdIncomeForecastDao.updateForecast(mdIncomeForecast);
         } else {
             mdIncomeForecast.setCreator(commonService.thisUserAccount());
             mdIncomeForecastDao.addForecast(mdIncomeForecast);
+        }
+
+        //先清除原数据
+        mdIncomeForecastYearDao.deleteByForecastId(mdIncomeForecast.getId());
+
+        //生成预测数据的年数据
+        MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
+        BigDecimal preYearAmount = null;//上一年金额
+        for (int i = 1; i <= incomeDateSection.getYearCount(); i++) {
+            MdIncomeForecastYear mdIncomeForecastYear = new MdIncomeForecastYear();
+            mdIncomeForecastYear.setForecastId(mdIncomeForecast.getId());
+            mdIncomeForecastYear.setBeginDate(incomeDateSection.getBeginDate());
+            mdIncomeForecastYear.setEndDate(DateUtils.addYear(incomeDateSection.getBeginDate(), i));
+            if (i == 1 || mdIncomeForecast.getGrowthRate() == null) {
+                mdIncomeForecastYear.setAmount(mdIncomeForecast.getInitialAmount());
+                preYearAmount = mdIncomeForecast.getInitialAmount();
+            } else {
+                //根据增长率计算各年金额，增长率与上一年金额相关 （1+增长率）*上一年金额
+                mdIncomeForecastYear.setAmount(mdIncomeForecast.getGrowthRate().add(new BigDecimal("1")).multiply(preYearAmount));
+            }
+            mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
+            mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
         }
     }
 
@@ -196,6 +303,24 @@ public class MdIncomeService {
      */
     public int getForecastCountBySectionId(Integer sectionId) {
         return mdIncomeForecastDao.getCountBySectionId(sectionId);
+    }
+
+    /**
+     * 获取预测年度数据列表
+     *
+     * @param forecastId
+     * @return
+     */
+    public BootstrapTableVo getForecastYearList(Integer forecastId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeForecastYear where = new MdIncomeForecastYear();
+        where.setForecastId(forecastId);
+        List<MdIncomeForecastYear> forecastYearList = mdIncomeForecastYearDao.getForecastYearList(where);
+        vo.setRows(CollectionUtils.isEmpty(forecastYearList) ? new ArrayList<MdIncomeForecastYear>() : forecastYearList);
+        vo.setTotal(page.getTotal());
+        return vo;
     }
 
 

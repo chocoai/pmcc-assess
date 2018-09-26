@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastYear" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="forecast_id" property="forecastId" jdbcType="INTEGER" />
-    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, forecast_id, year, amount, creator, gmt_created, gmt_modified
+    id, forecast_id, begin_date, end_date, amount, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastYearExample" >
     select
@@ -105,12 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_forecast_year (forecast_id, year, amount, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{forecastId,jdbcType=INTEGER}, #{year,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_md_income_forecast_year (forecast_id, begin_date, end_date, 
+      amount, creator, gmt_created, 
+      gmt_modified)
+    values (#{forecastId,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{amount,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastYear" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,8 +122,11 @@
       <if test="forecastId != null" >
         forecast_id,
       </if>
-      <if test="year != null" >
-        year,
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
       </if>
       <if test="amount != null" >
         amount,
@@ -141,8 +145,11 @@
       <if test="forecastId != null" >
         #{forecastId,jdbcType=INTEGER},
       </if>
-      <if test="year != null" >
-        #{year,jdbcType=VARCHAR},
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
@@ -173,8 +180,11 @@
       <if test="record.forecastId != null" >
         forecast_id = #{record.forecastId,jdbcType=INTEGER},
       </if>
-      <if test="record.year != null" >
-        year = #{record.year,jdbcType=VARCHAR},
+      <if test="record.beginDate != null" >
+        begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.amount != null" >
         amount = #{record.amount,jdbcType=DECIMAL},
@@ -197,7 +207,8 @@
     update tb_md_income_forecast_year
     set id = #{record.id,jdbcType=INTEGER},
       forecast_id = #{record.forecastId,jdbcType=INTEGER},
-      year = #{record.year,jdbcType=VARCHAR},
+      begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      end_date = #{record.endDate,jdbcType=TIMESTAMP},
       amount = #{record.amount,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -212,8 +223,11 @@
       <if test="forecastId != null" >
         forecast_id = #{forecastId,jdbcType=INTEGER},
       </if>
-      <if test="year != null" >
-        year = #{year,jdbcType=VARCHAR},
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="amount != null" >
         amount = #{amount,jdbcType=DECIMAL},
@@ -233,7 +247,8 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastYear" >
     update tb_md_income_forecast_year
     set forecast_id = #{forecastId,jdbcType=INTEGER},
-      year = #{year,jdbcType=VARCHAR},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
       amount = #{amount,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

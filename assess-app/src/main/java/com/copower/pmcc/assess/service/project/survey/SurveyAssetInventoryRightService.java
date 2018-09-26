@@ -180,6 +180,7 @@ public class SurveyAssetInventoryRightService {
                 errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
             }
         }
+        inputStream.close();
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowCount, successCount, rowCount - successCount, errorMsg.toString());
     }
 }

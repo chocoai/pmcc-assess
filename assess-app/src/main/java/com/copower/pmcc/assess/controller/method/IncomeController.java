@@ -5,17 +5,21 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * 评估原则
@@ -25,10 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class IncomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+
     @Autowired
     private MdIncomeService mdIncomeService;
     @Autowired
@@ -36,8 +37,8 @@ public class IncomeController {
 
     @ResponseBody
     @GetMapping(value = "/getDateSectionList", name = "获取日期分段列表")
-    public BootstrapTableVo getDateSectionList(Integer incomeId) {
-        return mdIncomeDateSectionService.getDateSectionList(incomeId);
+    public BootstrapTableVo getDateSectionList(Integer incomeId,Integer operationMode) {
+        return mdIncomeDateSectionService.getDateSectionList(incomeId,operationMode);
     }
 
     @ResponseBody
@@ -96,9 +97,35 @@ public class IncomeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/importHistory", name = "导入历史数据", method = RequestMethod.POST)
+    public HttpResult importHistory(MdIncomeHistory history, HttpServletRequest request) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if(multipartFile.isEmpty())
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            String s = mdIncomeService.importHistory(history,multipartFile);
+            return HttpResult.newCorrectResult(s);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(String.format("导入历史数据-%s", e.getMessage()), e);
+            return HttpResult.newErrorResult("导入历史数据异常");
+        }
+    }
+
+
+    @ResponseBody
     @RequestMapping(value = "/getForecastList", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo getForecastList(Integer incomeId, Integer type) {
         return mdIncomeService.getForecastList(incomeId, type);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastYearList", name = "显示年度预测列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastYearList(Integer forecastId) {
+        return mdIncomeService.getForecastYearList(forecastId);
     }
 
     @ResponseBody
@@ -124,6 +151,8 @@ public class IncomeController {
         }
         return HttpResult.newCorrectResult();
     }
+
+
 
 
 

@@ -15,12 +15,14 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <button class="btn btn-success" data-toggle="modal" onclick="selfSupport.addHistory(0);">
-                    新增
-                </button>
+                <div class="btn-group">
+                    <button class="btn btn-success" data-toggle="modal" onclick="selfSupport.addHistory(0);">
+                        新增
+                    </button>
+                </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary"
-                            onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据
+                            onclick="$('#ajaxFileUpload').val('').attr('data-type',0).trigger('click')">导入数据
                     </button>
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">
@@ -32,7 +34,7 @@
                                onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistory);">下载模板</a>
                         </li>
                         <li><a href="javascript://;"
-                               onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据</a>
+                               onclick="$('#ajaxFileUpload').val('').attr('data-type',0).trigger('click');">导入数据</a>
                         </li>
                     </ul>
                 </div>
@@ -66,9 +68,29 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <button class="btn btn-success" data-toggle="modal" onclick="selfSupport.addHistory(1);">
-                    新增
-                </button>
+                <div class="btn-group">
+                    <button class="btn btn-success" data-toggle="modal" onclick="selfSupport.addHistory(1);">
+                        新增
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary"
+                            onclick="$('#ajaxFileUpload').val('').attr('data-type',1).trigger('click')">导入数据
+                    </button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="javascript://"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistory);">下载模板</a>
+                        </li>
+                        <li><a href="javascript://;"
+                               onclick="$('#ajaxFileUpload').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                        </li>
+                    </ul>
+                </div>
                 <table class="table table-bordered" id="tb_history_cost_list">
                 </table>
             </div>
@@ -258,6 +280,7 @@
             <form id="frm_forecast" class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="type">
+                <input type="hidden" name="sectionId">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="x-valid">
@@ -292,10 +315,27 @@
         </div>
     </div>
 </div>
-<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="importRightData();">
+
+<div id="modal_forecast_year_list" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">预测年度信息</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tb_forecast_year_list">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;" data-type="0" onchange="selfSupport.importHistory(this);">
 <script type="text/javascript">
-
-
     $(function () {
 
     })
@@ -433,8 +473,10 @@
     }
 
     //导入历史数据
-    selfSupport.importHistory = function (type) {
+    selfSupport.importHistory = function (_this) {
         Loading.progressShow();
+        console.log($($(_this).attr('data-type')));
+        var type = $(_this).attr('data-type');
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/income/importHistory",
@@ -442,6 +484,7 @@
                 incomeId: $("#frm_income").find('[name=id]').val(),
                 type: type
             },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
             fileElementId: 'ajaxFileUpload',//文件选择框的id属性
             dataType: 'json',//服务器返回的格式
             success: function (result) {
@@ -501,7 +544,7 @@
         $('#modal_forecast').modal();
     }
 
-    //保存历史信息
+    //保存预测信息
     selfSupport.saveForecast = function () {
         if (!$("#frm_forecast").valid()) {
             return false;
@@ -578,6 +621,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecast(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.delForecast(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -597,6 +641,49 @@
             }
         });
     }
+
+    //查看年度预测
+    selfSupport.viewForecastYear = function (forecastId) {
+        selfSupport.loadForecastYearList(forecastId);
+        $('#modal_forecast_year_list').modal('show');
+    }
+
+    //加载年度预测列表
+    selfSupport.loadForecastYearList = function (forecastId) {
+        var cols = [];
+        cols.push({
+            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false);
+            }
+        });
+        cols.push({
+            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
+                return formatDate(row.endDate, false);
+            }
+        });
+        cols.push({field: 'amount', title: '金额'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看月度" onclick="selfSupport.editForecast(' + index + ');" ><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_forecast_year_list").bootstrapTable('destroy');
+        TableInit("tb_forecast_year_list", "${pageContext.request.contextPath}/income/getForecastYearList", cols, {
+            forecastId: forecastId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+
 
     //计算金额
     selfSupport.computeMoney = function () {

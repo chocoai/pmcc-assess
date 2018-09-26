@@ -89,4 +89,16 @@ public class MdIncomeForecastYearDao {
         return mdIncomeForecastYearMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 删除
+     *
+     * @param forecastId
+     * @return
+     */
+    public boolean deleteByForecastId(Integer forecastId) {
+        MdIncomeForecastYearExample example = new MdIncomeForecastYearExample();
+        example.createCriteria().andForecastIdEqualTo(forecastId);
+        return mdIncomeForecastYearMapper.deleteByExample(example) > 0;
+    }
+
 }

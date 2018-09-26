@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
+    <result column="operation_mode" property="operationMode" jdbcType="INTEGER" />
     <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     <result column="year_count" property="yearCount" jdbcType="INTEGER" />
@@ -75,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, begin_date, end_date, year_count, net_profit, rental_growth_rate, 
+    id, income_id, operation_mode, begin_date, end_date, year_count, net_profit, rental_growth_rate, 
     correction_factor, present_value_factor, income_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSectionExample" >
@@ -112,16 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_date_section (income_id, begin_date, end_date, 
-      year_count, net_profit, rental_growth_rate, 
-      correction_factor, present_value_factor, income_price, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{incomeId,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{yearCount,jdbcType=INTEGER}, #{netProfit,jdbcType=VARCHAR}, #{rentalGrowthRate,jdbcType=DECIMAL}, 
-      #{correctionFactor,jdbcType=DECIMAL}, #{presentValueFactor,jdbcType=DECIMAL}, #{incomePrice,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_md_income_date_section (income_id, operation_mode, begin_date, 
+      end_date, year_count, net_profit, 
+      rental_growth_rate, correction_factor, present_value_factor, 
+      income_price, creator, gmt_created, 
+      gmt_modified)
+    values (#{incomeId,jdbcType=INTEGER}, #{operationMode,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{yearCount,jdbcType=INTEGER}, #{netProfit,jdbcType=VARCHAR}, 
+      #{rentalGrowthRate,jdbcType=DECIMAL}, #{correctionFactor,jdbcType=DECIMAL}, #{presentValueFactor,jdbcType=DECIMAL}, 
+      #{incomePrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,6 +132,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
         income_id,
+      </if>
+      <if test="operationMode != null" >
+        operation_mode,
       </if>
       <if test="beginDate != null" >
         begin_date,
@@ -169,6 +173,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
         #{incomeId,jdbcType=INTEGER},
+      </if>
+      <if test="operationMode != null" >
+        #{operationMode,jdbcType=INTEGER},
       </if>
       <if test="beginDate != null" >
         #{beginDate,jdbcType=TIMESTAMP},
@@ -220,6 +227,9 @@
       <if test="record.incomeId != null" >
         income_id = #{record.incomeId,jdbcType=INTEGER},
       </if>
+      <if test="record.operationMode != null" >
+        operation_mode = #{record.operationMode,jdbcType=INTEGER},
+      </if>
       <if test="record.beginDate != null" >
         begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
       </if>
@@ -262,6 +272,7 @@
     update tb_md_income_date_section
     set id = #{record.id,jdbcType=INTEGER},
       income_id = #{record.incomeId,jdbcType=INTEGER},
+      operation_mode = #{record.operationMode,jdbcType=INTEGER},
       begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
       year_count = #{record.yearCount,jdbcType=INTEGER},
@@ -282,6 +293,9 @@
     <set >
       <if test="incomeId != null" >
         income_id = #{incomeId,jdbcType=INTEGER},
+      </if>
+      <if test="operationMode != null" >
+        operation_mode = #{operationMode,jdbcType=INTEGER},
       </if>
       <if test="beginDate != null" >
         begin_date = #{beginDate,jdbcType=TIMESTAMP},
@@ -322,6 +336,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection" >
     update tb_md_income_date_section
     set income_id = #{incomeId,jdbcType=INTEGER},
+      operation_mode = #{operationMode,jdbcType=INTEGER},
       begin_date = #{beginDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       year_count = #{yearCount,jdbcType=INTEGER},

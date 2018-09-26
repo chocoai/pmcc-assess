@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
+import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDateSectionDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -17,6 +19,7 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 评估依据
@@ -59,30 +63,34 @@ public class MdIncomeDateSectionService {
             mdIncomeDateSection.setYearCount(DateUtils.diffDate(mdIncomeDateSection.getEndDate(), mdIncomeDateSection.getBeginDate()) / DateUtils.DAYS_PER_YEAR);
             mdIncomeDateSectionDao.addDateSection(mdIncomeDateSection);
 
-            //为各项从表添加对应数据
-            //自营 收入预测 成本预测
-            MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
-            mdIncomeForecast.setIncomeId(mdIncomeDateSection.getIncomeId());
-            mdIncomeForecast.setSectionId(mdIncomeDateSection.getId());
-            mdIncomeForecast.setType(MethodDataTypeEnum.INCOME.getId());
-            mdIncomeForecast.setCreator(commonService.thisUserAccount());
-            mdIncomeService.saveForecast(mdIncomeForecast);
-            mdIncomeForecast.setId(null);
-            mdIncomeForecast.setType(MethodDataTypeEnum.COST.getId());
-            mdIncomeService.saveForecast(mdIncomeForecast);
-            //租赁 收入类 成本类 参数
-            MdIncomeLease mdIncomeLease = new MdIncomeLease();
-            mdIncomeLease.setIncomeId(mdIncomeDateSection.getIncomeId());
-            mdIncomeLease.setSectionId(mdIncomeDateSection.getId());
-            mdIncomeLease.setCreator(commonService.thisUserAccount());
-            mdIncomeService.saveLease(mdIncomeLease);
+            if (mdIncomeDateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.PROPRIETARY.getId())) {
+                //为各项从表添加对应数据
+                //自营 收入预测 成本预测
+                MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
+                mdIncomeForecast.setIncomeId(mdIncomeDateSection.getIncomeId());
+                mdIncomeForecast.setSectionId(mdIncomeDateSection.getId());
+                mdIncomeForecast.setType(MethodDataTypeEnum.INCOME.getId());
+                mdIncomeForecast.setCreator(commonService.thisUserAccount());
+                mdIncomeService.saveForecast(mdIncomeForecast);
+                mdIncomeForecast.setId(null);
+                mdIncomeForecast.setType(MethodDataTypeEnum.COST.getId());
+                mdIncomeService.saveForecast(mdIncomeForecast);
+            }
 
-            MdIncomeLeaseCost mdIncomeLeaseCost = new MdIncomeLeaseCost();
-            mdIncomeLeaseCost.setIncomeId(mdIncomeDateSection.getIncomeId());
-            mdIncomeLeaseCost.setSectionId(mdIncomeDateSection.getId());
-            mdIncomeLeaseCost.setCreator(commonService.thisUserAccount());
-            mdIncomeService.saveLeaseCost(mdIncomeLeaseCost);
+            if (mdIncomeDateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.LEASE.getId())) {
+                //租赁 收入类 成本类 参数
+                MdIncomeLease mdIncomeLease = new MdIncomeLease();
+                mdIncomeLease.setIncomeId(mdIncomeDateSection.getIncomeId());
+                mdIncomeLease.setSectionId(mdIncomeDateSection.getId());
+                mdIncomeLease.setCreator(commonService.thisUserAccount());
+                mdIncomeService.saveLease(mdIncomeLease);
 
+                MdIncomeLeaseCost mdIncomeLeaseCost = new MdIncomeLeaseCost();
+                mdIncomeLeaseCost.setIncomeId(mdIncomeDateSection.getIncomeId());
+                mdIncomeLeaseCost.setSectionId(mdIncomeDateSection.getId());
+                mdIncomeLeaseCost.setCreator(commonService.thisUserAccount());
+                mdIncomeService.saveLeaseCost(mdIncomeLeaseCost);
+            }
         }
     }
 
@@ -94,12 +102,19 @@ public class MdIncomeDateSectionService {
      */
     public boolean deleteDateSection(Integer id) throws BusinessException {
         //先检查各子项有无相关联的数据
-        if (mdIncomeService.getForecastCountBySectionId(id) > 0)
-            throw new BusinessException("请先删除相关自营的预测数据");
-        if (mdIncomeService.getLeaseCountBySectionId(id) > 0)
-            throw new BusinessException("请先删除相关租赁的收入数据");
-        if (mdIncomeService.getLeaseCostCountBySectionId(id) > 0)
-            throw new BusinessException("请先删除相关租赁的成本数据");
+        MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(id);
+        if (dateSection == null)
+            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        if (dateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.PROPRIETARY.getId())) {
+            if (mdIncomeService.getForecastCountBySectionId(id) > 0)
+                throw new BusinessException("请先删除相关自营的预测数据");
+        }
+        if (dateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.LEASE.getId())) {
+            if (mdIncomeService.getLeaseCountBySectionId(id) > 0)
+                throw new BusinessException("请先删除相关租赁的收入数据");
+            if (mdIncomeService.getLeaseCostCountBySectionId(id) > 0)
+                throw new BusinessException("请先删除相关租赁的成本数据");
+        }
         return mdIncomeDateSectionDao.deleteDateSection(id);
     }
 
@@ -120,17 +135,18 @@ public class MdIncomeDateSectionService {
      * @param incomeId
      * @return
      */
-    public BootstrapTableVo getDateSectionList(Integer incomeId) {
+    public BootstrapTableVo getDateSectionList(Integer incomeId, Integer operationMode) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         MdIncomeDateSection mdIncomeDateSection = new MdIncomeDateSection();
         mdIncomeDateSection.setIncomeId(incomeId);
+        mdIncomeDateSection.setOperationMode(operationMode);
         if (incomeId == 0) {
             mdIncomeDateSection.setCreator(commonService.thisUserAccount());
         }
         List<MdIncomeDateSection> sectionList = mdIncomeDateSectionDao.getDateSectionList(mdIncomeDateSection);
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(sectionList) ? new ArrayList<MdIncomeDateSection>() : sectionList);
+        vo.setRows(CollectionUtils.isEmpty(sectionList) ? new ArrayList<MdIncomeDateSection>() : sectionList);
         vo.setTotal(page.getTotal());
         return vo;
     }

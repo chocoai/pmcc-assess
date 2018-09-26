@@ -339,7 +339,7 @@ public class BaseDataDicService {
         if(CollectionUtils.isEmpty(list)) return null;
         if(StringUtils.isBlank(name)) return null;
         for (BaseDataDic baseDataDic : list) {
-            if(StringUtils.equals(baseDataDic.getName(),name))
+            if(StringUtils.equals(baseDataDic.getName().trim(),name.trim()))
                 return baseDataDic;
         }
         return null;

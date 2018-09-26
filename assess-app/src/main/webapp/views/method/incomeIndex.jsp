@@ -54,7 +54,7 @@
 
     </div>
 </div>
-<div class="x_panel">
+<div class="x_panel" id="panel_date_section" style="display: none;">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -152,6 +152,7 @@
         }
         var data = formParams("frm_data_section");
         data.incomeId = $("#frm_income").find('[name=id]').val();
+        data.operationMode = $("#frm_income").find('[name=operationMode]').val();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveDateSection",
@@ -162,7 +163,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
-                    incomeIndex.loadDateSectionList();
+                    incomeIndex.loadDateSectionList(data.operationMode);
                     selfSupport.loadForecastList(0);
                     selfSupport.loadForecastList(1);
                     $('#modal_data_section').modal('hide');
@@ -179,7 +180,7 @@
     }
 
     //加载时间段列表信息
-    incomeIndex.loadDateSectionList = function () {
+    incomeIndex.loadDateSectionList = function (operationMode) {
         var cols = [];
         cols.push({
             field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
@@ -203,7 +204,8 @@
         });
         $("#tb_data_section_list").bootstrapTable('destroy');
         TableInit("tb_data_section_list", "${pageContext.request.contextPath}/income/getDateSectionList", cols, {
-            incomeId: $("#frm_income").find('[name=id]').val()
+            incomeId: $("#frm_income").find('[name=id]').val(),
+            operationMode: operationMode
         }, {
             showColumns: false,
             showRefresh: false,
@@ -227,7 +229,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        incomeIndex.loadDateSectionList();
+                        incomeIndex.loadDateSectionList($("#frm_income").find('[name=operationMode]').val());
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -244,6 +246,9 @@
 
     //经营方式切换
     incomeIndex.operationModeChange = function (_this) {
+        $("#panel_date_section").show();
+        incomeIndex.loadDateSectionList($(_this).val());//加载时间分段
+
         if ($(_this).val() == 0) {
             $("#self_support_info").show();
             $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();

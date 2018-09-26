@@ -39,10 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_md_income_forecast" domainObjectName="MdIncomeForecast"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_md_income_lease" domainObjectName="MdIncomeLease"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_md_income_lease_cost" domainObjectName="MdIncomeLeaseCost"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_md_income_date_section" domainObjectName="MdIncomeDateSection"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
     </context>
-
 </generatorConfiguration>

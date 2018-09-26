@@ -257,8 +257,7 @@
                         //初始化文件组件
                         workPhaseObj.fileComponentInit(row.id);
                         //编辑页面回显文件
-                        workPhaseObj.fileList("workTemplate_file", row.id, "workTemp");
-                        workPhaseObj.fileList("workProcessTemplate_file", row.id, "processTemp");
+
 
                         //显示编辑模态窗口
                         workPhaseObj.modalWorkPhase.modal({backdrop: 'static', keyboard: false});
@@ -435,34 +434,8 @@
     workPhaseObj.fileComponentInit = function (id) {
         workPhaseObj.resetWorkTemplateFile();
         workPhaseObj.resetWorkProcessTemplateFile();
-        uploadFiles("workTemplate_file", "save_project_phase", {}, {
-                tableName: "tb_project_phase",
-                tableId: id,
-                fieldsName: "workTemp"
-            }, function (data) {
-                var id = $('#workTemplate').val();
-                if (id) {
-                    id += "," + data;
-                    $('#workTemplate').val(id);
-                } else {
-                    $('#workTemplate').val(data);
-                }
-            }
-        );
-        uploadFiles("workProcessTemplate_file", "save_project_phase", {}, {
-                tableName: "tb_project_phase",
-                tableId: id,
-                fieldsName: "processTemp"
-            }, function (data) {
-                var id = $('#workProcessTemplate').val();
-                if (id) {
-                    id += "," + data;
-                    $('#workProcessTemplate').val(id);
-                } else {
-                    $('#workProcessTemplate').val(data);
-                }
-            }
-        );
+
+
     };
     workPhaseObj.fileList = function (el, id, fieldName) {
         GetFileShows(el, {
@@ -489,8 +462,7 @@
 
     //--------------document init----------------------//
     $(function () {
-        $("#phaseForm").select2();
-        $("#workPhaseBoxName").select2();
+
 
         //保存工作事项按钮触发事件
         $('#save_project_phase').click(function () {

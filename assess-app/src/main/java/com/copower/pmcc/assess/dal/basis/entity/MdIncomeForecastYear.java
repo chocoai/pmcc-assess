@@ -8,7 +8,9 @@ public class MdIncomeForecastYear {
 
     private Integer forecastId;
 
-    private String year;
+    private Date beginDate;
+
+    private Date endDate;
 
     private BigDecimal amount;
 
@@ -34,12 +36,20 @@ public class MdIncomeForecastYear {
         this.forecastId = forecastId;
     }
 
-    public String getYear() {
-        return year;
+    public Date getBeginDate() {
+        return beginDate;
     }
 
-    public void setYear(String year) {
-        this.year = year == null ? null : year.trim();
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public BigDecimal getAmount() {
