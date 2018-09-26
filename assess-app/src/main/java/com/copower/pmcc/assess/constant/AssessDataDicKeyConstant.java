@@ -50,8 +50,7 @@ public class AssessDataDicKeyConstant {
     /*
      * 测算方法配置
      */
-    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_INCOME = "md.income.self.support.cost.type.income"; //收入类
-    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_COST = "md.income.self.support.cost.type.cost"; //成本类
-    public static final String MD_INCOME_SELF_SUPPORT_COST_TYPE_EXPENSE = "md.income.self.support.cost.type.expense"; //费用类
+    public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
+    public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //收入类
 
 }

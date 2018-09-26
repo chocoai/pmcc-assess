@@ -265,17 +265,17 @@
         FileUtils.uploadFiles({
             target: "uploadFile",
             showFileList: false,
-            fileExtArray: ["doc", "docx"]
-        }, {
+            fileExtArray: ["doc", "docx"],
             onUpload: function (file) {//上传之前触发
                 var formData = {
                     tableName: "tb_report_template",
                     creater: "${currUserAccount}",
                     tableId: $("#id").val()
                 };
-                $("#uploadFile").data('uploadifive').settings.formData = formData;   //动态更改formData的值
+                return formData;
             },
             onUploadComplete: function () {
+                alert(123);
                 loadTemplateAttachment($("#id").val(), "${currUserAccount}");
             }
         });

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.method;
 
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastExample;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.MdIncomeLeaseMapper;
@@ -78,6 +79,17 @@ public class MdIncomeLeaseDao {
      */
     public boolean deleteIncomeLease(Integer id){
         return mdIncomeLeaseMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 获取数量
+     * @param sectionId
+     * @return
+     */
+    public int getCountBySectionId(Integer sectionId){
+        MdIncomeLeaseExample example = new MdIncomeLeaseExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        return mdIncomeLeaseMapper.countByExample(example);
     }
 
 }

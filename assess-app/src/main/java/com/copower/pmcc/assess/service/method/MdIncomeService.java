@@ -1,32 +1,41 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeSelfSupportCostDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeSelfSupportDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncome;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupport;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
+import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.method.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
+import com.copower.pmcc.assess.dto.output.method.MdIncomeHistoryVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
-import com.copower.pmcc.assess.dto.output.method.MdIncomeSelfSupportCostVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,25 +50,33 @@ public class MdIncomeService {
     @Autowired
     private MdIncomeLeaseDao mdIncomeLeaseDao;
     @Autowired
-    private MdIncomeSelfSupportDao mdIncomeSelfSupportDao;
-    @Autowired
-    private MdIncomeSelfSupportCostDao mdIncomeSelfSupportCostDao;
+    private MdIncomeHistoryDao mdIncomeHistoryDao;
     @Autowired
     private CommonService commonService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private MdIncomeForecastDao mdIncomeForecastDao;
+    @Autowired
+    private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
+    @Autowired
+    private MdIncomeDateSectionDao mdIncomeDateSectionDao;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private MdIncomeForecastYearDao mdIncomeForecastYearDao;
 
     /**
      * 保存数据
      *
-     * @param mdIncomeSelfSupportCost
+     * @param mdIncomeHistoryCost
      */
-    public void saveSelfSupportCost(MdIncomeSelfSupportCost mdIncomeSelfSupportCost) {
-        if (mdIncomeSelfSupportCost.getId() != null && mdIncomeSelfSupportCost.getId() > 0) {
-            mdIncomeSelfSupportCostDao.updateSelfSupportCost(mdIncomeSelfSupportCost);
+    public void saveHistory(MdIncomeHistory mdIncomeHistoryCost) {
+        if (mdIncomeHistoryCost.getId() != null && mdIncomeHistoryCost.getId() > 0) {
+            mdIncomeHistoryDao.updateHistory(mdIncomeHistoryCost);
         } else {
-            mdIncomeSelfSupportCost.setCreator(commonService.thisUserAccount());
-            mdIncomeSelfSupportCostDao.addSelfSupportCost(mdIncomeSelfSupportCost);
+            mdIncomeHistoryCost.setCreator(commonService.thisUserAccount());
+            mdIncomeHistoryDao.addHistory(mdIncomeHistoryCost);
         }
     }
 
@@ -69,8 +86,8 @@ public class MdIncomeService {
      * @param id
      * @return
      */
-    public boolean deleteSelfSupportCost(Integer id) {
-        return mdIncomeSelfSupportCostDao.deleteSelfSupportCost(id);
+    public boolean deleteHistory(Integer id) {
+        return mdIncomeHistoryDao.deleteHistory(id);
     }
 
     /**
@@ -79,52 +96,233 @@ public class MdIncomeService {
      * @param id
      * @return
      */
-    public MdIncomeSelfSupportCost getSelfSupportCostById(Integer id) {
-        return mdIncomeSelfSupportCostDao.getSelfSupportCostById(id);
+    public MdIncomeHistory getHistoryById(Integer id) {
+        return mdIncomeHistoryDao.getHistoryById(id);
     }
 
+    /**
+     * 导入历史数据
+     *
+     * @param history
+     * @param multipartFile
+     * @return
+     * @throws BusinessException
+     * @throws IOException
+     */
+    public String importHistory(MdIncomeHistory history, MultipartFile multipartFile) throws BusinessException, IOException {
+        if (history == null)
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        FileInputStream inputStream = new FileInputStream(filePath);
+        Workbook hssfWorkbook = PoiUtils.isExcel2003(filePath) ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        Sheet sheet = hssfWorkbook.getSheetAt(0);//只取第一个sheet
+        int startRowNumber = 1;//读取数据的起始行
+        int rowCount = sheet.getLastRowNum() + 1 - startRowNumber;//数据总行数
+        StringBuilder errorMsg = new StringBuilder();
+        int successCount = 0;//导入成功数据条数
+        String key = history.getType().equals(0) ? AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_INCOME : AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_COST;
+        List<BaseDataDic> subjectList = baseDataDicService.getCacheDataDicList(key);
+        for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
+            try {
+                Row row = sheet.getRow(i);
+                MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                mdIncomeHistory.setIncomeId(history.getIncomeId());
+                mdIncomeHistory.setType(history.getType());
+                mdIncomeHistory.setCreator(commonService.thisUserAccount());
+                mdIncomeHistory.setYear(PoiUtils.getCellValue(row.getCell(1)));
+                BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(2)));
+                if (subjectDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setAccountingSubject(subjectDic.getId());
+                List<BaseDataDic> firstNoList = baseDataDicService.getCacheDataDicListByPid(subjectDic.getId());
+                BaseDataDic firstNoDic = baseDataDicService.getDataDicByName(firstNoList, PoiUtils.getCellValue(row.getCell(3)));
+                if (firstNoDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setFirstLevelNumber(firstNoDic.getId());
+                List<BaseDataDic> secondNoList = baseDataDicService.getCacheDataDicListByPid(firstNoDic.getId());
+                BaseDataDic secondNoDic = baseDataDicService.getDataDicByName(secondNoList, PoiUtils.getCellValue(row.getCell(4)));
+                if (secondNoDic == null) {
+                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
+                    continue;
+                }
+                mdIncomeHistory.setSecondLevelNumber(secondNoDic.getId());
+                mdIncomeHistory.setMonth(PoiUtils.getCellValue(row.getCell(5)));
+                mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
+                mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
+                mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(8))));
+                mdIncomeHistoryDao.addHistory(mdIncomeHistory);
+                successCount++;
+            } catch (Exception e) {
+                errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+        }
+        inputStream.close();
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowCount, successCount, rowCount - successCount, errorMsg.toString());
+    }
 
     /**
      * 获取数据列表
      *
-     * @param supportId
+     * @param incomeId
      * @return
      */
-    public BootstrapTableVo getSelfSupportCostList(Integer supportId, Integer type) {
+    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        MdIncomeSelfSupportCost where = new MdIncomeSelfSupportCost();
+        MdIncomeHistory where = new MdIncomeHistory();
         where.setType(type);
-        if (supportId != null && supportId > 0) {
-            where.setSupportId(supportId);
+        if (incomeId != null && incomeId > 0) {
+            where.setIncomeId(incomeId);
         } else {
-            where.setSupportId(0);
+            where.setIncomeId(0);
             where.setCreator(commonService.thisUserAccount());
         }
 
-        List<MdIncomeSelfSupportCost> selfSupportCostList = mdIncomeSelfSupportCostDao.getSelfSupportCostList(where);
-        List<MdIncomeSelfSupportCostVo> vos = LangUtils.transform(selfSupportCostList, p -> getSelfSupportCostVo(p));
+        List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(where);
+        List<MdIncomeHistoryVo> vos = LangUtils.transform(historyList, p -> getHistoryVo(p));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public MdIncomeSelfSupportCostVo getSelfSupportCostVo(MdIncomeSelfSupportCost mdIncomeSelfSupportCost) {
-        if (mdIncomeSelfSupportCost == null) return null;
-        MdIncomeSelfSupportCostVo mdIncomeSelfSupportCostVo = new MdIncomeSelfSupportCostVo();
-        BeanUtils.copyProperties(mdIncomeSelfSupportCost, mdIncomeSelfSupportCostVo);
-        if (mdIncomeSelfSupportCost.getAccountingSubject() != null && mdIncomeSelfSupportCost.getAccountingSubject() > 0) {
-            mdIncomeSelfSupportCostVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getAccountingSubject()));
+    public MdIncomeHistoryVo getHistoryVo(MdIncomeHistory mdIncomeHistory) {
+        if (mdIncomeHistory == null) return null;
+        MdIncomeHistoryVo mdIncomeHistoryVo = new MdIncomeHistoryVo();
+        BeanUtils.copyProperties(mdIncomeHistory, mdIncomeHistoryVo);
+        if (mdIncomeHistory.getAccountingSubject() != null && mdIncomeHistory.getAccountingSubject() > 0) {
+            mdIncomeHistoryVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeHistory.getAccountingSubject()));
         }
-        if (mdIncomeSelfSupportCost.getCostType() != null && mdIncomeSelfSupportCost.getCostType() > 0) {
-            mdIncomeSelfSupportCostVo.setCostTypeName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getCostType()));
+        if (mdIncomeHistory.getFirstLevelNumber() != null && mdIncomeHistory.getFirstLevelNumber() > 0) {
+            mdIncomeHistoryVo.setFirstLevelNumberName(baseDataDicService.getNameById(mdIncomeHistory.getFirstLevelNumber()));
         }
-        if (mdIncomeSelfSupportCost.getCostCategory() != null && mdIncomeSelfSupportCost.getCostCategory() > 0) {
-            mdIncomeSelfSupportCostVo.setCostCategoryName(baseDataDicService.getNameById(mdIncomeSelfSupportCost.getCostCategory()));
+        if (mdIncomeHistory.getSecondLevelNumber() != null && mdIncomeHistory.getSecondLevelNumber() > 0) {
+            mdIncomeHistoryVo.setSecondLevelNumberName(baseDataDicService.getNameById(mdIncomeHistory.getSecondLevelNumber()));
         }
-        return mdIncomeSelfSupportCostVo;
+        return mdIncomeHistoryVo;
     }
+
+    /**
+     * 保存预测数据
+     *
+     * @param mdIncomeForecast
+     * @return
+     */
+    @Transactional
+    public void saveForecast(MdIncomeForecast mdIncomeForecast) {
+        if (mdIncomeForecast.getId() != null && mdIncomeForecast.getId() > 0) {
+            mdIncomeForecastDao.updateForecast(mdIncomeForecast);
+        } else {
+            mdIncomeForecast.setCreator(commonService.thisUserAccount());
+            mdIncomeForecastDao.addForecast(mdIncomeForecast);
+        }
+
+        //先清除原数据
+        mdIncomeForecastYearDao.deleteByForecastId(mdIncomeForecast.getId());
+
+        //生成预测数据的年数据
+        MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
+        BigDecimal preYearAmount = null;//上一年金额
+        for (int i = 1; i <= incomeDateSection.getYearCount(); i++) {
+            MdIncomeForecastYear mdIncomeForecastYear = new MdIncomeForecastYear();
+            mdIncomeForecastYear.setForecastId(mdIncomeForecast.getId());
+            mdIncomeForecastYear.setBeginDate(incomeDateSection.getBeginDate());
+            mdIncomeForecastYear.setEndDate(DateUtils.addYear(incomeDateSection.getBeginDate(), i));
+            if (i == 1 || mdIncomeForecast.getGrowthRate() == null) {
+                mdIncomeForecastYear.setAmount(mdIncomeForecast.getInitialAmount());
+                preYearAmount = mdIncomeForecast.getInitialAmount();
+            } else {
+                //根据增长率计算各年金额，增长率与上一年金额相关 （1+增长率）*上一年金额
+                mdIncomeForecastYear.setAmount(mdIncomeForecast.getGrowthRate().add(new BigDecimal("1")).multiply(preYearAmount));
+            }
+            mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
+            mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
+        }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     */
+    public boolean deleteForecast(Integer id) {
+        return mdIncomeForecastDao.deleteForecast(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param incomeId
+     * @return
+     */
+    public BootstrapTableVo getForecastList(Integer incomeId, Integer type) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeForecast where = new MdIncomeForecast();
+        where.setType(type);
+        if (incomeId != null && incomeId > 0) {
+            where.setIncomeId(incomeId);
+        } else {
+            where.setIncomeId(0);
+            where.setCreator(commonService.thisUserAccount());
+        }
+
+        List<MdIncomeForecast> historyList = mdIncomeForecastDao.getForecastList(where);
+        List<MdIncomeForecastVo> vos = LangUtils.transform(historyList, p -> getForecastVo(p));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataEvaluationHypothesisVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public MdIncomeForecastVo getForecastVo(MdIncomeForecast mdIncomeForecast) {
+        if (mdIncomeForecast == null) return null;
+        MdIncomeForecastVo mdIncomeForecastVo = new MdIncomeForecastVo();
+        BeanUtils.copyProperties(mdIncomeForecast, mdIncomeForecastVo);
+        MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
+        if (dateSection != null) {
+            mdIncomeForecastVo.setBeginDate(dateSection.getBeginDate());
+            mdIncomeForecastVo.setEndDate(dateSection.getEndDate());
+            mdIncomeForecastVo.setYearCount(dateSection.getYearCount());
+        }
+        return mdIncomeForecastVo;
+    }
+
+    /**
+     * 获取数量
+     *
+     * @param sectionId
+     * @return
+     */
+    public int getForecastCountBySectionId(Integer sectionId) {
+        return mdIncomeForecastDao.getCountBySectionId(sectionId);
+    }
+
+    /**
+     * 获取预测年度数据列表
+     *
+     * @param forecastId
+     * @return
+     */
+    public BootstrapTableVo getForecastYearList(Integer forecastId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeForecastYear where = new MdIncomeForecastYear();
+        where.setForecastId(forecastId);
+        List<MdIncomeForecastYear> forecastYearList = mdIncomeForecastYearDao.getForecastYearList(where);
+        vo.setRows(CollectionUtils.isEmpty(forecastYearList) ? new ArrayList<MdIncomeForecastYear>() : forecastYearList);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
 
     /**
      * 获取金额合计
@@ -134,9 +332,9 @@ public class MdIncomeService {
      * @return
      */
     public BigDecimal getAmountMoneyTotal(Integer supportId, Integer type) {
-        String creator = supportId == 0 ? commonService.thisUserAccount() : null;
-        return mdIncomeSelfSupportCostDao.getAmountMoneyTotal(supportId, type, creator);
+        return null;
     }
+
 
     /**
      租赁-----------
@@ -188,22 +386,31 @@ public class MdIncomeService {
         return mdIncomeLeaseDao.getIncomeLeaseById(id);
     }
 
+    /**
+     * 获取数量
+     *
+     * @param sectionId
+     * @return
+     */
+    public int getLeaseCountBySectionId(Integer sectionId) {
+        return mdIncomeLeaseDao.getCountBySectionId(sectionId);
+    }
 
     /**
      * 获取数据列表
      *
-     * @param incomeId
+     * @param sectionId
      * @return
      */
-    public BootstrapTableVo getLeaseList(Integer incomeId) {
+    public BootstrapTableVo getLeaseList(Integer sectionId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         MdIncomeLease where = new MdIncomeLease();
-        if (incomeId != null && incomeId > 0) {
-            where.setIncomeId(incomeId);
+        if (sectionId != null && sectionId > 0) {
+            where.setSectionId(sectionId);
         } else {
-            where.setIncomeId(0);
+            where.setSectionId(0);
             where.setCreator(commonService.thisUserAccount());
         }
 
@@ -222,50 +429,6 @@ public class MdIncomeService {
         return mdIncomeLeaseVo;
     }
 
-    /**
-     * 获取数据
-     *
-     * @param id
-     * @return
-     */
-    public MdIncomeSelfSupport getSelfSupportById(Integer id) {
-        return mdIncomeSelfSupportDao.getSelfSupportById(id);
-    }
-
-    /**
-     * 获取数据
-     *
-     * @param incomeId
-     * @return
-     */
-    public MdIncomeSelfSupport getSelfSupportByIncomeId(Integer incomeId) {
-        MdIncomeSelfSupport where = new MdIncomeSelfSupport();
-        where.setIncomeId(incomeId);
-        return mdIncomeSelfSupportDao.getSelfSupport(where);
-    }
-
-    /**
-     * 保存数据
-     *
-     * @param mdIncomeSelfSupport
-     */
-    public void saveSelfSupport(MdIncomeSelfSupport mdIncomeSelfSupport) {
-        if (mdIncomeSelfSupport.getId() != null && mdIncomeSelfSupport.getId() > 0) {
-            mdIncomeSelfSupportDao.updateSelfSupport(mdIncomeSelfSupport);
-        } else {
-            mdIncomeSelfSupport.setCreator(commonService.thisUserAccount());
-            mdIncomeSelfSupportDao.addSelfSupport(mdIncomeSelfSupport);
-
-            //更新从表数据
-            MdIncomeSelfSupportCost incomeSelfSupportCost = new MdIncomeSelfSupportCost();
-            incomeSelfSupportCost.setSupportId(mdIncomeSelfSupport.getId());
-
-            MdIncomeSelfSupportCost where = new MdIncomeSelfSupportCost();
-            where.setSupportId(0);
-            where.setCreator(commonService.thisUserAccount());
-            mdIncomeSelfSupportCostDao.updateSelfSupportCost(incomeSelfSupportCost, where);
-        }
-    }
 
     /**
      * 获取数据
@@ -290,17 +453,41 @@ public class MdIncomeService {
             mdIncomeDao.addIncome(mdIncome);
             //更新从表数据
             MdIncomeLease mdIncomeLease = new MdIncomeLease();
-            mdIncomeLease.setIncomeId(mdIncome.getId());
+            mdIncomeLease.setSectionId(mdIncome.getId());
 
             MdIncomeLease where = new MdIncomeLease();
-            where.setIncomeId(0);
+            where.setSectionId(0);
             where.setCreator(commonService.thisUserAccount());
             mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease, where);
         }
     }
 
     /**
-     * 保存市场比较法的结果信息
+     * 保存租赁成本数据
+     *
+     * @param mdIncomeLeaseCost
+     */
+    public void saveLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
+        if (mdIncomeLeaseCost.getId() != null && mdIncomeLeaseCost.getId() > 0) {
+            mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
+        } else {
+            mdIncomeLeaseCost.setCreator(commonService.thisUserAccount());
+            mdIncomeLeaseCostDao.addLeaseCost(mdIncomeLeaseCost);
+        }
+    }
+
+    /**
+     * 获取数量
+     *
+     * @param sectionId
+     * @return
+     */
+    public int getLeaseCostCountBySectionId(Integer sectionId) {
+        return mdIncomeLeaseCostDao.getCountBySectionId(sectionId);
+    }
+
+    /**
+     * 保存收益法法的结果信息
      *
      * @param mdIncomeResultDto
      * @return
@@ -308,13 +495,13 @@ public class MdIncomeService {
     @Transactional(rollbackFor = Exception.class)
     public MdIncome saveResult(MdIncomeResultDto mdIncomeResultDto) {
         MdIncome mdIncome = mdIncomeResultDto.getMdIncome();
-        MdIncomeSelfSupport selfSupport = mdIncomeResultDto.getMdIncomeSelfSupport();
+        MdIncomeHistory selfSupport = null;
         if (mdIncome != null) {
             mdIncome.setPrice(new BigDecimal("0"));
             saveIncome(mdIncome);
             if (selfSupport != null) {
                 selfSupport.setIncomeId(mdIncome.getId());
-                saveSelfSupport(selfSupport);
+                saveHistory(selfSupport);
             }
         }
         return mdIncome;

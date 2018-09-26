@@ -4,10 +4,14 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncome" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="operation_mode" property="operationMode" jdbcType="INTEGER" />
     <result column="lease_mode" property="leaseMode" jdbcType="INTEGER" />
     <result column="restriction_explain" property="restrictionExplain" jdbcType="VARCHAR" />
+    <result column="average_profit_rate" property="averageProfitRate" jdbcType="VARCHAR" />
+    <result column="average_profit_rate_remark" property="averageProfitRateRemark" jdbcType="VARCHAR" />
+    <result column="reward_rate" property="rewardRate" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, price, operation_mode, lease_mode, restriction_explain, creator, gmt_created, 
-    gmt_modified
+    id, name, area, price, operation_mode, lease_mode, restriction_explain, average_profit_rate, 
+    average_profit_rate_remark, reward_rate, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeExample" >
     select
@@ -108,12 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income (name, price, operation_mode, 
-      lease_mode, restriction_explain, creator, 
-      gmt_created, gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{operationMode,jdbcType=INTEGER}, 
-      #{leaseMode,jdbcType=INTEGER}, #{restrictionExplain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income (name, area, price, 
+      operation_mode, lease_mode, restriction_explain, 
+      average_profit_rate, average_profit_rate_remark, 
+      reward_rate, creator, gmt_created, 
+      gmt_modified)
+    values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{operationMode,jdbcType=INTEGER}, #{leaseMode,jdbcType=INTEGER}, #{restrictionExplain,jdbcType=VARCHAR}, 
+      #{averageProfitRate,jdbcType=VARCHAR}, #{averageProfitRateRemark,jdbcType=VARCHAR}, 
+      #{rewardRate,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncome" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -123,6 +131,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
+      </if>
+      <if test="area != null" >
+        area,
       </if>
       <if test="price != null" >
         price,
@@ -135,6 +146,15 @@
       </if>
       <if test="restrictionExplain != null" >
         restriction_explain,
+      </if>
+      <if test="averageProfitRate != null" >
+        average_profit_rate,
+      </if>
+      <if test="averageProfitRateRemark != null" >
+        average_profit_rate_remark,
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate,
       </if>
       <if test="creator != null" >
         creator,
@@ -150,6 +170,9 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
@@ -161,6 +184,15 @@
       </if>
       <if test="restrictionExplain != null" >
         #{restrictionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="averageProfitRate != null" >
+        #{averageProfitRate,jdbcType=VARCHAR},
+      </if>
+      <if test="averageProfitRateRemark != null" >
+        #{averageProfitRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardRate != null" >
+        #{rewardRate,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -188,6 +220,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
       </if>
@@ -199,6 +234,15 @@
       </if>
       <if test="record.restrictionExplain != null" >
         restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.averageProfitRate != null" >
+        average_profit_rate = #{record.averageProfitRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.averageProfitRateRemark != null" >
+        average_profit_rate_remark = #{record.averageProfitRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rewardRate != null" >
+        reward_rate = #{record.rewardRate,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -218,10 +262,14 @@
     update tb_md_income
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
       price = #{record.price,jdbcType=DECIMAL},
       operation_mode = #{record.operationMode,jdbcType=INTEGER},
       lease_mode = #{record.leaseMode,jdbcType=INTEGER},
       restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
+      average_profit_rate = #{record.averageProfitRate,jdbcType=VARCHAR},
+      average_profit_rate_remark = #{record.averageProfitRateRemark,jdbcType=VARCHAR},
+      reward_rate = #{record.rewardRate,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -235,6 +283,9 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
       </if>
@@ -246,6 +297,15 @@
       </if>
       <if test="restrictionExplain != null" >
         restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="averageProfitRate != null" >
+        average_profit_rate = #{averageProfitRate,jdbcType=VARCHAR},
+      </if>
+      <if test="averageProfitRateRemark != null" >
+        average_profit_rate_remark = #{averageProfitRateRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="rewardRate != null" >
+        reward_rate = #{rewardRate,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -262,10 +322,14 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncome" >
     update tb_md_income
     set name = #{name,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
       price = #{price,jdbcType=DECIMAL},
       operation_mode = #{operationMode,jdbcType=INTEGER},
       lease_mode = #{leaseMode,jdbcType=INTEGER},
       restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
+      average_profit_rate = #{averageProfitRate,jdbcType=VARCHAR},
+      average_profit_rate_remark = #{averageProfitRateRemark,jdbcType=VARCHAR},
+      reward_rate = #{rewardRate,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

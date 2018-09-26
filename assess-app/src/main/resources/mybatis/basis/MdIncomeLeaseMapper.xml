@@ -4,42 +4,18 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
+    <result column="section_id" property="sectionId" jdbcType="INTEGER" />
     <result column="rental_income" property="rentalIncome" jdbcType="DECIMAL" />
-    <result column="rentals" property="rentals" jdbcType="VARCHAR" />
+    <result column="rentals" property="rentals" jdbcType="DECIMAL" />
     <result column="month_number" property="monthNumber" jdbcType="INTEGER" />
-    <result column="deposit" property="deposit" jdbcType="VARCHAR" />
-    <result column="interest_rate" property="interestRate" jdbcType="VARCHAR" />
-    <result column="interest_income" property="interestIncome" jdbcType="VARCHAR" />
-    <result column="other_income" property="otherIncome" jdbcType="VARCHAR" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="interest_rate" property="interestRate" jdbcType="DECIMAL" />
+    <result column="interest_income" property="interestIncome" jdbcType="DECIMAL" />
+    <result column="other_income" property="otherIncome" jdbcType="DECIMAL" />
     <result column="rentals_remark" property="rentalsRemark" jdbcType="VARCHAR" />
     <result column="interest_rate_remark" property="interestRateRemark" jdbcType="VARCHAR" />
     <result column="other_income_remark" property="otherIncomeRemark" jdbcType="VARCHAR" />
-    <result column="management_cost" property="managementCost" jdbcType="VARCHAR" />
-    <result column="management_cost_ratio" property="managementCostRatio" jdbcType="VARCHAR" />
-    <result column="payment_remark" property="paymentRemark" jdbcType="VARCHAR" />
-    <result column="gross_income" property="grossIncome" jdbcType="VARCHAR" />
-    <result column="maintenance" property="maintenance" jdbcType="VARCHAR" />
-    <result column="maintenance_cost_ratio" property="maintenanceCostRatio" jdbcType="VARCHAR" />
-    <result column="replacement_value" property="replacementValue" jdbcType="VARCHAR" />
-    <result column="additional" property="additional" jdbcType="VARCHAR" />
-    <result column="tax_rate" property="taxRate" jdbcType="VARCHAR" />
-    <result column="insurance_premium" property="insurancePremium" jdbcType="VARCHAR" />
-    <result column="insurance_rate" property="insuranceRate" jdbcType="VARCHAR" />
-    <result column="land_use_tax" property="landUseTax" jdbcType="VARCHAR" />
-    <result column="usage_tax_parameter" property="usageTaxParameter" jdbcType="VARCHAR" />
-    <result column="operating_expense" property="operatingExpense" jdbcType="VARCHAR" />
-    <result column="net_profit" property="netProfit" jdbcType="VARCHAR" />
-    <result column="income_price" property="incomePrice" jdbcType="VARCHAR" />
-    <result column="capitalization_rate" property="capitalizationRate" jdbcType="VARCHAR" />
-    <result column="return_period" property="returnPeriod" jdbcType="VARCHAR" />
-    <result column="lease_begin_date" property="leaseBeginDate" jdbcType="TIMESTAMP" />
-    <result column="lease_end_date" property="leaseEndDate" jdbcType="TIMESTAMP" />
-    <result column="rental_growth_rate" property="rentalGrowthRate" jdbcType="VARCHAR" />
-    <result column="correction_factor" property="correctionFactor" jdbcType="VARCHAR" />
-    <result column="present_value_factor" property="presentValueFactor" jdbcType="VARCHAR" />
-    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
-    <result column="land_area" property="landArea" jdbcType="DECIMAL" />
-    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="gross_income" property="grossIncome" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -103,13 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, rental_income, rentals, month_number, deposit, interest_rate, interest_income, 
-    other_income, rentals_remark, interest_rate_remark, other_income_remark, management_cost, 
-    management_cost_ratio, payment_remark, gross_income, maintenance, maintenance_cost_ratio, 
-    replacement_value, additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, 
-    usage_tax_parameter, operating_expense, net_profit, income_price, capitalization_rate, 
-    return_period, lease_begin_date, lease_end_date, rental_growth_rate, correction_factor, 
-    present_value_factor, floor_area, land_area, total_price, creator, gmt_created, gmt_modified
+    id, income_id, section_id, rental_income, rentals, month_number, deposit, interest_rate, 
+    interest_income, other_income, rentals_remark, interest_rate_remark, other_income_remark, 
+    gross_income, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample" >
     select
@@ -145,34 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_lease (income_id, rental_income, rentals, 
-      month_number, deposit, interest_rate, 
-      interest_income, other_income, rentals_remark, 
-      interest_rate_remark, other_income_remark, 
-      management_cost, management_cost_ratio, payment_remark, 
-      gross_income, maintenance, maintenance_cost_ratio, 
-      replacement_value, additional, tax_rate, 
-      insurance_premium, insurance_rate, land_use_tax, 
-      usage_tax_parameter, operating_expense, net_profit, 
-      income_price, capitalization_rate, return_period, 
-      lease_begin_date, lease_end_date, rental_growth_rate, 
-      correction_factor, present_value_factor, floor_area, 
-      land_area, total_price, creator, 
-      gmt_created, gmt_modified)
-    values (#{incomeId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, #{rentals,jdbcType=VARCHAR}, 
-      #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=VARCHAR}, #{interestRate,jdbcType=VARCHAR}, 
-      #{interestIncome,jdbcType=VARCHAR}, #{otherIncome,jdbcType=VARCHAR}, #{rentalsRemark,jdbcType=VARCHAR}, 
-      #{interestRateRemark,jdbcType=VARCHAR}, #{otherIncomeRemark,jdbcType=VARCHAR}, 
-      #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=VARCHAR}, #{paymentRemark,jdbcType=VARCHAR}, 
-      #{grossIncome,jdbcType=VARCHAR}, #{maintenance,jdbcType=VARCHAR}, #{maintenanceCostRatio,jdbcType=VARCHAR}, 
-      #{replacementValue,jdbcType=VARCHAR}, #{additional,jdbcType=VARCHAR}, #{taxRate,jdbcType=VARCHAR}, 
-      #{insurancePremium,jdbcType=VARCHAR}, #{insuranceRate,jdbcType=VARCHAR}, #{landUseTax,jdbcType=VARCHAR}, 
-      #{usageTaxParameter,jdbcType=VARCHAR}, #{operatingExpense,jdbcType=VARCHAR}, #{netProfit,jdbcType=VARCHAR}, 
-      #{incomePrice,jdbcType=VARCHAR}, #{capitalizationRate,jdbcType=VARCHAR}, #{returnPeriod,jdbcType=VARCHAR}, 
-      #{leaseBeginDate,jdbcType=TIMESTAMP}, #{leaseEndDate,jdbcType=TIMESTAMP}, #{rentalGrowthRate,jdbcType=VARCHAR}, 
-      #{correctionFactor,jdbcType=VARCHAR}, #{presentValueFactor,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{landArea,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income_lease (income_id, section_id, rental_income, 
+      rentals, month_number, deposit, 
+      interest_rate, interest_income, other_income, 
+      rentals_remark, interest_rate_remark, other_income_remark, 
+      gross_income, creator, gmt_created, 
+      gmt_modified)
+    values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, 
+      #{rentals,jdbcType=DECIMAL}, #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, 
+      #{interestRate,jdbcType=DECIMAL}, #{interestIncome,jdbcType=DECIMAL}, #{otherIncome,jdbcType=DECIMAL}, 
+      #{rentalsRemark,jdbcType=VARCHAR}, #{interestRateRemark,jdbcType=VARCHAR}, #{otherIncomeRemark,jdbcType=VARCHAR}, 
+      #{grossIncome,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -182,6 +138,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="incomeId != null" >
         income_id,
+      </if>
+      <if test="sectionId != null" >
+        section_id,
       </if>
       <if test="rentalIncome != null" >
         rental_income,
@@ -213,83 +172,8 @@
       <if test="otherIncomeRemark != null" >
         other_income_remark,
       </if>
-      <if test="managementCost != null" >
-        management_cost,
-      </if>
-      <if test="managementCostRatio != null" >
-        management_cost_ratio,
-      </if>
-      <if test="paymentRemark != null" >
-        payment_remark,
-      </if>
       <if test="grossIncome != null" >
         gross_income,
-      </if>
-      <if test="maintenance != null" >
-        maintenance,
-      </if>
-      <if test="maintenanceCostRatio != null" >
-        maintenance_cost_ratio,
-      </if>
-      <if test="replacementValue != null" >
-        replacement_value,
-      </if>
-      <if test="additional != null" >
-        additional,
-      </if>
-      <if test="taxRate != null" >
-        tax_rate,
-      </if>
-      <if test="insurancePremium != null" >
-        insurance_premium,
-      </if>
-      <if test="insuranceRate != null" >
-        insurance_rate,
-      </if>
-      <if test="landUseTax != null" >
-        land_use_tax,
-      </if>
-      <if test="usageTaxParameter != null" >
-        usage_tax_parameter,
-      </if>
-      <if test="operatingExpense != null" >
-        operating_expense,
-      </if>
-      <if test="netProfit != null" >
-        net_profit,
-      </if>
-      <if test="incomePrice != null" >
-        income_price,
-      </if>
-      <if test="capitalizationRate != null" >
-        capitalization_rate,
-      </if>
-      <if test="returnPeriod != null" >
-        return_period,
-      </if>
-      <if test="leaseBeginDate != null" >
-        lease_begin_date,
-      </if>
-      <if test="leaseEndDate != null" >
-        lease_end_date,
-      </if>
-      <if test="rentalGrowthRate != null" >
-        rental_growth_rate,
-      </if>
-      <if test="correctionFactor != null" >
-        correction_factor,
-      </if>
-      <if test="presentValueFactor != null" >
-        present_value_factor,
-      </if>
-      <if test="floorArea != null" >
-        floor_area,
-      </if>
-      <if test="landArea != null" >
-        land_area,
-      </if>
-      <if test="totalPrice != null" >
-        total_price,
       </if>
       <if test="creator != null" >
         creator,
@@ -305,26 +189,29 @@
       <if test="incomeId != null" >
         #{incomeId,jdbcType=INTEGER},
       </if>
+      <if test="sectionId != null" >
+        #{sectionId,jdbcType=INTEGER},
+      </if>
       <if test="rentalIncome != null" >
         #{rentalIncome,jdbcType=DECIMAL},
       </if>
       <if test="rentals != null" >
-        #{rentals,jdbcType=VARCHAR},
+        #{rentals,jdbcType=DECIMAL},
       </if>
       <if test="monthNumber != null" >
         #{monthNumber,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
-        #{deposit,jdbcType=VARCHAR},
+        #{deposit,jdbcType=DECIMAL},
       </if>
       <if test="interestRate != null" >
-        #{interestRate,jdbcType=VARCHAR},
+        #{interestRate,jdbcType=DECIMAL},
       </if>
       <if test="interestIncome != null" >
-        #{interestIncome,jdbcType=VARCHAR},
+        #{interestIncome,jdbcType=DECIMAL},
       </if>
       <if test="otherIncome != null" >
-        #{otherIncome,jdbcType=VARCHAR},
+        #{otherIncome,jdbcType=DECIMAL},
       </if>
       <if test="rentalsRemark != null" >
         #{rentalsRemark,jdbcType=VARCHAR},
@@ -335,83 +222,8 @@
       <if test="otherIncomeRemark != null" >
         #{otherIncomeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="managementCost != null" >
-        #{managementCost,jdbcType=VARCHAR},
-      </if>
-      <if test="managementCostRatio != null" >
-        #{managementCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="paymentRemark != null" >
-        #{paymentRemark,jdbcType=VARCHAR},
-      </if>
       <if test="grossIncome != null" >
-        #{grossIncome,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenance != null" >
-        #{maintenance,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenanceCostRatio != null" >
-        #{maintenanceCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="replacementValue != null" >
-        #{replacementValue,jdbcType=VARCHAR},
-      </if>
-      <if test="additional != null" >
-        #{additional,jdbcType=VARCHAR},
-      </if>
-      <if test="taxRate != null" >
-        #{taxRate,jdbcType=VARCHAR},
-      </if>
-      <if test="insurancePremium != null" >
-        #{insurancePremium,jdbcType=VARCHAR},
-      </if>
-      <if test="insuranceRate != null" >
-        #{insuranceRate,jdbcType=VARCHAR},
-      </if>
-      <if test="landUseTax != null" >
-        #{landUseTax,jdbcType=VARCHAR},
-      </if>
-      <if test="usageTaxParameter != null" >
-        #{usageTaxParameter,jdbcType=VARCHAR},
-      </if>
-      <if test="operatingExpense != null" >
-        #{operatingExpense,jdbcType=VARCHAR},
-      </if>
-      <if test="netProfit != null" >
-        #{netProfit,jdbcType=VARCHAR},
-      </if>
-      <if test="incomePrice != null" >
-        #{incomePrice,jdbcType=VARCHAR},
-      </if>
-      <if test="capitalizationRate != null" >
-        #{capitalizationRate,jdbcType=VARCHAR},
-      </if>
-      <if test="returnPeriod != null" >
-        #{returnPeriod,jdbcType=VARCHAR},
-      </if>
-      <if test="leaseBeginDate != null" >
-        #{leaseBeginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="leaseEndDate != null" >
-        #{leaseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rentalGrowthRate != null" >
-        #{rentalGrowthRate,jdbcType=VARCHAR},
-      </if>
-      <if test="correctionFactor != null" >
-        #{correctionFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="presentValueFactor != null" >
-        #{presentValueFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="floorArea != null" >
-        #{floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="landArea != null" >
-        #{landArea,jdbcType=DECIMAL},
-      </if>
-      <if test="totalPrice != null" >
-        #{totalPrice,jdbcType=DECIMAL},
+        #{grossIncome,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -439,26 +251,29 @@
       <if test="record.incomeId != null" >
         income_id = #{record.incomeId,jdbcType=INTEGER},
       </if>
+      <if test="record.sectionId != null" >
+        section_id = #{record.sectionId,jdbcType=INTEGER},
+      </if>
       <if test="record.rentalIncome != null" >
         rental_income = #{record.rentalIncome,jdbcType=DECIMAL},
       </if>
       <if test="record.rentals != null" >
-        rentals = #{record.rentals,jdbcType=VARCHAR},
+        rentals = #{record.rentals,jdbcType=DECIMAL},
       </if>
       <if test="record.monthNumber != null" >
         month_number = #{record.monthNumber,jdbcType=INTEGER},
       </if>
       <if test="record.deposit != null" >
-        deposit = #{record.deposit,jdbcType=VARCHAR},
+        deposit = #{record.deposit,jdbcType=DECIMAL},
       </if>
       <if test="record.interestRate != null" >
-        interest_rate = #{record.interestRate,jdbcType=VARCHAR},
+        interest_rate = #{record.interestRate,jdbcType=DECIMAL},
       </if>
       <if test="record.interestIncome != null" >
-        interest_income = #{record.interestIncome,jdbcType=VARCHAR},
+        interest_income = #{record.interestIncome,jdbcType=DECIMAL},
       </if>
       <if test="record.otherIncome != null" >
-        other_income = #{record.otherIncome,jdbcType=VARCHAR},
+        other_income = #{record.otherIncome,jdbcType=DECIMAL},
       </if>
       <if test="record.rentalsRemark != null" >
         rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
@@ -469,83 +284,8 @@
       <if test="record.otherIncomeRemark != null" >
         other_income_remark = #{record.otherIncomeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="record.managementCost != null" >
-        management_cost = #{record.managementCost,jdbcType=VARCHAR},
-      </if>
-      <if test="record.managementCostRatio != null" >
-        management_cost_ratio = #{record.managementCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="record.paymentRemark != null" >
-        payment_remark = #{record.paymentRemark,jdbcType=VARCHAR},
-      </if>
       <if test="record.grossIncome != null" >
-        gross_income = #{record.grossIncome,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maintenance != null" >
-        maintenance = #{record.maintenance,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maintenanceCostRatio != null" >
-        maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="record.replacementValue != null" >
-        replacement_value = #{record.replacementValue,jdbcType=VARCHAR},
-      </if>
-      <if test="record.additional != null" >
-        additional = #{record.additional,jdbcType=VARCHAR},
-      </if>
-      <if test="record.taxRate != null" >
-        tax_rate = #{record.taxRate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.insurancePremium != null" >
-        insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
-      </if>
-      <if test="record.insuranceRate != null" >
-        insurance_rate = #{record.insuranceRate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landUseTax != null" >
-        land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
-      </if>
-      <if test="record.usageTaxParameter != null" >
-        usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operatingExpense != null" >
-        operating_expense = #{record.operatingExpense,jdbcType=VARCHAR},
-      </if>
-      <if test="record.netProfit != null" >
-        net_profit = #{record.netProfit,jdbcType=VARCHAR},
-      </if>
-      <if test="record.incomePrice != null" >
-        income_price = #{record.incomePrice,jdbcType=VARCHAR},
-      </if>
-      <if test="record.capitalizationRate != null" >
-        capitalization_rate = #{record.capitalizationRate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.returnPeriod != null" >
-        return_period = #{record.returnPeriod,jdbcType=VARCHAR},
-      </if>
-      <if test="record.leaseBeginDate != null" >
-        lease_begin_date = #{record.leaseBeginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.leaseEndDate != null" >
-        lease_end_date = #{record.leaseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.rentalGrowthRate != null" >
-        rental_growth_rate = #{record.rentalGrowthRate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.correctionFactor != null" >
-        correction_factor = #{record.correctionFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="record.presentValueFactor != null" >
-        present_value_factor = #{record.presentValueFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="record.floorArea != null" >
-        floor_area = #{record.floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.landArea != null" >
-        land_area = #{record.landArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.totalPrice != null" >
-        total_price = #{record.totalPrice,jdbcType=DECIMAL},
+        gross_income = #{record.grossIncome,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -565,42 +305,18 @@
     update tb_md_income_lease
     set id = #{record.id,jdbcType=INTEGER},
       income_id = #{record.incomeId,jdbcType=INTEGER},
+      section_id = #{record.sectionId,jdbcType=INTEGER},
       rental_income = #{record.rentalIncome,jdbcType=DECIMAL},
-      rentals = #{record.rentals,jdbcType=VARCHAR},
+      rentals = #{record.rentals,jdbcType=DECIMAL},
       month_number = #{record.monthNumber,jdbcType=INTEGER},
-      deposit = #{record.deposit,jdbcType=VARCHAR},
-      interest_rate = #{record.interestRate,jdbcType=VARCHAR},
-      interest_income = #{record.interestIncome,jdbcType=VARCHAR},
-      other_income = #{record.otherIncome,jdbcType=VARCHAR},
+      deposit = #{record.deposit,jdbcType=DECIMAL},
+      interest_rate = #{record.interestRate,jdbcType=DECIMAL},
+      interest_income = #{record.interestIncome,jdbcType=DECIMAL},
+      other_income = #{record.otherIncome,jdbcType=DECIMAL},
       rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
       interest_rate_remark = #{record.interestRateRemark,jdbcType=VARCHAR},
       other_income_remark = #{record.otherIncomeRemark,jdbcType=VARCHAR},
-      management_cost = #{record.managementCost,jdbcType=VARCHAR},
-      management_cost_ratio = #{record.managementCostRatio,jdbcType=VARCHAR},
-      payment_remark = #{record.paymentRemark,jdbcType=VARCHAR},
-      gross_income = #{record.grossIncome,jdbcType=VARCHAR},
-      maintenance = #{record.maintenance,jdbcType=VARCHAR},
-      maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=VARCHAR},
-      replacement_value = #{record.replacementValue,jdbcType=VARCHAR},
-      additional = #{record.additional,jdbcType=VARCHAR},
-      tax_rate = #{record.taxRate,jdbcType=VARCHAR},
-      insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
-      insurance_rate = #{record.insuranceRate,jdbcType=VARCHAR},
-      land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
-      usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
-      operating_expense = #{record.operatingExpense,jdbcType=VARCHAR},
-      net_profit = #{record.netProfit,jdbcType=VARCHAR},
-      income_price = #{record.incomePrice,jdbcType=VARCHAR},
-      capitalization_rate = #{record.capitalizationRate,jdbcType=VARCHAR},
-      return_period = #{record.returnPeriod,jdbcType=VARCHAR},
-      lease_begin_date = #{record.leaseBeginDate,jdbcType=TIMESTAMP},
-      lease_end_date = #{record.leaseEndDate,jdbcType=TIMESTAMP},
-      rental_growth_rate = #{record.rentalGrowthRate,jdbcType=VARCHAR},
-      correction_factor = #{record.correctionFactor,jdbcType=VARCHAR},
-      present_value_factor = #{record.presentValueFactor,jdbcType=VARCHAR},
-      floor_area = #{record.floorArea,jdbcType=DECIMAL},
-      land_area = #{record.landArea,jdbcType=DECIMAL},
-      total_price = #{record.totalPrice,jdbcType=DECIMAL},
+      gross_income = #{record.grossIncome,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -614,26 +330,29 @@
       <if test="incomeId != null" >
         income_id = #{incomeId,jdbcType=INTEGER},
       </if>
+      <if test="sectionId != null" >
+        section_id = #{sectionId,jdbcType=INTEGER},
+      </if>
       <if test="rentalIncome != null" >
         rental_income = #{rentalIncome,jdbcType=DECIMAL},
       </if>
       <if test="rentals != null" >
-        rentals = #{rentals,jdbcType=VARCHAR},
+        rentals = #{rentals,jdbcType=DECIMAL},
       </if>
       <if test="monthNumber != null" >
         month_number = #{monthNumber,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
-        deposit = #{deposit,jdbcType=VARCHAR},
+        deposit = #{deposit,jdbcType=DECIMAL},
       </if>
       <if test="interestRate != null" >
-        interest_rate = #{interestRate,jdbcType=VARCHAR},
+        interest_rate = #{interestRate,jdbcType=DECIMAL},
       </if>
       <if test="interestIncome != null" >
-        interest_income = #{interestIncome,jdbcType=VARCHAR},
+        interest_income = #{interestIncome,jdbcType=DECIMAL},
       </if>
       <if test="otherIncome != null" >
-        other_income = #{otherIncome,jdbcType=VARCHAR},
+        other_income = #{otherIncome,jdbcType=DECIMAL},
       </if>
       <if test="rentalsRemark != null" >
         rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
@@ -644,83 +363,8 @@
       <if test="otherIncomeRemark != null" >
         other_income_remark = #{otherIncomeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="managementCost != null" >
-        management_cost = #{managementCost,jdbcType=VARCHAR},
-      </if>
-      <if test="managementCostRatio != null" >
-        management_cost_ratio = #{managementCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="paymentRemark != null" >
-        payment_remark = #{paymentRemark,jdbcType=VARCHAR},
-      </if>
       <if test="grossIncome != null" >
-        gross_income = #{grossIncome,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenance != null" >
-        maintenance = #{maintenance,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenanceCostRatio != null" >
-        maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=VARCHAR},
-      </if>
-      <if test="replacementValue != null" >
-        replacement_value = #{replacementValue,jdbcType=VARCHAR},
-      </if>
-      <if test="additional != null" >
-        additional = #{additional,jdbcType=VARCHAR},
-      </if>
-      <if test="taxRate != null" >
-        tax_rate = #{taxRate,jdbcType=VARCHAR},
-      </if>
-      <if test="insurancePremium != null" >
-        insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
-      </if>
-      <if test="insuranceRate != null" >
-        insurance_rate = #{insuranceRate,jdbcType=VARCHAR},
-      </if>
-      <if test="landUseTax != null" >
-        land_use_tax = #{landUseTax,jdbcType=VARCHAR},
-      </if>
-      <if test="usageTaxParameter != null" >
-        usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
-      </if>
-      <if test="operatingExpense != null" >
-        operating_expense = #{operatingExpense,jdbcType=VARCHAR},
-      </if>
-      <if test="netProfit != null" >
-        net_profit = #{netProfit,jdbcType=VARCHAR},
-      </if>
-      <if test="incomePrice != null" >
-        income_price = #{incomePrice,jdbcType=VARCHAR},
-      </if>
-      <if test="capitalizationRate != null" >
-        capitalization_rate = #{capitalizationRate,jdbcType=VARCHAR},
-      </if>
-      <if test="returnPeriod != null" >
-        return_period = #{returnPeriod,jdbcType=VARCHAR},
-      </if>
-      <if test="leaseBeginDate != null" >
-        lease_begin_date = #{leaseBeginDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="leaseEndDate != null" >
-        lease_end_date = #{leaseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="rentalGrowthRate != null" >
-        rental_growth_rate = #{rentalGrowthRate,jdbcType=VARCHAR},
-      </if>
-      <if test="correctionFactor != null" >
-        correction_factor = #{correctionFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="presentValueFactor != null" >
-        present_value_factor = #{presentValueFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="floorArea != null" >
-        floor_area = #{floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="landArea != null" >
-        land_area = #{landArea,jdbcType=DECIMAL},
-      </if>
-      <if test="totalPrice != null" >
-        total_price = #{totalPrice,jdbcType=DECIMAL},
+        gross_income = #{grossIncome,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -737,42 +381,18 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     update tb_md_income_lease
     set income_id = #{incomeId,jdbcType=INTEGER},
+      section_id = #{sectionId,jdbcType=INTEGER},
       rental_income = #{rentalIncome,jdbcType=DECIMAL},
-      rentals = #{rentals,jdbcType=VARCHAR},
+      rentals = #{rentals,jdbcType=DECIMAL},
       month_number = #{monthNumber,jdbcType=INTEGER},
-      deposit = #{deposit,jdbcType=VARCHAR},
-      interest_rate = #{interestRate,jdbcType=VARCHAR},
-      interest_income = #{interestIncome,jdbcType=VARCHAR},
-      other_income = #{otherIncome,jdbcType=VARCHAR},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      interest_rate = #{interestRate,jdbcType=DECIMAL},
+      interest_income = #{interestIncome,jdbcType=DECIMAL},
+      other_income = #{otherIncome,jdbcType=DECIMAL},
       rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
       interest_rate_remark = #{interestRateRemark,jdbcType=VARCHAR},
       other_income_remark = #{otherIncomeRemark,jdbcType=VARCHAR},
-      management_cost = #{managementCost,jdbcType=VARCHAR},
-      management_cost_ratio = #{managementCostRatio,jdbcType=VARCHAR},
-      payment_remark = #{paymentRemark,jdbcType=VARCHAR},
-      gross_income = #{grossIncome,jdbcType=VARCHAR},
-      maintenance = #{maintenance,jdbcType=VARCHAR},
-      maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=VARCHAR},
-      replacement_value = #{replacementValue,jdbcType=VARCHAR},
-      additional = #{additional,jdbcType=VARCHAR},
-      tax_rate = #{taxRate,jdbcType=VARCHAR},
-      insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
-      insurance_rate = #{insuranceRate,jdbcType=VARCHAR},
-      land_use_tax = #{landUseTax,jdbcType=VARCHAR},
-      usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
-      operating_expense = #{operatingExpense,jdbcType=VARCHAR},
-      net_profit = #{netProfit,jdbcType=VARCHAR},
-      income_price = #{incomePrice,jdbcType=VARCHAR},
-      capitalization_rate = #{capitalizationRate,jdbcType=VARCHAR},
-      return_period = #{returnPeriod,jdbcType=VARCHAR},
-      lease_begin_date = #{leaseBeginDate,jdbcType=TIMESTAMP},
-      lease_end_date = #{leaseEndDate,jdbcType=TIMESTAMP},
-      rental_growth_rate = #{rentalGrowthRate,jdbcType=VARCHAR},
-      correction_factor = #{correctionFactor,jdbcType=VARCHAR},
-      present_value_factor = #{presentValueFactor,jdbcType=VARCHAR},
-      floor_area = #{floorArea,jdbcType=DECIMAL},
-      land_area = #{landArea,jdbcType=DECIMAL},
-      total_price = #{totalPrice,jdbcType=DECIMAL},
+      gross_income = #{grossIncome,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

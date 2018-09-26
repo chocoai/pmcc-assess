@@ -8,6 +8,8 @@ public class MdIncome {
 
     private String name;
 
+    private BigDecimal area;
+
     private BigDecimal price;
 
     private Integer operationMode;
@@ -15,6 +17,12 @@ public class MdIncome {
     private Integer leaseMode;
 
     private String restrictionExplain;
+
+    private String averageProfitRate;
+
+    private String averageProfitRateRemark;
+
+    private BigDecimal rewardRate;
 
     private String creator;
 
@@ -36,6 +44,14 @@ public class MdIncome {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
     }
 
     public BigDecimal getPrice() {
@@ -68,6 +84,30 @@ public class MdIncome {
 
     public void setRestrictionExplain(String restrictionExplain) {
         this.restrictionExplain = restrictionExplain == null ? null : restrictionExplain.trim();
+    }
+
+    public String getAverageProfitRate() {
+        return averageProfitRate;
+    }
+
+    public void setAverageProfitRate(String averageProfitRate) {
+        this.averageProfitRate = averageProfitRate == null ? null : averageProfitRate.trim();
+    }
+
+    public String getAverageProfitRateRemark() {
+        return averageProfitRateRemark;
+    }
+
+    public void setAverageProfitRateRemark(String averageProfitRateRemark) {
+        this.averageProfitRateRemark = averageProfitRateRemark == null ? null : averageProfitRateRemark.trim();
+    }
+
+    public BigDecimal getRewardRate() {
+        return rewardRate;
+    }
+
+    public void setRewardRate(BigDecimal rewardRate) {
+        this.rewardRate = rewardRate;
     }
 
     public String getCreator() {

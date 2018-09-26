@@ -127,32 +127,7 @@
 
     //审批提交
     function saveform() {
-        if (!formApproval.valid()) {
-            return false;
-        }
-        var data = formApproval.getFormData();
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/surveyExamineItem/taskApproval",
-            type: "post",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        })
+        saveApprovalform("");
     }
 </script>
 </body>

@@ -1,21 +1,25 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupportCost;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * 评估原则
@@ -25,24 +29,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IncomeController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+
     @Autowired
     private MdIncomeService mdIncomeService;
+    @Autowired
+    private MdIncomeDateSectionService mdIncomeDateSectionService;
 
     @ResponseBody
-    @RequestMapping(value = "/getSelfSupportCostList", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo getSelfSupportCostList(Integer supportId, Integer type) {
-        return mdIncomeService.getSelfSupportCostList(supportId, type);
+    @GetMapping(value = "/getDateSectionList", name = "获取日期分段列表")
+    public BootstrapTableVo getDateSectionList(Integer incomeId,Integer operationMode) {
+        return mdIncomeDateSectionService.getDateSectionList(incomeId,operationMode);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveSelfSupportCost", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult saveSelfSupportCost(MdIncomeSelfSupportCost mdIncomeSelfSupportCost) {
+    @PostMapping(value = "/saveDateSection", name = "保存分段信息")
+    public HttpResult saveDateSection(String formData) {
         try {
-            mdIncomeService.saveSelfSupportCost(mdIncomeSelfSupportCost);
+            MdIncomeDateSection mdIncomeDateSection = JSON.parseObject(formData, MdIncomeDateSection.class);
+            mdIncomeDateSectionService.saveDateSection(mdIncomeDateSection);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -51,16 +55,116 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteSelfSupportCost", name = "删除", method = RequestMethod.POST)
-    public HttpResult delete(@RequestParam(value = "id") Integer id) {
+    @PostMapping(value = "/deleteDateSection", name = "删除分段信息")
+    public HttpResult deleteDateSection(@RequestParam(value = "id") Integer id) {
         try {
-            mdIncomeService.deleteSelfSupportCost(id);
+            mdIncomeDateSectionService.deleteDateSection(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type) {
+        return mdIncomeService.getHistoryList(incomeId, type);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveHistory", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult saveHistory(MdIncomeHistory mdIncomeHistory) {
+        try {
+            mdIncomeService.saveHistory(mdIncomeHistory);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteHistory", name = "删除", method = RequestMethod.POST)
+    public HttpResult deleteHistory(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.deleteHistory(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importHistory", name = "导入历史数据", method = RequestMethod.POST)
+    public HttpResult importHistory(MdIncomeHistory history, HttpServletRequest request) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if(multipartFile.isEmpty())
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            String s = mdIncomeService.importHistory(history,multipartFile);
+            return HttpResult.newCorrectResult(s);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(String.format("导入历史数据-%s", e.getMessage()), e);
+            return HttpResult.newErrorResult("导入历史数据异常");
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastList", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastList(Integer incomeId, Integer type) {
+        return mdIncomeService.getForecastList(incomeId, type);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastYearList", name = "显示年度预测列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastYearList(Integer forecastId) {
+        return mdIncomeService.getForecastYearList(forecastId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveForecast", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult saveForecast(MdIncomeForecast mdIncomeForecast) {
+        try {
+            mdIncomeService.saveForecast(mdIncomeForecast);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteForecast", name = "删除", method = RequestMethod.POST)
+    public HttpResult deleteForecast(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.deleteForecast(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @ResponseBody
