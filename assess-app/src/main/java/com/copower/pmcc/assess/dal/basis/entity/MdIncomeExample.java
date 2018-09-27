@@ -746,6 +746,76 @@ public class MdIncomeExample {
             return (Criteria) this;
         }
 
+        public Criteria andRewardRateJsonIsNull() {
+            addCriterion("reward_rate_json is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonIsNotNull() {
+            addCriterion("reward_rate_json is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonEqualTo(String value) {
+            addCriterion("reward_rate_json =", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonNotEqualTo(String value) {
+            addCriterion("reward_rate_json <>", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonGreaterThan(String value) {
+            addCriterion("reward_rate_json >", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonGreaterThanOrEqualTo(String value) {
+            addCriterion("reward_rate_json >=", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonLessThan(String value) {
+            addCriterion("reward_rate_json <", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonLessThanOrEqualTo(String value) {
+            addCriterion("reward_rate_json <=", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonLike(String value) {
+            addCriterion("reward_rate_json like", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonNotLike(String value) {
+            addCriterion("reward_rate_json not like", value, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonIn(List<String> values) {
+            addCriterion("reward_rate_json in", values, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonNotIn(List<String> values) {
+            addCriterion("reward_rate_json not in", values, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonBetween(String value1, String value2) {
+            addCriterion("reward_rate_json between", value1, value2, "rewardRateJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateJsonNotBetween(String value1, String value2) {
+            addCriterion("reward_rate_json not between", value1, value2, "rewardRateJson");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

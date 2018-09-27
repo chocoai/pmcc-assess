@@ -16,6 +16,12 @@ public class MdIncomeDateSection {
 
     private Integer yearCount;
 
+    private BigDecimal incomeTotal;
+
+    private BigDecimal costTotal;
+
+    private BigDecimal operatingProfit;
+
     private String netProfit;
 
     private BigDecimal rentalGrowthRate;
@@ -78,6 +84,30 @@ public class MdIncomeDateSection {
 
     public void setYearCount(Integer yearCount) {
         this.yearCount = yearCount;
+    }
+
+    public BigDecimal getIncomeTotal() {
+        return incomeTotal;
+    }
+
+    public void setIncomeTotal(BigDecimal incomeTotal) {
+        this.incomeTotal = incomeTotal;
+    }
+
+    public BigDecimal getCostTotal() {
+        return costTotal;
+    }
+
+    public void setCostTotal(BigDecimal costTotal) {
+        this.costTotal = costTotal;
+    }
+
+    public BigDecimal getOperatingProfit() {
+        return operatingProfit;
+    }
+
+    public void setOperatingProfit(BigDecimal operatingProfit) {
+        this.operatingProfit = operatingProfit;
     }
 
     public String getNetProfit() {

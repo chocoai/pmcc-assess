@@ -466,6 +466,186 @@ public class MdIncomeDateSectionExample {
             return (Criteria) this;
         }
 
+        public Criteria andIncomeTotalIsNull() {
+            addCriterion("income_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalIsNotNull() {
+            addCriterion("income_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalEqualTo(BigDecimal value) {
+            addCriterion("income_total =", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalNotEqualTo(BigDecimal value) {
+            addCriterion("income_total <>", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalGreaterThan(BigDecimal value) {
+            addCriterion("income_total >", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("income_total >=", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalLessThan(BigDecimal value) {
+            addCriterion("income_total <", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("income_total <=", value, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalIn(List<BigDecimal> values) {
+            addCriterion("income_total in", values, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalNotIn(List<BigDecimal> values) {
+            addCriterion("income_total not in", values, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("income_total between", value1, value2, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncomeTotalNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("income_total not between", value1, value2, "incomeTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalIsNull() {
+            addCriterion("cost_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalIsNotNull() {
+            addCriterion("cost_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalEqualTo(BigDecimal value) {
+            addCriterion("cost_total =", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalNotEqualTo(BigDecimal value) {
+            addCriterion("cost_total <>", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalGreaterThan(BigDecimal value) {
+            addCriterion("cost_total >", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost_total >=", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalLessThan(BigDecimal value) {
+            addCriterion("cost_total <", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost_total <=", value, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalIn(List<BigDecimal> values) {
+            addCriterion("cost_total in", values, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalNotIn(List<BigDecimal> values) {
+            addCriterion("cost_total not in", values, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost_total between", value1, value2, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostTotalNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost_total not between", value1, value2, "costTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitIsNull() {
+            addCriterion("operating_profit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitIsNotNull() {
+            addCriterion("operating_profit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitEqualTo(BigDecimal value) {
+            addCriterion("operating_profit =", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitNotEqualTo(BigDecimal value) {
+            addCriterion("operating_profit <>", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitGreaterThan(BigDecimal value) {
+            addCriterion("operating_profit >", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_profit >=", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitLessThan(BigDecimal value) {
+            addCriterion("operating_profit <", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("operating_profit <=", value, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitIn(List<BigDecimal> values) {
+            addCriterion("operating_profit in", values, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitNotIn(List<BigDecimal> values) {
+            addCriterion("operating_profit not in", values, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_profit between", value1, value2, "operatingProfit");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperatingProfitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("operating_profit not between", value1, value2, "operatingProfit");
+            return (Criteria) this;
+        }
+
         public Criteria andNetProfitIsNull() {
             addCriterion("net_profit is null");
             return (Criteria) this;

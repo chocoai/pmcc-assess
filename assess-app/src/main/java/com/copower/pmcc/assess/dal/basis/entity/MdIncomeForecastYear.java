@@ -8,6 +8,8 @@ public class MdIncomeForecastYear {
 
     private Integer forecastId;
 
+    private Integer type;
+
     private Date beginDate;
 
     private Date endDate;
@@ -34,6 +36,14 @@ public class MdIncomeForecastYear {
 
     public void setForecastId(Integer forecastId) {
         this.forecastId = forecastId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Date getBeginDate() {

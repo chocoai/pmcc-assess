@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastMonth" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="year_id" property="yearId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
     <result column="first_level_number" property="firstLevelNumber" jdbcType="INTEGER" />
     <result column="second_level_number" property="secondLevelNumber" jdbcType="INTEGER" />
@@ -74,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, year_id, accounting_subject, first_level_number, second_level_number, month, 
+    id, year_id, type, accounting_subject, first_level_number, second_level_number, month, 
     unit_price, number, amount_money, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastMonthExample" >
@@ -111,14 +112,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_forecast_month (year_id, accounting_subject, first_level_number, 
-      second_level_number, month, unit_price, 
-      number, amount_money, creator, 
-      gmt_created, gmt_modified)
-    values (#{yearId,jdbcType=INTEGER}, #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=INTEGER}, 
-      #{secondLevelNumber,jdbcType=INTEGER}, #{month,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
-      #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income_forecast_month (year_id, type, accounting_subject, 
+      first_level_number, second_level_number, month, 
+      unit_price, number, amount_money, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{yearId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{accountingSubject,jdbcType=INTEGER}, 
+      #{firstLevelNumber,jdbcType=INTEGER}, #{secondLevelNumber,jdbcType=INTEGER}, #{month,jdbcType=VARCHAR}, 
+      #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastMonth" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,6 +131,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="yearId != null" >
         year_id,
+      </if>
+      <if test="type != null" >
+        type,
       </if>
       <if test="accountingSubject != null" >
         accounting_subject,
@@ -163,6 +169,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="yearId != null" >
         #{yearId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="accountingSubject != null" >
         #{accountingSubject,jdbcType=INTEGER},
@@ -211,6 +220,9 @@
       <if test="record.yearId != null" >
         year_id = #{record.yearId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.accountingSubject != null" >
         accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
       </if>
@@ -250,6 +262,7 @@
     update tb_md_income_forecast_month
     set id = #{record.id,jdbcType=INTEGER},
       year_id = #{record.yearId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
       first_level_number = #{record.firstLevelNumber,jdbcType=INTEGER},
       second_level_number = #{record.secondLevelNumber,jdbcType=INTEGER},
@@ -269,6 +282,9 @@
     <set >
       <if test="yearId != null" >
         year_id = #{yearId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="accountingSubject != null" >
         accounting_subject = #{accountingSubject,jdbcType=INTEGER},
@@ -306,6 +322,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastMonth" >
     update tb_md_income_forecast_month
     set year_id = #{yearId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       accounting_subject = #{accountingSubject,jdbcType=INTEGER},
       first_level_number = #{firstLevelNumber,jdbcType=INTEGER},
       second_level_number = #{secondLevelNumber,jdbcType=INTEGER},

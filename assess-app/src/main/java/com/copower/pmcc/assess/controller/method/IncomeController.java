@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.method.MdIncomeDateSectionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -145,6 +142,36 @@ public class IncomeController {
     public HttpResult deleteForecast(@RequestParam(value = "id") Integer id) {
         try {
             mdIncomeService.deleteForecast(id);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getForecastMonthList", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastMonthList(Integer yearId, Integer type) {
+        return mdIncomeService.getForecastMonthList(yearId, type);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveForecastMonth", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult saveForecastMonth(MdIncomeForecastMonth mdIncomeForecastMonth) {
+        try {
+            mdIncomeService.saveForecastMonth(mdIncomeForecastMonth);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteForecastMonth", name = "删除", method = RequestMethod.POST)
+    public HttpResult deleteForecastMonth(@RequestParam(value = "id") Integer id) {
+        try {
+            mdIncomeService.deleteForecastMonth(id);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());

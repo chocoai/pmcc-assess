@@ -12,6 +12,7 @@
     <result column="average_profit_rate" property="averageProfitRate" jdbcType="VARCHAR" />
     <result column="average_profit_rate_remark" property="averageProfitRateRemark" jdbcType="VARCHAR" />
     <result column="reward_rate" property="rewardRate" jdbcType="DECIMAL" />
+    <result column="reward_rate_json" property="rewardRateJson" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -76,7 +77,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, area, price, operation_mode, lease_mode, restriction_explain, average_profit_rate, 
-    average_profit_rate_remark, reward_rate, creator, gmt_created, gmt_modified
+    average_profit_rate_remark, reward_rate, reward_rate_json, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeExample" >
     select
@@ -115,13 +117,13 @@
     insert into tb_md_income (name, area, price, 
       operation_mode, lease_mode, restriction_explain, 
       average_profit_rate, average_profit_rate_remark, 
-      reward_rate, creator, gmt_created, 
-      gmt_modified)
+      reward_rate, reward_rate_json, creator, 
+      gmt_created, gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
       #{operationMode,jdbcType=INTEGER}, #{leaseMode,jdbcType=INTEGER}, #{restrictionExplain,jdbcType=VARCHAR}, 
       #{averageProfitRate,jdbcType=VARCHAR}, #{averageProfitRateRemark,jdbcType=VARCHAR}, 
-      #{rewardRate,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{rewardRate,jdbcType=DECIMAL}, #{rewardRateJson,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncome" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -155,6 +157,9 @@
       </if>
       <if test="rewardRate != null" >
         reward_rate,
+      </if>
+      <if test="rewardRateJson != null" >
+        reward_rate_json,
       </if>
       <if test="creator != null" >
         creator,
@@ -193,6 +198,9 @@
       </if>
       <if test="rewardRate != null" >
         #{rewardRate,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardRateJson != null" >
+        #{rewardRateJson,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -244,6 +252,9 @@
       <if test="record.rewardRate != null" >
         reward_rate = #{record.rewardRate,jdbcType=DECIMAL},
       </if>
+      <if test="record.rewardRateJson != null" >
+        reward_rate_json = #{record.rewardRateJson,jdbcType=CHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -270,6 +281,7 @@
       average_profit_rate = #{record.averageProfitRate,jdbcType=VARCHAR},
       average_profit_rate_remark = #{record.averageProfitRateRemark,jdbcType=VARCHAR},
       reward_rate = #{record.rewardRate,jdbcType=DECIMAL},
+      reward_rate_json = #{record.rewardRateJson,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -307,6 +319,9 @@
       <if test="rewardRate != null" >
         reward_rate = #{rewardRate,jdbcType=DECIMAL},
       </if>
+      <if test="rewardRateJson != null" >
+        reward_rate_json = #{rewardRateJson,jdbcType=CHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -330,6 +345,7 @@
       average_profit_rate = #{averageProfitRate,jdbcType=VARCHAR},
       average_profit_rate_remark = #{averageProfitRateRemark,jdbcType=VARCHAR},
       reward_rate = #{rewardRate,jdbcType=DECIMAL},
+      reward_rate_json = #{rewardRateJson,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

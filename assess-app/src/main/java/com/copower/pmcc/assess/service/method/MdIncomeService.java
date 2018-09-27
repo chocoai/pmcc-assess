@@ -1,11 +1,13 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
+import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastMonthVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeHistoryVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
@@ -65,6 +67,8 @@ public class MdIncomeService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private MdIncomeForecastYearDao mdIncomeForecastYearDao;
+    @Autowired
+    private MdIncomeForecastMonthDao mdIncomeForecastMonthDao;
 
     /**
      * 保存数据
@@ -229,10 +233,12 @@ public class MdIncomeService {
         //生成预测数据的年数据
         MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeForecast.getSectionId());
         BigDecimal preYearAmount = null;//上一年金额
+        BigDecimal totalAmount = new BigDecimal("0");//总金额
         for (int i = 1; i <= incomeDateSection.getYearCount(); i++) {
             MdIncomeForecastYear mdIncomeForecastYear = new MdIncomeForecastYear();
             mdIncomeForecastYear.setForecastId(mdIncomeForecast.getId());
-            mdIncomeForecastYear.setBeginDate(incomeDateSection.getBeginDate());
+            mdIncomeForecastYear.setType(mdIncomeForecast.getType());
+            mdIncomeForecastYear.setBeginDate(DateUtils.addYear(incomeDateSection.getBeginDate(), i - 1));
             mdIncomeForecastYear.setEndDate(DateUtils.addYear(incomeDateSection.getBeginDate(), i));
             if (i == 1 || mdIncomeForecast.getGrowthRate() == null) {
                 mdIncomeForecastYear.setAmount(mdIncomeForecast.getInitialAmount());
@@ -240,10 +246,21 @@ public class MdIncomeService {
             } else {
                 //根据增长率计算各年金额，增长率与上一年金额相关 （1+增长率）*上一年金额
                 mdIncomeForecastYear.setAmount(mdIncomeForecast.getGrowthRate().add(new BigDecimal("1")).multiply(preYearAmount));
+                preYearAmount = mdIncomeForecastYear.getAmount();
             }
+            totalAmount.add(mdIncomeForecastYear.getAmount());
             mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
             mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
         }
+
+        //更新总收入或总成本
+        if(mdIncomeForecast.getType().equals(MethodDataTypeEnum.INCOME.getId())){
+            incomeDateSection.setIncomeTotal(totalAmount);
+        }
+        if(mdIncomeForecast.getType().equals(MethodDataTypeEnum.COST.getId())){
+            incomeDateSection.setCostTotal(totalAmount);
+        }
+        mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
     }
 
     /**
@@ -321,6 +338,68 @@ public class MdIncomeService {
         vo.setRows(CollectionUtils.isEmpty(forecastYearList) ? new ArrayList<MdIncomeForecastYear>() : forecastYearList);
         vo.setTotal(page.getTotal());
         return vo;
+    }
+
+
+    /**
+     * 保存数据
+     *
+     * @param mdIncomeForecastMonth
+     */
+    public void saveForecastMonth(MdIncomeForecastMonth mdIncomeForecastMonth) {
+        if (mdIncomeForecastMonth.getId() != null && mdIncomeForecastMonth.getId() > 0) {
+            mdIncomeForecastMonthDao.updateForecastMonth(mdIncomeForecastMonth);
+        } else {
+            mdIncomeForecastMonth.setCreator(commonService.thisUserAccount());
+            mdIncomeForecastMonthDao.addForecastMonth(mdIncomeForecastMonth);
+        }
+    }
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     */
+    public boolean deleteForecastMonth(Integer id) {
+        return mdIncomeForecastMonthDao.deleteForecastMonth(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param yearId
+     * @return
+     */
+    public BootstrapTableVo getForecastMonthList(Integer yearId, Integer type) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeForecastMonth where = new MdIncomeForecastMonth();
+        where.setType(type);
+        where.setYearId(yearId);
+
+        List<MdIncomeForecastMonth> historyList = mdIncomeForecastMonthDao.getForecastMonthList(where);
+        List<MdIncomeForecastMonthVo> vos = LangUtils.transform(historyList, p -> getForecastMonthVo(p));
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeForecastMonthVo>() : vos);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+    public MdIncomeForecastMonthVo getForecastMonthVo(MdIncomeForecastMonth mdIncomeForecastMonth) {
+        if (mdIncomeForecastMonth == null) return null;
+        MdIncomeForecastMonthVo mdIncomeForecastMonthVo = new MdIncomeForecastMonthVo();
+        BeanUtils.copyProperties(mdIncomeForecastMonth, mdIncomeForecastMonthVo);
+        if (mdIncomeForecastMonth.getAccountingSubject() != null && mdIncomeForecastMonth.getAccountingSubject() > 0) {
+            mdIncomeForecastMonthVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeForecastMonth.getAccountingSubject()));
+        }
+        if (mdIncomeForecastMonth.getFirstLevelNumber() != null && mdIncomeForecastMonth.getFirstLevelNumber() > 0) {
+            mdIncomeForecastMonthVo.setFirstLevelNumberName(baseDataDicService.getNameById(mdIncomeForecastMonth.getFirstLevelNumber()));
+        }
+        if (mdIncomeForecastMonth.getSecondLevelNumber() != null && mdIncomeForecastMonth.getSecondLevelNumber() > 0) {
+            mdIncomeForecastMonthVo.setSecondLevelNumberName(baseDataDicService.getNameById(mdIncomeForecastMonth.getSecondLevelNumber()));
+        }
+        return mdIncomeForecastMonthVo;
     }
 
 

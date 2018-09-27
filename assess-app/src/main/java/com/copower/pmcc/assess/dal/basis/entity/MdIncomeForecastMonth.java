@@ -8,6 +8,8 @@ public class MdIncomeForecastMonth {
 
     private Integer yearId;
 
+    private Integer type;
+
     private Integer accountingSubject;
 
     private Integer firstLevelNumber;
@@ -42,6 +44,14 @@ public class MdIncomeForecastMonth {
 
     public void setYearId(Integer yearId) {
         this.yearId = yearId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getAccountingSubject() {

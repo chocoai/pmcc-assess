@@ -11,6 +11,24 @@
     <div class="x_content">
         <form id="frm_income" class="form-horizontal" enctype="multipart/form-data">
             <input type="hidden" name="id" value="0">
+            <div class="form-group" >
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        房产剩余使用年限
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control"> 30</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        土地剩余使用年限
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control">20</label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">
                     经营方式<span class="symbol required"></span>
@@ -73,6 +91,7 @@
 </div>
 <jsp:include page="/views/method/module/income/selfSupport.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/lease.jsp"></jsp:include>
+<jsp:include page="/views/method/module/income/rewardRate.jsp"></jsp:include>
 <div id="modal_data_section" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -123,9 +142,6 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        incomeIndex.loadDateSectionList();
-    });
 
     var incomeIndex = {};
 
@@ -256,6 +272,7 @@
             selfSupport.loadHistoryList(1);
             selfSupport.loadForecastList(0);
             selfSupport.loadForecastList(1);
+            selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
             $("#self_support_info").hide();
             $("#group_leaseMode,#lease_info").show();
