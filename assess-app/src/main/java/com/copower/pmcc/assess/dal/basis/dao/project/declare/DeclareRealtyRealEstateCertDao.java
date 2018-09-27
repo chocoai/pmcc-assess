@@ -7,7 +7,6 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -36,14 +35,7 @@ public class DeclareRealtyRealEstateCertDao {
     public void removeDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
         MybatisUtils.convertObj2Example(declareRealtyRealEstateCert, example);
-        try {
-            declareRealtyRealEstateCertMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        declareRealtyRealEstateCertMapper.deleteByExample(example);
     }
 
     public List<DeclareRealtyRealEstateCert> getDeclareRealtyRealEstateCertList(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){

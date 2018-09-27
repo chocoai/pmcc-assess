@@ -121,39 +121,18 @@ public class CaseBuildingService {
     }
 
     public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding) {
-        if (caseBuilding == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseBuildingDao.getBuildingList(caseBuilding);
     }
 
     public CaseBuilding getCaseBuildingById(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseBuildingDao.getBuildingById(id);
     }
 
     public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
         Integer id = null;
-        if (caseBuilding == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
@@ -177,14 +156,7 @@ public class CaseBuildingService {
     }
 
     public boolean deleteCaseBuilding(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseBuildingDao.deleteBuilding(id);
     }
 }

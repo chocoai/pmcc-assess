@@ -444,15 +444,7 @@ public class DeclareRealtyHouseCertService {
     }
 
     public void removeDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert) {
-        try {
-            declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
-        } catch (Exception e1) {
-            try {
-                throw new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
+        declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(declareRealtyHouseCert);
     }
 
     public DeclareRealtyHouseCertVo getDeclareRealtyHouseCertVo(DeclareRealtyHouseCert declareRealtyHouseCert) {

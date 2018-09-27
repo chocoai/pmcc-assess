@@ -188,39 +188,18 @@ public class CaseHouseService {
     }
 
     public List<CaseHouse> getCaseHouseList(CaseHouse caseHouse){
-        if (caseHouse==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseHouseDao.getHouseList(caseHouse);
     }
 
     public CaseHouse getCaseHouseById(Integer id){
-        if (id==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseHouseDao.getHouseById(id);
     }
 
     public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse){
         Integer id = null ;
-        if (caseHouse==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
             caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
@@ -242,14 +221,7 @@ public class CaseHouseService {
     }
 
     public boolean deleteCaseHouse(Integer id){
-        if (id==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseHouseDao.deleteHouse(id);
     }
 }

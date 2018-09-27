@@ -24,38 +24,17 @@ public class CaseEstateLandStateService {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState){
-        if (caseEstateLandState==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseEstateLandStateDao.getEstateLandStateList(caseEstateLandState);
     }
 
     public CaseEstateLandState getCaseEstateLandStateById(Integer id){
-        if (id==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseEstateLandStateDao.getEstateLandStateById(id);
     }
 
     public boolean saveAndUpdateCaseEstateLandState(CaseEstateLandState caseEstateLandState){
-        if (caseEstateLandState==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         if (caseEstateLandState.getId()==null || caseEstateLandState.getId().intValue()==0){
             caseEstateLandState.setCreator(commonService.thisUserAccount());
             caseEstateLandState.setVersion(0);
@@ -74,14 +53,7 @@ public class CaseEstateLandStateService {
     }
 
     public boolean deleteCaseEstateLandState(Integer id){
-        if (id==null){
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseEstateLandStateDao.deleteEstateLandState(id);
     }
 }

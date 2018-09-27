@@ -41,14 +41,7 @@ public class CaseHouseTradingSellService {
 
     public Integer saveAndUpdateCaseHouseTradingSell(CaseHouseTradingSell caseHouseTradingSell) {
         Integer id = null;
-        if (caseHouseTradingSell == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         if (caseHouseTradingSell.getId() == null || caseHouseTradingSell.getId().intValue() == 0) {
             caseHouseTradingSell.setCreator(commonService.thisUserAccount());
             caseHouseTradingSell.setVersion(0);
@@ -106,14 +99,7 @@ public class CaseHouseTradingSellService {
     }
 
     public CaseHouseTradingSell getCaseHouseTradingSellById(Integer id){
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseHouseTradingSellDao.getCaseHouseTradingSellById(id);
     }
 

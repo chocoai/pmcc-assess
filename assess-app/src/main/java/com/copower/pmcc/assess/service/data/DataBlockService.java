@@ -38,14 +38,6 @@ public class DataBlockService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDataBlock(DataBlock dataBlock) {
-        if (dataBlock == null) {
-            try {
-                logger.error("null point");
-                throw new Exception("exception error!");
-            } catch (Exception e1) {
-
-            }
-        }
         if (dataBlock.getId() == null || dataBlock.getId().intValue() == 0) {
             dataBlock.setCreator(commonService.thisUserAccount());
             try {
@@ -62,24 +54,15 @@ public class DataBlockService {
 
     public DataBlock getDataBlockById(Integer id) {
         if (id == null) {
-            try {
-                logger.error("null point");
-
-            } catch (Exception e1) {
-
-            }
+            logger.error("null point");
+            return null;
         }
         return dataBlockDao.getDataBlockById(id);
     }
 
     public BootstrapTableVo getDataBlockListVos(DataBlock dataBlock) {
         if (dataBlock == null) {
-            try {
-                logger.error("null point");
-                throw new Exception("exception error!");
-            } catch (Exception e1) {
-
-            }
+            logger.error("null point");
         }
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -91,14 +74,6 @@ public class DataBlockService {
     }
 
     public List<DataBlockVo> dataBlockVos(DataBlock dataBlock) {
-        if (dataBlock == null) {
-            try {
-                logger.error("null point");
-                throw new Exception("exception error!");
-            } catch (Exception e1) {
-
-            }
-        }
         List<DataBlock> dataBlocks = dataBlockDao.getDataBlockList(dataBlock);
         List<DataBlockVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataBlocks)) {
@@ -110,34 +85,10 @@ public class DataBlockService {
     }
 
     public void removeDataBlock(DataBlock dataBlock) {
-        if (dataBlock == null) {
-            try {
-                logger.error("null point");
-                throw new Exception("exception error!");
-            } catch (Exception e1) {
-
-            }
-        }
-        try {
-            dataBlockDao.removeDataBlock(dataBlock);
-        } catch (Exception e1) {
-            try {
-                throw new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
+        dataBlockDao.removeDataBlock(dataBlock);
     }
 
     public DataBlockVo getDataBlockVo(DataBlock dataBlock) {
-        if (dataBlock == null) {
-            try {
-                logger.error("null point");
-                throw new Exception("exception error!");
-            } catch (Exception e1) {
-
-            }
-        }
         DataBlockVo vo = new DataBlockVo();
         BeanUtils.copyProperties(dataBlock, vo);
         if (StringUtils.isNotBlank(dataBlock.getProvince())) {

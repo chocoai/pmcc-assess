@@ -75,15 +75,7 @@ public class DataHousePriceIndexService {
     }
 
     public void removeDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex){
-        try {
-            dataHousePriceIndexDao.removeDataHousePriceIndex(dataHousePriceIndex);
-        } catch (Exception e1) {
-            try {
-                throw  new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
+        dataHousePriceIndexDao.removeDataHousePriceIndex(dataHousePriceIndex);
     }
 
     public DataHousePriceIndexVo getDataHousePriceIndexVo(DataHousePriceIndex dataHousePriceIndex){

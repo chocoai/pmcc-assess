@@ -69,15 +69,7 @@ public class DataLandLevelService {
     }
 
     public void removeDataLandLevel(DataLandLevel dataLandLevel){
-        try {
-            dataLandLevelDao.removeDataLandLevel(dataLandLevel);
-        } catch (Exception e1) {
-            try {
-                throw  new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
+        dataLandLevelDao.removeDataLandLevel(dataLandLevel);
     }
 
     public DataLandLevelVo getDataLandLevelVo(DataLandLevel dataLandLevel){

@@ -106,39 +106,15 @@ public class CaseUnitService {
     }
 
     public List<CaseUnit> getCaseUnitList(CaseUnit caseUnit) {
-        if (caseUnit == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
-
-            }
-        }
         return caseUnitDao.getUnitList(caseUnit);
     }
 
     public CaseUnit getCaseUnitById(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
-
-            }
-        }
         return caseUnitDao.getUnitById(id);
     }
 
     public Integer saveAndUpdateCaseUnit(CaseUnit caseUnit) {
         Integer id = null;
-        if (caseUnit == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
-
-            }
-        }
         if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
             caseUnit.setCreator(commonService.thisUserAccount());
             caseUnit.setVersion(0);
@@ -161,14 +137,6 @@ public class CaseUnitService {
     }
 
     public boolean deleteCaseUnit(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
-
-            }
-        }
         return caseUnitDao.deleteUnit(id);
     }
 }

@@ -77,26 +77,12 @@ public class CaseEstateService {
     }
 
     public List<CaseEstate> getCaseEstateList(CaseEstate caseEstate) {
-        if (caseEstate == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseEstateDao.getEstateList(caseEstate);
     }
 
     public CaseEstate getCaseEstateById(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         return caseEstateDao.getEstateById(id);
     }
 
@@ -256,14 +242,7 @@ public class CaseEstateService {
     }
 
     public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
-        if (caseEstate == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
@@ -286,27 +265,12 @@ public class CaseEstateService {
     }
 
     public boolean deleteCaseEstate(Integer id) {
-        if (id == null) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
 
-            }
-        }
-        //
         return caseEstateDao.deleteEstate(id);
     }
 
-    public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
-        if (maxRows == null || StringUtils.isEmpty(name)) {
-            try {
-                logger.error("传入了null");
-                throw new Exception("null point");
-            } catch (Exception e1) {
+    public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows){
 
-            }
-        }
         List<CaseEstate> caseEstates = Lists.newArrayList();
         List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name,null,null,null);
         if (!ObjectUtils.isEmpty(caseEstateList)) {

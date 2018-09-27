@@ -436,15 +436,7 @@ public class DeclareRealtyLandCertService {
     }
 
     public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
-        try {
-            declareRealtyLandCertDao.removeDeclareRealtyLandCert(declareRealtyLandCert);
-        } catch (Exception e1) {
-            try {
-                throw new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
+        declareRealtyLandCertDao.removeDeclareRealtyLandCert(declareRealtyLandCert);
     }
 
     public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert) {

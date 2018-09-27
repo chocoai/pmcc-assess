@@ -42,17 +42,17 @@
 
 
 
-        <table tableName="tb_declare_realty_real_estate_cert" domainObjectName="DeclareRealtyRealEstateCert">
+        <table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">
+        <table tableName="tb_declare_build_engineering" domainObjectName="DeclareBuildEngineering">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_realty_house_cert" domainObjectName="DeclareRealtyHouseCert">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_examine_building" domainObjectName="ExamineBuilding">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

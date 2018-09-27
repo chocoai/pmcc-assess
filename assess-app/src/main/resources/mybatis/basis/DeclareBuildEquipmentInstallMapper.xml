@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildEquipmentInstallMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="occupancy_unit" property="occupancyUnit" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="be_located" property="beLocated" jdbcType="VARCHAR" />
+    <result column="specification_model" property="specificationModel" jdbcType="VARCHAR" />
+    <result column="manufacturer" property="manufacturer" jdbcType="VARCHAR" />
+    <result column="measurement_unit" property="measurementUnit" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="expected_completion_date" property="expectedCompletionDate" jdbcType="TIMESTAMP" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="book_equipment_fee" property="bookEquipmentFee" jdbcType="VARCHAR" />
+    <result column="book_capital_cost" property="bookCapitalCost" jdbcType="VARCHAR" />
+    <result column="book_installation_fee" property="bookInstallationFee" jdbcType="VARCHAR" />
+    <result column="other" property="other" jdbcType="VARCHAR" />
+    <result column="declaration_date" property="declarationDate" jdbcType="TIMESTAMP" />
+    <result column="declarer" property="declarer" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, plan_details_id, province, city, district, occupancy_unit, name, be_located, 
+    specification_model, manufacturer, measurement_unit, number, expected_completion_date, 
+    start_date, book_equipment_fee, book_capital_cost, book_installation_fee, other, 
+    declaration_date, declarer, remark, enable, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstallExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_declare_build_equipment_install
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_declare_build_equipment_install
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_declare_build_equipment_install
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstallExample" >
+    delete from tb_declare_build_equipment_install
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_build_equipment_install (pid, plan_details_id, province, 
+      city, district, occupancy_unit, 
+      name, be_located, specification_model, 
+      manufacturer, measurement_unit, number, 
+      expected_completion_date, start_date, 
+      book_equipment_fee, book_capital_cost, book_installation_fee, 
+      other, declaration_date, declarer, 
+      remark, enable, creator, 
+      gmt_created, gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{occupancyUnit,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, #{specificationModel,jdbcType=VARCHAR}, 
+      #{manufacturer,jdbcType=VARCHAR}, #{measurementUnit,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{expectedCompletionDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, 
+      #{bookEquipmentFee,jdbcType=VARCHAR}, #{bookCapitalCost,jdbcType=VARCHAR}, #{bookInstallationFee,jdbcType=VARCHAR}, 
+      #{other,jdbcType=VARCHAR}, #{declarationDate,jdbcType=TIMESTAMP}, #{declarer,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_build_equipment_install
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="occupancyUnit != null" >
+        occupancy_unit,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="beLocated != null" >
+        be_located,
+      </if>
+      <if test="specificationModel != null" >
+        specification_model,
+      </if>
+      <if test="manufacturer != null" >
+        manufacturer,
+      </if>
+      <if test="measurementUnit != null" >
+        measurement_unit,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="expectedCompletionDate != null" >
+        expected_completion_date,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="bookEquipmentFee != null" >
+        book_equipment_fee,
+      </if>
+      <if test="bookCapitalCost != null" >
+        book_capital_cost,
+      </if>
+      <if test="bookInstallationFee != null" >
+        book_installation_fee,
+      </if>
+      <if test="other != null" >
+        other,
+      </if>
+      <if test="declarationDate != null" >
+        declaration_date,
+      </if>
+      <if test="declarer != null" >
+        declarer,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="occupancyUnit != null" >
+        #{occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="beLocated != null" >
+        #{beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="specificationModel != null" >
+        #{specificationModel,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null" >
+        #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="measurementUnit != null" >
+        #{measurementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="expectedCompletionDate != null" >
+        #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookEquipmentFee != null" >
+        #{bookEquipmentFee,jdbcType=VARCHAR},
+      </if>
+      <if test="bookCapitalCost != null" >
+        #{bookCapitalCost,jdbcType=VARCHAR},
+      </if>
+      <if test="bookInstallationFee != null" >
+        #{bookInstallationFee,jdbcType=VARCHAR},
+      </if>
+      <if test="other != null" >
+        #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="declarationDate != null" >
+        #{declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="declarer != null" >
+        #{declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstallExample" resultType="java.lang.Integer" >
+    select count(*) from tb_declare_build_equipment_install
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_declare_build_equipment_install
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occupancyUnit != null" >
+        occupancy_unit = #{record.occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beLocated != null" >
+        be_located = #{record.beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specificationModel != null" >
+        specification_model = #{record.specificationModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manufacturer != null" >
+        manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.measurementUnit != null" >
+        measurement_unit = #{record.measurementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.expectedCompletionDate != null" >
+        expected_completion_date = #{record.expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startDate != null" >
+        start_date = #{record.startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bookEquipmentFee != null" >
+        book_equipment_fee = #{record.bookEquipmentFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookCapitalCost != null" >
+        book_capital_cost = #{record.bookCapitalCost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookInstallationFee != null" >
+        book_installation_fee = #{record.bookInstallationFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.other != null" >
+        other = #{record.other,jdbcType=VARCHAR},
+      </if>
+      <if test="record.declarationDate != null" >
+        declaration_date = #{record.declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.declarer != null" >
+        declarer = #{record.declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enable != null" >
+        enable = #{record.enable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_declare_build_equipment_install
+    set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      occupancy_unit = #{record.occupancyUnit,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      be_located = #{record.beLocated,jdbcType=VARCHAR},
+      specification_model = #{record.specificationModel,jdbcType=VARCHAR},
+      manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+      measurement_unit = #{record.measurementUnit,jdbcType=VARCHAR},
+      number = #{record.number,jdbcType=INTEGER},
+      expected_completion_date = #{record.expectedCompletionDate,jdbcType=TIMESTAMP},
+      start_date = #{record.startDate,jdbcType=TIMESTAMP},
+      book_equipment_fee = #{record.bookEquipmentFee,jdbcType=VARCHAR},
+      book_capital_cost = #{record.bookCapitalCost,jdbcType=VARCHAR},
+      book_installation_fee = #{record.bookInstallationFee,jdbcType=VARCHAR},
+      other = #{record.other,jdbcType=VARCHAR},
+      declaration_date = #{record.declarationDate,jdbcType=TIMESTAMP},
+      declarer = #{record.declarer,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      enable = #{record.enable,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
+    update tb_declare_build_equipment_install
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="occupancyUnit != null" >
+        occupancy_unit = #{occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="beLocated != null" >
+        be_located = #{beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="specificationModel != null" >
+        specification_model = #{specificationModel,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacturer != null" >
+        manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="measurementUnit != null" >
+        measurement_unit = #{measurementUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="expectedCompletionDate != null" >
+        expected_completion_date = #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookEquipmentFee != null" >
+        book_equipment_fee = #{bookEquipmentFee,jdbcType=VARCHAR},
+      </if>
+      <if test="bookCapitalCost != null" >
+        book_capital_cost = #{bookCapitalCost,jdbcType=VARCHAR},
+      </if>
+      <if test="bookInstallationFee != null" >
+        book_installation_fee = #{bookInstallationFee,jdbcType=VARCHAR},
+      </if>
+      <if test="other != null" >
+        other = #{other,jdbcType=VARCHAR},
+      </if>
+      <if test="declarationDate != null" >
+        declaration_date = #{declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="declarer != null" >
+        declarer = #{declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall" >
+    update tb_declare_build_equipment_install
+    set pid = #{pid,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      occupancy_unit = #{occupancyUnit,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      be_located = #{beLocated,jdbcType=VARCHAR},
+      specification_model = #{specificationModel,jdbcType=VARCHAR},
+      manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      measurement_unit = #{measurementUnit,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      expected_completion_date = #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      book_equipment_fee = #{bookEquipmentFee,jdbcType=VARCHAR},
+      book_capital_cost = #{bookCapitalCost,jdbcType=VARCHAR},
+      book_installation_fee = #{bookInstallationFee,jdbcType=VARCHAR},
+      other = #{other,jdbcType=VARCHAR},
+      declaration_date = #{declarationDate,jdbcType=TIMESTAMP},
+      declarer = #{declarer,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

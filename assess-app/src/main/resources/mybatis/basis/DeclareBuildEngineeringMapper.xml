@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildEngineeringMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="occupancy_unit" property="occupancyUnit" jdbcType="VARCHAR" />
+    <result column="be_located" property="beLocated" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="structure" property="structure" jdbcType="VARCHAR" />
+    <result column="build_area" property="buildArea" jdbcType="DECIMAL" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="expected_completion_date" property="expectedCompletionDate" jdbcType="TIMESTAMP" />
+    <result column="speed_progress" property="speedProgress" jdbcType="VARCHAR" />
+    <result column="payment_ratio" property="paymentRatio" jdbcType="VARCHAR" />
+    <result column="book_net_value" property="bookNetValue" jdbcType="VARCHAR" />
+    <result column="book_value" property="bookValue" jdbcType="VARCHAR" />
+    <result column="declarer" property="declarer" jdbcType="VARCHAR" />
+    <result column="declaration_date" property="declarationDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, plan_details_id, province, city, district, occupancy_unit, be_located, name, 
+    structure, build_area, start_date, expected_completion_date, speed_progress, payment_ratio, 
+    book_net_value, book_value, declarer, declaration_date, remark, enable, creator, 
+    gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_declare_build_engineering
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_declare_build_engineering
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_declare_build_engineering
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringExample" >
+    delete from tb_declare_build_engineering
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_build_engineering (pid, plan_details_id, province, 
+      city, district, occupancy_unit, 
+      be_located, name, structure, 
+      build_area, start_date, expected_completion_date, 
+      speed_progress, payment_ratio, book_net_value, 
+      book_value, declarer, declaration_date, 
+      remark, enable, creator, 
+      gmt_created, gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{occupancyUnit,jdbcType=VARCHAR}, 
+      #{beLocated,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{structure,jdbcType=VARCHAR}, 
+      #{buildArea,jdbcType=DECIMAL}, #{startDate,jdbcType=TIMESTAMP}, #{expectedCompletionDate,jdbcType=TIMESTAMP}, 
+      #{speedProgress,jdbcType=VARCHAR}, #{paymentRatio,jdbcType=VARCHAR}, #{bookNetValue,jdbcType=VARCHAR}, 
+      #{bookValue,jdbcType=VARCHAR}, #{declarer,jdbcType=VARCHAR}, #{declarationDate,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_declare_build_engineering
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="occupancyUnit != null" >
+        occupancy_unit,
+      </if>
+      <if test="beLocated != null" >
+        be_located,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="structure != null" >
+        structure,
+      </if>
+      <if test="buildArea != null" >
+        build_area,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="expectedCompletionDate != null" >
+        expected_completion_date,
+      </if>
+      <if test="speedProgress != null" >
+        speed_progress,
+      </if>
+      <if test="paymentRatio != null" >
+        payment_ratio,
+      </if>
+      <if test="bookNetValue != null" >
+        book_net_value,
+      </if>
+      <if test="bookValue != null" >
+        book_value,
+      </if>
+      <if test="declarer != null" >
+        declarer,
+      </if>
+      <if test="declarationDate != null" >
+        declaration_date,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="occupancyUnit != null" >
+        #{occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="beLocated != null" >
+        #{beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="structure != null" >
+        #{structure,jdbcType=VARCHAR},
+      </if>
+      <if test="buildArea != null" >
+        #{buildArea,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectedCompletionDate != null" >
+        #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="speedProgress != null" >
+        #{speedProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentRatio != null" >
+        #{paymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNetValue != null" >
+        #{bookNetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="bookValue != null" >
+        #{bookValue,jdbcType=VARCHAR},
+      </if>
+      <if test="declarer != null" >
+        #{declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="declarationDate != null" >
+        #{declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringExample" resultType="java.lang.Integer" >
+    select count(*) from tb_declare_build_engineering
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_declare_build_engineering
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occupancyUnit != null" >
+        occupancy_unit = #{record.occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beLocated != null" >
+        be_located = #{record.beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.structure != null" >
+        structure = #{record.structure,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildArea != null" >
+        build_area = #{record.buildArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.startDate != null" >
+        start_date = #{record.startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expectedCompletionDate != null" >
+        expected_completion_date = #{record.expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.speedProgress != null" >
+        speed_progress = #{record.speedProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentRatio != null" >
+        payment_ratio = #{record.paymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookNetValue != null" >
+        book_net_value = #{record.bookNetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookValue != null" >
+        book_value = #{record.bookValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.declarer != null" >
+        declarer = #{record.declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.declarationDate != null" >
+        declaration_date = #{record.declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enable != null" >
+        enable = #{record.enable,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_declare_build_engineering
+    set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      occupancy_unit = #{record.occupancyUnit,jdbcType=VARCHAR},
+      be_located = #{record.beLocated,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      structure = #{record.structure,jdbcType=VARCHAR},
+      build_area = #{record.buildArea,jdbcType=DECIMAL},
+      start_date = #{record.startDate,jdbcType=TIMESTAMP},
+      expected_completion_date = #{record.expectedCompletionDate,jdbcType=TIMESTAMP},
+      speed_progress = #{record.speedProgress,jdbcType=VARCHAR},
+      payment_ratio = #{record.paymentRatio,jdbcType=VARCHAR},
+      book_net_value = #{record.bookNetValue,jdbcType=VARCHAR},
+      book_value = #{record.bookValue,jdbcType=VARCHAR},
+      declarer = #{record.declarer,jdbcType=VARCHAR},
+      declaration_date = #{record.declarationDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      enable = #{record.enable,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
+    update tb_declare_build_engineering
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="occupancyUnit != null" >
+        occupancy_unit = #{occupancyUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="beLocated != null" >
+        be_located = #{beLocated,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="structure != null" >
+        structure = #{structure,jdbcType=VARCHAR},
+      </if>
+      <if test="buildArea != null" >
+        build_area = #{buildArea,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectedCompletionDate != null" >
+        expected_completion_date = #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="speedProgress != null" >
+        speed_progress = #{speedProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentRatio != null" >
+        payment_ratio = #{paymentRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNetValue != null" >
+        book_net_value = #{bookNetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="bookValue != null" >
+        book_value = #{bookValue,jdbcType=VARCHAR},
+      </if>
+      <if test="declarer != null" >
+        declarer = #{declarer,jdbcType=VARCHAR},
+      </if>
+      <if test="declarationDate != null" >
+        declaration_date = #{declarationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
+    update tb_declare_build_engineering
+    set pid = #{pid,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      occupancy_unit = #{occupancyUnit,jdbcType=VARCHAR},
+      be_located = #{beLocated,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      structure = #{structure,jdbcType=VARCHAR},
+      build_area = #{buildArea,jdbcType=DECIMAL},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      expected_completion_date = #{expectedCompletionDate,jdbcType=TIMESTAMP},
+      speed_progress = #{speedProgress,jdbcType=VARCHAR},
+      payment_ratio = #{paymentRatio,jdbcType=VARCHAR},
+      book_net_value = #{bookNetValue,jdbcType=VARCHAR},
+      book_value = #{bookValue,jdbcType=VARCHAR},
+      declarer = #{declarer,jdbcType=VARCHAR},
+      declaration_date = #{declarationDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

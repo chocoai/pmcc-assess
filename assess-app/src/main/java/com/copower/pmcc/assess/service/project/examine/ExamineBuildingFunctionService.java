@@ -78,13 +78,8 @@ public class ExamineBuildingFunctionService {
             examineBuildingFunctionDao.removeExamineBuildingFunction(examineBuildingFunction);
             return true;
         } catch (Exception e1) {
-            try {
-                throw new Exception();
-            } catch (Exception e11) {
-
-            }
+           return false;
         }
-        return false;
     }
 
     public ExamineBuildingFunctionVo getExamineBuildingFunctionVo(ExamineBuildingFunction examineBuildingFunction) {
