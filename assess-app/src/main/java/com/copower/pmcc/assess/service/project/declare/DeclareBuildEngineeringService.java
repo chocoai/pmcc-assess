@@ -7,10 +7,12 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -46,47 +48,50 @@ public class DeclareBuildEngineeringService {
     @Autowired
     private DeclareBuildEngineeringDao declareBuildEngineeringDao;
 
-    public Integer saveAndUpdateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering){
-        if (declareBuildEngineering.getId()==null){
+    public Integer saveAndUpdateDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering) {
+        if (declareBuildEngineering.getId() == null) {
             declareBuildEngineering.setCreator(commonService.thisUserAccount());
-            return declareBuildEngineeringDao.addDeclareBuildEngineering(declareBuildEngineering);
-        }else {
+            Integer id = declareBuildEngineeringDao.addDeclareBuildEngineering(declareBuildEngineering);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class), id);
+            return id;
+        } else {
             declareBuildEngineeringDao.updateDeclareBuildEngineering(declareBuildEngineering);
             return null;
         }
     }
 
-    public DeclareBuildEngineering getDeclareBuildEngineeringById(Integer id){
+    public DeclareBuildEngineering getDeclareBuildEngineeringById(Integer id) {
         return declareBuildEngineeringDao.getDeclareBuildEngineeringById(id);
     }
 
-    public BootstrapTableVo getDeclareBuildEngineeringListVos(DeclareBuildEngineering declareBuildEngineering){
+    public BootstrapTableVo getDeclareBuildEngineeringListVos(DeclareBuildEngineering declareBuildEngineering) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareBuildEngineeringVo> vos = landLevels(declareBuildEngineering);
+        List<DeclareBuildEngineeringVo> vos = declareBuildEngineeringVoList(declareBuildEngineering);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
     }
-    public  List<DeclareBuildEngineeringVo> landLevels(DeclareBuildEngineering declareBuildEngineering){
+
+    public List<DeclareBuildEngineeringVo> declareBuildEngineeringVoList(DeclareBuildEngineering declareBuildEngineering) {
         List<DeclareBuildEngineering> declareBuildEngineerings = declareBuildEngineeringDao.getDeclareBuildEngineeringList(declareBuildEngineering);
         List<DeclareBuildEngineeringVo> vos = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(declareBuildEngineerings)){
-            for (DeclareBuildEngineering landLevel:declareBuildEngineerings){
+        if (!ObjectUtils.isEmpty(declareBuildEngineerings)) {
+            for (DeclareBuildEngineering landLevel : declareBuildEngineerings) {
                 vos.add(getDeclareBuildEngineeringVo(landLevel));
             }
         }
         return vos;
     }
 
-    public void removeDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering){
+    public void removeDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering) {
         declareBuildEngineeringDao.removeDeclareBuildEngineering(declareBuildEngineering);
     }
 
-    public DeclareBuildEngineeringVo getDeclareBuildEngineeringVo(DeclareBuildEngineering declareBuildEngineering){
+    public DeclareBuildEngineeringVo getDeclareBuildEngineeringVo(DeclareBuildEngineering declareBuildEngineering) {
         DeclareBuildEngineeringVo vo = new DeclareBuildEngineeringVo();
-        BeanUtils.copyProperties(declareBuildEngineering,vo);
+        BeanUtils.copyProperties(declareBuildEngineering, vo);
         if (StringUtils.isNotBlank(declareBuildEngineering.getProvince())) {
             vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEngineering.getProvince()));//省
         }
@@ -95,6 +100,19 @@ public class DeclareBuildEngineeringService {
         }
         if (StringUtils.isNotBlank(declareBuildEngineering.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEngineering.getDistrict()));//县
+        }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareBuildEngineering.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
         }
         return vo;
     }

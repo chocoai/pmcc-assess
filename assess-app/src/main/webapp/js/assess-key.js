@@ -35,6 +35,8 @@ AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 AssessDBKey.DeclareRealtyHouseCert = "tb_declare_realty_house_cert";
 AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert";
 AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert";
+AssessDBKey.DeclareBuildEngineering = "tb_declare_build_engineering";
+AssessDBKey.DeclareBuildEquipmentInstall = "tb_declare_build_equipment_install";
 
 /**
  * 项目分类key
