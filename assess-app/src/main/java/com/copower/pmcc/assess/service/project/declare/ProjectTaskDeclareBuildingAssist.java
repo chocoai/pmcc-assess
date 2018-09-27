@@ -37,7 +37,7 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareBuildingIndex", "", 0, "0", "");
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份....
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
