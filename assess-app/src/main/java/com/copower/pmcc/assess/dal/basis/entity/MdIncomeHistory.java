@@ -14,9 +14,9 @@ public class MdIncomeHistory {
 
     private Integer accountingSubject;
 
-    private Integer firstLevelNumber;
+    private String firstLevelNumber;
 
-    private Integer secondLevelNumber;
+    private String secondLevelNumber;
 
     private String month;
 
@@ -72,20 +72,20 @@ public class MdIncomeHistory {
         this.accountingSubject = accountingSubject;
     }
 
-    public Integer getFirstLevelNumber() {
+    public String getFirstLevelNumber() {
         return firstLevelNumber;
     }
 
-    public void setFirstLevelNumber(Integer firstLevelNumber) {
-        this.firstLevelNumber = firstLevelNumber;
+    public void setFirstLevelNumber(String firstLevelNumber) {
+        this.firstLevelNumber = firstLevelNumber == null ? null : firstLevelNumber.trim();
     }
 
-    public Integer getSecondLevelNumber() {
+    public String getSecondLevelNumber() {
         return secondLevelNumber;
     }
 
-    public void setSecondLevelNumber(Integer secondLevelNumber) {
-        this.secondLevelNumber = secondLevelNumber;
+    public void setSecondLevelNumber(String secondLevelNumber) {
+        this.secondLevelNumber = secondLevelNumber == null ? null : secondLevelNumber.trim();
     }
 
     public String getMonth() {

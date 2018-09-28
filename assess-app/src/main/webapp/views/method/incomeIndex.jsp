@@ -10,14 +10,15 @@
     </div>
     <div class="x_content">
         <form id="frm_income" class="form-horizontal" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="0">
-            <div class="form-group" >
+            <input type="hidden" name="id" value="${empty mdIncome?0: mdIncome.id}">
+            <input type="hidden" name="name" value="${judgeObject.name}">
+            <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         房产剩余使用年限
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"> 30</label>
+                        <label class="form-control">${houseSurplusYear}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -25,7 +26,7 @@
                         土地剩余使用年限
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">20</label>
+                        <label class="form-control">${landSurplusYear}</label>
                     </div>
                 </div>
             </div>
@@ -34,14 +35,17 @@
                     经营方式<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <span class="radio-inline"><input type="radio" required name="operationMode" id="operationMode0"
-                                                      onclick="incomeIndex.operationModeChange(this);"
-                                                      value="0">
+                    <div class="x-valid">
+                         <span class="radio-inline"><input type="radio" required name="operationMode"
+                                                           id="operationMode0"
+                                                           onclick="incomeIndex.operationModeChange(this);"
+                                                           value="0">
                         <label for="operationMode0">自营</label></span>
-                    <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
-                                                      onclick="incomeIndex.operationModeChange(this);"
-                                                      value="1"><label
-                            for="operationMode1">租赁</label></span>
+                        <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
+                                                          onclick="incomeIndex.operationModeChange(this);"
+                                                          value="1"><label
+                                for="operationMode1">租赁</label></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group" id="group_leaseMode" style="display: none;">
@@ -142,7 +146,12 @@
 </div>
 
 <script type="text/javascript">
-
+    $(function () {
+        DatepickerUtils.sectionChoose($("#frm_data_section").find('[name=beginDate]'), $("#frm_data_section").find('[name=endDate]'));
+        if ("${mdIncome.id}" > 0) {
+            $("#frm_income").find("[name=operationMode][value=${mdIncome.operationMode}]").trigger('click');
+        }
+    })
     var incomeIndex = {};
 
     //新增时间段
@@ -200,19 +209,18 @@
         var cols = [];
         cols.push({
             field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
-               return formatDate(row.beginDate, false);
+                return formatDate(row.beginDate, false);
             }
         });
         cols.push({
             field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
-               return formatDate(row.endDate, false);
+                return formatDate(row.endDate, false);
             }
         });
         cols.push({field: 'yearCount', title: '年份数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="incomeIndex.editDateSection(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="incomeIndex.delDateSection(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -291,7 +299,26 @@
         }
     }
 
+    //表单验证
+    incomeIndex.valid = function () {
+        if (!$("#frm_income").valid()) {
+            return false;
+        }
+        if (!$("#frm_self_support").valid()) {
+            return false;
+        }
+        return true;
+    }
 
+    //表单验证
+    incomeIndex.getData = function () {
+        var formData = {};
+        var operationMode = $("#frm_income").find('[name=operationMode]').val();
+        if (operationMode == 0) {//自营
+            formData = selfSupport.getData();
+        }
+        return formData;
+    }
 
 </script>
 

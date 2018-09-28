@@ -142,20 +142,8 @@ public class MdIncomeService {
                     continue;
                 }
                 mdIncomeHistory.setAccountingSubject(subjectDic.getId());
-                List<BaseDataDic> firstNoList = baseDataDicService.getCacheDataDicListByPid(subjectDic.getId());
-                BaseDataDic firstNoDic = baseDataDicService.getDataDicByName(firstNoList, PoiUtils.getCellValue(row.getCell(3)));
-                if (firstNoDic == null) {
-                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
-                    continue;
-                }
-                mdIncomeHistory.setFirstLevelNumber(firstNoDic.getId());
-                List<BaseDataDic> secondNoList = baseDataDicService.getCacheDataDicListByPid(firstNoDic.getId());
-                BaseDataDic secondNoDic = baseDataDicService.getDataDicByName(secondNoList, PoiUtils.getCellValue(row.getCell(4)));
-                if (secondNoDic == null) {
-                    errorMsg.append(String.format("\n第%s行异常：一级编号与系统配置的名称不一致", i + 1));
-                    continue;
-                }
-                mdIncomeHistory.setSecondLevelNumber(secondNoDic.getId());
+                mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(3)));
+                mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
                 mdIncomeHistory.setMonth(PoiUtils.getCellValue(row.getCell(5)));
                 mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
                 mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
@@ -203,13 +191,12 @@ public class MdIncomeService {
         if (mdIncomeHistory.getAccountingSubject() != null && mdIncomeHistory.getAccountingSubject() > 0) {
             mdIncomeHistoryVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeHistory.getAccountingSubject()));
         }
-        if (mdIncomeHistory.getFirstLevelNumber() != null && mdIncomeHistory.getFirstLevelNumber() > 0) {
-            mdIncomeHistoryVo.setFirstLevelNumberName(baseDataDicService.getNameById(mdIncomeHistory.getFirstLevelNumber()));
-        }
-        if (mdIncomeHistory.getSecondLevelNumber() != null && mdIncomeHistory.getSecondLevelNumber() > 0) {
-            mdIncomeHistoryVo.setSecondLevelNumberName(baseDataDicService.getNameById(mdIncomeHistory.getSecondLevelNumber()));
-        }
         return mdIncomeHistoryVo;
+    }
+
+    public void addForecast(MdIncomeForecast mdIncomeForecast) {
+        mdIncomeForecast.setCreator(commonService.thisUserAccount());
+        mdIncomeForecastDao.addForecast(mdIncomeForecast);
     }
 
     /**
@@ -219,13 +206,8 @@ public class MdIncomeService {
      * @return
      */
     @Transactional
-    public void saveForecast(MdIncomeForecast mdIncomeForecast) {
-        if (mdIncomeForecast.getId() != null && mdIncomeForecast.getId() > 0) {
-            mdIncomeForecastDao.updateForecast(mdIncomeForecast);
-        } else {
-            mdIncomeForecast.setCreator(commonService.thisUserAccount());
-            mdIncomeForecastDao.addForecast(mdIncomeForecast);
-        }
+    public void updateForecast(MdIncomeForecast mdIncomeForecast) {
+        mdIncomeForecastDao.updateForecast(mdIncomeForecast);
 
         //先清除原数据
         mdIncomeForecastYearDao.deleteByForecastId(mdIncomeForecast.getId());
@@ -248,16 +230,16 @@ public class MdIncomeService {
                 mdIncomeForecastYear.setAmount(mdIncomeForecast.getGrowthRate().add(new BigDecimal("1")).multiply(preYearAmount));
                 preYearAmount = mdIncomeForecastYear.getAmount();
             }
-            totalAmount.add(mdIncomeForecastYear.getAmount());
+            totalAmount = totalAmount.add(mdIncomeForecastYear.getAmount());
             mdIncomeForecastYear.setCreator(commonService.thisUserAccount());
             mdIncomeForecastYearDao.addForecastYear(mdIncomeForecastYear);
         }
 
         //更新总收入或总成本
-        if(mdIncomeForecast.getType().equals(MethodDataTypeEnum.INCOME.getId())){
+        if (mdIncomeForecast.getType().equals(MethodDataTypeEnum.INCOME.getId())) {
             incomeDateSection.setIncomeTotal(totalAmount);
         }
-        if(mdIncomeForecast.getType().equals(MethodDataTypeEnum.COST.getId())){
+        if (mdIncomeForecast.getType().equals(MethodDataTypeEnum.COST.getId())) {
             incomeDateSection.setCostTotal(totalAmount);
         }
         mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
@@ -393,12 +375,6 @@ public class MdIncomeService {
         if (mdIncomeForecastMonth.getAccountingSubject() != null && mdIncomeForecastMonth.getAccountingSubject() > 0) {
             mdIncomeForecastMonthVo.setAccountingSubjectName(baseDataDicService.getNameById(mdIncomeForecastMonth.getAccountingSubject()));
         }
-        if (mdIncomeForecastMonth.getFirstLevelNumber() != null && mdIncomeForecastMonth.getFirstLevelNumber() > 0) {
-            mdIncomeForecastMonthVo.setFirstLevelNumberName(baseDataDicService.getNameById(mdIncomeForecastMonth.getFirstLevelNumber()));
-        }
-        if (mdIncomeForecastMonth.getSecondLevelNumber() != null && mdIncomeForecastMonth.getSecondLevelNumber() > 0) {
-            mdIncomeForecastMonthVo.setSecondLevelNumberName(baseDataDicService.getNameById(mdIncomeForecastMonth.getSecondLevelNumber()));
-        }
         return mdIncomeForecastMonthVo;
     }
 
@@ -530,14 +506,6 @@ public class MdIncomeService {
         } else {
             mdIncome.setCreator(commonService.thisUserAccount());
             mdIncomeDao.addIncome(mdIncome);
-            //更新从表数据
-            MdIncomeLease mdIncomeLease = new MdIncomeLease();
-            mdIncomeLease.setSectionId(mdIncome.getId());
-
-            MdIncomeLease where = new MdIncomeLease();
-            where.setSectionId(0);
-            where.setCreator(commonService.thisUserAccount());
-            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease, where);
         }
     }
 
@@ -574,15 +542,44 @@ public class MdIncomeService {
     @Transactional(rollbackFor = Exception.class)
     public MdIncome saveResult(MdIncomeResultDto mdIncomeResultDto) {
         MdIncome mdIncome = mdIncomeResultDto.getMdIncome();
-        MdIncomeHistory selfSupport = null;
-        if (mdIncome != null) {
-            mdIncome.setPrice(new BigDecimal("0"));
-            saveIncome(mdIncome);
-            if (selfSupport != null) {
-                selfSupport.setIncomeId(mdIncome.getId());
-                saveHistory(selfSupport);
+        saveIncome(mdIncome);
+        List<MdIncomeDateSection> dateSectionList = mdIncomeResultDto.getDateSectionList();
+        if (CollectionUtils.isNotEmpty(dateSectionList)) {
+            for (MdIncomeDateSection mdIncomeDateSection : dateSectionList) {
+                mdIncomeDateSectionDao.updateDateSection(mdIncomeDateSection);
             }
         }
+        //更新从表数据
+        MdIncomeHistory where = new MdIncomeHistory();
+        where.setIncomeId(0);
+        where.setCreator(commonService.thisUserAccount());
+        MdIncomeHistory mdIncomeHistory=new MdIncomeHistory();
+        mdIncomeHistory.setIncomeId(mdIncome.getId());
+        mdIncomeHistoryDao.updateHistory(where,mdIncomeHistory);
+
+        MdIncomeDateSection whereDateSection = new MdIncomeDateSection();
+        whereDateSection.setIncomeId(0);
+        whereDateSection.setCreator(commonService.thisUserAccount());
+        MdIncomeDateSection mdIncomeDateSection=new MdIncomeDateSection();
+        mdIncomeDateSection.setIncomeId(mdIncome.getId());
+        mdIncomeDateSectionDao.updateDateSection(whereDateSection,mdIncomeDateSection);
+
+        MdIncomeForecast whereForecast = new MdIncomeForecast();
+        whereForecast.setIncomeId(0);
+        whereForecast.setCreator(commonService.thisUserAccount());
+        MdIncomeForecast mdIncomeForecast=new MdIncomeForecast();
+        mdIncomeForecast.setIncomeId(mdIncome.getId());
+        mdIncomeForecastDao.updateForecast(whereForecast,mdIncomeForecast);
+
+        MdIncomeLease whereLease = new MdIncomeLease();
+        whereLease.setIncomeId(0);
+        whereLease.setCreator(commonService.thisUserAccount());
+        MdIncomeLease mdIncomeLease=new MdIncomeLease();
+        mdIncomeLease.setIncomeId(mdIncome.getId());
+        mdIncomeLeaseDao.updateIncomeLease(whereLease,mdIncomeLease);
+
         return mdIncome;
+
+
     }
 }

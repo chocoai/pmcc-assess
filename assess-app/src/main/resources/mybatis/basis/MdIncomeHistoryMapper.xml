@@ -7,8 +7,8 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="year" property="year" jdbcType="VARCHAR" />
     <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
-    <result column="first_level_number" property="firstLevelNumber" jdbcType="INTEGER" />
-    <result column="second_level_number" property="secondLevelNumber" jdbcType="INTEGER" />
+    <result column="first_level_number" property="firstLevelNumber" jdbcType="VARCHAR" />
+    <result column="second_level_number" property="secondLevelNumber" jdbcType="VARCHAR" />
     <result column="month" property="month" jdbcType="VARCHAR" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -119,7 +119,7 @@
       amount_money, creator, gmt_created, 
       gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{year,jdbcType=VARCHAR}, 
-      #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=INTEGER}, #{secondLevelNumber,jdbcType=INTEGER}, 
+      #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
       #{month,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, 
       #{amountMoney,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
@@ -184,10 +184,10 @@
         #{accountingSubject,jdbcType=INTEGER},
       </if>
       <if test="firstLevelNumber != null" >
-        #{firstLevelNumber,jdbcType=INTEGER},
+        #{firstLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="secondLevelNumber != null" >
-        #{secondLevelNumber,jdbcType=INTEGER},
+        #{secondLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="month != null" >
         #{month,jdbcType=VARCHAR},
@@ -237,10 +237,10 @@
         accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
       </if>
       <if test="record.firstLevelNumber != null" >
-        first_level_number = #{record.firstLevelNumber,jdbcType=INTEGER},
+        first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.secondLevelNumber != null" >
-        second_level_number = #{record.secondLevelNumber,jdbcType=INTEGER},
+        second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.month != null" >
         month = #{record.month,jdbcType=VARCHAR},
@@ -275,8 +275,8 @@
       type = #{record.type,jdbcType=INTEGER},
       year = #{record.year,jdbcType=VARCHAR},
       accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
-      first_level_number = #{record.firstLevelNumber,jdbcType=INTEGER},
-      second_level_number = #{record.secondLevelNumber,jdbcType=INTEGER},
+      first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
+      second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
       month = #{record.month,jdbcType=VARCHAR},
       unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       number = #{record.number,jdbcType=INTEGER},
@@ -304,10 +304,10 @@
         accounting_subject = #{accountingSubject,jdbcType=INTEGER},
       </if>
       <if test="firstLevelNumber != null" >
-        first_level_number = #{firstLevelNumber,jdbcType=INTEGER},
+        first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="secondLevelNumber != null" >
-        second_level_number = #{secondLevelNumber,jdbcType=INTEGER},
+        second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
       </if>
       <if test="month != null" >
         month = #{month,jdbcType=VARCHAR},
@@ -339,8 +339,8 @@
       type = #{type,jdbcType=INTEGER},
       year = #{year,jdbcType=VARCHAR},
       accounting_subject = #{accountingSubject,jdbcType=INTEGER},
-      first_level_number = #{firstLevelNumber,jdbcType=INTEGER},
-      second_level_number = #{secondLevelNumber,jdbcType=INTEGER},
+      first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
+      second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
       month = #{month,jdbcType=VARCHAR},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},

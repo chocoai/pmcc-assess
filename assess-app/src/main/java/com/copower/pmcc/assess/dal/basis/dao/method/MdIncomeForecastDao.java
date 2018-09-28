@@ -70,13 +70,19 @@ public class MdIncomeForecastDao {
     }
 
     /**
-     * 编辑
+     * 更新
      *
      * @param mdIncomeForecast
      * @return
      */
     public boolean updateForecast(MdIncomeForecast mdIncomeForecast) {
         return mdIncomeForecastMapper.updateByPrimaryKeySelective(mdIncomeForecast) > 0;
+    }
+
+    public boolean updateForecast(MdIncomeForecast where,MdIncomeForecast mdIncomeForecast) {
+        MdIncomeForecastExample example = new MdIncomeForecastExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeForecastMapper.updateByExampleSelective(mdIncomeForecast,example) > 0;
     }
 
     /**

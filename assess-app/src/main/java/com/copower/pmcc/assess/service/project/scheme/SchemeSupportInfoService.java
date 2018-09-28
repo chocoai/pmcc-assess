@@ -84,7 +84,7 @@ public class SchemeSupportInfoService {
         Integer category = projectInfo.getProjectCategoryId();//项目类别
         Integer purpose = projectInfo.getEntrustPurpose();//委托目的
         Integer medhod = baseDataDic.getId();//评估方法
-        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();//评估方法
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         List<DataEvaluationPrinciple> principleList = evaluationPrincipleService.getPrincipleList(type, category, medhod, purpose);//原则
         SchemeSupportInfo schemeSupportInfo = null;
         if (CollectionUtils.isNotEmpty(principleList)) {

@@ -826,6 +826,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andFloorAreaIsNull() {
+            addCriterion("floor_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaIsNotNull() {
+            addCriterion("floor_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaEqualTo(BigDecimal value) {
+            addCriterion("floor_area =", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotEqualTo(BigDecimal value) {
+            addCriterion("floor_area <>", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaGreaterThan(BigDecimal value) {
+            addCriterion("floor_area >", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_area >=", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaLessThan(BigDecimal value) {
+            addCriterion("floor_area <", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_area <=", value, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaIn(List<BigDecimal> values) {
+            addCriterion("floor_area in", values, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotIn(List<BigDecimal> values) {
+            addCriterion("floor_area not in", values, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_area between", value1, value2, "floorArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_area not between", value1, value2, "floorArea");
+            return (Criteria) this;
+        }
+
         public Criteria andAreaGroupIdIsNull() {
             addCriterion("area_group_id is null");
             return (Criteria) this;
@@ -886,63 +946,123 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaIsNull() {
-            addCriterion("floor_area is null");
+        public Criteria andHouseUseEndDateIsNull() {
+            addCriterion("house_use_end_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaIsNotNull() {
-            addCriterion("floor_area is not null");
+        public Criteria andHouseUseEndDateIsNotNull() {
+            addCriterion("house_use_end_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaEqualTo(BigDecimal value) {
-            addCriterion("floor_area =", value, "floorArea");
+        public Criteria andHouseUseEndDateEqualTo(Date value) {
+            addCriterion("house_use_end_date =", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaNotEqualTo(BigDecimal value) {
-            addCriterion("floor_area <>", value, "floorArea");
+        public Criteria andHouseUseEndDateNotEqualTo(Date value) {
+            addCriterion("house_use_end_date <>", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaGreaterThan(BigDecimal value) {
-            addCriterion("floor_area >", value, "floorArea");
+        public Criteria andHouseUseEndDateGreaterThan(Date value) {
+            addCriterion("house_use_end_date >", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("floor_area >=", value, "floorArea");
+        public Criteria andHouseUseEndDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("house_use_end_date >=", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaLessThan(BigDecimal value) {
-            addCriterion("floor_area <", value, "floorArea");
+        public Criteria andHouseUseEndDateLessThan(Date value) {
+            addCriterion("house_use_end_date <", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("floor_area <=", value, "floorArea");
+        public Criteria andHouseUseEndDateLessThanOrEqualTo(Date value) {
+            addCriterion("house_use_end_date <=", value, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaIn(List<BigDecimal> values) {
-            addCriterion("floor_area in", values, "floorArea");
+        public Criteria andHouseUseEndDateIn(List<Date> values) {
+            addCriterion("house_use_end_date in", values, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaNotIn(List<BigDecimal> values) {
-            addCriterion("floor_area not in", values, "floorArea");
+        public Criteria andHouseUseEndDateNotIn(List<Date> values) {
+            addCriterion("house_use_end_date not in", values, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("floor_area between", value1, value2, "floorArea");
+        public Criteria andHouseUseEndDateBetween(Date value1, Date value2) {
+            addCriterion("house_use_end_date between", value1, value2, "houseUseEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andFloorAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("floor_area not between", value1, value2, "floorArea");
+        public Criteria andHouseUseEndDateNotBetween(Date value1, Date value2) {
+            addCriterion("house_use_end_date not between", value1, value2, "houseUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateIsNull() {
+            addCriterion("land_use_end_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateIsNotNull() {
+            addCriterion("land_use_end_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateEqualTo(Date value) {
+            addCriterion("land_use_end_date =", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotEqualTo(Date value) {
+            addCriterion("land_use_end_date <>", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateGreaterThan(Date value) {
+            addCriterion("land_use_end_date >", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("land_use_end_date >=", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateLessThan(Date value) {
+            addCriterion("land_use_end_date <", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateLessThanOrEqualTo(Date value) {
+            addCriterion("land_use_end_date <=", value, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateIn(List<Date> values) {
+            addCriterion("land_use_end_date in", values, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotIn(List<Date> values) {
+            addCriterion("land_use_end_date not in", values, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateBetween(Date value1, Date value2) {
+            addCriterion("land_use_end_date between", value1, value2, "landUseEndDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseEndDateNotBetween(Date value1, Date value2) {
+            addCriterion("land_use_end_date not between", value1, value2, "landUseEndDate");
             return (Criteria) this;
         }
 

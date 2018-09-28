@@ -71,10 +71,10 @@ public class MdIncomeDateSectionService {
                 mdIncomeForecast.setSectionId(mdIncomeDateSection.getId());
                 mdIncomeForecast.setType(MethodDataTypeEnum.INCOME.getId());
                 mdIncomeForecast.setCreator(commonService.thisUserAccount());
-                mdIncomeService.saveForecast(mdIncomeForecast);
+                mdIncomeService.addForecast(mdIncomeForecast);
                 mdIncomeForecast.setId(null);
                 mdIncomeForecast.setType(MethodDataTypeEnum.COST.getId());
-                mdIncomeService.saveForecast(mdIncomeForecast);
+                mdIncomeService.addForecast(mdIncomeForecast);
             }
 
             if (mdIncomeDateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.LEASE.getId())) {

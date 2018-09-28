@@ -3,6 +3,27 @@
  */
 $(function () {
     $(".select2").select2();//初始化出select2
+
+    $(".x-percent").each(function () {
+        AssessCommon.elementParsePercent($(this));
+    })
+
+    $(document).on('keyup', '.x-percent', function () {
+        var val = $(this).val();
+        if (val) {
+            var numberVal;
+            if (/%$/.test(val)) {
+                numberVal = val.replace(/%$/g, '');
+            } else {
+                numberVal = val;
+                $(this).val(val + "%");
+            }
+            $(this).attr('data-value', (parseFloat(numberVal) / 100).toFixed(4));
+            if (AssessCommon.getCursorPosition($(this)) == $(this).val().length) {
+                AssessCommon.moveCursor($(this), $(this).val().length - 1);
+            }
+        }
+    })
 });
 
 (function ($) {
@@ -28,6 +49,34 @@ $(function () {
                 }
             }
         },
+        //获取光标位置
+        getCursorPosition: function (element) {
+            var el = $(element).get(0);
+            var pos = 0;
+            if ('selectionStart' in el) {
+                pos = el.selectionStart;
+            } else if ('selection' in document) {
+                el.focus();
+                var Sel = document.selection.createRange();
+                var SelLength = document.selection.createRange().text.length;
+                Sel.moveStart('character', -el.value.length);
+                pos = Sel.text.length - SelLength;
+            }
+            return pos;
+        },
+        //移动光标
+        moveCursor: function (element, position) {
+            var txtFocus = $(element).get(0);
+            if ($.browser && $.browser.msie) {
+                var range = txtFocus.createTextRange();
+                range.move("character", position);
+                range.select();
+            }
+            else {
+                txtFocus.setSelectionRange(position, position);
+                txtFocus.focus();
+            }
+        },
 
         //对象不存在则返回空串
         toString: function (o) {
@@ -49,18 +98,39 @@ $(function () {
             }
         },
         //百分数转小数
-        toPoint: function () {
-            var str = percent.replace("%", "");
-            str = str / 100;
-            return str;
+        percentToPoint: function (value) {
+            if (value) {
+                var value = value.replace("%", "");
+                if (AssessCommon.isNumber(value)) {
+                    return (parseFloat(value) / 100).toFixed(4);
+                }
+            }
         },
         /*
          *描述:小数转百分数,这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%*/
-        toPercent: function () {
-            var str = Number(point * 100).toFixed(1);
-            str += "%";
-            return str;
+        pointToPercent: function (value) {
+            if (value && AssessCommon.isNumber(value)) {
+                return (parseFloat(value) * 100).toFixed(2) + "%";
+            }
         },
+        //百分数转小数
+        elementParsePoint: function (element) {
+            var val = $(element).val();
+            var pointVal = AssessCommon.percentToPoint(val);
+            if (pointVal) {
+                $(element).attr('data-value', pointVal);
+            }
+        },
+        //
+        elementParsePercent: function (element) {
+            var val = $(element).attr('data-value');
+            var percentVal = AssessCommon.pointToPercent(val);
+            if (percentVal) {
+                $(element).val(percentVal);
+            }
+        },
+
+
         //提取字段
         extractField: function (text) {
             if (!text) return text;
@@ -85,8 +155,8 @@ $(function () {
             return text.replace(eval(regex), value);
         },
         //获取项目分类详细信息
-        getProjectClassifyInfo:function (id,callback) {
-            if (id){
+        getProjectClassifyInfo: function (id, callback) {
+            if (id) {
                 $.ajax({
                     url: getContextPath() + "/baseProjectClassify/getProjectClassifyInfo",
                     type: "get",
@@ -97,7 +167,7 @@ $(function () {
                     success: function (result) {
                         if (result.ret) {
                             if (callback) {
-                                callback( result.data);
+                                callback(result.data);
                             }
                         }
                     },
@@ -108,8 +178,8 @@ $(function () {
             }
         },
         //根据项目字段获取项目类别
-        getProjectClassifyListByFieldName:function (fieldName,callback) {
-            if (fieldName){
+        getProjectClassifyListByFieldName: function (fieldName, callback) {
+            if (fieldName) {
                 $.ajax({
                     url: getContextPath() + "/baseProjectClassify/getProjectClassifyListByFieldName",
                     type: "get",
@@ -250,15 +320,15 @@ $(function () {
             }
         },
         //获取区域单个信息
-        getAreaById:function (target,callback) {
+        getAreaById: function (target, callback) {
             $.ajax({
                 url: getContextPath() + "/public/getAreaById",
                 type: "get",
-                data: {id:target},
+                data: {id: target},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        if(callback){
+                        if (callback) {
                             callback(result.data);
                         }
                     }
@@ -491,8 +561,8 @@ $(function () {
         },
 
         //获取调查附件上传的FieldsName
-        getExamineFieldsName:function (planDetailsId,fieldsName) {
-            var result="examine_planDetailsId_"+planDetailsId+"_"+fieldsName;
+        getExamineFieldsName: function (planDetailsId, fieldsName) {
+            var result = "examine_planDetailsId_" + planDetailsId + "_" + fieldsName;
             return result;
         },
 

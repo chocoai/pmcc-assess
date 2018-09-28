@@ -55,12 +55,12 @@
         if (!supportInfoModule.valid()) {
             return false;
         }
-        if (!income.valid()) {
+        if (!incomeIndex.valid()) {
             return false;
         }
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
-        data.incomeInfo = income.getData();
+        data.incomeInfo = incomeIndex.getData();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
         }

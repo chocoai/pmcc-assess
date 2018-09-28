@@ -7,8 +7,6 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecastMonth;
  */
 public class MdIncomeForecastMonthVo extends MdIncomeForecastMonth {
     private String accountingSubjectName;
-    private String firstLevelNumberName;
-    private String secondLevelNumberName;
 
     public String getAccountingSubjectName() {
         return accountingSubjectName;
@@ -16,21 +14,5 @@ public class MdIncomeForecastMonthVo extends MdIncomeForecastMonth {
 
     public void setAccountingSubjectName(String accountingSubjectName) {
         this.accountingSubjectName = accountingSubjectName;
-    }
-
-    public String getFirstLevelNumberName() {
-        return firstLevelNumberName;
-    }
-
-    public void setFirstLevelNumberName(String firstLevelNumberName) {
-        this.firstLevelNumberName = firstLevelNumberName;
-    }
-
-    public String getSecondLevelNumberName() {
-        return secondLevelNumberName;
-    }
-
-    public void setSecondLevelNumberName(String secondLevelNumberName) {
-        this.secondLevelNumberName = secondLevelNumberName;
     }
 }

@@ -356,52 +356,62 @@ public class MdIncomeForecastMonthExample {
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberEqualTo(Integer value) {
+        public Criteria andFirstLevelNumberEqualTo(String value) {
             addCriterion("first_level_number =", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberNotEqualTo(Integer value) {
+        public Criteria andFirstLevelNumberNotEqualTo(String value) {
             addCriterion("first_level_number <>", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberGreaterThan(Integer value) {
+        public Criteria andFirstLevelNumberGreaterThan(String value) {
             addCriterion("first_level_number >", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFirstLevelNumberGreaterThanOrEqualTo(String value) {
             addCriterion("first_level_number >=", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberLessThan(Integer value) {
+        public Criteria andFirstLevelNumberLessThan(String value) {
             addCriterion("first_level_number <", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andFirstLevelNumberLessThanOrEqualTo(String value) {
             addCriterion("first_level_number <=", value, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberIn(List<Integer> values) {
+        public Criteria andFirstLevelNumberLike(String value) {
+            addCriterion("first_level_number like", value, "firstLevelNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelNumberNotLike(String value) {
+            addCriterion("first_level_number not like", value, "firstLevelNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andFirstLevelNumberIn(List<String> values) {
             addCriterion("first_level_number in", values, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberNotIn(List<Integer> values) {
+        public Criteria andFirstLevelNumberNotIn(List<String> values) {
             addCriterion("first_level_number not in", values, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberBetween(Integer value1, Integer value2) {
+        public Criteria andFirstLevelNumberBetween(String value1, String value2) {
             addCriterion("first_level_number between", value1, value2, "firstLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andFirstLevelNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andFirstLevelNumberNotBetween(String value1, String value2) {
             addCriterion("first_level_number not between", value1, value2, "firstLevelNumber");
             return (Criteria) this;
         }
@@ -416,52 +426,62 @@ public class MdIncomeForecastMonthExample {
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberEqualTo(Integer value) {
+        public Criteria andSecondLevelNumberEqualTo(String value) {
             addCriterion("second_level_number =", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberNotEqualTo(Integer value) {
+        public Criteria andSecondLevelNumberNotEqualTo(String value) {
             addCriterion("second_level_number <>", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberGreaterThan(Integer value) {
+        public Criteria andSecondLevelNumberGreaterThan(String value) {
             addCriterion("second_level_number >", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSecondLevelNumberGreaterThanOrEqualTo(String value) {
             addCriterion("second_level_number >=", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberLessThan(Integer value) {
+        public Criteria andSecondLevelNumberLessThan(String value) {
             addCriterion("second_level_number <", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andSecondLevelNumberLessThanOrEqualTo(String value) {
             addCriterion("second_level_number <=", value, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberIn(List<Integer> values) {
+        public Criteria andSecondLevelNumberLike(String value) {
+            addCriterion("second_level_number like", value, "secondLevelNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelNumberNotLike(String value) {
+            addCriterion("second_level_number not like", value, "secondLevelNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSecondLevelNumberIn(List<String> values) {
             addCriterion("second_level_number in", values, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberNotIn(List<Integer> values) {
+        public Criteria andSecondLevelNumberNotIn(List<String> values) {
             addCriterion("second_level_number not in", values, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberBetween(Integer value1, Integer value2) {
+        public Criteria andSecondLevelNumberBetween(String value1, String value2) {
             addCriterion("second_level_number between", value1, value2, "secondLevelNumber");
             return (Criteria) this;
         }
 
-        public Criteria andSecondLevelNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andSecondLevelNumberNotBetween(String value1, String value2) {
             addCriterion("second_level_number not between", value1, value2, "secondLevelNumber");
             return (Criteria) this;
         }

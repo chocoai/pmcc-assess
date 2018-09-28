@@ -126,10 +126,10 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveForecast", method = {RequestMethod.POST}, name = "增加与修改")
+    @RequestMapping(value = "/saveForecast", method = {RequestMethod.POST}, name = "修改")
     public HttpResult saveForecast(MdIncomeForecast mdIncomeForecast) {
         try {
-            mdIncomeService.saveForecast(mdIncomeForecast);
+            mdIncomeService.updateForecast(mdIncomeForecast);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());

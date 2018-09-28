@@ -70,13 +70,19 @@ public class MdIncomeDateSectionDao {
     }
 
     /**
-     * 编辑
+     * 更新
      *
      * @param mdIncomeDateSection
      * @return
      */
     public boolean updateDateSection(MdIncomeDateSection mdIncomeDateSection) {
         return mdIncomeDateSectionMapper.updateByPrimaryKeySelective(mdIncomeDateSection) > 0;
+    }
+
+    public boolean updateDateSection(MdIncomeDateSection where,MdIncomeDateSection mdIncomeDateSection) {
+        MdIncomeDateSectionExample example = new MdIncomeDateSectionExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeDateSectionMapper.updateByExampleSelective(mdIncomeDateSection,example) > 0;
     }
 
     /**

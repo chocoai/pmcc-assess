@@ -124,7 +124,8 @@
                         </label>
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="rewardRate" data-value="0.003">
+                                <input type="text" required class="form-control x-percent" name="rewardRate" placeholder="报酬率"
+                                    data-value="${mdIncome.rewardRate}"   onblur="selfSupport.computePrice();">
                                 <span class="input-group-btn">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
                                      onclick="selfSupport.getRewardRate(this);"/>
@@ -139,8 +140,8 @@
                             利润率<span class="symbol required"></span>
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率" class="form-control" data-value="fff" value="123"
-                                   data-rule-number="true" required="required">
+                            <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
+                                   data-value="${mdIncome.averageProfitRate}"  class="form-control x-percent" onblur="selfSupport.computeOperatingProfit();" required="required">
                         </div>
                     </div>
                 </div>
@@ -150,8 +151,7 @@
                             取数说明
                         </label>
                         <div class="col-sm-11">
-                            <textarea name="averageProfitRateRemark" class="form-control"
-                                      placeholder="行业经营平均利润率取数说明"></textarea>
+                            <textarea name="averageProfitRateRemark" class="form-control" placeholder="行业经营平均利润率取数说明" >${mdIncome.averageProfitRateRemark}</textarea>
                         </div>
                     </div>
                 </div>
@@ -167,14 +167,14 @@
             <h2>测算结果</h2>
             <div class="clearfix"></div>
         </div>
-        <div class="x_content form-horizontal">
+        <div class="x_content form-horizontal" id="selfSupportResult">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
                         估价对象面积
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control"> 30</label>
+                        <label class="form-control" data-name="area">${judgeObject.evaluationArea}</label>
                     </div>
                 </div>
                 <div class="x-valid">
@@ -182,7 +182,7 @@
                         估价对象的价格
                     </label>
                     <div class="col-sm-3">
-                        <label class="form-control">20</label>
+                        <label class="form-control" data-name="price">${mdIncome.price}</label>
                     </div>
                 </div>
             </div>
@@ -236,39 +236,38 @@
                                                    data-rule-digits="true" class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             会计科目<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <select name="accountingSubject" class="form-control"
-                                                    onchange="selfSupport.accountingSubjectChange(this);"
-                                                    required="required"></select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            一级编号<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <select name="firstLevelNumber" class="form-control"
-                                                    onchange="selfSupport.firstLevelNumberChange(this);"
                                                     required="required"></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            一级编号<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="firstLevelNumber" placeholder="一级编号"
+                                                   class="form-control" required="required">
+                                        </div>
+                                    </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             二级编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="secondLevelNumber" class="form-control"
-                                                    required="required"></select>
+                                            <input type="text" name="secondLevelNumber" placeholder="二级编号"
+                                                   class="form-control" required="required">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             月度<span class="symbol required"></span>
@@ -278,8 +277,6 @@
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             单价<span class="symbol required"></span>
@@ -290,6 +287,8 @@
                                                    data-rule-number="true" class="form-control" required="required">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             数量<span class="symbol required"></span>
@@ -300,8 +299,6 @@
                                                    data-rule-digits="true" class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             金额<span class="symbol required"></span>
@@ -360,8 +357,8 @@
                                 增长率<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="growthRate" placeholder="增长率" data-rule-number="true"
-                                       class="form-control" required="required">
+                                <input type="text" name="growthRate" placeholder="增长率" class="form-control x-percent"
+                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -440,9 +437,7 @@
                                 会计科目<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <select name="accountingSubject" class="form-control"
-                                        onchange="selfSupport.accountingSubjectChange(this,'frm_forecast_month');"
-                                        required="required"></select>
+                                <select name="accountingSubject" class="form-control" required="required"></select>
                             </div>
                         </div>
                         <div class="x-valid">
@@ -450,9 +445,8 @@
                                 一级编号<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <select name="firstLevelNumber" class="form-control"
-                                        onchange="selfSupport.firstLevelNumberChange(this,'frm_forecast_month');"
-                                        required="required"></select>
+                                <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control"
+                                       required="required">
                             </div>
                         </div>
                     </div>
@@ -462,8 +456,8 @@
                                 二级编号<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <select name="secondLevelNumber" class="form-control"
-                                        required="required"></select>
+                                <input type="text" name="secondLevelNumber" placeholder="一级编号" class="form-control"
+                                       required="required">
                             </div>
                         </div>
                         <div class="x-valid">
@@ -543,9 +537,7 @@
 </script>
 
 <script type="text/javascript">
-    $(function () {
 
-    })
 
     var selfSupport = {};
 
@@ -614,23 +606,6 @@
             return "tb_forecast_income_list";
         if (type == 1)
             return "tb_forecast_cost_list";
-    }
-
-    //会计编号切换
-    selfSupport.accountingSubjectChange = function (_this, frm) {
-        var frm_id = frm == undefined ? 'frm_history' : frm;
-        $("#" + frm_id).find('[name=secondLevelNumber]').empty();
-        AssessCommon.loadDataDicByPid($(_this).val(), "", function (html, data) {
-            $("#" + frm_id).find('[name=firstLevelNumber]').empty().append(html);
-        })
-    }
-
-    //一级编号切换
-    selfSupport.firstLevelNumberChange = function (_this, frm) {
-        var frm_id = frm == undefined ? 'frm_history' : frm;
-        AssessCommon.loadDataDicByPid($(_this).val(), "", function (html, data) {
-            $("#" + frm_id).find('[name=secondLevelNumber]').empty().append(html);
-        })
     }
 
     //删除历史信息
@@ -727,8 +702,8 @@
     selfSupport.loadHistoryList = function (type) {
         var cols = [];
         cols.push({field: 'accountingSubjectName', title: '会计科目'});
-        cols.push({field: 'firstLevelNumberName', title: '一级编号'});
-        cols.push({field: 'secondLevelNumberName', title: '二级编号'});
+        cols.push({field: 'firstLevelNumber', title: '一级编号'});
+        cols.push({field: 'secondLevelNumber', title: '二级编号'});
         cols.push({field: 'month', title: '月度'});
         cols.push({field: 'unitPrice', title: '单价'});
         cols.push({field: 'number', title: '数量'});
@@ -761,6 +736,8 @@
         var row = $("#" + selfSupport.getForecastListId(type)).bootstrapTable('getData')[index];
         $("#frm_forecast").clearAll();
         $("#frm_forecast").initForm(row);
+        $("#frm_forecast").find('[name=growthRate]').attr('data-value', row.growthRate);
+        AssessCommon.elementParsePercent($("#frm_forecast").find('[name=growthRate]'));
         $('#modal_forecast').modal();
     }
 
@@ -782,6 +759,7 @@
                     toastr.success('保存成功');
                     var type = $("#frm_forecast").find('[name=type]').val();
                     selfSupport.loadForecastList(type);
+                    selfSupport.loadCalculationResult();
                     $('#modal_forecast').modal('hide');
                 }
                 else {
@@ -837,13 +815,16 @@
         });
         cols.push({field: 'yearCount', title: '年份数'});
         cols.push({field: 'initialAmount', title: '初始金额'});
-        cols.push({field: 'growthRate', title: '增长率'});
+        cols.push({
+            field: 'growthRate', title: '增长率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecast(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.delForecast(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -992,8 +973,8 @@
     selfSupport.loadForecastMonthList = function (type, yearId) {
         var cols = [];
         cols.push({field: 'accountingSubjectName', title: '会计科目'});
-        cols.push({field: 'firstLevelNumberName', title: '一级编号'});
-        cols.push({field: 'secondLevelNumberName', title: '二级编号'});
+        cols.push({field: 'firstLevelNumber', title: '一级编号'});
+        cols.push({field: 'secondLevelNumber', title: '二级编号'});
         cols.push({field: 'month', title: '月度'});
         cols.push({field: 'unitPrice', title: '单价'});
         cols.push({field: 'number', title: '数量'});
@@ -1025,7 +1006,10 @@
     selfSupport.getRewardRate = function (_this) {
         rewardRateFunc.calculation(function (result) {
             if (result) {
-                $(_this).closest('.input-group').find(':text').val(result);
+                var element = $(_this).closest('.input-group').find(':text');
+                element.val(result);
+                AssessCommon.elementParsePoint(element);
+                selfSupport.computeOperatingProfit();
             }
         })
     }
@@ -1053,6 +1037,7 @@
                         html = html.replace(/{presentValueFactor}/g, AssessCommon.toString(item.presentValueFactor)).replace(/{incomePrice}/g, AssessCommon.toString(item.incomePrice));
                         $("#selfSupportResultBody").append(html);
                     })
+                    selfSupport.computeOperatingProfit();
                 }
             },
             error: function (result) {
@@ -1060,6 +1045,85 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
+
+    //获取表单内容
+    selfSupport.getData = function () {
+        var formData = {};
+        formData.mdIncome = {};
+        formData.mdIncome.id = $("#frm_income").find('[name=id]').val();
+        formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
+        formData.mdIncome.area = $("#selfSupportResult").find('[data-name=area]').text();
+        formData.mdIncome.price = $("#selfSupportResult").find('[data-name=price]').text();
+        formData.mdIncome.operationMode = 0;
+        formData.mdIncome.averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');
+        formData.mdIncome.averageProfitRateRemark = $("#frm_self_support").find('[name=averageProfitRateRemark]').val();
+        formData.mdIncome.rewardRate = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');
+
+        formData.dateSectionList = [];
+        $("#selfSupportResultBody").find('tr').each(function () {
+            var section = {};
+            section.id = $(this).attr('data-id');
+            section.operatingProfit = $(this).find('[data-name=operatingProfit]').text();
+            section.netProfit = $(this).find('[data-name=netProfit]').text();
+            section.correctionFactor = $(this).find('[data-name=correctionFactor]').text();
+            section.presentValueFactor = $(this).find('[data-name=presentValueFactor]').text();
+            section.incomePrice = $(this).find('[data-name=incomePrice]').text();
+            formData.dateSectionList.push(section);
+        })
+        return formData;
+    }
+</script>
+<%--测算--%>
+<script type="text/javascript">
+    //计算经营利润与净收益
+    selfSupport.computeOperatingProfit = function () {
+        var averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');//行业平均利润率
+        if (!AssessCommon.isNumber(averageProfitRate)) return false;
+        averageProfitRate = parseFloat(averageProfitRate);
+        $("#selfSupportResultBody").find('tr').each(function () {
+            var incomeTotal = $(this).find('[data-name=incomeTotal]').text();
+            var costTotal = $(this).find('[data-name=costTotal]').text();
+            if (!AssessCommon.isNumber(incomeTotal)) return false;
+            if (!AssessCommon.isNumber(costTotal)) return false;
+            incomeTotal = parseFloat(incomeTotal);
+            costTotal = parseFloat(costTotal);
+            var operatingProfit = (incomeTotal * averageProfitRate).toFixed(2);
+            $(this).find('[data-name=operatingProfit]').text(operatingProfit);
+            //净收益
+            var netProfit = incomeTotal - costTotal - operatingProfit;
+            $(this).find('[data-name=netProfit]').text(netProfit.toFixed(2));
+        })
+
+        selfSupport.computePrice();
+    }
+
+    //计算年期修正系数[(h)=(1-(1/(1+r))^n]、收益现值系数[(k)=h/r]、房地产收益价格[房地产收益价格*收益现值系数]
+    selfSupport.computePrice = function () {
+        var r = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');//报酬率
+        if (!AssessCommon.isNumber(r)) return false;
+        r = parseFloat(r);
+        var incomePriceTotal = 0;//收益价格合计
+        $("#selfSupportResultBody").find('tr').each(function () {
+            var n = $(this).find('[data-name=yearCount]').text();
+            if (!AssessCommon.isNumber(n)) return false;
+            n = parseInt(n);
+            var h = (1 - Math.pow(1 / (1 + r), n)).toFixed(6);//年期修正系数
+            var k = (h / r).toFixed(6);//收益现值系数
+            $(this).find('[data-name=correctionFactor]').text(h);
+            $(this).find('[data-name=presentValueFactor]').text(k);
+            var netProfit = $(this).find('[data-name=netProfit]').text();
+            if (!AssessCommon.isNumber(netProfit)) return false;
+            netProfit = parseFloat(netProfit);
+            var incomePrice = (netProfit * k).toFixed(2);
+            incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
+            $(this).find('[data-name=incomePrice]').text(incomePrice);//收益价格
+        })
+        //计算委估对象单价 （单价=收益价格合计\委估对象面积）
+        var area = $("#selfSupportResult").find('[data-name=area]').text();
+        if (!AssessCommon.isNumber(area)) return false;
+        area = parseFloat(area);
+        $("#selfSupportResult").find('[data-name=price]').text((incomePriceTotal / area).toFixed(2));
     }
 </script>
 

@@ -26,9 +26,13 @@ public class DeclareRecord {
 
     private Integer practicalUse;
 
+    private BigDecimal floorArea;
+
     private Integer areaGroupId;
 
-    private BigDecimal floorArea;
+    private Date houseUseEndDate;
+
+    private Date landUseEndDate;
 
     private BigDecimal assessArea;
 
@@ -134,6 +138,14 @@ public class DeclareRecord {
         this.practicalUse = practicalUse;
     }
 
+    public BigDecimal getFloorArea() {
+        return floorArea;
+    }
+
+    public void setFloorArea(BigDecimal floorArea) {
+        this.floorArea = floorArea;
+    }
+
     public Integer getAreaGroupId() {
         return areaGroupId;
     }
@@ -142,12 +154,20 @@ public class DeclareRecord {
         this.areaGroupId = areaGroupId;
     }
 
-    public BigDecimal getFloorArea() {
-        return floorArea;
+    public Date getHouseUseEndDate() {
+        return houseUseEndDate;
     }
 
-    public void setFloorArea(BigDecimal floorArea) {
-        this.floorArea = floorArea;
+    public void setHouseUseEndDate(Date houseUseEndDate) {
+        this.houseUseEndDate = houseUseEndDate;
+    }
+
+    public Date getLandUseEndDate() {
+        return landUseEndDate;
+    }
+
+    public void setLandUseEndDate(Date landUseEndDate) {
+        this.landUseEndDate = landUseEndDate;
     }
 
     public BigDecimal getAssessArea() {

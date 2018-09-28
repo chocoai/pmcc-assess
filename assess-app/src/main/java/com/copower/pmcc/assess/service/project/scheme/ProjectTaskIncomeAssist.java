@@ -5,12 +5,13 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +45,9 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Autowired
     private MdIncomeService mdIncomeService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -98,6 +102,18 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        if (judgeObject != null) {
+            modelAndView.addObject("judgeObject", judgeObject);
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                if(declareRecord.getHouseUseEndDate()!=null)
+                    modelAndView.addObject("houseSurplusYear", DateUtils.diffDate(declareRecord.getHouseUseEndDate(),new Date())/DateUtils.DAYS_PER_YEAR);
+                if(declareRecord.getLandUseEndDate()!=null)
+                    modelAndView.addObject("landSurplusYear", DateUtils.diffDate(declareRecord.getLandUseEndDate(),new Date())/DateUtils.DAYS_PER_YEAR);
+            }
+        }
+
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         modelAndView.addObject("schemeInfo", schemeInfo);
         //评估支持数据
@@ -108,7 +124,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
         }
-        modelAndView.addObject("mdIncomeJSON", JSON.toJSONString(mdIncome == null ? new MdIncome() : mdIncome));
+        modelAndView.addObject("mdIncome", mdIncome);
     }
 
     /**

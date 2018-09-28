@@ -7,8 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory;
  */
 public class MdIncomeHistoryVo extends MdIncomeHistory {
     private String accountingSubjectName;
-    private String firstLevelNumberName;
-    private String secondLevelNumberName;
+
 
     public String getAccountingSubjectName() {
         return accountingSubjectName;
@@ -18,19 +17,4 @@ public class MdIncomeHistoryVo extends MdIncomeHistory {
         this.accountingSubjectName = accountingSubjectName;
     }
 
-    public String getFirstLevelNumberName() {
-        return firstLevelNumberName;
-    }
-
-    public void setFirstLevelNumberName(String firstLevelNumberName) {
-        this.firstLevelNumberName = firstLevelNumberName;
-    }
-
-    public String getSecondLevelNumberName() {
-        return secondLevelNumberName;
-    }
-
-    public void setSecondLevelNumberName(String secondLevelNumberName) {
-        this.secondLevelNumberName = secondLevelNumberName;
-    }
 }

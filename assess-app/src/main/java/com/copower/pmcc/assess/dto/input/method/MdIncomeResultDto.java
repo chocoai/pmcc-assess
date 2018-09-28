@@ -1,14 +1,16 @@
 package com.copower.pmcc.assess.dto.input.method;
 
 import com.copower.pmcc.assess.dal.basis.entity.MdIncome;
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeSelfSupport;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-7-23.
  */
 public class MdIncomeResultDto {
     private MdIncome mdIncome;
-    private MdIncomeSelfSupport mdIncomeSelfSupport;
+    private List<MdIncomeDateSection> dateSectionList;
 
     public MdIncome getMdIncome() {
         return mdIncome;
@@ -18,11 +20,11 @@ public class MdIncomeResultDto {
         this.mdIncome = mdIncome;
     }
 
-    public MdIncomeSelfSupport getMdIncomeSelfSupport() {
-        return mdIncomeSelfSupport;
+    public List<MdIncomeDateSection> getDateSectionList() {
+        return dateSectionList;
     }
 
-    public void setMdIncomeSelfSupport(MdIncomeSelfSupport mdIncomeSelfSupport) {
-        this.mdIncomeSelfSupport = mdIncomeSelfSupport;
+    public void setDateSectionList(List<MdIncomeDateSection> dateSectionList) {
+        this.dateSectionList = dateSectionList;
     }
 }

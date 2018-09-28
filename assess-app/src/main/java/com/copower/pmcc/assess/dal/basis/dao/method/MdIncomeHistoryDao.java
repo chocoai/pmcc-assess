@@ -70,13 +70,19 @@ public class MdIncomeHistoryDao {
     }
 
     /**
-     * 编辑
+     * 更新
      *
      * @param mdIncomeHistory
      * @return
      */
     public boolean updateHistory(MdIncomeHistory mdIncomeHistory) {
         return mdIncomeHistoryMapper.updateByPrimaryKeySelective(mdIncomeHistory) > 0;
+    }
+
+    public boolean updateHistory(MdIncomeHistory where, MdIncomeHistory mdIncomeHistory) {
+        MdIncomeHistoryExample example = new MdIncomeHistoryExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeHistoryMapper.updateByExampleSelective(mdIncomeHistory, example) > 0;
     }
 
     /**

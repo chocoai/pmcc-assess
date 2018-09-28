@@ -16,7 +16,7 @@
                     <table class="table tree">
                         <tr class="treegrid-1">
                             <td>机会成本</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                         <tr class="treegrid-2">
                             <td>风险补偿率</td>
@@ -24,15 +24,15 @@
                         </tr>
                         <tr class="treegrid-2-1 treegrid-parent-2">
                             <td>投资风险补偿</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                         <tr class="treegrid-2-2 treegrid-parent-2">
                             <td>管理负担补偿</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                         <tr class="treegrid-2-3 treegrid-parent-2">
                             <td>缺乏流动性补偿</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                         <tr class="treegrid-2-4 treegrid-parent-2">
                             <td>投资带来的优惠</td>
@@ -40,11 +40,11 @@
                         </tr>
                         <tr class="treegrid-2-4-1 treegrid-parent-2-4">
                             <td>易与获得融资的好处</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                         <tr class="treegrid-2-4-2 treegrid-parent-2-4">
                             <td>所得税抵扣的好处</td>
-                            <td><input type="text"></td>
+                            <td><input type="text" class="x-percent"></td>
                         </tr>
                     </table>
                 </form>
@@ -84,12 +84,12 @@
         rootNodes.each(function () {
             var val=rewardRateFunc.getValue(this);
             if (val) {
-                result += parseFloat(val);
+                result += parseFloat(val.replace(/%$/,''));
             }
         })
         $("#modal_reward_rate").modal('hide');
         if (rewardRateFunc.onSuccess) {
-            rewardRateFunc.onSuccess(result);
+            rewardRateFunc.onSuccess(result+'%');
         }
     }
 
@@ -116,7 +116,7 @@
                     result += parseFloat(val);
                 }
             })
-            $(parentNode).find('td:eq(1)').text(result.toFixed(4))
+            $(parentNode).find('td:eq(1)').text(result.toFixed(2)+"%")
             rewardRateRecursion(parentNode);
         }
     }
