@@ -39,14 +39,9 @@ public class DeclareBuildingConstructionPermitService {
     public Integer saveAndUpdateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit) {
         if (declareBuildingConstructionPermit.getId() == null || declareBuildingConstructionPermit.getId().intValue() == 0) {
             declareBuildingConstructionPermit.setCreator(commonService.thisUserAccount());
-            try {
-                Integer id = declareBuildingConstructionPermitDao.addDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
-                baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class), id);
-                return id;
-            } catch (Exception e1) {
-                logger.error(e1.getMessage(), e1);
-                return null;
-            }
+            Integer id = declareBuildingConstructionPermitDao.addDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class), id);
+            return id;
         } else {
             declareBuildingConstructionPermitDao.updateDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
             return null;

@@ -37,6 +37,10 @@ AssessDBKey.DeclareRealtyLandCert = "tb_declare_realty_land_cert";
 AssessDBKey.DeclareRealtyRealEstateCert = "tb_declare_realty_real_estate_cert";
 AssessDBKey.DeclareBuildEngineering = "tb_declare_build_engineering";
 AssessDBKey.DeclareBuildEquipmentInstall = "tb_declare_build_equipment_install";
+AssessDBKey.DeclareBuildingConstructionPermit = "tb_declare_building_construction_permit";
+AssessDBKey.DeclarePreSalePermit = "tb_declare_pre_sale_permit";
+AssessDBKey.DeclareLandUsePermit = "tb_declare_land_use_permit";
+AssessDBKey.DeclareBuildingPermit = "tb_declare_building_permit";
 
 /**
  * 项目分类key
@@ -113,3 +117,4 @@ AssessFTKey.ftHouseOwnershipCertificate = "ft.house.ownership.certificate";//房
 AssessFTKey.ftLandOwnershipCertificate = "ft.land.ownership.certificate";//土地证数据导入模型
 AssessFTKey.ftRealEstateOwnershipCertificate = "ft.real.estate.ownership.certificate";//不动产模板
 AssessFTKey.ftMethodIncomeHistory = "ft.method.income.history";//收益法历史数据模板
+AssessFTKey.ftDeclareBuildEngineering = "ft.declare.build.engineering";//在建工程土建模板

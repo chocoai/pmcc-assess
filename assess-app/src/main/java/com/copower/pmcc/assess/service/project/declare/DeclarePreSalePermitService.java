@@ -39,14 +39,9 @@ public class DeclarePreSalePermitService {
     public Integer saveAndUpdateDeclarePreSalePermit(DeclarePreSalePermit declarePreSalePermit) {
         if (declarePreSalePermit.getId() == null || declarePreSalePermit.getId().intValue() == 0) {
             declarePreSalePermit.setCreator(commonService.thisUserAccount());
-            try {
-                Integer id = declarePreSalePermitDao.addDeclarePreSalePermit(declarePreSalePermit);
-                baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class), id);
-                return id;
-            } catch (Exception e1) {
-                logger.error(e1.getMessage(), e1);
-                return null;
-            }
+            Integer id = declarePreSalePermitDao.addDeclarePreSalePermit(declarePreSalePermit);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class), id);
+            return id;
         } else {
             declarePreSalePermitDao.updateDeclarePreSalePermit(declarePreSalePermit);
             return null;

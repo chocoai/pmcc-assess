@@ -55,6 +55,17 @@ public class DeclareBuildEquipmentInstallDto {
     private String remark;
 
     private String enable;
+    private Integer buildingConstructionPermitId;
+
+    private Integer buildingPermitId;
+
+    private Integer landUsePermitId;
+
+    private Integer preSalePermitId;
+
+    private Integer landId;
+
+    private Integer realEstateId;
 
     public Integer getId() {
         return id;
@@ -238,5 +249,53 @@ public class DeclareBuildEquipmentInstallDto {
 
     public void setEnable(String enable) {
         this.enable = enable;
+    }
+
+    public Integer getBuildingConstructionPermitId() {
+        return buildingConstructionPermitId;
+    }
+
+    public void setBuildingConstructionPermitId(Integer buildingConstructionPermitId) {
+        this.buildingConstructionPermitId = buildingConstructionPermitId;
+    }
+
+    public Integer getBuildingPermitId() {
+        return buildingPermitId;
+    }
+
+    public void setBuildingPermitId(Integer buildingPermitId) {
+        this.buildingPermitId = buildingPermitId;
+    }
+
+    public Integer getLandUsePermitId() {
+        return landUsePermitId;
+    }
+
+    public void setLandUsePermitId(Integer landUsePermitId) {
+        this.landUsePermitId = landUsePermitId;
+    }
+
+    public Integer getPreSalePermitId() {
+        return preSalePermitId;
+    }
+
+    public void setPreSalePermitId(Integer preSalePermitId) {
+        this.preSalePermitId = preSalePermitId;
+    }
+
+    public Integer getLandId() {
+        return landId;
+    }
+
+    public void setLandId(Integer landId) {
+        this.landId = landId;
+    }
+
+    public Integer getRealEstateId() {
+        return realEstateId;
+    }
+
+    public void setRealEstateId(Integer realEstateId) {
+        this.realEstateId = realEstateId;
     }
 }

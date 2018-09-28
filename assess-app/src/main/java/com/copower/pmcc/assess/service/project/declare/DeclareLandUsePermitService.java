@@ -39,14 +39,9 @@ public class DeclareLandUsePermitService {
     public Integer saveAndUpdateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
         if (declareLandUsePermit.getId() == null || declareLandUsePermit.getId().intValue() == 0) {
             declareLandUsePermit.setCreator(commonService.thisUserAccount());
-            try {
-                Integer id = declareLandUsePermitDao.addDeclareLandUsePermit(declareLandUsePermit);
-                baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class), id);
-                return id;
-            } catch (Exception e1) {
-                logger.error(e1.getMessage(), e1);
-                return null;
-            }
+            Integer id = declareLandUsePermitDao.addDeclareLandUsePermit(declareLandUsePermit);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class), id);
+            return id;
         } else {
             declareLandUsePermitDao.updateDeclareLandUsePermit(declareLandUsePermit);
             return null;

@@ -297,72 +297,72 @@ public class DeclareLandUsePermitExample {
         }
 
         public Criteria andIssuingOrganIsNull() {
-            addCriterion("Issuing_organ is null");
+            addCriterion("issuing_organ is null");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganIsNotNull() {
-            addCriterion("Issuing_organ is not null");
+            addCriterion("issuing_organ is not null");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganEqualTo(String value) {
-            addCriterion("Issuing_organ =", value, "issuingOrgan");
+            addCriterion("issuing_organ =", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganNotEqualTo(String value) {
-            addCriterion("Issuing_organ <>", value, "issuingOrgan");
+            addCriterion("issuing_organ <>", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganGreaterThan(String value) {
-            addCriterion("Issuing_organ >", value, "issuingOrgan");
+            addCriterion("issuing_organ >", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganGreaterThanOrEqualTo(String value) {
-            addCriterion("Issuing_organ >=", value, "issuingOrgan");
+            addCriterion("issuing_organ >=", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganLessThan(String value) {
-            addCriterion("Issuing_organ <", value, "issuingOrgan");
+            addCriterion("issuing_organ <", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganLessThanOrEqualTo(String value) {
-            addCriterion("Issuing_organ <=", value, "issuingOrgan");
+            addCriterion("issuing_organ <=", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganLike(String value) {
-            addCriterion("Issuing_organ like", value, "issuingOrgan");
+            addCriterion("issuing_organ like", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganNotLike(String value) {
-            addCriterion("Issuing_organ not like", value, "issuingOrgan");
+            addCriterion("issuing_organ not like", value, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganIn(List<String> values) {
-            addCriterion("Issuing_organ in", values, "issuingOrgan");
+            addCriterion("issuing_organ in", values, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganNotIn(List<String> values) {
-            addCriterion("Issuing_organ not in", values, "issuingOrgan");
+            addCriterion("issuing_organ not in", values, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganBetween(String value1, String value2) {
-            addCriterion("Issuing_organ between", value1, value2, "issuingOrgan");
+            addCriterion("issuing_organ between", value1, value2, "issuingOrgan");
             return (Criteria) this;
         }
 
         public Criteria andIssuingOrganNotBetween(String value1, String value2) {
-            addCriterion("Issuing_organ not between", value1, value2, "issuingOrgan");
+            addCriterion("issuing_organ not between", value1, value2, "issuingOrgan");
             return (Criteria) this;
         }
 

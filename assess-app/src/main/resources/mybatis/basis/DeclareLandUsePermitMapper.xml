@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="certificate_number" property="certificateNumber" jdbcType="VARCHAR" />
-    <result column="Issuing_organ" property="issuingOrgan" jdbcType="VARCHAR" />
+    <result column="issuing_organ" property="issuingOrgan" jdbcType="VARCHAR" />
     <result column="date" property="date" jdbcType="TIMESTAMP" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, certificate_number, Issuing_organ, date, unit, name, location, 
+    id, plan_details_id, certificate_number, issuing_organ, date, unit, name, location, 
     nature, area, scale_construction, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermitExample" >
@@ -114,7 +114,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_declare_land_use_permit (plan_details_id, certificate_number, 
-      Issuing_organ, date, unit, 
+      issuing_organ, date, unit, 
       name, location, nature, 
       area, scale_construction, creator, 
       gmt_created, gmt_modified)
@@ -137,7 +137,7 @@
         certificate_number,
       </if>
       <if test="issuingOrgan != null" >
-        Issuing_organ,
+        issuing_organ,
       </if>
       <if test="date != null" >
         date,
@@ -231,7 +231,7 @@
         certificate_number = #{record.certificateNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.issuingOrgan != null" >
-        Issuing_organ = #{record.issuingOrgan,jdbcType=VARCHAR},
+        issuing_organ = #{record.issuingOrgan,jdbcType=VARCHAR},
       </if>
       <if test="record.date != null" >
         date = #{record.date,jdbcType=TIMESTAMP},
@@ -273,7 +273,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       certificate_number = #{record.certificateNumber,jdbcType=VARCHAR},
-      Issuing_organ = #{record.issuingOrgan,jdbcType=VARCHAR},
+      issuing_organ = #{record.issuingOrgan,jdbcType=VARCHAR},
       date = #{record.date,jdbcType=TIMESTAMP},
       unit = #{record.unit,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -298,7 +298,7 @@
         certificate_number = #{certificateNumber,jdbcType=VARCHAR},
       </if>
       <if test="issuingOrgan != null" >
-        Issuing_organ = #{issuingOrgan,jdbcType=VARCHAR},
+        issuing_organ = #{issuingOrgan,jdbcType=VARCHAR},
       </if>
       <if test="date != null" >
         date = #{date,jdbcType=TIMESTAMP},
@@ -337,7 +337,7 @@
     update tb_declare_land_use_permit
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       certificate_number = #{certificateNumber,jdbcType=VARCHAR},
-      Issuing_organ = #{issuingOrgan,jdbcType=VARCHAR},
+      issuing_organ = #{issuingOrgan,jdbcType=VARCHAR},
       date = #{date,jdbcType=TIMESTAMP},
       unit = #{unit,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
