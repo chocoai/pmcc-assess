@@ -14,6 +14,8 @@ $(function () {
             var numberVal;
             if (/%$/.test(val)) {
                 numberVal = val.replace(/%$/g, '');
+            } else if (/%/.test(val)) {
+                $(this).val(val.replace(/%/g, '') + "%");
             } else {
                 numberVal = val;
                 $(this).val(val + "%");
