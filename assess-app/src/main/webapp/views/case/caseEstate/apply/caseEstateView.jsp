@@ -614,9 +614,6 @@
 
     CaseEstateFun.prototype.select2Event = {
         estate: function () {
-            $("#province").select2();
-            $("#city").select2();
-            $("#district").select2();
             AssessCommon.initAreaInfo({
                 provinceTarget: $("#province"),
                 cityTarget: $("#city"),
@@ -625,7 +622,7 @@
                 cityValue: '',
                 districtValue: ''
             });
-            $("#" + caseEstate.config.estate.frm() + " .blockId").select2();//加载样式
+            // $("#" + caseEstate.config.estate.frm() + " .blockId").select2();//加载样式
             //主要是载入select2
             $.ajax({
                 url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
@@ -642,10 +639,7 @@
                             for (var i = 0; i < gradeNum; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            if ($("#" + caseEstate.config.estate.frm() + " .developerId").size() > 0) {
-                                $("#" + caseEstate.config.estate.frm() + " .developerId").html(option);
-                                $("#" + caseEstate.config.estate.frm() + " .developerId").select2();//加载样式
-                            }
+                            $("#" + caseEstate.config.estate.frm()).find("select.developerId").html(option);
                         }
                     }
                 },
@@ -673,10 +667,7 @@
                             for (var i = 0; i < gradeNum; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
                             }
-                            if ($("#" + caseEstate.config.estate.frm() + " .landLevel").size() > 0) {
-                                $("#" + caseEstate.config.estate.frm() + " .landLevel").html(option);
-                                $("#" + caseEstate.config.estate.frm() + " .landLevel").select2();//加载样式
-                            }
+                            $("#" + caseEstate.config.estate.frm()).find("select.landLevel").html(option);
                         }
                     }
                 },
@@ -721,20 +712,13 @@
         },
         landState: function () {
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
-                if ($("#" + caseEstate.config.landState.frm() + " .landUseType").size() > 0) {
-                    $("#" + caseEstate.config.landState.frm() + " .landUseType").html(html);
-                    $("#" + caseEstate.config.landState.frm() + " .landUseType").select2({minimumResultsForSearch: -1});//加载样式
-                }
+                $("#" + caseEstate.config.landState.frm()).find('select.landUseType').html(html);
             });
-            $("#" + caseEstate.config.landState.frm() + " .landUseCategory").select2();//加载样式
             $("#" + caseEstate.config.landState.frm() + " .landUseType").change(function () {
                 var id = $("#" + caseEstate.config.landState.frm() + " .landUseType").eq(1).val();
-                $("#" + caseEstate.config.landState.frm() + " .landUseCategory").eq(0).remove();
+                // $("#" + caseEstate.config.landState.frm() + " .landUseCategory").eq(0).remove();
                 AssessCommon.loadDataDicByPid(id, null, function (html, data) {
-                    if ($("#" + caseEstate.config.landState.frm() + " .landUseCategory").size() > 0) {
-                        $("#" + caseEstate.config.landState.frm() + " .landUseCategory").html(html);
-                        $("#" + caseEstate.config.landState.frm() + " .landUseCategory").select2();//加载样式
-                    }
+                    $("#" + caseEstate.config.landState.frm()).find('select.landUseCategory').html(html);
                 });
             });
             $.ajax({
@@ -756,10 +740,7 @@
                             for (var i = 0; i < gradeNum; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
                             }
-                            if ($("#" + caseEstate.config.landState.frm() + " .landLevel").size() > 0) {
-                                $("#" + caseEstate.config.landState.frm() + " .landLevel").html(option);
-                                $("#" + caseEstate.config.landState.frm() + " .landLevel").select2();//加载样式
-                            }
+                            $("#" + caseEstate.config.landState.frm()).find("select.landLevel").html(option);
                         }
                     }
                 },
@@ -869,8 +850,8 @@
                 $.each(matching, function (i, n) {
                     AssessCommon.getDataDicInfo(n, function (item) {
                         var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("."+fieldName);
-                        if (jq.size() > 0){
+                        var jq = $("." + fieldName);
+                        if (jq.size() > 0) {
                             jq.toggle();
                         }
                         console.log(fieldName);
@@ -879,8 +860,8 @@
                 $.each(other, function (i, n) {
                     AssessCommon.getDataDicInfo(n, function (item) {
                         var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("."+fieldName);
-                        if (jq.size() > 0){
+                        var jq = $("." + fieldName);
+                        if (jq.size() > 0) {
                             jq.toggle();
                         }
                         console.log(fieldName);

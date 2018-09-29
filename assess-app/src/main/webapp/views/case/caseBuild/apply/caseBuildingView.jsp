@@ -379,18 +379,14 @@
                 }
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingCategory").html(html);
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingCategory").select2();//加载样式
+                $("#" + CaseBuildFun.prototype.config.build.frm()).find("select.buildingCategory").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, null, function (html, data) {
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingStructure").html(html);
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingStructure").select2();//加载样式
+                $("#" + CaseBuildFun.prototype.config.build.frm()).find("select.buildingStructure").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, null, function (html, data) {
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .propertyType").html(html);
-                $("#" + CaseBuildFun.prototype.config.build.frm() + " .propertyType").select2();//加载样式
+                $("#" + CaseBuildFun.prototype.config.build.frm()).find("select.propertyType").html(html);
             });
-            $("#" + CaseBuildFun.prototype.config.build.frm() + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
             $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingStructure").change(function () {
                 /**
                  * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
@@ -398,8 +394,7 @@
                 var id = $("#" + CaseBuildFun.prototype.config.build.frm() + " .buildingStructure").eq(1).val();
                 if (id != null && id != '' && id != 0) {
                     AssessCommon.loadDataDicByPid(id, null, function (html, data) {
-                        $("#" + CaseBuildFun.prototype.config.build.frm() + "buildingStructure").html(html);
-                        $("#" + CaseBuildFun.prototype.config.build.frm() + "buildingStructure").select2();//加载样式
+                        $("#" + CaseBuildFun.prototype.config.build.frm()+ "buildingStructure").html(html);
                     });
                 }
             });
@@ -418,8 +413,7 @@
                             for (var i = 0; i < item.DataBuilder.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#" + CaseBuildFun.prototype.config.build.frm() + " .builderId").html(option);
-                            $("#" + CaseBuildFun.prototype.config.build.frm() + " .builderId").select2();//加载样式
+                            $("#" + CaseBuildFun.prototype.config.build.frm()).find("select.builderId").html(option);
                             option = "";
                         }
                         if (item.DataProperty.length > 0) {
@@ -428,8 +422,7 @@
                             for (var i = 0; i < item.DataProperty.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#" + CaseBuildFun.prototype.config.build.frm() + " .propertyId").html(option);
-                            $("#" + CaseBuildFun.prototype.config.build.frm() + " .propertyId").select2();//加载样式
+                            $("#" + CaseBuildFun.prototype.config.build.frm()).find("select.propertyId").html(option);
                         }
                     }
                 },
