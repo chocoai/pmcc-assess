@@ -347,9 +347,11 @@
                             for (var i = 0; i < data.length; i++) {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#frm" + " .type").html(option);
-                            $("#frm" + " .type").select2();
-                            $("#frm" + " .category").select2();
+                            $("#frm").find('select.type').html(option);
+
+                            // $("#frm" + " .type").html(option);
+                            // $("#frm" + " .type").select2();
+                            // $("#frm" + " .category").select2();
                         }
                     }
                     else {
@@ -385,12 +387,14 @@
                                 for (var i = 0; i < data.length; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                if ($("#frm" + " .category").prev(".category").size() > 0) {
-                                    $("#frm" + " .category").prev(".category").remove();
-                                }
-                                $("#frm" + " .category").empty();
-                                $("#frm" + " .category").html(option);
-                                $("#frm" + " .category").select2();
+                                // if ($("#frm" + " .category").prev(".category").size() > 0) {
+                                //     $("#frm" + " .category").prev(".category").remove();
+                                // }
+                                // $("#frm" + " .category").empty();
+                                // $("#frm" + " .category").html(option);
+                                // $("#frm" + " .category").select2();
+                                $("#frm").find('select.category').html(option);
+
                             }
                         }
                         else {

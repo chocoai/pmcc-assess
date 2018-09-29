@@ -160,7 +160,7 @@
                                             类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required class="form-control" name="reportAnalysisType">
+                                            <select required class="form-control search-select select2" name="reportAnalysisType">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${reportAnalysisTypeList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
@@ -223,9 +223,6 @@
     }
 
     function select2Load() {
-        $("#province").select2();
-        $("#city").select2();
-        $("#district").select2();
         //使数据校验生效
         $("#frm").validate();
         AssessCommon.initAreaInfo({
@@ -237,12 +234,10 @@
             districtValue: ''
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.dataEntrustmentPurpose, "", function (html, data) {
-            $("#frm" + " .entrustment").html(html);
-            $("#frm" + " .entrustment").select2();//加载样式
+            $("#frm").find('select.entrustment').html(html);
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.workProgrammeSetUse, "", function (html, data) {
-            $("#frm" + " .purpose").html(html);
-            $("#frm" + " .purpose").select2();//加载样式
+            $("#frm").find('select.purpose').html(html);
         });
     }
 

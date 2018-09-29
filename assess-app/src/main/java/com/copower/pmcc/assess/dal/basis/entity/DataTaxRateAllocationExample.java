@@ -774,6 +774,76 @@ public class DataTaxRateAllocationExample {
             addCriterion("tax_rate not between", value1, value2, "taxRate");
             return (Criteria) this;
         }
+
+        public Criteria andNationalUnityIsNull() {
+            addCriterion("national_unity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityIsNotNull() {
+            addCriterion("national_unity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityEqualTo(String value) {
+            addCriterion("national_unity =", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityNotEqualTo(String value) {
+            addCriterion("national_unity <>", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityGreaterThan(String value) {
+            addCriterion("national_unity >", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityGreaterThanOrEqualTo(String value) {
+            addCriterion("national_unity >=", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityLessThan(String value) {
+            addCriterion("national_unity <", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityLessThanOrEqualTo(String value) {
+            addCriterion("national_unity <=", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityLike(String value) {
+            addCriterion("national_unity like", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityNotLike(String value) {
+            addCriterion("national_unity not like", value, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityIn(List<String> values) {
+            addCriterion("national_unity in", values, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityNotIn(List<String> values) {
+            addCriterion("national_unity not in", values, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityBetween(String value1, String value2) {
+            addCriterion("national_unity between", value1, value2, "nationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andNationalUnityNotBetween(String value1, String value2) {
+            addCriterion("national_unity not between", value1, value2, "nationalUnity");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

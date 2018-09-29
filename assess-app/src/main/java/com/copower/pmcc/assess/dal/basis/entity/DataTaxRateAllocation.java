@@ -23,6 +23,8 @@ public class DataTaxRateAllocation {
 
     private String taxRate;
 
+    private String nationalUnity;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class DataTaxRateAllocation {
 
     public void setTaxRate(String taxRate) {
         this.taxRate = taxRate == null ? null : taxRate.trim();
+    }
+
+    public String getNationalUnity() {
+        return nationalUnity;
+    }
+
+    public void setNationalUnity(String nationalUnity) {
+        this.nationalUnity = nationalUnity == null ? null : nationalUnity.trim();
     }
 }
