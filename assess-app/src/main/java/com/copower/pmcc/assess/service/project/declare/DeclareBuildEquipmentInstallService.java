@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEquipmentInstallVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -51,9 +53,7 @@ public class DeclareBuildEquipmentInstallService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+    private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEquipmentInstallDao declareBuildEquipmentInstallDao;
 
@@ -210,5 +210,27 @@ public class DeclareBuildEquipmentInstallService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareBuildEquipmentInstall query = new DeclareBuildEquipmentInstall();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareBuildEquipmentInstall> lists = declareBuildEquipmentInstallDao.getDeclareBuildEquipmentInstallList(query);
+        for (DeclareBuildEquipmentInstall oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setOwnership(oo.getOccupancyUnit());
+            declareRecord.setSeat(oo.getBeLocated());
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 }

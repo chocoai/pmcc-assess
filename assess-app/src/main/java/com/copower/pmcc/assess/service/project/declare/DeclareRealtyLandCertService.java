@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
@@ -68,6 +69,8 @@ public class DeclareRealtyLandCertService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareInfoService declareInfoService;
 
     /**
      * 功能描述: 关联房产证
@@ -477,5 +480,9 @@ public class DeclareRealtyLandCertService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+
     }
 }

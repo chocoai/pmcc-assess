@@ -37,6 +37,21 @@ public class DeclareRecordService {
     @Autowired
     private ErpAreaService erpAreaService;
 
+    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord)throws Exception{
+        if (declareRecord==null){
+            throw new Exception("null point");
+        }
+        if (org.springframework.util.StringUtils.isEmpty(declareRecord.getCreator())){
+            declareRecord.setCreator(commonService.thisUserAccount());
+        }
+        if (declareRecord.getId()==null || declareRecord.getId().intValue()==0){
+            return declareRecordDao.saveReturnId(declareRecord);
+        }else {
+            declareRecordDao.updateDeclareRecord(declareRecord);
+            return null;
+        }
+    }
+
     /**
      * 申报记录信息按区域分组
      *

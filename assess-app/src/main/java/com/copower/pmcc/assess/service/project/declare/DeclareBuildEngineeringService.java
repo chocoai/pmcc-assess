@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEngineeringVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -57,6 +59,8 @@ public class DeclareBuildEngineeringService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DeclareBuildEngineeringDao declareBuildEngineeringDao;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public String importData(DeclareBuildEngineering declareBuildEngineering, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -177,21 +181,21 @@ public class DeclareBuildEngineeringService {
         if (StringUtils.isNotBlank(declareBuildEngineering.getProvince())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getProvince())) {
                 vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEngineering.getProvince()));//省
-            }else {
+            } else {
                 vo.setProvinceName(declareBuildEngineering.getProvince());//省
             }
         }
         if (StringUtils.isNotBlank(declareBuildEngineering.getCity())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getCity())) {
                 vo.setCityName(erpAreaService.getSysAreaName(declareBuildEngineering.getCity()));//市或者县
-            }else {
+            } else {
                 vo.setCityName(declareBuildEngineering.getCity());//市或者县
             }
         }
         if (StringUtils.isNotBlank(declareBuildEngineering.getDistrict())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getDistrict())) {
                 vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEngineering.getDistrict()));//县
-            }else {
+            } else {
                 vo.setDistrictName(declareBuildEngineering.getDistrict());//县
             }
         }
@@ -209,5 +213,29 @@ public class DeclareBuildEngineeringService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareBuildEngineering query = new DeclareBuildEngineering();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareBuildEngineering> lists = declareBuildEngineeringDao.getDeclareBuildEngineeringList(query);
+        for (DeclareBuildEngineering oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setOwnership(oo.getOccupancyUnit());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getBuildArea());
+            
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 }

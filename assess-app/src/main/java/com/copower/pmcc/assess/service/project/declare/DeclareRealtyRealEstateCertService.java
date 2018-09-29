@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -61,6 +62,8 @@ public class DeclareRealtyRealEstateCertService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareInfoService declareInfoService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -258,6 +261,10 @@ public class DeclareRealtyRealEstateCertService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+
     }
 
 
