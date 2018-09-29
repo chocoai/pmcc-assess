@@ -23,7 +23,9 @@ public class DeclareRealtyRealEstateCertDto {
 
     private String district;
 
-    private Integer type;
+    private String certName;
+
+    private String type;
 
     private String location;
 
@@ -57,6 +59,8 @@ public class DeclareRealtyRealEstateCertDto {
 
     private BigDecimal floorArea;
 
+    private BigDecimal evidenceArea;
+
     private BigDecimal innerArea;
 
     private String other;
@@ -82,26 +86,6 @@ public class DeclareRealtyRealEstateCertDto {
     private Date registrationDate;
 
     private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
-    private String useRightType;
-
-    private BigDecimal acquisitionPrice;
-
-    private String purpose;
-    @DateTimeFormat( pattern = "yyyy-MM-dd" )
-    private Date terminationDate;
-
-    private String memo;
-
-    private String apportionmentArea;
-
-    private String acreage;
-
-    private String useRightArea;
 
     public Integer getId() {
         return id;
@@ -151,11 +135,19 @@ public class DeclareRealtyRealEstateCertDto {
         this.district = district;
     }
 
-    public Integer getType() {
+    public String getCertName() {
+        return certName;
+    }
+
+    public void setCertName(String certName) {
+        this.certName = certName;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -287,6 +279,14 @@ public class DeclareRealtyRealEstateCertDto {
         this.floorArea = floorArea;
     }
 
+    public BigDecimal getEvidenceArea() {
+        return evidenceArea;
+    }
+
+    public void setEvidenceArea(BigDecimal evidenceArea) {
+        this.evidenceArea = evidenceArea;
+    }
+
     public BigDecimal getInnerArea() {
         return innerArea;
     }
@@ -389,85 +389,5 @@ public class DeclareRealtyRealEstateCertDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    public String getUseRightType() {
-        return useRightType;
-    }
-
-    public void setUseRightType(String useRightType) {
-        this.useRightType = useRightType;
-    }
-
-    public BigDecimal getAcquisitionPrice() {
-        return acquisitionPrice;
-    }
-
-    public void setAcquisitionPrice(BigDecimal acquisitionPrice) {
-        this.acquisitionPrice = acquisitionPrice;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public Date getTerminationDate() {
-        return terminationDate;
-    }
-
-    public void setTerminationDate(Date terminationDate) {
-        this.terminationDate = terminationDate;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public String getApportionmentArea() {
-        return apportionmentArea;
-    }
-
-    public void setApportionmentArea(String apportionmentArea) {
-        this.apportionmentArea = apportionmentArea;
-    }
-
-    public String getAcreage() {
-        return acreage;
-    }
-
-    public void setAcreage(String acreage) {
-        this.acreage = acreage;
-    }
-
-    public String getUseRightArea() {
-        return useRightArea;
-    }
-
-    public void setUseRightArea(String useRightArea) {
-        this.useRightArea = useRightArea;
     }
 }

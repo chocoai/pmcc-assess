@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dto.input.project.declare;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,15 +19,13 @@ public class DeclareRealtyLandCertDto {
 
     private String landCertName;
 
-    private String certName;
-
     private String province;
 
     private String city;
 
     private String district;
 
-    private Integer type;
+    private String type;
 
     private String location;
 
@@ -58,21 +57,25 @@ public class DeclareRealtyLandCertDto {
 
     private String useRightType;
 
-    private String acquisitionPrice;
+    private BigDecimal acquisitionPrice;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date terminationDate;
 
-    private String useRightArea;
+    private BigDecimal useRightArea;
 
-    private String acreage;
+    private BigDecimal acreage;
 
-    private String apportionmentArea;
+    private BigDecimal apportionmentArea;
 
     private String memo;
 
     private String registrationAuthority;
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
+
+    private String enable;
+
+    private String creator;
 
     public Integer getId() {
         return id;
@@ -106,14 +109,6 @@ public class DeclareRealtyLandCertDto {
         this.landCertName = landCertName;
     }
 
-    public String getCertName() {
-        return certName;
-    }
-
-    public void setCertName(String certName) {
-        this.certName = certName;
-    }
-
     public String getProvince() {
         return province;
     }
@@ -138,11 +133,11 @@ public class DeclareRealtyLandCertDto {
         this.district = district;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -266,11 +261,11 @@ public class DeclareRealtyLandCertDto {
         this.useRightType = useRightType;
     }
 
-    public String getAcquisitionPrice() {
+    public BigDecimal getAcquisitionPrice() {
         return acquisitionPrice;
     }
 
-    public void setAcquisitionPrice(String acquisitionPrice) {
+    public void setAcquisitionPrice(BigDecimal acquisitionPrice) {
         this.acquisitionPrice = acquisitionPrice;
     }
 
@@ -282,27 +277,27 @@ public class DeclareRealtyLandCertDto {
         this.terminationDate = terminationDate;
     }
 
-    public String getUseRightArea() {
+    public BigDecimal getUseRightArea() {
         return useRightArea;
     }
 
-    public void setUseRightArea(String useRightArea) {
+    public void setUseRightArea(BigDecimal useRightArea) {
         this.useRightArea = useRightArea;
     }
 
-    public String getAcreage() {
+    public BigDecimal getAcreage() {
         return acreage;
     }
 
-    public void setAcreage(String acreage) {
+    public void setAcreage(BigDecimal acreage) {
         this.acreage = acreage;
     }
 
-    public String getApportionmentArea() {
+    public BigDecimal getApportionmentArea() {
         return apportionmentArea;
     }
 
-    public void setApportionmentArea(String apportionmentArea) {
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
         this.apportionmentArea = apportionmentArea;
     }
 
@@ -328,5 +323,21 @@ public class DeclareRealtyLandCertDto {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

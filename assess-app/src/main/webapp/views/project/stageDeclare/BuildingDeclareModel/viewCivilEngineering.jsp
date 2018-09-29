@@ -21,8 +21,11 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)">下载模板</a></li>
-                        <li><a class="btn btn-default" onclick="$('#civilEngineeringUpload').val('').trigger('click')">导入</a></li>
+                        <li><a class="btn"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)">下载模板</a>
+                        </li>
+                        <li><a class="btn btn-default" onclick="$('#civilEngineeringUpload').val('').trigger('click')">导入</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -45,7 +48,8 @@
         </form>
     </div>
 </div>
-<input type="file" id="civilEngineeringUpload" name="file" style="display: none;" onchange="civilEngineering.inputFile();">
+<input type="file" id="civilEngineeringUpload" name="file" style="display: none;"
+       onchange="civilEngineering.inputFile();">
 <script>
     /**
      * @author:  zch
@@ -58,42 +62,42 @@
         table: "civilEngineeringTableList",
         box: "civilEngineeringBox",
         fileId: "civilEngineeringFileId",
-        excelUpload:"civilEngineeringUpload",
+        excelUpload: "civilEngineeringUpload",
         declareBuildingConstructionPermit: {
             box: "declareBuildingConstructionPermitBox",
             frm: "declareBuildingConstructionPermitFrm",
             fileId: "declareBuildingConstructionPermitFileId",
             name: "建筑工程施工许可证"
         },
-        declarePreSalePermit:{
-            box:"declarePreSalePermitBox",
-            frm:"declarePreSalePermitFrm",
-            fileId:"declarePreSalePermitFileId",
+        declarePreSalePermit: {
+            box: "declarePreSalePermitBox",
+            frm: "declarePreSalePermitFrm",
+            fileId: "declarePreSalePermitFileId",
             name: "商品房预售许可证"
         },
-        declareLandUsePermit:{
-            box:"declareLandUsePermitBox",
-            frm:"declareLandUsePermitFrm",
-            fileId:"declareLandUsePermitFileId",
-            name:"建设用地规划许可证"
+        declareLandUsePermit: {
+            box: "declareLandUsePermitBox",
+            frm: "declareLandUsePermitFrm",
+            fileId: "declareLandUsePermitFileId",
+            name: "建设用地规划许可证"
         },
-        declareBuildingPermit:{
-            box:"declareBuildingPermitBox",
-            frm:"declareBuildingPermitFrm",
-            fileId:"declareBuildingPermitFileId",
-            name:"建设工程规划许可证"
+        declareBuildingPermit: {
+            box: "declareBuildingPermitBox",
+            frm: "declareBuildingPermitFrm",
+            fileId: "declareBuildingPermitFileId",
+            name: "建设工程规划许可证"
         },
-        declareRealtyLandCert:{
-            box:"declareRealtyLandCertBox",
-            frm:"declareRealtyLandCertFrm",
-            fileId:"declareRealtyLandCertFileId",
-            name:"土地证"
+        declareRealtyLandCert: {
+            box: "declareRealtyLandCertBox",
+            frm: "declareRealtyLandCertFrm",
+            fileId: "declareRealtyLandCertFileId",
+            name: "土地证"
         },
-        declareRealtyRealEstateCert:{
-            box:"declareRealtyRealEstateCertBox",
-            frm:"declareRealtyRealEstateCertFrm",
-            fileId:"declareRealtyRealEstateCertFileId",
-            name:"不动产"
+        declareRealtyRealEstateCert: {
+            box: "declareRealtyRealEstateCertBox",
+            frm: "declareRealtyRealEstateCertFrm",
+            fileId: "declareRealtyRealEstateCertFileId",
+            name: "不动产"
         }
     };
 
@@ -306,39 +310,39 @@
     };
 
     /**
-    * @author:  zch
-    * 描述:不动产
-    * @date:2018-09-28
-    **/
+     * @author:  zch
+     * 描述:不动产
+     * @date:2018-09-28
+     **/
     civilEngineering.declareRealtyRealEstateCertRoleBeLocated = {
-        init:function () {
+        init: function () {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
@@ -352,7 +356,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var temp = "";
             var district = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .district").eq(1).val();
             var unit = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val();
@@ -407,14 +411,14 @@
         }
     };
     civilEngineering.declareRealtyRealEstateCertRoleCertName = {
-        init:function () {
+        init: function () {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleCertName.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val())) {
                     civilEngineering.declareRealtyRealEstateCertRoleCertName.write();
                 }
             });
@@ -428,7 +432,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var location = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val();
             var number = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val();
             var id = $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " .type").eq(1).val();
@@ -466,21 +470,21 @@
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
         });
         civilEngineering.declareRealtyRealEstateCertRoleCertName.init();
         civilEngineering.declareRealtyRealEstateCertRoleBeLocated.init();
     };
     civilEngineering.declareRealtyRealEstateCertView = function (id) {
-        if (civilEngineering.declareRealtyRealEstateCertFlag){
+        if (civilEngineering.declareRealtyRealEstateCertFlag) {
             civilEngineering.declareRealtyRealEstateCertInit();
             civilEngineering.declareRealtyRealEstateCertFlag = false;
         }
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var realEstateId = item.realEstateId ;
+        var realEstateId = item.realEstateId;
         $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).clearAll();
-        if (civilEngineering.isEmpty(realEstateId)){
+        if (civilEngineering.isEmpty(realEstateId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
                 type: "get",
@@ -492,9 +496,9 @@
                         if (civilEngineering.isEmpty(data)) {
                             data.pidC = id;
                             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).initForm(data);
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm,data.purpose,"purpose");
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm,data.type,"type");
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm,data.useRightType,"useRightType");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.purpose, "purpose");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.type, "type");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyRealEstateCert.frm, data.useRightType, "useRightType");
                             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
                             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
                             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
@@ -509,7 +513,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).initForm({pidC: id});
             civilEngineering.showFile(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
             civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
@@ -553,34 +557,34 @@
      * @date:2018-09-28
      **/
     civilEngineering.declareRealtyLandCertCertRoleBeLocated = {
-        init:function () {
+        init: function () {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='floor']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
@@ -594,7 +598,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var temp = null;
             var district = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .district").eq(1).val();
             var unit = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='unit']").val();
@@ -649,19 +653,19 @@
         }
     };
     civilEngineering.declareRealtyLandCertCertRoleCertName = {
-        init:function () {
+        init: function () {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").blur(function () {
-                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").val())){
+                if (civilEngineering.isEmpty($("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='number']").val())) {
                     civilEngineering.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
@@ -675,8 +679,8 @@
                 }
             });
         },
-        write:function () {
-            var temp = "" ;
+        write: function () {
+            var temp = "";
             var id = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " .type").eq(1).val();
             var location = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='location']").val();
             var year = $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='year']").val();
@@ -684,12 +688,12 @@
             if (civilEngineering.isEmpty(id)) {
                 AssessCommon.getProjectClassifyInfo(id, function (data) {
                     if (civilEngineering.isEmpty(data)) {
-                        var temp = location +  data.name +year+ "第" + number + "号";
+                        var temp = location + data.name + year + "第" + number + "号";
                         $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
                     }
                 });
             } else {
-                var temp = location +  year+ "第" + number + "号";
+                var temp = location + year + "第" + number + "号";
                 $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
             }
         }
@@ -706,21 +710,21 @@
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
         });
         civilEngineering.declareRealtyLandCertCertRoleCertName.init();
         civilEngineering.declareRealtyLandCertCertRoleBeLocated.init();
     };
     civilEngineering.declareRealtyLandCertView = function (id) {
-        if (civilEngineering.declareRealtyLandCertFlag){
+        if (civilEngineering.declareRealtyLandCertFlag) {
             civilEngineering.declareRealtyLandCertInit();
             civilEngineering.declareRealtyLandCertFlag = false;
         }
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var landId = item.landId ;
+        var landId = item.landId;
         $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).clearAll();
-        if (civilEngineering.isEmpty(landId)){
+        if (civilEngineering.isEmpty(landId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
                 type: "get",
@@ -732,9 +736,9 @@
                         if (civilEngineering.isEmpty(data)) {
                             data.pidC = id;
                             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).initForm(data);
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm,data.purpose,"purpose");
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm,data.type,"type");
-                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm,data.useRightType,"useRightType");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.purpose, "purpose");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.type, "type");
+                            civilEngineering.objectWriteSelectData(civilEngineeringConfig.declareRealtyLandCert.frm, data.useRightType, "useRightType");
                             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
                             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                             civilEngineering.showFile(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
@@ -746,7 +750,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).initForm({pidC: id});
             civilEngineering.showFile(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
             civilEngineering.fileUpload(civilEngineeringConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
@@ -792,8 +796,8 @@
     civilEngineering.declareBuildingPermitView = function (id) {
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareBuildingPermit.frm).clearAll();
-        var buildingPermitId = item.buildingPermitId ;
-        if (civilEngineering.isEmpty(buildingPermitId)){
+        var buildingPermitId = item.buildingPermitId;
+        if (civilEngineering.isEmpty(buildingPermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
                 type: "get",
@@ -815,7 +819,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm({pid: id});
             civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
             civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
@@ -867,8 +871,8 @@
     civilEngineering.declareLandUsePermitView = function (id) {
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareLandUsePermit.frm).clearAll();
-        var landUsePermitId = item.landUsePermitId ;
-        if (civilEngineering.isEmpty(landUsePermitId)){
+        var landUsePermitId = item.landUsePermitId;
+        if (civilEngineering.isEmpty(landUsePermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
                 type: "get",
@@ -890,7 +894,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm({pid: id});
             civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
             civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
@@ -943,7 +947,7 @@
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declarePreSalePermit.frm).clearAll();
         var preSalePermitId = item.preSalePermitId;
-        if (civilEngineering.isEmpty(preSalePermitId)){
+        if (civilEngineering.isEmpty(preSalePermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
                 type: "get",
@@ -965,7 +969,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm({pid: id});
             civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
             civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
@@ -1099,16 +1103,19 @@
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="civilEngineering.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-remove fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="civilEngineering.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证' onclick='civilEngineering.declareRealtyLandCertView(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建设工程规划许可证' onclick='civilEngineering.declareBuildingPermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建设工程规划许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建设用地规划许可证' onclick='civilEngineering.declareLandUsePermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建设用地规划许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑工程施工许可证' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建筑工程施工许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='商品房预售许可证' onclick='civilEngineering.declarePreSalePermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "商品房预售许可证" + "</a>";
-                str += '</div>';
+                var str = '<div class="dropdown">';
+                str += "<button class='btn dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
+                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>" ;
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" +row.id+")'"+">"+"删除"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" +row.id+")'"+">"+"编辑"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" +row.id+")'"+">"+"土地证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" +row.id+")'"+">"+"不动产"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" +row.id+")'"+">"+"建设工程规划许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "</ul>" ;
+                str += "</div>";
                 return str;
             }
         });
@@ -1126,10 +1133,10 @@
     };
 
     /**
-    * @author:  zch
-    * 描述:导入
-    * @date:2018-09-28
-    **/
+     * @author:  zch
+     * 描述:导入
+     * @date:2018-09-28
+     **/
     civilEngineering.inputFile = function () {
         $.ajaxFileUpload({
             type: "POST",
@@ -1138,11 +1145,11 @@
                 planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
-            fileElementId:civilEngineeringConfig.excelUpload,//文件选择框的id属性
+            fileElementId: civilEngineeringConfig.excelUpload,//文件选择框的id属性
             dataType: 'json',//服务器返回的格式
             async: false,
             success: function (result) {
-                if (result.ret){
+                if (result.ret) {
                     civilEngineering.loadList();
                     toastr.success(result.data);
                 }
@@ -1237,7 +1244,7 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建设位置"  name="location" class="form-control"
+                                                   placeholder="建设位置" name="location" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1381,7 +1388,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="用地面积" data-rule-maxlength="100" data-rule-number='true' name="area" class="form-control"
+                                                   placeholder="用地面积" data-rule-maxlength="100" data-rule-number='true'
+                                                   name="area" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1517,7 +1525,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="预售面积(数字)" data-rule-maxlength="100" data-rule-number='true' name="preSaleArea" class="form-control"
+                                                   placeholder="预售面积(数字)" data-rule-maxlength="100"
+                                                   data-rule-number='true' name="preSaleArea" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1547,7 +1556,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="预售款监管信息" name="preSaleSupervisionInformation" class="form-control"
+                                                   placeholder="预售款监管信息" name="preSaleSupervisionInformation"
+                                                   class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -2155,7 +2165,8 @@
                                             所在地
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" name="location" required="required" class="form-control" placeholder="所在地">
+                                            <input type="text" name="location" required="required" class="form-control"
+                                                   placeholder="所在地">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2163,7 +2174,8 @@
                                             土地使用权人
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" name="ownership" required="required"  class="form-control" placeholder="土地使用权人">
+                                            <input type="text" name="ownership" required="required" class="form-control"
+                                                   placeholder="土地使用权人">
                                         </div>
                                     </div>
                                 </div>
@@ -2173,7 +2185,8 @@
                                             土地权证号
                                         </label>
                                         <div class="col-sm-11">
-                                            <input type="text" name="landCertName" readonly="readonly" class="form-control" placeholder="土地权证号">
+                                            <input type="text" name="landCertName" readonly="readonly"
+                                                   class="form-control" placeholder="土地权证号">
                                         </div>
                                     </div>
                                 </div>
@@ -2193,7 +2206,9 @@
                                             年份
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" required="required" data-rule-maxlength="100" data-rule-number='true' name="year" class="form-control" placeholder="年份(数字如:2018)">
+                                            <input type="text" required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true' name="year" class="form-control"
+                                                   placeholder="年份(数字如:2018)">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2201,7 +2216,8 @@
                                             编号
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" required="required" name="number" class="form-control" placeholder="编号">
+                                            <input type="text" required="required" name="number" class="form-control"
+                                                   placeholder="编号">
                                         </div>
                                     </div>
                                 </div>
@@ -2329,7 +2345,8 @@
                                             使用权类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                            <select required="required" name="useRightType"
+                                                    class="form-control search-select select2 useRightType">
                                                 <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
@@ -2437,7 +2454,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="civilEngineering.declareRealtyLandCertSaveAndUpdate();">
+                    <button type="button" class="btn btn-primary"
+                            onclick="civilEngineering.declareRealtyLandCertSaveAndUpdate();">
                         保存
                     </button>
                 </div>
@@ -2572,7 +2590,8 @@
                                         <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control" data-rule-maxlength="100" data-rule-number='true'
+                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control"
+                                                   data-rule-maxlength="100" data-rule-number='true'
                                                    required="required">
                                         </div>
                                     </div>
@@ -2694,7 +2713,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="总层数(数字)" name="floorCount" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2702,7 +2722,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2710,7 +2731,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="套内面积(数字)" name="innerArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -2770,7 +2792,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="公摊面积(数字)" name="publicArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -2853,7 +2876,8 @@
                                             使用权类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                            <select required="required" name="useRightType"
+                                                    class="form-control search-select select2 useRightType">
                                                 <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
@@ -2922,7 +2946,8 @@
                                             附件<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-5">
-                                            <input id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
+                                            <input id="declareRealtyRealEstateCertFileId"
+                                                   name="declareRealtyRealEstateCertFileId"
                                                    required="required" placeholder="附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyRealEstateCertFileId"></div>
@@ -2938,7 +2963,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <label class="btn btn-primary" onclick="civilEngineering.declareRealtyRealEstateCertSaveAndUpdate()">
+                    <label class="btn btn-primary"
+                           onclick="civilEngineering.declareRealtyRealEstateCertSaveAndUpdate()">
                         保存
                     </label>
                 </div>

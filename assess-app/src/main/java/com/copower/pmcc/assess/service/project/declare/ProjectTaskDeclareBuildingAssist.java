@@ -37,7 +37,7 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareBuildingIndex", "", 0, "0", "");
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份....
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
@@ -45,12 +45,16 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareBuildingApproval", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareBuildingIndex", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 
@@ -62,6 +66,8 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageDeclare/taskDeclareBuildingApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails);
         return modelAndView;
     }
 

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareBuildEngineeringDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -14,6 +15,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * @Auther: zch
@@ -130,5 +136,23 @@ public class DeclareBuildEngineeringController {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importData", name = "导入土建", method = RequestMethod.POST)
+    public HttpResult importData(HttpServletRequest request, DeclareBuildEngineering oo) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = declareBuildEngineeringService.importData(oo,multipartFile);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
     }
 }

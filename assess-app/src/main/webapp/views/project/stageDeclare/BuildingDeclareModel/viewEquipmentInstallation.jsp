@@ -1090,16 +1090,19 @@
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="equipmentInstallation.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-remove fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="equipmentInstallation.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证' onclick='equipmentInstallation.declareRealtyLandCertView(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产' onclick='equipmentInstallation.declareRealtyRealEstateCertView(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建设工程规划许可证' onclick='equipmentInstallation.declareBuildingPermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建设工程规划许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建设用地规划许可证' onclick='equipmentInstallation.declareLandUsePermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建设用地规划许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑工程施工许可证' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "建筑工程施工许可证" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='商品房预售许可证' onclick='equipmentInstallation.declarePreSalePermitView(" + row.id + ")'" + ">" + "<i class='fa'>" + "商品房预售许可证" + "</a>";
-                str += '</div>';
+                var str = '<div class="dropdown">';
+                str += "<button class='btn dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
+                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>" ;
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" +row.id+")'"+">"+"删除"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" +row.id+")'"+">"+"编辑"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyLandCertView(" +row.id+")'"+">"+"土地证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyRealEstateCertView(" +row.id+")'"+">"+"不动产"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingPermitView(" +row.id+")'"+">"+"建设工程规划许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "</ul>" ;
+                str += "</div>";
                 return str;
             }
         });
