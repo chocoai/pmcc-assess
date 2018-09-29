@@ -8,7 +8,9 @@ public class DeclareRecord {
 
     private Integer projectId;
 
-    private Integer projectClassifyId;
+    private String dataTableName;
+
+    private Integer dataTableId;
 
     private String province;
 
@@ -22,9 +24,9 @@ public class DeclareRecord {
 
     private String seat;
 
-    private Integer certUse;
+    private String certUse;
 
-    private Integer practicalUse;
+    private String practicalUse;
 
     private BigDecimal floorArea;
 
@@ -66,12 +68,20 @@ public class DeclareRecord {
         this.projectId = projectId;
     }
 
-    public Integer getProjectClassifyId() {
-        return projectClassifyId;
+    public String getDataTableName() {
+        return dataTableName;
     }
 
-    public void setProjectClassifyId(Integer projectClassifyId) {
-        this.projectClassifyId = projectClassifyId;
+    public void setDataTableName(String dataTableName) {
+        this.dataTableName = dataTableName == null ? null : dataTableName.trim();
+    }
+
+    public Integer getDataTableId() {
+        return dataTableId;
+    }
+
+    public void setDataTableId(Integer dataTableId) {
+        this.dataTableId = dataTableId;
     }
 
     public String getProvince() {
@@ -122,20 +132,20 @@ public class DeclareRecord {
         this.seat = seat == null ? null : seat.trim();
     }
 
-    public Integer getCertUse() {
+    public String getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(Integer certUse) {
-        this.certUse = certUse;
+    public void setCertUse(String certUse) {
+        this.certUse = certUse == null ? null : certUse.trim();
     }
 
-    public Integer getPracticalUse() {
+    public String getPracticalUse() {
         return practicalUse;
     }
 
-    public void setPracticalUse(Integer practicalUse) {
-        this.practicalUse = practicalUse;
+    public void setPracticalUse(String practicalUse) {
+        this.practicalUse = practicalUse == null ? null : practicalUse.trim();
     }
 
     public BigDecimal getFloorArea() {

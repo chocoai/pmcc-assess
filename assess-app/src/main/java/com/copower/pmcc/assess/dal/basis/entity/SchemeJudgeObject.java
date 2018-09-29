@@ -26,9 +26,9 @@ public class SchemeJudgeObject {
 
     private String seat;
 
-    private Integer certUse;
+    private String certUse;
 
-    private Integer practicalUse;
+    private String practicalUse;
 
     private Integer setUse;
 
@@ -142,20 +142,20 @@ public class SchemeJudgeObject {
         this.seat = seat == null ? null : seat.trim();
     }
 
-    public Integer getCertUse() {
+    public String getCertUse() {
         return certUse;
     }
 
-    public void setCertUse(Integer certUse) {
-        this.certUse = certUse;
+    public void setCertUse(String certUse) {
+        this.certUse = certUse == null ? null : certUse.trim();
     }
 
-    public Integer getPracticalUse() {
+    public String getPracticalUse() {
         return practicalUse;
     }
 
-    public void setPracticalUse(Integer practicalUse) {
-        this.practicalUse = practicalUse;
+    public void setPracticalUse(String practicalUse) {
+        this.practicalUse = practicalUse == null ? null : practicalUse.trim();
     }
 
     public Integer getSetUse() {

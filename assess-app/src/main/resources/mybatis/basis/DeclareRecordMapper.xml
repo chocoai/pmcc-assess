@@ -4,15 +4,16 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="project_classify_id" property="projectClassifyId" jdbcType="INTEGER" />
+    <result column="data_table_name" property="dataTableName" jdbcType="VARCHAR" />
+    <result column="data_table_id" property="dataTableId" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
-    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
-    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
+    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="house_use_end_date" property="houseUseEndDate" jdbcType="TIMESTAMP" />
@@ -85,8 +86,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, project_classify_id, province, city, district, name, ownership, seat, 
-    cert_use, practical_use, floor_area, area_group_id, house_use_end_date, land_use_end_date, 
+    id, project_id, data_table_name, data_table_id, province, city, district, name, ownership, 
+    seat, cert_use, practical_use, floor_area, area_group_id, house_use_end_date, land_use_end_date, 
     assess_area, assess_unit_price, already_out_area, inventory_content_key, bis_generate_all, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -124,22 +125,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_record (project_id, project_classify_id, province, 
-      city, district, name, 
-      ownership, seat, cert_use, 
-      practical_use, floor_area, area_group_id, 
-      house_use_end_date, land_use_end_date, assess_area, 
-      assess_unit_price, already_out_area, inventory_content_key, 
-      bis_generate_all, creator, gmt_created, 
-      gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{projectClassifyId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, 
-      #{practicalUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, #{areaGroupId,jdbcType=INTEGER}, 
-      #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, #{assessArea,jdbcType=DECIMAL}, 
-      #{assessUnitPrice,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, #{inventoryContentKey,jdbcType=VARCHAR}, 
-      #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_declare_record (project_id, data_table_name, data_table_id, 
+      province, city, district, 
+      name, ownership, seat, 
+      cert_use, practical_use, floor_area, 
+      area_group_id, house_use_end_date, land_use_end_date, 
+      assess_area, assess_unit_price, already_out_area, 
+      inventory_content_key, bis_generate_all, creator, 
+      gmt_created, gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, 
+      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
+      #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
+      #{assessArea,jdbcType=DECIMAL}, #{assessUnitPrice,jdbcType=DECIMAL}, #{alreadyOutArea,jdbcType=DECIMAL}, 
+      #{inventoryContentKey,jdbcType=VARCHAR}, #{bisGenerateAll,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -150,8 +151,11 @@
       <if test="projectId != null" >
         project_id,
       </if>
-      <if test="projectClassifyId != null" >
-        project_classify_id,
+      <if test="dataTableName != null" >
+        data_table_name,
+      </if>
+      <if test="dataTableId != null" >
+        data_table_id,
       </if>
       <if test="province != null" >
         province,
@@ -218,8 +222,11 @@
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="projectClassifyId != null" >
-        #{projectClassifyId,jdbcType=INTEGER},
+      <if test="dataTableName != null" >
+        #{dataTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataTableId != null" >
+        #{dataTableId,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
@@ -240,10 +247,10 @@
         #{seat,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        #{certUse,jdbcType=INTEGER},
+        #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=INTEGER},
+        #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="floorArea != null" >
         #{floorArea,jdbcType=DECIMAL},
@@ -298,8 +305,11 @@
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectClassifyId != null" >
-        project_classify_id = #{record.projectClassifyId,jdbcType=INTEGER},
+      <if test="record.dataTableName != null" >
+        data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataTableId != null" >
+        data_table_id = #{record.dataTableId,jdbcType=INTEGER},
       </if>
       <if test="record.province != null" >
         province = #{record.province,jdbcType=VARCHAR},
@@ -320,10 +330,10 @@
         seat = #{record.seat,jdbcType=VARCHAR},
       </if>
       <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=INTEGER},
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
       </if>
       <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=INTEGER},
+        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="record.floorArea != null" >
         floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -370,15 +380,16 @@
     update tb_declare_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
-      project_classify_id = #{record.projectClassifyId,jdbcType=INTEGER},
+      data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{record.dataTableId,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       seat = #{record.seat,jdbcType=VARCHAR},
-      cert_use = #{record.certUse,jdbcType=INTEGER},
-      practical_use = #{record.practicalUse,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=VARCHAR},
+      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       house_use_end_date = #{record.houseUseEndDate,jdbcType=TIMESTAMP},
@@ -401,8 +412,11 @@
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="projectClassifyId != null" >
-        project_classify_id = #{projectClassifyId,jdbcType=INTEGER},
+      <if test="dataTableName != null" >
+        data_table_name = #{dataTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataTableId != null" >
+        data_table_id = #{dataTableId,jdbcType=INTEGER},
       </if>
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
@@ -423,10 +437,10 @@
         seat = #{seat,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=INTEGER},
+        cert_use = #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=INTEGER},
+        practical_use = #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="floorArea != null" >
         floor_area = #{floorArea,jdbcType=DECIMAL},
@@ -470,15 +484,16 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
     update tb_declare_record
     set project_id = #{projectId,jdbcType=INTEGER},
-      project_classify_id = #{projectClassifyId,jdbcType=INTEGER},
+      data_table_name = #{dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{dataTableId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       seat = #{seat,jdbcType=VARCHAR},
-      cert_use = #{certUse,jdbcType=INTEGER},
-      practical_use = #{practicalUse,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=VARCHAR},
+      practical_use = #{practicalUse,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       area_group_id = #{areaGroupId,jdbcType=INTEGER},
       house_use_end_date = #{houseUseEndDate,jdbcType=TIMESTAMP},
