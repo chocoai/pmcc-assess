@@ -76,7 +76,6 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
                         for (Map<String, Object> map : mapList) {
                             //记录申报数据
                             DeclareRecord declareRecord = new DeclareRecord();
-                            declareRecord.setProjectClassifyId(declareUseClassify.getProjectClassifyId());
                             declareRecord.setProjectId(declareInfo.getProjectId());
                             //申报数据特定字段记录
                             if (map.containsKey(AssessFieldNameConstant.DECLARE_RECORD_NAME)) {
