@@ -10,6 +10,8 @@ public class MdIncomeLeaseCost {
 
     private Integer sectionId;
 
+    private BigDecimal replacementValue;
+
     private String managementCost;
 
     private BigDecimal managementCostRatio;
@@ -18,19 +20,17 @@ public class MdIncomeLeaseCost {
 
     private BigDecimal maintenanceCostRatio;
 
-    private BigDecimal replacementValue;
-
     private String additional;
 
-    private BigDecimal taxRate;
+    private BigDecimal additionalRatio;
 
     private String insurancePremium;
 
-    private BigDecimal insuranceRate;
+    private BigDecimal insurancePremiumRatio;
 
     private String landUseTax;
 
-    private String usageTaxParameter;
+    private String useTaxParameter;
 
     private String creator;
 
@@ -60,6 +60,14 @@ public class MdIncomeLeaseCost {
 
     public void setSectionId(Integer sectionId) {
         this.sectionId = sectionId;
+    }
+
+    public BigDecimal getReplacementValue() {
+        return replacementValue;
+    }
+
+    public void setReplacementValue(BigDecimal replacementValue) {
+        this.replacementValue = replacementValue;
     }
 
     public String getManagementCost() {
@@ -94,14 +102,6 @@ public class MdIncomeLeaseCost {
         this.maintenanceCostRatio = maintenanceCostRatio;
     }
 
-    public BigDecimal getReplacementValue() {
-        return replacementValue;
-    }
-
-    public void setReplacementValue(BigDecimal replacementValue) {
-        this.replacementValue = replacementValue;
-    }
-
     public String getAdditional() {
         return additional;
     }
@@ -110,12 +110,12 @@ public class MdIncomeLeaseCost {
         this.additional = additional == null ? null : additional.trim();
     }
 
-    public BigDecimal getTaxRate() {
-        return taxRate;
+    public BigDecimal getAdditionalRatio() {
+        return additionalRatio;
     }
 
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
+    public void setAdditionalRatio(BigDecimal additionalRatio) {
+        this.additionalRatio = additionalRatio;
     }
 
     public String getInsurancePremium() {
@@ -126,12 +126,12 @@ public class MdIncomeLeaseCost {
         this.insurancePremium = insurancePremium == null ? null : insurancePremium.trim();
     }
 
-    public BigDecimal getInsuranceRate() {
-        return insuranceRate;
+    public BigDecimal getInsurancePremiumRatio() {
+        return insurancePremiumRatio;
     }
 
-    public void setInsuranceRate(BigDecimal insuranceRate) {
-        this.insuranceRate = insuranceRate;
+    public void setInsurancePremiumRatio(BigDecimal insurancePremiumRatio) {
+        this.insurancePremiumRatio = insurancePremiumRatio;
     }
 
     public String getLandUseTax() {
@@ -142,12 +142,12 @@ public class MdIncomeLeaseCost {
         this.landUseTax = landUseTax == null ? null : landUseTax.trim();
     }
 
-    public String getUsageTaxParameter() {
-        return usageTaxParameter;
+    public String getUseTaxParameter() {
+        return useTaxParameter;
     }
 
-    public void setUsageTaxParameter(String usageTaxParameter) {
-        this.usageTaxParameter = usageTaxParameter == null ? null : usageTaxParameter.trim();
+    public void setUseTaxParameter(String useTaxParameter) {
+        this.useTaxParameter = useTaxParameter == null ? null : useTaxParameter.trim();
     }
 
     public String getCreator() {

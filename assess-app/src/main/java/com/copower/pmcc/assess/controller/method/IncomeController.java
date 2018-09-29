@@ -180,20 +180,6 @@ public class IncomeController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @ResponseBody
     @RequestMapping(value = "/getLeaseList", name = "显示列表", method = RequestMethod.GET)
     public BootstrapTableVo getLeaseList(Integer incomeId) {
@@ -201,11 +187,11 @@ public class IncomeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveLease", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult saveLease(String formData) {
+    @RequestMapping(value = "/updateLease", method = {RequestMethod.POST}, name = "修改")
+    public HttpResult updateLease(String formData) {
         try {
             MdIncomeLease mdIncomeLease = JSON.parseObject(formData, MdIncomeLease.class);
-            mdIncomeService.saveLease(mdIncomeLease);
+            mdIncomeService.updateLease(mdIncomeLease);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -213,38 +199,23 @@ public class IncomeController {
         return HttpResult.newCorrectResult();
     }
 
+
     @ResponseBody
-    @RequestMapping(value = "/deleteLease", name = "删除", method = RequestMethod.POST)
-    public HttpResult deleteLease(@RequestParam(value = "id") Integer id) {
-        try {
-            mdIncomeService.deleteLease(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
+    @RequestMapping(value = "/getLeaseCostList", name = "显示列表", method = RequestMethod.GET)
+    public BootstrapTableVo getLeaseCostList(Integer incomeId) {
+        return mdIncomeService.getLeaseCostList(incomeId);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/copyLease", name = "复制", method = RequestMethod.POST)
-    public HttpResult copyLease(@RequestParam(value = "id") Integer id) {
+    @RequestMapping(value = "/updateLeaseCost", method = {RequestMethod.POST}, name = "修改")
+    public HttpResult updateLeaseCost(String formData) {
         try {
-            mdIncomeService.copyLease(id);
+            MdIncomeLeaseCost mdIncomeLease = JSON.parseObject(formData, MdIncomeLeaseCost.class);
+            mdIncomeService.updateLeaseCost(mdIncomeLease);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getAmountMoneyTotal", name = "获取金额合计", method = RequestMethod.POST)
-    public HttpResult getAmountMoneyTotal(Integer supportId, Integer type) {
-        try {
-            return HttpResult.newCorrectResult(mdIncomeService.getAmountMoneyTotal(supportId, type));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
     }
 }

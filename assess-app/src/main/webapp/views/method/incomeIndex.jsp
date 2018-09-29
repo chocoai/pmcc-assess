@@ -177,7 +177,7 @@
         }
         var data = formParams("frm_data_section");
         data.incomeId = $("#frm_income").find('[name=id]').val();
-        data.operationMode = $("#frm_income").find('[name=operationMode]').val();
+        data.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveDateSection",
@@ -189,8 +189,14 @@
                 if (result.ret) {
                     toastr.success('保存成功');
                     incomeIndex.loadDateSectionList(data.operationMode);
-                    selfSupport.loadForecastList(0);
-                    selfSupport.loadForecastList(1);
+                    if (data.operationMode == 0) {
+                        selfSupport.loadForecastList(0);
+                        selfSupport.loadForecastList(1);
+                    }
+                    if (data.operationMode == 1) {
+                        lease.loadLeaseList();
+                        lease.loadLeaseCostList();
+                    }
                     $('#modal_data_section').modal('hide');
                 }
                 else {
@@ -253,7 +259,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         toastr.success('删除成功');
-                        incomeIndex.loadDateSectionList($("#frm_income").find('[name=operationMode]').val());
+                        incomeIndex.loadDateSectionList($("#frm_income").find('[name=operationMode]:checked').val());
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);
@@ -284,8 +290,8 @@
         } else if ($(_this).val() == 1) {
             $("#self_support_info").hide();
             $("#group_leaseMode,#lease_info").show();
-
-
+            lease.loadLeaseList();
+            lease.loadLeaseCostList();
         }
     }
 
@@ -313,7 +319,7 @@
     //表单验证
     incomeIndex.getData = function () {
         var formData = {};
-        var operationMode = $("#frm_income").find('[name=operationMode]').val();
+        var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         if (operationMode == 0) {//自营
             formData = selfSupport.getData();
         }

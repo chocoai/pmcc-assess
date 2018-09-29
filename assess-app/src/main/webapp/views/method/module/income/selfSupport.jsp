@@ -6,7 +6,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>收入类<i class="red" id="amount_money_total_0"></i></h2>
+            <h2>收入类</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -59,7 +59,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>成本类 <i class="red" id="amount_money_total_1"></i></h2>
+            <h2>成本类</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -116,7 +116,6 @@
         </div>
         <div class="x_content">
             <form id="frm_self_support" class="form-horizontal" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="0">
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label" title="报酬率">

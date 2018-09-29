@@ -83,13 +83,13 @@ public class MdIncomeDateSectionService {
                 mdIncomeLease.setIncomeId(mdIncomeDateSection.getIncomeId());
                 mdIncomeLease.setSectionId(mdIncomeDateSection.getId());
                 mdIncomeLease.setCreator(commonService.thisUserAccount());
-                mdIncomeService.saveLease(mdIncomeLease);
+                mdIncomeService.addLease(mdIncomeLease);
 
                 MdIncomeLeaseCost mdIncomeLeaseCost = new MdIncomeLeaseCost();
                 mdIncomeLeaseCost.setIncomeId(mdIncomeDateSection.getIncomeId());
                 mdIncomeLeaseCost.setSectionId(mdIncomeDateSection.getId());
                 mdIncomeLeaseCost.setCreator(commonService.thisUserAccount());
-                mdIncomeService.saveLeaseCost(mdIncomeLeaseCost);
+                mdIncomeService.addLeaseCost(mdIncomeLeaseCost);
             }
         }
     }

@@ -175,9 +175,6 @@
             })
         },
         select2Load: function () {
-            $("#province").select2();
-            $("#city").select2();
-            $("#district").select2();
             //使数据校验生效
             $("#" + dataProperty.prototype.config().frm).validate();
             AssessCommon.initAreaInfo({
@@ -189,12 +186,10 @@
                 districtValue: ''
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.dataTaxRateAllocation, "", function (html, data) {
-                $("#" + dataProperty.prototype.config().frm + " .type").html(html);
-                $("#" + dataProperty.prototype.config().frm + " .type").select2();//加载样式
+                $("#" + dataProperty.prototype.config().frm).find('select.type').html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.dataTaxRateAllocation, "", function (html, data) {
-                $("#frmQuery" + " .type").html(html);
-                $("#frmQuery" + " .type").select2();//加载样式
+                $("#frmQuery").find('select.type').html(html);
             });
         },
         getAndInit: function (id) {

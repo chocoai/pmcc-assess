@@ -5,17 +5,17 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
+    <result column="replacement_value" property="replacementValue" jdbcType="DECIMAL" />
     <result column="management_cost" property="managementCost" jdbcType="VARCHAR" />
     <result column="management_cost_ratio" property="managementCostRatio" jdbcType="DECIMAL" />
     <result column="maintenance" property="maintenance" jdbcType="VARCHAR" />
     <result column="maintenance_cost_ratio" property="maintenanceCostRatio" jdbcType="DECIMAL" />
-    <result column="replacement_value" property="replacementValue" jdbcType="DECIMAL" />
     <result column="additional" property="additional" jdbcType="VARCHAR" />
-    <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="additional_ratio" property="additionalRatio" jdbcType="DECIMAL" />
     <result column="insurance_premium" property="insurancePremium" jdbcType="VARCHAR" />
-    <result column="insurance_rate" property="insuranceRate" jdbcType="DECIMAL" />
+    <result column="insurance_premium_ratio" property="insurancePremiumRatio" jdbcType="DECIMAL" />
     <result column="land_use_tax" property="landUseTax" jdbcType="VARCHAR" />
-    <result column="usage_tax_parameter" property="usageTaxParameter" jdbcType="VARCHAR" />
+    <result column="use_tax_parameter" property="useTaxParameter" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -79,9 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, section_id, management_cost, management_cost_ratio, maintenance, maintenance_cost_ratio, 
-    replacement_value, additional, tax_rate, insurance_premium, insurance_rate, land_use_tax, 
-    usage_tax_parameter, creator, gmt_created, gmt_modified
+    id, income_id, section_id, replacement_value, management_cost, management_cost_ratio, 
+    maintenance, maintenance_cost_ratio, additional, additional_ratio, insurance_premium, 
+    insurance_premium_ratio, land_use_tax, use_tax_parameter, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCostExample" >
     select
@@ -117,18 +117,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_lease_cost (income_id, section_id, management_cost, 
-      management_cost_ratio, maintenance, maintenance_cost_ratio, 
-      replacement_value, additional, tax_rate, 
-      insurance_premium, insurance_rate, land_use_tax, 
-      usage_tax_parameter, creator, gmt_created, 
-      gmt_modified)
-    values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{managementCost,jdbcType=VARCHAR}, 
-      #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, #{maintenanceCostRatio,jdbcType=DECIMAL}, 
-      #{replacementValue,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
-      #{insurancePremium,jdbcType=VARCHAR}, #{insuranceRate,jdbcType=DECIMAL}, #{landUseTax,jdbcType=VARCHAR}, 
-      #{usageTaxParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income_lease_cost (income_id, section_id, replacement_value, 
+      management_cost, management_cost_ratio, maintenance, 
+      maintenance_cost_ratio, additional, additional_ratio, 
+      insurance_premium, insurance_premium_ratio, 
+      land_use_tax, use_tax_parameter, creator, 
+      gmt_created, gmt_modified)
+    values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{replacementValue,jdbcType=DECIMAL}, 
+      #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
+      #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
+      #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
+      #{landUseTax,jdbcType=VARCHAR}, #{useTaxParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +142,9 @@
       <if test="sectionId != null" >
         section_id,
       </if>
+      <if test="replacementValue != null" >
+        replacement_value,
+      </if>
       <if test="managementCost != null" >
         management_cost,
       </if>
@@ -154,26 +157,23 @@
       <if test="maintenanceCostRatio != null" >
         maintenance_cost_ratio,
       </if>
-      <if test="replacementValue != null" >
-        replacement_value,
-      </if>
       <if test="additional != null" >
         additional,
       </if>
-      <if test="taxRate != null" >
-        tax_rate,
+      <if test="additionalRatio != null" >
+        additional_ratio,
       </if>
       <if test="insurancePremium != null" >
         insurance_premium,
       </if>
-      <if test="insuranceRate != null" >
-        insurance_rate,
+      <if test="insurancePremiumRatio != null" >
+        insurance_premium_ratio,
       </if>
       <if test="landUseTax != null" >
         land_use_tax,
       </if>
-      <if test="usageTaxParameter != null" >
-        usage_tax_parameter,
+      <if test="useTaxParameter != null" >
+        use_tax_parameter,
       </if>
       <if test="creator != null" >
         creator,
@@ -192,6 +192,9 @@
       <if test="sectionId != null" >
         #{sectionId,jdbcType=INTEGER},
       </if>
+      <if test="replacementValue != null" >
+        #{replacementValue,jdbcType=DECIMAL},
+      </if>
       <if test="managementCost != null" >
         #{managementCost,jdbcType=VARCHAR},
       </if>
@@ -204,26 +207,23 @@
       <if test="maintenanceCostRatio != null" >
         #{maintenanceCostRatio,jdbcType=DECIMAL},
       </if>
-      <if test="replacementValue != null" >
-        #{replacementValue,jdbcType=DECIMAL},
-      </if>
       <if test="additional != null" >
         #{additional,jdbcType=VARCHAR},
       </if>
-      <if test="taxRate != null" >
-        #{taxRate,jdbcType=DECIMAL},
+      <if test="additionalRatio != null" >
+        #{additionalRatio,jdbcType=DECIMAL},
       </if>
       <if test="insurancePremium != null" >
         #{insurancePremium,jdbcType=VARCHAR},
       </if>
-      <if test="insuranceRate != null" >
-        #{insuranceRate,jdbcType=DECIMAL},
+      <if test="insurancePremiumRatio != null" >
+        #{insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="landUseTax != null" >
         #{landUseTax,jdbcType=VARCHAR},
       </if>
-      <if test="usageTaxParameter != null" >
-        #{usageTaxParameter,jdbcType=VARCHAR},
+      <if test="useTaxParameter != null" >
+        #{useTaxParameter,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -254,6 +254,9 @@
       <if test="record.sectionId != null" >
         section_id = #{record.sectionId,jdbcType=INTEGER},
       </if>
+      <if test="record.replacementValue != null" >
+        replacement_value = #{record.replacementValue,jdbcType=DECIMAL},
+      </if>
       <if test="record.managementCost != null" >
         management_cost = #{record.managementCost,jdbcType=VARCHAR},
       </if>
@@ -266,26 +269,23 @@
       <if test="record.maintenanceCostRatio != null" >
         maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=DECIMAL},
       </if>
-      <if test="record.replacementValue != null" >
-        replacement_value = #{record.replacementValue,jdbcType=DECIMAL},
-      </if>
       <if test="record.additional != null" >
         additional = #{record.additional,jdbcType=VARCHAR},
       </if>
-      <if test="record.taxRate != null" >
-        tax_rate = #{record.taxRate,jdbcType=DECIMAL},
+      <if test="record.additionalRatio != null" >
+        additional_ratio = #{record.additionalRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.insurancePremium != null" >
         insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
       </if>
-      <if test="record.insuranceRate != null" >
-        insurance_rate = #{record.insuranceRate,jdbcType=DECIMAL},
+      <if test="record.insurancePremiumRatio != null" >
+        insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.landUseTax != null" >
         land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
       </if>
-      <if test="record.usageTaxParameter != null" >
-        usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
+      <if test="record.useTaxParameter != null" >
+        use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -306,17 +306,17 @@
     set id = #{record.id,jdbcType=INTEGER},
       income_id = #{record.incomeId,jdbcType=INTEGER},
       section_id = #{record.sectionId,jdbcType=INTEGER},
+      replacement_value = #{record.replacementValue,jdbcType=DECIMAL},
       management_cost = #{record.managementCost,jdbcType=VARCHAR},
       management_cost_ratio = #{record.managementCostRatio,jdbcType=DECIMAL},
       maintenance = #{record.maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{record.maintenanceCostRatio,jdbcType=DECIMAL},
-      replacement_value = #{record.replacementValue,jdbcType=DECIMAL},
       additional = #{record.additional,jdbcType=VARCHAR},
-      tax_rate = #{record.taxRate,jdbcType=DECIMAL},
+      additional_ratio = #{record.additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
-      insurance_rate = #{record.insuranceRate,jdbcType=DECIMAL},
+      insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
       land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
-      usage_tax_parameter = #{record.usageTaxParameter,jdbcType=VARCHAR},
+      use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -333,6 +333,9 @@
       <if test="sectionId != null" >
         section_id = #{sectionId,jdbcType=INTEGER},
       </if>
+      <if test="replacementValue != null" >
+        replacement_value = #{replacementValue,jdbcType=DECIMAL},
+      </if>
       <if test="managementCost != null" >
         management_cost = #{managementCost,jdbcType=VARCHAR},
       </if>
@@ -345,26 +348,23 @@
       <if test="maintenanceCostRatio != null" >
         maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=DECIMAL},
       </if>
-      <if test="replacementValue != null" >
-        replacement_value = #{replacementValue,jdbcType=DECIMAL},
-      </if>
       <if test="additional != null" >
         additional = #{additional,jdbcType=VARCHAR},
       </if>
-      <if test="taxRate != null" >
-        tax_rate = #{taxRate,jdbcType=DECIMAL},
+      <if test="additionalRatio != null" >
+        additional_ratio = #{additionalRatio,jdbcType=DECIMAL},
       </if>
       <if test="insurancePremium != null" >
         insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
       </if>
-      <if test="insuranceRate != null" >
-        insurance_rate = #{insuranceRate,jdbcType=DECIMAL},
+      <if test="insurancePremiumRatio != null" >
+        insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="landUseTax != null" >
         land_use_tax = #{landUseTax,jdbcType=VARCHAR},
       </if>
-      <if test="usageTaxParameter != null" >
-        usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
+      <if test="useTaxParameter != null" >
+        use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -382,17 +382,17 @@
     update tb_md_income_lease_cost
     set income_id = #{incomeId,jdbcType=INTEGER},
       section_id = #{sectionId,jdbcType=INTEGER},
+      replacement_value = #{replacementValue,jdbcType=DECIMAL},
       management_cost = #{managementCost,jdbcType=VARCHAR},
       management_cost_ratio = #{managementCostRatio,jdbcType=DECIMAL},
       maintenance = #{maintenance,jdbcType=VARCHAR},
       maintenance_cost_ratio = #{maintenanceCostRatio,jdbcType=DECIMAL},
-      replacement_value = #{replacementValue,jdbcType=DECIMAL},
       additional = #{additional,jdbcType=VARCHAR},
-      tax_rate = #{taxRate,jdbcType=DECIMAL},
+      additional_ratio = #{additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
-      insurance_rate = #{insuranceRate,jdbcType=DECIMAL},
+      insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},
       land_use_tax = #{landUseTax,jdbcType=VARCHAR},
-      usage_tax_parameter = #{usageTaxParameter,jdbcType=VARCHAR},
+      use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

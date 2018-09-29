@@ -286,6 +286,66 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
+        public Criteria andReplacementValueIsNull() {
+            addCriterion("replacement_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueIsNotNull() {
+            addCriterion("replacement_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueEqualTo(BigDecimal value) {
+            addCriterion("replacement_value =", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueNotEqualTo(BigDecimal value) {
+            addCriterion("replacement_value <>", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueGreaterThan(BigDecimal value) {
+            addCriterion("replacement_value >", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("replacement_value >=", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueLessThan(BigDecimal value) {
+            addCriterion("replacement_value <", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("replacement_value <=", value, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueIn(List<BigDecimal> values) {
+            addCriterion("replacement_value in", values, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueNotIn(List<BigDecimal> values) {
+            addCriterion("replacement_value not in", values, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("replacement_value between", value1, value2, "replacementValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplacementValueNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("replacement_value not between", value1, value2, "replacementValue");
+            return (Criteria) this;
+        }
+
         public Criteria andManagementCostIsNull() {
             addCriterion("management_cost is null");
             return (Criteria) this;
@@ -546,66 +606,6 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
-        public Criteria andReplacementValueIsNull() {
-            addCriterion("replacement_value is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueIsNotNull() {
-            addCriterion("replacement_value is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueEqualTo(BigDecimal value) {
-            addCriterion("replacement_value =", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueNotEqualTo(BigDecimal value) {
-            addCriterion("replacement_value <>", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueGreaterThan(BigDecimal value) {
-            addCriterion("replacement_value >", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("replacement_value >=", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueLessThan(BigDecimal value) {
-            addCriterion("replacement_value <", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("replacement_value <=", value, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueIn(List<BigDecimal> values) {
-            addCriterion("replacement_value in", values, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueNotIn(List<BigDecimal> values) {
-            addCriterion("replacement_value not in", values, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("replacement_value between", value1, value2, "replacementValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andReplacementValueNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("replacement_value not between", value1, value2, "replacementValue");
-            return (Criteria) this;
-        }
-
         public Criteria andAdditionalIsNull() {
             addCriterion("additional is null");
             return (Criteria) this;
@@ -676,63 +676,63 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateIsNull() {
-            addCriterion("tax_rate is null");
+        public Criteria andAdditionalRatioIsNull() {
+            addCriterion("additional_ratio is null");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateIsNotNull() {
-            addCriterion("tax_rate is not null");
+        public Criteria andAdditionalRatioIsNotNull() {
+            addCriterion("additional_ratio is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateEqualTo(BigDecimal value) {
-            addCriterion("tax_rate =", value, "taxRate");
+        public Criteria andAdditionalRatioEqualTo(BigDecimal value) {
+            addCriterion("additional_ratio =", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotEqualTo(BigDecimal value) {
-            addCriterion("tax_rate <>", value, "taxRate");
+        public Criteria andAdditionalRatioNotEqualTo(BigDecimal value) {
+            addCriterion("additional_ratio <>", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateGreaterThan(BigDecimal value) {
-            addCriterion("tax_rate >", value, "taxRate");
+        public Criteria andAdditionalRatioGreaterThan(BigDecimal value) {
+            addCriterion("additional_ratio >", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("tax_rate >=", value, "taxRate");
+        public Criteria andAdditionalRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("additional_ratio >=", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateLessThan(BigDecimal value) {
-            addCriterion("tax_rate <", value, "taxRate");
+        public Criteria andAdditionalRatioLessThan(BigDecimal value) {
+            addCriterion("additional_ratio <", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("tax_rate <=", value, "taxRate");
+        public Criteria andAdditionalRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("additional_ratio <=", value, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateIn(List<BigDecimal> values) {
-            addCriterion("tax_rate in", values, "taxRate");
+        public Criteria andAdditionalRatioIn(List<BigDecimal> values) {
+            addCriterion("additional_ratio in", values, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotIn(List<BigDecimal> values) {
-            addCriterion("tax_rate not in", values, "taxRate");
+        public Criteria andAdditionalRatioNotIn(List<BigDecimal> values) {
+            addCriterion("additional_ratio not in", values, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("tax_rate between", value1, value2, "taxRate");
+        public Criteria andAdditionalRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("additional_ratio between", value1, value2, "additionalRatio");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("tax_rate not between", value1, value2, "taxRate");
+        public Criteria andAdditionalRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("additional_ratio not between", value1, value2, "additionalRatio");
             return (Criteria) this;
         }
 
@@ -806,63 +806,63 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateIsNull() {
-            addCriterion("insurance_rate is null");
+        public Criteria andInsurancePremiumRatioIsNull() {
+            addCriterion("insurance_premium_ratio is null");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateIsNotNull() {
-            addCriterion("insurance_rate is not null");
+        public Criteria andInsurancePremiumRatioIsNotNull() {
+            addCriterion("insurance_premium_ratio is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateEqualTo(BigDecimal value) {
-            addCriterion("insurance_rate =", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioEqualTo(BigDecimal value) {
+            addCriterion("insurance_premium_ratio =", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateNotEqualTo(BigDecimal value) {
-            addCriterion("insurance_rate <>", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioNotEqualTo(BigDecimal value) {
+            addCriterion("insurance_premium_ratio <>", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateGreaterThan(BigDecimal value) {
-            addCriterion("insurance_rate >", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioGreaterThan(BigDecimal value) {
+            addCriterion("insurance_premium_ratio >", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("insurance_rate >=", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("insurance_premium_ratio >=", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateLessThan(BigDecimal value) {
-            addCriterion("insurance_rate <", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioLessThan(BigDecimal value) {
+            addCriterion("insurance_premium_ratio <", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("insurance_rate <=", value, "insuranceRate");
+        public Criteria andInsurancePremiumRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("insurance_premium_ratio <=", value, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateIn(List<BigDecimal> values) {
-            addCriterion("insurance_rate in", values, "insuranceRate");
+        public Criteria andInsurancePremiumRatioIn(List<BigDecimal> values) {
+            addCriterion("insurance_premium_ratio in", values, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateNotIn(List<BigDecimal> values) {
-            addCriterion("insurance_rate not in", values, "insuranceRate");
+        public Criteria andInsurancePremiumRatioNotIn(List<BigDecimal> values) {
+            addCriterion("insurance_premium_ratio not in", values, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("insurance_rate between", value1, value2, "insuranceRate");
+        public Criteria andInsurancePremiumRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("insurance_premium_ratio between", value1, value2, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
-        public Criteria andInsuranceRateNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("insurance_rate not between", value1, value2, "insuranceRate");
+        public Criteria andInsurancePremiumRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("insurance_premium_ratio not between", value1, value2, "insurancePremiumRatio");
             return (Criteria) this;
         }
 
@@ -936,73 +936,73 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterIsNull() {
-            addCriterion("usage_tax_parameter is null");
+        public Criteria andUseTaxParameterIsNull() {
+            addCriterion("use_tax_parameter is null");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterIsNotNull() {
-            addCriterion("usage_tax_parameter is not null");
+        public Criteria andUseTaxParameterIsNotNull() {
+            addCriterion("use_tax_parameter is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterEqualTo(String value) {
-            addCriterion("usage_tax_parameter =", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterEqualTo(String value) {
+            addCriterion("use_tax_parameter =", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterNotEqualTo(String value) {
-            addCriterion("usage_tax_parameter <>", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterNotEqualTo(String value) {
+            addCriterion("use_tax_parameter <>", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterGreaterThan(String value) {
-            addCriterion("usage_tax_parameter >", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterGreaterThan(String value) {
+            addCriterion("use_tax_parameter >", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterGreaterThanOrEqualTo(String value) {
-            addCriterion("usage_tax_parameter >=", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterGreaterThanOrEqualTo(String value) {
+            addCriterion("use_tax_parameter >=", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterLessThan(String value) {
-            addCriterion("usage_tax_parameter <", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterLessThan(String value) {
+            addCriterion("use_tax_parameter <", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterLessThanOrEqualTo(String value) {
-            addCriterion("usage_tax_parameter <=", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterLessThanOrEqualTo(String value) {
+            addCriterion("use_tax_parameter <=", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterLike(String value) {
-            addCriterion("usage_tax_parameter like", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterLike(String value) {
+            addCriterion("use_tax_parameter like", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterNotLike(String value) {
-            addCriterion("usage_tax_parameter not like", value, "usageTaxParameter");
+        public Criteria andUseTaxParameterNotLike(String value) {
+            addCriterion("use_tax_parameter not like", value, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterIn(List<String> values) {
-            addCriterion("usage_tax_parameter in", values, "usageTaxParameter");
+        public Criteria andUseTaxParameterIn(List<String> values) {
+            addCriterion("use_tax_parameter in", values, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterNotIn(List<String> values) {
-            addCriterion("usage_tax_parameter not in", values, "usageTaxParameter");
+        public Criteria andUseTaxParameterNotIn(List<String> values) {
+            addCriterion("use_tax_parameter not in", values, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterBetween(String value1, String value2) {
-            addCriterion("usage_tax_parameter between", value1, value2, "usageTaxParameter");
+        public Criteria andUseTaxParameterBetween(String value1, String value2) {
+            addCriterion("use_tax_parameter between", value1, value2, "useTaxParameter");
             return (Criteria) this;
         }
 
-        public Criteria andUsageTaxParameterNotBetween(String value1, String value2) {
-            addCriterion("usage_tax_parameter not between", value1, value2, "usageTaxParameter");
+        public Criteria andUseTaxParameterNotBetween(String value1, String value2) {
+            addCriterion("use_tax_parameter not between", value1, value2, "useTaxParameter");
             return (Criteria) this;
         }
 

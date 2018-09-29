@@ -7,10 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
-import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastMonthVo;
-import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
-import com.copower.pmcc.assess.dto.output.method.MdIncomeHistoryVo;
-import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
+import com.copower.pmcc.assess.dto.output.method.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -380,65 +377,54 @@ public class MdIncomeService {
 
 
     /**
-     * 获取金额合计
-     *
-     * @param supportId
-     * @param type
-     * @return
-     */
-    public BigDecimal getAmountMoneyTotal(Integer supportId, Integer type) {
-        return null;
-    }
-
-
-    /**
      租赁-----------
      */
 
     /**
-     * 保存数据
+     * 获取数据列表
      *
-     * @param mdIncomeLease
+     * @param incomeId
+     * @return
      */
-    public void saveLease(MdIncomeLease mdIncomeLease) {
-        if (mdIncomeLease.getId() != null && mdIncomeLease.getId() > 0) {
-            mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
+    public BootstrapTableVo getLeaseList(Integer incomeId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        MdIncomeLease where = new MdIncomeLease();
+        if (incomeId != null && incomeId > 0) {
+            where.setIncomeId(incomeId);
         } else {
-            mdIncomeLease.setCreator(commonService.thisUserAccount());
-            mdIncomeLeaseDao.addIncomeLease(mdIncomeLease);
+            where.setIncomeId(0);
+            where.setCreator(commonService.thisUserAccount());
         }
+        List<MdIncomeLease> leaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
+        List<MdIncomeLeaseVo> leaseVoList = LangUtils.transform(leaseList, o -> getMdIncomeLeaseVo(o));
+        vo.setRows(CollectionUtils.isEmpty(leaseVoList) ? new ArrayList<MdIncomeLeaseVo>() : leaseVoList);
+        vo.setTotal(page.getTotal());
+        return vo;
     }
 
-    /**
-     * 删除数据
-     *
-     * @param id
-     * @return
-     */
-    public boolean deleteLease(Integer id) {
-        return mdIncomeLeaseDao.deleteIncomeLease(id);
+    public MdIncomeLeaseVo getMdIncomeLeaseVo(MdIncomeLease mdIncomeLease) {
+        if (mdIncomeLease == null) return null;
+        MdIncomeLeaseVo mdIncomeLeaseVo = new MdIncomeLeaseVo();
+        BeanUtils.copyProperties(mdIncomeLease, mdIncomeLeaseVo);
+        MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLease.getSectionId());
+        if (dateSection != null) {
+            mdIncomeLeaseVo.setBeginDate(dateSection.getBeginDate());
+            mdIncomeLeaseVo.setEndDate(dateSection.getEndDate());
+            mdIncomeLeaseVo.setYearCount(dateSection.getYearCount());
+        }
+        return mdIncomeLeaseVo;
     }
 
-    /**
-     * 复制数据
-     *
-     * @param id
-     * @return
-     */
-    public void copyLease(Integer id) {
-        MdIncomeLease mdIncomeLease = mdIncomeLeaseDao.getIncomeLeaseById(id);
-        mdIncomeLease.setId(0);
+    //新增租赁收入
+    public void addLease(MdIncomeLease mdIncomeLease) {
         mdIncomeLeaseDao.addIncomeLease(mdIncomeLease);
     }
 
-    /**
-     * 获取数据
-     *
-     * @param id
-     * @return
-     */
-    public MdIncomeLease getLeaseById(Integer id) {
-        return mdIncomeLeaseDao.getIncomeLeaseById(id);
+    //更新租赁收入
+    public void updateLease(MdIncomeLease mdIncomeLease) {
+        mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
     }
 
     /**
@@ -451,39 +437,66 @@ public class MdIncomeService {
         return mdIncomeLeaseDao.getCountBySectionId(sectionId);
     }
 
+    //新增租赁成本
+    public void addLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
+        mdIncomeLeaseCostDao.addLeaseCost(mdIncomeLeaseCost);
+    }
+
+    /**
+     * 更新租赁成本数据
+     *
+     * @param mdIncomeLeaseCost
+     */
+    public void updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
+        mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
+    }
+
     /**
      * 获取数据列表
      *
-     * @param sectionId
+     * @param setIncomeId
      * @return
      */
-    public BootstrapTableVo getLeaseList(Integer sectionId) {
+    public BootstrapTableVo getLeaseCostList(Integer setIncomeId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        MdIncomeLease where = new MdIncomeLease();
-        if (sectionId != null && sectionId > 0) {
-            where.setSectionId(sectionId);
+        MdIncomeLeaseCost where = new MdIncomeLeaseCost();
+        if (setIncomeId != null && setIncomeId > 0) {
+            where.setIncomeId(setIncomeId);
         } else {
-            where.setSectionId(0);
+            where.setIncomeId(0);
             where.setCreator(commonService.thisUserAccount());
         }
-
-        List<MdIncomeLease> leaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
-        List<MdIncomeLeaseVo> vos = LangUtils.transform(leaseList, p -> getLeaseVo(p));
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeLeaseVo>() : vos);
+        List<MdIncomeLeaseCost> leaseList = mdIncomeLeaseCostDao.getLeaseCostList(where);
+        List<MdIncomeLeaseCostVo> leaseCostVoList = LangUtils.transform(leaseList, o -> getMdIncomeLeaseCostVo(o));
+        vo.setRows(CollectionUtils.isEmpty(leaseCostVoList) ? new ArrayList<MdIncomeLeaseCostVo>() : leaseCostVoList);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public MdIncomeLeaseVo getLeaseVo(MdIncomeLease mdIncomeLease) {
-        if (mdIncomeLease == null) return null;
-        MdIncomeLeaseVo mdIncomeLeaseVo = new MdIncomeLeaseVo();
-        BeanUtils.copyProperties(mdIncomeLease, mdIncomeLeaseVo);
-
-        return mdIncomeLeaseVo;
+    public MdIncomeLeaseCostVo getMdIncomeLeaseCostVo(MdIncomeLeaseCost mdIncomeLeaseCost) {
+        if (mdIncomeLeaseCost == null) return null;
+        MdIncomeLeaseCostVo mdIncomeLeaseCostVo = new MdIncomeLeaseCostVo();
+        BeanUtils.copyProperties(mdIncomeLeaseCost, mdIncomeLeaseCostVo);
+        MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLeaseCost.getSectionId());
+        if (dateSection != null) {
+            mdIncomeLeaseCostVo.setBeginDate(dateSection.getBeginDate());
+            mdIncomeLeaseCostVo.setEndDate(dateSection.getEndDate());
+            mdIncomeLeaseCostVo.setYearCount(dateSection.getYearCount());
+        }
+        return mdIncomeLeaseCostVo;
     }
 
+    /**
+     * 获取数量
+     *
+     * @param sectionId
+     * @return
+     */
+    public int getLeaseCostCountBySectionId(Integer sectionId) {
+        return mdIncomeLeaseCostDao.getCountBySectionId(sectionId);
+    }
 
     /**
      * 获取数据
@@ -510,30 +523,6 @@ public class MdIncomeService {
     }
 
     /**
-     * 保存租赁成本数据
-     *
-     * @param mdIncomeLeaseCost
-     */
-    public void saveLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
-        if (mdIncomeLeaseCost.getId() != null && mdIncomeLeaseCost.getId() > 0) {
-            mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
-        } else {
-            mdIncomeLeaseCost.setCreator(commonService.thisUserAccount());
-            mdIncomeLeaseCostDao.addLeaseCost(mdIncomeLeaseCost);
-        }
-    }
-
-    /**
-     * 获取数量
-     *
-     * @param sectionId
-     * @return
-     */
-    public int getLeaseCostCountBySectionId(Integer sectionId) {
-        return mdIncomeLeaseCostDao.getCountBySectionId(sectionId);
-    }
-
-    /**
      * 保存收益法法的结果信息
      *
      * @param mdIncomeResultDto
@@ -553,30 +542,30 @@ public class MdIncomeService {
         MdIncomeHistory where = new MdIncomeHistory();
         where.setIncomeId(0);
         where.setCreator(commonService.thisUserAccount());
-        MdIncomeHistory mdIncomeHistory=new MdIncomeHistory();
+        MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
         mdIncomeHistory.setIncomeId(mdIncome.getId());
-        mdIncomeHistoryDao.updateHistory(where,mdIncomeHistory);
+        mdIncomeHistoryDao.updateHistory(where, mdIncomeHistory);
 
         MdIncomeDateSection whereDateSection = new MdIncomeDateSection();
         whereDateSection.setIncomeId(0);
         whereDateSection.setCreator(commonService.thisUserAccount());
-        MdIncomeDateSection mdIncomeDateSection=new MdIncomeDateSection();
+        MdIncomeDateSection mdIncomeDateSection = new MdIncomeDateSection();
         mdIncomeDateSection.setIncomeId(mdIncome.getId());
-        mdIncomeDateSectionDao.updateDateSection(whereDateSection,mdIncomeDateSection);
+        mdIncomeDateSectionDao.updateDateSection(whereDateSection, mdIncomeDateSection);
 
         MdIncomeForecast whereForecast = new MdIncomeForecast();
         whereForecast.setIncomeId(0);
         whereForecast.setCreator(commonService.thisUserAccount());
-        MdIncomeForecast mdIncomeForecast=new MdIncomeForecast();
+        MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
         mdIncomeForecast.setIncomeId(mdIncome.getId());
-        mdIncomeForecastDao.updateForecast(whereForecast,mdIncomeForecast);
+        mdIncomeForecastDao.updateForecast(whereForecast, mdIncomeForecast);
 
         MdIncomeLease whereLease = new MdIncomeLease();
         whereLease.setIncomeId(0);
         whereLease.setCreator(commonService.thisUserAccount());
-        MdIncomeLease mdIncomeLease=new MdIncomeLease();
+        MdIncomeLease mdIncomeLease = new MdIncomeLease();
         mdIncomeLease.setIncomeId(mdIncome.getId());
-        mdIncomeLeaseDao.updateIncomeLease(whereLease,mdIncomeLease);
+        mdIncomeLeaseDao.updateIncomeLease(whereLease, mdIncomeLease);
 
         return mdIncome;
 

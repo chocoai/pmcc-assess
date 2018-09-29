@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.dto.output.method;
 
-import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
 
 import java.util.Date;
 
 /**
  * Created by kings on 2018-8-15.
  */
-public class MdIncomeLeaseVo extends MdIncomeLease {
+public class MdIncomeLeaseCostVo extends MdIncomeLeaseCost {
     private Date beginDate;
     private Date endDate;
     private Integer yearCount;
