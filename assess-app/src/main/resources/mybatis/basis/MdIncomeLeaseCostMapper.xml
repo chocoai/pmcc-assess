@@ -14,7 +14,7 @@
     <result column="additional_ratio" property="additionalRatio" jdbcType="DECIMAL" />
     <result column="insurance_premium" property="insurancePremium" jdbcType="VARCHAR" />
     <result column="insurance_premium_ratio" property="insurancePremiumRatio" jdbcType="DECIMAL" />
-    <result column="land_use_tax" property="landUseTax" jdbcType="VARCHAR" />
+    <result column="land_use_tax" property="landUseTax" jdbcType="DECIMAL" />
     <result column="use_tax_parameter" property="useTaxParameter" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -127,7 +127,7 @@
       #{managementCost,jdbcType=VARCHAR}, #{managementCostRatio,jdbcType=DECIMAL}, #{maintenance,jdbcType=VARCHAR}, 
       #{maintenanceCostRatio,jdbcType=DECIMAL}, #{additional,jdbcType=VARCHAR}, #{additionalRatio,jdbcType=DECIMAL}, 
       #{insurancePremium,jdbcType=VARCHAR}, #{insurancePremiumRatio,jdbcType=DECIMAL}, 
-      #{landUseTax,jdbcType=VARCHAR}, #{useTaxParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{landUseTax,jdbcType=DECIMAL}, #{useTaxParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost" >
@@ -220,7 +220,7 @@
         #{insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="landUseTax != null" >
-        #{landUseTax,jdbcType=VARCHAR},
+        #{landUseTax,jdbcType=DECIMAL},
       </if>
       <if test="useTaxParameter != null" >
         #{useTaxParameter,jdbcType=VARCHAR},
@@ -282,7 +282,7 @@
         insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.landUseTax != null" >
-        land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
+        land_use_tax = #{record.landUseTax,jdbcType=DECIMAL},
       </if>
       <if test="record.useTaxParameter != null" >
         use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
@@ -315,7 +315,7 @@
       additional_ratio = #{record.additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{record.insurancePremium,jdbcType=VARCHAR},
       insurance_premium_ratio = #{record.insurancePremiumRatio,jdbcType=DECIMAL},
-      land_use_tax = #{record.landUseTax,jdbcType=VARCHAR},
+      land_use_tax = #{record.landUseTax,jdbcType=DECIMAL},
       use_tax_parameter = #{record.useTaxParameter,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -361,7 +361,7 @@
         insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},
       </if>
       <if test="landUseTax != null" >
-        land_use_tax = #{landUseTax,jdbcType=VARCHAR},
+        land_use_tax = #{landUseTax,jdbcType=DECIMAL},
       </if>
       <if test="useTaxParameter != null" >
         use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
@@ -391,7 +391,7 @@
       additional_ratio = #{additionalRatio,jdbcType=DECIMAL},
       insurance_premium = #{insurancePremium,jdbcType=VARCHAR},
       insurance_premium_ratio = #{insurancePremiumRatio,jdbcType=DECIMAL},
-      land_use_tax = #{landUseTax,jdbcType=VARCHAR},
+      land_use_tax = #{landUseTax,jdbcType=DECIMAL},
       use_tax_parameter = #{useTaxParameter,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

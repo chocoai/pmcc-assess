@@ -14,19 +14,17 @@ public class MdIncomeLease {
 
     private BigDecimal rentals;
 
+    private String rentalsRemark;
+
     private Integer monthNumber;
 
     private BigDecimal deposit;
 
-    private BigDecimal interestRate;
+    private BigDecimal depositRate;
 
-    private BigDecimal interestIncome;
+    private String depositRateRemark;
 
     private BigDecimal otherIncome;
-
-    private String rentalsRemark;
-
-    private String interestRateRemark;
 
     private String otherIncomeRemark;
 
@@ -78,6 +76,14 @@ public class MdIncomeLease {
         this.rentals = rentals;
     }
 
+    public String getRentalsRemark() {
+        return rentalsRemark;
+    }
+
+    public void setRentalsRemark(String rentalsRemark) {
+        this.rentalsRemark = rentalsRemark == null ? null : rentalsRemark.trim();
+    }
+
     public Integer getMonthNumber() {
         return monthNumber;
     }
@@ -94,20 +100,20 @@ public class MdIncomeLease {
         this.deposit = deposit;
     }
 
-    public BigDecimal getInterestRate() {
-        return interestRate;
+    public BigDecimal getDepositRate() {
+        return depositRate;
     }
 
-    public void setInterestRate(BigDecimal interestRate) {
-        this.interestRate = interestRate;
+    public void setDepositRate(BigDecimal depositRate) {
+        this.depositRate = depositRate;
     }
 
-    public BigDecimal getInterestIncome() {
-        return interestIncome;
+    public String getDepositRateRemark() {
+        return depositRateRemark;
     }
 
-    public void setInterestIncome(BigDecimal interestIncome) {
-        this.interestIncome = interestIncome;
+    public void setDepositRateRemark(String depositRateRemark) {
+        this.depositRateRemark = depositRateRemark == null ? null : depositRateRemark.trim();
     }
 
     public BigDecimal getOtherIncome() {
@@ -116,22 +122,6 @@ public class MdIncomeLease {
 
     public void setOtherIncome(BigDecimal otherIncome) {
         this.otherIncome = otherIncome;
-    }
-
-    public String getRentalsRemark() {
-        return rentalsRemark;
-    }
-
-    public void setRentalsRemark(String rentalsRemark) {
-        this.rentalsRemark = rentalsRemark == null ? null : rentalsRemark.trim();
-    }
-
-    public String getInterestRateRemark() {
-        return interestRateRemark;
-    }
-
-    public void setInterestRateRemark(String interestRateRemark) {
-        this.interestRateRemark = interestRateRemark == null ? null : interestRateRemark.trim();
     }
 
     public String getOtherIncomeRemark() {

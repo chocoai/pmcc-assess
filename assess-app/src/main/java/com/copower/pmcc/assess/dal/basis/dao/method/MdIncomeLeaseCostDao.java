@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.method;
 
+import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCostExample;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample;
@@ -71,13 +72,24 @@ public class MdIncomeLeaseCostDao {
     }
 
     /**
-     * 编辑
+     * 更新
      *
      * @param mdIncomeLeaseCost
      * @return
      */
     public boolean updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
         return mdIncomeLeaseCostMapper.updateByPrimaryKeySelective(mdIncomeLeaseCost) > 0;
+    }
+
+    /**
+     * 更新
+     * @param mdIncomeLeaseCost
+     * @return
+     */
+    public boolean updateIncomeLeaseCost(MdIncomeLeaseCost where, MdIncomeLeaseCost mdIncomeLeaseCost) {
+        MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return mdIncomeLeaseCostMapper.updateByExampleSelective(mdIncomeLeaseCost,example) > 0;
     }
 
     /**
