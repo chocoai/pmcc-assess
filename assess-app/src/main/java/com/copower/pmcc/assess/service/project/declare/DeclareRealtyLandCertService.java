@@ -38,9 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -117,10 +115,20 @@ public class DeclareRealtyLandCertService {
                 oo.setProvince(provinceName);
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder)) {
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 //验证 类型(省略已经在excel配置了下拉框)
                 oo.setCertName(PoiUtils.getCellValue(row.getCell(0)));
@@ -286,10 +294,20 @@ public class DeclareRealtyLandCertService {
                 oo.setProvince(provinceName);
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder)) {
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 //验证 类型(省略已经在excel配置了下拉框)
 
