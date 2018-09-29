@@ -493,8 +493,19 @@ public class DeclareRealtyHouseCertService {
         for (DeclareRealtyHouseCert oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
             declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setName(oo.getCertName());
+            declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getEvidenceArea());
+            declareRecord.setHouseUseEndDate(oo.getUseEndDate());
+            /**
+             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
+             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
+             */
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

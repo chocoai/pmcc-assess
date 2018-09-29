@@ -5,10 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -63,7 +60,7 @@ public class DeclareRealtyRealEstateCertService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DeclareInfoService declareInfoService;
+    private DeclareRecordService declareRecordService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -264,7 +261,44 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public void eventWriteDeclareInfo(DeclareInfo declareInfo){
-
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
+        for (DeclareRealtyRealEstateCert oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setName(oo.getCertName());
+            declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getEvidenceArea());
+            declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            BaseDataDic baseDataDic = null;
+            if (oo.getPurpose() != null){
+                if (NumberUtils.isNumber(oo.getPurpose())){
+                    baseDataDic= baseDataDicService.getDataDicById(Integer.parseInt(oo.getPurpose()));
+                    if (baseDataDic != null){
+                        declareRecord.setCertUse(baseDataDic.getName());
+                    }
+                }
+            }
+            /**
+             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
+             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
+             */
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 
 

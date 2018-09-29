@@ -226,11 +226,14 @@ public class DeclareBuildEngineeringService {
         for (DeclareBuildEngineering oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
             declareRecord.setProjectId(declareInfo.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setFloorArea(oo.getBuildArea());
-            
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setFloorArea(new BigDecimal("0"));
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

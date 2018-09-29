@@ -42,27 +42,11 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseFormService baseFormService;
-    @Autowired
-    private DeclareBuildEngineeringService declareBuildEngineeringService;
-    @Autowired
-    private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
-    @Autowired
-    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
-    @Autowired
-    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
-    @Autowired
-    private DeclareRealtyLandCertService declareRealtyLandCertService ;
-
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);
         DeclareInfo declareInfo = declareInfoService.getDeclareInfoByProcessInsId(processExecution.getProcessInstanceId());
         if (declareInfo == null) return;
-        declareBuildEngineeringService.eventWriteDeclareInfo(declareInfo);
-        declareBuildEquipmentInstallService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyHouseCertService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyRealEstateCertService.eventWriteDeclareInfo(declareInfo);
-        declareRealtyLandCertService.eventWriteDeclareInfo(declareInfo);
         List<DeclareUseClassify> declareUseClassifyList = declareUseClassifyDao.getDeclareUseClassifyList(declareInfo.getProjectId(), declareInfo.getPlanDetailsId());
         if (CollectionUtils.isEmpty(declareUseClassifyList)) return;
         for (DeclareUseClassify declareUseClassify : declareUseClassifyList) {

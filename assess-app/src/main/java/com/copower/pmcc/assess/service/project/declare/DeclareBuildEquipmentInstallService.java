@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -223,9 +224,13 @@ public class DeclareBuildEquipmentInstallService {
         for (DeclareBuildEquipmentInstall oo : lists) {
             declareRecord = new DeclareRecord();
             BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
             declareRecord.setProjectId(declareInfo.getProjectId());
             declareRecord.setOwnership(oo.getOccupancyUnit());
             declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setFloorArea(new BigDecimal("0"));
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

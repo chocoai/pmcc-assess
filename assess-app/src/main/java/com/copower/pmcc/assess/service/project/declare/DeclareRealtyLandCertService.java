@@ -5,10 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -70,7 +67,7 @@ public class DeclareRealtyLandCertService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private DeclareInfoService declareInfoService;
+    private DeclareRecordService declareRecordService;
 
     /**
      * 功能描述: 关联房产证
@@ -483,6 +480,43 @@ public class DeclareRealtyLandCertService {
     }
 
     public void eventWriteDeclareInfo(DeclareInfo declareInfo){
-
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareRealtyLandCert query = new DeclareRealtyLandCert();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareRealtyLandCert> lists = declareRealtyLandCertDao.getDeclareRealtyLandCertList(query);
+        for (DeclareRealtyLandCert oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setName(oo.getLandCertName());
+            declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getUseRightArea());
+            declareRecord.setLandUseEndDate(oo.getTerminationDate());
+            BaseDataDic baseDataDic = null;
+            if (oo.getPurpose() != null){
+                if (NumberUtils.isNumber(oo.getPurpose())){
+                    baseDataDic= baseDataDicService.getDataDicById(Integer.parseInt(oo.getPurpose()));
+                    if (baseDataDic != null){
+                        declareRecord.setCertUse(baseDataDic.getName());
+                    }
+                }
+            }
+            /**
+             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
+             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
+             */
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 }
