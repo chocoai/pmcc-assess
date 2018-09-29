@@ -8,11 +8,13 @@ import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareUseClassifyD
 import com.copower.pmcc.assess.dal.basis.dao.base.FormConfigureDao;
 import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;
+import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import java.util.Map;
  */
 @Component
 public class DeclareRecordEvent extends ProjectTaskEvent {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -39,7 +42,6 @@ public class DeclareRecordEvent extends ProjectTaskEvent {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseFormService baseFormService;
-
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
         super.processFinishExecute(processExecution);

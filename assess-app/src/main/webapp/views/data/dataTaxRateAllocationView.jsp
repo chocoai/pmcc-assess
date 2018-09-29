@@ -93,12 +93,25 @@
         },
         loadDataDicList: function (type) {
             var cols = [];
-            cols.push({field: 'exExplain', title: '说明'});
+            cols.push({
+                field: 'id', title: '全国统一', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    if (row.nationalUnity == 'yes'){
+                        str += "是";
+                    }
+                    if (row.nationalUnity == 'no'){
+                        str += "否";
+                    }
+                    str += '</div>';
+                    return str;
+                }
+            });
             cols.push({field: 'provinceName', title: '省'});
             cols.push({field: 'cityName', title: '市'});
             cols.push({field: 'districtName', title: '县'});
-            cols.push({field: 'taxRateName', title: '税率'});
             cols.push({field: 'typeName', title: '类型'});
+            cols.push({field: 'taxRateName', title: '税率'});
+            cols.push({field: 'exExplain', title: '说明'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -191,6 +204,15 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.dataTaxRateAllocation, "", function (html, data) {
                 $("#frmQuery").find('select.type').html(html);
             });
+            $("#" + dataProperty.prototype.config().frm+" .nationalUnity").change(function () {
+                var item = $("#" + dataProperty.prototype.config().frm+" .nationalUnity").eq(1).val();
+                if (item == 'yes'){
+                    $("#region").hide();
+                }
+                if (item == 'no'){
+                    $("#region").show();
+                }
+            });
         },
         getAndInit: function (id) {
             $.ajax({
@@ -240,44 +262,56 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省
-                                            <span class="symbol required"></span></label>
+                                        <label class="col-sm-2 control-label">全国统一</label>
                                         <div class="col-sm-10">
-                                            <select id="province" name="province"
-                                                    class="form-control search-select select2"
-                                                    required="required">
-                                                <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
+                                            <select name="nationalUnity" class="form-control search-select select2 nationalUnity" required="required">
+                                                <option value="yes">是</option>
+                                                <option value="no">否</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市</label>
-                                        <div class="col-sm-10">
-                                            <select id="city" name="city" class="form-control search-select select2">
-                                            </select>
+                                <div id="region" style="display: none;">
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">省
+                                                <span class="symbol required"></span></label>
+                                            <div class="col-sm-10">
+                                                <select id="province" name="province"
+                                                        class="form-control search-select select2">
+                                                    <option value="" name="province">-请选择-</option>
+                                                    <c:forEach items="${ProvinceList}" var="item">
+                                                        <c:choose>
+                                                            <c:when test="${item.areaId == projectInfo.province}">
+                                                                <option value="${item.areaId}"
+                                                                        selected="selected">${item.name}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${item.areaId}">${item.name}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-10">
-                                            <select id="district" name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">市</label>
+                                            <div class="col-sm-10">
+                                                <select id="city" name="city" class="form-control search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-2 control-label">县</label>
+                                            <div class="col-sm-10">
+                                                <select id="district" name="district"
+                                                        class="form-control search-select select2">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -294,22 +328,22 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            说明<span class="symbol required"></span>
+                                            税率<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="exExplain"
-                                                   placeholder="说明" required="required">
+                                            <input type="text" data-rule-number='true' class="form-control" name="taxRate"
+                                                   placeholder="税率(数字)" required="required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            税率<span class="symbol required"></span>
+                                            说明<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" data-rule-number='true' class="form-control" name="taxRate"
-                                                   placeholder="税率(数字)" required="required">
+                                            <input type="text" class="form-control" name="exExplain"
+                                                   placeholder="说明" required="required">
                                         </div>
                                     </div>
                                 </div>

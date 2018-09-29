@@ -170,9 +170,6 @@
             })
         },
         select2Load: function () {
-            $("#province").select2();
-            $("#city").select2();
-            $("#district").select2();
             //使数据校验生效
             $("#" + dataProperty.prototype.config().frm).validate();
             AssessCommon.initAreaInfo({

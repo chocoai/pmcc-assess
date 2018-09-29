@@ -60,12 +60,15 @@ public class DataTaxRateAllocationController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataTaxRateAllocationList", method = {RequestMethod.GET}, name = "获取税率配置列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String type) {
+    public BootstrapTableVo getExamineEstateNetworkList(String type,String nationalUnity) {
+        BootstrapTableVo vo = null;
         DataTaxRateAllocation dataTaxRateAllocation = new DataTaxRateAllocation();
         if (!StringUtils.isEmpty(type)) {
             dataTaxRateAllocation.setType(type);
         }
-        BootstrapTableVo vo = null;
+        if (!StringUtils.isEmpty(nationalUnity)){
+            dataTaxRateAllocation.setNationalUnity(nationalUnity);
+        }
         try {
             vo = dataTaxRateAllocationService.getDataTaxRateAllocationListVos(dataTaxRateAllocation);
         } catch (Exception e1) {

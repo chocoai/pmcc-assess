@@ -43,6 +43,11 @@ public class DeclareRecordDao {
         return mapper.updateByPrimaryKeySelective(declareRecord) > 0;
     }
 
+    public Integer saveReturnId(DeclareRecord declareRecord){
+        mapper.insertSelective(declareRecord);
+        return declareRecord.getId();
+    }
+
     public boolean addDeclareRecord(DeclareRecord declareRecord) {
         return mapper.insertSelective(declareRecord) > 0;
     }

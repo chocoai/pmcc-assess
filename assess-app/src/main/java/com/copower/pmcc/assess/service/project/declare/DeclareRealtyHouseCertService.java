@@ -5,9 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -18,20 +16,15 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,11 +34,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -68,9 +58,9 @@ public class DeclareRealtyHouseCertService {
     @Autowired
     private DeclareRealtyLandCertDao declareRealtyLandCertDao;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     /**
      * 功能描述: 导入土地证 并且和房产证关联
@@ -121,10 +111,20 @@ public class DeclareRealtyHouseCertService {
                 oo.setProvince(provinceName);
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName,cityName,districtName,builder)){
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 //验证 类型(省略已经在excel配置了下拉框)
 
@@ -298,10 +298,20 @@ public class DeclareRealtyHouseCertService {
                 oo.setProvince(provinceName);
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName,cityName,districtName,builder)){
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 //验证 类型(省略已经在excel配置了下拉框)
 
@@ -488,6 +498,38 @@ public class DeclareRealtyHouseCertService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareRealtyHouseCert query = new DeclareRealtyHouseCert();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareRealtyHouseCert> lists = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(query);
+        for (DeclareRealtyHouseCert oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setName(oo.getCertName());
+            declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getEvidenceArea());
+            declareRecord.setHouseUseEndDate(oo.getUseEndDate());
+            /**
+             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
+             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
+             */
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 
 }

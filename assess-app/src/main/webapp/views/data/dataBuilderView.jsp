@@ -129,7 +129,7 @@
             $("#qualificationGradeV").val(null).trigger("change");
             $("#"+dataBuilder.prototype.config().frm).clearAll();
 
-            $("#qualificationGradeV").select2();
+            // $("#qualificationGradeV").select2();
             $('#'+dataBuilder.prototype.config().box).modal("show");
         },
         saveData:function () {
@@ -209,7 +209,7 @@
                                 }
                                 $("#qualificationGrade").parent().parent().parent().show();
                                 $("#qualificationGrade").html(option);
-                                $("#qualificationGrade").select2({ minimumResultsForSearch: -1 });//加载样式
+                                // $("#qualificationGrade").select2({ minimumResultsForSearch: -1 });//加载样式
                             }else {
                                 $("#qualificationGrade").empty();
                                 $("#qualificationGrade").parent().parent().parent().hide();

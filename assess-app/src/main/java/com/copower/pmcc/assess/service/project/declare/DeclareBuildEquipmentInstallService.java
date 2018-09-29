@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEquipmentInstallVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -34,7 +36,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -51,9 +56,7 @@ public class DeclareBuildEquipmentInstallService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
+    private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEquipmentInstallDao declareBuildEquipmentInstallDao;
 
@@ -96,10 +99,20 @@ public class DeclareBuildEquipmentInstallService {
                 oo.setProvince(provinceName);
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder)) {
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
                 oo.setOccupancyUnit(PoiUtils.getCellValue(row.getCell(0)));//占有单位
@@ -210,5 +223,31 @@ public class DeclareBuildEquipmentInstallService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareBuildEquipmentInstall query = new DeclareBuildEquipmentInstall();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareBuildEquipmentInstall> lists = declareBuildEquipmentInstallDao.getDeclareBuildEquipmentInstallList(query);
+        for (DeclareBuildEquipmentInstall oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setOwnership(oo.getOccupancyUnit());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setFloorArea(new BigDecimal("0"));
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 }

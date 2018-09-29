@@ -5,9 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -39,7 +37,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -61,6 +61,8 @@ public class DeclareRealtyRealEstateCertService {
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -105,10 +107,20 @@ public class DeclareRealtyRealEstateCertService {
                 oo.setCity(cityName);
                 oo.setDistrict(districtName);
 
+                Map<String,String> map = new HashMap<>();
                 //验证(区域)
-                if (!erpAreaService.checkArea(provinceName,cityName,districtName,builder)){
+                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
                     builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
                     continue;
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+                    oo.setProvince(map.get("province"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+                    oo.setCity(map.get("city"));
+                }
+                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+                    oo.setDistrict(map.get("district"));
                 }
                 //验证 类型(省略已经在excel配置了下拉框)
 
@@ -258,6 +270,47 @@ public class DeclareRealtyRealEstateCertService {
             vo.setFileViewName(builder.toString());
         }
         return vo;
+    }
+
+    public void eventWriteDeclareInfo(DeclareInfo declareInfo){
+        DeclareRecord declareRecord = null;
+        if (declareInfo == null) {
+            return;
+        }
+        DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
+        query.setPlanDetailsId(declareInfo.getPlanDetailsId());
+        List<DeclareRealtyRealEstateCert> lists = declareRealtyRealEstateCertDao.getDeclareRealtyRealEstateCertList(query);
+        for (DeclareRealtyRealEstateCert oo : lists) {
+            declareRecord = new DeclareRecord();
+            BeanUtils.copyProperties(oo,declareRecord);
+            declareRecord.setId(null);
+            declareRecord.setProjectId(declareInfo.getProjectId());
+            declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
+            declareRecord.setDataTableId(oo.getId());
+            declareRecord.setName(oo.getCertName());
+            declareRecord.setOwnership(oo.getOwnership());
+            declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setFloorArea(oo.getEvidenceArea());
+            declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            BaseDataDic baseDataDic = null;
+            if (oo.getPurpose() != null){
+                if (NumberUtils.isNumber(oo.getPurpose())){
+                    baseDataDic= baseDataDicService.getDataDicById(Integer.parseInt(oo.getPurpose()));
+                    if (baseDataDic != null){
+                        declareRecord.setCertUse(baseDataDic.getName());
+                    }
+                }
+            }
+            /**
+             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
+             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
+             */
+            try {
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+            } catch (Exception e1) {
+                logger.error("写入失败!",e1);
+            }
+        }
     }
 
 

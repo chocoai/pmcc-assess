@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-4-18.
@@ -29,7 +30,7 @@ public class ErpAreaService {
      * @auther: zch
      * @date: 2018/9/26 11:42
      */
-    public boolean checkArea(String provinceName, String cityName, String districtName,StringBuilder builder) throws Exception {
+    public boolean checkArea(String provinceName, String cityName, String districtName, StringBuilder builder, Map<String,String> map) throws Exception {
         if (org.springframework.util.StringUtils.isEmpty(provinceName)) {
             builder.append("省名称不能为null");
             throw new Exception("异常");
@@ -44,10 +45,12 @@ public class ErpAreaService {
                 if (Objects.equal(provinceName, sysAreaDto.getName())) {//省匹配
                     String areaId = sysAreaDto.getAreaId();//获取省级别的区域id
                     SysAreaDto province = erpRpcToolsService.getSysAreaDto(areaId);//省级别
+                    map.put("province",province.getAreaId());
                     List<SysAreaDto> citys = erpRpcToolsService.getSysAreaDtoList(province.getAreaId());
                     if (!ObjectUtils.isEmpty(citys)) {
                         for (SysAreaDto city : citys) {
                             if (Objects.equal(cityName, city.getName())) {//市 匹配
+                                map.put("city",city.getAreaId());
                                 if (org.springframework.util.StringUtils.isEmpty(districtName)) {//县级可以为null
                                     return true;
                                 }
@@ -56,6 +59,7 @@ public class ErpAreaService {
                                     if (!ObjectUtils.isEmpty(sysAreaDtoList)) {//县
                                         for (SysAreaDto district : sysAreaDtoList) {
                                             if (Objects.equal(districtName, district.getName())) {//只需要匹配到一个即可
+                                                map.put("district",district.getAreaId());
                                                 return true;
                                             }
                                         }

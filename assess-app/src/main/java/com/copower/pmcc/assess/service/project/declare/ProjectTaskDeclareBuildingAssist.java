@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.event.project.DeclareRecordEvent;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -78,7 +79,7 @@ public class ProjectTaskDeclareBuildingAssist implements ProjectTaskInterface {
         declareInfo.setPlanDetailsId(projectPlanDetails.getId());
         declareInfo.setProcessInsId(processInsId);
         declareInfoService.saveDeclareInfo(declareInfo);
-        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRecordEvent.class.getSimpleName());//修改监听器
+        bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());//修改监听器
     }
 
     @Override
