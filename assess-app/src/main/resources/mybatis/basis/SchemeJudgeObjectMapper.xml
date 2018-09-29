@@ -13,8 +13,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
-    <result column="cert_use" property="certUse" jdbcType="INTEGER" />
-    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
+    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
+    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
     <result column="set_use" property="setUse" jdbcType="INTEGER" />
     <result column="best_use" property="bestUse" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
@@ -138,7 +138,7 @@
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
-      #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=INTEGER}, #{practicalUse,jdbcType=INTEGER}, 
+      #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
       #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
       #{evaluationArea,jdbcType=DECIMAL}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
       #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
@@ -256,10 +256,10 @@
         #{seat,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        #{certUse,jdbcType=INTEGER},
+        #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=INTEGER},
+        #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="setUse != null" >
         #{setUse,jdbcType=INTEGER},
@@ -342,10 +342,10 @@
         seat = #{record.seat,jdbcType=VARCHAR},
       </if>
       <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=INTEGER},
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
       </if>
       <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=INTEGER},
+        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="record.setUse != null" >
         set_use = #{record.setUse,jdbcType=INTEGER},
@@ -401,8 +401,8 @@
       name = #{record.name,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       seat = #{record.seat,jdbcType=VARCHAR},
-      cert_use = #{record.certUse,jdbcType=INTEGER},
-      practical_use = #{record.practicalUse,jdbcType=INTEGER},
+      cert_use = #{record.certUse,jdbcType=VARCHAR},
+      practical_use = #{record.practicalUse,jdbcType=VARCHAR},
       set_use = #{record.setUse,jdbcType=INTEGER},
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -453,10 +453,10 @@
         seat = #{seat,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=INTEGER},
+        cert_use = #{certUse,jdbcType=VARCHAR},
       </if>
       <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=INTEGER},
+        practical_use = #{practicalUse,jdbcType=VARCHAR},
       </if>
       <if test="setUse != null" >
         set_use = #{setUse,jdbcType=INTEGER},
@@ -509,8 +509,8 @@
       name = #{name,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       seat = #{seat,jdbcType=VARCHAR},
-      cert_use = #{certUse,jdbcType=INTEGER},
-      practical_use = #{practicalUse,jdbcType=INTEGER},
+      cert_use = #{certUse,jdbcType=VARCHAR},
+      practical_use = #{practicalUse,jdbcType=VARCHAR},
       set_use = #{setUse,jdbcType=INTEGER},
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},

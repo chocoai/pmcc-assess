@@ -226,63 +226,133 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdIsNull() {
-            addCriterion("project_classify_id is null");
+        public Criteria andDataTableNameIsNull() {
+            addCriterion("data_table_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdIsNotNull() {
-            addCriterion("project_classify_id is not null");
+        public Criteria andDataTableNameIsNotNull() {
+            addCriterion("data_table_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdEqualTo(Integer value) {
-            addCriterion("project_classify_id =", value, "projectClassifyId");
+        public Criteria andDataTableNameEqualTo(String value) {
+            addCriterion("data_table_name =", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdNotEqualTo(Integer value) {
-            addCriterion("project_classify_id <>", value, "projectClassifyId");
+        public Criteria andDataTableNameNotEqualTo(String value) {
+            addCriterion("data_table_name <>", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdGreaterThan(Integer value) {
-            addCriterion("project_classify_id >", value, "projectClassifyId");
+        public Criteria andDataTableNameGreaterThan(String value) {
+            addCriterion("data_table_name >", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("project_classify_id >=", value, "projectClassifyId");
+        public Criteria andDataTableNameGreaterThanOrEqualTo(String value) {
+            addCriterion("data_table_name >=", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdLessThan(Integer value) {
-            addCriterion("project_classify_id <", value, "projectClassifyId");
+        public Criteria andDataTableNameLessThan(String value) {
+            addCriterion("data_table_name <", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdLessThanOrEqualTo(Integer value) {
-            addCriterion("project_classify_id <=", value, "projectClassifyId");
+        public Criteria andDataTableNameLessThanOrEqualTo(String value) {
+            addCriterion("data_table_name <=", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdIn(List<Integer> values) {
-            addCriterion("project_classify_id in", values, "projectClassifyId");
+        public Criteria andDataTableNameLike(String value) {
+            addCriterion("data_table_name like", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdNotIn(List<Integer> values) {
-            addCriterion("project_classify_id not in", values, "projectClassifyId");
+        public Criteria andDataTableNameNotLike(String value) {
+            addCriterion("data_table_name not like", value, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdBetween(Integer value1, Integer value2) {
-            addCriterion("project_classify_id between", value1, value2, "projectClassifyId");
+        public Criteria andDataTableNameIn(List<String> values) {
+            addCriterion("data_table_name in", values, "dataTableName");
             return (Criteria) this;
         }
 
-        public Criteria andProjectClassifyIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("project_classify_id not between", value1, value2, "projectClassifyId");
+        public Criteria andDataTableNameNotIn(List<String> values) {
+            addCriterion("data_table_name not in", values, "dataTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableNameBetween(String value1, String value2) {
+            addCriterion("data_table_name between", value1, value2, "dataTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableNameNotBetween(String value1, String value2) {
+            addCriterion("data_table_name not between", value1, value2, "dataTableName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdIsNull() {
+            addCriterion("data_table_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdIsNotNull() {
+            addCriterion("data_table_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdEqualTo(Integer value) {
+            addCriterion("data_table_id =", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdNotEqualTo(Integer value) {
+            addCriterion("data_table_id <>", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdGreaterThan(Integer value) {
+            addCriterion("data_table_id >", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("data_table_id >=", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdLessThan(Integer value) {
+            addCriterion("data_table_id <", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdLessThanOrEqualTo(Integer value) {
+            addCriterion("data_table_id <=", value, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdIn(List<Integer> values) {
+            addCriterion("data_table_id in", values, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdNotIn(List<Integer> values) {
+            addCriterion("data_table_id not in", values, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdBetween(Integer value1, Integer value2) {
+            addCriterion("data_table_id between", value1, value2, "dataTableId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTableIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("data_table_id not between", value1, value2, "dataTableId");
             return (Criteria) this;
         }
 
@@ -716,52 +786,62 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andCertUseEqualTo(Integer value) {
+        public Criteria andCertUseEqualTo(String value) {
             addCriterion("cert_use =", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotEqualTo(Integer value) {
+        public Criteria andCertUseNotEqualTo(String value) {
             addCriterion("cert_use <>", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThan(Integer value) {
+        public Criteria andCertUseGreaterThan(String value) {
             addCriterion("cert_use >", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCertUseGreaterThanOrEqualTo(String value) {
             addCriterion("cert_use >=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThan(Integer value) {
+        public Criteria andCertUseLessThan(String value) {
             addCriterion("cert_use <", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseLessThanOrEqualTo(Integer value) {
+        public Criteria andCertUseLessThanOrEqualTo(String value) {
             addCriterion("cert_use <=", value, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseIn(List<Integer> values) {
+        public Criteria andCertUseLike(String value) {
+            addCriterion("cert_use like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseNotLike(String value) {
+            addCriterion("cert_use not like", value, "certUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertUseIn(List<String> values) {
             addCriterion("cert_use in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotIn(List<Integer> values) {
+        public Criteria andCertUseNotIn(List<String> values) {
             addCriterion("cert_use not in", values, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseBetween(String value1, String value2) {
             addCriterion("cert_use between", value1, value2, "certUse");
             return (Criteria) this;
         }
 
-        public Criteria andCertUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andCertUseNotBetween(String value1, String value2) {
             addCriterion("cert_use not between", value1, value2, "certUse");
             return (Criteria) this;
         }
@@ -776,52 +856,62 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseEqualTo(Integer value) {
+        public Criteria andPracticalUseEqualTo(String value) {
             addCriterion("practical_use =", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotEqualTo(Integer value) {
+        public Criteria andPracticalUseNotEqualTo(String value) {
             addCriterion("practical_use <>", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThan(Integer value) {
+        public Criteria andPracticalUseGreaterThan(String value) {
             addCriterion("practical_use >", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPracticalUseGreaterThanOrEqualTo(String value) {
             addCriterion("practical_use >=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThan(Integer value) {
+        public Criteria andPracticalUseLessThan(String value) {
             addCriterion("practical_use <", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseLessThanOrEqualTo(Integer value) {
+        public Criteria andPracticalUseLessThanOrEqualTo(String value) {
             addCriterion("practical_use <=", value, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseIn(List<Integer> values) {
+        public Criteria andPracticalUseLike(String value) {
+            addCriterion("practical_use like", value, "practicalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalUseNotLike(String value) {
+            addCriterion("practical_use not like", value, "practicalUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andPracticalUseIn(List<String> values) {
             addCriterion("practical_use in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotIn(List<Integer> values) {
+        public Criteria andPracticalUseNotIn(List<String> values) {
             addCriterion("practical_use not in", values, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseBetween(Integer value1, Integer value2) {
+        public Criteria andPracticalUseBetween(String value1, String value2) {
             addCriterion("practical_use between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
 
-        public Criteria andPracticalUseNotBetween(Integer value1, Integer value2) {
+        public Criteria andPracticalUseNotBetween(String value1, String value2) {
             addCriterion("practical_use not between", value1, value2, "practicalUse");
             return (Criteria) this;
         }
