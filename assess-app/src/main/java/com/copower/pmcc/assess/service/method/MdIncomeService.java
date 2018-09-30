@@ -423,8 +423,19 @@ public class MdIncomeService {
     }
 
     //更新租赁收入
+    @Transactional
     public void updateLease(MdIncomeLease mdIncomeLease) {
         mdIncomeLeaseDao.updateIncomeLease(mdIncomeLease);
+
+        //计算总收入 月租金*出租率*月份数+押金*押金利率+其它收入
+        BigDecimal total = mdIncomeLease.getRentalIncome().multiply(mdIncomeLease.getRentals()).multiply(new BigDecimal(mdIncomeLease.getMonthNumber()));
+        total = total.add(mdIncomeLease.getDeposit().multiply(mdIncomeLease.getDepositRate()));
+        total = total.add(mdIncomeLease.getOtherIncome());
+        MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLease.getSectionId());
+        if (incomeDateSection != null) {
+            incomeDateSection.setIncomeTotal(total);
+            mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
+        }
     }
 
     /**
@@ -449,6 +460,18 @@ public class MdIncomeService {
      */
     public void updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
         mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
+        //计算总成本 毛收入*管理费率+重置价格*维护保养费率+毛收入*租赁税费率+毛收入*保险费率+土地使用税
+        MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLeaseCost.getSectionId());
+        if (incomeDateSection != null) {
+            BigDecimal incomeTotal = incomeDateSection.getIncomeTotal();//毛收入
+            BigDecimal total = incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio());
+            total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));
+            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));
+            total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));
+            total = total.add(mdIncomeLeaseCost.getLandUseTax());
+            incomeDateSection.setCostTotal(total);
+            mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
+        }
     }
 
     /**
@@ -567,6 +590,12 @@ public class MdIncomeService {
         mdIncomeLease.setIncomeId(mdIncome.getId());
         mdIncomeLeaseDao.updateIncomeLease(whereLease, mdIncomeLease);
 
+        MdIncomeLeaseCost whereLeaseCost = new MdIncomeLeaseCost();
+        whereLeaseCost.setIncomeId(0);
+        whereLeaseCost.setCreator(commonService.thisUserAccount());
+        MdIncomeLeaseCost mdIncomeLeaseCost = new MdIncomeLeaseCost();
+        mdIncomeLeaseCost.setIncomeId(mdIncome.getId());
+        mdIncomeLeaseCostDao.updateIncomeLeaseCost(whereLeaseCost, mdIncomeLeaseCost);
         return mdIncome;
 
 

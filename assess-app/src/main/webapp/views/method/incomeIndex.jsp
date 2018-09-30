@@ -49,16 +49,18 @@
                 </div>
             </div>
             <div class="form-group" id="group_leaseMode" style="display: none;">
-                <label class="col-sm-1 control-label">
-                    租赁限制<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-3">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        租赁限制<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-3">
                     <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
                                                       onchange="incomeIndex.leaseModeChange(this);" value="0"><label
                             for="leaseMode0">限制</label></span>
-                    <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
-                                                      onchange="incomeIndex.leaseModeChange(this);"><label
-                            for="leaseMode1">无限制</label></span>
+                        <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
+                                                          onchange="incomeIndex.leaseModeChange(this);"><label
+                                for="leaseMode1">无限制</label></span>
+                    </div>
                 </div>
             </div>
             <div class="form-group" id="group_restriction_explain" style="display: none;">
@@ -150,6 +152,7 @@
         DatepickerUtils.sectionChoose($("#frm_data_section").find('[name=beginDate]'), $("#frm_data_section").find('[name=endDate]'));
         if ("${mdIncome.id}" > 0) {
             $("#frm_income").find("[name=operationMode][value=${mdIncome.operationMode}]").trigger('click');
+            $("#frm_income").find("[name=leaseMode][value=${mdIncome.leaseMode}]").trigger('click');
         }
     })
     var incomeIndex = {};
@@ -192,10 +195,13 @@
                     if (data.operationMode == 0) {
                         selfSupport.loadForecastList(0);
                         selfSupport.loadForecastList(1);
+                        selfSupport.loadCalculationResult();
                     }
                     if (data.operationMode == 1) {
                         lease.loadLeaseList();
                         lease.loadLeaseCostList();
+                        lease.loadLeaseParameterList();
+                        lease.loadCalculationResult();
                     }
                     $('#modal_data_section').modal('hide');
                 }
@@ -292,6 +298,8 @@
             $("#group_leaseMode,#lease_info").show();
             lease.loadLeaseList();
             lease.loadLeaseCostList();
+            lease.loadLeaseParameterList();
+            lease.loadCalculationResult();
         }
     }
 
@@ -313,6 +321,9 @@
         if (!$("#frm_self_support").valid()) {
             return false;
         }
+        if (!$("#frm_lease").valid()) {
+            return false;
+        }
         return true;
     }
 
@@ -322,6 +333,9 @@
         var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         if (operationMode == 0) {//自营
             formData = selfSupport.getData();
+        }
+        if (operationMode == 1) {//自营
+            formData = lease.getData();
         }
         return formData;
     }

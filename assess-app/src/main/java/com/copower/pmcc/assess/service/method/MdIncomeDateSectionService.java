@@ -119,6 +119,14 @@ public class MdIncomeDateSectionService {
     }
 
     /**
+     * 更新
+     * @param dateSection
+     */
+    public void updateDateSection(MdIncomeDateSection dateSection){
+        mdIncomeDateSectionDao.updateDateSection(dateSection);
+    }
+
+    /**
      * 获取数据
      *
      * @param id

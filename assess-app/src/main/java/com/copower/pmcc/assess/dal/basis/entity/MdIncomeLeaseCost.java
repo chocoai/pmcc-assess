@@ -28,7 +28,7 @@ public class MdIncomeLeaseCost {
 
     private BigDecimal insurancePremiumRatio;
 
-    private String landUseTax;
+    private BigDecimal landUseTax;
 
     private String useTaxParameter;
 
@@ -134,12 +134,12 @@ public class MdIncomeLeaseCost {
         this.insurancePremiumRatio = insurancePremiumRatio;
     }
 
-    public String getLandUseTax() {
+    public BigDecimal getLandUseTax() {
         return landUseTax;
     }
 
-    public void setLandUseTax(String landUseTax) {
-        this.landUseTax = landUseTax == null ? null : landUseTax.trim();
+    public void setLandUseTax(BigDecimal landUseTax) {
+        this.landUseTax = landUseTax;
     }
 
     public String getUseTaxParameter() {

@@ -876,62 +876,52 @@ public class MdIncomeLeaseCostExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxEqualTo(String value) {
+        public Criteria andLandUseTaxEqualTo(BigDecimal value) {
             addCriterion("land_use_tax =", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxNotEqualTo(String value) {
+        public Criteria andLandUseTaxNotEqualTo(BigDecimal value) {
             addCriterion("land_use_tax <>", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxGreaterThan(String value) {
+        public Criteria andLandUseTaxGreaterThan(BigDecimal value) {
             addCriterion("land_use_tax >", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxGreaterThanOrEqualTo(String value) {
+        public Criteria andLandUseTaxGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("land_use_tax >=", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxLessThan(String value) {
+        public Criteria andLandUseTaxLessThan(BigDecimal value) {
             addCriterion("land_use_tax <", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxLessThanOrEqualTo(String value) {
+        public Criteria andLandUseTaxLessThanOrEqualTo(BigDecimal value) {
             addCriterion("land_use_tax <=", value, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxLike(String value) {
-            addCriterion("land_use_tax like", value, "landUseTax");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandUseTaxNotLike(String value) {
-            addCriterion("land_use_tax not like", value, "landUseTax");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandUseTaxIn(List<String> values) {
+        public Criteria andLandUseTaxIn(List<BigDecimal> values) {
             addCriterion("land_use_tax in", values, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxNotIn(List<String> values) {
+        public Criteria andLandUseTaxNotIn(List<BigDecimal> values) {
             addCriterion("land_use_tax not in", values, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxBetween(String value1, String value2) {
+        public Criteria andLandUseTaxBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_use_tax between", value1, value2, "landUseTax");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseTaxNotBetween(String value1, String value2) {
+        public Criteria andLandUseTaxNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_use_tax not between", value1, value2, "landUseTax");
             return (Criteria) this;
         }

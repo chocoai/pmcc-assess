@@ -406,6 +406,76 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andRentalsRemarkIsNull() {
+            addCriterion("rentals_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkIsNotNull() {
+            addCriterion("rentals_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkEqualTo(String value) {
+            addCriterion("rentals_remark =", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkNotEqualTo(String value) {
+            addCriterion("rentals_remark <>", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkGreaterThan(String value) {
+            addCriterion("rentals_remark >", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("rentals_remark >=", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkLessThan(String value) {
+            addCriterion("rentals_remark <", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkLessThanOrEqualTo(String value) {
+            addCriterion("rentals_remark <=", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkLike(String value) {
+            addCriterion("rentals_remark like", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkNotLike(String value) {
+            addCriterion("rentals_remark not like", value, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkIn(List<String> values) {
+            addCriterion("rentals_remark in", values, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkNotIn(List<String> values) {
+            addCriterion("rentals_remark not in", values, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkBetween(String value1, String value2) {
+            addCriterion("rentals_remark between", value1, value2, "rentalsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRentalsRemarkNotBetween(String value1, String value2) {
+            addCriterion("rentals_remark not between", value1, value2, "rentalsRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andMonthNumberIsNull() {
             addCriterion("month_number is null");
             return (Criteria) this;
@@ -526,123 +596,133 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateIsNull() {
-            addCriterion("interest_rate is null");
+        public Criteria andDepositRateIsNull() {
+            addCriterion("deposit_rate is null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateIsNotNull() {
-            addCriterion("interest_rate is not null");
+        public Criteria andDepositRateIsNotNull() {
+            addCriterion("deposit_rate is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateEqualTo(BigDecimal value) {
-            addCriterion("interest_rate =", value, "interestRate");
+        public Criteria andDepositRateEqualTo(BigDecimal value) {
+            addCriterion("deposit_rate =", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateNotEqualTo(BigDecimal value) {
-            addCriterion("interest_rate <>", value, "interestRate");
+        public Criteria andDepositRateNotEqualTo(BigDecimal value) {
+            addCriterion("deposit_rate <>", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateGreaterThan(BigDecimal value) {
-            addCriterion("interest_rate >", value, "interestRate");
+        public Criteria andDepositRateGreaterThan(BigDecimal value) {
+            addCriterion("deposit_rate >", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("interest_rate >=", value, "interestRate");
+        public Criteria andDepositRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("deposit_rate >=", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateLessThan(BigDecimal value) {
-            addCriterion("interest_rate <", value, "interestRate");
+        public Criteria andDepositRateLessThan(BigDecimal value) {
+            addCriterion("deposit_rate <", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("interest_rate <=", value, "interestRate");
+        public Criteria andDepositRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("deposit_rate <=", value, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateIn(List<BigDecimal> values) {
-            addCriterion("interest_rate in", values, "interestRate");
+        public Criteria andDepositRateIn(List<BigDecimal> values) {
+            addCriterion("deposit_rate in", values, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateNotIn(List<BigDecimal> values) {
-            addCriterion("interest_rate not in", values, "interestRate");
+        public Criteria andDepositRateNotIn(List<BigDecimal> values) {
+            addCriterion("deposit_rate not in", values, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("interest_rate between", value1, value2, "interestRate");
+        public Criteria andDepositRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("deposit_rate between", value1, value2, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestRateNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("interest_rate not between", value1, value2, "interestRate");
+        public Criteria andDepositRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("deposit_rate not between", value1, value2, "depositRate");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeIsNull() {
-            addCriterion("interest_income is null");
+        public Criteria andDepositRateRemarkIsNull() {
+            addCriterion("deposit_rate_remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeIsNotNull() {
-            addCriterion("interest_income is not null");
+        public Criteria andDepositRateRemarkIsNotNull() {
+            addCriterion("deposit_rate_remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeEqualTo(BigDecimal value) {
-            addCriterion("interest_income =", value, "interestIncome");
+        public Criteria andDepositRateRemarkEqualTo(String value) {
+            addCriterion("deposit_rate_remark =", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeNotEqualTo(BigDecimal value) {
-            addCriterion("interest_income <>", value, "interestIncome");
+        public Criteria andDepositRateRemarkNotEqualTo(String value) {
+            addCriterion("deposit_rate_remark <>", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeGreaterThan(BigDecimal value) {
-            addCriterion("interest_income >", value, "interestIncome");
+        public Criteria andDepositRateRemarkGreaterThan(String value) {
+            addCriterion("deposit_rate_remark >", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("interest_income >=", value, "interestIncome");
+        public Criteria andDepositRateRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("deposit_rate_remark >=", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeLessThan(BigDecimal value) {
-            addCriterion("interest_income <", value, "interestIncome");
+        public Criteria andDepositRateRemarkLessThan(String value) {
+            addCriterion("deposit_rate_remark <", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("interest_income <=", value, "interestIncome");
+        public Criteria andDepositRateRemarkLessThanOrEqualTo(String value) {
+            addCriterion("deposit_rate_remark <=", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeIn(List<BigDecimal> values) {
-            addCriterion("interest_income in", values, "interestIncome");
+        public Criteria andDepositRateRemarkLike(String value) {
+            addCriterion("deposit_rate_remark like", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeNotIn(List<BigDecimal> values) {
-            addCriterion("interest_income not in", values, "interestIncome");
+        public Criteria andDepositRateRemarkNotLike(String value) {
+            addCriterion("deposit_rate_remark not like", value, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("interest_income between", value1, value2, "interestIncome");
+        public Criteria andDepositRateRemarkIn(List<String> values) {
+            addCriterion("deposit_rate_remark in", values, "depositRateRemark");
             return (Criteria) this;
         }
 
-        public Criteria andInterestIncomeNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("interest_income not between", value1, value2, "interestIncome");
+        public Criteria andDepositRateRemarkNotIn(List<String> values) {
+            addCriterion("deposit_rate_remark not in", values, "depositRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRateRemarkBetween(String value1, String value2) {
+            addCriterion("deposit_rate_remark between", value1, value2, "depositRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRateRemarkNotBetween(String value1, String value2) {
+            addCriterion("deposit_rate_remark not between", value1, value2, "depositRateRemark");
             return (Criteria) this;
         }
 
@@ -703,146 +783,6 @@ public class MdIncomeLeaseExample {
 
         public Criteria andOtherIncomeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("other_income not between", value1, value2, "otherIncome");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkIsNull() {
-            addCriterion("rentals_remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkIsNotNull() {
-            addCriterion("rentals_remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkEqualTo(String value) {
-            addCriterion("rentals_remark =", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkNotEqualTo(String value) {
-            addCriterion("rentals_remark <>", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkGreaterThan(String value) {
-            addCriterion("rentals_remark >", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("rentals_remark >=", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkLessThan(String value) {
-            addCriterion("rentals_remark <", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkLessThanOrEqualTo(String value) {
-            addCriterion("rentals_remark <=", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkLike(String value) {
-            addCriterion("rentals_remark like", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkNotLike(String value) {
-            addCriterion("rentals_remark not like", value, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkIn(List<String> values) {
-            addCriterion("rentals_remark in", values, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkNotIn(List<String> values) {
-            addCriterion("rentals_remark not in", values, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkBetween(String value1, String value2) {
-            addCriterion("rentals_remark between", value1, value2, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRentalsRemarkNotBetween(String value1, String value2) {
-            addCriterion("rentals_remark not between", value1, value2, "rentalsRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkIsNull() {
-            addCriterion("interest_rate_remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkIsNotNull() {
-            addCriterion("interest_rate_remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkEqualTo(String value) {
-            addCriterion("interest_rate_remark =", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkNotEqualTo(String value) {
-            addCriterion("interest_rate_remark <>", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkGreaterThan(String value) {
-            addCriterion("interest_rate_remark >", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("interest_rate_remark >=", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkLessThan(String value) {
-            addCriterion("interest_rate_remark <", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkLessThanOrEqualTo(String value) {
-            addCriterion("interest_rate_remark <=", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkLike(String value) {
-            addCriterion("interest_rate_remark like", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkNotLike(String value) {
-            addCriterion("interest_rate_remark not like", value, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkIn(List<String> values) {
-            addCriterion("interest_rate_remark in", values, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkNotIn(List<String> values) {
-            addCriterion("interest_rate_remark not in", values, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkBetween(String value1, String value2) {
-            addCriterion("interest_rate_remark between", value1, value2, "interestRateRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andInterestRateRemarkNotBetween(String value1, String value2) {
-            addCriterion("interest_rate_remark not between", value1, value2, "interestRateRemark");
             return (Criteria) this;
         }
 

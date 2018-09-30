@@ -7,13 +7,12 @@
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
     <result column="rental_income" property="rentalIncome" jdbcType="DECIMAL" />
     <result column="rentals" property="rentals" jdbcType="DECIMAL" />
+    <result column="rentals_remark" property="rentalsRemark" jdbcType="VARCHAR" />
     <result column="month_number" property="monthNumber" jdbcType="INTEGER" />
     <result column="deposit" property="deposit" jdbcType="DECIMAL" />
-    <result column="interest_rate" property="interestRate" jdbcType="DECIMAL" />
-    <result column="interest_income" property="interestIncome" jdbcType="DECIMAL" />
+    <result column="deposit_rate" property="depositRate" jdbcType="DECIMAL" />
+    <result column="deposit_rate_remark" property="depositRateRemark" jdbcType="VARCHAR" />
     <result column="other_income" property="otherIncome" jdbcType="DECIMAL" />
-    <result column="rentals_remark" property="rentalsRemark" jdbcType="VARCHAR" />
-    <result column="interest_rate_remark" property="interestRateRemark" jdbcType="VARCHAR" />
     <result column="other_income_remark" property="otherIncomeRemark" jdbcType="VARCHAR" />
     <result column="gross_income" property="grossIncome" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -79,9 +78,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, section_id, rental_income, rentals, month_number, deposit, interest_rate, 
-    interest_income, other_income, rentals_remark, interest_rate_remark, other_income_remark, 
-    gross_income, creator, gmt_created, gmt_modified
+    id, income_id, section_id, rental_income, rentals, rentals_remark, month_number, 
+    deposit, deposit_rate, deposit_rate_remark, other_income, other_income_remark, gross_income, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseExample" >
     select
@@ -118,17 +117,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_income_lease (income_id, section_id, rental_income, 
-      rentals, month_number, deposit, 
-      interest_rate, interest_income, other_income, 
-      rentals_remark, interest_rate_remark, other_income_remark, 
-      gross_income, creator, gmt_created, 
-      gmt_modified)
+      rentals, rentals_remark, month_number, 
+      deposit, deposit_rate, deposit_rate_remark, 
+      other_income, other_income_remark, gross_income, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{incomeId,jdbcType=INTEGER}, #{sectionId,jdbcType=INTEGER}, #{rentalIncome,jdbcType=DECIMAL}, 
-      #{rentals,jdbcType=DECIMAL}, #{monthNumber,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, 
-      #{interestRate,jdbcType=DECIMAL}, #{interestIncome,jdbcType=DECIMAL}, #{otherIncome,jdbcType=DECIMAL}, 
-      #{rentalsRemark,jdbcType=VARCHAR}, #{interestRateRemark,jdbcType=VARCHAR}, #{otherIncomeRemark,jdbcType=VARCHAR}, 
-      #{grossIncome,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{rentals,jdbcType=DECIMAL}, #{rentalsRemark,jdbcType=VARCHAR}, #{monthNumber,jdbcType=INTEGER}, 
+      #{deposit,jdbcType=DECIMAL}, #{depositRate,jdbcType=DECIMAL}, #{depositRateRemark,jdbcType=VARCHAR}, 
+      #{otherIncome,jdbcType=DECIMAL}, #{otherIncomeRemark,jdbcType=VARCHAR}, #{grossIncome,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,26 +147,23 @@
       <if test="rentals != null" >
         rentals,
       </if>
+      <if test="rentalsRemark != null" >
+        rentals_remark,
+      </if>
       <if test="monthNumber != null" >
         month_number,
       </if>
       <if test="deposit != null" >
         deposit,
       </if>
-      <if test="interestRate != null" >
-        interest_rate,
+      <if test="depositRate != null" >
+        deposit_rate,
       </if>
-      <if test="interestIncome != null" >
-        interest_income,
+      <if test="depositRateRemark != null" >
+        deposit_rate_remark,
       </if>
       <if test="otherIncome != null" >
         other_income,
-      </if>
-      <if test="rentalsRemark != null" >
-        rentals_remark,
-      </if>
-      <if test="interestRateRemark != null" >
-        interest_rate_remark,
       </if>
       <if test="otherIncomeRemark != null" >
         other_income_remark,
@@ -198,26 +194,23 @@
       <if test="rentals != null" >
         #{rentals,jdbcType=DECIMAL},
       </if>
+      <if test="rentalsRemark != null" >
+        #{rentalsRemark,jdbcType=VARCHAR},
+      </if>
       <if test="monthNumber != null" >
         #{monthNumber,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
         #{deposit,jdbcType=DECIMAL},
       </if>
-      <if test="interestRate != null" >
-        #{interestRate,jdbcType=DECIMAL},
+      <if test="depositRate != null" >
+        #{depositRate,jdbcType=DECIMAL},
       </if>
-      <if test="interestIncome != null" >
-        #{interestIncome,jdbcType=DECIMAL},
+      <if test="depositRateRemark != null" >
+        #{depositRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="otherIncome != null" >
         #{otherIncome,jdbcType=DECIMAL},
-      </if>
-      <if test="rentalsRemark != null" >
-        #{rentalsRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="interestRateRemark != null" >
-        #{interestRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="otherIncomeRemark != null" >
         #{otherIncomeRemark,jdbcType=VARCHAR},
@@ -260,26 +253,23 @@
       <if test="record.rentals != null" >
         rentals = #{record.rentals,jdbcType=DECIMAL},
       </if>
+      <if test="record.rentalsRemark != null" >
+        rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
+      </if>
       <if test="record.monthNumber != null" >
         month_number = #{record.monthNumber,jdbcType=INTEGER},
       </if>
       <if test="record.deposit != null" >
         deposit = #{record.deposit,jdbcType=DECIMAL},
       </if>
-      <if test="record.interestRate != null" >
-        interest_rate = #{record.interestRate,jdbcType=DECIMAL},
+      <if test="record.depositRate != null" >
+        deposit_rate = #{record.depositRate,jdbcType=DECIMAL},
       </if>
-      <if test="record.interestIncome != null" >
-        interest_income = #{record.interestIncome,jdbcType=DECIMAL},
+      <if test="record.depositRateRemark != null" >
+        deposit_rate_remark = #{record.depositRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.otherIncome != null" >
         other_income = #{record.otherIncome,jdbcType=DECIMAL},
-      </if>
-      <if test="record.rentalsRemark != null" >
-        rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.interestRateRemark != null" >
-        interest_rate_remark = #{record.interestRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.otherIncomeRemark != null" >
         other_income_remark = #{record.otherIncomeRemark,jdbcType=VARCHAR},
@@ -308,13 +298,12 @@
       section_id = #{record.sectionId,jdbcType=INTEGER},
       rental_income = #{record.rentalIncome,jdbcType=DECIMAL},
       rentals = #{record.rentals,jdbcType=DECIMAL},
+      rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
       month_number = #{record.monthNumber,jdbcType=INTEGER},
       deposit = #{record.deposit,jdbcType=DECIMAL},
-      interest_rate = #{record.interestRate,jdbcType=DECIMAL},
-      interest_income = #{record.interestIncome,jdbcType=DECIMAL},
+      deposit_rate = #{record.depositRate,jdbcType=DECIMAL},
+      deposit_rate_remark = #{record.depositRateRemark,jdbcType=VARCHAR},
       other_income = #{record.otherIncome,jdbcType=DECIMAL},
-      rentals_remark = #{record.rentalsRemark,jdbcType=VARCHAR},
-      interest_rate_remark = #{record.interestRateRemark,jdbcType=VARCHAR},
       other_income_remark = #{record.otherIncomeRemark,jdbcType=VARCHAR},
       gross_income = #{record.grossIncome,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -339,26 +328,23 @@
       <if test="rentals != null" >
         rentals = #{rentals,jdbcType=DECIMAL},
       </if>
+      <if test="rentalsRemark != null" >
+        rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
+      </if>
       <if test="monthNumber != null" >
         month_number = #{monthNumber,jdbcType=INTEGER},
       </if>
       <if test="deposit != null" >
         deposit = #{deposit,jdbcType=DECIMAL},
       </if>
-      <if test="interestRate != null" >
-        interest_rate = #{interestRate,jdbcType=DECIMAL},
+      <if test="depositRate != null" >
+        deposit_rate = #{depositRate,jdbcType=DECIMAL},
       </if>
-      <if test="interestIncome != null" >
-        interest_income = #{interestIncome,jdbcType=DECIMAL},
+      <if test="depositRateRemark != null" >
+        deposit_rate_remark = #{depositRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="otherIncome != null" >
         other_income = #{otherIncome,jdbcType=DECIMAL},
-      </if>
-      <if test="rentalsRemark != null" >
-        rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="interestRateRemark != null" >
-        interest_rate_remark = #{interestRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="otherIncomeRemark != null" >
         other_income_remark = #{otherIncomeRemark,jdbcType=VARCHAR},
@@ -384,13 +370,12 @@
       section_id = #{sectionId,jdbcType=INTEGER},
       rental_income = #{rentalIncome,jdbcType=DECIMAL},
       rentals = #{rentals,jdbcType=DECIMAL},
+      rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
       month_number = #{monthNumber,jdbcType=INTEGER},
       deposit = #{deposit,jdbcType=DECIMAL},
-      interest_rate = #{interestRate,jdbcType=DECIMAL},
-      interest_income = #{interestIncome,jdbcType=DECIMAL},
+      deposit_rate = #{depositRate,jdbcType=DECIMAL},
+      deposit_rate_remark = #{depositRateRemark,jdbcType=VARCHAR},
       other_income = #{otherIncome,jdbcType=DECIMAL},
-      rentals_remark = #{rentalsRemark,jdbcType=VARCHAR},
-      interest_rate_remark = #{interestRateRemark,jdbcType=VARCHAR},
       other_income_remark = #{otherIncomeRemark,jdbcType=VARCHAR},
       gross_income = #{grossIncome,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},

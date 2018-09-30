@@ -52,6 +52,19 @@ public class IncomeController {
     }
 
     @ResponseBody
+    @PostMapping(value = "/updateDateSection", name = "更新分段信息")
+    public HttpResult updateDateSection(String formData) {
+        try {
+            MdIncomeDateSection mdIncomeDateSection = JSON.parseObject(formData, MdIncomeDateSection.class);
+            mdIncomeDateSectionService.updateDateSection(mdIncomeDateSection);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
     @PostMapping(value = "/deleteDateSection", name = "删除分段信息")
     public HttpResult deleteDateSection(@RequestParam(value = "id") Integer id) {
         try {
@@ -188,9 +201,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/updateLease", method = {RequestMethod.POST}, name = "修改")
-    public HttpResult updateLease(String formData) {
+    public HttpResult updateLease(MdIncomeLease mdIncomeLease) {
         try {
-            MdIncomeLease mdIncomeLease = JSON.parseObject(formData, MdIncomeLease.class);
             mdIncomeService.updateLease(mdIncomeLease);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -208,10 +220,9 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/updateLeaseCost", method = {RequestMethod.POST}, name = "修改")
-    public HttpResult updateLeaseCost(String formData) {
+    public HttpResult updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
         try {
-            MdIncomeLeaseCost mdIncomeLease = JSON.parseObject(formData, MdIncomeLeaseCost.class);
-            mdIncomeService.updateLeaseCost(mdIncomeLease);
+            mdIncomeService.updateLeaseCost(mdIncomeLeaseCost);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
