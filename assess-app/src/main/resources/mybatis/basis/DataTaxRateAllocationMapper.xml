@@ -9,10 +9,11 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="ex_explain" property="exExplain" jdbcType="VARCHAR" />
-    <result column="tax_rate" property="taxRate" jdbcType="VARCHAR" />
-    <result column="national_unity" property="nationalUnity" jdbcType="VARCHAR" />
+    <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="bis_national_unity" property="bisNationalUnity" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, creator, gmt_created, gmt_modified, province, city, district, type, ex_explain, 
-    tax_rate, national_unity
+    tax_rate, amount, bis_national_unity
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocationExample" >
     select
@@ -113,11 +114,11 @@
     insert into tb_data_tax_rate_allocation (creator, gmt_created, gmt_modified, 
       province, city, district, 
       type, ex_explain, tax_rate, 
-      national_unity)
+      amount, bis_national_unity)
     values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=VARCHAR}, 
-      #{nationalUnity,jdbcType=VARCHAR})
+      #{type,jdbcType=INTEGER}, #{exExplain,jdbcType=VARCHAR}, #{taxRate,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{bisNationalUnity,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -152,8 +153,11 @@
       <if test="taxRate != null" >
         tax_rate,
       </if>
-      <if test="nationalUnity != null" >
-        national_unity,
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="bisNationalUnity != null" >
+        bis_national_unity,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -176,16 +180,19 @@
         #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="exExplain != null" >
         #{exExplain,jdbcType=VARCHAR},
       </if>
       <if test="taxRate != null" >
-        #{taxRate,jdbcType=VARCHAR},
+        #{taxRate,jdbcType=DECIMAL},
       </if>
-      <if test="nationalUnity != null" >
-        #{nationalUnity,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bisNationalUnity != null" >
+        #{bisNationalUnity,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -220,16 +227,19 @@
         district = #{record.district,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.exExplain != null" >
         ex_explain = #{record.exExplain,jdbcType=VARCHAR},
       </if>
       <if test="record.taxRate != null" >
-        tax_rate = #{record.taxRate,jdbcType=VARCHAR},
+        tax_rate = #{record.taxRate,jdbcType=DECIMAL},
       </if>
-      <if test="record.nationalUnity != null" >
-        national_unity = #{record.nationalUnity,jdbcType=VARCHAR},
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.bisNationalUnity != null" >
+        bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -245,10 +255,11 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
       ex_explain = #{record.exExplain,jdbcType=VARCHAR},
-      tax_rate = #{record.taxRate,jdbcType=VARCHAR},
-      national_unity = #{record.nationalUnity,jdbcType=VARCHAR}
+      tax_rate = #{record.taxRate,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      bis_national_unity = #{record.bisNationalUnity,jdbcType=BIT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -275,16 +286,19 @@
         district = #{district,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="exExplain != null" >
         ex_explain = #{exExplain,jdbcType=VARCHAR},
       </if>
       <if test="taxRate != null" >
-        tax_rate = #{taxRate,jdbcType=VARCHAR},
+        tax_rate = #{taxRate,jdbcType=DECIMAL},
       </if>
-      <if test="nationalUnity != null" >
-        national_unity = #{nationalUnity,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bisNationalUnity != null" >
+        bis_national_unity = #{bisNationalUnity,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -297,10 +311,11 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       ex_explain = #{exExplain,jdbcType=VARCHAR},
-      tax_rate = #{taxRate,jdbcType=VARCHAR},
-      national_unity = #{nationalUnity,jdbcType=VARCHAR}
+      tax_rate = #{taxRate,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      bis_national_unity = #{bisNationalUnity,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

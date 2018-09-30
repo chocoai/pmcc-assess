@@ -20,6 +20,8 @@ public class MdIncomeLease {
 
     private BigDecimal deposit;
 
+    private String depositRemark;
+
     private BigDecimal depositRate;
 
     private String depositRateRemark;
@@ -98,6 +100,14 @@ public class MdIncomeLease {
 
     public void setDeposit(BigDecimal deposit) {
         this.deposit = deposit;
+    }
+
+    public String getDepositRemark() {
+        return depositRemark;
+    }
+
+    public void setDepositRemark(String depositRemark) {
+        this.depositRemark = depositRemark == null ? null : depositRemark.trim();
     }
 
     public BigDecimal getDepositRate() {

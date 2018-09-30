@@ -36,8 +36,8 @@
                                     类型
                                 </label>
                                 <div class="col-sm-2">
-                                    <select  name="type"
-                                             class="form-control search-select select2 type">
+                                    <select name="type"
+                                            class="form-control search-select select2 type">
                                     </select>
                                 </div>
                             </div>
@@ -94,23 +94,31 @@
         loadDataDicList: function (type) {
             var cols = [];
             cols.push({
-                field: 'id', title: '全国统一', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    if (row.nationalUnity == 'yes'){
-                        str += "是";
+                field: 'id', title: '区域', formatter: function (value, row, index) {
+                    var str = '全国';
+                    if (row.bisNationalUnity == false) {
+                        if (row.provinceName) {
+                            str = row.provinceName;
+                        }
+                        if (row.cityName) {
+                            str += row.cityName;
+                        }
+                        if (row.districtName) {
+                            str += row.districtName;
+                        }
                     }
-                    if (row.nationalUnity == 'no'){
-                        str += "否";
-                    }
-                    str += '</div>';
                     return str;
                 }
             });
-            cols.push({field: 'provinceName', title: '省'});
-            cols.push({field: 'cityName', title: '市'});
-            cols.push({field: 'districtName', title: '县'});
             cols.push({field: 'typeName', title: '类型'});
-            cols.push({field: 'taxRateName', title: '税率'});
+            cols.push({
+                field: 'taxRate', title: '税率', formatter: function (value, row, index) {
+                    if (value) {
+                        return AssessCommon.pointToPercent(value);
+                    }
+                }
+            });
+            cols.push({field: 'amount', title: '金额'});
             cols.push({field: 'exExplain', title: '说明'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -134,7 +142,7 @@
                 }
             });
         },
-        findList:function () {
+        findList: function () {
             var id = $("#frmQuery" + " .type").eq(1).val();
             dataProperty.prototype.loadDataDicList(id);
         },
@@ -204,12 +212,12 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.dataTaxRateAllocation, "", function (html, data) {
                 $("#frmQuery").find('select.type').html(html);
             });
-            $("#" + dataProperty.prototype.config().frm+" .nationalUnity").change(function () {
-                var item = $("#" + dataProperty.prototype.config().frm+" .nationalUnity").eq(1).val();
-                if (item == 'yes'){
+            $("#" + dataProperty.prototype.config().frm + " .bisNationalUnity").change(function () {
+                var item = $("#" + dataProperty.prototype.config().frm).find('select.bisNationalUnity').val();
+                if (item == 'true') {
                     $("#region").hide();
                 }
-                if (item == 'no'){
+                if (item == 'false') {
                     $("#region").show();
                 }
             });
@@ -224,9 +232,13 @@
                     if (result.ret) {
                         $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.city,"city");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.district,"district");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm,result.data.province,"province");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.city, "city");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.district, "district");
+                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.province, "province");
+                        $("#" + dataProperty.prototype.config().frm).find('.x-percent').each(function () {
+                            $(this).attr('data-value', result.data[$(this).attr('name')]);
+                            AssessCommon.elementParsePercent($(this));
+                        })
                         $('#' + dataProperty.prototype.config().box).modal("show");
                     }
                 },
@@ -247,7 +259,7 @@
 </script>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="width: 1000px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -262,11 +274,14 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">全国统一</label>
-                                        <div class="col-sm-10">
-                                            <select name="nationalUnity" class="form-control search-select select2 nationalUnity" required="required">
-                                                <option value="yes">是</option>
-                                                <option value="no">否</option>
+                                        <label class="col-sm-1 control-label">全国统一</label>
+                                        <div class="col-sm-3">
+                                            <select name="bisNationalUnity"
+                                                    class="form-control search-select select2 bisNationalUnity"
+                                                    required="required">
+                                                <option value="">-请选择-</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
                                             </select>
                                         </div>
                                     </div>
@@ -274,9 +289,9 @@
                                 <div id="region" style="display: none;">
                                     <div class="form-group">
                                         <div class="x-valid">
-                                            <label class="col-sm-2 control-label">省
+                                            <label class="col-sm-1 control-label">省
                                                 <span class="symbol required"></span></label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <select id="province" name="province"
                                                         class="form-control search-select select2">
                                                     <option value="" name="province">-请选择-</option>
@@ -294,20 +309,17 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
                                         <div class="x-valid">
-                                            <label class="col-sm-2 control-label">市</label>
-                                            <div class="col-sm-10">
-                                                <select id="city" name="city" class="form-control search-select select2">
+                                            <label class="col-sm-1 control-label">市</label>
+                                            <div class="col-sm-3">
+                                                <select id="city" name="city"
+                                                        class="form-control search-select select2">
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
                                         <div class="x-valid">
-                                            <label class="col-sm-2 control-label">县</label>
-                                            <div class="col-sm-10">
+                                            <label class="col-sm-1 control-label">县</label>
+                                            <div class="col-sm-3">
                                                 <select id="district" name="district"
                                                         class="form-control search-select select2">
                                                 </select>
@@ -317,33 +329,40 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">类型<span class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select  name="type"
+                                        <label class="col-sm-1 control-label">类型<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select name="type"
                                                     class="form-control search-select select2 type" required="required">
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            税率<span class="symbol required"></span>
+                                        <label class="col-sm-1 control-label">
+                                            税率
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" data-rule-number='true' class="form-control" name="taxRate"
-                                                   placeholder="税率(数字)" required="required">
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control x-percent"
+                                                   name="taxRate" placeholder="税率(数字)">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            金额
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" data-rule-number='true' class="form-control"
+                                                   name="amount" placeholder="金额(数字)">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            说明<span class="symbol required"></span>
+                                        <label class="col-sm-1 control-label">
+                                            说明
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="exExplain"
-                                                   placeholder="说明" required="required">
+                                        <div class="col-sm-11">
+                                            <textarea class="form-control" name="exExplain"></textarea>
                                         </div>
                                     </div>
                                 </div>

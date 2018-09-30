@@ -34,8 +34,8 @@ public class IncomeController {
 
     @ResponseBody
     @GetMapping(value = "/getDateSectionList", name = "获取日期分段列表")
-    public BootstrapTableVo getDateSectionList(Integer incomeId,Integer operationMode) {
-        return mdIncomeDateSectionService.getDateSectionList(incomeId,operationMode);
+    public BootstrapTableVo getDateSectionList(Integer incomeId, Integer operationMode) {
+        return mdIncomeDateSectionService.getDateSectionList(incomeId, operationMode);
     }
 
     @ResponseBody
@@ -113,9 +113,9 @@ public class IncomeController {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
             MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
-            if(multipartFile.isEmpty())
+            if (multipartFile.isEmpty())
                 return HttpResult.newErrorResult("上传的文件不能为空");
-            String s = mdIncomeService.importHistory(history,multipartFile);
+            String s = mdIncomeService.importHistory(history, multipartFile);
             return HttpResult.newCorrectResult(s);
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -223,9 +223,11 @@ public class IncomeController {
     public HttpResult updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
         try {
             mdIncomeService.updateLeaseCost(mdIncomeLeaseCost);
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
+            return HttpResult.newErrorResult("保存异常");
         }
         return HttpResult.newCorrectResult();
     }

@@ -596,6 +596,76 @@ public class MdIncomeLeaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andDepositRemarkIsNull() {
+            addCriterion("deposit_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkIsNotNull() {
+            addCriterion("deposit_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkEqualTo(String value) {
+            addCriterion("deposit_remark =", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkNotEqualTo(String value) {
+            addCriterion("deposit_remark <>", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkGreaterThan(String value) {
+            addCriterion("deposit_remark >", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("deposit_remark >=", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkLessThan(String value) {
+            addCriterion("deposit_remark <", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkLessThanOrEqualTo(String value) {
+            addCriterion("deposit_remark <=", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkLike(String value) {
+            addCriterion("deposit_remark like", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkNotLike(String value) {
+            addCriterion("deposit_remark not like", value, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkIn(List<String> values) {
+            addCriterion("deposit_remark in", values, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkNotIn(List<String> values) {
+            addCriterion("deposit_remark not in", values, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkBetween(String value1, String value2) {
+            addCriterion("deposit_remark between", value1, value2, "depositRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepositRemarkNotBetween(String value1, String value2) {
+            addCriterion("deposit_remark not between", value1, value2, "depositRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andDepositRateIsNull() {
             addCriterion("deposit_rate is null");
             return (Criteria) this;
