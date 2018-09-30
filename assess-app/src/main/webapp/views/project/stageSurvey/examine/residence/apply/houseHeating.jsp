@@ -197,8 +197,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseHeating.prototype.config().frm + " .equipmentPrice").html(option);
-                                $("#" + houseHeating.prototype.config().frm + " .equipmentPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseHeating.prototype.config().frm ).find("select.equipmentPrice").html(option);
                             }
                         }
                     },
@@ -220,8 +219,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseHeating.prototype.config().frm + " .category").html(option);
-                                $("#" + houseHeating.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseHeating.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },

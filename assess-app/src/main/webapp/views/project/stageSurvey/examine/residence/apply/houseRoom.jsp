@@ -226,8 +226,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .material").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .material").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.material").html(option);
                             }
                         }
                     },
@@ -248,8 +247,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .materialPrice").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.materialPrice").html(option);
                             }
                         }
                     },
@@ -270,8 +268,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .constructionTechnology").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.constructionTechnology").html(option);
                             }
                         }
                     },
@@ -292,8 +289,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .part").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .part").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.part").html(option);
                             }
                         }
                     },
@@ -401,8 +397,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").html(option);
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseRoom.prototype.config().frm ).find("select.roomType").html(option);
                             }
                         }
                     },

@@ -208,8 +208,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolNature").html(option);
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolNature").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEducation.prototype.config().frm).find("select.schoolNature").html(option);
                             }
                         }
                     },
@@ -230,8 +229,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolGradation").html(option);
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolGradation").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEducation.prototype.config().frm).find("select.schoolGradation").html(option);
                             }
                         }
                     },
@@ -252,8 +250,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolLevel").html(option);
-                                $("#" + matchingEducation.prototype.config().frm + " .schoolLevel").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEducation.prototype.config().frm).find("select.schoolLevel").html(option);
                             }
                         }
                     },
@@ -274,8 +271,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEducation.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingEducation.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEducation.prototype.config().frm).find("select.distance").html(option);
                             }
                         }
                     },

@@ -230,8 +230,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMarket.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingMarket.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMarket.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },
@@ -253,8 +252,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMarket.prototype.config().frm + " .grade").html(option);
-                                $("#" + matchingMarket.prototype.config().frm + " .grade").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMarket.prototype.config().frm ).find("select.grade").html(option);
                             }
                         }
                     },
@@ -276,8 +274,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMarket.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingMarket.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMarket.prototype.config().frm ).find("select.distance").html(option);
                             }
                         }
                     },

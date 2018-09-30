@@ -185,72 +185,7 @@
                 })
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_category",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .type").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .type").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingEnvironment/environment_influence_degree",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+
 
             }
         }

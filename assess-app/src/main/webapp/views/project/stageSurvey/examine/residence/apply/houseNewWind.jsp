@@ -200,8 +200,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseNewWind.prototype.config().frm + " .equipmentPrice").html(option);
-                                $("#" + houseNewWind.prototype.config().frm + " .equipmentPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseNewWind.prototype.config().frm ).find("select.equipmentPrice").html(option);
                             }
                         }
                     },
@@ -223,8 +222,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseNewWind.prototype.config().frm + " .category").html(option);
-                                $("#" + houseNewWind.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseNewWind.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },

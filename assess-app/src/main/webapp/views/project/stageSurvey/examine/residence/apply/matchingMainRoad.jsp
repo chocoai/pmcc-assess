@@ -192,8 +192,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMainRoad.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingMainRoad.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMainRoad.prototype.config().frm ).find("select.distance").html(option);
                             }
                         }
                     },

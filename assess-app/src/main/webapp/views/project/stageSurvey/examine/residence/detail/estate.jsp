@@ -144,6 +144,15 @@
                        class="form-control">
             </div>
         </div>
+
+        <div class="x-valid">
+            <label class="col-sm-1 control-label">基础板块名称<span class="symbol required"></span></label>
+            <div class="col-sm-3">
+                <input type="text" placeholder="价格区间"
+                       value="${surveyExamineDataInfoVo.examineEstateVo.blockName}" name="blockName" readonly="readonly"
+                       class="form-control">
+            </div>
+        </div>
     </div>
 
     <div class="form-group">

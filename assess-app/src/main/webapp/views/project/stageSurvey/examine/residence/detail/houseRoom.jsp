@@ -210,94 +210,7 @@
                 })
             },
             subclassInit: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_decorating_material",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .material").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .material").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_material_price",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .materialPrice").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_construction_technology",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .constructionTechnology").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_building_decoration_part",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .part").html(option);
-                                $("#" + houseRoom.prototype.config().frmSubclass + " .part").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
+
             },
             subclassLoadList: function () {
                 var cols = [];
@@ -383,29 +296,6 @@
                 })
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseRoom/examine_unit_house_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").html(option);
-                                $("#" + houseRoom.prototype.config().frm + " .roomType").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-
 
             }
         }

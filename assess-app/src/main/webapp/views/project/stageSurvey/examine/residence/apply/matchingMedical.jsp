@@ -197,8 +197,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").html(option);
-                                $("#" + matchingMedical.prototype.config().frm + " .organizationLevel").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMedical.prototype.config().frm ).find("select.organizationLevel").html(option);
                             }
                         }
                     },
@@ -220,8 +219,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMedical.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingMedical.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMedical.prototype.config().frm ).find("select.distance").html(option);
                             }
                         }
                     },

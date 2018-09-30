@@ -209,72 +209,7 @@
                 })
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseCorollaryEquipment/examine_house_corollary_equipment_price",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price").html(option);
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .price").select2();//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseCorollaryEquipment/examine_house_corollary_equipment_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .type").html(option);
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .type").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineHouseCorollaryEquipment/examine_house_corollary_equipment_category",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .category").html(option);
-                                $("#" + houseCorollaryEquipment.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+
 
             },
             fileUpload:function () {

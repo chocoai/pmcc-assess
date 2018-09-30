@@ -195,16 +195,13 @@
     var houseFun = new HouseFun();
     houseFun.init = function () {
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
-            $("#" + houseFun.config.getFrm() + " .certUse").html(html);
-            $("#" + houseFun.config.getFrm() + " .certUse").select2();//加载样式
+            $("#" + houseFun.config.getFrm()).find("select.certUse").html(html);
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, null, function (html, data) {
-            $("#" + houseFun.config.getFrm() + " .practicalUse").html(html);
-            $("#" + houseFun.config.getFrm() + " .practicalUse").select2();//加载样式
+            $("#" + houseFun.config.getFrm()).find("select.practicalUse").html(html);
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, null, function (html, data) {
-            $("#" + houseFun.config.getFrm() + " .newsHuxing").html(html);
-            $("#" + houseFun.config.getFrm() + " .newsHuxing").select2();//加载样式
+            $("#" + houseFun.config.getFrm()).find("select.newsHuxing").html(html);
         });
         houseFun.files.init();
         houseFun.huXinSelect();

@@ -171,28 +171,7 @@
                 })
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineEstateParking/estate_car_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + estateParking.prototype.config().frm + " .parkingType").html(option);
-                                $("#" + estateParking.prototype.config().frm + " .parkingType").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+
             }
         }
     })();

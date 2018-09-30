@@ -187,72 +187,8 @@
                 })
             },
             init: function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingMaterial/estate_supply_new_distance",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingMaterial.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingMaterial/estate_supply_new_scale",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingMaterial.prototype.config().frm + " .scale").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .scale").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/examineMatchingMaterial/estate_supply_new_type",
-                    type: "get",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            var gradeNum = data.length;
-                            var option = "<option value=''>请选择</option>";
-                            if (gradeNum > 0) {
-                                for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                $("#" + matchingMaterial.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
+
+
 
             }
         }

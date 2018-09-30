@@ -208,8 +208,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").html(option);
-                                $("#" + unitDecorate.prototype.config().frm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + unitDecorate.prototype.config().frm ).find("select.decoratingMaterial").html(option);
                             }
                         }
                     },
@@ -230,8 +229,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").html(option);
-                                $("#" + unitDecorate.prototype.config().frm + " .materialPriceRange").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + unitDecorate.prototype.config().frm ).find("select.materialPriceRange").html(option);
                             }
                         }
                     },
@@ -252,8 +250,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").html(option);
-                                $("#" + unitDecorate.prototype.config().frm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + unitDecorate.prototype.config().frm ).find("select.constructionTechnology").html(option);
                             }
                         }
                     },
@@ -274,8 +271,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").html(option);
-                                $("#" + unitDecorate.prototype.config().frm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + unitDecorate.prototype.config().frm ).find("select.decorationPart").html(option);
                             }
                         }
                     },

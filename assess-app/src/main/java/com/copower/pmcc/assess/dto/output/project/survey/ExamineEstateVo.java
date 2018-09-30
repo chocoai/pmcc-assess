@@ -9,6 +9,7 @@ public class ExamineEstateVo extends ExamineEstate {
     private String developerName;//开发商
     private String address;//地址
     private String landLevelName;
+    private String blockName;
 
     public String getDeveloperName() {
         return developerName;
@@ -32,5 +33,13 @@ public class ExamineEstateVo extends ExamineEstate {
 
     public void setLandLevelName(String landLevelName) {
         this.landLevelName = landLevelName;
+    }
+
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
     }
 }

@@ -362,28 +362,22 @@
         init: function () {
             //第一次加载
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.tradingType").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .descriptionType").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.descriptionType").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .taxBurden").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.taxBurden").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .normalTransaction").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .normalTransaction").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.normalTransaction").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .paymentMethod").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.paymentMethod").html(html);
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm + " .informationType").html(html);
-                $("#" + examineHouseTrading.prototype.config().frm + " .informationType").select2();//加载样式
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.informationType").html(html);
             });
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();

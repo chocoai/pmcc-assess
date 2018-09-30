@@ -219,8 +219,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .intelligentSystem").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .intelligentSystem").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.intelligentSystem").html(option);
                             }
                         }
                     },
@@ -241,8 +240,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .monitoringSystem").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .monitoringSystem").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.monitoringSystem").html(option);
                             }
                         }
                     },
@@ -263,8 +261,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .internalCommunication").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .internalCommunication").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.internalCommunication").html(option);
                             }
                         }
                     },
@@ -285,8 +282,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .lampsLanterns").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .lampsLanterns").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.lampsLanterns").html(option);
                             }
                         }
                     },
@@ -307,8 +303,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .switchCircuit").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .switchCircuit").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.switchCircuit").html(option);
                             }
                         }
                     },
@@ -329,8 +324,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireErection").html(option);
-                                $("#" + houseIntelligent.prototype.config().frm + " .wireErection").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseIntelligent.prototype.config().frm ).find("select.wireErection").html(option);
                             }
                         }
                     },

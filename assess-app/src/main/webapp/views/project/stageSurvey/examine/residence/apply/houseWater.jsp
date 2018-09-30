@@ -212,8 +212,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseWater.prototype.config().frm + " .pretreatedWater").html(option);
-                                $("#" + houseWater.prototype.config().frm + " .pretreatedWater").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseWater.prototype.config().frm ).find("select.pretreatedWater").html(option);
                             }
                         }
                     },
@@ -234,8 +233,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseWater.prototype.config().frm + " .supplyErectionMethod").html(option);
-                                $("#" + houseWater.prototype.config().frm + " .supplyErectionMethod").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseWater.prototype.config().frm ).find("select.supplyErectionMethod").html(option);
                             }
                         }
                     },
@@ -256,8 +254,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseWater.prototype.config().frm + " .waterIntakeEquipmentPrice").html(option);
-                                $("#" + houseWater.prototype.config().frm + " .waterIntakeEquipmentPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseWater.prototype.config().frm ).find("select.waterIntakeEquipmentPrice").html(option);
                             }
                         }
                     },
@@ -278,8 +275,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseWater.prototype.config().frm + " .purificationEquipmentPrice").html(option);
-                                $("#" + houseWater.prototype.config().frm + " .purificationEquipmentPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseWater.prototype.config().frm ).find("select.purificationEquipmentPrice").html(option);
                             }
                         }
                     },
@@ -300,8 +296,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseWater.prototype.config().frm + " .drainageCircuit").html(option);
-                                $("#" + houseWater.prototype.config().frm + " .drainageCircuit").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + houseWater.prototype.config().frm ).find("select.drainageCircuit").html(option);
                             }
                         }
                     },

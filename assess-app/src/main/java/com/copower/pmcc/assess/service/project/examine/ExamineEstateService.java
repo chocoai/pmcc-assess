@@ -2,12 +2,10 @@ package com.copower.pmcc.assess.service.project.examine;
 
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.examine.ExamineEstateDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
-import com.copower.pmcc.assess.dal.basis.entity.ExamineEstate;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.ExamineEstateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -35,6 +33,8 @@ public class ExamineEstateService {
     private DataDeveloperService dataDeveloperService;
     @Autowired
     private DataLandLevelService dataLandLevelService;
+    @Autowired
+    private DataBlockService dataBlockService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -78,10 +78,12 @@ public class ExamineEstateService {
             if (dataLandLevel!=null){
                 examineEstateVo.setLandLevelName(dataLandLevel.getLeve());
             }
-//            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstate.getLandLevel());
-//            if (sysDataDicTemp != null){
-//                examineEstateVo.setLandLevelName(sysDataDicTemp.getName());
-//            }
+        }
+        if (examineEstate.getBlockId() != null){
+            DataBlock dataBlock = dataBlockService.getDataBlockById(examineEstate.getBlockId());
+            if (dataBlock != null){
+                examineEstateVo.setBlockName(dataBlock.getName());
+            }
         }
         return examineEstateVo;
     }

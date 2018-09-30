@@ -296,7 +296,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                   建筑类别
+                    建筑类别
                 </label>
                 <div class="col-sm-3">
                     <select name="buildingCategory"
@@ -915,12 +915,10 @@
             },
             init: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
-                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").html(html);
-                    $("#" + examineBuilding_.prototype.config().frm + " .buildingCategory").select2();//加载样式
+                    $("#" + examineBuilding_.prototype.config().frm ).find("select.buildingCategory").html(html);
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, null, function (html, data) {
-                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").html(html);
-                    $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").select2();//加载样式
+                    $("#" + examineBuilding_.prototype.config().frm ).find("select.buildingStructure").html(html);
                 });
                 $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2({minimumResultsForSearch: -1});//加载样式
                 $("#" + examineBuilding_.prototype.config().frm + " .buildingStructure").change(function () {
@@ -931,13 +929,11 @@
                     if (id != null && id != '' && id != 0) {
                         AssessCommon.loadDataDicByPid(id, null, function (html, data) {
                             $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").html(html);
-                            $("#" + examineBuilding_.prototype.config().frm + "buildingStructure").select2();//加载样式
                         });
                     }
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, null, function (html, data) {
-                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").html(html);
-                    $("#" + examineBuilding_.prototype.config().frm + " .propertyType").select2();//加载样式
+                    $("#" + examineBuilding_.prototype.config().frm ).find("select.propertyType").html(html);
                 });
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
@@ -954,8 +950,7 @@
                                 for (var i = 0; i < item.DataBuilder.length; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .builderId").select2();//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm ).find("select.builderId").html(html);
                                 option = "";
                             }
                             if (item.DataProperty.length > 0) {
@@ -964,8 +959,7 @@
                                 for (var i = 0; i < item.DataProperty.length; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").html(option);
-                                $("#" + examineBuilding_.prototype.config().frm + " .propertyId").select2();//加载样式
+                                $("#" + examineBuilding_.prototype.config().frm ).find("select.propertyId").html(html);
                             }
                         }
                     },
@@ -1102,8 +1096,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().sonFrm ).find("select.decoratingMaterial").html(option);
                                     }
                                 }
                             },
@@ -1124,8 +1117,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().sonFrm ).find("select.materialPrice").html(option);
                                     }
                                 }
                             },
@@ -1146,8 +1138,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().sonFrm ).find("select.constructionTechnology").html(option);
                                     }
                                 }
                             },
@@ -1168,8 +1159,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().sonFrm ).find("select.decorationPart").html(option);
                                     }
                                 }
                             },
@@ -1318,8 +1308,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").select2();//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm ).find("select.structure").html(option);
                                     }
                                 }
                             },
@@ -1467,8 +1456,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").select2();//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm ).find("select.category").html(option);
                                     }
                                 }
                             },
@@ -1490,8 +1478,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").select2();//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm ).find("select.materialQuality").html(option);
                                     }
                                 }
                             },
@@ -1643,8 +1630,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decoratingMaterial").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm ).find("select.decoratingMaterial").html(option);
                                     }
                                 }
                             },
@@ -1665,8 +1651,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .materialPrice").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm ).find("select.materialPrice").html(option);
                                     }
                                 }
                             },
@@ -1687,8 +1672,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .constructionTechnology").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm ).find("select.constructionTechnology").html(option);
                                     }
                                 }
                             },
@@ -1709,8 +1693,7 @@
                                         for (var i = 0; i < gradeNum; i++) {
                                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                         }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decorationPart").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
+                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm ).find("select.decorationPart").html(option);
                                     }
                                 }
                             },
@@ -1969,7 +1952,6 @@
         </div>
     </div>
 </div>
-
 
 <div id="divBoxExamineBuildingSurface" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"

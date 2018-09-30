@@ -243,8 +243,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + unitHuxing.prototype.config().frm + " .houseLayout").html(option);
-                                $("#" + unitHuxing.prototype.config().frm + " .houseLayout").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + unitHuxing.prototype.config().frm ).find("select.houseLayout").html(option);
                             }
                         }
                     },

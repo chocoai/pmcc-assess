@@ -228,8 +228,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingRecreation.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingRecreation.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingRecreation.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },
@@ -274,8 +273,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingRecreation.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingRecreation.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingRecreation.prototype.config().frm ).find("select.distance").html(option);
                             }
                         }
                     },

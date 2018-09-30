@@ -212,20 +212,16 @@
             },
             init: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, "", function (html, data) {
-                    $("#" + houseFun.prototype.config().frm + " .certUse").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .certUse").select2();//加载样式
+                    $("#" + houseFun.prototype.config().frm ).find("select.certUse").html(html);
                 })
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, "", function (html, data) {
-                    $("#" + houseFun.prototype.config().frm + " .practicalUse").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .practicalUse").select2();//加载样式
+                    $("#" + houseFun.prototype.config().frm ).find("select.practicalUse").html(html);
                 })
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, "", function (html, data) {
-                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .useEnvironment").select2();//加载样式
+                    $("#" + houseFun.prototype.config().frm ).find("select.useEnvironment").html(html);
                 })
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, "", function (html, data) {
-                    $("#" + houseFun.prototype.config().frm + " .newsHuxing").html(html);
-                    $("#" + houseFun.prototype.config().frm + " .newsHuxing").select2();//加载样式
+                    $("#" + houseFun.prototype.config().frm ).find("select.newsHuxing").html(html);
                 })
                 houseFun.prototype.examineunithuxingSelect();
                 houseFun.prototype.changeEvent();

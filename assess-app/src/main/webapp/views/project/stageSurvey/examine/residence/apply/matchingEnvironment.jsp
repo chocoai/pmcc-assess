@@ -201,8 +201,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEnvironment.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },
@@ -223,8 +222,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .type").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .type").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEnvironment.prototype.config().frm ).find("select.type").html(option);
                             }
                         }
                     },
@@ -245,8 +243,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").html(option);
-                                $("#" + matchingEnvironment.prototype.config().frm + " .influenceDegree").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingEnvironment.prototype.config().frm ).find("select.influenceDegree").html(option);
                             }
                         }
                     },

@@ -203,8 +203,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMaterial.prototype.config().frm + " .distance").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .distance").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMaterial.prototype.config().frm ).find("select.distance").html(option);
                             }
                         }
                     },
@@ -225,8 +224,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMaterial.prototype.config().frm + " .scale").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .scale").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMaterial.prototype.config().frm ).find("select.scale").html(option);
                             }
                         }
                     },
@@ -247,8 +245,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + matchingMaterial.prototype.config().frm + " .category").html(option);
-                                $("#" + matchingMaterial.prototype.config().frm + " .category").select2({minimumResultsForSearch: -1});//加载样式
+                                $("#" + matchingMaterial.prototype.config().frm ).find("select.category").html(option);
                             }
                         }
                     },
