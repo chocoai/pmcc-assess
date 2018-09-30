@@ -53,4 +53,18 @@ public class AssessDataDicKeyConstant {
     public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
     public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //收入类
 
+    /**
+     * 税率配置
+     */
+    public static final String DATA_TAX_RATE_ALLOCATION_DEED_TAX = "data.tax.rate.allocation.deed.tax"; //土地取得契税
+    public static final String DATA_TAX_RATE_ALLOCATION_TRANSACTION_COST = "data.tax.rate.allocation.transaction.cost"; //交易费用
+    public static final String DATA_TAX_RATE_ALLOCATION_MANAGEMENT_COST = "data.tax.rate.allocation.management.cost"; //管理费用
+    public static final String DATA_TAX_RATE_ALLOCATION_SALES_TAX = "data.tax.rate.allocation.sales.tax"; //营业税
+    public static final String DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX = "data.tax.rate.allocation.construction.tax"; //城建税
+    public static final String DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL = "data.tax.rate.allocation.local.education.tax.additional"; //地方教育税附加
+    public static final String DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS = "data.tax.rate.allocation.education.fee.plus"; //教育费附加
+    public static final String DATA_TAX_RATE_ALLOCATION_STAMP_DUTY = "data.tax.rate.allocation.stamp.duty"; //印花税
+    public static final String DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX = "data.tax.rate.allocation.property.tax"; //房产税
+    public static final String DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX = "data.tax.rate.allocation.land.increment.tax"; //土地增值税
+    public static final String DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE = "data.tax.rate.allocation.land.replacement.value"; //重置价格
 }

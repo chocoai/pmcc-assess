@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -48,17 +49,23 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private DataTaxRateAllocationService dataTaxRateAllocationService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskIncomeIndex", 0);
         //初始化支撑数据
-
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_INCOME);
         setViewParam(projectPlanDetails, modelAndView);
+
+
         return modelAndView;
     }
+
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
@@ -102,18 +109,6 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        if (judgeObject != null) {
-            modelAndView.addObject("judgeObject", judgeObject);
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                if(declareRecord.getHouseUseEndDate()!=null)
-                    modelAndView.addObject("houseSurplusYear", DateUtils.diffDate(declareRecord.getHouseUseEndDate(),new Date())/DateUtils.DAYS_PER_YEAR);
-                if(declareRecord.getLandUseEndDate()!=null)
-                    modelAndView.addObject("landSurplusYear", DateUtils.diffDate(declareRecord.getLandUseEndDate(),new Date())/DateUtils.DAYS_PER_YEAR);
-            }
-        }
-
         SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         modelAndView.addObject("schemeInfo", schemeInfo);
         //评估支持数据
@@ -124,6 +119,24 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
             mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
         }
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        if (judgeObject != null) {
+            modelAndView.addObject("judgeObject", judgeObject);
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
+            if (declareRecord != null) {
+                if (declareRecord.getHouseUseEndDate() != null)//房产使用剩余年限
+                    modelAndView.addObject("houseSurplusYear", DateUtils.diffDate(declareRecord.getHouseUseEndDate(), new Date()) / DateUtils.DAYS_PER_YEAR);
+                if (declareRecord.getLandUseEndDate() != null)//土地使用剩余年限
+                    modelAndView.addObject("landSurplusYear", DateUtils.diffDate(declareRecord.getLandUseEndDate(), new Date()) / DateUtils.DAYS_PER_YEAR);
+            }
+        }
+        //取重置价格
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.get(judgeObject.getAreaGroupId());
+        DataTaxRateAllocation taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE, areaGroup.getProvince(), areaGroup.getCity(), null);
+        if (taxRateAllocation != null)
+            modelAndView.addObject("replacementValue", taxRateAllocation.getAmount());
+        //取租赁税费 房产税+印花税+营业税*(城建税+地方教育费附加+教育费附加)
+        modelAndView.addObject("additionalRatio", mdIncomeService.getAdditionalRatio(areaGroup.getProvince(), areaGroup.getCity(), null));
         modelAndView.addObject("mdIncome", mdIncome);
     }
 

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,8 +26,6 @@ public class DataTaxRateAllocationController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
     @Autowired
     private DataTaxRateAllocationService dataTaxRateAllocationService;
     @Autowired
@@ -60,15 +56,10 @@ public class DataTaxRateAllocationController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataTaxRateAllocationList", method = {RequestMethod.GET}, name = "获取税率配置列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String type,String nationalUnity) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer type,String nationalUnity) {
         BootstrapTableVo vo = null;
         DataTaxRateAllocation dataTaxRateAllocation = new DataTaxRateAllocation();
-        if (!StringUtils.isEmpty(type)) {
-            dataTaxRateAllocation.setType(type);
-        }
-        if (!StringUtils.isEmpty(nationalUnity)){
-            dataTaxRateAllocation.setNationalUnity(nationalUnity);
-        }
+        dataTaxRateAllocation.setType(type);
         try {
             vo = dataTaxRateAllocationService.getDataTaxRateAllocationListVos(dataTaxRateAllocation);
         } catch (Exception e1) {

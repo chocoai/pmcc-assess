@@ -128,7 +128,15 @@
                                        class="form-control" required="required">
                             </div>
                         </div>
-
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                全年月份数<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="monthNumber" placeholder="全年月份数" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
 
@@ -146,22 +154,13 @@
                                 出租率说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="rentalsRemark" placeholder="出租率" class="form-control"
+                                <input type="text" name="rentalsRemark" placeholder="出租率说明" class="form-control"
                                        required="required">
                             </div>
                         </div>
 
                     </div>
                     <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                全年月份数<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="monthNumber" placeholder="全年月份数" class="form-control"
-                                       required="required">
-                            </div>
-                        </div>
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
                                 押金<span class="symbol required"></span>
@@ -171,7 +170,15 @@
                                        class="form-control" required="required">
                             </div>
                         </div>
-
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                押金说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="depositRemark" placeholder="押金说明" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="x-valid">
@@ -256,7 +263,8 @@
                                 重置价格<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="replacementValue" placeholder="重置价格" data-rule-number="true"
+                                <input type="text" name="replacementValue" readonly="readonly" placeholder="重置价格"
+                                       data-rule-number="true"
                                        class="form-control " required="required">
                             </div>
                         </div>
@@ -276,7 +284,7 @@
                                 租赁税费<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-4">
-                                <input type="text" name="additionalRatio" placeholder="租赁税费"
+                                <input type="text" name="additionalRatio" readonly="readonly" placeholder="租赁税费"
                                        class="form-control x-percent" required="required">
                             </div>
                         </div>
@@ -490,6 +498,12 @@
             $(this).attr('data-value', row[$(this).attr('name')]);
             AssessCommon.elementParsePercent($(this));
         })
+        //租赁税费特殊处理
+        var additionalRatioElement = $("#frm_lease_cost").find('[name=additionalRatio]');
+        additionalRatioElement.attr('data-value', '${additionalRatio}');
+        AssessCommon.elementParsePercent(additionalRatioElement);
+        //重置价格特殊处理
+        $("#frm_lease_cost").find('[name=replacementValue]').val("${replacementValue}");
         $('#modal_lease_cost').modal();
     }
 
@@ -558,7 +572,6 @@
             }
         });
         cols.push({field: 'landUseTax', title: '土地使用税'});
-        cols.push({field: 'useTaxParameter', title: '使用税参数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -704,8 +717,8 @@
         formData.mdIncome.id = $("#frm_income").find('[name=id]').val();
         formData.mdIncome.name = $("#frm_income").find('[name=name]').val();
         formData.mdIncome.price = $("#leaseResult").find('[data-name=price]').text();
-        formData.mdIncome.operationMode =  $("#frm_income").find('[name=operationMode]:checked').val();
-        formData.mdIncome.leaseMode =  $("#frm_income").find('[name=leaseMode]:checked').val();
+        formData.mdIncome.operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+        formData.mdIncome.leaseMode = $("#frm_income").find('[name=leaseMode]:checked').val();
         formData.mdIncome.rewardRate = $("#frm_lease").find('[name=rewardRate]').attr('data-value');
         formData.dateSectionList = [];
         $("#leaseResultBody").find('tr').each(function () {
@@ -755,7 +768,7 @@
             g = parseFloat(g);//租金增长率
 
             var h = (1 - Math.pow((1 + g) / (1 + r), n)).toFixed(6);//年期修正系数
-
+            if (h <= 0) return false;
             var k = (h / (r - g)).toFixed(6);//收益现值系数
 
             $(this).find('[data-name=correctionFactor]').text(h);

@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.data.DataEvaluationHypothesisVo;
 import com.copower.pmcc.assess.dto.output.method.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -66,6 +67,8 @@ public class MdIncomeService {
     private MdIncomeForecastYearDao mdIncomeForecastYearDao;
     @Autowired
     private MdIncomeForecastMonthDao mdIncomeForecastMonthDao;
+    @Autowired
+    private DataTaxRateAllocationService dataTaxRateAllocationService;
 
     /**
      * 保存数据
@@ -458,12 +461,15 @@ public class MdIncomeService {
      *
      * @param mdIncomeLeaseCost
      */
-    public void updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) {
+    public void updateLeaseCost(MdIncomeLeaseCost mdIncomeLeaseCost) throws BusinessException {
         mdIncomeLeaseCostDao.updateLeaseCost(mdIncomeLeaseCost);
         //计算总成本 毛收入*管理费率+重置价格*维护保养费率+毛收入*租赁税费率+毛收入*保险费率+土地使用税
         MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLeaseCost.getSectionId());
         if (incomeDateSection != null) {
             BigDecimal incomeTotal = incomeDateSection.getIncomeTotal();//毛收入
+            if(incomeTotal==null){
+                throw new BusinessException("请先保存毛收入信息");
+            }
             BigDecimal total = incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio());
             total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));
             total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));
@@ -597,7 +603,52 @@ public class MdIncomeService {
         mdIncomeLeaseCost.setIncomeId(mdIncome.getId());
         mdIncomeLeaseCostDao.updateIncomeLeaseCost(whereLeaseCost, mdIncomeLeaseCost);
         return mdIncome;
+    }
 
+    /**
+     * 获取租赁税费 房产税+印花税+营业税*(1+城建税+地方教育费附加+教育费附加)
+     *
+     * @param province
+     * @param city
+     * @param district
+     * @return
+     */
+    public BigDecimal getAdditionalRatio(String province, String city, String district) {
+        BigDecimal propertyTax = new BigDecimal("0");//房产税
+        BigDecimal stampDuty = new BigDecimal("0");//印花税
+        BigDecimal salesTax = new BigDecimal("0");//营业税
+        BigDecimal constructionTax = new BigDecimal("0");//城建税
+        BigDecimal localEducationTax = new BigDecimal("0");//地方教育费附加
+        BigDecimal educationFeePlus = new BigDecimal("0");//教育费附加
+        //房产税
+        DataTaxRateAllocation propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX);
+        if (propertyTaxAllocation != null)
+            propertyTax = propertyTaxAllocation.getTaxRate();
+        //印花税
+        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
+        if (propertyTaxAllocation != null)
+            stampDuty = propertyTaxAllocation.getTaxRate();
+        //营业税
+        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
+        if (propertyTaxAllocation != null)
+            salesTax = propertyTaxAllocation.getTaxRate();
+        //城建税
+        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_CONSTRUCTION_TAX);
+        if (propertyTaxAllocation != null)
+            constructionTax = propertyTaxAllocation.getTaxRate();
+        //地方教育费附加
+        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LOCAL_EDUCATION_TAX_ADDITIONAL, province, city, district);
+        if (propertyTaxAllocation != null)
+            localEducationTax = propertyTaxAllocation.getTaxRate();
+        //教育费附加
+        propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_EDUCATION_FEE_PLUS);
+        if (propertyTaxAllocation != null)
+            educationFeePlus = propertyTaxAllocation.getTaxRate();
 
+        BigDecimal total = new BigDecimal("0");
+        total = total.add(propertyTax).add(stampDuty);
+        total = total.add(salesTax.multiply(new BigDecimal("1").add(constructionTax).add(localEducationTax).add(educationFeePlus)));
+        total = total.setScale(4,BigDecimal.ROUND_HALF_UP);
+        return total;
     }
 }

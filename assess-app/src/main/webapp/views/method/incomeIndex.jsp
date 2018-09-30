@@ -327,14 +327,14 @@
         return true;
     }
 
-    //表单验证
+    //获取表单数据
     incomeIndex.getData = function () {
         var formData = {};
         var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
         if (operationMode == 0) {//自营
             formData = selfSupport.getData();
         }
-        if (operationMode == 1) {//自营
+        if (operationMode == 1) {//租赁
             formData = lease.getData();
         }
         return formData;

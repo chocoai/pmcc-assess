@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -575,62 +576,52 @@ public class DataTaxRateAllocationExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
+        public Criteria andTypeEqualTo(Integer value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
+        public Criteria andTypeNotEqualTo(Integer value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(String value) {
+        public Criteria andTypeGreaterThan(Integer value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(String value) {
+        public Criteria andTypeLessThan(Integer value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
+        public Criteria andTypeIn(List<Integer> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
+        public Criteria andTypeNotIn(List<Integer> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(String value1, String value2) {
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
@@ -715,133 +706,173 @@ public class DataTaxRateAllocationExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateEqualTo(String value) {
+        public Criteria andTaxRateEqualTo(BigDecimal value) {
             addCriterion("tax_rate =", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotEqualTo(String value) {
+        public Criteria andTaxRateNotEqualTo(BigDecimal value) {
             addCriterion("tax_rate <>", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateGreaterThan(String value) {
+        public Criteria andTaxRateGreaterThan(BigDecimal value) {
             addCriterion("tax_rate >", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateGreaterThanOrEqualTo(String value) {
+        public Criteria andTaxRateGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("tax_rate >=", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateLessThan(String value) {
+        public Criteria andTaxRateLessThan(BigDecimal value) {
             addCriterion("tax_rate <", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateLessThanOrEqualTo(String value) {
+        public Criteria andTaxRateLessThanOrEqualTo(BigDecimal value) {
             addCriterion("tax_rate <=", value, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateLike(String value) {
-            addCriterion("tax_rate like", value, "taxRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaxRateNotLike(String value) {
-            addCriterion("tax_rate not like", value, "taxRate");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaxRateIn(List<String> values) {
+        public Criteria andTaxRateIn(List<BigDecimal> values) {
             addCriterion("tax_rate in", values, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotIn(List<String> values) {
+        public Criteria andTaxRateNotIn(List<BigDecimal> values) {
             addCriterion("tax_rate not in", values, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateBetween(String value1, String value2) {
+        public Criteria andTaxRateBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("tax_rate between", value1, value2, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andTaxRateNotBetween(String value1, String value2) {
+        public Criteria andTaxRateNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("tax_rate not between", value1, value2, "taxRate");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityIsNull() {
-            addCriterion("national_unity is null");
+        public Criteria andAmountIsNull() {
+            addCriterion("amount is null");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityIsNotNull() {
-            addCriterion("national_unity is not null");
+        public Criteria andAmountIsNotNull() {
+            addCriterion("amount is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityEqualTo(String value) {
-            addCriterion("national_unity =", value, "nationalUnity");
+        public Criteria andAmountEqualTo(BigDecimal value) {
+            addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityNotEqualTo(String value) {
-            addCriterion("national_unity <>", value, "nationalUnity");
+        public Criteria andAmountNotEqualTo(BigDecimal value) {
+            addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityGreaterThan(String value) {
-            addCriterion("national_unity >", value, "nationalUnity");
+        public Criteria andAmountGreaterThan(BigDecimal value) {
+            addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityGreaterThanOrEqualTo(String value) {
-            addCriterion("national_unity >=", value, "nationalUnity");
+        public Criteria andAmountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityLessThan(String value) {
-            addCriterion("national_unity <", value, "nationalUnity");
+        public Criteria andAmountLessThan(BigDecimal value) {
+            addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityLessThanOrEqualTo(String value) {
-            addCriterion("national_unity <=", value, "nationalUnity");
+        public Criteria andAmountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityLike(String value) {
-            addCriterion("national_unity like", value, "nationalUnity");
+        public Criteria andAmountIn(List<BigDecimal> values) {
+            addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityNotLike(String value) {
-            addCriterion("national_unity not like", value, "nationalUnity");
+        public Criteria andAmountNotIn(List<BigDecimal> values) {
+            addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityIn(List<String> values) {
-            addCriterion("national_unity in", values, "nationalUnity");
+        public Criteria andAmountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityNotIn(List<String> values) {
-            addCriterion("national_unity not in", values, "nationalUnity");
+        public Criteria andAmountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityBetween(String value1, String value2) {
-            addCriterion("national_unity between", value1, value2, "nationalUnity");
+        public Criteria andBisNationalUnityIsNull() {
+            addCriterion("bis_national_unity is null");
             return (Criteria) this;
         }
 
-        public Criteria andNationalUnityNotBetween(String value1, String value2) {
-            addCriterion("national_unity not between", value1, value2, "nationalUnity");
+        public Criteria andBisNationalUnityIsNotNull() {
+            addCriterion("bis_national_unity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityEqualTo(Boolean value) {
+            addCriterion("bis_national_unity =", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityNotEqualTo(Boolean value) {
+            addCriterion("bis_national_unity <>", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityGreaterThan(Boolean value) {
+            addCriterion("bis_national_unity >", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_national_unity >=", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityLessThan(Boolean value) {
+            addCriterion("bis_national_unity <", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_national_unity <=", value, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityIn(List<Boolean> values) {
+            addCriterion("bis_national_unity in", values, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityNotIn(List<Boolean> values) {
+            addCriterion("bis_national_unity not in", values, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_national_unity between", value1, value2, "bisNationalUnity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNationalUnityNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_national_unity not between", value1, value2, "bisNationalUnity");
             return (Criteria) this;
         }
     }

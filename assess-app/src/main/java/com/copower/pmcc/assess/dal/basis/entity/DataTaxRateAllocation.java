@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataTaxRateAllocation {
@@ -17,13 +18,15 @@ public class DataTaxRateAllocation {
 
     private String district;
 
-    private String type;
+    private Integer type;
 
     private String exExplain;
 
-    private String taxRate;
+    private BigDecimal taxRate;
 
-    private String nationalUnity;
+    private BigDecimal amount;
+
+    private Boolean bisNationalUnity;
 
     public Integer getId() {
         return id;
@@ -81,12 +84,12 @@ public class DataTaxRateAllocation {
         this.district = district == null ? null : district.trim();
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getExExplain() {
@@ -97,19 +100,27 @@ public class DataTaxRateAllocation {
         this.exExplain = exExplain == null ? null : exExplain.trim();
     }
 
-    public String getTaxRate() {
+    public BigDecimal getTaxRate() {
         return taxRate;
     }
 
-    public void setTaxRate(String taxRate) {
-        this.taxRate = taxRate == null ? null : taxRate.trim();
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
     }
 
-    public String getNationalUnity() {
-        return nationalUnity;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setNationalUnity(String nationalUnity) {
-        this.nationalUnity = nationalUnity == null ? null : nationalUnity.trim();
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public Boolean getBisNationalUnity() {
+        return bisNationalUnity;
+    }
+
+    public void setBisNationalUnity(Boolean bisNationalUnity) {
+        this.bisNationalUnity = bisNationalUnity;
     }
 }
