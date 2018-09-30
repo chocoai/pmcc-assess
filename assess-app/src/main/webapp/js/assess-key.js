@@ -63,8 +63,8 @@ AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory = "single.lan
  */
 var AssessDicKey = {}
 //基础数据
-AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//	委托目的
-AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//税率配置
+AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
+AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)
