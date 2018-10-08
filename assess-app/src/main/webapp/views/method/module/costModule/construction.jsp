@@ -1177,9 +1177,6 @@
             if (obj == 0) {
                 return true;
             }
-            // if (obj == '') {
-            //     return true;
-            // }
             if (obj) {
                 return true;
             }
@@ -1243,7 +1240,6 @@
                 if (construction.isNumber(value)) {
                     var funName = "construction.inputFun." + key.select + "Input(" + value + ")";
                     eval(funName);
-                    // construction.inputAlgorithm(key.select, value);
                 } else {
                     Alert("请输入合法数字!")
                 }
@@ -1260,7 +1256,6 @@
                     if (construction.isNumber(percent)) {
                         var funName = "construction.inputFun." + construction.config().inputConfig().landAcquisitionTaxRate.key + "Input(" + percent + ")";
                         eval(funName);
-                        // construction.inputAlgorithm(construction.config().inputConfig().landAcquisitionTaxRate.key, percent);
                     } else {
                         Alert("请输入合法数字!")
                     }
@@ -1278,7 +1273,6 @@
                     if (construction.isNumber(percent)) {
                         var funName = "construction.inputFun." + construction.config().inputConfig().addedValueAdditionalTaxRate.key + "Input(" + percent + ")";
                         eval(funName);
-                        // construction.inputAlgorithm(construction.config().inputConfig().addedValueAdditionalTaxRate.key, percent);
                     } else {
                         Alert("请输入合法数字!")
                     }
@@ -1321,10 +1315,8 @@
                                 temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
                                 optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                             }
-                            $("." + construction.config().frm + " ." + construction.config().inputConfig().infrastructureCost.select).html(optionA);
-                            $("." + construction.config().frm + " ." + construction.config().inputConfig().infrastructureCost.select).select2();
-                            $("." + construction.config().frm + " ." + construction.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
-                            $("." + construction.config().frm + " ." + construction.config().inputConfig().infrastructureMatchingCost.select).select2();
+                            $("." + construction.config().frm).find("select."+construction.config().inputConfig().infrastructureCost.select).html(optionA);
+                            $("." + construction.config().frm).find("select."+construction.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                         }
                     }
                 },
@@ -1336,15 +1328,13 @@
         //土地取得税率 加载数据
         loadSelect2DataLandAcquisitionTaxRate: function () {
             AssessCommon.loadDataDicByKey(AssessDicKey.build_landAcquisitionTaxRate, "", function (html, data) {
-                $("." + construction.config().frm + " ." + construction.config().inputConfig().landAcquisitionTaxRate.select).html(html);
-                $("." + construction.config().frm + " ." + construction.config().inputConfig().landAcquisitionTaxRate.select).select2();//加载样式
+                $("." + construction.config().frm).find("select."+construction.config().inputConfig().landAcquisitionTaxRate.select).html(html);
             })
         },
         //增值及附加税率
         loadSelect2DataAddedValueAdditionalTaxRate: function () {
             AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-                $("." + construction.config().frm + " ." + construction.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
-                $("." + construction.config().frm + " ." + construction.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                $("." + construction.config().frm).find("select."+construction.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
             })
         },
         init: function () {
@@ -1362,7 +1352,6 @@
      **/
     construction.constructionInstallationEngineeringFee = {
         event: function () {
-            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).show();
             layer.open({
                 type: 1,
                 area: '1000px;',
@@ -1376,13 +1365,11 @@
         getDataAndWriteHtml: function () {
             var data = constructEngineeringObjectA.getCalculatedResults();
             construction.inputAlgorithmObject.jqueryInputGetAndSet("set", construction.config().inputConfig().constructionInstallationEngineeringFee.key, data); //建筑安装工程费
-            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
             construction.inputFun.constructionInstallationEngineeringFeeInput(data);
             construction.constructionInstallationEngineeringFee.saveAndUpdate(constructEngineeringObjectA.loadData());
             construction.constructionInstallationEngineeringFee.layerClose();
         },
         close: function () {
-            // $("." + construction.config().frm + " ." + construction.config().engineeringFee).hide();
             construction.constructionInstallationEngineeringFee.layerClose();
         },
         layerClose:function () {

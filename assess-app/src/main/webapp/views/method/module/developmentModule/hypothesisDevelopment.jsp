@@ -1400,7 +1400,6 @@
 
     hypothesisDevelopment.constructionInstallationEngineeringFee = {
         event: function () {
-            // $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).show();
             layer.open({
                 type: 1,
                 area: '1000px;',
@@ -1412,7 +1411,6 @@
             });
         },
         close: function () {
-            // $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().architecturalEngineeringModel).hide();
             hypothesisDevelopment.constructionInstallationEngineeringFee.layerClose();
         },
         layerClose: function () {
@@ -1460,8 +1458,7 @@
                     $.each(data, function (i, item) {
                         retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                     });
-                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
-                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).select2();
+                    $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
                 });
             },
             /**
@@ -1471,8 +1468,7 @@
              **/
             loadAddedValueAdditionalTaxRate: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
-                    $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                    $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
                 })
             },
             /**
@@ -1499,10 +1495,8 @@
                                     temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
                                     optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                                 }
-                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureCost.select).html(optionA);
-                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureCost.select).select2();
-                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
-                                $("." + hypothesisDevelopment.config().frm + " ." + hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).select2();
+                                $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().infrastructureCost.select).html(optionA);
+                                $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                             }
 
                         }
