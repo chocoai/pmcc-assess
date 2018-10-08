@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdMarketCompareFieldMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataSetUseFieldMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="mc_id" property="mcId" jdbcType="INTEGER" />
-    <result column="dic_id" property="dicId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
     <result column="bis_primary_key" property="bisPrimaryKey" jdbcType="BIT" />
     <result column="bis_price" property="bisPrice" jdbcType="BIT" />
     <result column="bis_only_view" property="bisOnlyView" jdbcType="BIT" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -76,16 +75,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, mc_id, dic_id, name, value, bis_primary_key, bis_price, bis_only_view, sorting, 
-    remark, creator, gmt_created, gmt_modified
+    id, pid, name, field_name, bis_primary_key, bis_price, bis_only_view, bis_delete, 
+    sorting, remark, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareFieldExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_md_market_compare_field
+    from tb_data_set_use_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,54 +95,48 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_md_market_compare_field
+    from tb_data_set_use_field
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_md_market_compare_field
+    delete from tb_data_set_use_field
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareFieldExample" >
-    delete from tb_md_market_compare_field
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldExample" >
+    delete from tb_data_set_use_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_market_compare_field (pid, mc_id, dic_id, 
-      name, value, bis_primary_key, 
-      bis_price, bis_only_view, sorting, 
-      remark, creator, gmt_created, 
-      gmt_modified)
-    values (#{pid,jdbcType=INTEGER}, #{mcId,jdbcType=INTEGER}, #{dicId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{bisPrimaryKey,jdbcType=BIT}, 
-      #{bisPrice,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_data_set_use_field (pid, name, field_name, 
+      bis_primary_key, bis_price, bis_only_view, 
+      bis_delete, sorting, remark, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
+      #{bisPrimaryKey,jdbcType=BIT}, #{bisPrice,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, 
+      #{bisDelete,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_market_compare_field
+    insert into tb_data_set_use_field
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
         pid,
       </if>
-      <if test="mcId != null" >
-        mc_id,
-      </if>
-      <if test="dicId != null" >
-        dic_id,
-      </if>
       <if test="name != null" >
         name,
       </if>
-      <if test="value != null" >
-        value,
+      <if test="fieldName != null" >
+        field_name,
       </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key,
@@ -153,6 +146,9 @@
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
       </if>
       <if test="sorting != null" >
         sorting,
@@ -174,17 +170,11 @@
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="mcId != null" >
-        #{mcId,jdbcType=INTEGER},
-      </if>
-      <if test="dicId != null" >
-        #{dicId,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="value != null" >
-        #{value,jdbcType=VARCHAR},
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
       </if>
       <if test="bisPrimaryKey != null" >
         #{bisPrimaryKey,jdbcType=BIT},
@@ -194,6 +184,9 @@
       </if>
       <if test="bisOnlyView != null" >
         #{bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
       </if>
       <if test="sorting != null" >
         #{sorting,jdbcType=INTEGER},
@@ -212,14 +205,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareFieldExample" resultType="java.lang.Integer" >
-    select count(*) from tb_md_market_compare_field
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_set_use_field
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_md_market_compare_field
+    update tb_data_set_use_field
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -227,17 +220,11 @@
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.mcId != null" >
-        mc_id = #{record.mcId,jdbcType=INTEGER},
-      </if>
-      <if test="record.dicId != null" >
-        dic_id = #{record.dicId,jdbcType=INTEGER},
-      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.value != null" >
-        value = #{record.value,jdbcType=VARCHAR},
+      <if test="record.fieldName != null" >
+        field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
       <if test="record.bisPrimaryKey != null" >
         bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
@@ -247,6 +234,9 @@
       </if>
       <if test="record.bisOnlyView != null" >
         bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
       <if test="record.sorting != null" >
         sorting = #{record.sorting,jdbcType=INTEGER},
@@ -269,16 +259,15 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_md_market_compare_field
+    update tb_data_set_use_field
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      mc_id = #{record.mcId,jdbcType=INTEGER},
-      dic_id = #{record.dicId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      value = #{record.value,jdbcType=VARCHAR},
+      field_name = #{record.fieldName,jdbcType=VARCHAR},
       bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
       bis_price = #{record.bisPrice,jdbcType=BIT},
       bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -288,23 +277,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
-    update tb_md_market_compare_field
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
+    update tb_data_set_use_field
     <set >
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="mcId != null" >
-        mc_id = #{mcId,jdbcType=INTEGER},
-      </if>
-      <if test="dicId != null" >
-        dic_id = #{dicId,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="value != null" >
-        value = #{value,jdbcType=VARCHAR},
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
       </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
@@ -314,6 +297,9 @@
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view = #{bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
       <if test="sorting != null" >
         sorting = #{sorting,jdbcType=INTEGER},
@@ -333,16 +319,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField" >
-    update tb_md_market_compare_field
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
+    update tb_data_set_use_field
     set pid = #{pid,jdbcType=INTEGER},
-      mc_id = #{mcId,jdbcType=INTEGER},
-      dic_id = #{dicId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
-      value = #{value,jdbcType=VARCHAR},
+      field_name = #{fieldName,jdbcType=VARCHAR},
       bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
       bis_price = #{bisPrice,jdbcType=BIT},
       bis_only_view = #{bisOnlyView,jdbcType=BIT},
+      bis_delete = #{bisDelete,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

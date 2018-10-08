@@ -11,8 +11,6 @@ public class BaseProjectClassify {
 
     private String fieldName;
 
-    private Integer formModuleId;
-
     private String applyUrl;
 
     private String detailUrl;
@@ -63,14 +61,6 @@ public class BaseProjectClassify {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName == null ? null : fieldName.trim();
-    }
-
-    public Integer getFormModuleId() {
-        return formModuleId;
-    }
-
-    public void setFormModuleId(Integer formModuleId) {
-        this.formModuleId = formModuleId;
     }
 
     public String getApplyUrl() {

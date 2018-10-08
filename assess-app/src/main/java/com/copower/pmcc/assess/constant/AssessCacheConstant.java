@@ -40,6 +40,13 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_DATA_DIC_FIELD = "pmcc:assess:data:dic:field";
     public static final String PMCC_ASSESS_DATA_DIC_FIELD_ITEM = "pmcc:assess:data:dic:field:item";
 
+    //设定用途字段
+    public static final String PMCC_ASSESS_SET_USE = "pmcc:assess:set:use";
+    public static final String PMCC_ASSESS_SET_USE_ID = "pmcc:assess:set:use:id";
+    public static final String PMCC_ASSESS_SET_USE_PID = "pmcc:assess:set:use:pid";
+    public static final String PMCC_ASSESS_SET_USE_FIELD = "pmcc:assess:set:use:field";
+    public static final String PMCC_ASSESS_SET_USE_FIELD_ITEM = "pmcc:assess:set:use:field:item";
+
     //参数
     public static final String PMCC_ASSESS_PARAMETER_KEY = "pmcc:assess:parameter:key";
 

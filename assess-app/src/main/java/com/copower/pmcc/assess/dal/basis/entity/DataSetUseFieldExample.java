@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BaseProjectClassifyExample {
+public class DataSetUseFieldExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BaseProjectClassifyExample() {
+    public DataSetUseFieldExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -365,263 +365,183 @@ public class BaseProjectClassifyExample {
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlIsNull() {
-            addCriterion("apply_url is null");
+        public Criteria andBisPrimaryKeyIsNull() {
+            addCriterion("bis_primary_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlIsNotNull() {
-            addCriterion("apply_url is not null");
+        public Criteria andBisPrimaryKeyIsNotNull() {
+            addCriterion("bis_primary_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlEqualTo(String value) {
-            addCriterion("apply_url =", value, "applyUrl");
+        public Criteria andBisPrimaryKeyEqualTo(Boolean value) {
+            addCriterion("bis_primary_key =", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlNotEqualTo(String value) {
-            addCriterion("apply_url <>", value, "applyUrl");
+        public Criteria andBisPrimaryKeyNotEqualTo(Boolean value) {
+            addCriterion("bis_primary_key <>", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlGreaterThan(String value) {
-            addCriterion("apply_url >", value, "applyUrl");
+        public Criteria andBisPrimaryKeyGreaterThan(Boolean value) {
+            addCriterion("bis_primary_key >", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("apply_url >=", value, "applyUrl");
+        public Criteria andBisPrimaryKeyGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_primary_key >=", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlLessThan(String value) {
-            addCriterion("apply_url <", value, "applyUrl");
+        public Criteria andBisPrimaryKeyLessThan(Boolean value) {
+            addCriterion("bis_primary_key <", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlLessThanOrEqualTo(String value) {
-            addCriterion("apply_url <=", value, "applyUrl");
+        public Criteria andBisPrimaryKeyLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_primary_key <=", value, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlLike(String value) {
-            addCriterion("apply_url like", value, "applyUrl");
+        public Criteria andBisPrimaryKeyIn(List<Boolean> values) {
+            addCriterion("bis_primary_key in", values, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlNotLike(String value) {
-            addCriterion("apply_url not like", value, "applyUrl");
+        public Criteria andBisPrimaryKeyNotIn(List<Boolean> values) {
+            addCriterion("bis_primary_key not in", values, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlIn(List<String> values) {
-            addCriterion("apply_url in", values, "applyUrl");
+        public Criteria andBisPrimaryKeyBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_primary_key between", value1, value2, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlNotIn(List<String> values) {
-            addCriterion("apply_url not in", values, "applyUrl");
+        public Criteria andBisPrimaryKeyNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_primary_key not between", value1, value2, "bisPrimaryKey");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlBetween(String value1, String value2) {
-            addCriterion("apply_url between", value1, value2, "applyUrl");
+        public Criteria andBisPriceIsNull() {
+            addCriterion("bis_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andApplyUrlNotBetween(String value1, String value2) {
-            addCriterion("apply_url not between", value1, value2, "applyUrl");
+        public Criteria andBisPriceIsNotNull() {
+            addCriterion("bis_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlIsNull() {
-            addCriterion("detail_url is null");
+        public Criteria andBisPriceEqualTo(Boolean value) {
+            addCriterion("bis_price =", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlIsNotNull() {
-            addCriterion("detail_url is not null");
+        public Criteria andBisPriceNotEqualTo(Boolean value) {
+            addCriterion("bis_price <>", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlEqualTo(String value) {
-            addCriterion("detail_url =", value, "detailUrl");
+        public Criteria andBisPriceGreaterThan(Boolean value) {
+            addCriterion("bis_price >", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlNotEqualTo(String value) {
-            addCriterion("detail_url <>", value, "detailUrl");
+        public Criteria andBisPriceGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_price >=", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlGreaterThan(String value) {
-            addCriterion("detail_url >", value, "detailUrl");
+        public Criteria andBisPriceLessThan(Boolean value) {
+            addCriterion("bis_price <", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlGreaterThanOrEqualTo(String value) {
-            addCriterion("detail_url >=", value, "detailUrl");
+        public Criteria andBisPriceLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_price <=", value, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlLessThan(String value) {
-            addCriterion("detail_url <", value, "detailUrl");
+        public Criteria andBisPriceIn(List<Boolean> values) {
+            addCriterion("bis_price in", values, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlLessThanOrEqualTo(String value) {
-            addCriterion("detail_url <=", value, "detailUrl");
+        public Criteria andBisPriceNotIn(List<Boolean> values) {
+            addCriterion("bis_price not in", values, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlLike(String value) {
-            addCriterion("detail_url like", value, "detailUrl");
+        public Criteria andBisPriceBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_price between", value1, value2, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlNotLike(String value) {
-            addCriterion("detail_url not like", value, "detailUrl");
+        public Criteria andBisPriceNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_price not between", value1, value2, "bisPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlIn(List<String> values) {
-            addCriterion("detail_url in", values, "detailUrl");
+        public Criteria andBisOnlyViewIsNull() {
+            addCriterion("bis_only_view is null");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlNotIn(List<String> values) {
-            addCriterion("detail_url not in", values, "detailUrl");
+        public Criteria andBisOnlyViewIsNotNull() {
+            addCriterion("bis_only_view is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlBetween(String value1, String value2) {
-            addCriterion("detail_url between", value1, value2, "detailUrl");
+        public Criteria andBisOnlyViewEqualTo(Boolean value) {
+            addCriterion("bis_only_view =", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andDetailUrlNotBetween(String value1, String value2) {
-            addCriterion("detail_url not between", value1, value2, "detailUrl");
+        public Criteria andBisOnlyViewNotEqualTo(Boolean value) {
+            addCriterion("bis_only_view <>", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultIsNull() {
-            addCriterion("bis_default is null");
+        public Criteria andBisOnlyViewGreaterThan(Boolean value) {
+            addCriterion("bis_only_view >", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultIsNotNull() {
-            addCriterion("bis_default is not null");
+        public Criteria andBisOnlyViewGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_only_view >=", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultEqualTo(Boolean value) {
-            addCriterion("bis_default =", value, "bisDefault");
+        public Criteria andBisOnlyViewLessThan(Boolean value) {
+            addCriterion("bis_only_view <", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultNotEqualTo(Boolean value) {
-            addCriterion("bis_default <>", value, "bisDefault");
+        public Criteria andBisOnlyViewLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_only_view <=", value, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultGreaterThan(Boolean value) {
-            addCriterion("bis_default >", value, "bisDefault");
+        public Criteria andBisOnlyViewIn(List<Boolean> values) {
+            addCriterion("bis_only_view in", values, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_default >=", value, "bisDefault");
+        public Criteria andBisOnlyViewNotIn(List<Boolean> values) {
+            addCriterion("bis_only_view not in", values, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultLessThan(Boolean value) {
-            addCriterion("bis_default <", value, "bisDefault");
+        public Criteria andBisOnlyViewBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_only_view between", value1, value2, "bisOnlyView");
             return (Criteria) this;
         }
 
-        public Criteria andBisDefaultLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_default <=", value, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultIn(List<Boolean> values) {
-            addCriterion("bis_default in", values, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultNotIn(List<Boolean> values) {
-            addCriterion("bis_default not in", values, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_default between", value1, value2, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDefaultNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_default not between", value1, value2, "bisDefault");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIsNull() {
-            addCriterion("bis_enable is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIsNotNull() {
-            addCriterion("bis_enable is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableEqualTo(Boolean value) {
-            addCriterion("bis_enable =", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotEqualTo(Boolean value) {
-            addCriterion("bis_enable <>", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableGreaterThan(Boolean value) {
-            addCriterion("bis_enable >", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_enable >=", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableLessThan(Boolean value) {
-            addCriterion("bis_enable <", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_enable <=", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIn(List<Boolean> values) {
-            addCriterion("bis_enable in", values, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotIn(List<Boolean> values) {
-            addCriterion("bis_enable not in", values, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_enable between", value1, value2, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_enable not between", value1, value2, "bisEnable");
+        public Criteria andBisOnlyViewNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_only_view not between", value1, value2, "bisOnlyView");
             return (Criteria) this;
         }
 
@@ -682,6 +602,66 @@ public class BaseProjectClassifyExample {
 
         public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_delete not between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
             return (Criteria) this;
         }
 
@@ -755,186 +735,6 @@ public class BaseProjectClassifyExample {
             return (Criteria) this;
         }
 
-        public Criteria andSortingIsNull() {
-            addCriterion("sorting is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingIsNotNull() {
-            addCriterion("sorting is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingEqualTo(Integer value) {
-            addCriterion("sorting =", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingNotEqualTo(Integer value) {
-            addCriterion("sorting <>", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingGreaterThan(Integer value) {
-            addCriterion("sorting >", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sorting >=", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingLessThan(Integer value) {
-            addCriterion("sorting <", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingLessThanOrEqualTo(Integer value) {
-            addCriterion("sorting <=", value, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingIn(List<Integer> values) {
-            addCriterion("sorting in", values, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingNotIn(List<Integer> values) {
-            addCriterion("sorting not in", values, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingBetween(Integer value1, Integer value2) {
-            addCriterion("sorting between", value1, value2, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
-            addCriterion("sorting not between", value1, value2, "sorting");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIsNull() {
-            addCriterion("created is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIsNotNull() {
-            addCriterion("created is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedEqualTo(Date value) {
-            addCriterion("created =", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotEqualTo(Date value) {
-            addCriterion("created <>", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedGreaterThan(Date value) {
-            addCriterion("created >", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("created >=", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedLessThan(Date value) {
-            addCriterion("created <", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("created <=", value, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedIn(List<Date> values) {
-            addCriterion("created in", values, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotIn(List<Date> values) {
-            addCriterion("created not in", values, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedBetween(Date value1, Date value2) {
-            addCriterion("created between", value1, value2, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("created not between", value1, value2, "created");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedIsNull() {
-            addCriterion("mdified is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedIsNotNull() {
-            addCriterion("mdified is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedEqualTo(Date value) {
-            addCriterion("mdified =", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedNotEqualTo(Date value) {
-            addCriterion("mdified <>", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedGreaterThan(Date value) {
-            addCriterion("mdified >", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedGreaterThanOrEqualTo(Date value) {
-            addCriterion("mdified >=", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedLessThan(Date value) {
-            addCriterion("mdified <", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedLessThanOrEqualTo(Date value) {
-            addCriterion("mdified <=", value, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedIn(List<Date> values) {
-            addCriterion("mdified in", values, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedNotIn(List<Date> values) {
-            addCriterion("mdified not in", values, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedBetween(Date value1, Date value2) {
-            addCriterion("mdified between", value1, value2, "mdified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMdifiedNotBetween(Date value1, Date value2) {
-            addCriterion("mdified not between", value1, value2, "mdified");
-            return (Criteria) this;
-        }
-
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -1002,6 +802,126 @@ public class BaseProjectClassifyExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNull() {
+            addCriterion("gmt_created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNotNull() {
+            addCriterion("gmt_created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedEqualTo(Date value) {
+            addCriterion("gmt_created =", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotEqualTo(Date value) {
+            addCriterion("gmt_created <>", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThan(Date value) {
+            addCriterion("gmt_created >", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_created >=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThan(Date value) {
+            addCriterion("gmt_created <", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_created <=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIn(List<Date> values) {
+            addCriterion("gmt_created in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotIn(List<Date> values) {
+            addCriterion("gmt_created not in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
+            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNull() {
+            addCriterion("gmt_modified is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNotNull() {
+            addCriterion("gmt_modified is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedEqualTo(Date value) {
+            addCriterion("gmt_modified =", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotEqualTo(Date value) {
+            addCriterion("gmt_modified <>", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThan(Date value) {
+            addCriterion("gmt_modified >", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified >=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThan(Date value) {
+            addCriterion("gmt_modified <", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified <=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIn(List<Date> values) {
+            addCriterion("gmt_modified in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotIn(List<Date> values) {
+            addCriterion("gmt_modified not in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
     }

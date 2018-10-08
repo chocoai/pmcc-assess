@@ -2,24 +2,22 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.Date;
 
-public class MdMarketCompareField {
+public class DataSetUseField {
     private Integer id;
 
     private Integer pid;
 
-    private Integer mcId;
-
-    private Integer dicId;
-
     private String name;
 
-    private String value;
+    private String fieldName;
 
     private Boolean bisPrimaryKey;
 
     private Boolean bisPrice;
 
     private Boolean bisOnlyView;
+
+    private Boolean bisDelete;
 
     private Integer sorting;
 
@@ -47,22 +45,6 @@ public class MdMarketCompareField {
         this.pid = pid;
     }
 
-    public Integer getMcId() {
-        return mcId;
-    }
-
-    public void setMcId(Integer mcId) {
-        this.mcId = mcId;
-    }
-
-    public Integer getDicId() {
-        return dicId;
-    }
-
-    public void setDicId(Integer dicId) {
-        this.dicId = dicId;
-    }
-
     public String getName() {
         return name;
     }
@@ -71,12 +53,12 @@ public class MdMarketCompareField {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getValue() {
-        return value;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
     public Boolean getBisPrimaryKey() {
@@ -101,6 +83,14 @@ public class MdMarketCompareField {
 
     public void setBisOnlyView(Boolean bisOnlyView) {
         this.bisOnlyView = bisOnlyView;
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 
     public Integer getSorting() {

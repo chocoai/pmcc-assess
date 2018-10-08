@@ -241,32 +241,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            动态表单
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <input type="hidden" id="formModuleId" name="formModuleId" value="">
-                                                <input id='formModuleName' class='form-control' onclick="selectDynamicForm();"
-                                                       readonly="readonly" maxlength="200">
-                                                <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="selectDynamicForm();" data-toggle="tooltip"
-                                                        data-original-title="选择">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                                 <button type="button" class="btn btn-default docs-tooltip"
-                                                         onclick="$(this).closest('.input-group').find('input').val('');"
-                                                         data-toggle="tooltip" data-original-title="清除">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div>
                                         <label class="col-sm-3 control-label">
                                             是否启用<span class="symbol required"></span>
@@ -474,7 +448,6 @@
         var cols = [];
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'fieldName', title: '字段名称'});
-        cols.push({field: 'formModuleName', title: '动态表单'});
         cols.push({
             field: 'bisEnable', title: '是否启用', formatter: function (value) {
                 return getBoolChs(value);

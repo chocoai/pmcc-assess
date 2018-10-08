@@ -165,6 +165,66 @@ public class MdMarketCompareFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
         public Criteria andMcIdIsNull() {
             addCriterion("mc_id is null");
             return (Criteria) this;
@@ -222,6 +282,66 @@ public class MdMarketCompareFieldExample {
 
         public Criteria andMcIdNotBetween(Integer value1, Integer value2) {
             addCriterion("mc_id not between", value1, value2, "mcId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdIsNull() {
+            addCriterion("dic_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdIsNotNull() {
+            addCriterion("dic_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdEqualTo(Integer value) {
+            addCriterion("dic_id =", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdNotEqualTo(Integer value) {
+            addCriterion("dic_id <>", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdGreaterThan(Integer value) {
+            addCriterion("dic_id >", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dic_id >=", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdLessThan(Integer value) {
+            addCriterion("dic_id <", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdLessThanOrEqualTo(Integer value) {
+            addCriterion("dic_id <=", value, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdIn(List<Integer> values) {
+            addCriterion("dic_id in", values, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdNotIn(List<Integer> values) {
+            addCriterion("dic_id not in", values, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdBetween(Integer value1, Integer value2) {
+            addCriterion("dic_id between", value1, value2, "dicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDicIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("dic_id not between", value1, value2, "dicId");
             return (Criteria) this;
         }
 

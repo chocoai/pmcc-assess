@@ -3,9 +3,8 @@ package com.copower.pmcc.assess.controller.base;
 import com.copower.pmcc.assess.dal.basis.entity.BaseForm;
 import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.basis.entity.BaseFormModuleField;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.dto.output.FormConfigureFieldVo;
+import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -15,7 +14,6 @@ import com.copower.pmcc.erp.api.enums.CustomTableTypeEnum;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -308,12 +306,7 @@ public class FormConfigureController {
     public HttpResult getProjectClassifyFormInfo(Integer id) {
         try {
             BaseFormModuleVo baseFormModuleVo = new BaseFormModuleVo();
-            BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(id);
-            if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
-                BaseFormModule baseFormModule = formConfigureService.getBaseFormModuleById(baseProjectClassify.getFormModuleId());
-                BeanUtils.copyProperties(baseFormModule,baseFormModuleVo);
-                baseFormModuleVo.setListShowFields(formConfigureService.getListShowFields(baseFormModule.getId()));
-            }
+
             return HttpResult.newCorrectResult(baseFormModuleVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.base;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseProjectClassifyDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
@@ -122,11 +121,6 @@ public class BaseProjectClassifyService {
     public BaseProjectClassifyVo getBaseProjectClassifyVo(BaseProjectClassify baseProjectClassify) {
         BaseProjectClassifyVo baseProjectClassifyVo = new BaseProjectClassifyVo();
         BeanUtils.copyProperties(baseProjectClassify, baseProjectClassifyVo);
-        if (baseProjectClassify.getFormModuleId() != null) {
-            BaseFormModule baseFormModule = baseFormService.getCacheFormModuleById(baseProjectClassify.getFormModuleId());
-            if (baseFormModule != null)
-                baseProjectClassifyVo.setFormModuleName(baseFormModule.getCnName());
-        }
         return baseProjectClassifyVo;
     }
 

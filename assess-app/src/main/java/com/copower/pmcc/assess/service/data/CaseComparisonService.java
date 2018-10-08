@@ -1,10 +1,9 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.CaseComparisonEnum;
-import com.copower.pmcc.assess.dal.basis.entity.BaseFormModule;
+import com.copower.pmcc.assess.dal.basis.dao.data.CaseComparisonDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DataCaseComparison;
-import com.copower.pmcc.assess.dal.basis.dao.data.CaseComparisonDao;
 import com.copower.pmcc.assess.dto.input.data.CaseComparisonDto;
 import com.copower.pmcc.assess.dto.output.data.CaseComparisonVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -143,11 +142,7 @@ public class CaseComparisonService {
             CaseComparisonVo caseComparisonVo = new CaseComparisonVo();
             BeanUtils.copyProperties(p, caseComparisonVo);
             Integer exploreFormType = p.getExploreFormType();
-            BaseProjectClassify projectClassify = baseProjectClassifyService.getDataById(exploreFormType);
-            Integer formModuleId = projectClassify.getFormModuleId();
-            BaseFormModule baseFormModule = baseFormModuleService.getDataById(formModuleId);
-            String tableName = baseFormModule.getTableName();
-            caseComparisonVo.setTableName(tableName);
+
             if (p.getCaseFormType() != null) {
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getDataById(p.getCaseFormType());
                 if (baseProjectClassify != null)

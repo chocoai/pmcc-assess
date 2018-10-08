@@ -6,7 +6,6 @@
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
-    <result column="form_module_id" property="formModuleId" jdbcType="INTEGER" />
     <result column="apply_url" property="applyUrl" jdbcType="VARCHAR" />
     <result column="detail_url" property="detailUrl" jdbcType="VARCHAR" />
     <result column="bis_default" property="bisDefault" jdbcType="BIT" />
@@ -77,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, field_name, form_module_id, apply_url, detail_url, bis_default, bis_enable, 
-    bis_delete, remark, sorting, created, mdified, creator
+    id, pid, name, field_name, apply_url, detail_url, bis_default, bis_enable, bis_delete, 
+    remark, sorting, created, mdified, creator
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassifyExample" >
     select
@@ -115,15 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_base_project_classify (pid, name, field_name, 
-      form_module_id, apply_url, detail_url, 
-      bis_default, bis_enable, bis_delete, 
-      remark, sorting, created, 
-      mdified, creator)
+      apply_url, detail_url, bis_default, 
+      bis_enable, bis_delete, remark, 
+      sorting, created, mdified, 
+      creator)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
-      #{formModuleId,jdbcType=INTEGER}, #{applyUrl,jdbcType=VARCHAR}, #{detailUrl,jdbcType=VARCHAR}, 
-      #{bisDefault,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
-      #{remark,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
-      #{mdified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR})
+      #{applyUrl,jdbcType=VARCHAR}, #{detailUrl,jdbcType=VARCHAR}, #{bisDefault,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
+      #{sorting,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, #{mdified,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,9 +138,6 @@
       </if>
       <if test="fieldName != null" >
         field_name,
-      </if>
-      <if test="formModuleId != null" >
-        form_module_id,
       </if>
       <if test="applyUrl != null" >
         apply_url,
@@ -183,9 +179,6 @@
       </if>
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
-      </if>
-      <if test="formModuleId != null" >
-        #{formModuleId,jdbcType=INTEGER},
       </if>
       <if test="applyUrl != null" >
         #{applyUrl,jdbcType=VARCHAR},
@@ -240,9 +233,6 @@
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
-      <if test="record.formModuleId != null" >
-        form_module_id = #{record.formModuleId,jdbcType=INTEGER},
-      </if>
       <if test="record.applyUrl != null" >
         apply_url = #{record.applyUrl,jdbcType=VARCHAR},
       </if>
@@ -284,7 +274,6 @@
       pid = #{record.pid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
-      form_module_id = #{record.formModuleId,jdbcType=INTEGER},
       apply_url = #{record.applyUrl,jdbcType=VARCHAR},
       detail_url = #{record.detailUrl,jdbcType=VARCHAR},
       bis_default = #{record.bisDefault,jdbcType=BIT},
@@ -310,9 +299,6 @@
       </if>
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
-      </if>
-      <if test="formModuleId != null" >
-        form_module_id = #{formModuleId,jdbcType=INTEGER},
       </if>
       <if test="applyUrl != null" >
         apply_url = #{applyUrl,jdbcType=VARCHAR},
@@ -352,7 +338,6 @@
     set pid = #{pid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
-      form_module_id = #{formModuleId,jdbcType=INTEGER},
       apply_url = #{applyUrl,jdbcType=VARCHAR},
       detail_url = #{detailUrl,jdbcType=VARCHAR},
       bis_default = #{bisDefault,jdbcType=BIT},

@@ -94,12 +94,7 @@ public class DeclareInfoService {
         DeclareUseClassify declareUseClassify = declareUseClassifyDao.getDeclareUseClassify(projectId, planDetailsId, projectClassifyId);
         if (declareUseClassify != null) {
             BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareUseClassify.getProjectClassifyId());
-            if (projectClassify != null && projectClassify.getFormModuleId() != null) {
-                BaseFormModule baseFormModule = baseFormService.getBaseFormModule(projectClassify.getFormModuleId());
-                if (baseFormModule != null && StringUtils.isNotBlank(baseFormModule.getForeignKeyName())) {
-                    jdbcTemplate.execute(String.format("DELETE FROM %s WHERE %s=%s", baseFormModule.getTableName(), baseFormModule.getForeignKeyName(), declareUseClassify.getPlanDetailsId()));
-                }
-            }
+
             declareUseClassifyDao.deleteDeclareUseClassify(declareUseClassify.getId());
         }
     }
@@ -119,21 +114,10 @@ public class DeclareInfoService {
         }else{
             for (DeclareUseClassify declareUseClassify : useClassifyList) {
                 BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(declareUseClassify.getProjectClassifyId());
-                if (baseProjectClassify != null && baseProjectClassify.getFormModuleId() != null) {
-                    setBaseFormModuleVo(baseFormModuleVos, baseProjectClassify);
-                }
+
             }
         }
         return baseFormModuleVos;
     }
 
-    private void setBaseFormModuleVo(List<BaseFormModuleVo> baseFormModuleVos, BaseProjectClassify baseProjectClassify) {
-        BaseFormModule baseFormModule = baseFormService.getBaseFormModule(baseProjectClassify.getFormModuleId());
-        if (baseFormModule != null) {
-            BaseFormModuleVo baseFormModuleVo = baseFormService.getBaseFormModuleVo(baseFormModule);
-            baseFormModuleVo.setClassifyId(baseProjectClassify.getId());
-            baseFormModuleVo.setTitle(baseProjectClassify.getName());
-            baseFormModuleVos.add(baseFormModuleVo);
-        }
-    }
 }
