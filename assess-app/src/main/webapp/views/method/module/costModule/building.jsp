@@ -758,7 +758,6 @@
                         b = build.inputAlgorithmObject.jqueryInputGetAndSet("get", build.config().inputConfig().replacementValue.key, null);//重置价格
                         c = build.mul(percent, b);
                         build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().valueAddedAdditionalTaxes.key, c);//增值及附加税金
-                        //
                     } else {
                         build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().valueAddedAdditionalTaxes.key, 0);//增值及附加税金
                     }
@@ -1006,8 +1005,7 @@
          **/
         loadAddedValueAdditionalTaxRate: function () {
             AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-                $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
-                $("." + build.config().frm + " ." + build.config().inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                $("." + build.config().frm).find("select."+build.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
             })
         },
         /**
@@ -1034,10 +1032,8 @@
                                 temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
                                 optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                             }
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).html(optionA);
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureCost.select).select2();
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
-                            $("." + build.config().frm + " ." + build.config().inputConfig().infrastructureMatchingCost.select).select2();
+                            $("." + build.config().frm).find("select."+build.config().inputConfig().infrastructureCost.select).html(optionA);
+                            $("." + build.config().frm).find("select."+build.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                         }
 
                     }
@@ -1066,7 +1062,6 @@
                 offset: 't',
                 content: $("." + build.config().frm+" ." + build.config().engineeringFee)
             });
-//            $("." + build.config().engineeringFee).show();
             $(function () {
                 constructEngineeringObject.viewInit();
             });
@@ -1076,11 +1071,9 @@
             build.inputAlgorithmObject.jqueryInputGetAndSet("set", build.config().inputConfig().constructionInstallationEngineeringFee.key, data);
             build.inputFun.constructionInstallationEngineeringFeeInput(data);
             build.constructionInstallationEngineeringFee.saveAndUpdate(constructEngineeringObject.loadData());
-            // $("." + build.config().engineeringFee).hide();
             build.constructionInstallationEngineeringFee.layerClose();
         },
         close: function () {
-            // $("." + build.config().engineeringFee).hide();
             build.constructionInstallationEngineeringFee.layerClose();
         },
         layerClose:function () {
@@ -1142,7 +1135,6 @@
                 var k2 = build.mul(build.newRateModel.algorithm.specialTreatment(c), build.newRateModel.algorithm.specialTreatment(d));
                 k = build.add(k1, k2);
                 $("." + build.config().newRate + " .integratednewRate").html(k);
-                // build.newRateModel.select2Event.eventInit();
             },
             //年限法 成新率
             newRateA: function (obj) {
@@ -1174,7 +1166,6 @@
                             d = 1 - (1 - b) * (c / a);
                             $("." + build.config().newRate + " " + "input[name='" + 'newRateA' + "']").val(d);
                             build.newRateModel.algorithm.integratednewRate(d);
-                            // build.newRateModel.select2Event.eventInit();
                         }
                     },
                     error: function (result) {
@@ -1333,8 +1324,7 @@
                                 optionA += "<option value='" + n.id + "'>" + n.durableLife + "</option>";
                             }
                         })
-                        $("." + build.config().newRate + " .durableLife").html(optionA);
-                        $("." + build.config().newRate + " .durableLife").select2();
+                        $("." + build.config().newRate).find("select.durableLife").html(optionA);
                     }
                 },
                 error: function (result) {
@@ -1352,29 +1342,6 @@
         build.newRateModel.select2Event.eventInit();
     })
 
-</script>
-
-<!-- 通用面板模板 弃用 -->
-<script type="text/html" id="generalPanelTemplate">
-    <div class="panel panel-warning" style="width:300px;">
-        <div class="panel-heading">
-            <div>{title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label class="control-label" onclick="build.inputCancel(this);">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X
-                </label>
-            </div>
-        </div>
-        <div class="panel-body btn-toolbar" role="toolbar">
-            <div class="btn-group">
-                <input class="form-control" name="{name}">
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-default" data-name="{dataName}" onclick="build.inputSubmit(this)">
-                    <i class="glyphicon glyphicon-ok"></i></button>
-            </div>
-        </div>
-        <div class="panel-footer"></div>
-    </div>
 </script>
 
 
