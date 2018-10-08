@@ -67,4 +67,9 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_TAX_RATE_ALLOCATION_PROPERTY_TAX = "data.tax.rate.allocation.property.tax"; //房产税
     public static final String DATA_TAX_RATE_ALLOCATION_LAND_INCREMENT_TAX = "data.tax.rate.allocation.land.increment.tax"; //土地增值税
     public static final String DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE = "data.tax.rate.allocation.land.replacement.value"; //重置价格
+
+    /**
+     * 工作方案
+     */
+    public static final String WORK_PROGRAMME_SET_USE = "work.programme.set.use"; //设定用途
 }

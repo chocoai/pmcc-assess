@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
@@ -9,8 +10,6 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEquipmentInstallVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -243,6 +242,7 @@ public class DeclareBuildEquipmentInstallService {
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class));
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setFloorArea(new BigDecimal("0"));
+            declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

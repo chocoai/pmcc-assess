@@ -6,9 +6,11 @@
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="set_use" property="setUse" jdbcType="INTEGER" />
     <result column="bis_primary_key" property="bisPrimaryKey" jdbcType="BIT" />
     <result column="bis_price" property="bisPrice" jdbcType="BIT" />
     <result column="bis_only_view" property="bisOnlyView" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="sorting" property="sorting" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -75,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, name, field_name, bis_primary_key, bis_price, bis_only_view, bis_delete, 
-    sorting, remark, creator, gmt_created, gmt_modified
+    id, pid, name, field_name, set_use, bis_primary_key, bis_price, bis_only_view, bis_enable, 
+    bis_delete, sorting, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldExample" >
     select
@@ -113,15 +115,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_set_use_field (pid, name, field_name, 
-      bis_primary_key, bis_price, bis_only_view, 
-      bis_delete, sorting, remark, 
-      creator, gmt_created, gmt_modified
-      )
+      set_use, bis_primary_key, bis_price, 
+      bis_only_view, bis_enable, bis_delete, 
+      sorting, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, 
-      #{bisPrimaryKey,jdbcType=BIT}, #{bisPrice,jdbcType=BIT}, #{bisOnlyView,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{setUse,jdbcType=INTEGER}, #{bisPrimaryKey,jdbcType=BIT}, #{bisPrice,jdbcType=BIT}, 
+      #{bisOnlyView,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataSetUseField" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -138,6 +140,9 @@
       <if test="fieldName != null" >
         field_name,
       </if>
+      <if test="setUse != null" >
+        set_use,
+      </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key,
       </if>
@@ -146,6 +151,9 @@
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view,
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -176,6 +184,9 @@
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="setUse != null" >
+        #{setUse,jdbcType=INTEGER},
+      </if>
       <if test="bisPrimaryKey != null" >
         #{bisPrimaryKey,jdbcType=BIT},
       </if>
@@ -184,6 +195,9 @@
       </if>
       <if test="bisOnlyView != null" >
         #{bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -226,6 +240,9 @@
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="record.setUse != null" >
+        set_use = #{record.setUse,jdbcType=INTEGER},
+      </if>
       <if test="record.bisPrimaryKey != null" >
         bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
       </if>
@@ -234,6 +251,9 @@
       </if>
       <if test="record.bisOnlyView != null" >
         bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -264,9 +284,11 @@
       pid = #{record.pid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
+      set_use = #{record.setUse,jdbcType=INTEGER},
       bis_primary_key = #{record.bisPrimaryKey,jdbcType=BIT},
       bis_price = #{record.bisPrice,jdbcType=BIT},
       bis_only_view = #{record.bisOnlyView,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       sorting = #{record.sorting,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -289,6 +311,9 @@
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="setUse != null" >
+        set_use = #{setUse,jdbcType=INTEGER},
+      </if>
       <if test="bisPrimaryKey != null" >
         bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
       </if>
@@ -297,6 +322,9 @@
       </if>
       <if test="bisOnlyView != null" >
         bis_only_view = #{bisOnlyView,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -324,9 +352,11 @@
     set pid = #{pid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
+      set_use = #{setUse,jdbcType=INTEGER},
       bis_primary_key = #{bisPrimaryKey,jdbcType=BIT},
       bis_price = #{bisPrice,jdbcType=BIT},
       bis_only_view = #{bisOnlyView,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       sorting = #{sorting,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
@@ -292,6 +293,7 @@ public class DeclareRealtyRealEstateCertService {
             declareRecord.setSeat(oo.getBeLocated());
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setLandUseEndDate(oo.getUseEndDate());
+            declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             BaseDataDic baseDataDic = null;
             if (oo.getPurpose() != null){
                 if (NumberUtils.isNumber(oo.getPurpose())){

@@ -365,6 +365,66 @@ public class DataSetUseFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andSetUseIsNull() {
+            addCriterion("set_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseIsNotNull() {
+            addCriterion("set_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseEqualTo(Integer value) {
+            addCriterion("set_use =", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotEqualTo(Integer value) {
+            addCriterion("set_use <>", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseGreaterThan(Integer value) {
+            addCriterion("set_use >", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseGreaterThanOrEqualTo(Integer value) {
+            addCriterion("set_use >=", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseLessThan(Integer value) {
+            addCriterion("set_use <", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseLessThanOrEqualTo(Integer value) {
+            addCriterion("set_use <=", value, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseIn(List<Integer> values) {
+            addCriterion("set_use in", values, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotIn(List<Integer> values) {
+            addCriterion("set_use not in", values, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseBetween(Integer value1, Integer value2) {
+            addCriterion("set_use between", value1, value2, "setUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseNotBetween(Integer value1, Integer value2) {
+            addCriterion("set_use not between", value1, value2, "setUse");
+            return (Criteria) this;
+        }
+
         public Criteria andBisPrimaryKeyIsNull() {
             addCriterion("bis_primary_key is null");
             return (Criteria) this;
@@ -542,6 +602,66 @@ public class DataSetUseFieldExample {
 
         public Criteria andBisOnlyViewNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_only_view not between", value1, value2, "bisOnlyView");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
 

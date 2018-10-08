@@ -3,8 +3,6 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataSetUseFieldDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
-import com.copower.pmcc.assess.dto.input.ZtreeDto;
-import com.copower.pmcc.assess.dto.output.TreeViewVo;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -17,9 +15,7 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,10 +33,10 @@ public class DataSetUseFieldService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    //region 获取数据字典列表
+    //region 获取设定用途字段列表
 
     /**
-     * 获取数据字典列表
+     * 获取设定用途字段列表
      *
      * @return
      */
@@ -55,7 +51,7 @@ public class DataSetUseFieldService {
     }
 
     /**
-     * 获取数据字典列表
+     * 获取设定用途字段列表
      *
      * @return
      */
@@ -70,10 +66,10 @@ public class DataSetUseFieldService {
     }
     //endregion
 
-    //region 保存数据字典中的数据
+    //region 保存设定用途字段中的数据
 
     /**
-     * 保存数据字典中的数据
+     * 保存设定用途字段中的数据
      *
      * @param sysSetUseField
      */
@@ -125,10 +121,10 @@ public class DataSetUseFieldService {
     }
     //endregion
 
-    //region 获取缓存中的数据字典数据
+    //region 获取缓存中的设定用途字段数据
 
     /**
-     * 获取缓存中的数据字典数据
+     * 获取缓存中的设定用途字段数据
      *
      * @return
      */
@@ -157,10 +153,10 @@ public class DataSetUseFieldService {
 
     }
 
-    //region 获取缓存中的数据字典数据
+    //region 获取缓存中的设定用途字段数据
 
     /**
-     * 获取缓存中的数据字典数据
+     * 获取缓存中的设定用途字段数据
      *
      * @return
      */
@@ -176,7 +172,23 @@ public class DataSetUseFieldService {
     }
 
     /**
-     * 获取缓存中的数据字典数据
+     * 获取缓存中的设定用途字段数据
+     *
+     * @return
+     */
+    public List<DataSetUseField> getCacheSetUseFieldListByType(Integer type) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_TYPE, String.valueOf(type));
+
+        try {
+            List<DataSetUseField> sysSetUseFields = LangUtils.listCache(rdsKey, type, DataSetUseField.class, input -> dataSetUseFieldDao.getEnableListByType(input));
+            return sysSetUseFields;
+        } catch (Exception e) {
+            return dataSetUseFieldDao.getEnableListByType(type);
+        }
+    }
+
+    /**
+     * 获取缓存中的设定用途字段数据
      *
      * @return
      */
@@ -227,120 +239,6 @@ public class DataSetUseFieldService {
             keyValueDto.setKeyValueDto(kv);
 
         }
-    }
-
-    public TreeViewVo getSetUseFieldTree(String fieldName) {
-
-        DataSetUseField hrDataSetUseField = getCacheSetUseFieldByFieldName(fieldName);
-        TreeViewVo treeViewVo = new TreeViewVo();
-        if (hrDataSetUseField != null) {
-
-            treeViewVo.setId(hrDataSetUseField.getId());
-            treeViewVo.setText(hrDataSetUseField.getName());
-            treeViewVo.setpId(0);
-            treeViewVo.setpName("");
-            treeViewVo.setNodes(getTreeView(hrDataSetUseField.getId()));
-        }
-        return treeViewVo;
-    }
-
-    private List<TreeViewVo> getTreeView(Integer pid) {
-        TreeViewVo treeViewVo;
-        List<DataSetUseField> hrDataSetUseFields = getCacheSetUseFieldListByPid(pid);
-        List<TreeViewVo> treeViewVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(hrDataSetUseFields)) {
-
-            for (DataSetUseField item : hrDataSetUseFields) {
-                treeViewVo = new TreeViewVo();
-                treeViewVo.setId(item.getId());
-                treeViewVo.setText(item.getName());
-                treeViewVo.setpId(item.getPid());
-                List<TreeViewVo> treeView = getTreeView(item.getId());
-                if (treeView.size() > 0) {
-                    treeViewVo.setNodes(treeView);
-                }
-                treeViewVos.add(treeViewVo);
-            }
-        }
-        return treeViewVos;
-    }
-
-
-    /**
-     * 获取数据信息
-     *
-     * @param pid
-     * @return
-     */
-    public List<ZtreeDto> getBaseDicTree(Integer pid) {
-        if (pid == null)
-            return Lists.newArrayList();
-        List<DataSetUseField> baseSetUseFieldList = getCacheSetUseFieldListByPid(pid);
-        if (CollectionUtils.isEmpty(baseSetUseFieldList))
-            return Lists.newArrayList();
-        return LangUtils.transform(baseSetUseFieldList, p -> {
-            return getZtreeDto(p);
-        });
-    }
-
-    /**
-     * 查询数据信息
-     *
-     * @param name
-     * @return
-     */
-    public List<ZtreeDto> queryBaseDicTree(String name) {
-        if (StringUtils.isBlank(name))
-            return Lists.newArrayList();
-        List<DataSetUseField> dataDicList = dataSetUseFieldDao.getListObject(null, name,null);
-        if (CollectionUtils.isEmpty(dataDicList))
-            return Lists.newArrayList();
-        return LangUtils.transform(dataDicList, p -> {
-            return getZtreeDto(p);
-        });
-    }
-
-    public List<ZtreeDto> getBaseDicByKey(String key) {
-        DataSetUseField baseSetUseField = getCacheSetUseFieldByFieldName(key);
-        if (baseSetUseField == null) return null;
-        return Lists.newArrayList(getZtreeDto(baseSetUseField));
-    }
-
-    private ZtreeDto getZtreeDto(DataSetUseField baseSetUseField) {
-        ZtreeDto ztreeDto = new ZtreeDto();
-        ztreeDto.setId(baseSetUseField.getId());
-        ztreeDto.setPid(baseSetUseField.getPid());
-        ztreeDto.setName(baseSetUseField.getName());
-        List<DataSetUseField> dataDics = getCacheSetUseFieldListByPid(baseSetUseField.getId());
-        ztreeDto.setIsParent(CollectionUtils.isNotEmpty(dataDics));
-        return ztreeDto;
-    }
-
-    /**
-     * 根据id获取显示的名称
-     * @param id
-     * @return
-     */
-    public String getNameById(Integer id){
-        DataSetUseField baseSetUseField = dataSetUseFieldDao.getSingleObject(id);
-        if(baseSetUseField==null) return "";
-        return baseSetUseField.getName();
-    }
-
-    /**
-     * 从现有集合中根据名称找出对应数据
-     * @param list
-     * @param name
-     * @return
-     */
-    public DataSetUseField getSetUseFieldByName(List<DataSetUseField> list,String name){
-        if(CollectionUtils.isEmpty(list)) return null;
-        if(StringUtils.isBlank(name)) return null;
-        for (DataSetUseField baseSetUseField : list) {
-            if(StringUtils.equals(baseSetUseField.getName().trim(),name.trim()))
-                return baseSetUseField;
-        }
-        return null;
     }
 
 }
