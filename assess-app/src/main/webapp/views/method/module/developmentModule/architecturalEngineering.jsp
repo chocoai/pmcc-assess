@@ -1308,15 +1308,13 @@
                     $.each(data, function (i, item) {
                         retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                     });
-                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
-                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().hypothesisDevelopmentSelect2.select).select2();
+                    $("." + architecturalObj.config.frm()).find("select."+architecturalObj.config.inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
                 });
             },
             //增值及附加税率
             loadAddedValueAdditionalTaxRate: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().addedValueAdditionalTaxRate.select).html(html);
-                    $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().addedValueAdditionalTaxRate.select).select2();//加载样式
+                    $("." + architecturalObj.config.frm()).find("select."+architecturalObj.config.inputConfig().addedValueAdditionalTaxRate.select).html(html);
                 })
             },
             /**
@@ -1343,10 +1341,8 @@
                                     temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
                                     optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                                 }
-                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureCost.select).html(optionA);
-                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureCost.select).select2();
-                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureMatchingCost.select).html(optionB);
-                                $("." + architecturalObj.config.frm() + " ." + architecturalObj.config.inputConfig().infrastructureMatchingCost.select).select2();
+                                $("." + architecturalObj.config.frm()).find("select."+architecturalObj.config.inputConfig().infrastructureCost.select).html(optionA);
+                                $("." + architecturalObj.config.frm()).find("select."+architecturalObj.config.inputConfig().infrastructureMatchingCost.select).html(optionB);
                             }
 
                         }
