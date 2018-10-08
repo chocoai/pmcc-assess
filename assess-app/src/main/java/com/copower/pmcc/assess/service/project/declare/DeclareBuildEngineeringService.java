@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
@@ -246,6 +247,7 @@ public class DeclareBuildEngineeringService {
             declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class));
             declareRecord.setDataTableId(oo.getId());
             declareRecord.setFloorArea(new BigDecimal("0"));
+            declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {

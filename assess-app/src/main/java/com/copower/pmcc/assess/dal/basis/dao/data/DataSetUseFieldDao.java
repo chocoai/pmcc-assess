@@ -31,7 +31,7 @@ public class DataSetUseFieldDao {
      */
     public List<DataSetUseField> getListObject(String name, String fieldName, Integer pid) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
-        DataSetUseFieldExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        DataSetUseFieldExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(fieldName)) {
             criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
         }
@@ -64,7 +64,7 @@ public class DataSetUseFieldDao {
     public List<DataSetUseField> getListByPid(Integer pid, String search) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
         DataSetUseFieldExample.Criteria criteria = example.createCriteria();
-        criteria.andPidEqualTo(pid).andBisDeleteEqualTo(false);
+        criteria.andPidEqualTo(pid).andBisEnableEqualTo(true).andBisDeleteEqualTo(false);
         if (StringUtils.isNotBlank(search)) {
             criteria.andNameLike(search);
         }
@@ -85,12 +85,24 @@ public class DataSetUseFieldDao {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
         example.createCriteria()
                 .andPidEqualTo(pid)
+                .andBisEnableEqualTo(true)
                 .andBisDeleteEqualTo(false);
         example.setOrderByClause("sorting");
         List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
         return list;
     }
     //endregion
+
+    public List<DataSetUseField> getEnableListByType(Integer type) {
+        DataSetUseFieldExample example = new DataSetUseFieldExample();
+        example.createCriteria()
+                .andSetUseEqualTo(type)
+                .andBisEnableEqualTo(true)
+                .andBisDeleteEqualTo(false);
+        example.setOrderByClause("sorting");
+        List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
+        return list;
+    }
 
     public List<DataSetUseField> getEnableListByPids(List<Integer> integers) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();

@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventory
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryRight;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -63,7 +62,7 @@ public class SurveyAssetInventoryService {
                 surveyAssetInventoryDao.save(surveyAssetInventory);
 
                 //更新附件
-                baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryRight.class),surveyAssetInventory.getId());
+                baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class),surveyAssetInventory.getId());
             }
             List<SurveyAssetInventoryContent> assetInventoryContentList = surveyAssetCommonDataDto.getAssetInventoryContentList();
             if (CollectionUtils.isNotEmpty(assetInventoryContentList)) {

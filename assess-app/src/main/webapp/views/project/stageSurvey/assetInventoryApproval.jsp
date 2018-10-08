@@ -272,6 +272,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-2 control-label">
+                            附件
+                        </label>
+                        <div class="col-sm-10">
+                            <div id="_inventoryRightFile"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">
@@ -324,6 +334,18 @@
         saveApprovalform("");
     }
 
+    //加载他项权利附件
+    function loadInventoryRightFile(tableId) {
+        FileUtils.getFileShows({
+            target: "inventoryRightFile",
+            formData: {
+                tableName: AssessDBKey.SurveyAssetInventoryRight,
+                tableId: tableId
+            },
+            deleteFlag: true
+        });
+    }
+
     function loadAssetOtherRightList() {
         var cols = [];
         cols.push({field: 'typeName', title: '类型'});
@@ -357,10 +379,12 @@
         $("#viewInventoryRightModal").find('[data-name]').each(function () {
             $(this).text('').text(row[$(this).attr('data-name')]);
         })
+        loadInventoryRightFile(row.id);
         $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
         $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
         $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
         $("#viewInventoryRightModal").modal();
+
     };
 </script>
 </body>

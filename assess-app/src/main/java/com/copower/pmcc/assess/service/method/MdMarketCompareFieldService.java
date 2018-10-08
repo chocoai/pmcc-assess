@@ -1,6 +1,13 @@
 package com.copower.pmcc.assess.service.method;
 
+import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by kings on 2018-7-23.
@@ -67,12 +74,20 @@ public class MdMarketCompareFieldService {
     private String internalAssembly = new String();//内装 ps:楼栋内装信息+房屋内的装修信息
     private String planeLayout = new String();//平面布局
     private String newDegree = new String();//成新度
-    private String maintenanceAndLossStatus = new String();//维护保养和完损状况
+    private String maintenanceLossStatus = new String();//维护保养和完损状况
     private String other = new String();//其    他
 
-    public void getInfo(Integer planDetailsId){
-        //获取所需数据
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private DataSetUseFieldService dataSetUseFieldService;
 
+    public void getInfo(Integer judgeObjectId, List<Integer> casePlanDetailsIdList){
+        //根据委估对象id找出相应的查勘信息，如果委估对象是由多个权证合并则找第一个权证的相关信息即可
+        //1.找出当前权证的相关信息，根据设定用途确定需要对比的字段信息
+        //2.找出各字段的值，案例类似处理
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        List<DataSetUseField> setUseFieldList = dataSetUseFieldService.getCacheSetUseFieldListByType(judgeObject.getSetUse());
     }
 
     /**

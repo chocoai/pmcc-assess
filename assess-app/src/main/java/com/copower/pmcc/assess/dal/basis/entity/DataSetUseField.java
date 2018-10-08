@@ -11,11 +11,15 @@ public class DataSetUseField {
 
     private String fieldName;
 
+    private Integer setUse;
+
     private Boolean bisPrimaryKey;
 
     private Boolean bisPrice;
 
     private Boolean bisOnlyView;
+
+    private Boolean bisEnable;
 
     private Boolean bisDelete;
 
@@ -61,6 +65,14 @@ public class DataSetUseField {
         this.fieldName = fieldName == null ? null : fieldName.trim();
     }
 
+    public Integer getSetUse() {
+        return setUse;
+    }
+
+    public void setSetUse(Integer setUse) {
+        this.setUse = setUse;
+    }
+
     public Boolean getBisPrimaryKey() {
         return bisPrimaryKey;
     }
@@ -83,6 +95,14 @@ public class DataSetUseField {
 
     public void setBisOnlyView(Boolean bisOnlyView) {
         this.bisOnlyView = bisOnlyView;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Boolean getBisDelete() {
