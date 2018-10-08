@@ -36,7 +36,7 @@
             </span>
         </div>
         <div class="hypothesisDevelopment">
-            <jsp:include page="../method/module/developmentModule/hypothesisDevelopmentDetail.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/landEngineeringDetail.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
         <div class="architecturalEngineering" style="display: none;">

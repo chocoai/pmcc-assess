@@ -19,34 +19,65 @@
     <div class="x_content optionsBuildBox">
         <div>
             <!-- 隐藏框数据 -->
-            <input type="hidden" id="mdCostAndDevelopmentOtherHypothesisJSON" name="mdCostAndDevelopmentOtherHypothesisJSON" value='${mdCostAndDevelopmentOtherHypothesisJSON}'>
-            <input type="hidden" id="mdCostAndDevelopmentOtherArchitecturalJSON" name="mdCostAndDevelopmentOtherArchitecturalJSON" value='${mdCostAndDevelopmentOtherArchitecturalJSON}'>
-            <input type="hidden" id="mdDevelopmentHypothesisJSON" name="mdDevelopmentHypothesisJSON" value='${mdDevelopmentHypothesisJSON}'>
-            <input type="hidden" id="mdDevelopmentArchitecturalJSON" name="mdDevelopmentArchitecturalJSON" value='${mdDevelopmentArchitecturalJSON}'>
+            <input type="hidden" id="mdCostAndDevelopmentOtherHypothesisJSON"
+                   name="mdCostAndDevelopmentOtherHypothesisJSON" value='${mdCostAndDevelopmentOtherHypothesisJSON}'>
+            <input type="hidden" id="mdCostAndDevelopmentOtherArchitecturalJSON"
+                   name="mdCostAndDevelopmentOtherArchitecturalJSON"
+                   value='${mdCostAndDevelopmentOtherArchitecturalJSON}'>
+            <input type="hidden" id="mdDevelopmentHypothesisJSON" name="mdDevelopmentHypothesisJSON"
+                   value='${mdDevelopmentHypothesisJSON}'>
+            <input type="hidden" id="mdDevelopmentArchitecturalJSON" name="mdDevelopmentArchitecturalJSON"
+                   value='${mdDevelopmentArchitecturalJSON}'>
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
-                <label>假设开发法:</label>
+                <label>经营方式</label><span class="symbol required"></span>
             </span>
             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
                  <input type="radio" name="development" value="1" checked="checked">
-                <label>假设开发法</label>
+                <label>土地</label>
             </span>
             <span class="col-sm-2  checkbox-inline">
                 <input type="radio" name="development" value="2">
-                <label>在建工程建设开发法</label>
+                <label>在建工程</label>
             </span>
         </div>
-        <div class="hypothesisDevelopment">
-            <jsp:include page="../method/module/developmentModule/hypothesisDevelopment.jsp"></jsp:include>
-            <!-- 主题内容 -->
-        </div>
-        <div class="architecturalEngineering" style="display: none;">
-            <jsp:include page="../method/module/developmentModule/architecturalEngineering.jsp"></jsp:include>
-            <!-- 主题内容 -->
+        <div class="col-sm-12 form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    项目建设期(年)
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="项目建设期(年)"
+                           class="form-control">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    已开发时间(年)
+                </label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="已开发时间(年)"
+                           class="form-control">
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
+
+<div class="landEngineering">
+    <jsp:include page="../method/module/developmentModule/landEngineering.jsp"></jsp:include>
+    <!-- 主题内容 -->
+</div>
+<div class="architecturalEngineering" style="display: none;">
+    <jsp:include page="../method/module/developmentModule/architecturalEngineering.jsp"></jsp:include>
+    <!-- 主题内容 -->
+</div>
+
 <script>
 
     var AlgorithmsPrototype = function () {
@@ -179,12 +210,12 @@
 
     var optionsBuildBox = new Object();
     optionsBuildBox.showHypothesisDevelopment = function () {
-        $(".optionsBuildBox .hypothesisDevelopment").show();
-        $(".optionsBuildBox .architecturalEngineering").hide();
+        $(".landEngineering").show();
+        $(".architecturalEngineering").hide();
     };
     optionsBuildBox.showArchitecturalEngineering = function () {
-        $(".optionsBuildBox .architecturalEngineering").show();
-        $(".optionsBuildBox .hypothesisDevelopment").hide();
+        $(".architecturalEngineering").show();
+        $(".landEngineering").hide();
     };
 
     /**
@@ -236,23 +267,23 @@
     };
 
     optionsBuildBox.updateInit = function () {
-        var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}" ;
-        var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}" ;
+        var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}";
+        var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}";
 
-        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)){
+        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)) {
             mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();
             try {
                 mdDevelopmentArchitectural = JSON.parse(mdDevelopmentArchitectural);
                 optionsBuildBox.architecturalEngineeringInit(mdDevelopmentArchitectural);
                 //设置从表数据
-                var mdCostAndDevelopmentOtherArchitecturalJSON = "${mdCostAndDevelopmentOtherArchitectural}" ;
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherArchitecturalJSON)){
+                var mdCostAndDevelopmentOtherArchitecturalJSON = "${mdCostAndDevelopmentOtherArchitectural}";
+                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherArchitecturalJSON)) {
                     try {
                         mdCostAndDevelopmentOtherArchitecturalJSON = $("#mdCostAndDevelopmentOtherArchitecturalJSON").val();
                         mdCostAndDevelopmentOtherArchitecturalJSON = JSON.parse(mdCostAndDevelopmentOtherArchitecturalJSON);
                         architecturalEngineeringObj.setServerData(mdCostAndDevelopmentOtherArchitecturalJSON);
                     } catch (e) {
-                        console.log("设置从表数据 失败!") ;
+                        console.log("设置从表数据 失败!");
                     }
                 }
 
@@ -261,20 +292,20 @@
             }
         }
 
-        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)){
+        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)) {
             mdDevelopmentHypothesis = $("#mdDevelopmentHypothesisJSON").val();
             try {
                 mdDevelopmentHypothesis = JSON.parse(mdDevelopmentHypothesis);
                 optionsBuildBox.hypothesisDevelopmentInit(mdDevelopmentHypothesis);
                 //设置从表数据
-                var mdCostAndDevelopmentOtherHypothesisJSON = "${mdCostAndDevelopmentOtherHypothesis}" ;
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherHypothesisJSON)){
+                var mdCostAndDevelopmentOtherHypothesisJSON = "${mdCostAndDevelopmentOtherHypothesis}";
+                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherHypothesisJSON)) {
                     try {
-                        mdCostAndDevelopmentOtherHypothesisJSON = $("#mdCostAndDevelopmentOtherHypothesisJSON").val() ;
-                        mdCostAndDevelopmentOtherHypothesisJSON =JSON.parse(mdCostAndDevelopmentOtherHypothesisJSON) ;
+                        mdCostAndDevelopmentOtherHypothesisJSON = $("#mdCostAndDevelopmentOtherHypothesisJSON").val();
+                        mdCostAndDevelopmentOtherHypothesisJSON = JSON.parse(mdCostAndDevelopmentOtherHypothesisJSON);
                         hypothesisDevelopmentBuild.setServerData(mdCostAndDevelopmentOtherHypothesisJSON);
                     } catch (e) {
-                        console.log("设置从表数据 失败!") ;
+                        console.log("设置从表数据 失败!");
                     }
                 }
             } catch (e) {

@@ -1458,7 +1458,7 @@
                     $.each(data, function (i, item) {
                         retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                     });
-                    $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
+                    $("." + hypothesisDevelopment.config().frm).find("select." + hypothesisDevelopment.config().inputConfig().hypothesisDevelopmentSelect2.select).html(retHtml);
                 });
             },
             /**
@@ -1468,7 +1468,7 @@
              **/
             loadAddedValueAdditionalTaxRate: function () {
                 AssessCommon.loadDataDicByKey(AssessDicKey.build_addedvalueadditionaltaxrate, "", function (html, data) {
-                    $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
+                    $("." + hypothesisDevelopment.config().frm).find("select." + hypothesisDevelopment.config().inputConfig().addedValueAdditionalTaxRate.select).html(html);
                 })
             },
             /**
@@ -1495,8 +1495,8 @@
                                     temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
                                     optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
                                 }
-                                $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().infrastructureCost.select).html(optionA);
-                                $("." + hypothesisDevelopment.config().frm).find("select."+hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
+                                $("." + hypothesisDevelopment.config().frm).find("select." + hypothesisDevelopment.config().inputConfig().infrastructureCost.select).html(optionA);
+                                $("." + hypothesisDevelopment.config().frm).find("select." + hypothesisDevelopment.config().inputConfig().infrastructureMatchingCost.select).html(optionB);
                             }
 
                         }
