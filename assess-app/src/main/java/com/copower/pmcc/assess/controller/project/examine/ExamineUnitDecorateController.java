@@ -71,7 +71,7 @@ public class ExamineUnitDecorateController {
                 examineUnitDecorate.setDeclareId(declareId);
             }
             if (planDetailsId!=null ){
-                examineUnitDecorate.setDeclareId(planDetailsId);
+                examineUnitDecorate.setPlanDetailsId(planDetailsId);
             }
             vo = examineUnitDecorateService.getExamineUnitDecorateLists(examineUnitDecorate);
         } catch (Exception e1) {
