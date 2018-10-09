@@ -63,8 +63,8 @@
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
-                        <select name="infrastructureMatchingCostTax"
-                                class="form-control search-select select2 infrastructureMatchingCostTax">
+                        <select name="infrastructureCostTax"
+                                class="form-control search-select select2 infrastructureCostTax">
                         </select>
                     </div>
                 </div>
@@ -103,6 +103,18 @@
                     <div class="col-sm-11">
                         <input type="text"
                                placeholder="其它工程费率" class="form-control x-percent" name="otherEngineeringCostTax">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    不可预见费
+                </label>
+                <div class="x-valid">
+                    <div class="col-sm-11">
+                        <input type="text"
+                               placeholder="不可预见费" class="form-control x-percent" name="unforeseenExpensesTax">
                     </div>
                 </div>
             </div>
