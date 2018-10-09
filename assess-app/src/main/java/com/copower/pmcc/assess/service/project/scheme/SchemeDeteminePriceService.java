@@ -48,10 +48,13 @@ public class SchemeDeteminePriceService {
             schemeAreaJudgeObjectVo.setAreaGroupName(erpAreaService.getAreaFullName(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict()));
             List<SchemeJudgeObjectVo> judgeObjectVoList = Lists.newArrayList();
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-
+                if (schemeJudgeObject.getAreaGroupId().equals(integer)) {
+                    judgeObjectVoList.add(schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject));
+                }
             }
+            schemeAreaJudgeObjectVo.setJudgeObjectVoList(judgeObjectVoList);
             areaJudgeObjectVoList.add(schemeAreaJudgeObjectVo);
         }
-        return null;
+        return areaJudgeObjectVoList;
     }
 }

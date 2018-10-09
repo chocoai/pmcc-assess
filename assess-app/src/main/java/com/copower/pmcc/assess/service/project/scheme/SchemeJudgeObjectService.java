@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -132,6 +133,28 @@ public class SchemeJudgeObjectService {
      */
     public boolean areaGroupReduction(Integer originalAreaGroupId) {
         return schemeJudgeObjectDao.areaGroupReduction(originalAreaGroupId);
+    }
+
+    /**
+     * 获取vo
+     *
+     * @param schemeJudgeObject
+     * @return
+     */
+    public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
+        SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
+        BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
+        if (schemeJudgeObject.getSetUse() != null && schemeJudgeObject.getSetUse() > 0) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(schemeJudgeObject.getSetUse());
+            if (baseDataDic != null)
+                schemeJudgeObjectVo.setSetUseName(baseDataDic.getName());
+        }
+        if (schemeJudgeObject.getBestUse() != null && schemeJudgeObject.getBestUse() > 0) {
+            BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(schemeJudgeObject.getBestUse());
+            if (baseDataDic != null)
+                schemeJudgeObjectVo.setBestUseName(baseDataDic.getName());
+        }
+        return schemeJudgeObjectVo;
     }
 
     /**
