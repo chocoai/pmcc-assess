@@ -85,6 +85,12 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getSchemeJudgeObjectList(areaGroupId);
     }
 
+    public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setProjectId(projectId);
+        return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+    }
+
     /**
      * 获取估价对象数据列表
      *
@@ -93,7 +99,7 @@ public class SchemeJudgeObjectService {
      */
     public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        SchemeJudgeObject schemeJudgeObject=new SchemeJudgeObject();
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

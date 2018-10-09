@@ -194,7 +194,7 @@
     };
     examineHouseTrading.prototype = {
         saveView:function () {
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}","taxBurden");
+            //examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}","taxBurden");
             examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}","normalTransaction");
             examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
             examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}","tradingType");
@@ -376,8 +376,8 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.descriptionType").html(html);
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.taxBurden").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.taxBurden").html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.normalTransaction").html(html);
