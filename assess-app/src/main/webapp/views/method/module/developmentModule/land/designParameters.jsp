@@ -20,34 +20,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        不可预见费
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="不可预见费" class="form-control" data-rule-number='true' required="required"
-                               name="unforeseenExpensesTax">
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="unforeseenExpensesTaxExplain">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
                         契税率
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="契税率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="契税率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="deedTax">
                     </div>
                 </div>
@@ -71,7 +48,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="交易费率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="交易费率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="transactionCostTax">
                     </div>
                 </div>
@@ -95,7 +72,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="管理费率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="管理费率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="managementExpenseTax">
                     </div>
                 </div>
@@ -119,7 +96,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="销售费用率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="销售费用率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="salesFeeTax">
                     </div>
                 </div>
@@ -143,7 +120,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="投资利息率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="投资利息率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="interestInvestmentTax">
                     </div>
                 </div>
@@ -167,7 +144,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="投资利润率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="投资利润率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="investmentProfitTax">
                     </div>
                 </div>
@@ -191,7 +168,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="营业税金及附加率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="营业税金及附加率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="businessAdditionalTax">
                     </div>
                 </div>
@@ -215,7 +192,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="土地增值税" class="form-control" data-rule-number='true' required="required"
+                               placeholder="土地增值税" class="form-control x-percent" data-rule-number='true' required="required"
                                name="landIncrementTax">
                     </div>
                 </div>

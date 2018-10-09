@@ -181,7 +181,7 @@
                                 return '必须是数字';
                             } else {
                                 //更新各种合计
-                                parameter.write(value, n.name);
+                                parameter.write(value, n.name,n.key);
                             }
                         } else {
                             return '不能为空';
@@ -192,14 +192,24 @@
         });
     };
 
-    parameter.write = function (item, name) {
+    parameter.write = function (item, name,key) {
         if (name == '建筑面积') {
             var str = 0;
-            str += Number($("#" + parameter.config.frm).find(".villaResidenceBuildArea").html());
-            str += Number($("#" + parameter.config.frm).find(".strategyBusinessBuildArea").html());
-            str += Number($("#" + parameter.config.frm).find(".workBuildArea").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundGarageBuildArea").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopBuildArea").html());
+            if (key != "villaResidenceBuildArea"){
+                str += Number($("#" + parameter.config.frm).find(".villaResidenceBuildArea").html());
+            }
+            if (key != "strategyBusinessBuildArea"){
+                str += Number($("#" + parameter.config.frm).find(".strategyBusinessBuildArea").html());
+            }
+            if (key != "workBuildArea"){
+                str += Number($("#" + parameter.config.frm).find(".workBuildArea").html());
+            }
+            if (key != "undergroundGarageBuildArea"){
+                str += Number($("#" + parameter.config.frm).find(".undergroundGarageBuildArea").html());
+            }
+            if (key != "undergroundBusinessShopBuildArea"){
+                str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopBuildArea").html());
+            }
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='estimateSaleTotal']").val(str);
             $("#"+landEngineering.config.id).find("."+landEngineering.config.inputConfig.estimateSaleTotal.key).html(str);

@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                             <td> 工程建设成本小计</td>
-                            <td>0.00</td>
+                            <td class="constructionCostSubtotal">0.00</td>
                         </tr>
                         <tr>
                             <td> 不可预见费金额</td>

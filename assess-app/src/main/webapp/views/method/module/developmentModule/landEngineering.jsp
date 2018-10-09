@@ -2,6 +2,7 @@
 <div id="landEngineeringModel">
     <jsp:include page="../developmentModule/land/parameter.jsp"></jsp:include>
     <jsp:include page="../developmentModule/land/cost.jsp"></jsp:include>
+
     <div>
         <form class="form-horizontal">
             <div class="form-group">
@@ -26,10 +27,110 @@
                                name="constructionInstallationEngineeringFee" value="7929.30">
                     </div>
                 </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        基础设施费用 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="基础设施费用" class="form-control" readonly="readonly"
+                               name="infrastructureCost">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        公共配套设施建设费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="公共配套设施建设费" class="form-control" readonly="readonly"
+                               name="infrastructureMatchingCost">
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        开发期间税费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="开发期间税费" class="form-control" readonly="readonly"
+                               name="devDuring">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        其它工程费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="其它工程费" class="form-control" readonly="readonly"
+                               name="otherEngineeringCost">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        不可预见费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="不可预见费" class="form-control" readonly="readonly"
+                               name="unforeseenExpenses">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <jsp:include page="../developmentModule/land/designParameters.jsp"></jsp:include>
+
+    <div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        设计费参数比率 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="设计费参数比率" class="form-control" readonly="readonly"
+                               name="designFeeParameterRatio">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        管理费 (计算率)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="管理费" class="form-control" readonly="readonly"
+                               name="managementExpenseCorrecting">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        管理费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="管理费(金额)" class="form-control" readonly="readonly"
+                               name="managementExpense">
+                    </div>
+                </div>
             </div>
         </form>
     </div>
-    <jsp:include page="../developmentModule/land/designParameters.jsp"></jsp:include>
+
     <jsp:include page="../developmentModule/land/resultView.jsp"></jsp:include>
 </div>
 
@@ -92,12 +193,23 @@
                 tax: "otherEngineeringCostTax",
                 correcting: "",
                 name: "其它工程费"
-            },//设计费参数比率
+            },
+            constructionCostSubtotal: {
+                key: "constructionCostSubtotal",
+                tax: "",
+                name: "工程建设成本小计"
+            },
             unforeseenExpenses: {
                 key: "unforeseenExpenses",
                 tax: "unforeseenExpensesTax",
                 correcting: "",
                 name: "不可预见费"
+            },
+            //设计费参数比率
+            designFeeParameterRatio: {
+                key: "designFeeParameterRatio",
+                tax: "",
+                name: "设计费参数比率"
             },
             deed: {
                 key: "deed",
@@ -201,15 +313,143 @@
             landEngineering.algsObj.reconnaissanceDesign();
         },
         //基础设施建设费
-        infrastructureCostTaxFun:function () {
+        infrastructureCostTaxFun: function () {
+            landEngineering.algsObj.infrastructureCost();
+        },
+        //公共配套设施建设费
+        infrastructureMatchingCostTaxFun: function () {
+            landEngineering.algsObj.infrastructureMatchingCost();
+        },
+        //开发期间税费
+        devDuringTaxFun: function () {
+            landEngineering.algsObj.devDuring();
+        },
+        //其它工程费率
+        otherEngineeringCostTaxFun: function () {
+            landEngineering.algsObj.otherEngineeringCost();
+        },
+        //不可预见费
+        unforeseenExpensesTaxFun: function () {
+            landEngineering.algsObj.unforeseenExpenses();
+        }
 
+        //契税率
+        ,
+        deedTaxFun: function () {
+            landEngineering.algsObj.designFeeParameterRatio();
+        },
+        //交易费率
+        transactionCostTaxFun: function () {
+            landEngineering.algsObj.designFeeParameterRatio();
+        },
+        //管理费率
+        managementExpenseTaxFun: function () {
+            landEngineering.algsObj.managementExpenseCorrecting();//管理费
+            landEngineering.algsObj.managementExpense();//管理费 金额
         }
     };
 
     landEngineering.algsObj = {
-        //基础设施建设费
-        infrastructureCost:function () {
-
+        //管理费 金额 = (不可预见费 (金额) + 工程建设成本小计)*管理费率
+        managementExpense: function () {
+            var a = 0, b = 0, c = 0, d = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.managementExpense.tax, null);//管理费率
+            b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.unforeseenExpenses.key, null);//不可预见费 (金额)
+            c = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionCostSubtotal.key).html();//工程建设成本小计
+            c = Number(c);
+            d = (c + b)*a;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.managementExpense.key, c);//管理费 金额
+        },
+        //管理费 = 管理费率 * 设计费参数比率
+        managementExpenseCorrecting: function () {
+            var a = 0, b = 0, c = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.managementExpense.tax, null);//管理费率
+            b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.designFeeParameterRatio.key, null);//设计费参数比率
+            c = (a * b);
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.managementExpense.correcting, c);//管理费
+        },
+        //设计费参数比率
+        designFeeParameterRatio: function () {
+            var a = 0, b = 0, c = 0;
+            b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.deed.tax, null);//契税率
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.transactionCost.tax, null);//交易费率
+            c = 1 + a + b;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.designFeeParameterRatio.key, c);//设计费参数比率
+            landEngineering.algsObj.managementExpenseCorrecting();//管理费
+        },
+        //不可预见费 (金额) = 不可预见费 * 工程建设成本小计
+        unforeseenExpenses: function () {
+            var a = 0, b = 0, c = 0;
+            a = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionCostSubtotal.key).html();//工程建设成本小计
+            b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.unforeseenExpenses.tax, null);//不可预见费
+            c = (a * b);
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.unforeseenExpenses.key, c);//不可预见费 (金额)
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.unforeseenExpenses.key).html(c);
+            landEngineering.algsObj.managementExpense();//管理费 金额
+        },
+        //工程建设成本小计
+        constructionCostSubtotal: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.otherEngineeringCost.key, null);//其它工程费 (金额)
+            b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.devDuring.key, null);//开发期间税费 (金额)
+            c = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.infrastructureMatchingCost.key, null);//公共配套设施建设费 (金额)
+            d = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.infrastructureCost.key, null);//基础设施建设费 (金额)
+            e = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.reconnaissanceDesign.key, null);//勘察设计和前期工程费 (金额)
+            f = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.key, null);//建筑安装工程费 (金额)
+            g = a + b + c + d + e + f;
+            g = g.toFixed(2);
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionCostSubtotal.key).html(g);
+            landEngineering.algsObj.unforeseenExpenses();//不可预见费 (金额)
+        },
+        //其它工程费 (金额) = 其它工程费*总建筑面积小计 / 1000
+        otherEngineeringCost: function () {
+            var a = 0, b = 0, c = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.otherEngineeringCost.tax, null);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 1000;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.otherEngineeringCost.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
+        },
+        //开发期间税费 (金额) = 开发期间税费*总建筑面积小计 /1000
+        devDuring: function () {
+            var a = 0, b = 0, c = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.devDuring.tax, null);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 1000;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.devDuring.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
+        },
+        //公共配套设施建设费 (金额) = 公共配套设施建设费*总建筑面积小计 /1000
+        infrastructureMatchingCost: function () {
+            var a = 0, b = 0, c = 0;
+            a = $("#" + landEngineering.config.id + " ." + landEngineering.config.inputConfig.infrastructureMatchingCost.tax).eq(1).val();//公共配套设施建设费
+            a = Number(a);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 1000;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.infrastructureMatchingCost.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
+        },
+        //基础设施建设费 (金额) = 基础设施建设费*总建筑面积小计 /1000
+        infrastructureCost: function () {
+            var a = 0, b = 0, c = 0;
+            a = $("#" + landEngineering.config.id + " ." + landEngineering.config.inputConfig.infrastructureCost.tax).eq(1).val();//基础设施建设费
+            a = Number(a);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 1000;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.infrastructureCost.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
         //勘察设计和前期工程费 (金额) = 勘察设计和前期工程费 * 建筑安装工程费 (计算金额)
         reconnaissanceDesign: function () {
@@ -217,8 +457,21 @@
             a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.reconnaissanceDesign.tax, null);
             b = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.key, null);
             c = a * b;
-            console.log("a:"+a+" b:"+b+" c:"+c);
+            c = c.toFixed(2);
+            console.log("a:" + a + " b:" + b + " c:" + c);
             landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.reconnaissanceDesign.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
+        },
+        //建筑安装工程费 (计算金额) = 建筑安装工程费 * 总建筑面积小计 / 1000
+        constructionInstallationEngineeringFee: function () {
+            var a = 0, b = 0, c = 0;
+            a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.tax, null);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 1000;
+            c = c.toFixed(2);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.key, c);
+            landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
         //总建筑面积小计 = 预期销售合计 + 不可售建筑面积
         totalGrossFloorArea: function () {
@@ -226,6 +479,7 @@
             a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.nonSaleFloorArea.tax, null);
             b = Number($("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.estimateSaleTotal.key).html());
             c = a + b;
+            c = c.toFixed(2);
             $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html(c);
         },
         getAndSet: function (flag, name, data) {
@@ -252,8 +506,8 @@
         specialTreatment: function (obj) {
             if (landEngineering.algsObj.isNotNull(obj)) {
                 var nnn = "" + obj + "";
-                var str = nnn.substring(nnn.length-1,nnn.length);
-                if (str == '%'){//检测是否为百分比
+                var str = nnn.substring(nnn.length - 1, nnn.length);
+                if (str == '%') {//检测是否为百分比
                     str = AssessCommon.percentToPoint(nnn);
                     return str;
                 }
@@ -286,22 +540,34 @@
     //监听change 事件
     landEngineering.monitor = {
         // 基础设施建设费
-        infrastructureCost:function () {
+        infrastructureCost: function () {
             var tax = landEngineering.config.inputConfig.infrastructureCost.tax;
             $("#" + landEngineering.config.id + " ." + tax).change(function () {
                 var funName = "landEngineering.algorithm." + tax + "Fun(" + ")";
+                console.log(funName);
                 try {
                     eval(funName);
                 } catch (e) {
                     console.log("没有这个函数");
+                    console.log(e);
                 }
             });
         },
         //公共配套设施建设费
-        infrastructureMatchingCost:function () {
-
+        infrastructureMatchingCost: function () {
+            var tax = landEngineering.config.inputConfig.infrastructureMatchingCost.tax;
+            $("#" + landEngineering.config.id + " ." + tax).change(function () {
+                var funName = "landEngineering.algorithm." + tax + "Fun(" + ")";
+                console.log(funName);
+                try {
+                    eval(funName);
+                } catch (e) {
+                    console.log("没有这个函数");
+                    console.log(e);
+                }
+            });
         },
-        init:function () {
+        init: function () {
             landEngineering.monitor.infrastructureCost();
             landEngineering.monitor.infrastructureMatchingCost();
         }
