@@ -72,14 +72,6 @@
     <form class="form-horizontal" id="frmExamineBuilding_">
         <input type="hidden" name="id">
         <input type="hidden" name="identifier">
-        <input type="hidden" id="oneExamineBuilding"
-               value='${surveyExamineDataInfoVo.examineBuildingVoMap['oneExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="twoExamineBuilding"
-               value='${surveyExamineDataInfoVo.examineBuildingVoMap['twoExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="threeExamineBuilding"
-               value='${surveyExamineDataInfoVo.examineBuildingVoMap['threeExamineBuilding'].jsonContent}'>
-        <input type="hidden" id="fourExamineBuilding"
-               value='${surveyExamineDataInfoVo.examineBuildingVoMap['fourExamineBuilding'].jsonContent}'>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -266,20 +258,20 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构上级
+                    建筑结构类型
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" data-title="buildingStructure" value="${examineBuildingVo.buildingStructureName}"
+                    <input type="text" data-title="buildingStructure" value="${examineBuildingVo.buildingStructureTypeName}"
                            readonly="readonly" name="buildingStructureName" class="form-control">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构(下级)
+                    建筑结构类别
                 </label>
                 <div class="col-sm-3">
                     <input type="text" data-title="buildingstructurePid"
-                           value="${examineBuildingVo.buildingstructurePid}" readonly="readonly"
+                           value="${examineBuildingVo.buildingstructureCategoryName}" readonly="readonly"
                            name="buildingstructurePid" class="form-control">
                 </div>
             </div>

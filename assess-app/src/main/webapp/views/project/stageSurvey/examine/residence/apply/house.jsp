@@ -19,7 +19,7 @@
             <label class="col-sm-1 control-label">所在楼层<span class="symbol required"></span></label>
             <div class="col-sm-3">
                 <input type="text" data-rule-maxlength="100" data-rule-number='true' placeholder="所在楼层(请输入数字)"
-                       value="${surveyExamineDataInfoVo.examineHouseVo.houseNumber}" name="floor"
+                       value="${surveyExamineDataInfoVo.examineHouseVo.floor}" name="floor"
                        class="form-control">
             </div>
         </div>
@@ -105,9 +105,7 @@
         <div class="x-valid">
             <label class="col-sm-1 control-label">房屋出租占用情况途描述<span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <textarea class="form-control" name="description" required="required">
-                    ${surveyExamineDataInfoVo.examineHouseVo.description}
-                </textarea>
+                <textarea class="form-control" name="description" required="required">${surveyExamineDataInfoVo.examineHouseVo.description}</textarea>
             </div>
         </div>
     </div>

@@ -1,7 +1,9 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%--
  房屋交易信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="x_content">
     <div class="x_title">
         <h3>房屋交易信息 </h3>
@@ -73,7 +75,7 @@
                     <input required="required" placeholder="交易时间"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
                            class="form-control date-picker dbdate" readonly="readonly"
-                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}">
+                           value="<fmt:formatDate value='${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}' pattern='yyyy-MM-dd'/>">
                 </div>
             </div>
 

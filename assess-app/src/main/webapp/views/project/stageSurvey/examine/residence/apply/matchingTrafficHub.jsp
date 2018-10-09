@@ -70,9 +70,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                // cols.push({field: 'type', title: '类型'});
-                cols.push({field: 'lineName', title: '线路名称'});
-                cols.push({field: 'theLine', title: '所在线路'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
@@ -244,29 +241,6 @@
                                             <select required="required" name="distance"
                                                     class="form-control search-select select2 distance">
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            所在线路<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
                                         </div>
                                     </div>
                                 </div>
