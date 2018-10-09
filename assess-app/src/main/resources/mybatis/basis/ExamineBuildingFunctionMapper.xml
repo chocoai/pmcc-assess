@@ -7,15 +7,13 @@
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="examine_type" property="examineType" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
     <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="water_proof" property="waterProof" jdbcType="VARCHAR" />
-    <result column="heat_preservation" property="heatPreservation" jdbcType="VARCHAR" />
     <result column="build_number" property="buildNumber" jdbcType="VARCHAR" />
-    <result column="heat_insulation" property="heatInsulation" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -78,9 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, declare_id, plan_details_id, examine_type, building_id, decoration_part, decorating_material, 
-    material_price, construction_technology, creator, water_proof, heat_preservation, 
-    build_number, heat_insulation, gmt_created, gmt_modified
+    id, declare_id, plan_details_id, examine_type, building_id, type, decoration_part, 
+    decorating_material, material_price, construction_technology, build_number, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuildingFunctionExample" >
     select
@@ -117,16 +115,14 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_examine_building_function (declare_id, plan_details_id, examine_type, 
-      building_id, decoration_part, decorating_material, 
-      material_price, construction_technology, 
-      creator, water_proof, heat_preservation, 
-      build_number, heat_insulation, gmt_created, 
+      building_id, type, decoration_part, 
+      decorating_material, material_price, construction_technology, 
+      build_number, creator, gmt_created, 
       gmt_modified)
     values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
-      #{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
-      #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{waterProof,jdbcType=VARCHAR}, #{heatPreservation,jdbcType=VARCHAR}, 
-      #{buildNumber,jdbcType=VARCHAR}, #{heatInsulation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{buildingId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
+      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
+      #{buildNumber,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuildingFunction" >
@@ -147,6 +143,9 @@
       <if test="buildingId != null" >
         building_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="decorationPart != null" >
         decoration_part,
       </if>
@@ -159,20 +158,11 @@
       <if test="constructionTechnology != null" >
         construction_technology,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="waterProof != null" >
-        water_proof,
-      </if>
-      <if test="heatPreservation != null" >
-        heat_preservation,
-      </if>
       <if test="buildNumber != null" >
         build_number,
       </if>
-      <if test="heatInsulation != null" >
-        heat_insulation,
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -194,6 +184,9 @@
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
       <if test="decorationPart != null" >
         #{decorationPart,jdbcType=INTEGER},
       </if>
@@ -206,20 +199,11 @@
       <if test="constructionTechnology != null" >
         #{constructionTechnology,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="waterProof != null" >
-        #{waterProof,jdbcType=VARCHAR},
-      </if>
-      <if test="heatPreservation != null" >
-        #{heatPreservation,jdbcType=VARCHAR},
-      </if>
       <if test="buildNumber != null" >
         #{buildNumber,jdbcType=VARCHAR},
       </if>
-      <if test="heatInsulation != null" >
-        #{heatInsulation,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -253,6 +237,9 @@
       <if test="record.buildingId != null" >
         building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.decorationPart != null" >
         decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       </if>
@@ -265,20 +252,11 @@
       <if test="record.constructionTechnology != null" >
         construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.waterProof != null" >
-        water_proof = #{record.waterProof,jdbcType=VARCHAR},
-      </if>
-      <if test="record.heatPreservation != null" >
-        heat_preservation = #{record.heatPreservation,jdbcType=VARCHAR},
-      </if>
       <if test="record.buildNumber != null" >
         build_number = #{record.buildNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.heatInsulation != null" >
-        heat_insulation = #{record.heatInsulation,jdbcType=VARCHAR},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -298,15 +276,13 @@
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       examine_type = #{record.examineType,jdbcType=INTEGER},
       building_id = #{record.buildingId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       material_price = #{record.materialPrice,jdbcType=INTEGER},
       construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      water_proof = #{record.waterProof,jdbcType=VARCHAR},
-      heat_preservation = #{record.heatPreservation,jdbcType=VARCHAR},
       build_number = #{record.buildNumber,jdbcType=VARCHAR},
-      heat_insulation = #{record.heatInsulation,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -328,6 +304,9 @@
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="decorationPart != null" >
         decoration_part = #{decorationPart,jdbcType=INTEGER},
       </if>
@@ -340,20 +319,11 @@
       <if test="constructionTechnology != null" >
         construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="waterProof != null" >
-        water_proof = #{waterProof,jdbcType=VARCHAR},
-      </if>
-      <if test="heatPreservation != null" >
-        heat_preservation = #{heatPreservation,jdbcType=VARCHAR},
-      </if>
       <if test="buildNumber != null" >
         build_number = #{buildNumber,jdbcType=VARCHAR},
       </if>
-      <if test="heatInsulation != null" >
-        heat_insulation = #{heatInsulation,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -370,15 +340,13 @@
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       examine_type = #{examineType,jdbcType=INTEGER},
       building_id = #{buildingId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       material_price = #{materialPrice,jdbcType=INTEGER},
       construction_technology = #{constructionTechnology,jdbcType=INTEGER},
-      creator = #{creator,jdbcType=VARCHAR},
-      water_proof = #{waterProof,jdbcType=VARCHAR},
-      heat_preservation = #{heatPreservation,jdbcType=VARCHAR},
       build_number = #{buildNumber,jdbcType=VARCHAR},
-      heat_insulation = #{heatInsulation,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

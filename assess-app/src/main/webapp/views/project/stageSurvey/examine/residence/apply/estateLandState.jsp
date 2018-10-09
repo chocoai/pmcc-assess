@@ -147,6 +147,7 @@
         ContainerFunForValid.push(EstateLandState.valid);//数据验证方法写入容器
         ContainerFunForGetData.push(EstateLandState.getFormData);//获取数据方法写入容器
         ContainerFunForInit.estate.push(estateLandState.prototype.init);//初始化方法写入容器
+
     })
 </script>
 <script type="text/javascript">
@@ -186,19 +187,20 @@
     };
     estateLandState.prototype.init = function () {
         var landUseType = "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseType}";//土地用途类型
-        var landUseCategory = "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseType}";//土地用途类别
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, landUseType, function (html, optionArray) {
-            $("#" + EstateLandState.config().frm).find("select.landUseType").html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByPid(landUseType, landUseCategory, function (html, data) {
-            $("#" + EstateLandState.config().frm).find("select.landUseCategory").append(html).trigger('change');
-        });
-
+        var landUseCategory = "${surveyExamineDataInfoVo.examineEstateLandStateVo.landUseCategory}";//土地用途类别
         $("#" + EstateLandState.config().frm).find("select.landUseType").change(function () {
             AssessCommon.loadDataDicByPid($(this).val(), null, function (html, data) {
                 $("#" + EstateLandState.config().frm).find("select.landUseCategory").empty().html(html).trigger('change');
             });
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, landUseType, function (html, optionArray) {
+            $("#" + EstateLandState.config().frm).find("select.landUseType").html(html).trigger('change');
+
+            AssessCommon.loadDataDicByPid(landUseType, landUseCategory, function (html, data) {
+                $("#" + EstateLandState.config().frm).find("select.landUseCategory").append(html).trigger('change');
+            });
+        });
+
         $.ajax({
             url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
             type: "get",
@@ -216,7 +218,11 @@
                     var option = "<option value=''>请选择</option>";
                     if (gradeNum > 0) {
                         for (var i = 0; i < gradeNum; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                            if('${surveyExamineDataInfoVo.examineEstateLandStateVo.landLevel}'==data[i].id){
+                                option += "<option selected='selected' value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                            }else {
+                                option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                            }
                         }
                         $("#" + EstateLandState.config().frm).find("select.landLevel").empty().html(option).trigger('change');
                     }

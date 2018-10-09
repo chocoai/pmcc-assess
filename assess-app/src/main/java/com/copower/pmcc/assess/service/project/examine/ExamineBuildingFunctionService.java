@@ -85,6 +85,9 @@ public class ExamineBuildingFunctionService {
     public ExamineBuildingFunctionVo getExamineBuildingFunctionVo(ExamineBuildingFunction examineBuildingFunction) {
         ExamineBuildingFunctionVo vo = new ExamineBuildingFunctionVo();
         BeanUtils.copyProperties(examineBuildingFunction, vo);
+        if (examineBuildingFunction.getType() != null) {
+            vo.setTypeName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_FUNCTION_TYPE, examineBuildingFunction.getType()));
+        }
         if (examineBuildingFunction.getDecorationPart() != null) {
             vo.setDecorationPartName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART, examineBuildingFunction.getDecorationPart()));
         }

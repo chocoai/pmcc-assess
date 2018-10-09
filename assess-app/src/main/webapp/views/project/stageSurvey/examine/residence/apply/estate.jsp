@@ -255,30 +255,6 @@
             },
             init: function () {
                 //主要是载入select2
-                //版块
-                <%--$.ajax({--%>
-                    <%--url: "${pageContext.request.contextPath}/dataBlock/getDataBlockListByArea",--%>
-                    <%--type: "get",--%>
-                    <%--dataType: "json",--%>
-                    <%--async: false,--%>
-                    <%--data: {province: "${projectInfo.province}",city: "${projectInfo.city}",district: "${projectInfo.district}"},--%>
-                    <%--success: function (result) {--%>
-                        <%--if (result.ret) {--%>
-                            <%--var data = result.data;--%>
-                            <%--var gradeNum = data.length;--%>
-                            <%--var option = "<option value=''>请选择</option>";--%>
-                            <%--if (gradeNum > 0) {--%>
-                                <%--for (var i = 0; i < gradeNum; i++) {--%>
-                                    <%--option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";--%>
-                                <%--}--%>
-                                <%--$("#" + Estate.config().frm).find('select.blockId').empty().html(option).trigger('change');--%>
-                            <%--}--%>
-                        <%--}--%>
-                    <%--},--%>
-                    <%--error: function (result) {--%>
-                        <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
-                    <%--}--%>
-                <%--});--%>
                 //开发商
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineBuilding/getBuildAndProperty",
@@ -293,7 +269,11 @@
                             var option = "<option value=''>请选择</option>";
                             if (gradeNum > 0) {
                                 for (var i = 0; i < gradeNum; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                    if('${surveyExamineDataInfoVo.examineEstateVo.developerId}'==data[i].id){
+                                        option += "<option selected='selected' value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                    }else{
+                                        option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                                    }
                                 }
                                 $("#" + Estate.config().frm).find('select.developerId').empty().html(option).trigger('change');
                             }

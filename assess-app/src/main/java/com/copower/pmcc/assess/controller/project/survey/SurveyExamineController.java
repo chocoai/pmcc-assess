@@ -190,5 +190,15 @@ public class SurveyExamineController {
         }
     }
 
-
+    @ResponseBody
+    @PostMapping(name = "保存调查信息", value = "/saveExamineDataInfo")
+    public HttpResult saveExamineDataInfo(String formData) {
+        try {
+            surveyExamineTaskService.saveExamineDataInfo(formData);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("保存调查信息", e);
+            return HttpResult.newErrorResult("保存调查信息异常");
+        }
+    }
 }

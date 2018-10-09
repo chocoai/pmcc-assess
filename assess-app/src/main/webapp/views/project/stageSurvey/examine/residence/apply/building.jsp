@@ -94,6 +94,15 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
+                    楼栋名称
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="楼栋名称" name="buildingName"
+                           class="form-control" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
                     户型区间
                 </label>
                 <div class="col-sm-3">
@@ -101,28 +110,9 @@
                            class="form-control">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    物业费
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="物业费(数字)" name="propertyFee"
-                           data-rule-number='true' class="form-control" required="required">
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    公共设施使用费
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="公共设施使用费(数字)" name="facilitiesUseFee"
-                           data-rule-number='true' class="form-control" required="required">
-                </div>
-            </div>
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     楼层起
@@ -132,20 +122,6 @@
                            data-rule-number='true' class="form-control">
                 </div>
             </div>
-            <%--<input type="hidden" placeholder="编号" name="identifier"--%>
-            <%--readonly="readonly" class="form-control">--%>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    编号
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="编号" name="identifier"
-                           readonly="readonly" class="form-control">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     楼层止
@@ -164,6 +140,28 @@
                            name="floorCount" class="form-control">
                 </div>
             </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    物业费
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="物业费(数字)" name="propertyFee"
+                           data-rule-number='true' class="form-control" required="required">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    公共设施使用费
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="公共设施使用费(数字)" name="facilitiesUseFee"
+                           data-rule-number='true' class="form-control" required="required">
+                </div>
+            </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
                     建筑高度
@@ -173,7 +171,18 @@
                            name="buildingHeight" class="form-control" required="required">
                 </div>
             </div>
+            <div class="x-valid" style="display: none;">
+                <label class="col-sm-1 control-label">
+                    编号
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="编号" name="identifier"
+                           readonly="readonly" class="form-control">
+                </div>
+            </div>
         </div>
+
+
 
         <div class="form-group">
             <div class="x-valid">
@@ -271,7 +280,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构上级
+                    建筑结构类型
                 </label>
                 <div class="col-sm-3">
                     <select name="buildingStructure"
@@ -281,7 +290,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构(下级)
+                    建筑结构类别
                 </label>
                 <div class="col-sm-3">
                     <select id="frmExamineBuilding_buildingStructure"
@@ -1427,12 +1436,14 @@
                                 Alert("调用服务端方法失败，失败原因:" + result);
                             }
                         })
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_function_type, null, function (html, optionArray) {
+                            $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm).find("select.type").html(html).trigger('change');
+                        });
+
                     },
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'waterProof', title: '防水'});
-                        cols.push({field: 'heatPreservation', title: '保温'});
-                        cols.push({field: 'heatInsulation', title: '隔热'});
+                        cols.push({field: 'typeName', title: '类型'});
                         cols.push({field: 'decorationPartName', title: '装修部位'});
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                         cols.push({field: 'materialPriceName', title: '材料价格区间'});
@@ -1637,34 +1648,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            保温
+                                            类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="保温"
-                                                   name="heatPreservation" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            防水
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="防水"
-                                                   name="waterProof" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            隔热
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="隔热"
-                                                   name="heatInsulation" class="form-control" required="required">
+                                            <select required="required" name="type"
+                                                    class="form-control search-select select2 type">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

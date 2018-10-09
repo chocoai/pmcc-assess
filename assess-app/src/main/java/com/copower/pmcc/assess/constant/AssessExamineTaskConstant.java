@@ -72,6 +72,7 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_BUILDING_STRUCTURE = "examine.building.structure";//层面结构
     public static final String EXAMINE_BUILDING_MAINTENANCE_CATEGORY = "examine.building.maintenance.category";//维护结构分类
     public static final String EXAMINE_BUILDING_MATERIALQUALITY = "examine.building.maintenance.materialQuality";//维护结构材质
+    public static final String EXAMINE_BUILDING_FUNCTION_TYPE = "building.function.type";//建筑功能类型
 
     public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
     public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型

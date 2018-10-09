@@ -405,6 +405,66 @@ public class ExamineBuildingFunctionExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andDecorationPartIsNull() {
             addCriterion("decoration_part is null");
             return (Criteria) this;
@@ -645,216 +705,6 @@ public class ExamineBuildingFunctionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofIsNull() {
-            addCriterion("water_proof is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofIsNotNull() {
-            addCriterion("water_proof is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofEqualTo(String value) {
-            addCriterion("water_proof =", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofNotEqualTo(String value) {
-            addCriterion("water_proof <>", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofGreaterThan(String value) {
-            addCriterion("water_proof >", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofGreaterThanOrEqualTo(String value) {
-            addCriterion("water_proof >=", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofLessThan(String value) {
-            addCriterion("water_proof <", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofLessThanOrEqualTo(String value) {
-            addCriterion("water_proof <=", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofLike(String value) {
-            addCriterion("water_proof like", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofNotLike(String value) {
-            addCriterion("water_proof not like", value, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofIn(List<String> values) {
-            addCriterion("water_proof in", values, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofNotIn(List<String> values) {
-            addCriterion("water_proof not in", values, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofBetween(String value1, String value2) {
-            addCriterion("water_proof between", value1, value2, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andWaterProofNotBetween(String value1, String value2) {
-            addCriterion("water_proof not between", value1, value2, "waterProof");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationIsNull() {
-            addCriterion("heat_preservation is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationIsNotNull() {
-            addCriterion("heat_preservation is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationEqualTo(String value) {
-            addCriterion("heat_preservation =", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationNotEqualTo(String value) {
-            addCriterion("heat_preservation <>", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationGreaterThan(String value) {
-            addCriterion("heat_preservation >", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationGreaterThanOrEqualTo(String value) {
-            addCriterion("heat_preservation >=", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationLessThan(String value) {
-            addCriterion("heat_preservation <", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationLessThanOrEqualTo(String value) {
-            addCriterion("heat_preservation <=", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationLike(String value) {
-            addCriterion("heat_preservation like", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationNotLike(String value) {
-            addCriterion("heat_preservation not like", value, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationIn(List<String> values) {
-            addCriterion("heat_preservation in", values, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationNotIn(List<String> values) {
-            addCriterion("heat_preservation not in", values, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationBetween(String value1, String value2) {
-            addCriterion("heat_preservation between", value1, value2, "heatPreservation");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeatPreservationNotBetween(String value1, String value2) {
-            addCriterion("heat_preservation not between", value1, value2, "heatPreservation");
-            return (Criteria) this;
-        }
-
         public Criteria andBuildNumberIsNull() {
             addCriterion("build_number is null");
             return (Criteria) this;
@@ -925,73 +775,73 @@ public class ExamineBuildingFunctionExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationIsNull() {
-            addCriterion("heat_insulation is null");
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationIsNotNull() {
-            addCriterion("heat_insulation is not null");
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationEqualTo(String value) {
-            addCriterion("heat_insulation =", value, "heatInsulation");
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationNotEqualTo(String value) {
-            addCriterion("heat_insulation <>", value, "heatInsulation");
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationGreaterThan(String value) {
-            addCriterion("heat_insulation >", value, "heatInsulation");
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationGreaterThanOrEqualTo(String value) {
-            addCriterion("heat_insulation >=", value, "heatInsulation");
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationLessThan(String value) {
-            addCriterion("heat_insulation <", value, "heatInsulation");
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationLessThanOrEqualTo(String value) {
-            addCriterion("heat_insulation <=", value, "heatInsulation");
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationLike(String value) {
-            addCriterion("heat_insulation like", value, "heatInsulation");
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationNotLike(String value) {
-            addCriterion("heat_insulation not like", value, "heatInsulation");
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationIn(List<String> values) {
-            addCriterion("heat_insulation in", values, "heatInsulation");
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationNotIn(List<String> values) {
-            addCriterion("heat_insulation not in", values, "heatInsulation");
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationBetween(String value1, String value2) {
-            addCriterion("heat_insulation between", value1, value2, "heatInsulation");
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andHeatInsulationNotBetween(String value1, String value2) {
-            addCriterion("heat_insulation not between", value1, value2, "heatInsulation");
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
 

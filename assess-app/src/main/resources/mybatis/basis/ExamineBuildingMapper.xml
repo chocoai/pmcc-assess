@@ -9,6 +9,7 @@
     <result column="builder_id" property="builderId" jdbcType="INTEGER" />
     <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="property_type" property="propertyType" jdbcType="INTEGER" />
     <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
     <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
@@ -27,13 +28,12 @@
     <result column="land_use_year" property="landUseYear" jdbcType="INTEGER" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
-    <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
-    <result column="building_structure_pid" property="buildingStructurePid" jdbcType="INTEGER" />
+    <result column="building_structure_type" property="buildingStructureType" jdbcType="INTEGER" />
+    <result column="building_structure_category" property="buildingStructureCategory" jdbcType="INTEGER" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="json_content" property="jsonContent" jdbcType="CHAR" />
-    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -95,10 +95,11 @@
   </sql>
   <sql id="Base_Column_List" >
     id, declare_id, plan_details_id, examine_type, builder_id, property_Id, building_number, 
-    property_type, floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, 
-    floor_end, building_height, building_area, cover_an_area, building_category, open_time, 
-    room_time, floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
-    building_structure_pid, creator, gmt_created, gmt_modified, json_content, identifier
+    building_name, property_type, floor_count, unit_interval, property_fee, facilities_use_fee, 
+    floor_start, floor_end, building_height, building_area, cover_an_area, building_category, 
+    open_time, room_time, floor_height, diameter_depth, land_use_year, location, net_height, 
+    building_structure_type, building_structure_category, identifier, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuildingExample" >
     select
@@ -136,26 +137,26 @@
     </selectKey>
     insert into tb_examine_building (declare_id, plan_details_id, examine_type, 
       builder_id, property_Id, building_number, 
-      property_type, floor_count, unit_interval, 
-      property_fee, facilities_use_fee, floor_start, 
-      floor_end, building_height, building_area, 
-      cover_an_area, building_category, open_time, 
-      room_time, floor_height, diameter_depth, 
-      land_use_year, location, net_height, 
-      building_structure, building_structure_pid, 
-      creator, gmt_created, gmt_modified, 
-      json_content, identifier)
+      building_name, property_type, floor_count, 
+      unit_interval, property_fee, facilities_use_fee, 
+      floor_start, floor_end, building_height, 
+      building_area, cover_an_area, building_category, 
+      open_time, room_time, floor_height, 
+      diameter_depth, land_use_year, location, 
+      net_height, building_structure_type, building_structure_category, 
+      identifier, creator, gmt_created, 
+      gmt_modified)
     values (#{declareId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{examineType,jdbcType=INTEGER}, 
       #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, 
-      #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, 
-      #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, 
-      #{buildingStructure,jdbcType=INTEGER}, #{buildingStructurePid,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{jsonContent,jdbcType=CHAR}, #{identifier,jdbcType=VARCHAR})
+      #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, 
+      #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
+      #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, 
+      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
+      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
+      #{identifier,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ExamineBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -180,6 +181,9 @@
       </if>
       <if test="buildingNumber != null" >
         building_number,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
       </if>
       <if test="propertyType != null" >
         property_type,
@@ -235,11 +239,14 @@
       <if test="netHeight != null" >
         net_height,
       </if>
-      <if test="buildingStructure != null" >
-        building_structure,
+      <if test="buildingStructureType != null" >
+        building_structure_type,
       </if>
-      <if test="buildingStructurePid != null" >
-        building_structure_pid,
+      <if test="buildingStructureCategory != null" >
+        building_structure_category,
+      </if>
+      <if test="identifier != null" >
+        identifier,
       </if>
       <if test="creator != null" >
         creator,
@@ -249,12 +256,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="jsonContent != null" >
-        json_content,
-      </if>
-      <if test="identifier != null" >
-        identifier,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -275,6 +276,9 @@
       </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="propertyType != null" >
         #{propertyType,jdbcType=INTEGER},
@@ -330,11 +334,14 @@
       <if test="netHeight != null" >
         #{netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="buildingStructure != null" >
-        #{buildingStructure,jdbcType=INTEGER},
+      <if test="buildingStructureType != null" >
+        #{buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructurePid != null" >
-        #{buildingStructurePid,jdbcType=INTEGER},
+      <if test="buildingStructureCategory != null" >
+        #{buildingStructureCategory,jdbcType=INTEGER},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -344,12 +351,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="jsonContent != null" >
-        #{jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="identifier != null" >
-        #{identifier,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -382,6 +383,9 @@
       </if>
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingName != null" >
+        building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
       <if test="record.propertyType != null" >
         property_type = #{record.propertyType,jdbcType=INTEGER},
@@ -437,11 +441,14 @@
       <if test="record.netHeight != null" >
         net_height = #{record.netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="record.buildingStructure != null" >
-        building_structure = #{record.buildingStructure,jdbcType=INTEGER},
+      <if test="record.buildingStructureType != null" >
+        building_structure_type = #{record.buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingStructurePid != null" >
-        building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      <if test="record.buildingStructureCategory != null" >
+        building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.identifier != null" >
+        identifier = #{record.identifier,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -451,12 +458,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.jsonContent != null" >
-        json_content = #{record.jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="record.identifier != null" >
-        identifier = #{record.identifier,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -472,6 +473,7 @@
       builder_id = #{record.builderId,jdbcType=INTEGER},
       property_Id = #{record.propertyId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      building_name = #{record.buildingName,jdbcType=VARCHAR},
       property_type = #{record.propertyType,jdbcType=INTEGER},
       floor_count = #{record.floorCount,jdbcType=INTEGER},
       unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
@@ -490,13 +492,12 @@
       land_use_year = #{record.landUseYear,jdbcType=INTEGER},
       location = #{record.location,jdbcType=VARCHAR},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
-      building_structure = #{record.buildingStructure,jdbcType=INTEGER},
-      building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      building_structure_type = #{record.buildingStructureType,jdbcType=INTEGER},
+      building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      json_content = #{record.jsonContent,jdbcType=CHAR},
-      identifier = #{record.identifier,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -521,6 +522,9 @@
       </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="propertyType != null" >
         property_type = #{propertyType,jdbcType=INTEGER},
@@ -576,11 +580,14 @@
       <if test="netHeight != null" >
         net_height = #{netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="buildingStructure != null" >
-        building_structure = #{buildingStructure,jdbcType=INTEGER},
+      <if test="buildingStructureType != null" >
+        building_structure_type = #{buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructurePid != null" >
-        building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      <if test="buildingStructureCategory != null" >
+        building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},
+      </if>
+      <if test="identifier != null" >
+        identifier = #{identifier,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -590,12 +597,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="jsonContent != null" >
-        json_content = #{jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="identifier != null" >
-        identifier = #{identifier,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -608,6 +609,7 @@
       builder_id = #{builderId,jdbcType=INTEGER},
       property_Id = #{propertyId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
       property_type = #{propertyType,jdbcType=INTEGER},
       floor_count = #{floorCount,jdbcType=INTEGER},
       unit_interval = #{unitInterval,jdbcType=VARCHAR},
@@ -626,13 +628,12 @@
       land_use_year = #{landUseYear,jdbcType=INTEGER},
       location = #{location,jdbcType=VARCHAR},
       net_height = #{netHeight,jdbcType=DECIMAL},
-      building_structure = #{buildingStructure,jdbcType=INTEGER},
-      building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      building_structure_type = #{buildingStructureType,jdbcType=INTEGER},
+      building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},
+      identifier = #{identifier,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      json_content = #{jsonContent,jdbcType=CHAR},
-      identifier = #{identifier,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

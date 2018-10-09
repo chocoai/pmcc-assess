@@ -517,9 +517,7 @@
 
     building.examineBuildingFunctionList = function () {
         var cols = [];
-        cols.push({field: 'waterProof', title: '防水'});
-        cols.push({field: 'heatPreservation', title: '保温'});
-        cols.push({field: 'heatInsulation', title: '隔热'});
+        cols.push({field: 'typeName', title: '类型'});
         cols.push({field: 'decorationPartName', title: '装修部位'});
         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
         cols.push({field: 'materialPriceName', title: '材料价格区间'});

@@ -102,6 +102,9 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
+                        <button id="btn_save" class="btn btn-warning" onclick="save();">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                        </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -151,6 +154,11 @@
         else {
             submitToServer(JSON.stringify(formData));
         }
+    }
+
+    //保存
+    function save() {
+        taskExamineItemIndex.save();
     }
 </script>
 <script type="text/javascript">
@@ -207,7 +215,7 @@
             }
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/surveyExamineItem/saveExamineDataInfo",
+                url: "${pageContext.request.contextPath}/surveyExamine/saveExamineDataInfo",
                 data: {
                     formData: JSON.stringify(taskExamineItemIndex.getFormData())
                 },

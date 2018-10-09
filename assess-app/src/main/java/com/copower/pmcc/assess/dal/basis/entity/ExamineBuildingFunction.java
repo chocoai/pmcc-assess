@@ -13,6 +13,8 @@ public class ExamineBuildingFunction {
 
     private Integer buildingId;
 
+    private Integer type;
+
     private Integer decorationPart;
 
     private Integer decoratingMaterial;
@@ -21,15 +23,9 @@ public class ExamineBuildingFunction {
 
     private Integer constructionTechnology;
 
-    private String creator;
-
-    private String waterProof;
-
-    private String heatPreservation;
-
     private String buildNumber;
 
-    private String heatInsulation;
+    private String creator;
 
     private Date gmtCreated;
 
@@ -75,6 +71,14 @@ public class ExamineBuildingFunction {
         this.buildingId = buildingId;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getDecorationPart() {
         return decorationPart;
     }
@@ -107,30 +111,6 @@ public class ExamineBuildingFunction {
         this.constructionTechnology = constructionTechnology;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getWaterProof() {
-        return waterProof;
-    }
-
-    public void setWaterProof(String waterProof) {
-        this.waterProof = waterProof == null ? null : waterProof.trim();
-    }
-
-    public String getHeatPreservation() {
-        return heatPreservation;
-    }
-
-    public void setHeatPreservation(String heatPreservation) {
-        this.heatPreservation = heatPreservation == null ? null : heatPreservation.trim();
-    }
-
     public String getBuildNumber() {
         return buildNumber;
     }
@@ -139,12 +119,12 @@ public class ExamineBuildingFunction {
         this.buildNumber = buildNumber == null ? null : buildNumber.trim();
     }
 
-    public String getHeatInsulation() {
-        return heatInsulation;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setHeatInsulation(String heatInsulation) {
-        this.heatInsulation = heatInsulation == null ? null : heatInsulation.trim();
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {

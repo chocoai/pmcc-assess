@@ -33,7 +33,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -289,8 +291,8 @@ public class ExamineBuildingService {
         ExamineBuildingVo vo = new ExamineBuildingVo();
         if (examineBuilding != null) {
             BeanUtils.copyProperties(examineBuilding, vo);
-            if (examineBuilding.getBuildingStructure() != null) {
-                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructure());
+            if (examineBuilding.getBuildingStructureType() != null) {
+                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(examineBuilding.getBuildingStructureType());
                 if (baseDataDic != null) {
                     vo.setBuildingStructureName(baseDataDic.getName());
                     vo.setBuildingStructurePid(baseDataDic.getPid());
@@ -349,31 +351,17 @@ public class ExamineBuildingService {
                             oo.setCreator(commonService.thisUserAccount());
                             id = examineBuildingDao.addBuilding(oo);
                             oo.setId(id);
-                            oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
                             examineBuildingDao.updateBuilding(oo);
                         } else {
                             //真正的更新
                             examineBuildingDao.updateBuilding(oo);
-                            oo.setJsonContent(null);
-                            oo.setJsonContent(JSON.toJSONString(getExamineBuildingVo(oo)));
-                            examineBuildingDao.updateBuilding(oo);
                             id = oo.getId();
                         }
-                        try {
-                            if (!StringUtils.isEmpty(oo.getIdentifier())){
-                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(oo.getIdentifier()).toString(), id);
-                                builder.setLength(0);
-                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(oo.getIdentifier()).toString(), id);
-                                builder.setLength(0);
-                                updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(oo.getIdentifier()).toString(), id);
-                            }
-                        } catch (Exception e1) {
-                            try {
-                                throw e1;
-                            } catch (Exception e11) {
-
-                            }
-                        }
+                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorPlan.getName()).append(oo.getIdentifier()).toString(), id);
+                        builder.setLength(0);
+                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFigureOutside.getName()).append(oo.getIdentifier()).toString(), id);
+                        builder.setLength(0);
+                        updateSysAttachmentDto(builder.append(ExamineFileUpLoadFieldEnum.buildingFloorAppearanceFigure.getName()).append(oo.getIdentifier()).toString(), id);
                     }
                 }
             }
@@ -384,15 +372,12 @@ public class ExamineBuildingService {
 
     private void updateSysAttachmentDto(String fileName, Integer id) {
         List<SysAttachmentDto> sysAttachmentDtoList = null;
-        try {
-            sysAttachmentDtoList = baseAttachmentService.getByField_tableId(0, fileName, FormatUtils.entityNameConvertToTableName(ExamineBuilding.class));
-            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                    sysAttachmentDto.setTableId(id);
-                    baseAttachmentService.updateAttachment(sysAttachmentDto);
-                }
+        sysAttachmentDtoList = baseAttachmentService.getByField_tableId(0, fileName, FormatUtils.entityNameConvertToTableName(ExamineBuilding.class));
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                sysAttachmentDto.setTableId(id);
+                baseAttachmentService.updateAttachment(sysAttachmentDto);
             }
-        } catch (Exception e1) {
         }
     }
 

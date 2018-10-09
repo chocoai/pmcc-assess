@@ -270,12 +270,14 @@ $(function () {
                         if (result.ret) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
-                                if (item.id === value) {
+                                if (item.id == value) {
                                     retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
                                 } else {
                                     retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                                 }
                             });
+                            console.log(value);
+                            console.log(retHtml);
                             if (callback) {
                                 callback(retHtml, result.data);
                             }

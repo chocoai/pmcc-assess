@@ -75,6 +75,7 @@ AssessDicKey.examine_building_decorating_material = "building.decorating_materia
 AssessDicKey.examine_building_material_price = "building.material_price";//材料价格区间
 AssessDicKey.examine_building_construction_technology = "building.construction_technology";//施工工艺
 AssessDicKey.examine_building_decoration_part = "building.decoration_part";//装修部位
+AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
 
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途

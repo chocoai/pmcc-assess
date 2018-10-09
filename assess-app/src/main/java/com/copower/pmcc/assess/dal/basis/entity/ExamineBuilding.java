@@ -18,6 +18,8 @@ public class ExamineBuilding {
 
     private String buildingNumber;
 
+    private String buildingName;
+
     private Integer propertyType;
 
     private Integer floorCount;
@@ -54,19 +56,17 @@ public class ExamineBuilding {
 
     private BigDecimal netHeight;
 
-    private Integer buildingStructure;
+    private Integer buildingStructureType;
 
-    private Integer buildingStructurePid;
+    private Integer buildingStructureCategory;
+
+    private String identifier;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String jsonContent;
-
-    private String identifier;
 
     public Integer getId() {
         return id;
@@ -122,6 +122,14 @@ public class ExamineBuilding {
 
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
     }
 
     public Integer getPropertyType() {
@@ -268,20 +276,28 @@ public class ExamineBuilding {
         this.netHeight = netHeight;
     }
 
-    public Integer getBuildingStructure() {
-        return buildingStructure;
+    public Integer getBuildingStructureType() {
+        return buildingStructureType;
     }
 
-    public void setBuildingStructure(Integer buildingStructure) {
-        this.buildingStructure = buildingStructure;
+    public void setBuildingStructureType(Integer buildingStructureType) {
+        this.buildingStructureType = buildingStructureType;
     }
 
-    public Integer getBuildingStructurePid() {
-        return buildingStructurePid;
+    public Integer getBuildingStructureCategory() {
+        return buildingStructureCategory;
     }
 
-    public void setBuildingStructurePid(Integer buildingStructurePid) {
-        this.buildingStructurePid = buildingStructurePid;
+    public void setBuildingStructureCategory(Integer buildingStructureCategory) {
+        this.buildingStructureCategory = buildingStructureCategory;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier == null ? null : identifier.trim();
     }
 
     public String getCreator() {
@@ -306,21 +322,5 @@ public class ExamineBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier == null ? null : identifier.trim();
     }
 }
