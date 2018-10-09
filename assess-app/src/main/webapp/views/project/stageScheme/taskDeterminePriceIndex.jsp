@@ -15,19 +15,19 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <c:forEach items="${areaGroups}" var="item">
+            <c:forEach items="${areaJudgeObjectVos}" var="item">
                 <div class="x_panel area_panel">
                     <div class="x_title collapse-link">
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         </ul>
                         <h2>
-                            <label>${item.areaName}</label>
+                            <label>${item.areaGroupName}</label>
                         </h2>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content collapse">
-                        <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                        <form class="form-horizontal">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -45,7 +45,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${item.judgeObjectList}" var="judgeObject">
+                                <c:forEach items="${item.judgeObjectVoList}" var="judgeObject">
                                     <tr>
                                         <td>
                                             <label class="form-control">${judgeObject.number}</label>

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaJudgeObjectVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -8,6 +9,8 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -21,11 +24,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private SchemeDeteminePriceService schemeDeteminePriceService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDeterminePriceIndex", "", 0, "0", "");
-
+        List<SchemeAreaJudgeObjectVo> areaJudgeObjectVos = schemeDeteminePriceService.getAreaJudgeObjectList(projectPlanDetails.getProjectId());
+        modelAndView.addObject("areaJudgeObjectVos", areaJudgeObjectVos);
         return modelAndView;
     }
 
@@ -42,7 +48,8 @@ public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDeterminePriceApproval", processInsId, boxId, taskId, agentUserAccount);
-
+        List<SchemeAreaJudgeObjectVo> areaJudgeObjectVos = schemeDeteminePriceService.getAreaJudgeObjectList(projectPlanDetails.getProjectId());
+        modelAndView.addObject("areaJudgeObjectVos", areaJudgeObjectVos);
         return modelAndView;
     }
 
@@ -59,7 +66,8 @@ public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDeterminePriceIndex", processInsId, boxId, taskId, agentUserAccount);
-
+        List<SchemeAreaJudgeObjectVo> areaJudgeObjectVos = schemeDeteminePriceService.getAreaJudgeObjectList(projectPlanDetails.getProjectId());
+        modelAndView.addObject("areaJudgeObjectVos", areaJudgeObjectVos);
         return modelAndView;
     }
 
@@ -71,7 +79,8 @@ public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDeterminePriceApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-
+        List<SchemeAreaJudgeObjectVo> areaJudgeObjectVos = schemeDeteminePriceService.getAreaJudgeObjectList(projectPlanDetails.getProjectId());
+        modelAndView.addObject("areaJudgeObjectVos", areaJudgeObjectVos);
         return modelAndView;
     }
 
