@@ -192,14 +192,14 @@
     }
     var houseFun = new HouseFun();
     houseFun.init = function () {
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
-            $("#" + houseFun.config.getFrm()).find("select.certUse").html(html);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, "${surveyExamineDataInfoVo.examineHouseVo.certUse}", function (html, data) {
+            $("#" + houseFun.config.getFrm()).find("select.certUse").html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, null, function (html, data) {
-            $("#" + houseFun.config.getFrm()).find("select.practicalUse").html(html);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, "${surveyExamineDataInfoVo.examineHouseVo.practicalUse}", function (html, data) {
+            $("#" + houseFun.config.getFrm()).find("select.practicalUse").html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, null, function (html, data) {
-            $("#" + houseFun.config.getFrm()).find("select.newsHuxing").html(html);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, "${surveyExamineDataInfoVo.examineHouseVo.newsHuxing}", function (html, data) {
+            $("#" + houseFun.config.getFrm()).find("select.newsHuxing").html(html).trigger('change');
         });
         houseFun.files.init();
         houseFun.huXinSelect();
@@ -228,6 +228,26 @@
                         if ($("#" + houseFun.config.getFrm() + " .huxingId").size() > 0) {
                             $("#" + houseFun.config.getFrm() + " .huxingId").html(option);
                         }
+                    }
+                    houseFun.config.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseVo.huxingId}","huxingId");
+                    var id = "${surveyExamineDataInfoVo.examineHouseVo.huxingId}" ;
+                    if (houseFun.config.isEmpty(id)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/examineUnitHuxing/getExamineUnitHuxingById",
+                            dataType: "JSON",
+                            data: {'id': id},
+                            type: "GET",
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    $("#" + houseFun.config.getFrm() + " .house_latest_family_plan").html(data.fileViewName);
+                                    $("#" + houseFun.config.getFrm() + " input[name='orientation']").val(data.orientation) ;
+                                }
+                            },
+                            error: function (e) {
+                                Alert("调用服务端方法失败，失败原因:" + e);
+                            }
+                        });
                     }
                 }
             },

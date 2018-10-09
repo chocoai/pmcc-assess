@@ -45,6 +45,12 @@
 
         };
         houseRoom.prototype = {
+            isEmpty: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
             setFlag: function (flag_) {
                 flag = flag_;
             },
@@ -100,9 +106,9 @@
                 $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomList", cols, {
                     type: houseRoom.prototype.config().type,
-                    declareId : $("#declareId").val(),
-                    planDetailsId : $("#planDetailsId").val(),
-                    examineType : $("#examineType").val()
+                    declareId: $("#declareId").val(),
+                    planDetailsId: $("#planDetailsId").val(),
+                    examineType: $("#examineType").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -181,7 +187,10 @@
                         if (result.ret) {
                             toastr.success('保存成功');
                             $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal('hide');
-                            houseRoom.prototype.subclassLoadList();
+                            var item = result.data;
+                            if (houseRoom.prototype.isEmpty(item)) {
+                                houseRoom.prototype.subclassLoadList(item.roomId);
+                            }
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -226,7 +235,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.material").html(option);
+                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.material").html(option);
                             }
                         }
                     },
@@ -247,7 +256,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.materialPrice").html(option);
+                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.materialPrice").html(option);
                             }
                         }
                     },
@@ -268,7 +277,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.constructionTechnology").html(option);
+                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.constructionTechnology").html(option);
                             }
                         }
                     },
@@ -289,7 +298,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frmSubclass ).find("select.part").html(option);
+                                $("#" + houseRoom.prototype.config().frmSubclass).find("select.part").html(option);
                             }
                         }
                     },
@@ -300,6 +309,10 @@
             },
             subclassLoadList: function (id) {
                 var cols = [];
+                var temp = id;
+                if (houseRoom.prototype.isEmpty(temp)) {
+                    temp = $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val();
+                }
                 cols.push({field: 'materialName', title: '装修材料'});
                 cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                 cols.push({field: 'partName', title: '房间装修部位'});
@@ -314,9 +327,10 @@
                 });
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/examineHouseRoom/getExamineHouseRoomDecorateLists", cols, {
-                    roomId: id,
-                    declareId : $("#declareId").val(),
-                    examineType : $("#examineType").val()
+                    roomId: temp,
+                    declareId: $("#declareId").val(),
+                    examineType: $("#examineType").val(),
+                    planDetailsId: $("#planDetailsId").val()
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -397,7 +411,7 @@
                                 for (var i = 0; i < gradeNum; i++) {
                                     option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
-                                $("#" + houseRoom.prototype.config().frm ).find("select.roomType").html(option);
+                                $("#" + houseRoom.prototype.config().frm).find("select.roomType").html(option);
                             }
                         }
                     },

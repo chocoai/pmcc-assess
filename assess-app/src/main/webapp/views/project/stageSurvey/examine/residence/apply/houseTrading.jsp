@@ -102,7 +102,7 @@
                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="买方支付的额外税费"
-                           name="buyerExtraTaxFee" class="form-control">
+                           name="buyerExtraTaxFee" class="form-control" value="${surveyExamineDataInfoVo.examineHouseTradingVo.buyerExtraTaxFee}">
                 </div>
             </div>
 
@@ -119,7 +119,7 @@
                 <label class="col-sm-1 control-label">出售总额</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="出售总额"
-                           name="totalSale" class="form-control">
+                           name="totalSale" class="form-control" value="${surveyExamineDataInfoVo.examineHouseTradingVo.totalSale}">
                 </div>
             </div>
         </div>
@@ -194,11 +194,24 @@
     };
     examineHouseTrading.prototype = {
         saveView:function () {
-            //examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}","taxBurden");
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}","normalTransaction");
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}","tradingType");
-            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.informationType}","informationType");
+            var tradingID = "${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}" ;
+            if (examineHouseTrading.prototype.isEmpty(tradingID)){
+                var tradingType = null;
+                AssessCommon.getDataDicInfo(tradingID,function (data) {
+                    tradingType = data.fieldName;
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingLeaseID) {
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").show();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).hide();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).show();
+                        examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingLeaseID);
+                    }
+                    if (tradingType == examineHouseTrading.prototype.config().examineHouseTradingSellID) {
+                        $("#"+examineHouseTrading.prototype.config().tableSon+"div").hide();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
+                        $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
+                    }
+                })
+            }
         },
         select2InitMethodWrite:function (data,name) {
             console.log(""+data+" "+name);
@@ -370,23 +383,23 @@
 
         init: function () {
             //第一次加载
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.tradingType").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType,"${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.tradingType").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.descriptionType").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType,"${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.descriptionType").html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden,"${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}",function (html,data) {
                 $("#" + examineHouseTrading.prototype.config().frm).find("select.taxBurden").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.normalTransaction").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction,"${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.normalTransaction").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.paymentMethod").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod,"${surveyExamineDataInfoVo.examineHouseTradingVo.paymentMethod}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.paymentMethod").html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources,"",function (html,data) {
-                $("#" + examineHouseTrading.prototype.config().frm).find("select.informationType").html(html);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources,"${surveyExamineDataInfoVo.examineHouseTradingVo.informationType}",function (html,data) {
+                $("#" + examineHouseTrading.prototype.config().frm).find("select.informationType").html(html).trigger('change');
             });
             $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").change(function () {
                 var tradingID = $("#" + examineHouseTrading.prototype.config().frm + " .tradingType").eq(1).val();
@@ -403,7 +416,6 @@
                         $("#"+examineHouseTrading.prototype.config().tableSon+"div").hide();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingSellID).show();
                         $("#"+examineHouseTrading.prototype.config().frm +" ."+examineHouseTrading.prototype.config().examineHouseTradingLeaseID).hide();
-                        // examineHouseTrading.prototype.subLoadList(examineHouseTrading.prototype.config().examineHouseTradingSellID);
                     }
                 })
             });

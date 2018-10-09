@@ -46,8 +46,9 @@ public class ExamineHouseRoomDecorateDao {
      * @param examineHouseRoomDecorate
      * @return
      */
-    public boolean addHouseRoomDecorate(ExamineHouseRoomDecorate examineHouseRoomDecorate) {
-        return examineHouseRoomDecorateMapper.insertSelective(examineHouseRoomDecorate) > 0;
+    public int addHouseRoomDecorate(ExamineHouseRoomDecorate examineHouseRoomDecorate) {
+        examineHouseRoomDecorateMapper.insertSelective(examineHouseRoomDecorate);
+        return examineHouseRoomDecorate.getId();
     }
 
     /**

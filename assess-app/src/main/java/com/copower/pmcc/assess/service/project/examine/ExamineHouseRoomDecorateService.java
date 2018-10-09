@@ -110,7 +110,7 @@ public class ExamineHouseRoomDecorateService {
      * @param examineHouseRoomDecorate
      * @return
      */
-    public boolean addExamineHouseRoomDecorate(ExamineHouseRoomDecorate examineHouseRoomDecorate) {
+    public int addExamineHouseRoomDecorate(ExamineHouseRoomDecorate examineHouseRoomDecorate) {
         examineHouseRoomDecorate.setCreator(commonService.thisUserAccount());
         //以后需要删除掉
         if (ObjectUtils.isEmpty(examineHouseRoomDecorate.getDeclareId())) {

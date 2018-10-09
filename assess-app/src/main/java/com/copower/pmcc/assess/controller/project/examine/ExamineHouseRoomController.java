@@ -153,11 +153,12 @@ public class ExamineHouseRoomController {
     public HttpResult saveExamineHouseRoomDecorate(ExamineHouseRoomDecorate examineHouseRoomDecorate){
         try {
             if (examineHouseRoomDecorate.getId()==null || examineHouseRoomDecorate.getId().equals(0)){
-                examineHouseRoomDecorateService.addExamineHouseRoomDecorate(examineHouseRoomDecorate);
+                Integer id = examineHouseRoomDecorateService.addExamineHouseRoomDecorate(examineHouseRoomDecorate);
+                examineHouseRoomDecorate.setId(id);
             }else {
                 examineHouseRoomDecorateService.updateExamineHouseRoomDecorate(examineHouseRoomDecorate);
             }
-            return HttpResult.newCorrectResult("保存 success!");
+            return HttpResult.newCorrectResult(examineHouseRoomDecorate);
         } catch (Exception e) {
             logger.error(String.format("exception: %s",e.getMessage()),e);
             return HttpResult.newErrorResult("保存异常");
