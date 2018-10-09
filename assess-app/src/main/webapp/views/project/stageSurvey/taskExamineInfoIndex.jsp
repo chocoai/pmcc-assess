@@ -159,6 +159,8 @@
     //保存
     function save() {
         taskExamineItemIndex.save();
+        //处理楼栋 保存后数据丢失问题
+        examineBuilding_.prototype.specialTreatment();
     }
 </script>
 <script type="text/javascript">

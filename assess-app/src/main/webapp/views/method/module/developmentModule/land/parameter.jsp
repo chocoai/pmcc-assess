@@ -88,7 +88,7 @@
                         <label class="col-md-1 col-sm-1 control-label">不可售建筑面积(㎡)</label>
                         <div class="col-md-2 col-sm-2">
                             <input type="text"
-                                   placeholder="不可售建筑面积(㎡)" class="form-control">
+                                   placeholder="不可售建筑面积(㎡)" class="form-control" name="nonSaleFloorAreaTax">
                         </div>
                     </div>
 
@@ -202,6 +202,7 @@
             str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopBuildArea").html());
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='estimateSaleTotal']").val(str);
+            $("#"+landEngineering.config.id).find("."+landEngineering.config.inputConfig.estimateSaleTotal.key).html(str);
         }
         if (name == '可售面积') {
             var str = 0;

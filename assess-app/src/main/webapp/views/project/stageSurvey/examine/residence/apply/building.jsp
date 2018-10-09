@@ -183,7 +183,6 @@
         </div>
 
 
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
@@ -384,7 +383,6 @@
 </div>
 
 
-
 <div class="x_content">
     <div class="x_title">
         <h3>
@@ -430,6 +428,46 @@
         examineBuilding_.prototype = {
             /**
              * @author:  zch
+             * 描述:获取服务端数据
+             * @date:2018-10-09
+             **/
+            specialTreatment: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/examineBuilding/getExamineBuildingList",
+                    type: "get",
+                    data: {
+                        declareId: $("#declareId").val(),
+                        examineType: $("#examineType").val(),
+                        planDetailsId: $("#planDetailsId").val()
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            if (examineBuilding_.prototype.isEmpty(data)) {
+                                if (data.length > 0) {
+                                    console.log(data);
+                                    $.each(data, function (i, n) {
+                                        var identifier = n.identifier;
+                                        if (examineBuilding_.prototype.isEmpty(identifier)) {
+                                            var num = identifier.substring(identifier.length - 1, identifier.length);
+                                            console.log(num);
+                                            console.log(n);
+                                            examineBuilding_.prototype.setObjArrayElement(num,n);
+                                        }
+                                    });
+                                    console.log(objArray);
+                                }
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            },
+            /**
+             * @author:  zch
              * 描述:获取所有临时数据
              * @date:2018-09-03
              **/
@@ -456,16 +494,16 @@
             setFloorPlanAttachmentId: function (target) {
                 floorPlanAttachmentId = target;
             },
-            getFigureOutsideAttachmentId:function () {
+            getFigureOutsideAttachmentId: function () {
                 return figureOutsideAttachmentId;
             },
-            setFigureOutsideAttachmentId:function (target) {
+            setFigureOutsideAttachmentId: function (target) {
                 figureOutsideAttachmentId = target;
             },
-            getFloorAppearanceFigureAttachmentId:function () {
+            getFloorAppearanceFigureAttachmentId: function () {
                 return floorAppearanceFigureAttachmentId;
             },
-            setFloorAppearanceFigureAttachmentId:function (target) {
+            setFloorAppearanceFigureAttachmentId: function (target) {
                 floorAppearanceFigureAttachmentId = target;
             },
             /**
@@ -570,6 +608,8 @@
                     examineBuilding_.prototype.initSonMainOutfitSurface();
                     examineBuilding_.prototype.setFlag(false);
                 }
+                //处理楼栋 保存后数据丢失问题
+                examineBuilding_.prototype.specialTreatment();
                 examineBuilding_.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                 examineBuilding_.prototype.sonModelMethod.buildingFunction.loadDataDicList();
             },
@@ -680,7 +720,7 @@
                             type: "post",
                             data: {
                                 newBuildNumber: newObj.identifier,
-                                oldBuildNumber:data.identifier,
+                                oldBuildNumber: data.identifier,
                                 declareId: $("#declareId").val(),
                                 examineType: $("#examineType").val(),
                                 planDetailsId: $("#planDetailsId").val()
@@ -702,34 +742,36 @@
                         $.ajax({
                             url: "${pageContext.request.contextPath}/examineBuilding/copyBuildFileData",
                             type: "post",
-                            data: {formData: JSON.stringify({
-                                    floorPlanAttachmentId:data.floorPlanAttachmentId,
-                                    figureOutsideAttachmentId:data.figureOutsideAttachmentId,
-                                    floorAppearanceFigureAttachmentId:data.floorAppearanceFigureAttachmentId,
-                                    identifier:newObj.identifier
-                                })},
+                            data: {
+                                formData: JSON.stringify({
+                                    floorPlanAttachmentId: data.floorPlanAttachmentId,
+                                    figureOutsideAttachmentId: data.figureOutsideAttachmentId,
+                                    floorAppearanceFigureAttachmentId: data.floorAppearanceFigureAttachmentId,
+                                    identifier: newObj.identifier
+                                })
+                            },
                             dataType: "json",
                             success: function (result) {
                                 if (result.ret) {
-                                    var fileData = result.data ;
+                                    var fileData = result.data;
                                     console.log(fileData);
-                                    if (examineBuilding_.prototype.isEmpty(fileData)){
+                                    if (examineBuilding_.prototype.isEmpty(fileData)) {
                                         var floorPlanAttachmentIdData = fileData.floorPlanAttachmentId;
                                         var figureOutsideAttachmentIdData = fileData.figureOutsideAttachmentId;
                                         var floorAppearanceFigureAttachmentIdData = fileData.floorAppearanceFigureAttachmentId;
-                                        if (examineBuilding_.prototype.isEmpty(floorPlanAttachmentIdData)){
+                                        if (examineBuilding_.prototype.isEmpty(floorPlanAttachmentIdData)) {
                                             newObj.floorPlanAttachmentId = floorPlanAttachmentIdData.id;
                                             examineBuilding_.prototype.setFloorPlanAttachmentId(null);
                                         }
-                                        if (examineBuilding_.prototype.isEmpty(figureOutsideAttachmentIdData)){
+                                        if (examineBuilding_.prototype.isEmpty(figureOutsideAttachmentIdData)) {
                                             newObj.figureOutsideAttachmentId = figureOutsideAttachmentIdData.id;
                                             examineBuilding_.prototype.setFigureOutsideAttachmentId(null);
                                         }
-                                        if (examineBuilding_.prototype.isEmpty(floorAppearanceFigureAttachmentIdData)){
+                                        if (examineBuilding_.prototype.isEmpty(floorAppearanceFigureAttachmentIdData)) {
                                             newObj.floorAppearanceFigureAttachmentId = floorAppearanceFigureAttachmentIdData.id;
                                             examineBuilding_.prototype.setFloorAppearanceFigureAttachmentId(null);
                                         }
-                                        examineBuilding_.prototype.navButtonBuild.copyFileWriteJson(identifierNumber,newObj,target);
+                                        examineBuilding_.prototype.navButtonBuild.copyFileWriteJson(identifierNumber, newObj, target);
                                     }
                                 }
                             },
@@ -739,15 +781,15 @@
                         });
 
                         //一个附件都没有的情况
-                        if (!examineBuilding_.prototype.isEmpty(fileFloorPlanAttachmentId) && !examineBuilding_.prototype.isEmpty(fileFigureOutsideAttachmentId) && !examineBuilding_.prototype.isEmpty(fileFloorAppearanceFigureAttachmentId)){
-                            examineBuilding_.prototype.navButtonBuild.copyFileWriteJson(identifierNumber,newObj,target);
+                        if (!examineBuilding_.prototype.isEmpty(fileFloorPlanAttachmentId) && !examineBuilding_.prototype.isEmpty(fileFigureOutsideAttachmentId) && !examineBuilding_.prototype.isEmpty(fileFloorAppearanceFigureAttachmentId)) {
+                            examineBuilding_.prototype.navButtonBuild.copyFileWriteJson(identifierNumber, newObj, target);
                         }
                     } else {
                         toastr.success('没有能复制的部分!');
                         return false;
                     }
                 },
-                copyFileWriteJson:function (identifierNumber,newObj,target) {
+                copyFileWriteJson: function (identifierNumber, newObj, target) {
                     //把合成好的数据 传入数组相应的位置
                     examineBuilding_.prototype.setObjArrayElement(identifierNumber, newObj);
                     //赋值
@@ -800,7 +842,8 @@
                                 }
                             })
                         });
-                    };
+                    }
+                    ;
                     if (examineBuilding_.prototype.isEmpty(fileFigureOutsideAttachmentId)) {
                         data.figureOutsideAttachmentId = fileFigureOutsideAttachmentId;
                         AssessCommon.getSysAttachmentDto(fileFigureOutsideAttachmentId, function (fileData) {
@@ -812,7 +855,8 @@
                                 }
                             })
                         });
-                    };
+                    }
+                    ;
                     if (examineBuilding_.prototype.isEmpty(fileFloorAppearanceFigureAttachmentId)) {
                         data.floorAppearanceFigureAttachmentId = fileFloorAppearanceFigureAttachmentId;
                         AssessCommon.getSysAttachmentDto(fileFloorAppearanceFigureAttachmentId, function (fileData) {
@@ -824,7 +868,8 @@
                                 }
                             })
                         });
-                    };
+                    }
+                    ;
                     examineBuilding_.prototype.setObjArrayElement(temp, data);
                     //更新子类
                     $.ajax({
@@ -1027,8 +1072,8 @@
                 //附件
                 examineBuilding_.prototype.file.init();
                 //对所有的input添加事件
-                var input = $("#"+examineBuilding_.prototype.config().frm+" :input");
-                $.each(input,function (i,n) {
+                var input = $("#" + examineBuilding_.prototype.config().frm + " :input");
+                $.each(input, function (i, n) {
                     $(n).blur(function () {
                         examineBuilding_.prototype.setNavButtonBuildFlag(true);
                     });
@@ -1498,13 +1543,13 @@
                         },
                         onUploadComplete: function (result, file) {
                             //附件id
-                            if (target == examineBuilding_.prototype.config().building_floor_plan ){
+                            if (target == examineBuilding_.prototype.config().building_floor_plan) {
                                 examineBuilding_.prototype.setFloorPlanAttachmentId(result);
                             }
-                            if (target == examineBuilding_.prototype.config().building_figure_outside ){
+                            if (target == examineBuilding_.prototype.config().building_figure_outside) {
                                 examineBuilding_.prototype.setFigureOutsideAttachmentId(result);
                             }
-                            if (target == examineBuilding_.prototype.config().building_floor_Appearance_figure ){
+                            if (target == examineBuilding_.prototype.config().building_floor_Appearance_figure) {
                                 examineBuilding_.prototype.setFloorAppearanceFigureAttachmentId(result);
                             }
                             examineBuilding_.prototype.file.getFileShowsModel(target);

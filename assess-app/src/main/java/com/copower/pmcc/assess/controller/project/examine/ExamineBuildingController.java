@@ -36,6 +36,17 @@ public class ExamineBuildingController {
     private ExamineBuildingService examineBuildingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @ResponseBody
+    @RequestMapping(value = "/getExamineBuildingList", method = {RequestMethod.GET}, name = "获取楼栋信息")
+    public HttpResult getExamineBuildingList(Integer declareId, Integer planDetailsId, Integer examineType) {
+        try {
+            return HttpResult.newCorrectResult(examineBuildingService.getByDeclareIdAndExamineType(declareId, planDetailsId, examineType));
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/initSonMainOutfitSurface", method = {RequestMethod.POST}, name = "初始化 子类")

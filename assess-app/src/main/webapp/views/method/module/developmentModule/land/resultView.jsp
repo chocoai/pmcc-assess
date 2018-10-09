@@ -23,19 +23,19 @@
                         <tbody>
                         <tr>
                             <td>预期销售合计</td>
-                            <td>0.00</td>
+                            <td class="estimateSaleTotal">0.00</td>
                         </tr>
                         <tr>
                             <td> 总建筑面积小计（㎡）</td>
-                            <td>0.00</td>
+                            <td class="totalGrossFloorArea">0.00</td>
                         </tr>
                         <tr>
                             <td> 工程建设成本小计</td>
                             <td>0.00</td>
                         </tr>
                         <tr>
-                            <td> 不可预见费</td>
-                            <td>0.00</td>
+                            <td> 不可预见费金额</td>
+                            <td class="unforeseenExpenses">0.00</td>
                         </tr>
                         <tr>
                             <td> 投资利润</td>

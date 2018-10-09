@@ -19,13 +19,13 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    费率
+                    勘察设计和前期工程费率
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
                                placeholder="勘察设计和前期工程费率" class="form-control" data-rule-number='true' required="required"
-                               name="reconnaissanceDesignRote">
+                               name="reconnaissanceDesignTax">
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <div class="col-sm-11">
                         <div class="input-group">
                             <input type="text" readonly="readonly"
-                                   placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
+                                   placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFeeTax">
                             <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
@@ -63,8 +63,8 @@
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
-                        <select name="infrastructureCostSelect"
-                                class="form-control search-select select2 infrastructureCostSelect">
+                        <select name="infrastructureMatchingCostTax"
+                                class="form-control search-select select2 infrastructureMatchingCostTax">
                         </select>
                     </div>
                 </div>
@@ -72,12 +72,12 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    公共配套设施建设费 单价选择
+                    公共配套设施建设费
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
-                        <select name="infrastructureMatchingCostSelect"
-                                class="form-control search-select select2 infrastructureMatchingCostSelect">
+                        <select name="infrastructureMatchingCostTax"
+                                class="form-control search-select select2 infrastructureMatchingCostTax">
                         </select>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
+                               placeholder="开发期间税费" class="form-control" name="devDuringTax">
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
+                               placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
                     </div>
                 </div>
             </div>
