@@ -203,6 +203,12 @@
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='estimateSaleTotal']").val(str);
             $("#"+landEngineering.config.id).find("."+landEngineering.config.inputConfig.estimateSaleTotal.key).html(str);
+            try {
+                landEngineering.algsObj.totalGrossFloorArea();
+            } catch (e) {
+                console.log("函数名称被更改!");
+                console.log(e);
+            }
         }
         if (name == '可售面积') {
             var str = 0;

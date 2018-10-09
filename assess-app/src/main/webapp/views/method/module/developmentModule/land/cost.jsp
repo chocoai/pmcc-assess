@@ -24,7 +24,7 @@
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="勘察设计和前期工程费率" class="form-control" data-rule-number='true' required="required"
+                               placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="reconnaissanceDesignTax">
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div class="col-sm-11">
                         <div class="input-group">
                             <input type="text" readonly="readonly"
-                                   placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFeeTax">
+                                   placeholder="建筑安装工程费" value="1500" class="form-control" name="constructionInstallationEngineeringFeeTax">
                             <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
@@ -97,12 +97,12 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    其它工程费
+                    其它工程费率
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
+                               placeholder="其它工程费率" class="form-control x-percent" name="otherEngineeringCostTax">
                     </div>
                 </div>
             </div>

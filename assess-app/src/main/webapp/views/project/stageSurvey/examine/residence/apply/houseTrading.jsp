@@ -17,14 +17,14 @@
                 <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="财产范围" required="required"
-                           name="scopeProperty" class="form-control">
+                           name="scopeProperty" class="form-control" value="${surveyExamineDataInfoVo.examineHouseTradingVo.scopeProperty}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">融资条件<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="融资条件" required="required"
-                           name="financingConditions" class="form-control">
+                           name="financingConditions" class="form-control" value="${surveyExamineDataInfoVo.examineHouseTradingVo.financingConditions}">
                 </div>
             </div>
             <div class="x-valid">
@@ -72,7 +72,8 @@
                 <div class="col-sm-3">
                     <input required="required" placeholder="交易时间"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate tradingTime">
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="${surveyExamineDataInfoVo.examineHouseTradingVo.tradingTime}">
                 </div>
             </div>
 
@@ -192,14 +193,22 @@
 
     };
     examineHouseTrading.prototype = {
+        saveView:function () {
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.taxBurden}","taxBurden");
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.normalTransaction}","normalTransaction");
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.descriptionType}","descriptionType");
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.tradingType}","tradingType");
+            examineHouseTrading.prototype.select2InitMethodWrite("${surveyExamineDataInfoVo.examineHouseTradingVo.informationType}","informationType");
+        },
         select2InitMethodWrite:function (data,name) {
+            console.log(""+data+" "+name);
             if (examineHouseTrading.prototype.isEmpty(data)){
                 if (examineHouseTrading.prototype.isEmpty(name)){
-                    $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(data).trigger("change");
+                    $("#"+examineHouseTrading.prototype.config().frm).find("select."+name).val(data).trigger("change");
                 }
             }else {
                 if (examineHouseTrading.prototype.isEmpty(name)){
-                    $("#"+examineHouseTrading.prototype.config().frm+" ."+name).val(null).trigger("change");
+                    $("#"+examineHouseTrading.prototype.config().frm).find("select."+name).val(null).trigger("change");
                 }
             }
         },
@@ -435,6 +444,7 @@
                     });
                 }
             });
+            examineHouseTrading.prototype.saveView();
         }
     };
 
