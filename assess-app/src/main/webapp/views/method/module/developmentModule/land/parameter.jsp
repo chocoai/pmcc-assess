@@ -34,16 +34,19 @@
                             <td>住宅建筑</td>
                             <td><a href="#" class="villaResidenceBuildArea" data-type="text" data-title="建筑面积">0.00</a>
                             </td>
-                            <td><a href="#" class="villaResidenceMaySaleArea" data-type="text" data-title="可售面积">0.00</a>
+                            <td><a href="#" class="villaResidenceMaySaleArea" data-type="text"
+                                   data-title="可售面积">0.00</a>
                             </td>
                             <td><a href="#" class="villaResidenceUnitPrice" data-type="text" data-title="单位售价">0.00</a>
                             </td>
                         </tr>
                         <tr>
                             <td>商业建筑</td>
-                            <td><a href="#" class="strategyBusinessBuildArea" data-type="text" data-title="建筑面积">0.00</a>
+                            <td><a href="#" class="strategyBusinessBuildArea" data-type="text"
+                                   data-title="建筑面积">0.00</a>
                             </td>
-                            <td><a href="#" class="strategyBusinessMaySaleArea" data-type="text" data-title="可售面积">0.00</a>
+                            <td><a href="#" class="strategyBusinessMaySaleArea" data-type="text"
+                                   data-title="可售面积">0.00</a>
                             </td>
                             <td><a href="#" class="strategyBusinessUnitPrice" data-type="text"
                                    data-title="单位售价">0.00</a>
@@ -60,7 +63,8 @@
                         </tr>
                         <tr>
                             <td>地下机动车停车库建筑</td>
-                            <td><a href="#" class="undergroundGarageBuildArea" data-type="text" data-title="建筑面积">0.00</a>
+                            <td><a href="#" class="undergroundGarageBuildArea" data-type="text"
+                                   data-title="建筑面积">0.00</a>
                             </td>
                             <td><a href="#" class="undergroundGarageMaySaleArea" data-type="text"
                                    data-title="可售面积">0.00</a>
@@ -181,7 +185,7 @@
                                 return '必须是数字';
                             } else {
                                 //更新各种合计
-                                parameter.write(value, n.name,n.key);
+                                parameter.write(value, n.name, n.key);
                             }
                         } else {
                             return '不能为空';
@@ -192,27 +196,27 @@
         });
     };
 
-    parameter.write = function (item, name,key) {
+    parameter.write = function (item, name, key) {
         if (name == '建筑面积') {
             var str = 0;
-            if (key != "villaResidenceBuildArea"){
+            if (key != "villaResidenceBuildArea") {
                 str += Number($("#" + parameter.config.frm).find(".villaResidenceBuildArea").html());
             }
-            if (key != "strategyBusinessBuildArea"){
+            if (key != "strategyBusinessBuildArea") {
                 str += Number($("#" + parameter.config.frm).find(".strategyBusinessBuildArea").html());
             }
-            if (key != "workBuildArea"){
+            if (key != "workBuildArea") {
                 str += Number($("#" + parameter.config.frm).find(".workBuildArea").html());
             }
-            if (key != "undergroundGarageBuildArea"){
+            if (key != "undergroundGarageBuildArea") {
                 str += Number($("#" + parameter.config.frm).find(".undergroundGarageBuildArea").html());
             }
-            if (key != "undergroundBusinessShopBuildArea"){
+            if (key != "undergroundBusinessShopBuildArea") {
                 str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopBuildArea").html());
             }
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='estimateSaleTotal']").val(str);
-            $("#"+landEngineering.config.id).find("."+landEngineering.config.inputConfig.estimateSaleTotal.key).html(str);
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.estimateSaleTotal.key).html(str);
             try {
                 landEngineering.algsObj.totalGrossFloorArea();
             } catch (e) {
@@ -222,23 +226,49 @@
         }
         if (name == '可售面积') {
             var str = 0;
-            str += Number($("#" + parameter.config.frm).find(".villaResidenceMaySaleArea").html());
-            str += Number($("#" + parameter.config.frm).find(".strategyBusinessMaySaleArea").html());
-            str += Number($("#" + parameter.config.frm).find(".workBuildMaySaleArea").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundGarageMaySaleArea").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopMaySaleArea").html());
+            if (key != 'villaResidenceMaySaleArea') {
+                str += Number($("#" + parameter.config.frm).find(".villaResidenceMaySaleArea").html());
+            }
+            if (key != 'strategyBusinessMaySaleArea') {
+                str += Number($("#" + parameter.config.frm).find(".strategyBusinessMaySaleArea").html());
+            }
+            if (key != 'workBuildMaySaleArea') {
+                str += Number($("#" + parameter.config.frm).find(".workBuildMaySaleArea").html());
+            }
+            if (key != 'undergroundGarageMaySaleArea') {
+                str += Number($("#" + parameter.config.frm).find(".undergroundGarageMaySaleArea").html());
+            }
+            if (key != 'undergroundBusinessShopMaySaleArea') {
+                str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopMaySaleArea").html());
+            }
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='smallGarageMaySaleArea']").val(str);
         }
         if (name == '单位售价') {
             var str = 0;
-            str += Number($("#" + parameter.config.frm).find(".villaResidenceUnitPrice").html());
-            str += Number($("#" + parameter.config.frm).find(".strategyBusinessUnitPrice").html());
-            str += Number($("#" + parameter.config.frm).find(".workBuildUnitPrice").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundGarageUnitPrice").html());
-            str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopUnitPrice").html());
+            if (key != 'villaResidenceUnitPrice') {
+                str += Number($("#" + parameter.config.frm).find(".villaResidenceUnitPrice").html());
+            }
+            if (key != 'strategyBusinessUnitPrice') {
+                str += Number($("#" + parameter.config.frm).find(".strategyBusinessUnitPrice").html());
+            }
+            if (key != 'workBuildUnitPrice') {
+                str += Number($("#" + parameter.config.frm).find(".workBuildUnitPrice").html());
+            }
+            if (key != 'undergroundGarageUnitPrice') {
+                str += Number($("#" + parameter.config.frm).find(".undergroundGarageUnitPrice").html());
+            }
+            if (key != 'undergroundBusinessShopUnitPrice') {
+                str += Number($("#" + parameter.config.frm).find(".undergroundBusinessShopUnitPrice").html());
+            }
             str += Number(item);
             $("#" + parameter.config.frm).find("input[name='smallGarageTotalPrice']").val(str);
+            try {
+                landEngineering.algsObj.salesFee();//销售费用 金额
+            } catch (e) {
+                console.log("函数名称被更改!");
+                console.log(e);
+            }
         }
     };
 

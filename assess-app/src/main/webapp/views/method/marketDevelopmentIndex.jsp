@@ -50,7 +50,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="项目建设期(年)"
-                           class="form-control">
+                           class="form-control" name="projectConstructionPeriod" id="projectConstructionPeriod">
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                 <div class="col-sm-3">
                     <input type="text"
                            placeholder="已开发时间(年)"
-                           class="form-control">
+                           class="form-control" name="developedTime" id="developedTime">
                 </div>
             </div>
         </div>

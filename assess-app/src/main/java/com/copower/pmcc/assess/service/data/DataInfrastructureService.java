@@ -156,20 +156,21 @@ public class DataInfrastructureService {
         List<DataInfrastructureCost> dataInfrastructureCosts = dataDataInfrastructureCostService.getDataInfrastructureCostList(dataInfrastructureCost);
         List<DataInfrastructureMatchingCost> dataInfrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts(dataInfrastructureMatchingCost);
         double temp = 0.0;
-        if (!ObjectUtils.isEmpty(dataInfrastructureCosts)){
+        if (!ObjectUtils.isEmpty(dataInfrastructureCosts)) {
             for (DataInfrastructureCost cost : dataInfrastructureCosts) {
                 if (cost != null) {
-                    if (cost.getNumber()!=null){
+                    if (cost.getNumber() != null) {
                         temp += cost.getNumber().doubleValue();
                     }
                 }
             }
         }
         vo.setPriceCost(temp);
-        if (!ObjectUtils.isEmpty(dataInfrastructureMatchingCosts)){
+        temp = 0;
+        if (!ObjectUtils.isEmpty(dataInfrastructureMatchingCosts)) {
             for (DataInfrastructureMatchingCost cost : dataInfrastructureMatchingCosts) {
                 if (cost != null) {
-                    if (cost.getNumber()!=null){
+                    if (cost.getNumber() != null) {
                         temp += cost.getNumber().doubleValue();
                     }
                 }
