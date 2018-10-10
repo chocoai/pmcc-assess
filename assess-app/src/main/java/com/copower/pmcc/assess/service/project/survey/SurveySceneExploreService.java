@@ -1,7 +1,13 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveySceneExploreDao;
-import com.copower.pmcc.assess.dal.basis.entity.SurveySceneExplore;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.examine.ExamineBuildingService;
+import com.copower.pmcc.assess.service.project.examine.ExamineHouseService;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -19,6 +25,16 @@ public class SurveySceneExploreService {
     private CommonService commonService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ExamineHouseService examineHouseService;
+    @Autowired
+    private ExamineBuildingService examineBuildingService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     /**
      * 数据保存
@@ -35,6 +51,35 @@ public class SurveySceneExploreService {
         } else {
             surveySceneExplore.setCreator(commonService.thisUserAccount());
             return surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
+        }
+    }
+
+    /**
+     * 更新申报相关信息
+     *
+     * @param planDetailsId
+     */
+    public void updateDeclareInfo(Integer planDetailsId) throws BusinessException {
+        //1.更新证载用途、更新实际用途
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails == null) return;
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
+        if (declareRecord == null) return;
+        ExamineHouse house = examineHouseService.getHouseByDeclareId(projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), ExamineTypeEnum.EXPLORE);
+        if (house != null) {
+            if (house.getCertUse() != null && house.getCertUse() > 0) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getCertUse());
+                declareRecord.setCertUse(baseDataDic.getName());
+            }
+            if (house.getPracticalUse() != null && house.getPracticalUse() > 0) {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(house.getPracticalUse());
+                declareRecord.setCertUse(baseDataDic.getName());
+            }
+        }
+        try {
+            declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+        } catch (Exception e) {
+            throw new  BusinessException("保存申报记录信息异常",e);
         }
     }
 
@@ -87,7 +132,7 @@ public class SurveySceneExploreService {
         surveySceneExplore.setProjectId(projectId);
         surveySceneExplore.setPlanDetailsId(planDetailsId);
         surveySceneExplore.setDeclareId(declareId);
-        surveySceneExplore.setJsonContent(surveyCommonService.getDeclareCertJson(projectId,declareId));
+        surveySceneExplore.setJsonContent(surveyCommonService.getDeclareCertJson(projectId, declareId));
         surveySceneExplore.setCreator(commonService.thisUserAccount());
         surveySceneExploreDao.addSurveySceneExplore(surveySceneExplore);
         return surveySceneExplore;

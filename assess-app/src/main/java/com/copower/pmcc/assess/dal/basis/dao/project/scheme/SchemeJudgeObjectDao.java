@@ -57,6 +57,9 @@ public class SchemeJudgeObjectDao {
         example.createCriteria().andOriginalAreaGroupIdEqualTo(originalAreaGroupId);
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setAreaGroupId(originalAreaGroupId);
+        schemeJudgeObject.setOriginalAreaGroupId(null);
+        schemeJudgeObject.setNumber(schemeJudgeObject.getOriginalNumber());
+        schemeJudgeObject.setOriginalNumber(null);
         return mapper.updateByExampleSelective(schemeJudgeObject, example) > 0;
     }
 

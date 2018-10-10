@@ -92,6 +92,12 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
+    public List<SchemeJudgeObject> getJudgeObjectListByAreaGroupId(Integer areaGroupId) {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setAreaGroupId(areaGroupId);
+        return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+    }
+
     /**
      * 获取估价对象数据列表
      *
@@ -131,8 +137,19 @@ public class SchemeJudgeObjectService {
      * @param originalAreaGroupId
      * @return
      */
-    public boolean areaGroupReduction(Integer originalAreaGroupId) {
-        return schemeJudgeObjectDao.areaGroupReduction(originalAreaGroupId);
+    public void areaGroupReduction(Integer originalAreaGroupId) {
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setOriginalAreaGroupId(originalAreaGroupId);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+                schemeJudgeObject.setAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
+                schemeJudgeObject.setNumber(schemeJudgeObject.getOriginalNumber());
+                schemeJudgeObject.setOriginalAreaGroupId(null);
+                schemeJudgeObject.setOriginalNumber(null);
+                schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+            }
+        }
     }
 
     /**

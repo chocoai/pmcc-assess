@@ -40,11 +40,11 @@ public class DataSetUseFieldService {
      *
      * @return
      */
-    public BootstrapTableVo getSetUseFieldList(String fieldName, String name) {
+    public BootstrapTableVo getSetUseFieldList(String name) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataSetUseField> list = dataSetUseFieldDao.getListObject(fieldName, name,null);
+        List<DataSetUseField> list = dataSetUseFieldDao.getListObject(name,0);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<DataSetUseField>() : list);
         return bootstrapTableVo;
@@ -172,19 +172,12 @@ public class DataSetUseFieldService {
     }
 
     /**
-     * 获取缓存中的设定用途字段数据
+     * 获取设定用途字段数据
      *
      * @return
      */
-    public List<DataSetUseField> getCacheSetUseFieldListByType(Integer type) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_SET_USE_TYPE, String.valueOf(type));
-
-        try {
-            List<DataSetUseField> sysSetUseFields = LangUtils.listCache(rdsKey, type, DataSetUseField.class, input -> dataSetUseFieldDao.getEnableListByType(input));
-            return sysSetUseFields;
-        } catch (Exception e) {
-            return dataSetUseFieldDao.getEnableListByType(type);
-        }
+    public DataSetUseField getSetUseFieldByType(Integer type) {
+        return dataSetUseFieldDao.getSetUseFieldByType(type);
     }
 
     /**

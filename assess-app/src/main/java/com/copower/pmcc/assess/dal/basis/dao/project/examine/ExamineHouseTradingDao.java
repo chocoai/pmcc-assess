@@ -39,8 +39,16 @@ public class ExamineHouseTradingDao {
     public ExamineHouseTrading getHouseTradingByDeclareId(Integer declareId,Integer planDetailsId,Integer examineType) {
         ExamineHouseTradingExample example = new ExamineHouseTradingExample();
         example.createCriteria().andDeclareIdEqualTo(declareId).andPlanDetailsIdEqualTo(planDetailsId).andExamineTypeEqualTo(examineType);
-        List<ExamineHouseTrading> blockList = examineHouseTradingMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        List<ExamineHouseTrading> tradingList = examineHouseTradingMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(tradingList)) return tradingList.get(0);
+        return null;
+    }
+
+    public ExamineHouseTrading getHouseTradingByPlanDetailsId(Integer planDetailsId) {
+        ExamineHouseTradingExample example = new ExamineHouseTradingExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        List<ExamineHouseTrading> tradingList = examineHouseTradingMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(tradingList)) return tradingList.get(0);
         return null;
     }
 

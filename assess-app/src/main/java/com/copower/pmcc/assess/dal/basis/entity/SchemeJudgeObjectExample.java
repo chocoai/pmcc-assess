@@ -536,6 +536,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andOriginalNumberIsNull() {
+            addCriterion("original_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberIsNotNull() {
+            addCriterion("original_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberEqualTo(String value) {
+            addCriterion("original_number =", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberNotEqualTo(String value) {
+            addCriterion("original_number <>", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberGreaterThan(String value) {
+            addCriterion("original_number >", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("original_number >=", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberLessThan(String value) {
+            addCriterion("original_number <", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberLessThanOrEqualTo(String value) {
+            addCriterion("original_number <=", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberLike(String value) {
+            addCriterion("original_number like", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberNotLike(String value) {
+            addCriterion("original_number not like", value, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberIn(List<String> values) {
+            addCriterion("original_number in", values, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberNotIn(List<String> values) {
+            addCriterion("original_number not in", values, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberBetween(String value1, String value2) {
+            addCriterion("original_number between", value1, value2, "originalNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalNumberNotBetween(String value1, String value2) {
+            addCriterion("original_number not between", value1, value2, "originalNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andSplitNumberIsNull() {
             addCriterion("split_number is null");
             return (Criteria) this;
