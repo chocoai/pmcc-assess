@@ -39,15 +39,15 @@
                         </tr>
                         <tr>
                             <td> 投资利润</td>
-                            <td>0.00</td>
+                            <td class="investmentProfit">0.00</td>
                         </tr>
                         <tr>
                             <td> 地价</td>
-                            <td>0.00</td>
+                            <td class="landPriceCorrecting">0.00</td>
                         </tr>
                         <tr>
                             <td> 委估土地单价</td>
-                            <td>0.00</td>
+                            <td class="estimateUnitPriceLandC33">0.00</td>
                         </tr>
                         </tbody>
                     </table>

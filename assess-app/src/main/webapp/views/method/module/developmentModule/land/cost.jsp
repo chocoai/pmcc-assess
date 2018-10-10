@@ -109,12 +109,12 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    不可预见费
+                    不可预见费率
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="不可预见费" class="form-control x-percent" name="unforeseenExpensesTax">
+                               placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
                     </div>
                 </div>
             </div>

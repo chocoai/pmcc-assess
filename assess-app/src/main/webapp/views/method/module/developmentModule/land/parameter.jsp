@@ -265,6 +265,7 @@
             $("#" + parameter.config.frm).find("input[name='smallGarageTotalPrice']").val(str);
             try {
                 landEngineering.algsObj.salesFee();//销售费用 金额
+                landEngineering.algsObj.salesTaxAndAdditional();//销售税金及附加 金额
             } catch (e) {
                 console.log("函数名称被更改!");
                 console.log(e);
