@@ -11,6 +11,7 @@ public class MarketCompareItemDto {
     private Integer score;
     private BigDecimal ratio;
 
+
     public String getName() {
         return name;
     }

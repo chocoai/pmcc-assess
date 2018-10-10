@@ -86,6 +86,7 @@ public class ProjectTaskExploreAssist implements ProjectTaskInterface {
         SurveySceneExplore surveySceneExplore= JSON.parseObject(formData,SurveySceneExplore.class);
         surveySceneExplore.setProcessInsId(processInsId);
         surveySceneExploreService.saveSurveySceneExplore(surveySceneExplore);
+        surveySceneExploreService.updateDeclareInfo(projectPlanDetails.getId());//更新申报记录相关信息
     }
 
     @Override

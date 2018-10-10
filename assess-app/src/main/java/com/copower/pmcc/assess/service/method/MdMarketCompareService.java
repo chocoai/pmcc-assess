@@ -1,14 +1,15 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.copower.pmcc.assess.common.enums.MarketCompareObjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareFieldDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareResultDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ public class MdMarketCompareService {
     private MdMarketCompareItemDao mdMarketCompareItemDao;
     @Autowired
     private MdMarketCompareResultDao mdMarketCompareResultDao;
+    @Autowired
+    private DataSetUseFieldService dataSetUseFieldService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private CommonService commonService;
 
     public MdMarketCompare getMdMarketCompare(Integer id) {
         return mdMarketCompareDao.getMarketCompareById(id);
@@ -47,6 +54,41 @@ public class MdMarketCompareService {
     }
 
     /**
+     * 根据设定用途类型获取配置的字段
+     *
+     * @param setUse
+     * @return
+     */
+    public List<DataSetUseField> getFieldList(Integer setUse) {
+        DataSetUseField dataSetUseField = dataSetUseFieldService.getSetUseFieldByType(setUse);
+        if (dataSetUseField == null) return null;
+        return dataSetUseFieldService.getCacheSetUseFieldListByPid(dataSetUseField.getId());
+    }
+
+    /**
+     * 初始化查勘字段数据信息
+     */
+    public void initExplore(Integer judgeObjectId,List<DataSetUseField> setUseFieldList) {
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        if (schemeJudgeObject == null) return;
+        MdMarketCompare mdMarketCompare = new MdMarketCompare();
+        mdMarketCompare.setName(String.format("%s号委估对象", schemeJudgeObject.getNumber()));
+        mdMarketCompare.setCreator(commonService.thisUserAccount());
+        mdMarketCompareDao.addMarketCompare(mdMarketCompare);
+
+        MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
+        mdMarketCompareItem.setMcId(mdMarketCompare.getId());
+        mdMarketCompareItem.setName("");
+        mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
+        mdMarketCompareItem.setCreator(commonService.thisUserAccount());
+        StringBuilder stringBuilder = new StringBuilder();
+        //依次设置各个字段的值
+
+        mdMarketCompareItem.setJsonContent(stringBuilder.toString());
+        mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
+    }
+
+    /**
      * 获取委估对象信息by mcid
      *
      * @param mcId
@@ -55,7 +97,7 @@ public class MdMarketCompareService {
     public MdMarketCompareItem getEvaluationListByMcId(Integer mcId) {
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
         mdMarketCompareItem.setMcId(mcId);
-        mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.EVALUATION.getId());
+        mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         List<MdMarketCompareItem> marketCompareItemList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItem);
         if (CollectionUtils.isEmpty(marketCompareItemList)) return null;
         return marketCompareItemList.get(0);
@@ -70,24 +112,25 @@ public class MdMarketCompareService {
     public List<MdMarketCompareItem> getCaseListByMcId(Integer mcId) {
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
         mdMarketCompareItem.setMcId(mcId);
-        mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.CASE.getId());
+        mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
         List<MdMarketCompareItem> marketCompareItemList = mdMarketCompareItemDao.getMarketCompareItemList(mdMarketCompareItem);
         return marketCompareItemList;
     }
 
     /**
-     *保存市场比较法的结果信息
+     * 保存市场比较法的结果信息
+     *
      * @param marketCompareResultDto
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public MdMarketCompare saveResult(MarketCompareResultDto marketCompareResultDto){
+    public MdMarketCompare saveResult(MarketCompareResultDto marketCompareResultDto) {
         //1.委估对象的平均价保存 2.案例数据相关信息存储
         MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(marketCompareResultDto.getId());
         MdMarketCompareItem evaluationItem = marketCompareResultDto.getEvaluationItem();
         mdMarketCompareItemDao.updateMarketCompareItem(evaluationItem);
         List<MdMarketCompareItem> caseItemList = marketCompareResultDto.getCaseItemList();
-        if(CollectionUtils.isNotEmpty(caseItemList)){
+        if (CollectionUtils.isNotEmpty(caseItemList)) {
             for (MdMarketCompareItem mdMarketCompareItem : caseItemList) {
                 mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
             }

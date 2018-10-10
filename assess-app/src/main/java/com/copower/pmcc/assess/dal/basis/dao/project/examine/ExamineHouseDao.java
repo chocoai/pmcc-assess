@@ -44,9 +44,9 @@ public class ExamineHouseDao {
         return null;
     }
 
-    public ExamineHouse getHouseByDeclareId(Integer declareId,Integer examineType) {
+    public ExamineHouse getHouseByPlanDetailsId(Integer planDetailsId) {
         ExamineHouseExample example = new ExamineHouseExample();
-        example.createCriteria().andDeclareIdEqualTo(declareId).andExamineTypeEqualTo(examineType);
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
         List<ExamineHouse> examineHouseList = examineHouseMapper.selectByExample(example);
         if(CollectionUtils.isNotEmpty(examineHouseList)) return examineHouseList.get(0);
         return null;

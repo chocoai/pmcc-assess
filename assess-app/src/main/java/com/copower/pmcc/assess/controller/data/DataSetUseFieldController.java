@@ -58,8 +58,8 @@ public class DataSetUseFieldController {
      */
     @ResponseBody
     @GetMapping("/getSetUseFieldList")
-    public BootstrapTableVo getSetUseFieldList(String fieldName, String name) {
-        return dataSetUseFieldService.getSetUseFieldList(fieldName, name);
+    public BootstrapTableVo getSetUseFieldList(String name) {
+        return dataSetUseFieldService.getSetUseFieldList(name);
     }
 
     /**

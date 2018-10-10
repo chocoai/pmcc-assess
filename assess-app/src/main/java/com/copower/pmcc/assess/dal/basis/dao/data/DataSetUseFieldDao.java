@@ -25,16 +25,13 @@ public class DataSetUseFieldDao {
     /**
      * 获取所有项目分类列表
      *
-     * @param fieldName
      * @param name
      * @return
      */
-    public List<DataSetUseField> getListObject(String name, String fieldName, Integer pid) {
+    public List<DataSetUseField> getListObject(String name, Integer pid) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
         DataSetUseFieldExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true).andBisDeleteEqualTo(false);
-        if (StringUtils.isNotBlank(fieldName)) {
-            criteria.andFieldNameLike(MessageFormat.format("%{0}%", fieldName));
-        }
+
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike("%" + name + "%");
         }
@@ -47,12 +44,6 @@ public class DataSetUseFieldDao {
     }
     //endregion
 
-
-    public List<DataSetUseField> getProjectClassifyList(DataSetUseField baseProjectClassify) {
-        DataSetUseFieldExample example = new DataSetUseFieldExample();
-        MybatisUtils.convertObj2Example(baseProjectClassify, example);
-        return dataSetUseFieldMapper.selectByExample(example);
-    }
 
     //region 获取数据根据pid
 
@@ -93,15 +84,13 @@ public class DataSetUseFieldDao {
     }
     //endregion
 
-    public List<DataSetUseField> getEnableListByType(Integer type) {
+    public DataSetUseField getSetUseFieldByType(Integer type) {
         DataSetUseFieldExample example = new DataSetUseFieldExample();
-        example.createCriteria()
-                .andSetUseEqualTo(type)
-                .andBisEnableEqualTo(true)
-                .andBisDeleteEqualTo(false);
-        example.setOrderByClause("sorting");
+        example.createCriteria().andSetUseEqualTo(type);
         List<DataSetUseField> list = dataSetUseFieldMapper.selectByExample(example);
-        return list;
+        if (CollectionUtils.isNotEmpty(list))
+            return list.get(0);
+        return null;
     }
 
     public List<DataSetUseField> getEnableListByPids(List<Integer> integers) {

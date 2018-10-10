@@ -1,11 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="x_panel">
-    <div class="x_title collapse-link">
+    <div class="x_title ">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>市场比较法</h2>
+        <h2>
+            市场比较法
+            <small>
+                <input type="button" class="btn btn-primary btn-xs" value="选择案例">
+            </small>
+        </h2>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -25,6 +30,7 @@
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxRatio">测算值</label>
             </span>
+
         </div>
         <div>
             <input type="hidden" id="marketCompareId">
@@ -165,7 +171,7 @@
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
-            if(!defaluts.readonly){
+            if (!defaluts.readonly) {
                 setElementEditable();
             }
         }

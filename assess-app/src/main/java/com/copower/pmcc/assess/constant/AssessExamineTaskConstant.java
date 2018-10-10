@@ -42,6 +42,9 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_SCHOOL_GRADATION = "estate.school.gradation";//学校级次
     public static final String ESTATE_SCHOOL_LEVEL = "estate.school.level";//学校等级
     public static final String ESTATE_ENVIRONMENT_TYPE = "estate.environment.type";//环境类型
+    public static final String ESTATE_ENVIRONMENT_TYPE_NATURAL = "estate.environment.type.natural";//自然
+    public static final String ESTATE_ENVIRONMENT_TYPE_CULTURAL = "estate.environment.type.cultural";//人文
+    public static final String ESTATE_ENVIRONMENT_TYPE_SCENERY = "estate.environment.type.scenery";//景观
     public static final String ESTATE_ENVIRONMENT_CATEGORY = "estate.environment.category";//环境类别
     public static final String ESTATE_ENVIRONMENT_INFLUENCE_DEGREE = "estate.environment.Influence.degree";//影响程度
     public static final String ESTATE_FINANCE_CATEGORY = "estate.finance.category";//金融类别

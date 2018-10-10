@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.test;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.MarketCompareObjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareFieldDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
@@ -160,7 +160,7 @@ public class initMdTest {
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
-        mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.EVALUATION.getId());
+        mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         mdMarketCompareItem.setName("香瑞福");
         mdMarketCompareItem.setJsonContent(JSON.toJSONString(list));
         mdMarketCompareItem.setCreator("admin");
@@ -209,7 +209,7 @@ public class initMdTest {
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
-        mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.CASE.getId());
+        mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
         mdMarketCompareItem.setName("彩叠园");
         mdMarketCompareItem.setJsonContent(JSON.toJSONString(list));
         mdMarketCompareItem.setCreator("admin");
@@ -253,7 +253,7 @@ public class initMdTest {
         marketCompareItemDto.setRatio(new BigDecimal("1"));
         list.add(marketCompareItemDto);
 
-        mdMarketCompareItem.setType(MarketCompareObjectTypeEnum.CASE.getId());
+        mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
         mdMarketCompareItem.setName("合能琥珀");
         mdMarketCompareItem.setJsonContent(JSON.toJSONString(list));
         mdMarketCompareItem.setCreator("admin");

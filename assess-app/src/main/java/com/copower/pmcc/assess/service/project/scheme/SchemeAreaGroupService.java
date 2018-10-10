@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -57,7 +58,7 @@ public class SchemeAreaGroupService {
      * @param projectId
      * @param areaGroupIds
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void areaGroupMerge(Integer projectId, String areaGroupIds) throws BusinessException {
         //验证区域是否能合并
         //创建合并区域 设置参与合并的区域不可用 将委估对象移至新区域下
@@ -72,24 +73,37 @@ public class SchemeAreaGroupService {
                 throw new BusinessException("区域不一致不能参与合并");
         }
 
-        SchemeAreaGroup schemeAreaGroup = new SchemeAreaGroup();
-        schemeAreaGroup.setPid(0);
-        schemeAreaGroup.setProjectId(projectId);
-        schemeAreaGroup.setProvince(province);
-        schemeAreaGroup.setCity(city);
-        schemeAreaGroup.setAreaName(erpAreaService.getAreaFullName(province, city, null));
-        schemeAreaGroup.setValueTimePoint(schemeAreaGroupList.get(0).getValueTimePoint());
-        schemeAreaGroup.setTimePointExplain(schemeAreaGroupList.get(0).getTimePointExplain());
-        schemeAreaGroup.setBisEnable(true);
-        schemeAreaGroup.setBisMerge(true);
-        schemeAreaGroup.setCreator(commonService.thisUserAccount());
-        schemeAreaGroupDao.add(schemeAreaGroup);
-
-        for (SchemeAreaGroup areaGroup : schemeAreaGroupList) {
-            areaGroup.setPid(schemeAreaGroup.getId());
-            areaGroup.setBisEnable(false);
-            schemeAreaGroupDao.update(areaGroup);
-            schemeJudgeObjectService.updateSchemeJudgeObject(areaGroup.getId(), schemeAreaGroup.getId());
+        SchemeAreaGroup newAreaGroup = new SchemeAreaGroup();
+        newAreaGroup.setPid(0);
+        newAreaGroup.setProjectId(projectId);
+        newAreaGroup.setProvince(province);
+        newAreaGroup.setCity(city);
+        newAreaGroup.setAreaName(erpAreaService.getAreaFullName(province, city, null));
+        newAreaGroup.setValueTimePoint(schemeAreaGroupList.get(0).getValueTimePoint());
+        newAreaGroup.setTimePointExplain(schemeAreaGroupList.get(0).getTimePointExplain());
+        newAreaGroup.setBisEnable(true);
+        newAreaGroup.setBisMerge(true);
+        newAreaGroup.setCreator(commonService.thisUserAccount());
+        schemeAreaGroupDao.add(newAreaGroup);
+        int i = 1;//委估对象重新编号
+        for (SchemeAreaGroup oldAreaGroup : schemeAreaGroupList) {
+            oldAreaGroup.setPid(newAreaGroup.getId());
+            oldAreaGroup.setBisEnable(false);
+            schemeAreaGroupDao.update(oldAreaGroup);
+            //委估对象逐一验证，如果已存在合并或拆分的对象，则不允许区域合并
+            List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(oldAreaGroup.getId());
+            if (CollectionUtils.isNotEmpty(judgeObjects)) {
+                for (SchemeJudgeObject judgeObject : judgeObjects) {
+                    if (judgeObject.getBisMerge() == Boolean.TRUE || judgeObject.getBisSplit() == Boolean.TRUE)
+                        throw new BusinessException("参与合并的区域中已存在合并或拆分对象");
+                    judgeObject.setOriginalNumber(judgeObject.getNumber());
+                    judgeObject.setNumber(String.valueOf(i));
+                    judgeObject.setOriginalAreaGroupId(oldAreaGroup.getId());
+                    judgeObject.setAreaGroupId(newAreaGroup.getId());
+                    schemeJudgeObjectService.updateSchemeJudgeObject(judgeObject);
+                    i++;
+                }
+            }
         }
     }
 

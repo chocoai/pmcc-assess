@@ -18,6 +18,8 @@ public class SchemeJudgeObject {
 
     private String number;
 
+    private String originalNumber;
+
     private Integer splitNumber;
 
     private String name;
@@ -108,6 +110,14 @@ public class SchemeJudgeObject {
 
     public void setNumber(String number) {
         this.number = number == null ? null : number.trim();
+    }
+
+    public String getOriginalNumber() {
+        return originalNumber;
+    }
+
+    public void setOriginalNumber(String originalNumber) {
+        this.originalNumber = originalNumber == null ? null : originalNumber.trim();
     }
 
     public Integer getSplitNumber() {
