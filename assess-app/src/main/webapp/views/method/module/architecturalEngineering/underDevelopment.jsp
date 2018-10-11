@@ -75,9 +75,6 @@
         if (obj == 0) {
             return true;
         }
-        if (obj == '') {
-            return true;
-        }
         if (obj) {
             return true;
         }
@@ -94,7 +91,7 @@
         };
     };
 
-    var editIndex = null; //必须的局部变量
+    var editIndexUnderDevelopment = null; //必须的局部变量
 
     /**
      * @author:  zch
@@ -145,7 +142,7 @@
                 field: 'valuationDateDegreeCompletion',
                 title: '估价时点完工程度',
                 width: 110,
-                editor: {type: "numberbox", options: {precision: precision}},
+                editor: {type: "text", options: {precision: precision}},
                 styler: function (value, row, index) {
                     return 'background-color:#F0F0F0;color:red;';
                 }
@@ -221,6 +218,36 @@
         }
     };
 
+    underDevelopment.specialTreatment = function (obj) {
+        if (underDevelopment.isNotNull(obj)){
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                str = AssessCommon.percentToPoint(nnn);
+                str = Number(str);
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
+    underDevelopment.algs = function (data) {
+        var currency = null;
+        var area = null;
+        var valuationDateDegreeCompletion = null;
+        var valuationDateCurrency = null;
+        var continuedConstructionInvestmentCurrency = null;
+        currency = Number(data.currency);
+        area = Number(data.area);
+        valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
+        valuationDateDegreeCompletion = underDevelopment.specialTreatment(valuationDateDegreeCompletion);
+        valuationDateCurrency = currency * valuationDateDegreeCompletion ;
+        continuedConstructionInvestmentCurrency = currency - valuationDateCurrency ;
+        data.valuationDateCurrency = valuationDateCurrency;
+        data.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
+        return data;
+    };
+
     /**
      * @author:  zch
      * 描述:更新子节点数据
@@ -230,10 +257,12 @@
         if (underDevelopment.isNotNull(data)) {
             var currency = null;
             var area = null;
-            if (changes.currency) {//估价时点单价(元/㎡)
+            var valuationDateDegreeCompletion = null;
+            if (changes.currency) {//单方造价
                 currency = changes.currency;
                 if (AssessCommon.isNumber(currency)) {
                     area = data.area;
+                    valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
                 } else {
                     Alert("请输入数字!");
                     return false;
@@ -243,24 +272,35 @@
                 area = changes.area;
                 if (AssessCommon.isNumber(area)) {
                     currency = data.currency;
+                    valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (underDevelopment.isNotNull(area)) {
-                if (underDevelopment.isNotNull(currency)) {
-                    //更新节点值
-                    $('#' + underDevelopment.config().tableId).treegrid('update', {
-                        id: data.id,
-                        row: {currency: currency, area: area}
-                    });
-                    if (!data.parent) {//说明不是父节点
-                        underDevelopment.updateFather(data);
-                    } else {
-                        underDevelopment.updateDirectFather();
-                    }
+            if (changes.valuationDateDegreeCompletion) {//面积
+                valuationDateDegreeCompletion = changes.valuationDateDegreeCompletion;
+                if (underDevelopment.isNotNull(valuationDateDegreeCompletion)) {
+                    currency = data.currency;
+                    area = data.area;
+                } else {
+                    Alert("请输入数字!");
+                    return false;
                 }
+            }
+            //更新节点值
+            $('#' + underDevelopment.config().tableId).treegrid('update', {
+                id: data.id,
+                row: underDevelopment.algs({
+                    currency: currency,
+                    area: area,
+                    valuationDateDegreeCompletion: valuationDateDegreeCompletion
+                })
+            });
+            if (!data.parent) {//说明不是父节点
+                underDevelopment.updateFather(data);
+            } else {
+                underDevelopment.updateDirectFather();
             }
         }
     };
@@ -280,14 +320,23 @@
         var childrens = parent.children;
         var area = 0;//建筑面积
         var currency = 0;//单方造价
+        var valuationDateDegreeCompletion = 0;
+        var valuationDateCurrency = 0;
+        var continuedConstructionInvestmentCurrency = 0;
         if (underDevelopment.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency += Number(n.currency);
                 area += Number(n.area);
+                continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
+                valuationDateCurrency += Number(n.valuationDateCurrency);
+                valuationDateDegreeCompletion += Number(underDevelopment.specialTreatment(n.valuationDateDegreeCompletion));
             });
         }
         parent.currency = currency;
         parent.area = area;
+        parent.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
+        parent.valuationDateCurrency = valuationDateCurrency;
+        parent.valuationDateDegreeCompletion = AssessCommon.pointToPercent(valuationDateDegreeCompletion);
         //更新节点值
         $('#' + underDevelopment.config().tableId).treegrid('update', {
             id: parent.id,
@@ -305,13 +354,16 @@
     underDevelopment.totalCalculation = function () {
         var area = 0;//建筑面积
         var currency = 0;//单方造价
+        var continuedConstructionInvestmentCurrency = 0;//续建投入总价
         $.each($('#' + underDevelopment.config().tableId).treegrid('getRoots'), function (i, n) {
             currency += Number(n.currency);
             area += Number(n.area);
+            continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
         });
         underDevelopment.updateHtml({
             area: area,
             currency: currency,
+            continuedConstructionInvestmentCurrency:continuedConstructionInvestmentCurrency
         });
     };
     /**
@@ -323,11 +375,11 @@
         var area = $('.' + underDevelopment.config().areaClass).html();
         area = Number(area);
         area += Number(data.area);
-        var totalCost = 0;
-        totalCost = Number(area) * Number(data.currency);
+        var total = 0;
+        total = Number(area) * Number(data.continuedConstructionInvestmentCurrency);
         $('.' + underDevelopment.config().areaClass).html(area);
         $('.' + underDevelopment.config().currencyClass).html(data.currency);
-        $('.' + underDevelopment.config().totalCostClass).html(totalCost);
+        $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html(total);
     };
 
     /**
@@ -336,7 +388,7 @@
      * @date:2018-08-14
      **/
     underDevelopment.getCalculatedResults = function () {
-        return $('.' + underDevelopment.config().totalCostClass).html();
+        return $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html();
     };
 
 
@@ -379,7 +431,7 @@
                     var opts = dg.datagrid('options');
                     opts.oldOnClickCell = opts.onClickCell;
                     opts.onClickCell = function (index, field) {
-                        editIndex = index;
+                        editIndexUnderDevelopment = index;
                         if (opts.editIndex != undefined) {
                             if (dg.datagrid('validateRow', opts.editIndex)) {
                                 dg.datagrid('endEdit', opts.editIndex);

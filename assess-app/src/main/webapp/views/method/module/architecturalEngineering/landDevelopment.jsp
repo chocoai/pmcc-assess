@@ -219,7 +219,7 @@
         if (hypothesisDevelopmentBuild.isNotNull(data)) {
             var currency = null;
             var area = null;
-            if (changes.currency) {//估价时点单价(元/㎡)
+            if (changes.currency) {//单方造价
                 currency = changes.currency;
                 if (AssessCommon.isNumber(currency)) {
                     area = data.area;

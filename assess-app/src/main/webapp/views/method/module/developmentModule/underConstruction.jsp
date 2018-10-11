@@ -483,8 +483,13 @@
         //投资利息率
         interestInvestmentTaxFun: function () {
             var projectConstructionPeriod = $("#" + underConstruction.config.projectConstructionPeriod).val();
+            var developedTime = $("#" + underConstruction.config.developedTime).val();
             if (!underConstruction.isEmpty(projectConstructionPeriod)) {//项目建设期不能为null,至于其它在调用此方法时就会校验
                 toastr.success('项目建设期不能为null');
+                return false;
+            }
+            if (!underConstruction.isEmpty(developedTime)) {//已开发时间不能为null,至于其它在调用此方法时就会校验
+                toastr.success('已开发时间不能为null');
                 return false;
             }
             underConstruction.algsObj.interestInvestment();//投资利息 金额
@@ -549,6 +554,7 @@
             var a = 0, b = 0, temp = 0;
             var interestInvestment = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.interestInvestment.tax, null);//投资利息率 C28
             var projectConstructionPeriod = $("#" + underConstruction.config.projectConstructionPeriod).val();//D28
+            var developedTime = $("#" + underConstruction.config.developedTime).val();
             a = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.designFeeParameterRatio.key, null);//设计费参数比率 E23
             b = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.managementExpense.correcting, null);//管理费计算率 D26
             if (!AssessCommon.isNumber(b)) {
@@ -560,6 +566,9 @@
             if (!AssessCommon.isNumber(interestInvestment)) {
                 return false;
             }
+            projectConstructionPeriod = Number(projectConstructionPeriod);
+            developedTime = Number(developedTime);
+            projectConstructionPeriod = projectConstructionPeriod - developedTime;
             temp = (Math.pow(1 + interestInvestment, projectConstructionPeriod) - 1) * a;
             temp += (Math.pow(1 + interestInvestment, projectConstructionPeriod / 2) - 1) * b;
             temp = temp.toFixed(4);
@@ -697,6 +706,7 @@
             var interestInvestment = 0;
             interestInvestment = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.interestInvestment.tax, null);//投资利息率
             var projectConstructionPeriod = $("#" + underConstruction.config.projectConstructionPeriod).val();
+            var developedTime = $("#" + underConstruction.config.developedTime).val();
             a = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.key, null);//建筑安装工程费 (金额)
             c = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.infrastructureMatchingCost.key, null);//公共配套设施建设费 (金额)
             b = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.devDuring.key, null);//开发期间税费 (金额)
@@ -711,6 +721,12 @@
             if (!underConstruction.isEmpty(projectConstructionPeriod)) {//项目建设期不能为null,至于其它在调用此方法时就会校验
                 return false;
             }
+            if (!underConstruction.isEmpty(developedTime)) {//已开发时间不能为null,至于其它在调用此方法时就会校验
+                return false;
+            }
+            projectConstructionPeriod = Number(projectConstructionPeriod);
+            developedTime = Number(developedTime);
+            projectConstructionPeriod = projectConstructionPeriod - developedTime;
             temp = (a + c + b + e + f + g + k) * (Math.pow(1 + interestInvestment, projectConstructionPeriod / 2) - 1);
             temp += (h + i) * (Math.pow(1 + interestInvestment, projectConstructionPeriod) - 1);
             temp = temp.toFixed(3);
@@ -1004,8 +1020,8 @@
                 type: "post",
                 data: {
                     jsonContent: JSON.stringify(data),
-                    type: "MdCostBuilding",
-                    id: "${mdCostAndDevelopmentOtherBuilding.id}"
+                    type: "MdDevelopmentArchitectural",
+                    id: "${mdCostAndDevelopmentOtherArchitectural.id}"
                 },
                 dataType: "json",
                 success: function (result) {
