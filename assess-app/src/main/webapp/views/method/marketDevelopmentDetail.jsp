@@ -40,7 +40,7 @@
             <!-- 主题内容 -->
         </div>
         <div class="architecturalEngineering" style="display: none;">
-            <jsp:include page="../method/module/developmentModule/architecturalEngineeringDetail.jsp"></jsp:include>
+            <jsp:include page="../method/module/developmentModule/underConstructionDetail.jsp"></jsp:include>
             <!-- 主题内容 -->
         </div>
     </div>
