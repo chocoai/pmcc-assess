@@ -23,6 +23,7 @@ public class ExamineMatchingFinanceDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class ExamineMatchingFinanceDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineMatchingFinance
      * @return
      */
@@ -41,8 +43,15 @@ public class ExamineMatchingFinanceDao {
         return examineMatchingFinanceMapper.selectByExample(example);
     }
 
+    public List<ExamineMatchingFinance> getMatchingFinanceList(Integer planDetailsId) {
+        ExamineMatchingFinanceExample example = new ExamineMatchingFinanceExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineMatchingFinanceMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineMatchingFinance
      * @return
      */
@@ -52,6 +61,7 @@ public class ExamineMatchingFinanceDao {
 
     /**
      * 编辑
+     *
      * @param examineMatchingFinance
      * @return
      */
@@ -61,10 +71,11 @@ public class ExamineMatchingFinanceDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteMatchingFinance(Integer id){
+    public boolean deleteMatchingFinance(Integer id) {
         return examineMatchingFinanceMapper.deleteByPrimaryKey(id) > 0;
     }
 

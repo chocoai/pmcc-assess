@@ -70,15 +70,11 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
     private CommonService commonService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
-    @Autowired
-    private PublicService publicService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -95,6 +91,15 @@ public class ProjectPlanDetailsService {
 
     public List<ProjectPlanDetails> getPlanDetailsByPlanId(Integer planId) {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+    }
+
+    public ProjectPlanDetails getProjectPlanDetails(Integer declareId,Integer projectPhaseId){
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setDeclareRecordId(declareId);
+        projectPlanDetails.setProjectPhaseId(projectPhaseId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
+        if(CollectionUtils.isNotEmpty(planDetailsList)) return planDetailsList.get(0);
+        return null;
     }
 
     /**

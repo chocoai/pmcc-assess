@@ -23,6 +23,7 @@ public class ExamineBuildingOutfitDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -30,7 +31,7 @@ public class ExamineBuildingOutfitDao {
         return examineBuildingOutfitMapper.selectByPrimaryKey(id);
     }
 
-    public void initRemove(){
+    public void initRemove() {
         ExamineBuildingOutfitExample example = new ExamineBuildingOutfitExample();
         ExamineBuildingOutfitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -38,7 +39,7 @@ public class ExamineBuildingOutfitDao {
         examineBuildingOutfitMapper.deleteByExample(example);
     }
 
-    public void removeExamineBuildingOutfit(ExamineBuildingOutfit examineBuildingOutfit){
+    public void removeExamineBuildingOutfit(ExamineBuildingOutfit examineBuildingOutfit) {
         ExamineBuildingOutfitExample example = new ExamineBuildingOutfitExample();
         MybatisUtils.convertObj2Example(examineBuildingOutfit, example);
         examineBuildingOutfitMapper.deleteByExample(example);
@@ -46,6 +47,7 @@ public class ExamineBuildingOutfitDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineBuildingOutfit
      * @return
      */
@@ -55,8 +57,15 @@ public class ExamineBuildingOutfitDao {
         return examineBuildingOutfitMapper.selectByExample(example);
     }
 
+    public List<ExamineBuildingOutfit> getBuildingOutfitList(Integer planDetailsId) {
+        ExamineBuildingOutfitExample example = new ExamineBuildingOutfitExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineBuildingOutfitMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineBuildingOutfit
      * @return
      */
@@ -66,6 +75,7 @@ public class ExamineBuildingOutfitDao {
 
     /**
      * 编辑
+     *
      * @param examineBuildingOutfit
      * @return
      */
@@ -75,10 +85,11 @@ public class ExamineBuildingOutfitDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteBuildingOutfit(Integer id){
+    public boolean deleteBuildingOutfit(Integer id) {
         return examineBuildingOutfitMapper.deleteByPrimaryKey(id) > 0;
     }
 

@@ -18,12 +18,13 @@ import java.util.List;
  */
 @Repository
 public class ExamineEstateSupplyDao {
-    
+
     @Autowired
     private ExamineEstateSupplyMapper examineEstateSupplyMapper;
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -33,6 +34,7 @@ public class ExamineEstateSupplyDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -42,8 +44,15 @@ public class ExamineEstateSupplyDao {
         return examineEstateSupplyMapper.selectByExample(example);
     }
 
+    public List<ExamineEstateSupply> getExamineEstateSupplyList(Integer planDetailsId) {
+        ExamineEstateSupplyExample example = new ExamineEstateSupplyExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineEstateSupplyMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -53,6 +62,7 @@ public class ExamineEstateSupplyDao {
 
     /**
      * 编辑
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -62,10 +72,11 @@ public class ExamineEstateSupplyDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteExamineEstateSupply(Integer id){
+    public boolean deleteExamineEstateSupply(Integer id) {
         return examineEstateSupplyMapper.deleteByPrimaryKey(id) > 0;
     }
 }

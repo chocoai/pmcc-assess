@@ -41,6 +41,12 @@ public class ExamineHouseRoomDecorateDao {
         return examineHouseRoomDecorateMapper.selectByExample(example);
     }
 
+    public List<ExamineHouseRoomDecorate> getHouseRoomDecorateList(List<Integer> roomIds) {
+        ExamineHouseRoomDecorateExample example = new ExamineHouseRoomDecorateExample();
+        example.createCriteria().andRoomIdIn(roomIds);
+        return examineHouseRoomDecorateMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineHouseRoomDecorate

@@ -23,6 +23,7 @@ public class ExamineHouseRoomDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class ExamineHouseRoomDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineHouseRoom
      * @return
      */
@@ -41,8 +43,15 @@ public class ExamineHouseRoomDao {
         return examineHouseRoomMapper.selectByExample(example);
     }
 
+    public List<ExamineHouseRoom> getHouseRoomList(Integer planDetailsId) {
+        ExamineHouseRoomExample example = new ExamineHouseRoomExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineHouseRoomMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineHouseRoom
      * @return
      */
@@ -52,6 +61,7 @@ public class ExamineHouseRoomDao {
 
     /**
      * 编辑
+     *
      * @param examineHouseRoom
      * @return
      */
@@ -61,10 +71,11 @@ public class ExamineHouseRoomDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteHouseRoom(Integer id){
+    public boolean deleteHouseRoom(Integer id) {
         return examineHouseRoomMapper.deleteByPrimaryKey(id) > 0;
     }
 

@@ -45,6 +45,14 @@ public class ExamineUnitDao {
         return null;
     }
 
+    public ExamineUnit getUnitByPlanDetailsId(Integer planDetailsId) {
+        ExamineUnitExample example = new ExamineUnitExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        List<ExamineUnit> blockList = examineUnitMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(blockList)) return blockList.get(0);
+        return null;
+    }
+
     /**
      * 获取数据列表
      * @param examineUnit

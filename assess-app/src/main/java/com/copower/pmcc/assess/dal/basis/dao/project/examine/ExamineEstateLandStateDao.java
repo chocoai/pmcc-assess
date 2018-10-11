@@ -44,6 +44,14 @@ public class ExamineEstateLandStateDao {
         return null;
     }
 
+    public ExamineEstateLandState getEstateLandStateByPlanDetailsId(Integer planDetailsId) {
+        ExamineEstateLandStateExample example = new ExamineEstateLandStateExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        List<ExamineEstateLandState> landStateList = examineEstateLandStateMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(landStateList)) return landStateList.get(0);
+        return null;
+    }
+
     /**
      * 获取数据列表
      * @param examineEstateLandState
