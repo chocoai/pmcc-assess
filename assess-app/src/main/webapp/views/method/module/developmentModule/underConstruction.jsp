@@ -911,6 +911,7 @@
             a = a / 10000;
             a = a.toFixed(3);
             underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.key, a);
+            underConstruction.algsObj.reconnaissanceDesign();
             underConstruction.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
         //总建筑面积小计 = 预期销售合计 + 不可售建筑面积
@@ -1080,9 +1081,9 @@
         var table = $("#" + underConstruction.config.id).find("#" + underParameter.config.frm + " table").eq(0).html();
         var forms = $("#" + underConstruction.config.id).find("form");
         $.each(forms, function (i, n) {
-            if (!$(n).valid()) {
-                return false;
-            }
+            // if (!$(n).valid()) {
+            //     return false;
+            // }
         });
         $.each(forms, function (i, n) {
             try {

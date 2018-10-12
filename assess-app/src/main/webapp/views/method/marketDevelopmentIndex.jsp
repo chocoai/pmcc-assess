@@ -154,11 +154,13 @@
 
     //初始化在建工程
     optionsBuildBox.hypothesisDevelopmentInit = function (data) {
+        data = JSON.parse(data);
         underConstruction.initForm(data);
     };
 
     //初始化 土地
     optionsBuildBox.architecturalEngineeringInit = function (data) {
+        data = JSON.parse(data);
         landEngineering.initForm(data);
     };
     /**

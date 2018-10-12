@@ -883,6 +883,7 @@
             c = a * b;
             c = c.toFixed(3);
             landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.reconnaissanceDesign.key, c);
+            landEngineering.algsObj.reconnaissanceDesign();
             landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
         //建筑安装工程费 (计算金额) = 建筑安装工程费计算金额(控件数据)  / 10000
@@ -1066,9 +1067,9 @@
         var table = $("#" + landEngineering.config.id).find("#" + parameter.config.frm + " table").eq(0).html();
         var forms = $("#" + landEngineering.config.id).find("form");
         $.each(forms, function (i, n) {
-            if (!$(n).valid()) {
-                return false;
-            }
+            // if (!$(n).valid()) {
+            //     return false;
+            // }
         });
         $.each(forms, function (i, n) {
             try {
