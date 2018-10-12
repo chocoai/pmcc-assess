@@ -1007,7 +1007,7 @@
             var data = underDevelopment.getCalculatedResults();
             underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
             underConstruction.algsObj.constructionInstallationEngineeringFee();
-            // underConstruction.constructionInstallationEngineeringFeeEvent.serverSave(underDevelopment.loadData());
+            underConstruction.constructionInstallationEngineeringFeeEvent.serverSave(underDevelopment.loadData());
             underConstruction.constructionInstallationEngineeringFeeEvent.close();
         },
         close: function () {
@@ -1020,7 +1020,7 @@
                 type: "post",
                 data: {
                     jsonContent: JSON.stringify(data),
-                    type: "MdDevelopmentArchitectural",
+                    type: "MdDevelopmentHypothesis",
                     id: "${mdCostAndDevelopmentOtherArchitectural.id}"
                 },
                 dataType: "json",
@@ -1069,6 +1069,98 @@
             underConstruction.monitor.infrastructureMatchingCost();
         }
     };
+
+    /**
+     * @author:  zch
+     * 描述:收集数据
+     * @date:2018-10-12
+     **/
+    underConstruction.formParams = function () {
+        var item = {};
+        var table = $("#" + underConstruction.config.id).find("#" + underParameter.config.frm + " table").eq(0).html();
+        var forms = $("#" + underConstruction.config.id).find("form");
+        $.each(forms, function (i, n) {
+            if (!$(n).valid()) {
+                return false;
+            }
+        });
+        $.each(forms, function (i, n) {
+            try {
+                /*Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 ECMAScript6 (可能不兼容) */
+                item = Object.assign(item, formSerializeArray($(n)));
+            } catch (e) {
+                item = $.extend(item, formSerializeArray($(n)));
+            }
+        });
+        item.projectConstructionPeriod = $("#" + underConstruction.config.projectConstructionPeriod).val();
+        item.developedTime = $("#" + underConstruction.config.developedTime).val();
+
+        item.estimateSaleTotal = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.estimateSaleTotal.key).html();
+        item.totalGrossFloorArea = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.totalGrossFloorArea.key).html();
+        item.constructionCostSubtotal = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionCostSubtotal.key).html();
+        item.unforeseenExpenses = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.unforeseenExpenses.key).html();
+        item.investmentProfit = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.investmentProfit.key).html();
+        item.landPriceCorrecting = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.landPrice.correcting).html();
+        item.estimateUnitPriceLandC33 = $("#" + underConstruction.config.id).find("." + underConstruction.config.estimateUnitPriceLand.C33).html();
+        item.table = table;
+        return item;
+    };
+
+
+    /**
+     * @author:  zch
+     * 描述:赋值
+     * @date:2018-10-12
+     **/
+    underConstruction.initForm = function (item) {
+        var forms = $("#" + underConstruction.config.id).find("form");
+        $.each(forms, function (i, n) {
+            $(n).clearAll();
+        });
+        if (underConstruction.isEmpty(item.projectConstructionPeriod)) {
+            $("#" + underConstruction.config.projectConstructionPeriod).val(null);
+        }
+        if (underConstruction.isEmpty(item.developedTime)) {
+            $("#" + underConstruction.config.developedTime).val(null);
+        }
+        $.each(forms, function (i, n) {
+            $(n).initForm(item);
+        });
+        if (underConstruction.isEmpty(item.projectConstructionPeriod)) {
+            $("#" + underConstruction.config.projectConstructionPeriod).val(item.projectConstructionPeriod);
+        }
+        if (underConstruction.isEmpty(item.developedTime)) {
+            $("#" + underConstruction.config.developedTime).val(item.developedTime);
+        }
+        if (underConstruction.isEmpty(item.estimateSaleTotal)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.estimateSaleTotal.key).html(item.estimateSaleTotal);
+        }
+        if (underConstruction.isEmpty(item.totalGrossFloorArea)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.totalGrossFloorArea.key).html(item.totalGrossFloorArea);
+        }
+        if (underConstruction.isEmpty(item.constructionCostSubtotal)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionCostSubtotal.key).html(item.constructionCostSubtotal);
+        }
+        if (underConstruction.isEmpty(item.unforeseenExpenses)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.unforeseenExpenses.key).html(item.unforeseenExpenses);
+        }
+        if (underConstruction.isEmpty(item.investmentProfit)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.investmentProfit.key).html(item.investmentProfit);
+        }
+        if (underConstruction.isEmpty(item.landPriceCorrecting)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.landPrice.correcting).html(item.landPriceCorrecting);
+        }
+        if (underConstruction.isEmpty(item.estimateUnitPriceLandC33)) {
+            $("#" + underConstruction.config.id).find("." + underConstruction.config.estimateUnitPriceLand.C33).html(item.estimateUnitPriceLandC33);
+        }
+        if (underConstruction.isEmpty(item.table)) {
+            $("#" + underConstruction.config.id).find("#" + underParameter.config.frm + " table").eq(0).html(item.table);
+        }
+        $(function () {
+            underParameter.init();
+        });
+    };
+
     $(function () {
         underConstruction.loadData();
         underConstruction.inputEvent();

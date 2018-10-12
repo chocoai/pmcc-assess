@@ -15,7 +15,7 @@
       href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
-        <table id="hypothesisDevelopmentBuildID">
+        <table id="landEngineeringDevelopmentID">
 
         </table>
     </div>
@@ -70,8 +70,8 @@
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 
-    var hypothesisDevelopmentBuild = new Object();
-    hypothesisDevelopmentBuild.isNotNull = function (obj) {
+    var landEngineeringDevelopment = new Object();
+    landEngineeringDevelopment.isNotNull = function (obj) {
         if (obj == 0) {
             return true;
         }
@@ -83,9 +83,9 @@
         }
         return false;
     };
-    hypothesisDevelopmentBuild.config = function () {
+    landEngineeringDevelopment.config = function () {
         return {
-            tableId: "hypothesisDevelopmentBuildID",
+            tableId: "landEngineeringDevelopmentID",
             currencyClass: "constructionInstallationEngineeringFeeBCurrencyClassA",//建安成本小计 3个label class
             areaClass: "constructionInstallationEngineeringFeeBAreaClassA",
             totalCostClass: "constructionInstallationEngineeringFeeBTotalCostClassA",
@@ -101,8 +101,8 @@
      * 描述:读取树形表单数据
      * @date: 2018-08-23
      **/
-    hypothesisDevelopmentBuild.loadData = function () {
-        var data = $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getData');
+    landEngineeringDevelopment.loadData = function () {
+        var data = $('#' + landEngineeringDevelopment.config().tableId).treegrid('getData');
         return data;
     };
 
@@ -111,13 +111,13 @@
      * 描述:注入修改的数据
      * @date:2018-08-23
      **/
-    hypothesisDevelopmentBuild.setServerData = function (data) {
+    landEngineeringDevelopment.setServerData = function (data) {
         this.data = data;
     };
-    hypothesisDevelopmentBuild.setArea = function (data) {
-        $('.' + hypothesisDevelopmentBuild.config().areaClass).html(data);
+    landEngineeringDevelopment.setArea = function (data) {
+        $('.' + landEngineeringDevelopment.config().areaClass).html(data);
     };
-    hypothesisDevelopmentBuild.getColumns = function () {
+    landEngineeringDevelopment.getColumns = function () {
         var data = null;
         var precision = 4;//精度
         data = [[
@@ -145,8 +145,8 @@
         return data;
     };
 
-    hypothesisDevelopmentBuild.treeGrIdInit = function (data) {
-        $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid({
+    landEngineeringDevelopment.treeGrIdInit = function (data) {
+        $('#' + landEngineeringDevelopment.config().tableId).treegrid({
             iconCls: 'icon-edit',
             nowrap: false,
             width: 1000,
@@ -158,10 +158,10 @@
             treeField: 'name',//treegrid 树形结构主键 text
             fitColumns: true,
             striped: true,//显示斑马线
-            columns: hypothesisDevelopmentBuild.getColumns(),
+            columns: landEngineeringDevelopment.getColumns(),
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
-                hypothesisDevelopmentBuild.updateChildren($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('find', row.id), changes);
+                landEngineeringDevelopment.updateChildren($('#' + landEngineeringDevelopment.config().tableId).treegrid('find', row.id), changes);
             }
         });
     };
@@ -171,7 +171,7 @@
      * 描述:数据表格初始化数据
      * @date:2018-08-13
      **/
-    hypothesisDevelopmentBuild.init = function () {
+    landEngineeringDevelopment.init = function () {
         function isNotNull(obj) {
             if (obj) {
                 return true;
@@ -183,11 +183,11 @@
         var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
         if (isNotNull(data)) {//引用修改数据继续处理
             console.log("引用修改数据!");
-            hypothesisDevelopmentBuild.treeGrIdInit(data);
+            landEngineeringDevelopment.treeGrIdInit(data);
         } else {//说明非修改 需要手动从服务器上获取数据
             console.log("从服务器上获取数据!");
             //说明 由于 easyui 如果是传入的data并且data中是没有初始化过的数据那么无法开启编辑
-            $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid({
+            $('#' + landEngineeringDevelopment.config().tableId).treegrid({
                 iconCls: 'icon-edit',
                 nowrap: false,
                 // rownumbers: true,
@@ -201,10 +201,10 @@
                 treeField: 'name',//treegrid 树形结构主键 text
                 fitColumns: true,
                 striped: true,//显示斑马线
-                columns: hypothesisDevelopmentBuild.getColumns(),
+                columns: landEngineeringDevelopment.getColumns(),
                 onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                     //根据id获取值
-                    hypothesisDevelopmentBuild.updateChildren($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('find', row.id), changes);
+                    landEngineeringDevelopment.updateChildren($('#' + landEngineeringDevelopment.config().tableId).treegrid('find', row.id), changes);
                 }
             });
         }
@@ -215,8 +215,8 @@
      * 描述:更新子节点数据
      * @date:2018-08-13
      **/
-    hypothesisDevelopmentBuild.updateChildren = function (data, changes) {
-        if (hypothesisDevelopmentBuild.isNotNull(data)) {
+    landEngineeringDevelopment.updateChildren = function (data, changes) {
+        if (landEngineeringDevelopment.isNotNull(data)) {
             var currency = null;
             var area = null;
             if (changes.currency) {//单方造价
@@ -237,26 +237,26 @@
                     return false;
                 }
             }
-            if (hypothesisDevelopmentBuild.isNotNull(area)) {
-                if (hypothesisDevelopmentBuild.isNotNull(currency)) {
+            if (landEngineeringDevelopment.isNotNull(area)) {
+                if (landEngineeringDevelopment.isNotNull(currency)) {
                     //更新节点值
-                    $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('update', {
+                    $('#' + landEngineeringDevelopment.config().tableId).treegrid('update', {
                         id: data.id,
                         row: {currency: currency, area: area}
                     });
                     if (!data.parent) {//说明不是父节点
-                        hypothesisDevelopmentBuild.updateFather(data);
+                        landEngineeringDevelopment.updateFather(data);
                     } else {
-                        hypothesisDevelopmentBuild.updateDirectFather();
+                        landEngineeringDevelopment.updateDirectFather();
                     }
                 }
             }
         }
     };
 
-    hypothesisDevelopmentBuild.updateDirectFather = function () {
+    landEngineeringDevelopment.updateDirectFather = function () {
         //更新建安成本小计
-        hypothesisDevelopmentBuild.totalCalculation();
+        landEngineeringDevelopment.totalCalculation();
     };
 
     /**
@@ -264,12 +264,12 @@
      * 描述:更新父节点数据
      * @date:2018-08-13
      **/
-    hypothesisDevelopmentBuild.updateFather = function (data) {
-        var parent = $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getParent', data.id);
+    landEngineeringDevelopment.updateFather = function (data) {
+        var parent = $('#' + landEngineeringDevelopment.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
         var area = 0;//建筑面积
         var currency = 0;//单方造价
-        if (hypothesisDevelopmentBuild.isNotNull(childrens)) {
+        if (landEngineeringDevelopment.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency += Number(n.currency);
                 area += Number(n.area);
@@ -278,12 +278,12 @@
         parent.currency = currency;
         parent.area = area;
         //更新节点值
-        $('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('update', {
+        $('#' + landEngineeringDevelopment.config().tableId).treegrid('update', {
             id: parent.id,
             row: parent
         });
         //更新建安成本小计
-        hypothesisDevelopmentBuild.totalCalculation();
+        landEngineeringDevelopment.totalCalculation();
     };
 
     /**
@@ -291,14 +291,14 @@
      * 描述:建安成本小计
      * @date:2018-08-14
      **/
-    hypothesisDevelopmentBuild.totalCalculation = function () {
+    landEngineeringDevelopment.totalCalculation = function () {
         var area = 0;//建筑面积
         var currency = 0;//单方造价
-        $.each($('#' + hypothesisDevelopmentBuild.config().tableId).treegrid('getRoots'), function (i, n) {
+        $.each($('#' + landEngineeringDevelopment.config().tableId).treegrid('getRoots'), function (i, n) {
             currency += Number(n.currency);
             area += Number(n.area);
         });
-        hypothesisDevelopmentBuild.updateHtml({
+        landEngineeringDevelopment.updateHtml({
             area: area,
             currency: currency,
         });
@@ -308,15 +308,15 @@
      * 描述:建安成本小计 写html value
      * @date:2018-08-14
      **/
-    hypothesisDevelopmentBuild.updateHtml = function (data) {
-        var area = $('.' + hypothesisDevelopmentBuild.config().areaClass).html();
+    landEngineeringDevelopment.updateHtml = function (data) {
+        var area = $('.' + landEngineeringDevelopment.config().areaClass).html();
         area = Number(area);
         area += Number(data.area);
         var totalCost = 0;
         totalCost = Number(area) * Number(data.currency);
-        $('.' + hypothesisDevelopmentBuild.config().areaClass).html(area);
-        $('.' + hypothesisDevelopmentBuild.config().currencyClass).html(data.currency);
-        $('.' + hypothesisDevelopmentBuild.config().totalCostClass).html(totalCost);
+        $('.' + landEngineeringDevelopment.config().areaClass).html(area);
+        $('.' + landEngineeringDevelopment.config().currencyClass).html(data.currency);
+        $('.' + landEngineeringDevelopment.config().totalCostClass).html(totalCost);
     };
 
     /**
@@ -324,8 +324,8 @@
      * 描述:获取建安成本小计
      * @date:2018-08-14
      **/
-    hypothesisDevelopmentBuild.getCalculatedResults = function () {
-        return $('.' + hypothesisDevelopmentBuild.config().totalCostClass).html();
+    landEngineeringDevelopment.getCalculatedResults = function () {
+        return $('.' + landEngineeringDevelopment.config().totalCostClass).html();
     };
 
 
@@ -334,7 +334,7 @@
      * 描述:封装临时的方法到$datagrid上 enableCellEditing,editCell
      * @date:2018-08-13
      **/
-    hypothesisDevelopmentBuild.extendOverwrite = function () {
+    landEngineeringDevelopment.extendOverwrite = function () {
         $.extend($.fn.datagrid.methods, {
             editCell: function (jq, param) {
                 return jq.each(function () {
@@ -389,14 +389,14 @@
         });
     };
 
-    hypothesisDevelopmentBuild.viewInit = function () {
-        hypothesisDevelopmentBuild.extendOverwrite();
-        hypothesisDevelopmentBuild.init();
+    landEngineeringDevelopment.viewInit = function () {
+        landEngineeringDevelopment.extendOverwrite();
+        landEngineeringDevelopment.init();
         /**
          * @author:  zch
          * 描述:开启单元格编辑
          * @date:2018-08-13
          **/
-        $('#' + hypothesisDevelopmentBuild.config().tableId).datagrid().datagrid('enableCellEditing');
+        $('#' + landEngineeringDevelopment.config().tableId).datagrid().datagrid('enableCellEditing');
     };
 </script>

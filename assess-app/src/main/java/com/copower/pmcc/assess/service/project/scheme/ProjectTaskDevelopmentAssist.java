@@ -110,13 +110,15 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             jsonContent = jsonObject.getString("supportInfoList");
             if (!StringUtils.isEmpty(jsonContent)) {
                 supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
-                jsonContent = null;//必须初始化,否则下面判定失败
+                //必须初始化,否则下面判定失败
+                jsonContent = null;
             }
             jsonContent = jsonObject.getString("mdDevelopmentHypothesis");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentHypothesis = JSONObject.parseObject(jsonContent, MdDevelopmentHypothesis.class);
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
-                jsonContent = null;//必须初始化,否则下面判定失败
+                //必须初始化,否则下面判定失败
+                jsonContent = null;
             }
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
@@ -124,7 +126,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
             }
         } catch (Exception e1) {
-            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
+            //不需要抛出异常
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));
         }
 
         //处理评估方法
@@ -134,29 +137,35 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
 
-        //处理假设开发法中的假设开发法
+        //处理假设开发法 在建工程
         if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis)) {
             mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
             if (mdCostAndDevelopmentOther != null) {
-                mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                //存入从表id
+                mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());
             }
-            mdDevelopmentHypothesis.setPid(id);//存入上级主表id
+            //存入上级主表id
+            mdDevelopmentHypothesis.setPid(id);
             pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
-            if (mdCostAndDevelopmentOther != null) {//处理从表
+            //处理从表
+            if (mdCostAndDevelopmentOther != null) {
                 mdCostAndDevelopmentOther.setPid(pid);
                 mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
             }
         }
 
-        //处理假设开发法中的在建工程建设开发法
+        //处理假设开发法 土地
         if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural)) {
             mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
             if (mdCostAndDevelopmentOther != null) {
-                mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                //存入从表id
+                mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());
             }
-            mdDevelopmentArchitectural.setPid(id);//存入上级主表id
+            //存入上级主表id
+            mdDevelopmentArchitectural.setPid(id);
             pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
-            if (mdCostAndDevelopmentOther != null) {//处理从表
+            //处理从表
+            if (mdCostAndDevelopmentOther != null) {
                 mdCostAndDevelopmentOther.setPid(pid);
                 mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
             }
@@ -185,7 +194,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null ;
         String jsonContent = null;
-        Integer id = 0;//(id至少会有一个实体含有 否则保存不会提交成功)
+        //(id至少会有一个实体含有 否则保存不会提交成功)
+        Integer id = 0;
         Integer pid = 0;
 
         //解析实体 ,并且对json 进行一些处理
@@ -193,13 +203,15 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             jsonContent = jsonObject.getString("supportInfoList");
             if (!StringUtils.isEmpty(jsonContent)) {
                 supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
-                jsonContent = null;//必须初始化,否则下面判定失败
+                //必须初始化,否则下面判定失败
+                jsonContent = null;
             }
             jsonContent = jsonObject.getString("mdDevelopmentHypothesis");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentHypothesis = JSONObject.parseObject(jsonContent, MdDevelopmentHypothesis.class);
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
-                jsonContent = null;//必须初始化,否则下面判定失败
+                //必须初始化,否则下面判定失败
+                jsonContent = null;
                 if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis.getId())){
                     id = mdDevelopmentService.getMdDevelopmentHypothesis(mdDevelopmentHypothesis.getId()).getPid();
                 }
@@ -213,7 +225,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 }
             }
         } catch (Exception e1) {
-            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
+            //不需要抛出异常
+            logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));
         }
 
         //处理评估方法
@@ -223,16 +236,19 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
 
-        //处理假设开发法中的假设开发法
+        //处理假设开发法 在建工程
         if (mdDevelopmentHypothesis != null) {
             if (mdDevelopmentHypothesis.getId() == null){
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
-                    mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                    //存入从表id
+                    mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());
                 }
-                mdDevelopmentHypothesis.setPid(id);//存入上级主表id
+                //存入上级主表id
+                mdDevelopmentHypothesis.setPid(id);
                 pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
-                if (mdCostAndDevelopmentOther != null) {//处理从表
+                //处理从表
+                if (mdCostAndDevelopmentOther != null) {
                     mdCostAndDevelopmentOther.setPid(pid);
                     mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
                 }
@@ -241,16 +257,19 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
 
-        //处理假设开发法中的在建工程建设开发法
+        //处理假设开发法 土地
         if (mdDevelopmentArchitectural != null) {
             if (mdDevelopmentArchitectural.getId() == null){
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
-                    mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
+                    //存入从表id
+                    mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());
                 }
-                mdDevelopmentArchitectural.setPid(id);//存入上级主表id
+                //存入上级主表id
+                mdDevelopmentArchitectural.setPid(id);
                 pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
-                if (mdCostAndDevelopmentOther != null) {//处理从表
+                //处理从表
+                if (mdCostAndDevelopmentOther != null) {
                     mdCostAndDevelopmentOther.setPid(pid);
                     mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
                 }
@@ -275,19 +294,21 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         try {
             schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         } catch (Exception e1) {
-            logger.error(String.format("没有获取到数据 ==> %s", e1.getMessage()));//不需要抛出异常
+            //不需要抛出异常
+            logger.error(String.format("没有获取到数据 ==> %s", e1.getMessage()));
         }
         Integer pid = null;
         if (schemeInfo != null) {
             pid = schemeInfo.getMethodDataId();
         }
-        //设置假设开发法中的假设开发法
+        //设置假设开发法 在建工程
         if (pid != null) {
             mdDevelopmentHypothesis = new MdDevelopmentHypothesis();
             mdDevelopmentHypothesis.setPid(pid);
             List<MdDevelopmentHypothesis> mdDevelopmentHypothesisList = mdDevelopmentService.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
             if (!ObjectUtils.isEmpty(mdDevelopmentHypothesisList)) {
-                mdDevelopmentHypothesis = mdDevelopmentHypothesisList.get(0);//一定会是只有一个或者没有,关于原因 查看save method
+                //一定会是只有一个或者没有,关于原因 查看save method
+                mdDevelopmentHypothesis = mdDevelopmentHypothesisList.get(0);
                 modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
                 modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentHypothesis.getEngineeringId());
@@ -297,13 +318,14 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 }
             }
         }
-        //设置假设开发法中的在建工程建设开发法
+        //假设开发法 土地
         if (pid != null) {
             mdDevelopmentArchitectural = new MdDevelopmentArchitectural();
             mdDevelopmentArchitectural.setPid(pid);
             List<MdDevelopmentArchitectural> mdDevelopmentArchitecturalList = mdDevelopmentService.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
             if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)){
-                mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);//一定会是 只有一个或者没有,原因...
+                //一定会是 只有一个或者没有,原因...
+                mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);
                 modelAndView.addObject("mdDevelopmentArchitecturalJSON",mdDevelopmentArchitectural.getJsonContent());
                 modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentArchitectural.getEngineeringId());

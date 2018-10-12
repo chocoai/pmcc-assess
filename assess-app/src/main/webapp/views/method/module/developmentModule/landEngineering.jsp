@@ -240,6 +240,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 <script>
     var landEngineering = new Object();
@@ -981,16 +983,16 @@
                 content: $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionInstallationEngineeringFee.class)
             });
             $(function () {
-                hypothesisDevelopmentBuild.viewInit();
+                landEngineeringDevelopment.viewInit();
                 var total = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
-                hypothesisDevelopmentBuild.setArea(total);
+                landEngineeringDevelopment.setArea(total);
             });
         },
         eventSave: function () {
-            var data = hypothesisDevelopmentBuild.getCalculatedResults();
+            var data = landEngineeringDevelopment.getCalculatedResults();
             landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
             landEngineering.algsObj.constructionInstallationEngineeringFee();
-            // landEngineering.constructionInstallationEngineeringFeeEvent.serverSave(hypothesisDevelopmentBuild.loadData());
+            landEngineering.constructionInstallationEngineeringFeeEvent.serverSave(landEngineeringDevelopment.loadData());
             landEngineering.constructionInstallationEngineeringFeeEvent.close();
         },
         close: function () {
@@ -1003,7 +1005,7 @@
                 type: "post",
                 data: {
                     jsonContent: JSON.stringify(data),
-                    type: "MdCostBuilding",
+                    type: "MdDevelopmentArchitectural",
                     id: "${mdCostAndDevelopmentOtherBuilding.id}"
                 },
                 dataType: "json",
@@ -1052,6 +1054,100 @@
             landEngineering.monitor.infrastructureMatchingCost();
         }
     };
+
+
+    /**
+     * @author:  zch
+     * 描述:收集数据
+     * @date:2018-10-12
+     **/
+    landEngineering.formParams = function () {
+        var item = {};
+        var table = $("#" + landEngineering.config.id).find("#" + parameter.config.frm + " table").eq(0).html();
+        var forms = $("#" + landEngineering.config.id).find("form");
+        $.each(forms, function (i, n) {
+            if (!$(n).valid()) {
+                return false;
+            }
+        });
+        $.each(forms, function (i, n) {
+            try {
+                /*Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 ECMAScript6 (可能不兼容) */
+                item = Object.assign(item, formSerializeArray($(n)));
+            } catch (e) {
+                item = $.extend(item, formSerializeArray($(n)));
+            }
+        });
+        item.projectConstructionPeriod = $("#" + landEngineering.config.projectConstructionPeriod).val();
+        item.developedTime = $("#" + landEngineering.config.developedTime).val();
+
+        item.estimateSaleTotal = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.estimateSaleTotal.key).html();
+        item.totalGrossFloorArea = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+        item.constructionCostSubtotal = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionCostSubtotal.key).html();
+        item.unforeseenExpenses = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.unforeseenExpenses.key).html();
+        item.investmentProfit = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.investmentProfit.key).html();
+        item.landPriceCorrecting = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.landPrice.correcting).html();
+        item.estimateUnitPriceLandC33 = $("#" + landEngineering.config.id).find("." + landEngineering.config.estimateUnitPriceLand.C33).html();
+        item.table = table;
+        return item;
+    };
+
+
+    /**
+     * @author:  zch
+     * 描述:赋值
+     * @date:2018-10-12
+     **/
+    landEngineering.initForm = function (item) {
+        var forms = $("#" + landEngineering.config.id).find("form");
+        $.each(forms, function (i, n) {
+            $(n).clearAll();
+        });
+        if (landEngineering.isEmpty(item.projectConstructionPeriod)) {
+            $("#" + landEngineering.config.projectConstructionPeriod).val(null);
+        }
+        if (landEngineering.isEmpty(item.developedTime)) {
+            $("#" + landEngineering.config.developedTime).val(null);
+        }
+
+        $.each(forms, function (i, n) {
+            $(n).initForm(item);
+        });
+        if (landEngineering.isEmpty(item.projectConstructionPeriod)) {
+            $("#" + landEngineering.config.projectConstructionPeriod).val(item.projectConstructionPeriod);
+        }
+        if (landEngineering.isEmpty(item.developedTime)) {
+            $("#" + landEngineering.config.developedTime).val(item.developedTime);
+        }
+        if (landEngineering.isEmpty(item.estimateSaleTotal)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.estimateSaleTotal.key).html(item.estimateSaleTotal);
+        }
+        if (landEngineering.isEmpty(item.totalGrossFloorArea)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html(item.totalGrossFloorArea);
+        }
+        if (landEngineering.isEmpty(item.constructionCostSubtotal)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionCostSubtotal.key).html(item.constructionCostSubtotal);
+        }
+        if (landEngineering.isEmpty(item.unforeseenExpenses)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.unforeseenExpenses.key).html(item.unforeseenExpenses);
+        }
+        if (landEngineering.isEmpty(item.investmentProfit)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.investmentProfit.key).html(item.investmentProfit);
+        }
+        if (landEngineering.isEmpty(item.landPriceCorrecting)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.landPrice.correcting).html(item.landPriceCorrecting);
+        }
+        if (landEngineering.isEmpty(item.estimateUnitPriceLandC33)) {
+            $("#" + landEngineering.config.id).find("." + landEngineering.config.estimateUnitPriceLand.C33).html(item.estimateUnitPriceLandC33);
+        }
+        if (landEngineering.isEmpty(item.table)) {
+            $("#" + landEngineering.config.id).find("#" + parameter.config.frm + " table").eq(0).html(item.table);
+        }
+        $(function () {
+            parameter.init();
+        });
+    };
+
     $(function () {
         landEngineering.loadData();
         landEngineering.inputEvent();

@@ -135,13 +135,6 @@
 
 
     function submit() {
-
-        if (!$("#frmDevelopment").valid()) {
-            return false;
-        }
-        if (!$("#frmArchitecturalEngineering").valid()) {
-            return false;
-        }
         if (!$("#frm_task").valid()) {
             return false;
         }
@@ -150,7 +143,7 @@
         }
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
-        data.mdDevelopmentHypothesis = optionsBuildBox.getDevelopment();
+        data.mdDevelopmentHypothesis = optionsBuildBox.getHypothesisDevelopment();
         data.mdDevelopmentArchitectural = optionsBuildBox.getArchitecturalEngineering();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());

@@ -16,7 +16,7 @@
     </div>
 
     <div class="x_content">
-        <form class="form-horizontal">
+        <form class="form-horizontal" name="cost">
             <div class="form-group">
                 <label class="col-sm-1 control-label">
                     勘察设计和前期工程费率

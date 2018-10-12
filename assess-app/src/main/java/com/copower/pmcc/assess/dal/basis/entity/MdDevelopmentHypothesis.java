@@ -1,26 +1,33 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class MdDevelopmentHypothesis {
     private Integer id;
 
-    private String creator;
+    private String estimateunitpricelandc33;
 
-    private Date gmtCreated;
+    private String landpricecorrecting;
 
-    private Date gmtModified;
+    private String investmentprofit;
 
-    private BigDecimal evaluationPrice;
+    private String constructioncostsubtotal;
 
-    private BigDecimal constructionInstallationEngineeringFee;
+    private String totalgrossfloorarea;
+
+    private String estimatesaletotal;
 
     private String jsonContent;
 
     private Integer engineeringId;
 
     private Integer pid;
+
+    private String creator;
+
+    private Date gmtModified;
+
+    private Date gmtCreated;
 
     public Integer getId() {
         return id;
@@ -30,44 +37,52 @@ public class MdDevelopmentHypothesis {
         this.id = id;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getEstimateunitpricelandc33() {
+        return estimateunitpricelandc33;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setEstimateunitpricelandc33(String estimateunitpricelandc33) {
+        this.estimateunitpricelandc33 = estimateunitpricelandc33 == null ? null : estimateunitpricelandc33.trim();
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
+    public String getLandpricecorrecting() {
+        return landpricecorrecting;
     }
 
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
+    public void setLandpricecorrecting(String landpricecorrecting) {
+        this.landpricecorrecting = landpricecorrecting == null ? null : landpricecorrecting.trim();
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
+    public String getInvestmentprofit() {
+        return investmentprofit;
     }
 
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    public void setInvestmentprofit(String investmentprofit) {
+        this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
     }
 
-    public BigDecimal getEvaluationPrice() {
-        return evaluationPrice;
+    public String getConstructioncostsubtotal() {
+        return constructioncostsubtotal;
     }
 
-    public void setEvaluationPrice(BigDecimal evaluationPrice) {
-        this.evaluationPrice = evaluationPrice;
+    public void setConstructioncostsubtotal(String constructioncostsubtotal) {
+        this.constructioncostsubtotal = constructioncostsubtotal == null ? null : constructioncostsubtotal.trim();
     }
 
-    public BigDecimal getConstructionInstallationEngineeringFee() {
-        return constructionInstallationEngineeringFee;
+    public String getTotalgrossfloorarea() {
+        return totalgrossfloorarea;
     }
 
-    public void setConstructionInstallationEngineeringFee(BigDecimal constructionInstallationEngineeringFee) {
-        this.constructionInstallationEngineeringFee = constructionInstallationEngineeringFee;
+    public void setTotalgrossfloorarea(String totalgrossfloorarea) {
+        this.totalgrossfloorarea = totalgrossfloorarea == null ? null : totalgrossfloorarea.trim();
+    }
+
+    public String getEstimatesaletotal() {
+        return estimatesaletotal;
+    }
+
+    public void setEstimatesaletotal(String estimatesaletotal) {
+        this.estimatesaletotal = estimatesaletotal == null ? null : estimatesaletotal.trim();
     }
 
     public String getJsonContent() {
@@ -92,5 +107,29 @@ public class MdDevelopmentHypothesis {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
     }
 }

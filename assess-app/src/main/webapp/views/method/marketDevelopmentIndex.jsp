@@ -79,7 +79,6 @@
 </div>
 
 <script>
-
     var AlgorithmsPrototype = function () {
 
     };
@@ -101,8 +100,7 @@
         } else {
             return false;
         }
-    }
-
+    };
 
     /**
      * @author:  zch
@@ -125,87 +123,6 @@
         return true;
     };
 
-    /**
-     * @author:  zch
-     * 描述:函数，加法函数，用来得到精确的加法结果 如:3,2 = 5
-     * 参数：arg1：第一个加数；arg2第二个加数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数）
-     * @date:2018-08-07
-     * @return 两数相加的结果
-     **/
-    AlgorithmsPrototype.prototype.add = function (arg1, arg2) {
-        arg1 = arg1.toString(), arg2 = arg2.toString();
-        var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
-            d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
-        var maxLen = Math.max(d1.length, d2.length);
-        var m = Math.pow(10, maxLen);
-        var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
-        var d = arguments[2];
-        return typeof d === "number" ? Number((result).toFixed(d)) : result;
-    };
-
-    /**
-     * @author:  zch
-     * 描述:减法函数，用来得到精确的减法结果 如:3,2 = 1
-     *参数：arg1：第一个加数；arg2第二个加数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数
-     * @date:2018-08-07
-     **/
-    AlgorithmsPrototype.prototype.sub = function (arg1, arg2) {
-        if (AlgorithmsPrototype.prototype.isNumber(arg1)) {
-            if (AlgorithmsPrototype.prototype.isNumber(arg2)) {
-                return AlgorithmsPrototype.prototype.add(arg1, -Number(arg2), arguments[2]);
-            } else {
-                return "";
-            }
-        } else {
-            return "";
-        }
-    };
-
-    /**
-     * @author:  zch
-     * 描述:乘法函数，用来得到精确的乘法结果 如:3,2 = 6
-     * 参数：arg1：第一个乘数；arg2第二个乘数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
-     * @date:2018-08-07
-     **/
-    AlgorithmsPrototype.prototype.mul = function (arg1, arg2) {
-        if (AlgorithmsPrototype.prototype.isNumber(arg1)) {
-            if (AlgorithmsPrototype.prototype.isNumber(arg2)) {
-                var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
-                m = (r1.split(".")[1] ? r1.split(".")[1].length : 0) + (r2.split(".")[1] ? r2.split(".")[1].length : 0);
-                resultVal = Number(r1.replace(".", "")) * Number(r2.replace(".", "")) / Math.pow(10, m);
-                return typeof d !== "number" ? Number(resultVal) : Number(resultVal.toFixed(parseInt(d)));
-            } else {
-                return "";
-            }
-        } else {
-            return "";
-        }
-    }
-
-    /**
-     * @author:  zch
-     * 参数：arg1：除数；arg2被除数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
-     * 描述:除法函数，用来得到精确的除法结果 如:3,2 = 1.5
-     * @date:2018-08-07
-     **/
-    AlgorithmsPrototype.prototype.div = function (arg1, arg2) {
-        if (AlgorithmsPrototype.prototype.isNumber(arg1)) {
-            if (AlgorithmsPrototype.prototype.isNumber(arg2)) {
-                if (arg1 != 0) {//除数不能为0
-                    var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
-                    m = (r2.split(".")[1] ? r2.split(".")[1].length : 0) - (r1.split(".")[1] ? r1.split(".")[1].length : 0);
-                    resultVal = Number(r1.replace(".", "")) / Number(r2.replace(".", "")) * Math.pow(10, m);
-                    return typeof d !== "number" ? Number(resultVal) : Number(resultVal.toFixed(parseInt(d)));
-                } else {
-                    return "";
-                }
-            } else {
-                return "";
-            }
-        } else {
-            return "";
-        }
-    }
 
 
     var optionsBuildBox = new Object();
@@ -235,33 +152,33 @@
         });
     };
 
-    //初始化假设开发法
+    //初始化在建工程
     optionsBuildBox.hypothesisDevelopmentInit = function (data) {
-        $("#frmDevelopment").initForm(data);
+        underConstruction.initForm(data);
     };
 
-    //在建工程建设开发法
+    //初始化 土地
     optionsBuildBox.architecturalEngineeringInit = function (data) {
-        $("#frmArchitecturalEngineering").initForm(data);
+        landEngineering.initForm(data);
     };
     /**
      * @author:  zch
-     * 描述:获取假设开发法数据
+     * 描述:获取 在建工程
      * @date:2018-08-17
      **/
-    optionsBuildBox.getDevelopment = function () {
-        var jsonParams = formParams("frmDevelopment");
+    optionsBuildBox.getHypothesisDevelopment = function () {//getDevelopment
+        var jsonParams = underConstruction.formParams();
         jsonParams.id = "${mdDevelopmentHypothesis.id}";//确保修改能成功
         return jsonParams;
     };
 
     /**
      * @author:  zch
-     * 描述:在建工程建设开发法数据
+     * 描述:获取 土地
      * @date:2018-08-17
      **/
     optionsBuildBox.getArchitecturalEngineering = function () {
-        var jsonParams = formParams("frmArchitecturalEngineering");
+        var jsonParams = landEngineering.formParams();
         jsonParams.id = "${mdDevelopmentArchitectural.id}";//确保修改能成功
         return jsonParams;
     };
@@ -281,7 +198,7 @@
                     try {
                         mdCostAndDevelopmentOtherArchitecturalJSON = $("#mdCostAndDevelopmentOtherArchitecturalJSON").val();
                         mdCostAndDevelopmentOtherArchitecturalJSON = JSON.parse(mdCostAndDevelopmentOtherArchitecturalJSON);
-                        architecturalEngineeringObj.setServerData(mdCostAndDevelopmentOtherArchitecturalJSON);
+                        landEngineeringDevelopment.setServerData(mdCostAndDevelopmentOtherArchitecturalJSON);
                     } catch (e) {
                         console.log("设置从表数据 失败!");
                     }
@@ -303,7 +220,7 @@
                     try {
                         mdCostAndDevelopmentOtherHypothesisJSON = $("#mdCostAndDevelopmentOtherHypothesisJSON").val();
                         mdCostAndDevelopmentOtherHypothesisJSON = JSON.parse(mdCostAndDevelopmentOtherHypothesisJSON);
-                        hypothesisDevelopmentBuild.setServerData(mdCostAndDevelopmentOtherHypothesisJSON);
+                        underDevelopment.setServerData(mdCostAndDevelopmentOtherHypothesisJSON);
                     } catch (e) {
                         console.log("设置从表数据 失败!");
                     }

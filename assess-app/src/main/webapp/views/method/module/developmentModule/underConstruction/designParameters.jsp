@@ -16,7 +16,7 @@
     </div>
 
     <div class="x_content">
-        <form class="form-horizontal">
+        <form class="form-horizontal" name="designParameters">
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
