@@ -3,10 +3,8 @@ package com.copower.pmcc.assess.test;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ExamineTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareFieldDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareField;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.google.common.collect.Lists;
@@ -31,8 +29,6 @@ public class initMdTest {
     private MdMarketCompareDao mdMarketCompareDao;
     @Autowired
     private MdMarketCompareItemDao mdMarketCompareItemDao;
-    @Autowired
-    private MdMarketCompareFieldDao mdMarketCompareFieldDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -73,10 +69,6 @@ public class initMdTest {
         mdMarketCompare.setCreator("admin");
         mdMarketCompareDao.addMarketCompare(mdMarketCompare);
 
-        for (MdMarketCompareField mdMarketCompareField : getFieldList()) {
-            mdMarketCompareField.setMcId(mdMarketCompare.getId());
-            mdMarketCompareFieldDao.addMarketCompareField(mdMarketCompareField);
-        }
 
         MdMarketCompareItem evaluationObject = getEvaluationObject();
         evaluationObject.setMcId(mdMarketCompare.getId());
@@ -88,37 +80,7 @@ public class initMdTest {
         }
     }
 
-    //获取所有关联字段信息
-    private List<MdMarketCompareField> getFieldList() {
-        List<MdMarketCompareField> list = Lists.newArrayList();
-        MdMarketCompareField mdMarketCompareField = new MdMarketCompareField();
-        mdMarketCompareField.setName("楼盘名称");
-        mdMarketCompareField.setValue("楼盘名称");
-        mdMarketCompareField.setBisPrimaryKey(true);
-        mdMarketCompareField.setBisOnlyView(true);
-        list.add(mdMarketCompareField);
 
-        mdMarketCompareField = new MdMarketCompareField();
-        mdMarketCompareField.setName("交易情况");
-        mdMarketCompareField.setValue("交易情况");
-        list.add(mdMarketCompareField);
-
-        mdMarketCompareField = new MdMarketCompareField();
-        mdMarketCompareField.setName("付款方式");
-        mdMarketCompareField.setValue("付款方式");
-        list.add(mdMarketCompareField);
-
-        mdMarketCompareField = new MdMarketCompareField();
-        mdMarketCompareField.setName("房地产坐落及方位");
-        mdMarketCompareField.setValue("房地产坐落及方位");
-        list.add(mdMarketCompareField);
-
-        mdMarketCompareField = new MdMarketCompareField();
-        mdMarketCompareField.setName("交通条件");
-        mdMarketCompareField.setValue("交通条件");
-        list.add(mdMarketCompareField);
-        return list;
-    }
 
     //获取估价对象信息
     private MdMarketCompareItem getEvaluationObject() {

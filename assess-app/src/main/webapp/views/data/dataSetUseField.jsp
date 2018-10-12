@@ -87,21 +87,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-3 control-label">
-                                            设定用途<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <select id="setUse" name="setUse" class="form-control search-select select2" required>
-                                                <option value="" >-请选择-</option>
-                                                <c:forEach items="${setUseList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
                                             是否启用
                                         </label>
                                         <div class="col-sm-9">
@@ -391,7 +376,6 @@
                     $("#name").val(result.data.name);
                     $("#fieldName").val(result.data.fieldName);
                     $("#bisEnable").prop("checked", result.data.bisEnable);
-                    $("#setUse").val(result.data.setUse).trigger('change');
                     $("#sorting").val(result.data.sorting);
                     $("#remark").val(result.data.remark);
                     $('#divBox').modal();

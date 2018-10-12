@@ -13,6 +13,8 @@ public class DataSetUseField {
 
     private Integer setUse;
 
+    private String level;
+
     private Boolean bisPrimaryKey;
 
     private Boolean bisPrice;
@@ -71,6 +73,14 @@ public class DataSetUseField {
 
     public void setSetUse(Integer setUse) {
         this.setUse = setUse;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level == null ? null : level.trim();
     }
 
     public Boolean getBisPrimaryKey() {

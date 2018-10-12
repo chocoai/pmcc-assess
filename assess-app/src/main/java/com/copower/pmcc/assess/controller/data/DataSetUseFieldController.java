@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataSetUseField;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
@@ -43,8 +41,6 @@ public class DataSetUseFieldController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/data/dataSetUseField");
-        List<BaseDataDic> setUseList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.WORK_PROGRAMME_SET_USE);
-        modelAndView.addObject("setUseList",setUseList);
         return modelAndView;
     }
     //endregion

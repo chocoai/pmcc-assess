@@ -4,6 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
 <body class="nav-md footer_fixed">
@@ -33,11 +34,13 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<script src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>
 <input type="hidden" id="evaluationJSON" value='${evaluationJSON}'>
 <input type="hidden" id="casesJSON" value='${casesJSON}'>
+<input type="hidden" id="casesAllJSON" value='${casesAllJSON}'>
 
 <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
 <script type="text/javascript">
@@ -47,6 +50,9 @@
             marketCompare: JSON.parse($("#marketCompareJSON").val()),
             fields: JSON.parse($("#fieldsJSON").val()),
             evaluation: JSON.parse($("#evaluationJSON").val()),
+            casesAll: JSON.parse($("#casesAllJSON").val()),
+            mcId: '${mcId}',
+            setUse: '${setUse}',
             cases: JSON.parse($("#casesJSON").val())
         });
 

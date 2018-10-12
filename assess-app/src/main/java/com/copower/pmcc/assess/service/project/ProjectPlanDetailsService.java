@@ -93,13 +93,12 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
     }
 
-    public ProjectPlanDetails getProjectPlanDetails(Integer declareId,Integer projectPhaseId){
+    public List<ProjectPlanDetails> getProjectPlanDetails(Integer declareId,Integer projectPhaseId){
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhaseId);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
-        if(CollectionUtils.isNotEmpty(planDetailsList)) return planDetailsList.get(0);
-        return null;
+        return planDetailsList;
     }
 
     /**

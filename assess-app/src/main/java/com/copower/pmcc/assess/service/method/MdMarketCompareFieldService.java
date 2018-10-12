@@ -134,7 +134,8 @@ public class MdMarketCompareFieldService {
         ExamineBuilding examineBuilding = CollectionUtils.isEmpty(buildingList) ? new ExamineBuilding() : buildingList.get(0);
         //9.取得他项权利
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY);
-        ProjectPlanDetails inventoryPlanDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
+        ProjectPlanDetails inventoryPlanDetails =  planDetailsList.get(0);
         List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(inventoryPlanDetails.getId());
         //10.取得土地实体情况
         ExamineEstateLandState landState = examineEstateLandStateDao.getEstateLandStateByPlanDetailsId(planDetailsId);
@@ -151,6 +152,7 @@ public class MdMarketCompareFieldService {
         BaseDataDic baseDataDic = null;
         List<MarketCompareItemDto> list = Lists.newArrayList();
         for (DataSetUseField dataSetUseField : setUseFieldList) {
+            if (StringUtils.isBlank(dataSetUseField.getFieldName())) continue;
             switch (dataSetUseField.getFieldName()) {
                 case AssessMarketCompareConstant.ESTATE_NAME://楼盘名称
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.ESTATE_NAME, examineEstate.getName()));
@@ -162,10 +164,10 @@ public class MdMarketCompareFieldService {
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FINANCING_CONDITIONS, houseTrading.getFinancingConditions()));
                     break;
                 case AssessMarketCompareConstant.TAX_BURDEN://税费负担
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TAX_BURDEN, houseTrading.getTaxBurden()));
+                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TAX_BURDEN, baseDataDicService.getNameById(Integer.valueOf(houseTrading.getTaxBurden()))));
                     break;
                 case AssessMarketCompareConstant.PAYMENT_METHOD://付款方式
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PAYMENT_METHOD, houseTrading.getPaymentMethod()));
+                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PAYMENT_METHOD, baseDataDicService.getNameById(Integer.valueOf(houseTrading.getPaymentMethod()))));
                     break;
                 case AssessMarketCompareConstant.TRADING_PRICE://交易价格
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TRADING_PRICE, String.valueOf(houseTrading.getTradingPrice())));
@@ -591,7 +593,7 @@ public class MdMarketCompareFieldService {
 
     private void getCommonBuildingFunction(List<ExamineBuildingFunction> buildingFunctions, StringBuilder stringBuilder, BaseDataDic heatPreservationDic) {
         for (ExamineBuildingFunction buildingFunction : buildingFunctions) {
-            if (buildingFunction.getType().equals(heatPreservationDic.getId())) {
+            if (buildingFunction.getType() != null && buildingFunction.getType().equals(heatPreservationDic.getId())) {
                 stringBuilder.append(buildingFunction.getDecorationPart() == null ? "" : String.format("装修部位:%s、", baseDataDicService.getNameById(buildingFunction.getDecorationPart())));
                 stringBuilder.append(buildingFunction.getDecoratingMaterial() == null ? "" : String.format("装修材料:%s、", baseDataDicService.getNameById(buildingFunction.getDecoratingMaterial())));
                 stringBuilder.append(buildingFunction.getMaterialPrice() == null ? "" : String.format("材料价格区间:%s、", baseDataDicService.getNameById(buildingFunction.getMaterialPrice())));
@@ -622,19 +624,5 @@ public class MdMarketCompareFieldService {
         return marketCompareItemDto;
     }
 
-    public void getInfo(Integer judgeObjectId, List<Integer> casePlanDetailsIdList) {
-        //根据委估对象id找出相应的查勘信息，如果委估对象是由多个权证合并则找第一个权证的相关信息即可
-        //1.找出当前权证的相关信息，根据设定用途确定需要对比的字段信息
-        //2.找出各字段的值，案例类似处理
-        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        DataSetUseField dataSetUseField = dataSetUseFieldService.getSetUseFieldByType(judgeObject.getSetUse());
-    }
-
-    /**
-     *
-     */
-    private void initField() {
-
-    }
 
 }

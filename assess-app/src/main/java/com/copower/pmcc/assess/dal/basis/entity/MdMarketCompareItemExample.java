@@ -426,6 +426,66 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andMustAdjustPriceIsNull() {
+            addCriterion("must_adjust_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceIsNotNull() {
+            addCriterion("must_adjust_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceEqualTo(Boolean value) {
+            addCriterion("must_adjust_price =", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceNotEqualTo(Boolean value) {
+            addCriterion("must_adjust_price <>", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceGreaterThan(Boolean value) {
+            addCriterion("must_adjust_price >", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("must_adjust_price >=", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceLessThan(Boolean value) {
+            addCriterion("must_adjust_price <", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceLessThanOrEqualTo(Boolean value) {
+            addCriterion("must_adjust_price <=", value, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceIn(List<Boolean> values) {
+            addCriterion("must_adjust_price in", values, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceNotIn(List<Boolean> values) {
+            addCriterion("must_adjust_price not in", values, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceBetween(Boolean value1, Boolean value2) {
+            addCriterion("must_adjust_price between", value1, value2, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andMustAdjustPriceNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("must_adjust_price not between", value1, value2, "mustAdjustPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andSpecificPriceIsNull() {
             addCriterion("specific_price is null");
             return (Criteria) this;

@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
 import com.copower.pmcc.assess.service.data.EvaluationThinkingService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -66,6 +67,8 @@ public class SchemeProgrammeController {
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private DataSetUseFieldService dataSetUseFieldService;
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
     public ModelAndView index(Integer projectId, Integer planId) {
@@ -74,7 +77,7 @@ public class SchemeProgrammeController {
         List<SchemeAreaGroup> areaGroups = declareRecordService.getSchemeGroup(projectId);//获取分组信息
         modelAndView.addObject("areaGroups", areaGroups);
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList());
-        modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
+        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldListByPid(0));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD));
         modelAndView.addObject("evaluationMethodMap", evaluationMethodService.getEvaluationMethodMap());
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());

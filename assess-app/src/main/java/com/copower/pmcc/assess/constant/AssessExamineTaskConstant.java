@@ -104,7 +104,13 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_NEWSHUXING = "examine.house.newsHuxing";//最新户型
     public static final String EXAMINE_HOUSE_LOAD_UTILITY = "examine.house.load.utility";//证载用途
     public static final String EXAMINE_HOUSE_PRACTICAL_USE = "examine.house.practical.use";//实际用途
+
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
+    public static final String EXAMINE_HOUSE_NORMAL_TRANSACTION_YES = "examine.house.normal.transaction.yes";//正常交易
+    public static final String EXAMINE_HOUSE_NORMAL_TRANSACTION_NO = "examine.house.normal.transaction.no";//非正常交易
+    public static final String EXAMINE_HOUSE_PAYMENT_METHOD_DISPOSABLE = "examine.house.payment.method.disposable";//一次性
+    public static final String EXAMINE_HOUSE_PAYMENT_METHOD_INSTALMENT = "examine.house.payment.method.instalment";//分期付款
+
     public static final String EXAMINE_HOUSE_DESCRIPTION_TYPE = "examine.house.description_type";//说明事项类型
     public static final String EXAMINE_HOUSE_ENVIRONMENT_USE = "examine.house.environment.use";//使用环境
     public static final String EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE = "examine.house.corollary.equipment.type";//配套设备设施 类型

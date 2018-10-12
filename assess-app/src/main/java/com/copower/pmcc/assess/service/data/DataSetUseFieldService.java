@@ -16,7 +16,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class DataSetUseFieldService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataSetUseField> list = dataSetUseFieldDao.getListObject(name,0);
+        List<DataSetUseField> list = dataSetUseFieldDao.getListObject(name, 0);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<DataSetUseField>() : list);
         return bootstrapTableVo;
@@ -74,28 +73,19 @@ public class DataSetUseFieldService {
      * @param sysSetUseField
      */
     public void saveSetUseField(DataSetUseField sysSetUseField) throws BusinessException {
-        DataSetUseField sysSetUseFieldTemp = null;
-
         if (dataSetUseFieldDao.isExist(sysSetUseField.getFieldName(), sysSetUseField.getId()))
             throw new BusinessException(HttpReturnEnum.EXIST.getName());
         if (sysSetUseField.getId() != null && sysSetUseField.getId() > 0) {
-            sysSetUseFieldTemp = dataSetUseFieldDao.getSingleObject(sysSetUseField.getId());
-            if (sysSetUseFieldTemp != null)//如果没有找到相应信息，则表示没有相应的数据，不进行更新处
-            {
-                BeanUtils.copyProperties(sysSetUseField, sysSetUseFieldTemp);
-                if (!dataSetUseFieldDao.updateObject(sysSetUseFieldTemp)) {
-                    throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
-                }
-            } else {
-                throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+            sysSetUseField.setLevel(getLevel(sysSetUseField.getPid()));
+            if (!dataSetUseFieldDao.updateObject(sysSetUseField)) {
+                throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
 
         } else {
-            sysSetUseFieldTemp = new DataSetUseField();
-            BeanUtils.copyProperties(sysSetUseField, sysSetUseFieldTemp);
-            sysSetUseFieldTemp.setBisDelete(false);
-            sysSetUseFieldTemp.setCreator(processControllerComponent.getThisUser());
-            if (!dataSetUseFieldDao.addObject(sysSetUseFieldTemp)) {
+            sysSetUseField.setBisDelete(false);
+            sysSetUseField.setCreator(processControllerComponent.getThisUser());
+            sysSetUseField.setLevel(getLevel(sysSetUseField.getPid()));
+            if (!dataSetUseFieldDao.addObject(sysSetUseField)) {
                 throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
             }
         }
@@ -199,6 +189,18 @@ public class DataSetUseFieldService {
 
     public DataSetUseField getSetUseFieldById(Integer id) {
         return dataSetUseFieldDao.getSingleObject(id);
+    }
+
+    /**
+     * 获取层次
+     *
+     * @param pid
+     */
+    public String getLevel(Integer pid) {
+        if (pid == null) return "";
+        DataSetUseField useField = getCacheSetUseFieldById(pid);
+        if (useField == null) return "";
+        return String.format("%s-%s", getLevel(useField.getPid()), useField.getId()).replaceAll("^-|-$","");
     }
 
     /**

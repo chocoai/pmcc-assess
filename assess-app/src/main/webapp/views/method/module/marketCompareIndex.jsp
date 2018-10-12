@@ -8,7 +8,8 @@
         <h2>
             市场比较法
             <small>
-                <input type="button" class="btn btn-primary btn-xs" value="选择案例">
+                <input type="button" class="btn btn-primary btn-xs" value="选择案例"
+                       onclick="$('#modal_select_case').modal();">
             </small>
         </h2>
         <div class="clearfix"></div>
@@ -34,9 +35,34 @@
         </div>
         <div>
             <input type="hidden" id="marketCompareId">
-            <table id="tb_md_mc_item_list" class="table  jambo_table bulk_action">
+            <table id="tb_md_mc_item_list" class="table  tree">
 
             </table>
+        </div>
+    </div>
+</div>
+
+<div id="modal_select_case" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">选择案例</h3>
+            </div>
+            <div class="modal-body select-case">
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="marketCompare.selectCase();">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -101,7 +127,7 @@
                     var evaluationScore = $(this).closest('tr').find('[data-type="evaluation"]').text();
                     var group = $(this).closest('tr').attr('data-group');
                     var itemId = $(this).closest('td').attr('data-item-id');
-                    var ratioEle = $(this).closest('tbody').find('tr[data-group=' + group + '][data-name="ratio"]').find('td[data-item-id=' + itemId + ']');
+                    var ratioEle = $(this).closest('tbody').find('tr[data-group="' + group + '"][data-name="ratio"]').find('td[data-item-id=' + itemId + ']');
                     if (evaluationScore && currScore) {
                         evaluationScore = parseFloat(evaluationScore);
                         currScore = parseFloat(currScore);
@@ -140,12 +166,17 @@
         //初始化 1.初始化表格的标题 2.初始化表格内容
         marketCompare.isPass = true;
         marketCompare.fields = [];
+        marketCompare.mcId = 0;
+        marketCompare.setUse = 0;
         marketCompare.init = function (options) {
             var defaluts = {
                 marketCompare: undefined,//主表信息
                 fields: undefined,//字段信息
                 evaluation: undefined,//委估对象
                 cases: undefined,//案例
+                casesAll: undefined,//所有案例
+                mcId: undefined,
+                setUse: undefined,
                 readonly: false//
             };
             defaluts = $.extend({}, defaluts, options);
@@ -171,8 +202,19 @@
             marketCompare.initHead(defaluts);
             marketCompare.initBody(defaluts);
             marketCompare.initResult(defaluts);
+
+            marketCompare.mcId = defaluts.mcId;
+            marketCompare.setUse = defaluts.setUse;
+            $('#tb_md_mc_item_list').treegrid();
             if (!defaluts.readonly) {
                 setElementEditable();
+
+                if (defaluts.casesAll) {
+                    $.each(defaluts.casesAll, function (i, item) {
+                        var html = '<span class="checkbox-inline"><input type="checkbox" id="case' + item.id + '" value="' + item.id + '"><label for="case' + item.id + '">' + item.projectPhaseName + '</label></span>';
+                        $(".select-case").append(html);
+                    })
+                }
             }
         }
 
@@ -180,10 +222,11 @@
         marketCompare.initHead = function (defaluts) {
             //头部html
             var headHtml = '<thead> <tr>';
-            headHtml += '<th width="5%">项目</th>';
-            headHtml += '<th width="10%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">委估对象</th>';
+            headHtml += '<th width="10%">项目</th>';
+            headHtml += '<th width="20%" data-type="evaluation" data-item-id="' + defaluts.evaluation.id + '">估价对象</th>';
             for (var i = 1; i <= defaluts.cases.length; i++) {
-                headHtml += '<th width="10%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">案例' + i + '</th>';
+                console.log(defaluts.cases[i - 1]);
+                headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">' + defaluts.cases[i - 1].name + '</th>';
             }
             headHtml += '</tr> </thead>';
             $("#tb_md_mc_item_list").append(headHtml);
@@ -194,42 +237,50 @@
             //字段内容html
             var bodyHtml = ' <tbody>';
             $.each(defaluts.fields, function (i, item) {
-                var evaluationItem = getItemByName(JSON.parse(defaluts.evaluation.jsonContent), item.name);
+                var evaluationItem = getItemByName(JSON.parse(defaluts.evaluation.jsonContent), item.fieldName);
                 evaluationItem = evaluationItem == undefined ? {} : evaluationItem;
                 if (item.bisOnlyView) {//只用于显示的字段
-                    var trHtml = '<tr data-group="' + item.name + '" data-name="text"';
-                    item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
-                    item.bisPrice == true ? trHtml += ' data-bisPrice="true" ' : '';
-                    trHtml += '>'
-                    trHtml += ' <td>' + toString(item.value) + '</td>';
-                    if (evaluationItem) {
-                        trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
-                    }
-                    for (var j = 0; j < defaluts.cases.length; j++) {
-                        var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.name);
-                        if (caseItem) {
+                    if (!item.fieldName) {
+                        var colspan = 2 + defaluts.cases.length;
+                        var text=item.name;
+                        if(item.remark){
+                            text+='<span style="font-size: 12px;color: red;font-weight: normal;">('+item.remark+')<span>';
+                        }
+                        bodyHtml += '<tr><td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px">' + text + '</td></tr>';
+                    } else {
+                        var trHtml = '<tr data-group="' + item.fieldName + '" data-name="text"';
+                        item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
+                        item.bisPrice == true ? trHtml += ' data-bisPrice="true" ' : '';
+                        trHtml += '>'
+                        trHtml += ' <td>' + toString(item.name) + '</td>';
+                        if (evaluationItem) {
+                            trHtml += ' <td data-item-id="' + toString(defaluts.evaluation.id) + '">' + toString(evaluationItem.value) + '</td>';
+                        }
+                        for (var j = 0; j < defaluts.cases.length; j++) {
+                            var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
+                            caseItem = caseItem == undefined ? {} : caseItem;
                             trHtml += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.value) + '</td>';
                         }
+                        trHtml += ' </tr>';
+                        bodyHtml += trHtml;
                     }
-                    trHtml += ' </tr>';
-                    bodyHtml += trHtml;
+
                 } else {//可能需要填写数据的字段
-                    var rowHtml = getTempHtml("pRowTemp", defaluts.readonly);
-                    rowHtml = rowHtml.replace(/{fieldName}/g, toString(item.name)).replace(/{fieldValue}/g, toString(item.value));
+                    var rowHtml = getTempHtml(item.bisPrice ? "pRowPriceTemp" : "pRowTemp", defaluts.readonly);
+                    rowHtml = rowHtml.replace(/{fieldName}/g, toString(item.fieldName)).replace(/{fieldValue}/g, toString(item.name));
                     rowHtml = rowHtml.replace(/{evaluationText}/g, toString(evaluationItem.value)).replace(/{evaluationScore}/g, toString(evaluationItem.score));
                     rowHtml = rowHtml.replace(/{evaluationRatio}/g, toString(evaluationItem.ratio)).replace(/{itemId}/g, toString(defaluts.evaluation.id));
                     rowHtml = rowHtml.replace(/{bisPrice}/g, toString(item.bisPrice)).replace(/{bisPrimaryKey}/g, toString(item.bisPrimaryKey));
                     //取到案例相关
                     var caseText, caseScore, caseRatio;
                     for (var j = 0; j < defaluts.cases.length; j++) {
-                        var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.name);
-                        if (caseItem) {
-                            var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
-                            var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
-                            caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.value)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
-                            caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.value)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
-                            caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
-                        }
+                        var caseItem = getItemByName(JSON.parse(defaluts.cases[j].jsonContent), item.fieldName);
+                        var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
+                        var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
+                        caseItem = caseItem == undefined ? {} : caseItem;
+                        caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
+                        caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
+                        caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
                     }
                     rowHtml = rowHtml.replace(/{caseText}/g, toString(caseText)).replace(/{caseScore}/g, toString(caseScore)).replace(/{caseRatio}/g, toString(caseRatio));
                     bodyHtml += rowHtml;
@@ -281,27 +332,34 @@
                 }
             })
 
+
             //计算比准价格
             $.each(caseItemIdArray, function (i, item) {
                 //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
-                var price = table.find('tr[data-bisprice="true"]').find('td[data-item-id=' + item + ']').text();
-                var specificPrice = price = parseFloat(price);
-                table.find('tr[data-name="ratio"]').each(function () {
-                    specificPrice = specificPrice * parseFloat($(this).find('td[data-item-id=' + item + ']').text());
-                })
-                specificPrice = iTofixed(specificPrice, 2);
-                table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text(specificPrice);
+                var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text').text();
+                console.log(price);
+                if (price && AssessCommon.isNumber(price)) {
+                    var specificPrice = price = parseFloat(price);
+                    table.find('tr[data-name="ratio"]').each(function () {
+                        var ratio = $(this).find('td[data-item-id=' + item + ']').text();
+                        if (ratio && AssessCommon.isNumber(ratio)) {
+                            specificPrice = specificPrice * parseFloat(ratio);
+                        }
+                    })
+                    specificPrice = iTofixed(specificPrice, 2);
+                    table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text(specificPrice);
 
-                //修正差额 	修正差额不能大于30%，如果大于30%提示修改案例，修正差额=（比准价格-成交价）/成交价 的绝对值
-                var correctionDifference = iTofixed(Math.abs(specificPrice - price) / price * 100, 2);
-                var correctionDifferenceTd = table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']');
-                correctionDifferenceTd.removeClass('red').text(correctionDifference + "%");
-                if (correctionDifference > 30) {
-                    correctionDifferenceTd.text(correctionDifferenceTd.text() + " 请调整案例").addClass('red');
-                    marketCompare.isPass = false;
-                } else {
-                    correctionDifferenceTd.text(correctionDifferenceTd.text()).removeClass('red');
-                    marketCompare.isPass = true;
+                    //修正差额 	修正差额不能大于30%，如果大于30%提示修改案例，修正差额=（比准价格-成交价）/成交价 的绝对值
+                    var correctionDifference = iTofixed(Math.abs(specificPrice - price) / price * 100, 2);
+                    var correctionDifferenceTd = table.find('tr[data-name="correctionDifference"]').find('td[data-item-id=' + item + ']');
+                    correctionDifferenceTd.removeClass('red').text(correctionDifference + "%");
+                    if (correctionDifference > 30) {
+                        correctionDifferenceTd.text(correctionDifferenceTd.text() + " 请调整案例").addClass('red');
+                        marketCompare.isPass = false;
+                    } else {
+                        correctionDifferenceTd.text(correctionDifferenceTd.text()).removeClass('red');
+                        marketCompare.isPass = true;
+                    }
                 }
             })
 
@@ -557,6 +615,40 @@
             })
         }
 
+        //选择案例
+        marketCompare.selectCase = function () {
+            var cbxs = $(".select-case").find('input:checkbox:checked');
+            if (cbxs.length <= 0) {
+                Alert("还未选择任何案例");
+                return false;
+            }
+            var caseArray = [];
+            $.each(cbxs, function (i, item) {
+                caseArray.push($(item).val());
+            })
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/marketCompare/selectCase',
+                data: {
+                    mcId: marketCompare.mcId,
+                    setUse: marketCompare.setUse,
+                    planDetailsIdString: caseArray.join()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        Alert("选择成功！");
+                        $('#modal_select_case').modal('hide');
+                        window.location.href = window.location.href;
+                    } else {
+                        Alert('选择案例异常，' + result.msg);
+                    }
+                }
+            })
+        }
+
         window.marketCompare = marketCompare;
     })(jQuery)
 </script>
@@ -695,6 +787,19 @@
         {caseRatio}
     </tr>
     </tbody>
+</script>
+
+<%--交易价格行数据模板--%>
+<script type="text/html" id="pRowPriceTemp">
+    <tr data-group="{fieldName}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="field">
+        <td style="vertical-align: middle">{fieldValue}</td>
+        <td class="p_text" data-item-id="{itemId}">
+            <a href="javascript://" data-type="textarea"
+               data-original-title="{fieldValue}"
+               class="editable editable-click editable-pre-wrapped">{evaluationText}</a>
+        </td>
+        {caseText}
+    </tr>
 </script>
 
 <%--行数据模板只读--%>
