@@ -41,6 +41,12 @@ public class ExamineMatchingEducationDao {
         return examineMatchingEducationMapper.selectByExample(example);
     }
 
+    public List<ExamineMatchingEducation> getMatchingEducationList(Integer planDetailsId) {
+        ExamineMatchingEducationExample example = new ExamineMatchingEducationExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineMatchingEducationMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineMatchingEducation

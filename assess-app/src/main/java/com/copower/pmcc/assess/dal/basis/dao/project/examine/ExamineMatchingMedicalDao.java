@@ -41,6 +41,12 @@ public class ExamineMatchingMedicalDao {
         return examineExamineMatchingMedicalMapper.selectByExample(example);
     }
 
+    public List<ExamineMatchingMedical> getExamineMatchingMedicalList(Integer planDetailsId) {
+        ExamineMatchingMedicalExample example = new ExamineMatchingMedicalExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineExamineMatchingMedicalMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineExamineMatchingMedical

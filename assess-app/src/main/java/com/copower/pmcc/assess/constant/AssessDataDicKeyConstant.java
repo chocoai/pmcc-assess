@@ -38,6 +38,7 @@ public class AssessDataDicKeyConstant {
     public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
     public static final String INVENTORY_CONTENT_DEFAULT = "project.survey.inventory.content.default"; //清查内容默认
     public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
+    public static final String INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD = "project.survey.inventory.right.type.house.leasehold";//租赁权
 
     /**
      * 评估方法

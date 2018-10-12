@@ -51,4 +51,10 @@ public class ExamineBuildingFunctionDao {
         MybatisUtils.convertObj2Example(examineBuildingFunction, example);
         return examineBuildingFunctionMapper.selectByExample(example);
     }
+
+    public List<ExamineBuildingFunction> getExamineBuildingFunctionList(Integer planDetailsId){
+        ExamineBuildingFunctionExample example = new ExamineBuildingFunctionExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineBuildingFunctionMapper.selectByExample(example);
+    }
 }

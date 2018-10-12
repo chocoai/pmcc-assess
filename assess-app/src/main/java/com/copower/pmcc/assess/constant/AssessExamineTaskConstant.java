@@ -76,6 +76,9 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_BUILDING_MAINTENANCE_CATEGORY = "examine.building.maintenance.category";//维护结构分类
     public static final String EXAMINE_BUILDING_MATERIALQUALITY = "examine.building.maintenance.materialQuality";//维护结构材质
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE = "building.function.type";//建筑功能类型
+    public static final String EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION = "building.function.type.heat.insulation";//隔热
+    public static final String EXAMINE_BUILDING_FUNCTION_TYPE_WATERPROOF = "building.function.type.waterproof";//防水
+    public static final String EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_PRESERVATION = "building.function.type.heat.preservation";//保温
 
     public static final String EXAMINE_UNIT_HOUSE_LAYOUT = "unit.house_layout";//房型
     public static final String EXAMINE_UNIT_HOUSE_TYPE = "examine.house.type";//房屋类型

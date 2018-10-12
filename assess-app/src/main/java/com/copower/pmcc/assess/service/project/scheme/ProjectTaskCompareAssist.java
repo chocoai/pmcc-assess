@@ -37,12 +37,16 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private ProjectInfoService projectInfoService;
     @Autowired
     private SchemeInfoService schemeInfoService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareIndex", "", 0, "0", "");
 
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+        mdMarketCompareService.initExplore(judgeObject);
         //初始化支撑数据
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
@@ -86,6 +90,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
         //市场比较法相关
+
+
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(201);
 
 

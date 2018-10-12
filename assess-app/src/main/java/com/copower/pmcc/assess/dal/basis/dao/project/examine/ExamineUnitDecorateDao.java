@@ -41,6 +41,12 @@ public class ExamineUnitDecorateDao {
         return examineUnitDecorateMapper.selectByExample(example);
     }
 
+    public List<ExamineUnitDecorate> getUnitDecorateList(Integer planDetailsId) {
+        ExamineUnitDecorateExample example = new ExamineUnitDecorateExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineUnitDecorateMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineUnitDecorate

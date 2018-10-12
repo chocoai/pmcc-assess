@@ -48,7 +48,7 @@ public class ExamineMatchingLeisurePlaceService {
      * @return
      */
     public ExamineMatchingLeisurePlace getExamineMatchingLeisurePlaceById(Integer id) {
-        return examineMatchingLeisurePlaceDao.getMatchingFinanceById(id);
+        return examineMatchingLeisurePlaceDao.getMatchingLeisurePlaceById(id);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ExamineMatchingLeisurePlaceService {
      * @return
      */
     public List<ExamineMatchingLeisurePlace> getExamineMatchingLeisurePlaceList(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
-        return examineMatchingLeisurePlaceDao.getMatchingFinanceList(examineMatchingLeisurePlace);
+        return examineMatchingLeisurePlaceDao.getMatchingLeisurePlaceList(examineMatchingLeisurePlace);
     }
 
     public BootstrapTableVo getExamineMatchingLeisurePlaceLists(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
@@ -136,7 +136,7 @@ public class ExamineMatchingLeisurePlaceService {
         if (ObjectUtils.isEmpty(examineMatchingLeisurePlace.getExamineType())) {
             examineMatchingLeisurePlace.setExamineType(0);
         }
-        return examineMatchingLeisurePlaceDao.addMatchingFinance(examineMatchingLeisurePlace);
+        return examineMatchingLeisurePlaceDao.addMatchingLeisurePlace(examineMatchingLeisurePlace);
     }
 
     /**
@@ -146,7 +146,7 @@ public class ExamineMatchingLeisurePlaceService {
      * @return
      */
     public boolean updateExamineMatchingLeisurePlace(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
-        return examineMatchingLeisurePlaceDao.updateMatchingFinance(examineMatchingLeisurePlace);
+        return examineMatchingLeisurePlaceDao.updateMatchingLeisurePlace(examineMatchingLeisurePlace);
     }
 
     /**
@@ -156,7 +156,7 @@ public class ExamineMatchingLeisurePlaceService {
      * @return
      */
     public boolean deleteExamineMatchingLeisurePlace(Integer id) {
-        return examineMatchingLeisurePlaceDao.deleteMatchingFinance(id);
+        return examineMatchingLeisurePlaceDao.deleteMatchingLeisurePlace(id);
     }
 
     public List<BaseDataDic> examineMatchingLeisurePlace_category(ExamineMatchingLeisurePlaceTypeEnum typeEnum) {

@@ -21,48 +21,59 @@ public class ExamineMatchingLeisurePlaceDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
-    public ExamineMatchingLeisurePlace getMatchingFinanceById(Integer id) {
+    public ExamineMatchingLeisurePlace getMatchingLeisurePlaceById(Integer id) {
         return examineMatchingLeisurePlaceMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 获取数据列表
+     *
      * @param examineMatchingLeisurePlace
      * @return
      */
-    public List<ExamineMatchingLeisurePlace> getMatchingFinanceList(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
+    public List<ExamineMatchingLeisurePlace> getMatchingLeisurePlaceList(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
         ExamineMatchingLeisurePlaceExample example = new ExamineMatchingLeisurePlaceExample();
         MybatisUtils.convertObj2Example(examineMatchingLeisurePlace, example);
         return examineMatchingLeisurePlaceMapper.selectByExample(example);
     }
 
+    public List<ExamineMatchingLeisurePlace> getMatchingLeisurePlaceList(Integer planDetailsId) {
+        ExamineMatchingLeisurePlaceExample example = new ExamineMatchingLeisurePlaceExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineMatchingLeisurePlaceMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineMatchingLeisurePlace
      * @return
      */
-    public boolean addMatchingFinance(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
+    public boolean addMatchingLeisurePlace(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
         return examineMatchingLeisurePlaceMapper.insertSelective(examineMatchingLeisurePlace) > 0;
     }
 
     /**
      * 编辑
+     *
      * @param examineMatchingLeisurePlace
      * @return
      */
-    public boolean updateMatchingFinance(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
+    public boolean updateMatchingLeisurePlace(ExamineMatchingLeisurePlace examineMatchingLeisurePlace) {
         return examineMatchingLeisurePlaceMapper.updateByPrimaryKeySelective(examineMatchingLeisurePlace) > 0;
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteMatchingFinance(Integer id){
+    public boolean deleteMatchingLeisurePlace(Integer id) {
         return examineMatchingLeisurePlaceMapper.deleteByPrimaryKey(id) > 0;
     }
 

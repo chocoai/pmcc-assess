@@ -46,6 +46,16 @@ public class ExamineBuildingDao {
         return examineBuildingMapper.selectByExample(examineBuildingExample);
     }
 
+    public List<ExamineBuilding> getByPlanDetailsId(Integer planDetailsId){
+        ExamineBuildingExample examineBuildingExample = new ExamineBuildingExample();
+        ExamineBuildingExample.Criteria criteria = examineBuildingExample.createCriteria();
+        criteria.andIdIsNotNull();
+        if (planDetailsId!=null){
+            criteria.andPlanDetailsIdEqualTo(planDetailsId);
+        }
+        return examineBuildingMapper.selectByExample(examineBuildingExample);
+    }
+
     /**
      * 获取数据列表
      * @param examineBuilding

@@ -23,6 +23,7 @@ public class ExamineEstateNetworkDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class ExamineEstateNetworkDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineEstateNetwork
      * @return
      */
@@ -41,8 +43,15 @@ public class ExamineEstateNetworkDao {
         return examineEstateNetworkMapper.selectByExample(example);
     }
 
+    public List<ExamineEstateNetwork> getEstateNetworkList(Integer planDetailsId) {
+        ExamineEstateNetworkExample example = new ExamineEstateNetworkExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineEstateNetworkMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineEstateNetwork
      * @return
      */
@@ -52,6 +61,7 @@ public class ExamineEstateNetworkDao {
 
     /**
      * 编辑
+     *
      * @param examineEstateNetwork
      * @return
      */
@@ -61,10 +71,11 @@ public class ExamineEstateNetworkDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteEstateNetwork(Integer id){
+    public boolean deleteEstateNetwork(Integer id) {
         return examineEstateNetworkMapper.deleteByPrimaryKey(id) > 0;
     }
 
