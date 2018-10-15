@@ -23,47 +23,47 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-5 control-label">
             建安成本小计
         </label>
     </div>
+    <%--<div class="x-valid">--%>
+        <%--<label class="col-sm-3 control-label">--%>
+            <%--建筑面积（㎡）--%>
+        <%--</label>--%>
+    <%--</div>--%>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            建筑面积（㎡）
+        <label class="col-sm-7 control-label">
+            单方总造价(元/㎡)
         </label>
     </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            单方造价(元/㎡)
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            总造价（万元）
-        </label>
-    </div>
+    <%--<div class="x-valid">--%>
+        <%--<label class="col-sm-3 control-label">--%>
+            <%--总造价（万元）--%>
+        <%--</label>--%>
+    <%--</div>--%>
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-5 control-label">
             数据计算值:
         </label>
     </div>
+    <%--<div class="x-valid">--%>
+        <%--<label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClass">--%>
+            <%--0--%>
+        <%--</label>--%>
+    <%--</div>--%>
     <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClass">
+        <label class="col-sm-7 control-label constructionInstallationEngineeringFeeBCurrencyClass">
             0
         </label>
     </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBCurrencyClass">
-            0
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClass">
-            0
-        </label>
-    </div>
+    <%--<div class="x-valid">--%>
+        <%--<label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClass">--%>
+            <%--0--%>
+        <%--</label>--%>
+    <%--</div>--%>
 </div>
 
 
@@ -175,25 +175,25 @@
         data = [[
             {field: 'number', title: '序号', width: 50},
             {field: 'name', title: '工程名称', width: '35%'},
-            {
-                field: 'area',
-                title: '建筑面积',
-                width: 90,
-                editor: {type: "numberbox", options: {precision: 7}},//精度为7
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            },
+            // {
+            //     field: 'area',
+            //     title: '建筑面积',
+            //     width: 90,
+            //     editor: {type: "numberbox", options: {precision: 7}},//精度为7
+            //     styler: function (value, row, index) {
+            //         return 'background-color:#F0F0F0;color:red;';
+            //     }
+            // },
             {
                 field: 'currency',
                 title: ' 单方造价(元/㎡)',
                 width: 100,
-                editor: {type: "numberbox", options: {precision: 7}},//精度为7
+                editor: {type: "numberbox", options: {precision: 4}},//精度为4
                 styler: function (value, row, index) {
                     return 'background-color:#F0F0F0;color:red;';
                 }
             },
-            {field: 'totalCost', title: '总造价', width: 120}
+            // {field: 'totalCost', title: '总造价', width: 120}
         ]];
         return data;
     };
@@ -270,26 +270,17 @@
         if (constructEngineeringObject.isNotNull(data)) {
             var area = null;
             var currency = null;
-            if (changes.area) {//修改的是面积
-                area = changes.area;
-                if (constructEngineeringObject.isNumber(area)) {
-                    currency = data.currency;
-                } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
+
             if (changes.currency) {
                 currency = changes.currency;
                 if (constructEngineeringObject.isNumber(currency)) {
-                    area = data.area;
+
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (constructEngineeringObject.isNotNull(area) && constructEngineeringObject.isNotNull(currency)) {
-                data.totalCost = constructEngineeringObject.mul(area, currency);
+            if (constructEngineeringObject.isNotNull(currency)) {
                 //更新节点值
                 $('#' + constructEngineeringObject.config().tableId).treegrid('update', {
                     id: data.id,
@@ -320,18 +311,12 @@
         var parent = $('#' + constructEngineeringObject.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
         var currency = 0;
-        var area = 0;
-        var totalCost = 0;
         if (constructEngineeringObject.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
-                area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
-                totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
             });
         }
         parent.currency = currency;
-        parent.area = area;
-        parent.totalCost = totalCost;
         //更新节点值
         $('#' + constructEngineeringObject.config().tableId).treegrid('update', {
             id: parent.id,
@@ -352,8 +337,8 @@
         var totalCost = 0;
         $.each($('#' + constructEngineeringObject.config().tableId).treegrid('getRoots'), function (i, n) {
             currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
-            area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
-            totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
+            // area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
+            // totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
         });
         constructEngineeringObject.updateHtml(currency, area, totalCost);
     }
@@ -363,9 +348,9 @@
      * @date:2018-08-14
      **/
     constructEngineeringObject.updateHtml = function (currency, area, totalCost) {
-        $('.' + constructEngineeringObject.config().areaClass).html(area);
+        // $('.' + constructEngineeringObject.config().areaClass).html(area);
         $('.' + constructEngineeringObject.config().currencyClass).html(currency);
-        $('.' + constructEngineeringObject.config().totalCostClass).html(totalCost);
+        // $('.' + constructEngineeringObject.config().totalCostClass).html(totalCost);
     }
 
     /**
@@ -374,7 +359,7 @@
      * @date:2018-08-14
      **/
     constructEngineeringObject.getCalculatedResults = function () {
-        return $('.' + constructEngineeringObject.config().totalCostClass).html();
+        return $('.' + constructEngineeringObject.config().currencyClass).html();
     }
 
     /**

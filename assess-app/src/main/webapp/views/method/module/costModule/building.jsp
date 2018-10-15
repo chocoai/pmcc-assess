@@ -6,27 +6,34 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        勘察设计和前期工程费 (计算金额)
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"
-                               name="reconnaissanceDesign">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--勘察设计和前期工程费 (计算金额)--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"--%>
+                               <%--name="reconnaissanceDesign">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        建筑安装工程费 (计算金额)
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="建筑安装工程费" class="form-control" readonly="readonly"
-                               name="constructionInstallationEngineeringFee" value="1000">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--建筑安装工程费 (计算金额)--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="建筑安装工程费" class="form-control" readonly="readonly"--%>
+                               <%--name="constructionInstallationEngineeringFee" value="0">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+
+                <input type="hidden"
+                       placeholder="建筑安装工程费" class="form-control" readonly="readonly"
+                       name="constructionInstallationEngineeringFee" value="0">
+                <input type="hidden"
+                       placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"
+                       name="reconnaissanceDesign">
             </div>
 
 
@@ -39,31 +46,51 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        管理费
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="管理费" class="form-control" readonly="readonly"
-                               name="managementExpense">
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        不可预见费
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="不可预见费" class="form-control" readonly="readonly"
-                               name="unforeseenExpenses">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--管理费--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="管理费" class="form-control" readonly="readonly"--%>
+                               <%--name="managementExpense">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--不可预见费--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="不可预见费" class="form-control" readonly="readonly"--%>
+                               <%--name="unforeseenExpenses">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+
+                <input type="hidden"
+                       placeholder="管理费" class="form-control" readonly="readonly"
+                       name="managementExpense">
+                <input type="hidden"
+                       placeholder="不可预见费" class="form-control" readonly="readonly"
+                       name="unforeseenExpenses">
             </div>
         </form>
     </div>
 
     <jsp:include page="../costModule/build/resultView.jsp"></jsp:include>
+    <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
+        <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
+        <div class="form-group">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <input class="btn btn btn-primary" type="button" value="关闭"
+                       onclick="build.constructionInstallationEngineeringFeeEvent.close()">
+                <input class="btn btn-success" value="确认" type="button"
+                       onclick="build.constructionInstallationEngineeringFeeEvent.eventSave()">
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -421,6 +448,8 @@
         },
         //建筑安装工程费
         constructionInstallationEngineeringFee: function () {
+            var a = build.algsObj.getAndSet("get", build.config.inputConfig.constructionInstallationEngineeringFee.tax, null);
+            build.algsObj.getAndSet("set", build.config.inputConfig.constructionInstallationEngineeringFee.key, a);
             build.algsObj.reconnaissanceDesign();
         },
         //勘察设计和前期工程费
@@ -546,11 +575,15 @@
                 content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class)
             });
             $(function () {
-
+                constructEngineeringObject.viewInit();
             });
         },
         eventSave: function () {
-
+            var data = constructEngineeringObject.getCalculatedResults();
+            build.algsObj.getAndSet("set", build.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
+            build.algsObj.constructionInstallationEngineeringFee();
+            build.constructionInstallationEngineeringFeeEvent.close();
+            build.constructionInstallationEngineeringFeeEvent.serverSave(constructEngineeringObject.loadData());
         },
         close: function () {
             layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
@@ -656,7 +689,7 @@
     build.newRateModel = {
         show: function () {
             $("#" + build.config.inputConfig.newRate.div).modal("show");
-            $("#" + build.config.inputConfig.newRate.frm).validate();
+            // $("#" + build.config.inputConfig.newRate.frm).validate();
             $(function () {
                 build.newRateModel.event.init();
             });
@@ -667,20 +700,76 @@
             $("#" + build.config.inputConfig.newRate.div).modal("hide");
             build.algsObj.newRate();//成新率
         },
+        //计算 成新率
+        handle: function () {
+            var temp = 0;
+            //年限法权重
+            var weightA = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='weight']").val();
+            //年限法 成新率
+            var newRateA = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='newRate']").val();
+            //所选方法
+            var v = $("#" + build.config.inputConfig.newRate.frm).find(":radio:checked").val();
+            //观察法 成新率
+            var newRateB = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").find("input[name='newRate']").val();
+            newRateB = "" + newRateB + "";
+            temp = newRateB.substring(newRateB.length - 1, newRateB.length);
+            if (temp == '%') {//检测是否为百分比
+                newRateB = AssessCommon.percentToPoint(newRateB);
+            }
+            newRateB = Number(newRateB);
+            v = Number(v);
+            newRateA = Number(newRateA);
+            weightA = Number(weightA);
+            if (!AssessCommon.isNumber(weightA) || !AssessCommon.isNumber(newRateB)) {
+                toastr.success('请输入数字');
+                return false;
+            }
+            if (v == 1) {//年限法
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(newRateA);
+            }
+            if (v == 2) {//观察法
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(newRateB.toFixed(4));
+            }
+            if (v == 12) {//年限/观察法
+                temp = weightA * newRateA + (1 - weightA) * newRateB;
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(temp.toFixed(4));
+            }
+        },
+        //年限法
+        yearHandle: function () {
+            var temp = 0;
+            var useYear = 0;//已使用年限
+            var residualValue = 0;//残值率
+            var durableLife = 0;//经济耐用年限
+            useYear = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='useYear']").val();
+            residualValue = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='residualValue']").val();
+            durableLife = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='durableLife']").val();
+            useYear = Number(useYear);
+            residualValue = Number(residualValue);
+            durableLife = Number(durableLife);
+            if (!AssessCommon.isNumber(useYear) || !AssessCommon.isNumber(residualValue) || !AssessCommon.isNumber(durableLife)) {
+                return false;
+            }
+            temp = (1 - residualValue) * (useYear / durableLife);
+            temp = 1 - temp;
+            temp = temp.toFixed(4);
+            $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='newRate']").val(temp);
+            build.newRateModel.handle();
+        },
         event: {
             radioChange: function () {
                 $("#" + build.config.inputConfig.newRate.frm).find("input[type='radio'][name='method']").change(function () {
                     var v = $("#" + build.config.inputConfig.newRate.frm).find(":radio:checked").val();
                     v = Number(v);
-                    if (v == 1) {
+                    if (v == 1) {//年限法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").hide();
                     }
-                    if (v == 2) {
+                    if (v == 2) {//观察法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").hide();
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").show();
                     }
-                    if (v == 12) {
+                    if (v == 12) {//年限/观察法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").show();
                     }
@@ -701,18 +790,48 @@
                         if (result.ret) {
                             var optionA = "<option value=''>请选择</option>";
                             $.each(result.data, function (i, n) {
-                                console.log(n);
                                 if (build.isEmpty(n.durableLife)) {
                                     optionA += "<option value='" + n.id + "'>" + n.buildingStructure + "-" + n.buildingUseName + "</option>";
                                 }
                             });
-                            $("#" + build.config.inputConfig.newRate.frm).find("select.durableLife").empty();
-                            $("#" + build.config.inputConfig.newRate.frm).find("select.durableLife").html(optionA);
+                            $("#" + build.config.inputConfig.newRate.frm).find("select.dataBuildingNewRate").empty();
+                            $("#" + build.config.inputConfig.newRate.frm).find("select.dataBuildingNewRate").html(optionA);
+                            build.newRateModel.event.dataBuildingNewRate();
                         }
                     },
                     error: function (result) {
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
+                });
+            },
+            dataBuildingNewRate: function () {
+                var key = $("#" + build.config.inputConfig.newRate.frm).find("select.dataBuildingNewRate");
+                key.change(function () {
+                    var id = key.val();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/architecture/getByDataBuildingNewRateId",
+                        type: "get",
+                        dataType: "json",
+                        data: {id: id},
+                        success: function (result) {
+                            if (result.ret) {
+                                var data = null;
+                                try {
+                                    data = result.data;
+                                } catch (e) {
+                                    console.log("说明没有数据!");
+                                }
+                                if (build.isEmpty(data)) {
+                                    $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='residualValue']").val(data.residualValue);
+                                    $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='durableLife']").val(data.durableLife);
+                                    build.newRateModel.yearHandle();
+                                }
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    })
                 });
             }
         }
@@ -772,11 +891,11 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        经济耐用年限
+                                        建筑结构与用途
                                     </label>
                                     <div class="col-sm-5">
-                                        <select name="durableLife" required="required"
-                                                class="form-control search-select select2 durableLife">
+                                        <select name="dataBuildingNewRate" required="required"
+                                                class="form-control search-select select2 dataBuildingNewRate">
                                         </select>
                                     </div>
                                 </div>
@@ -788,7 +907,7 @@
                                     <div class="col-sm-5">
                                         <input type="text" class="form-control" name="useYear"
                                                data-rule-number='true' required="required"
-                                               placeholder="已使用年限">
+                                               placeholder="已使用年限" onblur="build.newRateModel.yearHandle();">
                                     </div>
                                 </div>
                             </div>
@@ -799,7 +918,7 @@
                                         残值率
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control residualValue"
+                                        <input type="text" class="form-control"
                                                name="residualValue"
                                                readonly="readonly"
                                                placeholder="残值率">
@@ -810,7 +929,7 @@
                                         成新率
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="newRateA" readonly="readonly"
+                                        <input type="text" class="form-control" name="newRate" readonly="readonly"
                                                placeholder="成新率">
                                     </div>
                                 </div>
@@ -819,12 +938,12 @@
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
-                                        建筑结构
+                                        经济耐用年限
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control buildingStructure"
-                                               name="buildingStructure" readonly="readonly"
-                                               placeholder="建筑结构" required="required">
+                                        <input type="text" class="form-control"
+                                               name="durableLife" readonly="readonly"
+                                               placeholder="经济耐用年限">
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -832,9 +951,9 @@
                                         权重
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" name="weightYear"
+                                        <input type="text" class="form-control" name="weight"
                                                data-rule-number='true' required="required"
-                                               placeholder="权重">
+                                               placeholder="权重" onblur="build.newRateModel.handle();">
                                     </div>
                                 </div>
                             </div>
@@ -853,19 +972,9 @@
                                             成新率
                                         </label>
                                         <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="newRateG"
+                                            <input type="text" class="form-control x-percent" name="newRate"
                                                    data-rule-number='true' required="required"
-                                                   placeholder="成新率">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            权重
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input type="text" class="form-control" name="weightG"
-                                                   data-rule-number='true' required="required"
-                                                   placeholder="权重">
+                                                   placeholder="成新率" onblur="build.newRateModel.handle();">
                                         </div>
                                     </div>
                                 </div>
