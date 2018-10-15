@@ -166,433 +166,413 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
+        public Criteria andConstructionassessmentpriceIsNull() {
+            addCriterion("constructionAssessmentPrice is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
+        public Criteria andConstructionassessmentpriceIsNotNull() {
+            addCriterion("constructionAssessmentPrice is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
+        public Criteria andConstructionassessmentpriceEqualTo(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice =", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
+        public Criteria andConstructionassessmentpriceNotEqualTo(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice <>", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
+        public Criteria andConstructionassessmentpriceGreaterThan(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice >", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
+        public Criteria andConstructionassessmentpriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice >=", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
+        public Criteria andConstructionassessmentpriceLessThan(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice <", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
+        public Criteria andConstructionassessmentpriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("constructionAssessmentPrice <=", value, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
+        public Criteria andConstructionassessmentpriceIn(List<BigDecimal> values) {
+            addCriterion("constructionAssessmentPrice in", values, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
+        public Criteria andConstructionassessmentpriceNotIn(List<BigDecimal> values) {
+            addCriterion("constructionAssessmentPrice not in", values, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
+        public Criteria andConstructionassessmentpriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("constructionAssessmentPrice between", value1, value2, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
+        public Criteria andConstructionassessmentpriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("constructionAssessmentPrice not between", value1, value2, "constructionassessmentprice");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
+        public Criteria andConstructionassessmentvalueIsNull() {
+            addCriterion("constructionAssessmentValue is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
+        public Criteria andConstructionassessmentvalueIsNotNull() {
+            addCriterion("constructionAssessmentValue is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedIsNull() {
-            addCriterion("gmt_created is null");
+        public Criteria andConstructionassessmentvalueEqualTo(String value) {
+            addCriterion("constructionAssessmentValue =", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedIsNotNull() {
-            addCriterion("gmt_created is not null");
+        public Criteria andConstructionassessmentvalueNotEqualTo(String value) {
+            addCriterion("constructionAssessmentValue <>", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedEqualTo(Date value) {
-            addCriterion("gmt_created =", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueGreaterThan(String value) {
+            addCriterion("constructionAssessmentValue >", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedNotEqualTo(Date value) {
-            addCriterion("gmt_created <>", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueGreaterThanOrEqualTo(String value) {
+            addCriterion("constructionAssessmentValue >=", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedGreaterThan(Date value) {
-            addCriterion("gmt_created >", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueLessThan(String value) {
+            addCriterion("constructionAssessmentValue <", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_created >=", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueLessThanOrEqualTo(String value) {
+            addCriterion("constructionAssessmentValue <=", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedLessThan(Date value) {
-            addCriterion("gmt_created <", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueLike(String value) {
+            addCriterion("constructionAssessmentValue like", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_created <=", value, "gmtCreated");
+        public Criteria andConstructionassessmentvalueNotLike(String value) {
+            addCriterion("constructionAssessmentValue not like", value, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedIn(List<Date> values) {
-            addCriterion("gmt_created in", values, "gmtCreated");
+        public Criteria andConstructionassessmentvalueIn(List<String> values) {
+            addCriterion("constructionAssessmentValue in", values, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedNotIn(List<Date> values) {
-            addCriterion("gmt_created not in", values, "gmtCreated");
+        public Criteria andConstructionassessmentvalueNotIn(List<String> values) {
+            addCriterion("constructionAssessmentValue not in", values, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
-            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+        public Criteria andConstructionassessmentvalueBetween(String value1, String value2) {
+            addCriterion("constructionAssessmentValue between", value1, value2, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
+        public Criteria andConstructionassessmentvalueNotBetween(String value1, String value2) {
+            addCriterion("constructionAssessmentValue not between", value1, value2, "constructionassessmentvalue");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedIsNull() {
-            addCriterion("gmt_modified is null");
+        public Criteria andInvestmentprofitIsNull() {
+            addCriterion("investmentProfit is null");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedIsNotNull() {
-            addCriterion("gmt_modified is not null");
+        public Criteria andInvestmentprofitIsNotNull() {
+            addCriterion("investmentProfit is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedEqualTo(Date value) {
-            addCriterion("gmt_modified =", value, "gmtModified");
+        public Criteria andInvestmentprofitEqualTo(String value) {
+            addCriterion("investmentProfit =", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedNotEqualTo(Date value) {
-            addCriterion("gmt_modified <>", value, "gmtModified");
+        public Criteria andInvestmentprofitNotEqualTo(String value) {
+            addCriterion("investmentProfit <>", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedGreaterThan(Date value) {
-            addCriterion("gmt_modified >", value, "gmtModified");
+        public Criteria andInvestmentprofitGreaterThan(String value) {
+            addCriterion("investmentProfit >", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified >=", value, "gmtModified");
+        public Criteria andInvestmentprofitGreaterThanOrEqualTo(String value) {
+            addCriterion("investmentProfit >=", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedLessThan(Date value) {
-            addCriterion("gmt_modified <", value, "gmtModified");
+        public Criteria andInvestmentprofitLessThan(String value) {
+            addCriterion("investmentProfit <", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified <=", value, "gmtModified");
+        public Criteria andInvestmentprofitLessThanOrEqualTo(String value) {
+            addCriterion("investmentProfit <=", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedIn(List<Date> values) {
-            addCriterion("gmt_modified in", values, "gmtModified");
+        public Criteria andInvestmentprofitLike(String value) {
+            addCriterion("investmentProfit like", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedNotIn(List<Date> values) {
-            addCriterion("gmt_modified not in", values, "gmtModified");
+        public Criteria andInvestmentprofitNotLike(String value) {
+            addCriterion("investmentProfit not like", value, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified between", value1, value2, "gmtModified");
+        public Criteria andInvestmentprofitIn(List<String> values) {
+            addCriterion("investmentProfit in", values, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+        public Criteria andInvestmentprofitNotIn(List<String> values) {
+            addCriterion("investmentProfit not in", values, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueIsNull() {
-            addCriterion("construction_proces_assess_value is null");
+        public Criteria andInvestmentprofitBetween(String value1, String value2) {
+            addCriterion("investmentProfit between", value1, value2, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueIsNotNull() {
-            addCriterion("construction_proces_assess_value is not null");
+        public Criteria andInvestmentprofitNotBetween(String value1, String value2) {
+            addCriterion("investmentProfit not between", value1, value2, "investmentprofit");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueEqualTo(BigDecimal value) {
-            addCriterion("construction_proces_assess_value =", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentIsNull() {
+            addCriterion("interestInvestment is null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueNotEqualTo(BigDecimal value) {
-            addCriterion("construction_proces_assess_value <>", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentIsNotNull() {
+            addCriterion("interestInvestment is not null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueGreaterThan(BigDecimal value) {
-            addCriterion("construction_proces_assess_value >", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentEqualTo(String value) {
+            addCriterion("interestInvestment =", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("construction_proces_assess_value >=", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentNotEqualTo(String value) {
+            addCriterion("interestInvestment <>", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueLessThan(BigDecimal value) {
-            addCriterion("construction_proces_assess_value <", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentGreaterThan(String value) {
+            addCriterion("interestInvestment >", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("construction_proces_assess_value <=", value, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentGreaterThanOrEqualTo(String value) {
+            addCriterion("interestInvestment >=", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueIn(List<BigDecimal> values) {
-            addCriterion("construction_proces_assess_value in", values, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentLessThan(String value) {
+            addCriterion("interestInvestment <", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueNotIn(List<BigDecimal> values) {
-            addCriterion("construction_proces_assess_value not in", values, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentLessThanOrEqualTo(String value) {
+            addCriterion("interestInvestment <=", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("construction_proces_assess_value between", value1, value2, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentLike(String value) {
+            addCriterion("interestInvestment like", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionProcesAssessValueNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("construction_proces_assess_value not between", value1, value2, "constructionProcesAssessValue");
+        public Criteria andInterestinvestmentNotLike(String value) {
+            addCriterion("interestInvestment not like", value, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectIsNull() {
-            addCriterion("evaluation_value_construction_project is null");
+        public Criteria andInterestinvestmentIn(List<String> values) {
+            addCriterion("interestInvestment in", values, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectIsNotNull() {
-            addCriterion("evaluation_value_construction_project is not null");
+        public Criteria andInterestinvestmentNotIn(List<String> values) {
+            addCriterion("interestInvestment not in", values, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project =", value, "evaluationValueConstructionProject");
+        public Criteria andInterestinvestmentBetween(String value1, String value2) {
+            addCriterion("interestInvestment between", value1, value2, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectNotEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project <>", value, "evaluationValueConstructionProject");
+        public Criteria andInterestinvestmentNotBetween(String value1, String value2) {
+            addCriterion("interestInvestment not between", value1, value2, "interestinvestment");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectGreaterThan(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project >", value, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalIsNull() {
+            addCriterion("constructionSubtotal is null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project >=", value, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalIsNotNull() {
+            addCriterion("constructionSubtotal is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectLessThan(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project <", value, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalEqualTo(String value) {
+            addCriterion("constructionSubtotal =", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project <=", value, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalNotEqualTo(String value) {
+            addCriterion("constructionSubtotal <>", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value_construction_project in", values, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalGreaterThan(String value) {
+            addCriterion("constructionSubtotal >", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectNotIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value_construction_project not in", values, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalGreaterThanOrEqualTo(String value) {
+            addCriterion("constructionSubtotal >=", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value_construction_project between", value1, value2, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalLessThan(String value) {
+            addCriterion("constructionSubtotal <", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value_construction_project not between", value1, value2, "evaluationValueConstructionProject");
+        public Criteria andConstructionsubtotalLessThanOrEqualTo(String value) {
+            addCriterion("constructionSubtotal <=", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectIsNull() {
-            addCriterion("evaluation_value_construction_project_correct is null");
+        public Criteria andConstructionsubtotalLike(String value) {
+            addCriterion("constructionSubtotal like", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectIsNotNull() {
-            addCriterion("evaluation_value_construction_project_correct is not null");
+        public Criteria andConstructionsubtotalNotLike(String value) {
+            addCriterion("constructionSubtotal not like", value, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct =", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andConstructionsubtotalIn(List<String> values) {
+            addCriterion("constructionSubtotal in", values, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectNotEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct <>", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andConstructionsubtotalNotIn(List<String> values) {
+            addCriterion("constructionSubtotal not in", values, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectGreaterThan(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct >", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andConstructionsubtotalBetween(String value1, String value2) {
+            addCriterion("constructionSubtotal between", value1, value2, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct >=", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andConstructionsubtotalNotBetween(String value1, String value2) {
+            addCriterion("constructionSubtotal not between", value1, value2, "constructionsubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectLessThan(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct <", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalIsNull() {
+            addCriterion("landGetCostTotal is null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("evaluation_value_construction_project_correct <=", value, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalIsNotNull() {
+            addCriterion("landGetCostTotal is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value_construction_project_correct in", values, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalEqualTo(String value) {
+            addCriterion("landGetCostTotal =", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectNotIn(List<BigDecimal> values) {
-            addCriterion("evaluation_value_construction_project_correct not in", values, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalNotEqualTo(String value) {
+            addCriterion("landGetCostTotal <>", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value_construction_project_correct between", value1, value2, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalGreaterThan(String value) {
+            addCriterion("landGetCostTotal >", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationValueConstructionProjectCorrectNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("evaluation_value_construction_project_correct not between", value1, value2, "evaluationValueConstructionProjectCorrect");
+        public Criteria andLandgetcosttotalGreaterThanOrEqualTo(String value) {
+            addCriterion("landGetCostTotal >=", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeIsNull() {
-            addCriterion("construction_installation_engineering_fee is null");
+        public Criteria andLandgetcosttotalLessThan(String value) {
+            addCriterion("landGetCostTotal <", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeIsNotNull() {
-            addCriterion("construction_installation_engineering_fee is not null");
+        public Criteria andLandgetcosttotalLessThanOrEqualTo(String value) {
+            addCriterion("landGetCostTotal <=", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeEqualTo(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee =", value, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalLike(String value) {
+            addCriterion("landGetCostTotal like", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeNotEqualTo(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee <>", value, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalNotLike(String value) {
+            addCriterion("landGetCostTotal not like", value, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeGreaterThan(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee >", value, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalIn(List<String> values) {
+            addCriterion("landGetCostTotal in", values, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee >=", value, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalNotIn(List<String> values) {
+            addCriterion("landGetCostTotal not in", values, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeLessThan(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee <", value, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalBetween(String value1, String value2) {
+            addCriterion("landGetCostTotal between", value1, value2, "landgetcosttotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionInstallationEngineeringFeeLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("construction_installation_engineering_fee <=", value, "constructionInstallationEngineeringFee");
-            return (Criteria) this;
-        }
-
-        public Criteria andConstructionInstallationEngineeringFeeIn(List<BigDecimal> values) {
-            addCriterion("construction_installation_engineering_fee in", values, "constructionInstallationEngineeringFee");
-            return (Criteria) this;
-        }
-
-        public Criteria andConstructionInstallationEngineeringFeeNotIn(List<BigDecimal> values) {
-            addCriterion("construction_installation_engineering_fee not in", values, "constructionInstallationEngineeringFee");
-            return (Criteria) this;
-        }
-
-        public Criteria andConstructionInstallationEngineeringFeeBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("construction_installation_engineering_fee between", value1, value2, "constructionInstallationEngineeringFee");
-            return (Criteria) this;
-        }
-
-        public Criteria andConstructionInstallationEngineeringFeeNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("construction_installation_engineering_fee not between", value1, value2, "constructionInstallationEngineeringFee");
+        public Criteria andLandgetcosttotalNotBetween(String value1, String value2) {
+            addCriterion("landGetCostTotal not between", value1, value2, "landgetcosttotal");
             return (Criteria) this;
         }
 
@@ -663,66 +643,6 @@ public class MdCostConstructionExample {
 
         public Criteria andJsonContentNotBetween(String value1, String value2) {
             addCriterion("json_content not between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdIsNull() {
-            addCriterion("cost_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdIsNotNull() {
-            addCriterion("cost_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdEqualTo(Integer value) {
-            addCriterion("cost_id =", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdNotEqualTo(Integer value) {
-            addCriterion("cost_id <>", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdGreaterThan(Integer value) {
-            addCriterion("cost_id >", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("cost_id >=", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdLessThan(Integer value) {
-            addCriterion("cost_id <", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdLessThanOrEqualTo(Integer value) {
-            addCriterion("cost_id <=", value, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdIn(List<Integer> values) {
-            addCriterion("cost_id in", values, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdNotIn(List<Integer> values) {
-            addCriterion("cost_id not in", values, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdBetween(Integer value1, Integer value2) {
-            addCriterion("cost_id between", value1, value2, "costId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCostIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("cost_id not between", value1, value2, "costId");
             return (Criteria) this;
         }
 
@@ -843,6 +763,196 @@ public class MdCostConstructionExample {
 
         public Criteria andPidNotBetween(Integer value1, Integer value2) {
             addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNull() {
+            addCriterion("gmt_modified is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNotNull() {
+            addCriterion("gmt_modified is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedEqualTo(Date value) {
+            addCriterion("gmt_modified =", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotEqualTo(Date value) {
+            addCriterion("gmt_modified <>", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThan(Date value) {
+            addCriterion("gmt_modified >", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified >=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThan(Date value) {
+            addCriterion("gmt_modified <", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified <=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIn(List<Date> values) {
+            addCriterion("gmt_modified in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotIn(List<Date> values) {
+            addCriterion("gmt_modified not in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNull() {
+            addCriterion("gmt_created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNotNull() {
+            addCriterion("gmt_created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedEqualTo(Date value) {
+            addCriterion("gmt_created =", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotEqualTo(Date value) {
+            addCriterion("gmt_created <>", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThan(Date value) {
+            addCriterion("gmt_created >", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_created >=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThan(Date value) {
+            addCriterion("gmt_created <", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_created <=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIn(List<Date> values) {
+            addCriterion("gmt_created in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotIn(List<Date> values) {
+            addCriterion("gmt_created not in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
+            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
             return (Criteria) this;
         }
     }

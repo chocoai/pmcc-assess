@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuildingNewRate;
+import com.copower.pmcc.assess.dto.output.data.DataBuildingNewRateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -85,7 +86,7 @@ public class DataBuildingNewRateController {
     @RequestMapping(value = "/addAndUpdateNewRate", method = RequestMethod.POST)
     public HttpResult addAndUpdateNewRate(DataBuildingNewRate dataBuildingNewRate) {
         try {
-            if (dataBuildingNewRate.getId() != null && !Objects.equal(dataBuildingNewRate.getId(), 0)) {//不再使用专门的 update controller
+            if (dataBuildingNewRate.getId() != null && !Objects.equal(dataBuildingNewRate.getId(), 0)) {
                 dataBuildingNewRateService.editDataBuildingNewRate(dataBuildingNewRate);
             } else {
                 dataBuildingNewRateService.addDataBuildingNewRate(dataBuildingNewRate);
@@ -107,5 +108,17 @@ public class DataBuildingNewRateController {
             return HttpResult.newErrorResult(e1.getMessage());
         }
         return HttpResult.newCorrectResult(dataBuildingNewRate);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/dataBuildingNewRateList", method = RequestMethod.GET)
+    public HttpResult dataBuildingNewRateList() {
+        List<DataBuildingNewRateVo> vos = null;
+        try {
+            vos = dataBuildingNewRateService.dataBuildingNewRateList();
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult(e1.getMessage());
+        }
+        return HttpResult.newCorrectResult(vos);
     }
 }

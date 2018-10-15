@@ -121,7 +121,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="计息周期" class="form-control x-percent" data-rule-number='true' required="required"
+                               placeholder="计息周期" class="form-control" data-rule-number='true' required="required"
                                name="interestInvestmentCorrecting">
                     </div>
                 </div>
@@ -170,12 +170,12 @@
                     <div class="col-sm-7">
                         <div class="input-group">
                             <input type="text" readonly="readonly"
-                                   placeholder="成新率" value="0" class="form-control" name="newRate">
+                                   placeholder="成新率" value="90%" class="form-control" name="newRate">
                             <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="">
+                                onclick="build.newRateModel.show();">
                                             <i class="fa fa-search"></i>
                                             </button>
                         <button type="button" class="btn btn-default docs-tooltip"

@@ -6,27 +6,29 @@ import java.util.Date;
 public class MdCostConstruction {
     private Integer id;
 
-    private String creator;
+    private BigDecimal constructionassessmentprice;
 
-    private Date gmtCreated;
+    private String constructionassessmentvalue;
 
-    private Date gmtModified;
+    private String investmentprofit;
 
-    private BigDecimal constructionProcesAssessValue;
+    private String interestinvestment;
 
-    private BigDecimal evaluationValueConstructionProject;
+    private String constructionsubtotal;
 
-    private BigDecimal evaluationValueConstructionProjectCorrect;
-
-    private BigDecimal constructionInstallationEngineeringFee;
+    private String landgetcosttotal;
 
     private String jsonContent;
-
-    private Integer costId;
 
     private Integer engineeringId;
 
     private Integer pid;
+
+    private String creator;
+
+    private Date gmtModified;
+
+    private Date gmtCreated;
 
     public Integer getId() {
         return id;
@@ -36,60 +38,52 @@ public class MdCostConstruction {
         this.id = id;
     }
 
-    public String getCreator() {
-        return creator;
+    public BigDecimal getConstructionassessmentprice() {
+        return constructionassessmentprice;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setConstructionassessmentprice(BigDecimal constructionassessmentprice) {
+        this.constructionassessmentprice = constructionassessmentprice;
     }
 
-    public Date getGmtCreated() {
-        return gmtCreated;
+    public String getConstructionassessmentvalue() {
+        return constructionassessmentvalue;
     }
 
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
+    public void setConstructionassessmentvalue(String constructionassessmentvalue) {
+        this.constructionassessmentvalue = constructionassessmentvalue == null ? null : constructionassessmentvalue.trim();
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
+    public String getInvestmentprofit() {
+        return investmentprofit;
     }
 
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    public void setInvestmentprofit(String investmentprofit) {
+        this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
     }
 
-    public BigDecimal getConstructionProcesAssessValue() {
-        return constructionProcesAssessValue;
+    public String getInterestinvestment() {
+        return interestinvestment;
     }
 
-    public void setConstructionProcesAssessValue(BigDecimal constructionProcesAssessValue) {
-        this.constructionProcesAssessValue = constructionProcesAssessValue;
+    public void setInterestinvestment(String interestinvestment) {
+        this.interestinvestment = interestinvestment == null ? null : interestinvestment.trim();
     }
 
-    public BigDecimal getEvaluationValueConstructionProject() {
-        return evaluationValueConstructionProject;
+    public String getConstructionsubtotal() {
+        return constructionsubtotal;
     }
 
-    public void setEvaluationValueConstructionProject(BigDecimal evaluationValueConstructionProject) {
-        this.evaluationValueConstructionProject = evaluationValueConstructionProject;
+    public void setConstructionsubtotal(String constructionsubtotal) {
+        this.constructionsubtotal = constructionsubtotal == null ? null : constructionsubtotal.trim();
     }
 
-    public BigDecimal getEvaluationValueConstructionProjectCorrect() {
-        return evaluationValueConstructionProjectCorrect;
+    public String getLandgetcosttotal() {
+        return landgetcosttotal;
     }
 
-    public void setEvaluationValueConstructionProjectCorrect(BigDecimal evaluationValueConstructionProjectCorrect) {
-        this.evaluationValueConstructionProjectCorrect = evaluationValueConstructionProjectCorrect;
-    }
-
-    public BigDecimal getConstructionInstallationEngineeringFee() {
-        return constructionInstallationEngineeringFee;
-    }
-
-    public void setConstructionInstallationEngineeringFee(BigDecimal constructionInstallationEngineeringFee) {
-        this.constructionInstallationEngineeringFee = constructionInstallationEngineeringFee;
+    public void setLandgetcosttotal(String landgetcosttotal) {
+        this.landgetcosttotal = landgetcosttotal == null ? null : landgetcosttotal.trim();
     }
 
     public String getJsonContent() {
@@ -98,14 +92,6 @@ public class MdCostConstruction {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public Integer getCostId() {
-        return costId;
-    }
-
-    public void setCostId(Integer costId) {
-        this.costId = costId;
     }
 
     public Integer getEngineeringId() {
@@ -122,5 +108,29 @@ public class MdCostConstruction {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
     }
 }

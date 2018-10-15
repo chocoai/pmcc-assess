@@ -79,9 +79,4 @@ public class ProjectTaskMarketCostController {
         return HttpResult.newCorrectResult(mdMarketCostService.getAddedValueAdditionalTaxRate());
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/dataBuildingNewRateList", name = "建筑成新率率", method = RequestMethod.GET)
-    public HttpResult dataBuildingNewRateList() {
-        return HttpResult.newCorrectResult(mdMarketCostService.dataBuildingNewRateList());
-    }
 }

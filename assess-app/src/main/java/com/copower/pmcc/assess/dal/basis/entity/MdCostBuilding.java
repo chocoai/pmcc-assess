@@ -6,25 +6,27 @@ import java.util.Date;
 public class MdCostBuilding {
     private Integer id;
 
+    private BigDecimal assessprice;
+
+    private String replacementvalue;
+
+    private String investmentprofit;
+
+    private String interestinvestment;
+
+    private String constructioncost;
+
+    private String jsonContent;
+
+    private Integer engineeringId;
+
+    private Integer pid;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String newRate;
-
-    private BigDecimal assessPrice;
-
-    private BigDecimal constructionInstallationEngineeringFee;
-
-    private String jsonContent;
-
-    private Integer costId;
-
-    private Integer engineeringId;
-
-    private Integer pid;
 
     public Integer getId() {
         return id;
@@ -32,6 +34,70 @@ public class MdCostBuilding {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public BigDecimal getAssessprice() {
+        return assessprice;
+    }
+
+    public void setAssessprice(BigDecimal assessprice) {
+        this.assessprice = assessprice;
+    }
+
+    public String getReplacementvalue() {
+        return replacementvalue;
+    }
+
+    public void setReplacementvalue(String replacementvalue) {
+        this.replacementvalue = replacementvalue == null ? null : replacementvalue.trim();
+    }
+
+    public String getInvestmentprofit() {
+        return investmentprofit;
+    }
+
+    public void setInvestmentprofit(String investmentprofit) {
+        this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
+    }
+
+    public String getInterestinvestment() {
+        return interestinvestment;
+    }
+
+    public void setInterestinvestment(String interestinvestment) {
+        this.interestinvestment = interestinvestment == null ? null : interestinvestment.trim();
+    }
+
+    public String getConstructioncost() {
+        return constructioncost;
+    }
+
+    public void setConstructioncost(String constructioncost) {
+        this.constructioncost = constructioncost == null ? null : constructioncost.trim();
+    }
+
+    public String getJsonContent() {
+        return jsonContent;
+    }
+
+    public void setJsonContent(String jsonContent) {
+        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public Integer getEngineeringId() {
+        return engineeringId;
+    }
+
+    public void setEngineeringId(Integer engineeringId) {
+        this.engineeringId = engineeringId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public String getCreator() {
@@ -56,61 +122,5 @@ public class MdCostBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getNewRate() {
-        return newRate;
-    }
-
-    public void setNewRate(String newRate) {
-        this.newRate = newRate == null ? null : newRate.trim();
-    }
-
-    public BigDecimal getAssessPrice() {
-        return assessPrice;
-    }
-
-    public void setAssessPrice(BigDecimal assessPrice) {
-        this.assessPrice = assessPrice;
-    }
-
-    public BigDecimal getConstructionInstallationEngineeringFee() {
-        return constructionInstallationEngineeringFee;
-    }
-
-    public void setConstructionInstallationEngineeringFee(BigDecimal constructionInstallationEngineeringFee) {
-        this.constructionInstallationEngineeringFee = constructionInstallationEngineeringFee;
-    }
-
-    public String getJsonContent() {
-        return jsonContent;
-    }
-
-    public void setJsonContent(String jsonContent) {
-        this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public Integer getCostId() {
-        return costId;
-    }
-
-    public void setCostId(Integer costId) {
-        this.costId = costId;
-    }
-
-    public Integer getEngineeringId() {
-        return engineeringId;
-    }
-
-    public void setEngineeringId(Integer engineeringId) {
-        this.engineeringId = engineeringId;
-    }
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
     }
 }

@@ -3,17 +3,18 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostConstructionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="construction_proces_assess_value" property="constructionProcesAssessValue" jdbcType="DECIMAL" />
-    <result column="evaluation_value_construction_project" property="evaluationValueConstructionProject" jdbcType="DECIMAL" />
-    <result column="evaluation_value_construction_project_correct" property="evaluationValueConstructionProjectCorrect" jdbcType="DECIMAL" />
-    <result column="construction_installation_engineering_fee" property="constructionInstallationEngineeringFee" jdbcType="DECIMAL" />
+    <result column="constructionAssessmentPrice" property="constructionassessmentprice" jdbcType="DECIMAL" />
+    <result column="constructionAssessmentValue" property="constructionassessmentvalue" jdbcType="VARCHAR" />
+    <result column="investmentProfit" property="investmentprofit" jdbcType="VARCHAR" />
+    <result column="interestInvestment" property="interestinvestment" jdbcType="VARCHAR" />
+    <result column="constructionSubtotal" property="constructionsubtotal" jdbcType="VARCHAR" />
+    <result column="landGetCostTotal" property="landgetcosttotal" jdbcType="VARCHAR" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
-    <result column="cost_id" property="costId" jdbcType="INTEGER" />
     <result column="engineering_id" property="engineeringId" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,9 +75,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, creator, gmt_created, gmt_modified, construction_proces_assess_value, evaluation_value_construction_project, 
-    evaluation_value_construction_project_correct, construction_installation_engineering_fee, 
-    json_content, cost_id, engineering_id, pid
+    id, constructionAssessmentPrice, constructionAssessmentValue, investmentProfit, interestInvestment, 
+    constructionSubtotal, landGetCostTotal, json_content, engineering_id, pid, creator, 
+    gmt_modified, gmt_created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -112,16 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_construction (creator, gmt_created, gmt_modified, 
-      construction_proces_assess_value, evaluation_value_construction_project, 
-      evaluation_value_construction_project_correct, construction_installation_engineering_fee, 
-      json_content, cost_id, engineering_id, 
-      pid)
-    values (#{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{constructionProcesAssessValue,jdbcType=DECIMAL}, #{evaluationValueConstructionProject,jdbcType=DECIMAL}, 
-      #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL}, #{constructionInstallationEngineeringFee,jdbcType=DECIMAL}, 
-      #{jsonContent,jdbcType=CHAR}, #{costId,jdbcType=INTEGER}, #{engineeringId,jdbcType=INTEGER}, 
-      #{pid,jdbcType=INTEGER})
+    insert into tb_md_cost_construction (constructionAssessmentPrice, constructionAssessmentValue, 
+      investmentProfit, interestInvestment, constructionSubtotal, 
+      landGetCostTotal, json_content, engineering_id, 
+      pid, creator, gmt_modified, 
+      gmt_created)
+    values (#{constructionassessmentprice,jdbcType=DECIMAL}, #{constructionassessmentvalue,jdbcType=VARCHAR}, 
+      #{investmentprofit,jdbcType=VARCHAR}, #{interestinvestment,jdbcType=VARCHAR}, #{constructionsubtotal,jdbcType=VARCHAR}, 
+      #{landgetcosttotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{engineeringId,jdbcType=INTEGER}, 
+      #{pid,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{gmtCreated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,32 +130,26 @@
     </selectKey>
     insert into tb_md_cost_construction
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        creator,
+      <if test="constructionassessmentprice != null" >
+        constructionAssessmentPrice,
       </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
+      <if test="constructionassessmentvalue != null" >
+        constructionAssessmentValue,
       </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
+      <if test="investmentprofit != null" >
+        investmentProfit,
       </if>
-      <if test="constructionProcesAssessValue != null" >
-        construction_proces_assess_value,
+      <if test="interestinvestment != null" >
+        interestInvestment,
       </if>
-      <if test="evaluationValueConstructionProject != null" >
-        evaluation_value_construction_project,
+      <if test="constructionsubtotal != null" >
+        constructionSubtotal,
       </if>
-      <if test="evaluationValueConstructionProjectCorrect != null" >
-        evaluation_value_construction_project_correct,
-      </if>
-      <if test="constructionInstallationEngineeringFee != null" >
-        construction_installation_engineering_fee,
+      <if test="landgetcosttotal != null" >
+        landGetCostTotal,
       </if>
       <if test="jsonContent != null" >
         json_content,
-      </if>
-      <if test="costId != null" >
-        cost_id,
       </if>
       <if test="engineeringId != null" >
         engineering_id,
@@ -162,40 +157,52 @@
       <if test="pid != null" >
         pid,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
+        creator,
       </if>
       <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
+        gmt_modified,
       </if>
-      <if test="constructionProcesAssessValue != null" >
-        #{constructionProcesAssessValue,jdbcType=DECIMAL},
+      <if test="gmtCreated != null" >
+        gmt_created,
       </if>
-      <if test="evaluationValueConstructionProject != null" >
-        #{evaluationValueConstructionProject,jdbcType=DECIMAL},
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="constructionassessmentprice != null" >
+        #{constructionassessmentprice,jdbcType=DECIMAL},
       </if>
-      <if test="evaluationValueConstructionProjectCorrect != null" >
-        #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
+      <if test="constructionassessmentvalue != null" >
+        #{constructionassessmentvalue,jdbcType=VARCHAR},
       </if>
-      <if test="constructionInstallationEngineeringFee != null" >
-        #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      <if test="investmentprofit != null" >
+        #{investmentprofit,jdbcType=VARCHAR},
+      </if>
+      <if test="interestinvestment != null" >
+        #{interestinvestment,jdbcType=VARCHAR},
+      </if>
+      <if test="constructionsubtotal != null" >
+        #{constructionsubtotal,jdbcType=VARCHAR},
+      </if>
+      <if test="landgetcosttotal != null" >
+        #{landgetcosttotal,jdbcType=VARCHAR},
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="costId != null" >
-        #{costId,jdbcType=INTEGER},
       </if>
       <if test="engineeringId != null" >
         #{engineeringId,jdbcType=INTEGER},
       </if>
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -211,38 +218,41 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
+      <if test="record.constructionassessmentprice != null" >
+        constructionAssessmentPrice = #{record.constructionassessmentprice,jdbcType=DECIMAL},
       </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      <if test="record.constructionassessmentvalue != null" >
+        constructionAssessmentValue = #{record.constructionassessmentvalue,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      <if test="record.investmentprofit != null" >
+        investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionProcesAssessValue != null" >
-        construction_proces_assess_value = #{record.constructionProcesAssessValue,jdbcType=DECIMAL},
+      <if test="record.interestinvestment != null" >
+        interestInvestment = #{record.interestinvestment,jdbcType=VARCHAR},
       </if>
-      <if test="record.evaluationValueConstructionProject != null" >
-        evaluation_value_construction_project = #{record.evaluationValueConstructionProject,jdbcType=DECIMAL},
+      <if test="record.constructionsubtotal != null" >
+        constructionSubtotal = #{record.constructionsubtotal,jdbcType=VARCHAR},
       </if>
-      <if test="record.evaluationValueConstructionProjectCorrect != null" >
-        evaluation_value_construction_project_correct = #{record.evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
-      </if>
-      <if test="record.constructionInstallationEngineeringFee != null" >
-        construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      <if test="record.landgetcosttotal != null" >
+        landGetCostTotal = #{record.landgetcosttotal,jdbcType=VARCHAR},
       </if>
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="record.costId != null" >
-        cost_id = #{record.costId,jdbcType=INTEGER},
       </if>
       <if test="record.engineeringId != null" >
         engineering_id = #{record.engineeringId,jdbcType=INTEGER},
       </if>
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -252,17 +262,18 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_cost_construction
     set id = #{record.id,jdbcType=INTEGER},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      construction_proces_assess_value = #{record.constructionProcesAssessValue,jdbcType=DECIMAL},
-      evaluation_value_construction_project = #{record.evaluationValueConstructionProject,jdbcType=DECIMAL},
-      evaluation_value_construction_project_correct = #{record.evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
-      construction_installation_engineering_fee = #{record.constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      constructionAssessmentPrice = #{record.constructionassessmentprice,jdbcType=DECIMAL},
+      constructionAssessmentValue = #{record.constructionassessmentvalue,jdbcType=VARCHAR},
+      investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
+      interestInvestment = #{record.interestinvestment,jdbcType=VARCHAR},
+      constructionSubtotal = #{record.constructionsubtotal,jdbcType=VARCHAR},
+      landGetCostTotal = #{record.landgetcosttotal,jdbcType=VARCHAR},
       json_content = #{record.jsonContent,jdbcType=CHAR},
-      cost_id = #{record.costId,jdbcType=INTEGER},
       engineering_id = #{record.engineeringId,jdbcType=INTEGER},
-      pid = #{record.pid,jdbcType=INTEGER}
+      pid = #{record.pid,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -270,32 +281,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
     <set >
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
+      <if test="constructionassessmentprice != null" >
+        constructionAssessmentPrice = #{constructionassessmentprice,jdbcType=DECIMAL},
       </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      <if test="constructionassessmentvalue != null" >
+        constructionAssessmentValue = #{constructionassessmentvalue,jdbcType=VARCHAR},
       </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      <if test="investmentprofit != null" >
+        investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
       </if>
-      <if test="constructionProcesAssessValue != null" >
-        construction_proces_assess_value = #{constructionProcesAssessValue,jdbcType=DECIMAL},
+      <if test="interestinvestment != null" >
+        interestInvestment = #{interestinvestment,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationValueConstructionProject != null" >
-        evaluation_value_construction_project = #{evaluationValueConstructionProject,jdbcType=DECIMAL},
+      <if test="constructionsubtotal != null" >
+        constructionSubtotal = #{constructionsubtotal,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationValueConstructionProjectCorrect != null" >
-        evaluation_value_construction_project_correct = #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
-      </if>
-      <if test="constructionInstallationEngineeringFee != null" >
-        construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+      <if test="landgetcosttotal != null" >
+        landGetCostTotal = #{landgetcosttotal,jdbcType=VARCHAR},
       </if>
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="costId != null" >
-        cost_id = #{costId,jdbcType=INTEGER},
       </if>
       <if test="engineeringId != null" >
         engineering_id = #{engineeringId,jdbcType=INTEGER},
@@ -303,22 +308,32 @@
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
-    set creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      construction_proces_assess_value = #{constructionProcesAssessValue,jdbcType=DECIMAL},
-      evaluation_value_construction_project = #{evaluationValueConstructionProject,jdbcType=DECIMAL},
-      evaluation_value_construction_project_correct = #{evaluationValueConstructionProjectCorrect,jdbcType=DECIMAL},
-      construction_installation_engineering_fee = #{constructionInstallationEngineeringFee,jdbcType=DECIMAL},
+    set constructionAssessmentPrice = #{constructionassessmentprice,jdbcType=DECIMAL},
+      constructionAssessmentValue = #{constructionassessmentvalue,jdbcType=VARCHAR},
+      investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
+      interestInvestment = #{interestinvestment,jdbcType=VARCHAR},
+      constructionSubtotal = #{constructionsubtotal,jdbcType=VARCHAR},
+      landGetCostTotal = #{landgetcosttotal,jdbcType=VARCHAR},
       json_content = #{jsonContent,jdbcType=CHAR},
-      cost_id = #{costId,jdbcType=INTEGER},
       engineering_id = #{engineeringId,jdbcType=INTEGER},
-      pid = #{pid,jdbcType=INTEGER}
+      pid = #{pid,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -3,9 +3,65 @@
 
     <jsp:include page="../costModule/build/cost.jsp"></jsp:include>
 
+    <div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        勘察设计和前期工程费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"
+                               name="reconnaissanceDesign">
+                    </div>
+                </div>
+
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        建筑安装工程费 (计算金额)
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="建筑安装工程费" class="form-control" readonly="readonly"
+                               name="constructionInstallationEngineeringFee" value="1000">
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
     <jsp:include page="../costModule/build/totalTaxRate.jsp"></jsp:include>
 
     <jsp:include page="../costModule/build/designParameters.jsp"></jsp:include>
+    <div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        管理费
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="管理费" class="form-control" readonly="readonly"
+                               name="managementExpense">
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        不可预见费
+                    </label>
+                    <div class="col-sm-3">
+                        <input type="text"
+                               placeholder="不可预见费" class="form-control" readonly="readonly"
+                               name="unforeseenExpenses">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <jsp:include page="../costModule/build/resultView.jsp"></jsp:include>
 
@@ -17,14 +73,14 @@
     build.config = {
         id: "buildModel",
         /*说明:key代表计算出的金额,correcting代表费率校正值,tax代表费率,name代表名称*/
-        totalTaxRate:{
-            key:"totalTaxRate",
-            name:"合计税率",
-            business:"businessTax",//营业税
-            urbanMaintenance:"urbanMaintenanceTax",//城建税
-            education:"educationTax",//教育费附加
-            localEducation:"localEducationTax",//地方教育费附加
-            stampDuty:"stampDuty"//印花税
+        totalTaxRate: {
+            key: "totalTaxRate",
+            name: "合计税率",
+            business: "businessTax",//营业税
+            urbanMaintenance: "urbanMaintenanceTax",//城建税
+            education: "educationTax",//教育费附加
+            localEducation: "localEducationTax",//地方教育费附加
+            stampDuty: "stampDuty"//印花税
         },
         inputConfig: {
             reconnaissanceDesign: {
@@ -99,8 +155,8 @@
                 tax: "",
                 name: "建设成本"
             },
-            replacementValue: {key: "replacementValue", name: "重置价格",tax:""},
-            newRate: {key: "newRate", name: "成新率",tax:""},
+            replacementValue: {key: "replacementValue", name: "重置价格", tax: ""},
+            newRate: {key: "newRate", name: "成新率", tax: "", div: "newRateModelDiv", frm: "newRateModelFrm"},
             assessPrice: {key: "assessPrice", name: "评估单价", tax: ""}
         }
     };
@@ -143,12 +199,246 @@
         });
     };
 
-    build.algorithm = {};
+    build.algorithm = {
+        businessTaxFun: function () {
+            //合计税率
+            build.algsObj.totalTaxRate();
+        },
+        urbanMaintenanceTaxFun: function () {
+            //合计税率
+            build.algsObj.totalTaxRate();
+        },
+        educationTaxFun: function () {
+            //合计税率
+            build.algsObj.totalTaxRate();
+        },
+        localEducationTaxFun: function () {
+            //合计税率
+            build.algsObj.totalTaxRate();
+        },
+        stampDutyFun: function () {
+            //合计税率
+            build.algsObj.totalTaxRate();
+        },
+        //勘察设计和前期工程费率
+        reconnaissanceDesignTaxFun: function () {
+            build.algsObj.reconnaissanceDesign();
+        },
+        //基础设施建设费
+        infrastructureCostTaxFun: function () {
+            build.algsObj.constructionCost();//建设成本
+        },
+        //公共配套设施建设费
+        infrastructureMatchingCostTaxFun: function () {
+            build.algsObj.constructionCost();//建设成本
+        },
+        //开发期间税费
+        devDuringTaxFun: function () {
+            build.algsObj.constructionCost();//建设成本
+        },
+        //其它工程费
+        otherEngineeringCostTaxFun: function () {
+            build.algsObj.constructionCost();//建设成本
+        },
+        //管理费率
+        managementExpenseTaxFun: function () {
+            var b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.tax, null);
+            if (b >= 0.03 && b <= 0.07) {
+                build.algsObj.managementExpense();//管理费
+            } else {
+                toastr.success('管理费参考值3%-7%');
+            }
+        },
+        //不可预见费率
+        unforeseenExpensesTaxFun: function () {
+            var c = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.tax, null);
+            if (c >= 0.03 && c <= 0.08) {
+                build.algsObj.unforeseenExpenses();//不可预见费
+            } else {
+                toastr.success('不可预见费参考值3%-7%');
+            }
+        },
+        //销售费用率
+        salesFeeTaxFun: function () {
+            build.algsObj.replacementValue();//重置价格
+        },
+        //计息周期
+        interestInvestmentCorrectingFun: function () {
+            build.algsObj.interestInvestment();//投资利息
+        },
+        //投资利息率
+        interestInvestmentTaxFun: function () {
+            build.algsObj.interestInvestment();//投资利息
+        },
+        //投资利润率
+        investmentProfitTaxFun: function () {
+            build.algsObj.investmentProfit();//投资利润
+        }
+    };
 
     build.algsObj = {
+        //评估单价
+        assessPrice: function () {
+            var a = 0, b = 0, c = 0;
+            a = $("#" + build.config.id).find("." + build.config.inputConfig.replacementValue.key).html();//重置价格
+            a = Number(a);
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.newRate.key, null);//成新率
+            c = a * b;
+            c = c.toFixed(4);
+            $("#" + build.config.id).find("." + build.config.inputConfig.assessPrice.key).html(c);//评估单价
+        },
+        //成新率
+        newRate: function () {
+            build.algsObj.assessPrice();//评估单价
+        },
+        //重置价格
+        replacementValue: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, temp = 0;
+            var p = 0, o = 0, s = 0;
+            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
+            c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
+            c = Number(c);
+            d = $("#" + build.config.id).find("." + build.config.inputConfig.investmentProfit.key).html();//投资利息
+            d = Number(d);
+            e = $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html();//投资利息
+            e = Number(e);
+            o = build.algsObj.getAndSet("get", build.config.inputConfig.salesFee.tax, null);//销售费用率
+            p = build.algsObj.getAndSet("get", build.config.totalTaxRate.key, null);//合计税率
+            s = build.algsObj.getAndSet("get", build.config.inputConfig.investmentProfit.tax, null);//
+            if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b) || !AssessCommon.isNumber(c) || !AssessCommon.isNumber(d) || !AssessCommon.isNumber(e)) {
+                return false;
+            }
+            if (!AssessCommon.isNumber(p) || !AssessCommon.isNumber(o)) {
+                return false;
+            }
+            temp = a + b + c + d + e;
+            temp = temp / (1 - p - o - (o * s));
+            temp = temp.toFixed(4);
+            $("#" + build.config.id).find("." + build.config.inputConfig.replacementValue.key).html(temp);//重置价格
+            build.algsObj.assessPrice();//评估单价
+        },
+        //投资利润
+        investmentProfit: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
+            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
+            c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
+            c = Number(c);
+            d = build.algsObj.getAndSet("get", build.config.inputConfig.investmentProfit.tax, null);
+            temp = a + b + c;
+            temp = temp * d;
+            if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b) || !AssessCommon.isNumber(c) || !AssessCommon.isNumber(d)) {
+                return false;
+            }
+            temp = temp.toFixed(4);
+            $("#" + build.config.id).find("." + build.config.inputConfig.investmentProfit.key).html(temp);//投资利润率
+            build.algsObj.replacementValue();//重置价格
+        },
+        //投资利息
+        interestInvestment: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
+            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
+            c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
+            c = Number(c);
+            d = build.algsObj.getAndSet("get", build.config.inputConfig.interestInvestment.tax, null);
+            e = build.algsObj.getAndSet("get", build.config.inputConfig.interestInvestment.correcting, null);
+            if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b) || !AssessCommon.isNumber(c) || !AssessCommon.isNumber(d) || !AssessCommon.isNumber(e)) {
+                return false;
+            }
+            temp = a + b + c;
+            temp = temp * (Math.pow(1 + d, e / 2) - 1);
+            temp = temp.toFixed(4);
+            $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html(temp);//投资利息
+            build.algsObj.replacementValue();//重置价格
+        },
+        //不可预见费
+        unforeseenExpenses: function () {
+            var a = 0, b = 0, c = 0, d = 0;
+            a = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();
+            a = Number(a);
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);
+            c = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.tax, null);
+            d = (a + b) * c;
+            d = d.toFixed(4);
+            if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b) || !AssessCommon.isNumber(c)) {
+                return false;
+            }
+            if (c >= 0.03 && c <= 0.08) {
+                build.algsObj.getAndSet("set", build.config.inputConfig.unforeseenExpenses.key, d);
+            }
+            build.algsObj.interestInvestment();//投资利息
+            build.algsObj.investmentProfit();//投资利润
+        },
+        //管理费
+        managementExpense: function () {
+            var a = 0, b = 0, c = 0;
+            a = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();
+            a = Number(a);
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.tax, null);
+            c = a * b;
+            c = c.toFixed(4);
+            if (!AssessCommon.isNumber(a)) {
+                return false;
+            }
+            if (!AssessCommon.isNumber(b)) {
+                return false;
+            }
+            if (b >= 0.03 && b <= 0.07) {
+                build.algsObj.getAndSet("set", build.config.inputConfig.managementExpense.key, c);
+            }
+            build.algsObj.unforeseenExpenses();//不可预见费
+        },
+        //建设成本
+        constructionCost: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
+            a = $("#" + build.config.id + " ." + build.config.inputConfig.infrastructureCost.tax).eq(1).val();//基础设施建设费
+            a = Number(a);
+            b = $("#" + build.config.id + " ." + build.config.inputConfig.infrastructureMatchingCost.tax).eq(1).val();//公共配套设施建设费
+            b = Number(b);
+            c = build.algsObj.getAndSet("get", build.config.inputConfig.constructionInstallationEngineeringFee.key, null);
+            d = build.algsObj.getAndSet("get", build.config.inputConfig.devDuring.tax, null);
+            e = build.algsObj.getAndSet("get", build.config.inputConfig.otherEngineeringCost.tax, null);
+            f = build.algsObj.getAndSet("get", build.config.inputConfig.reconnaissanceDesign.key, null);
+            temp = a + b + c + d + e + f;
+            temp = temp.toFixed(4);
+            if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b) || !AssessCommon.isNumber(c) || !AssessCommon.isNumber(d)) {
+                return false;
+            }
+            if (!AssessCommon.isNumber(e) || !AssessCommon.isNumber(f)) {
+                return false;
+            }
+            $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(temp);
+            build.algsObj.managementExpense();//管理费
+        },
         //建筑安装工程费
         constructionInstallationEngineeringFee: function () {
-
+            build.algsObj.reconnaissanceDesign();
+        },
+        //勘察设计和前期工程费
+        reconnaissanceDesign: function () {
+            var a = 0, b = 0, c = 0;
+            a = build.algsObj.getAndSet("get", build.config.inputConfig.constructionInstallationEngineeringFee.key, null);
+            b = build.algsObj.getAndSet("get", build.config.inputConfig.reconnaissanceDesign.tax, null);
+            c = a * b;
+            build.algsObj.getAndSet("set", build.config.inputConfig.reconnaissanceDesign.key, c);
+            build.algsObj.constructionCost();//建设成本
+        },
+        //合计税率
+        totalTaxRate: function () {
+            var a = 0, b = 0, c = 0, d = 0, e = 0, temp = 0;
+            b = build.algsObj.getAndSet("get", build.config.totalTaxRate.urbanMaintenance, null);//城建税
+            a = build.algsObj.getAndSet("get", build.config.totalTaxRate.business, null);//营业税
+            c = build.algsObj.getAndSet("get", build.config.totalTaxRate.education, null);//教育费附加
+            d = build.algsObj.getAndSet("get", build.config.totalTaxRate.localEducation, null);//地方教育费附加
+            e = build.algsObj.getAndSet("get", build.config.totalTaxRate.stampDuty, null);//印花税
+            temp = 1 + b + c + d;
+            temp = a * temp;
+            temp = e + temp;
+            temp = AssessCommon.pointToPercent(temp);
+            build.algsObj.getAndSet("set", build.config.totalTaxRate.key, temp);
+            build.algsObj.replacementValue();//重置价格
         },
         getAndSet: function (flag, name, data) {
             if (flag == 'get') {
@@ -215,7 +505,7 @@
         arr.push(build.config.totalTaxRate.localEducation);
         arr.push(build.config.totalTaxRate.stampDuty);
         arr.push(build.config.totalTaxRate.urbanMaintenance);
-        $.each(arr,function (i,n) {
+        $.each(arr, function (i, n) {
             var input = $("#" + build.config.id).find("input[name='" + n + "']");
             if (build.isEmpty(n)) {
                 input.bind("blur", function () {//使用失去焦点事件来收集数据并且计算
@@ -356,6 +646,64 @@
         });
     };
 
+    build.newRateModel = {
+        show: function () {
+            $("#" + build.config.inputConfig.newRate.div).modal("show");
+            $("#" + build.config.inputConfig.newRate.frm).validate();
+            $(function () {
+                build.newRateModel.event.init();
+            });
+        },
+        event: {
+            radioChange: function () {
+                $("#" + build.config.inputConfig.newRate.frm).find("input[type='radio'][name='method']").change(function () {
+                    var v = $("#" + build.config.inputConfig.newRate.frm).find(":radio:checked").val();
+                    v = Number(v);
+                    if (v == 1) {
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").hide();
+                    }
+                    if (v == 2) {
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").hide();
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").show();
+                    }
+                    if (v == 12) {
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").show();
+                    }
+                    $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm).show();
+                });
+            },
+            init: function () {
+                build.newRateModel.event.radioChange();
+                build.newRateModel.event.selectInit();
+            },
+            selectInit: function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/architecture/dataBuildingNewRateList",
+                    type: "get",
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.ret) {
+                            var optionA = "<option value=''>请选择</option>";
+                            $.each(result.data, function (i, n) {
+                                if (build.isEmpty(n.durableLife)) {
+                                    optionA += "<option value='" + n.id + "'>" + n.durableLife + "</option>";
+                                }
+                            });
+                            $("#" + build.config.inputConfig.newRate.frm).find("select.durableLife").empty();
+                            $("#" + build.config.inputConfig.newRate.frm).find("select.durableLife").html(optionA);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            }
+        }
+    };
+
     $(function () {
         build.loadData();
         build.inputEvent();
@@ -363,3 +711,181 @@
         build.monitor.init();
     });
 </script>
+<div id="newRateModelDiv" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">成新率</h3>
+            </div>
+            <form class="form-horizontal" id="newRateModelFrm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-header">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <span class="col-sm-2">
+                                        </span>
+                                        <span class="col-sm-2">
+                                            <input type="radio" name="method" value="1">
+                                            <label>年限法</label>
+                                        </span>
+                                        <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
+                                            <input type="radio" name="method" value="2">
+                                            <label>观察法</label>
+                                        </span>
+                                        <span class="col-sm-2  checkbox-inline">
+                                            <input type="radio" name="method" value="12">
+                                            <label>年限/观察法</label>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 newRateModelFrmA" style="display: none">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        年限法
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        经济耐用年限
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <select name="durableLife" required="required"
+                                                class="form-control search-select select2 durableLife">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        已使用年限
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" name="useYear"
+                                               data-rule-number='true' required="required"
+                                               placeholder="已使用年限">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        残值率
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control residualValue"
+                                               name="residualValue"
+                                               readonly="readonly"
+                                               placeholder="残值率">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        成新率
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" name="newRateA" readonly="readonly"
+                                               placeholder="成新率">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        建筑结构
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control buildingStructure"
+                                               name="buildingStructure" readonly="readonly"
+                                               placeholder="建筑结构" required="required">
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        权重
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" name="weightYear"
+                                               data-rule-number='true' required="required"
+                                               placeholder="权重">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 newRateModelFrmB" style="display:none;">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        观察法
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            成新率
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="newRateG"
+                                                   data-rule-number='true' required="required"
+                                                   placeholder="成新率">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            权重
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" name="weightG"
+                                                   data-rule-number='true' required="required"
+                                                   placeholder="权重">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 newRateModelFrm" style="display: none">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">
+                                        <font color="red">计算所得成新率</font>
+                                    </label>
+                                    <div class="x-valid">
+                                        <div class="col-sm-5">
+                                            <label class="control-label integratednewRate">
+                                                0
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="">
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
