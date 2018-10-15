@@ -78,6 +78,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareApproval", processInsId, boxId, taskId, agentUserAccount);
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+
         setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
         return modelAndView;
     }
@@ -87,6 +88,26 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
+
+        //测试完删除
+        if (info == null) {
+            MdMarketCompare marketCompare = mdMarketCompareService.initExplore(judgeObject);
+            if (marketCompare != null) {
+                SchemeInfo schemeInfo = new SchemeInfo();
+                schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+                schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+                schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+                schemeInfo.setMethodDataId(marketCompare.getId());
+                try {
+                    schemeInfoService.saveSchemeInfo(schemeInfo);
+                    info = schemeInfo;
+                } catch (BusinessException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+
         setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
         return modelAndView;
     }

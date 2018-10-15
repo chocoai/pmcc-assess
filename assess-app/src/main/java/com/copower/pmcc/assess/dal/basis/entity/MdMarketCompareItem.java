@@ -14,6 +14,8 @@ public class MdMarketCompareItem {
 
     private String jsonContent;
 
+    private BigDecimal initialPrice;
+
     private Boolean mustAdjustPrice;
 
     private String specificPrice;
@@ -72,6 +74,14 @@ public class MdMarketCompareItem {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
+    }
+
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
+    }
+
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
     }
 
     public Boolean getMustAdjustPrice() {

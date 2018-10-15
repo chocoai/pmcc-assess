@@ -426,6 +426,66 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andInitialPriceIsNull() {
+            addCriterion("initial_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceIsNotNull() {
+            addCriterion("initial_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceEqualTo(BigDecimal value) {
+            addCriterion("initial_price =", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceNotEqualTo(BigDecimal value) {
+            addCriterion("initial_price <>", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceGreaterThan(BigDecimal value) {
+            addCriterion("initial_price >", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("initial_price >=", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceLessThan(BigDecimal value) {
+            addCriterion("initial_price <", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("initial_price <=", value, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceIn(List<BigDecimal> values) {
+            addCriterion("initial_price in", values, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceNotIn(List<BigDecimal> values) {
+            addCriterion("initial_price not in", values, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("initial_price between", value1, value2, "initialPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andInitialPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("initial_price not between", value1, value2, "initialPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andMustAdjustPriceIsNull() {
             addCriterion("must_adjust_price is null");
             return (Criteria) this;
