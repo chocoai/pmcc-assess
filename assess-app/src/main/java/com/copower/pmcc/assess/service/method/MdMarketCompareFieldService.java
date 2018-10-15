@@ -135,7 +135,7 @@ public class MdMarketCompareFieldService {
         //9.取得他项权利
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-        ProjectPlanDetails inventoryPlanDetails =  planDetailsList.get(0);
+        ProjectPlanDetails inventoryPlanDetails = planDetailsList.get(0);
         List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(inventoryPlanDetails.getId());
         //10.取得土地实体情况
         ExamineEstateLandState landState = examineEstateLandStateDao.getEstateLandStateByPlanDetailsId(planDetailsId);
@@ -195,8 +195,8 @@ public class MdMarketCompareFieldService {
                                 stringBuilder.append("、");
                             }
                         }
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.OFFICE_CONCENTRATION, stringBuilder.toString()));
                     }
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.OFFICE_CONCENTRATION, stringBuilder.toString()));
                     break;
                 case AssessMarketCompareConstant.FLOOR://楼层
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR, String.valueOf(examineHouse.getFloor())));
@@ -214,8 +214,8 @@ public class MdMarketCompareFieldService {
                                 stringBuilder.append("、");
                             }
                         }
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.TRAFFIC_CONDITIONS, stringBuilder.toString()));
                     }
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.OFFICE_CONCENTRATION, stringBuilder.toString()));
                     break;
                 case AssessMarketCompareConstant.URBAN_INFRASTRUCTURE://城市基础设施
 
@@ -381,7 +381,7 @@ public class MdMarketCompareFieldService {
                     stringBuilder.append(StringUtils.isEmpty(landState.getSoil()) ? "" : String.format("土壤:%s、", landState.getSoil()));
                     stringBuilder.append(StringUtils.isEmpty(landState.getTopographicTerrain()) ? "" : String.format("地形地势:%s、", landState.getTopographicTerrain()));
                     stringBuilder.append(StringUtils.isEmpty(landState.getLandArea()) ? "" : String.format("土地面积:%s、", landState.getLandArea()));
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.PROPERTY_MANAGEMENT, stringBuilder.toString()));
+                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.LAND_ENTITY_STATUS, stringBuilder.toString()));
                     break;
                 case AssessMarketCompareConstant.BUILDING_SCALE://建筑规模
 
@@ -396,7 +396,7 @@ public class MdMarketCompareFieldService {
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.FLOOR_HEIGHT, String.valueOf(examineBuilding.getFloorHeight())));
                     break;
                 case AssessMarketCompareConstant.NET_HEIGHT://净高
-                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.NET_HEIGHT, String.valueOf(examineBuilding.getNetHeight())));
+                    list.add(getMarketCompareItemDto(AssessMarketCompareConstant.NET_HEIGHT, String.valueOf(examineBuilding.getNetHeight() == null ? "" : examineBuilding.getNetHeight())));
                     break;
                 case AssessMarketCompareConstant.BUILDING_HEIGHT://建筑高度
                     list.add(getMarketCompareItemDto(AssessMarketCompareConstant.BUILDING_HEIGHT, String.valueOf(examineBuilding.getBuildingHeight())));
@@ -604,7 +604,7 @@ public class MdMarketCompareFieldService {
 
     private void getEnvironmentString(StringBuilder stringBuilder, BaseDataDic sceneryDic, ExamineMatchingEnvironment examineMatchingEnvironment) {
         BaseDataDic baseDataDic;
-        if (sceneryDic.getId().equals(examineMatchingEnvironment.getType())) {
+        if (StringUtils.equals(String.valueOf(sceneryDic.getId()), examineMatchingEnvironment.getType())) {
             baseDataDic = baseDataDicService.getDataDicById(examineMatchingEnvironment.getCategory());
             if (baseDataDic != null)
                 stringBuilder.append(baseDataDic.getName());

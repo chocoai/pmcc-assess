@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -135,18 +136,31 @@ public class MdMarketCompareService {
         List<Integer> planDetailsIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdString));
         if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
             List<DataSetUseField> setUseFieldList = getFieldList(setUse);
-            for (Integer integer : planDetailsIdList) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(integer);
+            for (Integer planDetailsId : planDetailsIdList) {
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
                 mdMarketCompareItem.setMcId(mcId);
                 mdMarketCompareItem.setName(projectPlanDetails.getProjectPhaseName());
                 mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
-                mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(integer));
+                mdMarketCompareItem.setInitialPrice(getTradingPrice(planDetailsId));
+                mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
                 mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             }
         }
+    }
+
+    /**
+     * 获取成交价
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public BigDecimal getTradingPrice(Integer planDetailsId) {
+        ExamineHouseTrading houseTrading = examineHouseTradingDao.getHouseTradingByPlanDetailsId(planDetailsId);
+        if (houseTrading == null) return null;
+        return houseTrading.getTradingPrice();
     }
 
     /**
