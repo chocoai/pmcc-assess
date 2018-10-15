@@ -240,7 +240,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" placeholder="残值率"
-                                                   id="residualValue" name="residualValue" class="form-control">
+                                                   id="residualValue" name="residualValue" class="form-control x-percent">
                                         </div>
                                     </div>
                                 </div>

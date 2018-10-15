@@ -156,7 +156,14 @@
                 name: "建设成本"
             },
             replacementValue: {key: "replacementValue", name: "重置价格", tax: ""},
-            newRate: {key: "newRate", name: "成新率", tax: "", div: "newRateModelDiv", frm: "newRateModelFrm"},
+            newRate: {
+                key: "newRate",
+                name: "成新率",
+                tax: "",
+                div: "newRateModelDiv",
+                frm: "newRateModelFrm",
+                correcting: "newRateCorrecting"
+            },
             assessPrice: {key: "assessPrice", name: "评估单价", tax: ""}
         }
     };
@@ -654,6 +661,12 @@
                 build.newRateModel.event.init();
             });
         },
+        close: function () {
+            var v = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html();
+            build.algsObj.getAndSet("set", build.config.inputConfig.newRate.key, Number(v));//成新率
+            $("#" + build.config.inputConfig.newRate.div).modal("hide");
+            build.algsObj.newRate();//成新率
+        },
         event: {
             radioChange: function () {
                 $("#" + build.config.inputConfig.newRate.frm).find("input[type='radio'][name='method']").change(function () {
@@ -688,8 +701,9 @@
                         if (result.ret) {
                             var optionA = "<option value=''>请选择</option>";
                             $.each(result.data, function (i, n) {
+                                console.log(n);
                                 if (build.isEmpty(n.durableLife)) {
-                                    optionA += "<option value='" + n.id + "'>" + n.durableLife + "</option>";
+                                    optionA += "<option value='" + n.id + "'>" + n.buildingStructure + "-" + n.buildingUseName + "</option>";
                                 }
                             });
                             $("#" + build.config.inputConfig.newRate.frm).find("select.durableLife").empty();
@@ -867,7 +881,7 @@
                                     </label>
                                     <div class="x-valid">
                                         <div class="col-sm-5">
-                                            <label class="control-label integratednewRate">
+                                            <label class="control-label newRateCorrecting">
                                                 0
                                             </label>
                                         </div>
@@ -881,7 +895,7 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="">
+                    <button type="button" class="btn btn-primary" onclick="build.newRateModel.close();">
                         确认
                     </button>
                 </div>
