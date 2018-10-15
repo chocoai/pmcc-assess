@@ -40,6 +40,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal evaluationArea;
 
+    private BigDecimal price;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -198,6 +200,14 @@ public class SchemeJudgeObject {
 
     public void setEvaluationArea(BigDecimal evaluationArea) {
         this.evaluationArea = evaluationArea;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Boolean getBisSplit() {

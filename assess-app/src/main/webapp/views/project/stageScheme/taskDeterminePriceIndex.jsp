@@ -75,7 +75,12 @@
                                             <label class="form-control">${judgeObject.evaluationArea}</label>
                                         </td>
                                         <td>
-
+                                            <a href="javascript://" onclick="determinePrice.surePrice(this);"
+                                               class="btn btn-xs btn-success judge-split tooltips">确定单价</a>
+                                            <c:if test="${judgeObject.bisMerge}">
+                                                <a href="javascript://" onclick="programme.splitJudge(this);"
+                                                   class="btn btn-xs btn-success judge-split tooltips">调整评估价</a>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -101,22 +106,82 @@
         </div>
     </div>
 </div>
+
+<%--确定单价--%>
+<div id="modal_sure_price" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">确定单价</h3>
+            </div>
+            <form id="frm_data_section" class="form-horizontal">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%">序号</th>
+                            <th style="width: 10%">方法名称</th>
+                            <th style="width: 5%">试算价格</th>
+                            <th style="width: 15%">权重</th>
+                            <th style="width: 10%">误差率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>假设开发法</td>
+                                <td>5685</td>
+                                <td>
+                                    <input type="text" name="weight">
+                                </td>
+                                <td>0.32%</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>市场比较法</td>
+                                <td>5685</td>
+                                <td>
+                                    <input type="text" name="weight">
+                                </td>
+                                <td>0.32%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                最终单价
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" required name="beginDate" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="incomeIndex.saveDateSection();">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 
-
-<script type="text/javascript">
-    $(function () {
-
-    })
-</script>
 <script type="application/javascript">
     function submit() {
-
         var data = {};
-
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data));
         }
@@ -125,6 +190,12 @@
         }
     }
 
+
+    var determinePrice = {};
+    //确定单价
+    determinePrice.surePrice = function () {
+
+    }
 </script>
 
 </html>

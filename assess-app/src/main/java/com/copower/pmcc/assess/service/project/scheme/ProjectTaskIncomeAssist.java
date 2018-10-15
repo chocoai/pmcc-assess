@@ -162,6 +162,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
+        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_INCOME);
         schemeInfo.setMethodDataId(mdIncome.getId());
         schemeInfoService.saveSchemeInfo(schemeInfo);

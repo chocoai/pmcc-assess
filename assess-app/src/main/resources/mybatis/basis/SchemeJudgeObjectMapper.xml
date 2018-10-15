@@ -20,6 +20,7 @@
     <result column="best_use" property="bestUse" jdbcType="INTEGER" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="evaluation_area" property="evaluationArea" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="bis_split" property="bisSplit" jdbcType="BIT" />
     <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
@@ -90,7 +91,7 @@
   <sql id="Base_Column_List" >
     id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, number, 
     original_number, split_number, name, ownership, seat, cert_use, practical_use, set_use, 
-    best_use, floor_area, evaluation_area, bis_split, bis_merge, bis_enable, bis_set_function, 
+    best_use, floor_area, evaluation_area, price, bis_split, bis_merge, bis_enable, bis_set_function, 
     sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" >
@@ -132,19 +133,19 @@
       original_number, split_number, name, 
       ownership, seat, cert_use, 
       practical_use, set_use, best_use, 
-      floor_area, evaluation_area, bis_split, 
-      bis_merge, bis_enable, bis_set_function, 
-      sorting, creator, gmt_created, 
-      gmt_modified)
+      floor_area, evaluation_area, price, 
+      bis_split, bis_merge, bis_enable, 
+      bis_set_function, sorting, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
       #{originalNumber,jdbcType=VARCHAR}, #{splitNumber,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, 
       #{practicalUse,jdbcType=VARCHAR}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
-      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{bisSplit,jdbcType=BIT}, 
-      #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -202,6 +203,9 @@
       </if>
       <if test="evaluationArea != null" >
         evaluation_area,
+      </if>
+      <if test="price != null" >
+        price,
       </if>
       <if test="bisSplit != null" >
         bis_split,
@@ -279,6 +283,9 @@
       </if>
       <if test="evaluationArea != null" >
         #{evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="bisSplit != null" >
         #{bisSplit,jdbcType=BIT},
@@ -369,6 +376,9 @@
       <if test="record.evaluationArea != null" >
         evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
       </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
       <if test="record.bisSplit != null" >
         bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
@@ -418,6 +428,7 @@
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
       bis_split = #{record.bisSplit,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -484,6 +495,9 @@
       <if test="evaluationArea != null" >
         evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
       </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
       <if test="bisSplit != null" >
         bis_split = #{bisSplit,jdbcType=BIT},
       </if>
@@ -530,6 +544,7 @@
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
       bis_split = #{bisSplit,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},

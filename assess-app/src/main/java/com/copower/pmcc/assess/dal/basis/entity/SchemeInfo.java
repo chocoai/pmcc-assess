@@ -11,7 +11,7 @@ public class SchemeInfo {
 
     private String processInsId;
 
-    private Integer evaluationObjectId;
+    private Integer judgeObjectId;
 
     private String methodType;
 
@@ -55,12 +55,12 @@ public class SchemeInfo {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
-    public Integer getEvaluationObjectId() {
-        return evaluationObjectId;
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
     }
 
-    public void setEvaluationObjectId(Integer evaluationObjectId) {
-        this.evaluationObjectId = evaluationObjectId;
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     public String getMethodType() {

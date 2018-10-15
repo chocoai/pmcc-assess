@@ -6,7 +6,7 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="evaluation_object_id" property="evaluationObjectId" jdbcType="INTEGER" />
+    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="method_type" property="methodType" jdbcType="VARCHAR" />
     <result column="method_data_id" property="methodDataId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, evaluation_object_id, method_type, 
-    method_data_id, creator, gmt_created, gmt_modified
+    id, project_id, plan_details_id, process_ins_id, judge_object_id, method_type, method_data_id, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfoExample" >
     select
@@ -110,11 +110,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_info (project_id, plan_details_id, process_ins_id, 
-      evaluation_object_id, method_type, method_data_id, 
+      judge_object_id, method_type, method_data_id, 
       creator, gmt_created, gmt_modified
       )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{evaluationObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=VARCHAR}, #{methodDataId,jdbcType=INTEGER}, 
+      #{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=VARCHAR}, #{methodDataId,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -133,8 +133,8 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="evaluationObjectId != null" >
-        evaluation_object_id,
+      <if test="judgeObjectId != null" >
+        judge_object_id,
       </if>
       <if test="methodType != null" >
         method_type,
@@ -162,8 +162,8 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationObjectId != null" >
-        #{evaluationObjectId,jdbcType=INTEGER},
+      <if test="judgeObjectId != null" >
+        #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
         #{methodType,jdbcType=VARCHAR},
@@ -203,8 +203,8 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.evaluationObjectId != null" >
-        evaluation_object_id = #{record.evaluationObjectId,jdbcType=INTEGER},
+      <if test="record.judgeObjectId != null" >
+        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="record.methodType != null" >
         method_type = #{record.methodType,jdbcType=VARCHAR},
@@ -232,7 +232,7 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      evaluation_object_id = #{record.evaluationObjectId,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       method_type = #{record.methodType,jdbcType=VARCHAR},
       method_data_id = #{record.methodDataId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -254,8 +254,8 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationObjectId != null" >
-        evaluation_object_id = #{evaluationObjectId,jdbcType=INTEGER},
+      <if test="judgeObjectId != null" >
+        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
         method_type = #{methodType,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      evaluation_object_id = #{evaluationObjectId,jdbcType=INTEGER},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       method_type = #{methodType,jdbcType=VARCHAR},
       method_data_id = #{methodDataId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

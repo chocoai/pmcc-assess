@@ -355,63 +355,63 @@ public class SchemeInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdIsNull() {
-            addCriterion("evaluation_object_id is null");
+        public Criteria andJudgeObjectIdIsNull() {
+            addCriterion("judge_object_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdIsNotNull() {
-            addCriterion("evaluation_object_id is not null");
+        public Criteria andJudgeObjectIdIsNotNull() {
+            addCriterion("judge_object_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdEqualTo(Integer value) {
-            addCriterion("evaluation_object_id =", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdEqualTo(Integer value) {
+            addCriterion("judge_object_id =", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdNotEqualTo(Integer value) {
-            addCriterion("evaluation_object_id <>", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
+            addCriterion("judge_object_id <>", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdGreaterThan(Integer value) {
-            addCriterion("evaluation_object_id >", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
+            addCriterion("judge_object_id >", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("evaluation_object_id >=", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id >=", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdLessThan(Integer value) {
-            addCriterion("evaluation_object_id <", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdLessThan(Integer value) {
+            addCriterion("judge_object_id <", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("evaluation_object_id <=", value, "evaluationObjectId");
+        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("judge_object_id <=", value, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdIn(List<Integer> values) {
-            addCriterion("evaluation_object_id in", values, "evaluationObjectId");
+        public Criteria andJudgeObjectIdIn(List<Integer> values) {
+            addCriterion("judge_object_id in", values, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdNotIn(List<Integer> values) {
-            addCriterion("evaluation_object_id not in", values, "evaluationObjectId");
+        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
+            addCriterion("judge_object_id not in", values, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("evaluation_object_id between", value1, value2, "evaluationObjectId");
+        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andEvaluationObjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("evaluation_object_id not between", value1, value2, "evaluationObjectId");
+        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
             return (Criteria) this;
         }
 
