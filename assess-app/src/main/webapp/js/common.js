@@ -405,10 +405,6 @@ $(function () {
                 defaults.districtTarget = $(defaults.districtTarget);
             }
 
-            defaults.provinceTarget.select2();
-            defaults.cityTarget.select2();
-            defaults.districtTarget.select2();
-
             //省切换
             defaults.provinceTarget.bind('change', function () {
                 isProvinceFirstChange = false;
