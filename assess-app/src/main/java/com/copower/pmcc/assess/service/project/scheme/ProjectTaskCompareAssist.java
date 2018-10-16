@@ -142,13 +142,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
                 schemeSupportInfoService.saveSupportInfo(schemeSupportInfo);
             }
         }
-
-        SchemeInfo schemeInfo = new SchemeInfo();
-        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-        schemeInfo.setMethodDataId(mdMarketCompare.getId());
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 

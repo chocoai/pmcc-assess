@@ -42,6 +42,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal price;
 
+    private BigDecimal originalPrice;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -208,6 +210,14 @@ public class SchemeJudgeObject {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
     public Boolean getBisSplit() {

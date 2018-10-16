@@ -89,6 +89,7 @@ public class SchemeJudgeObjectService {
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(projectId);
+        schemeJudgeObject.setBisEnable(true);
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
