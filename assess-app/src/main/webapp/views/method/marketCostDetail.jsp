@@ -102,7 +102,7 @@
         var mdCostBuilding = "${mdCostBuilding}";
         var mdCostConstruction = "${mdCostConstruction}";
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
-            optionsBuildBox.showBuilding();
+            // optionsBuildBox.showBuilding();
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
@@ -112,7 +112,7 @@
             }
         }
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
-            optionsBuildBox.showConstruction();
+            // optionsBuildBox.showConstruction();
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);

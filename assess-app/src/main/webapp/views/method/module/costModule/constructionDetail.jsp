@@ -218,9 +218,8 @@
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-11">
-                            <select name="infrastructureCostTax"
-                                    class="form-control search-select select2 infrastructureCostTax">
-                            </select>
+                            <input type="text" readonly="readonly"
+                                   placeholder="基础设施建设费" class="form-control" name="infrastructureCostTax">
                         </div>
                     </div>
                 </div>
@@ -231,9 +230,8 @@
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-11">
-                            <select name="infrastructureMatchingCostTax"
-                                    class="form-control search-select select2 infrastructureMatchingCostTax">
-                            </select>
+                            <input type="text" readonly="readonly"
+                                   placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCostTax">
                         </div>
                     </div>
                 </div>
@@ -244,7 +242,7 @@
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-11">
-                            <input type="text"
+                            <input type="text" readonly="readonly"
                                    placeholder="开发期间税费" class="form-control" name="devDuringTax">
                         </div>
                     </div>
@@ -256,7 +254,7 @@
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-11">
-                            <input type="text"
+                            <input type="text" readonly="readonly"
                                    placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
                         </div>
                     </div>
@@ -283,7 +281,7 @@
                     </label>
                     <div class="x-valid">
                         <div class="col-sm-3">
-                            <input type="text"
+                            <input type="text" readonly="readonly"
                                    placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
                         </div>
                     </div>
@@ -295,7 +293,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="费率说明" class="form-control"
-                                   name="unforeseenExpensesTaxExplain">
+                                   name="unforeseenExpensesTaxExplain" readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -319,7 +317,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="费率说明" class="form-control"
-                                   name="managementExpenseTaxExplain">
+                                   name="managementExpenseTaxExplain" readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -344,7 +342,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="费率说明" class="form-control"
-                                   name="salesFeeTaxExplain">
+                                   name="salesFeeTaxExplain" readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -369,7 +367,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="费率说明" class="form-control"
-                                   name="interestInvestmentTaxExplain">
+                                   name="interestInvestmentTaxExplain" readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -394,7 +392,7 @@
                         <div class="col-sm-3">
                             <input type="text"
                                    placeholder="费率说明" class="form-control"
-                                   name="investmentProfitTaxExplain">
+                                   name="investmentProfitTaxExplain"  readonly="readonly">
                         </div>
                     </div>
                 </div>
