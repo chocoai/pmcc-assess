@@ -1,442 +1,678 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/8/8
-  Time: 12:04
-  To change this template use File | Settings | File Templates.
-  在建工程
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-horizontal frmConstruction" id="frmConstruction">
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            开发土地面积
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="开发土地面积" class="form-control" name="developmentLandArea">
-            </div>
+
+<div id="constructionModel">
+
+
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>开发信息</h2>
+            <div class="clearfix"></div>
         </div>
 
-        <label class="col-sm-1 control-label">
-            开发建筑面积
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="开发建筑面积" class="form-control" name="developmentBuildArea">
-            </div>
-        </div>
+        <div class="x_content">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        开发土地面积(㎡)
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text" name="developLandAreaTax"
+                                   placeholder=" 开发土地面积(㎡)" class="form-control" data-rule-number='true'
+                                   readonly="readonly">
+                        </div>
+                    </div>
+                </div>
 
-        <label class="col-sm-1 control-label">
-            开发期
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="开发期" class="form-control" name="developmentDate">
-            </div>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        开发建筑面积(㎡)
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text" name="developBuildAreaTax"
+                                   placeholder="开发建筑面积(㎡)" class="form-control" data-rule-number='true'
+                                   readonly="readonly">
+                        </div>
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            土地购买单价
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="土地购买单价" class="form-control" name="unitPriceLandPurchase">
-            </div>
-        </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        开发期（年）
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text" name="developYearNumberTax"
+                                   placeholder="开发期（年）" class="form-control" data-rule-number='true'
+                                   readonly="readonly">
+                        </div>
+                    </div>
+                </div>
 
-        <label class="col-sm-1 control-label">
-            土地购买合价
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="土地购买合价" class="form-control" name="landPurchasePrice">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            土地取得税率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <select name="landAcquisitionTaxRate"
-                        class="landAcquisitionTaxRateClass form-control search-select select2"></select>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            土地取得税费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="土地取得税费" class="form-control" name="landAcquisitionTax">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            土地取得单价
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="土地取得单价" class="form-control" name="landAcquisitionPrice">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            土地取得小计
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="土地取得小计" class="form-control" name="landAcquisitionTotal">
-            </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        土地购买价格
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text" name="landPurchasePriceTax"
+                                   placeholder="土地购买价格" class="form-control" data-rule-number='true'
+                                   readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="form-group">
-
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="勘察设计和前期工程费"
-                       class="form-control" name="reconnaissanceDesign" readonly="readonly">
-            </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>合计税率</h2>
+            <div class="clearfix"></div>
         </div>
 
-        <label class="col-sm-1 control-label">
-            勘察设计和前期工程费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="勘察设计和前期工程费率" class="form-control"
-                       name="reconnaissanceDesignRote">
-            </div>
+        <div class="x_content">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            契税率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="契税率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="deedTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            交易费率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="交易费率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="transactionCostTax">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            地方教育费附加
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="地方教育费附加" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="localEducationTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            印花税
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="印花税" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="stampDuty">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            营业税
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="营业税" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="businessTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            城建税
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="城建税" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="urbanMaintenanceTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            教育费附加
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="教育费附加" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="educationTax">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>建设成本</h2>
+            <div class="clearfix"></div>
         </div>
 
-        <label class="col-sm-1 control-label">
-            建筑安装工程费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="建筑安装工程费" class="form-control" name="constructionInstallationEngineeringFee">
-            </div>
+        <div class="x_content">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        勘察设计和前期工程费率
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text"
+                                   placeholder="勘察设计和前期工程费率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="reconnaissanceDesignTax">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        建筑安装工程费
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <div class="input-group">
+                                <input type="text" readonly="readonly"
+                                       placeholder="建筑安装工程费" value="0" class="form-control"
+                                       name="constructionInstallationEngineeringFeeTax">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        基础设施建设费
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <select name="infrastructureCostTax"
+                                    class="form-control search-select select2 infrastructureCostTax">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        公共配套设施建设费
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <select name="infrastructureMatchingCostTax"
+                                    class="form-control search-select select2 infrastructureMatchingCostTax">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        开发期间税费
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text"
+                                   placeholder="开发期间税费" class="form-control" name="devDuringTax">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        其它工程费
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-11">
+                            <input type="text"
+                                   placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>设计费参数比率</h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="x_content">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        不可预见费率
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            费率说明
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="费率说明" class="form-control"
+                                   name="unforeseenExpensesTaxExplain">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            管理费率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="管理费率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="managementExpenseTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            费率说明
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="费率说明" class="form-control"
+                                   name="managementExpenseTaxExplain">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            销售费用率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="销售费用率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="salesFeeTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            费率说明
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="费率说明" class="form-control"
+                                   name="salesFeeTaxExplain">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            投资利息率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="投资利息率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="interestInvestmentTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            费率说明
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="费率说明" class="form-control"
+                                   name="interestInvestmentTaxExplain">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            投资利润率
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="投资利润率" class="form-control x-percent" data-rule-number='true'
+                                   readonly="readonly"
+                                   name="investmentProfitTax">
+                        </div>
+                    </div>
+
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label">
+                            费率说明
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text"
+                                   placeholder="费率说明" class="form-control"
+                                   name="investmentProfitTaxExplain">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
         </div>
     </div>
 
 
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            基础设施建设费 单价选择
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="基础设施建设费 单价选择" class="form-control" name="infrastructureCostSelect">
-            </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h2>测算结果</h2>
+            <div class="clearfix"></div>
         </div>
 
-        <label class="col-sm-1 control-label">
-            基础设施建设费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="基础设施建设费" class="form-control" name="infrastructureCost">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            公共配套设施建设费 单价选择
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="公共配套设施建设费 单价选择" class="form-control" name="infrastructureMatchingCostSelect">
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            公共配套设施建设费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="公共配套设施建设费" class="form-control" name="infrastructureMatchingCost">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            开发期间单价
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="开发期间单价" class="form-control" name="devDuringPrice">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            开发期间税费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="开发期间税费" class="form-control" name="devDuringPriceTax">
-            </div>
+        <div class="x_content">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12 col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>土地取得成本合计</td>
+                                <td class="landGetCostTotal">0.00</td>
+                            </tr>
+                            <tr>
+                                <td> 建设成本小计</td>
+                                <td class="constructionSubtotal">0.00</td>
+                            </tr>
+                            <tr>
+                                <td> 投资利息</td>
+                                <td class="interestInvestment">0.00</td>
+                            </tr>
+                            <tr>
+                                <td> 投资利润</td>
+                                <td class="investmentProfit">0.00</td>
+                            </tr>
+                            <tr>
+                                <td> 在建工程评估价值</td>
+                                <td class="constructionAssessmentValue">0.00</td>
+                            </tr>
+                            <tr>
+                                <td> 在建工程单位价</td>
+                                <td class="constructionAssessmentPriceCorrecting">0.00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            其它工程费单价
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="其它工程费单价" class="form-control" name="otherEngineeringCostPrice">
-            </div>
-        </div>
+<script>
 
-        <label class="col-sm-1 control-label">
-            其它工程费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="其它工程费" class="form-control" name="otherEngineeringCost">
-            </div>
-        </div>
+    var construction = new Object();
 
-        <label class="col-sm-1 control-label">
-            建设成本
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="建设成本" class="form-control" name="constructionCost">
-            </div>
-        </div>
-    </div>
+    construction.config = {
+        id: "constructionModel",
+        totalTaxRate: {
+            key: "totalTaxRate",
+            name: "合计税率",
+            business: "businessTax",//营业税
+            urbanMaintenance: "urbanMaintenanceTax",//城建税
+            education: "educationTax",//教育费附加
+            localEducation: "localEducationTax",//地方教育费附加
+            stampDuty: "stampDuty"//印花税
+        },
+        /*说明:key代表计算出的金额,correcting代表费率校正值,tax代表费率,name代表名称*/
+        inputConfig: {
+            developLandArea: {
+                key: "developLandArea",
+                tax: "developLandAreaTax",
+                name: "开发土地面积"
+            },
+            developBuildArea: {
+                key: "developBuildArea",
+                tax: "developBuildAreaTax",
+                name: "开发建筑面积"
+            },
+            developYearNumber: {
+                key: "developYearNumber",
+                tax: "developYearNumberTax",
+                name: "开发年"
+            },
+            landPurchasePrice: {
+                key: "landPurchasePrice",
+                name: "土地购买价格",
+                tax: "landPurchasePriceTax"
+            },
+            landGetRelevant: {
+                key: "landGetRelevant",
+                tax: "landGetRelevantTax",
+                name: "土地取得相关税费"
+            },
+            landGetCostTotal: {
+                key: "landGetCostTotal",
+                name: "土地取得成本合计",
+                tax: ""
+            },
+            reconnaissanceDesign: {
+                key: "reconnaissanceDesign",
+                tax: "reconnaissanceDesignTax",
+                correcting: "",
+                name: "勘察设计和前期工程费"
+            },
+            constructionInstallationEngineeringFee: {
+                key: "constructionInstallationEngineeringFee",
+                tax: "constructionInstallationEngineeringFeeTax",
+                correcting: "",
+                name: "建筑安装工程费",
+                class: "constructionInstallationEngineeringFeeClass"
+            },
+            infrastructureCost: {
+                key: "infrastructureCost",
+                tax: "infrastructureCostTax",
+                correcting: "",
+                name: "基础设施费用"
+            },
+            infrastructureMatchingCost: {
+                key: "infrastructureMatchingCost",
+                tax: "infrastructureMatchingCostTax",
+                correcting: "",
+                name: "公共配套设施费用"
+            },
+            devDuring: {
+                key: "devDuring",
+                tax: "devDuringTax",
+                correcting: "",
+                name: "开发期间"
+            },
+            otherEngineeringCost: {
+                key: "otherEngineeringCost",
+                tax: "otherEngineeringCostTax",
+                correcting: "",
+                name: "其它工程费"
+            },
+            constructionSubtotal: {
+                key: "constructionSubtotal",
+                tax: "",
+                name: "建设成本小计"
+            },
+            unforeseenExpenses: {
+                key: "unforeseenExpenses",
+                tax: "unforeseenExpensesTax",
+                correcting: "",
+                name: "不可预见费"
+            },
+            deed: {
+                key: "deed",
+                tax: "deedTax",
+                correcting: "deedCorrecting",
+                name: "契税"
+            },
+            transactionCost: {
+                key: "transactionCost",
+                tax: "transactionCostTax",
+                correcting: "transactionCostCorrecting",
+                name: "交易费"
+            },
+            managementExpense: {
+                key: "managementExpense",
+                tax: "managementExpenseTax",
+                correcting: "managementExpenseCorrecting",
+                name: "管理费"
+            },
+            salesFee: {
+                key: "salesFee",
+                tax: "salesFeeTax",
+                correcting: "salesFeeCorrecting",
+                name: "销售费用"
+            },
+            interestInvestment: {
+                key: "interestInvestment",
+                tax: "interestInvestmentTax",
+                correcting: "interestInvestmentCorrecting",
+                name: "投资利息"
+            },
+            investmentProfit: {
+                key: "investmentProfit",
+                tax: "investmentProfitTax",
+                correcting: "investmentProfitCorrecting",
+                name: "投资利润"
+            },
+            salesTaxAndAdditional: {
+                key: "salesTaxAndAdditional",
+                tax: "",
+                correcting: "salesTaxAndAdditionalCorrecting",
+                name: "销售税金及附加"
+            },
+            businessAdditional: {
+                key: "businessAdditional",
+                tax: "businessAdditionalTax",
+                name: "营业税金及附加"
+            },
+            landIncrement: {
+                key: "landIncrement",
+                tax: "landIncrementTax",
+                name: "土地增值"
+            },
+            constructionAssessmentValue: {
+                key: "constructionAssessmentValue",
+                tax: "",
+                name: "在建工程评估价值"
+            },
+            constructionAssessmentPrice: {
+                key: "constructionAssessmentPrice",
+                tax: "",
+                correcting: "constructionAssessmentPriceCorrecting",
+                name: "在建工程单位价"
+            }
+        }
+    };
 
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            管理费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="管理费" class="form-control" name="managementExpense">
-            </div>
-        </div>
+    construction.isEmpty = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
 
-        <label class="col-sm-1 control-label">
-            管理费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="管理费率" class="form-control" name="managementExpenseRote">
-            </div>
-        </div>
-        <label class="col-sm-1 control-label">
-            不可预见费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="不可预见费率" class="form-control" name="unforeseenExpensesRote">
-            </div>
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            不可预见费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="不可预见费" class="form-control" name="unforeseenExpenses">
-            </div>
-        </div>
+    /**
+     * @author:  zch
+     * 描述:收集数据
+     * @date:2018-10-12
+     **/
+    construction.formParams = function () {
+        var item = {};
+        var forms = $("#" + construction.config.id).find("form");
+        $.each(forms, function (i, n) {
+            // if (!$(n).valid()) {
+            //     return false;
+            // }
+        });
+        $.each(forms, function (i, n) {
+            try {
+                /*Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 ECMAScript6 (可能不兼容) */
+                item = Object.assign(item, formSerializeArray($(n)));
+            } catch (e) {
+                item = $.extend(item, formSerializeArray($(n)));
+            }
+        });
+        item.landGetCostTotal = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html());
+        item.constructionSubtotal = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html());
+        item.interestInvestment = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html());
+        item.investmentProfit = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.investmentProfit.key).html());
+        item.constructionAssessmentValue = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentValue.key).html());
+        item.constructionAssessmentPriceCorrecting = Number($("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentPrice.correcting).html());
+        return item;
+    };
 
-        <label class="col-sm-1 control-label">
-            销售费率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="销售费率" class="form-control" name="salesFeeRote">
-            </div>
-        </div>
 
-        <label class="col-sm-1 control-label">
-            重置价格
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="重置价格" class="form-control" name="replacementValue">
-            </div>
-        </div>
+    /**
+     * @author:  zch
+     * 描述:赋值
+     * @date:2018-10-12
+     **/
+    construction.initForm = function (item) {
+        var forms = $("#" + construction.config.id).find("form");
+        item = JSON.parse(item);
+        $.each(forms, function (i, n) {
+            $(n).clearAll();
+        });
+        $.each(forms, function (i, n) {
+            $(n).initForm(item);
+        });
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html(item.landGetCostTotal);
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(item.constructionSubtotal);
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html(item.interestInvestment);
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.investmentProfit.key).html(item.investmentProfit);
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentValue.key).html(item.constructionAssessmentValue);
+        $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentPrice.correcting).html(item.constructionAssessmentPriceCorrecting);
+    };
 
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            销售费
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="销售费" class="form-control" name="salesFee">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            增值及附加税率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="增值及附加税率" class="form-control" name="addedValueAdditionalTaxRateSelect">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            增值及附加税金
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="增值及附加税金" class="form-control" name="valueAddedAdditionalTaxes">
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            投资计息利率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="投资计息利率" class="form-control" name="interestRateOnInvestment">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            计息周期
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" data-rule-number='true' required="required"
-                       placeholder="计息周期" class="form-control" name="interestPeriod">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            投资计息税率修正
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="投资计息税率修正" class="form-control" name="interestRateOnInvestmentCorrect">
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-1 control-label">
-            投资利息
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="投资利息" class="form-control" name="interestInInvestment">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            开发利润率
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text"
-                       placeholder="开发利润率" class="form-control" name="developmentProfitMarginRote">
-            </div>
-        </div>
-
-        <label class="col-sm-1 control-label">
-            开发利润
-        </label>
-        <div class="x-valid">
-            <div class="col-sm-3">
-                <input type="text" readonly="readonly"
-                       placeholder="开发利润" class="form-control" name="developmentProfitMargin">
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">
-                开发利润修正
-            </label>
-            <div class="col-sm-2">
-                <input type="text" readonly="readonly"
-                       placeholder="开发利润修正" class="form-control" name="developmentProfitMarginRoteCorrect">
-            </div>
-        </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">
-                在建工程评估价值
-            </label>
-            <div class="col-sm-2">
-                <input type="text" readonly="readonly"
-                       placeholder="在建工程评估价值" class="form-control" name="evaluationValueConstructionProject">
-            </div>
-        </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">
-                在建工程评估价值修正
-            </label>
-            <div class="col-sm-2">
-                <input type="text" readonly="readonly"
-                       placeholder="在建工程评估价值修正" class="form-control" name="evaluationValueConstructionProjectCorrect">
-            </div>
-        </div>
-
-        <div class="x-valid">
-            <label class="col-sm-1 control-label">
-                在建工程评估值
-            </label>
-            <div class="col-sm-2">
-                <input type="text" readonly="readonly"
-                       placeholder="在建工程评估值" class="form-control" name="constructionProcesAssessValue">
-            </div>
-        </div>
-    </div>
-</form>
+</script>

@@ -134,14 +134,6 @@
 
     //提交
     function submit() {
-
-        if (!$("#frmBuild").valid()) {
-            return false;
-        }
-        if (!$("#frmConstruction").valid()) {
-            return false;
-        }
-
         if (!supportInfoModule.valid()) {
             return false;
         }

@@ -43,7 +43,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="landEngineering.constructionInstallationEngineeringFeeEvent.show();">
+                                onclick="construction.constructionInstallationEngineeringFeeEvent.show();">
                                             <i class="fa fa-search"></i>
                                             </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -97,27 +97,16 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    其它工程费率
+                    其它工程费
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
                         <input type="text"
-                               placeholder="其它工程费率" class="form-control x-percent" name="otherEngineeringCostTax">
+                               placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
                     </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    不可预见费率
-                </label>
-                <div class="x-valid">
-                    <div class="col-sm-11">
-                        <input type="text"
-                               placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
 </div>

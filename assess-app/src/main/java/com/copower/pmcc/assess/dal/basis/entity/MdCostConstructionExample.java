@@ -166,413 +166,413 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceIsNull() {
-            addCriterion("constructionAssessmentPrice is null");
+        public Criteria andConstructionAssessmentPriceCorrectingIsNull() {
+            addCriterion("construction_assessment_price_correcting is null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceIsNotNull() {
-            addCriterion("constructionAssessmentPrice is not null");
+        public Criteria andConstructionAssessmentPriceCorrectingIsNotNull() {
+            addCriterion("construction_assessment_price_correcting is not null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceEqualTo(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice =", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingEqualTo(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting =", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceNotEqualTo(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice <>", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingNotEqualTo(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting <>", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceGreaterThan(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice >", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingGreaterThan(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting >", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice >=", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting >=", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceLessThan(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice <", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingLessThan(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting <", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("constructionAssessmentPrice <=", value, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("construction_assessment_price_correcting <=", value, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceIn(List<BigDecimal> values) {
-            addCriterion("constructionAssessmentPrice in", values, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingIn(List<BigDecimal> values) {
+            addCriterion("construction_assessment_price_correcting in", values, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceNotIn(List<BigDecimal> values) {
-            addCriterion("constructionAssessmentPrice not in", values, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingNotIn(List<BigDecimal> values) {
+            addCriterion("construction_assessment_price_correcting not in", values, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("constructionAssessmentPrice between", value1, value2, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_assessment_price_correcting between", value1, value2, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentpriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("constructionAssessmentPrice not between", value1, value2, "constructionassessmentprice");
+        public Criteria andConstructionAssessmentPriceCorrectingNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("construction_assessment_price_correcting not between", value1, value2, "constructionAssessmentPriceCorrecting");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueIsNull() {
-            addCriterion("constructionAssessmentValue is null");
+        public Criteria andConstructionAssessmentValueIsNull() {
+            addCriterion("construction_assessment_value is null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueIsNotNull() {
-            addCriterion("constructionAssessmentValue is not null");
+        public Criteria andConstructionAssessmentValueIsNotNull() {
+            addCriterion("construction_assessment_value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueEqualTo(String value) {
-            addCriterion("constructionAssessmentValue =", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueEqualTo(String value) {
+            addCriterion("construction_assessment_value =", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueNotEqualTo(String value) {
-            addCriterion("constructionAssessmentValue <>", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueNotEqualTo(String value) {
+            addCriterion("construction_assessment_value <>", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueGreaterThan(String value) {
-            addCriterion("constructionAssessmentValue >", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueGreaterThan(String value) {
+            addCriterion("construction_assessment_value >", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueGreaterThanOrEqualTo(String value) {
-            addCriterion("constructionAssessmentValue >=", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueGreaterThanOrEqualTo(String value) {
+            addCriterion("construction_assessment_value >=", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueLessThan(String value) {
-            addCriterion("constructionAssessmentValue <", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueLessThan(String value) {
+            addCriterion("construction_assessment_value <", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueLessThanOrEqualTo(String value) {
-            addCriterion("constructionAssessmentValue <=", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueLessThanOrEqualTo(String value) {
+            addCriterion("construction_assessment_value <=", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueLike(String value) {
-            addCriterion("constructionAssessmentValue like", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueLike(String value) {
+            addCriterion("construction_assessment_value like", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueNotLike(String value) {
-            addCriterion("constructionAssessmentValue not like", value, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueNotLike(String value) {
+            addCriterion("construction_assessment_value not like", value, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueIn(List<String> values) {
-            addCriterion("constructionAssessmentValue in", values, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueIn(List<String> values) {
+            addCriterion("construction_assessment_value in", values, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueNotIn(List<String> values) {
-            addCriterion("constructionAssessmentValue not in", values, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueNotIn(List<String> values) {
+            addCriterion("construction_assessment_value not in", values, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueBetween(String value1, String value2) {
-            addCriterion("constructionAssessmentValue between", value1, value2, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueBetween(String value1, String value2) {
+            addCriterion("construction_assessment_value between", value1, value2, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionassessmentvalueNotBetween(String value1, String value2) {
-            addCriterion("constructionAssessmentValue not between", value1, value2, "constructionassessmentvalue");
+        public Criteria andConstructionAssessmentValueNotBetween(String value1, String value2) {
+            addCriterion("construction_assessment_value not between", value1, value2, "constructionAssessmentValue");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIsNull() {
-            addCriterion("investmentProfit is null");
+        public Criteria andInvestmentProfitIsNull() {
+            addCriterion("investment_profit is null");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIsNotNull() {
-            addCriterion("investmentProfit is not null");
+        public Criteria andInvestmentProfitIsNotNull() {
+            addCriterion("investment_profit is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitEqualTo(String value) {
-            addCriterion("investmentProfit =", value, "investmentprofit");
+        public Criteria andInvestmentProfitEqualTo(String value) {
+            addCriterion("investment_profit =", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotEqualTo(String value) {
-            addCriterion("investmentProfit <>", value, "investmentprofit");
+        public Criteria andInvestmentProfitNotEqualTo(String value) {
+            addCriterion("investment_profit <>", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitGreaterThan(String value) {
-            addCriterion("investmentProfit >", value, "investmentprofit");
+        public Criteria andInvestmentProfitGreaterThan(String value) {
+            addCriterion("investment_profit >", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitGreaterThanOrEqualTo(String value) {
-            addCriterion("investmentProfit >=", value, "investmentprofit");
+        public Criteria andInvestmentProfitGreaterThanOrEqualTo(String value) {
+            addCriterion("investment_profit >=", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLessThan(String value) {
-            addCriterion("investmentProfit <", value, "investmentprofit");
+        public Criteria andInvestmentProfitLessThan(String value) {
+            addCriterion("investment_profit <", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLessThanOrEqualTo(String value) {
-            addCriterion("investmentProfit <=", value, "investmentprofit");
+        public Criteria andInvestmentProfitLessThanOrEqualTo(String value) {
+            addCriterion("investment_profit <=", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLike(String value) {
-            addCriterion("investmentProfit like", value, "investmentprofit");
+        public Criteria andInvestmentProfitLike(String value) {
+            addCriterion("investment_profit like", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotLike(String value) {
-            addCriterion("investmentProfit not like", value, "investmentprofit");
+        public Criteria andInvestmentProfitNotLike(String value) {
+            addCriterion("investment_profit not like", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIn(List<String> values) {
-            addCriterion("investmentProfit in", values, "investmentprofit");
+        public Criteria andInvestmentProfitIn(List<String> values) {
+            addCriterion("investment_profit in", values, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotIn(List<String> values) {
-            addCriterion("investmentProfit not in", values, "investmentprofit");
+        public Criteria andInvestmentProfitNotIn(List<String> values) {
+            addCriterion("investment_profit not in", values, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitBetween(String value1, String value2) {
-            addCriterion("investmentProfit between", value1, value2, "investmentprofit");
+        public Criteria andInvestmentProfitBetween(String value1, String value2) {
+            addCriterion("investment_profit between", value1, value2, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotBetween(String value1, String value2) {
-            addCriterion("investmentProfit not between", value1, value2, "investmentprofit");
+        public Criteria andInvestmentProfitNotBetween(String value1, String value2) {
+            addCriterion("investment_profit not between", value1, value2, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIsNull() {
-            addCriterion("interestInvestment is null");
+        public Criteria andInterestInvestmentIsNull() {
+            addCriterion("interest_investment is null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIsNotNull() {
-            addCriterion("interestInvestment is not null");
+        public Criteria andInterestInvestmentIsNotNull() {
+            addCriterion("interest_investment is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentEqualTo(String value) {
-            addCriterion("interestInvestment =", value, "interestinvestment");
+        public Criteria andInterestInvestmentEqualTo(String value) {
+            addCriterion("interest_investment =", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotEqualTo(String value) {
-            addCriterion("interestInvestment <>", value, "interestinvestment");
+        public Criteria andInterestInvestmentNotEqualTo(String value) {
+            addCriterion("interest_investment <>", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentGreaterThan(String value) {
-            addCriterion("interestInvestment >", value, "interestinvestment");
+        public Criteria andInterestInvestmentGreaterThan(String value) {
+            addCriterion("interest_investment >", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentGreaterThanOrEqualTo(String value) {
-            addCriterion("interestInvestment >=", value, "interestinvestment");
+        public Criteria andInterestInvestmentGreaterThanOrEqualTo(String value) {
+            addCriterion("interest_investment >=", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLessThan(String value) {
-            addCriterion("interestInvestment <", value, "interestinvestment");
+        public Criteria andInterestInvestmentLessThan(String value) {
+            addCriterion("interest_investment <", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLessThanOrEqualTo(String value) {
-            addCriterion("interestInvestment <=", value, "interestinvestment");
+        public Criteria andInterestInvestmentLessThanOrEqualTo(String value) {
+            addCriterion("interest_investment <=", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLike(String value) {
-            addCriterion("interestInvestment like", value, "interestinvestment");
+        public Criteria andInterestInvestmentLike(String value) {
+            addCriterion("interest_investment like", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotLike(String value) {
-            addCriterion("interestInvestment not like", value, "interestinvestment");
+        public Criteria andInterestInvestmentNotLike(String value) {
+            addCriterion("interest_investment not like", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIn(List<String> values) {
-            addCriterion("interestInvestment in", values, "interestinvestment");
+        public Criteria andInterestInvestmentIn(List<String> values) {
+            addCriterion("interest_investment in", values, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotIn(List<String> values) {
-            addCriterion("interestInvestment not in", values, "interestinvestment");
+        public Criteria andInterestInvestmentNotIn(List<String> values) {
+            addCriterion("interest_investment not in", values, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentBetween(String value1, String value2) {
-            addCriterion("interestInvestment between", value1, value2, "interestinvestment");
+        public Criteria andInterestInvestmentBetween(String value1, String value2) {
+            addCriterion("interest_investment between", value1, value2, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotBetween(String value1, String value2) {
-            addCriterion("interestInvestment not between", value1, value2, "interestinvestment");
+        public Criteria andInterestInvestmentNotBetween(String value1, String value2) {
+            addCriterion("interest_investment not between", value1, value2, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalIsNull() {
-            addCriterion("constructionSubtotal is null");
+        public Criteria andConstructionSubtotalIsNull() {
+            addCriterion("construction_subtotal is null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalIsNotNull() {
-            addCriterion("constructionSubtotal is not null");
+        public Criteria andConstructionSubtotalIsNotNull() {
+            addCriterion("construction_subtotal is not null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalEqualTo(String value) {
-            addCriterion("constructionSubtotal =", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalEqualTo(String value) {
+            addCriterion("construction_subtotal =", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalNotEqualTo(String value) {
-            addCriterion("constructionSubtotal <>", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalNotEqualTo(String value) {
+            addCriterion("construction_subtotal <>", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalGreaterThan(String value) {
-            addCriterion("constructionSubtotal >", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalGreaterThan(String value) {
+            addCriterion("construction_subtotal >", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalGreaterThanOrEqualTo(String value) {
-            addCriterion("constructionSubtotal >=", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalGreaterThanOrEqualTo(String value) {
+            addCriterion("construction_subtotal >=", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalLessThan(String value) {
-            addCriterion("constructionSubtotal <", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalLessThan(String value) {
+            addCriterion("construction_subtotal <", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalLessThanOrEqualTo(String value) {
-            addCriterion("constructionSubtotal <=", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalLessThanOrEqualTo(String value) {
+            addCriterion("construction_subtotal <=", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalLike(String value) {
-            addCriterion("constructionSubtotal like", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalLike(String value) {
+            addCriterion("construction_subtotal like", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalNotLike(String value) {
-            addCriterion("constructionSubtotal not like", value, "constructionsubtotal");
+        public Criteria andConstructionSubtotalNotLike(String value) {
+            addCriterion("construction_subtotal not like", value, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalIn(List<String> values) {
-            addCriterion("constructionSubtotal in", values, "constructionsubtotal");
+        public Criteria andConstructionSubtotalIn(List<String> values) {
+            addCriterion("construction_subtotal in", values, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalNotIn(List<String> values) {
-            addCriterion("constructionSubtotal not in", values, "constructionsubtotal");
+        public Criteria andConstructionSubtotalNotIn(List<String> values) {
+            addCriterion("construction_subtotal not in", values, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalBetween(String value1, String value2) {
-            addCriterion("constructionSubtotal between", value1, value2, "constructionsubtotal");
+        public Criteria andConstructionSubtotalBetween(String value1, String value2) {
+            addCriterion("construction_subtotal between", value1, value2, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andConstructionsubtotalNotBetween(String value1, String value2) {
-            addCriterion("constructionSubtotal not between", value1, value2, "constructionsubtotal");
+        public Criteria andConstructionSubtotalNotBetween(String value1, String value2) {
+            addCriterion("construction_subtotal not between", value1, value2, "constructionSubtotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalIsNull() {
-            addCriterion("landGetCostTotal is null");
+        public Criteria andLandGetCostTotalIsNull() {
+            addCriterion("land_get_cost_total is null");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalIsNotNull() {
-            addCriterion("landGetCostTotal is not null");
+        public Criteria andLandGetCostTotalIsNotNull() {
+            addCriterion("land_get_cost_total is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalEqualTo(String value) {
-            addCriterion("landGetCostTotal =", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalEqualTo(String value) {
+            addCriterion("land_get_cost_total =", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalNotEqualTo(String value) {
-            addCriterion("landGetCostTotal <>", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalNotEqualTo(String value) {
+            addCriterion("land_get_cost_total <>", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalGreaterThan(String value) {
-            addCriterion("landGetCostTotal >", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalGreaterThan(String value) {
+            addCriterion("land_get_cost_total >", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalGreaterThanOrEqualTo(String value) {
-            addCriterion("landGetCostTotal >=", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalGreaterThanOrEqualTo(String value) {
+            addCriterion("land_get_cost_total >=", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalLessThan(String value) {
-            addCriterion("landGetCostTotal <", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalLessThan(String value) {
+            addCriterion("land_get_cost_total <", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalLessThanOrEqualTo(String value) {
-            addCriterion("landGetCostTotal <=", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalLessThanOrEqualTo(String value) {
+            addCriterion("land_get_cost_total <=", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalLike(String value) {
-            addCriterion("landGetCostTotal like", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalLike(String value) {
+            addCriterion("land_get_cost_total like", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalNotLike(String value) {
-            addCriterion("landGetCostTotal not like", value, "landgetcosttotal");
+        public Criteria andLandGetCostTotalNotLike(String value) {
+            addCriterion("land_get_cost_total not like", value, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalIn(List<String> values) {
-            addCriterion("landGetCostTotal in", values, "landgetcosttotal");
+        public Criteria andLandGetCostTotalIn(List<String> values) {
+            addCriterion("land_get_cost_total in", values, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalNotIn(List<String> values) {
-            addCriterion("landGetCostTotal not in", values, "landgetcosttotal");
+        public Criteria andLandGetCostTotalNotIn(List<String> values) {
+            addCriterion("land_get_cost_total not in", values, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalBetween(String value1, String value2) {
-            addCriterion("landGetCostTotal between", value1, value2, "landgetcosttotal");
+        public Criteria andLandGetCostTotalBetween(String value1, String value2) {
+            addCriterion("land_get_cost_total between", value1, value2, "landGetCostTotal");
             return (Criteria) this;
         }
 
-        public Criteria andLandgetcosttotalNotBetween(String value1, String value2) {
-            addCriterion("landGetCostTotal not between", value1, value2, "landgetcosttotal");
+        public Criteria andLandGetCostTotalNotBetween(String value1, String value2) {
+            addCriterion("land_get_cost_total not between", value1, value2, "landGetCostTotal");
             return (Criteria) this;
         }
 

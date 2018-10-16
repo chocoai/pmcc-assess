@@ -166,343 +166,343 @@ public class MdCostBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceIsNull() {
-            addCriterion("assessPrice is null");
+        public Criteria andAssessPriceIsNull() {
+            addCriterion("assess_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceIsNotNull() {
-            addCriterion("assessPrice is not null");
+        public Criteria andAssessPriceIsNotNull() {
+            addCriterion("assess_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceEqualTo(BigDecimal value) {
-            addCriterion("assessPrice =", value, "assessprice");
+        public Criteria andAssessPriceEqualTo(BigDecimal value) {
+            addCriterion("assess_price =", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceNotEqualTo(BigDecimal value) {
-            addCriterion("assessPrice <>", value, "assessprice");
+        public Criteria andAssessPriceNotEqualTo(BigDecimal value) {
+            addCriterion("assess_price <>", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceGreaterThan(BigDecimal value) {
-            addCriterion("assessPrice >", value, "assessprice");
+        public Criteria andAssessPriceGreaterThan(BigDecimal value) {
+            addCriterion("assess_price >", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assessPrice >=", value, "assessprice");
+        public Criteria andAssessPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_price >=", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceLessThan(BigDecimal value) {
-            addCriterion("assessPrice <", value, "assessprice");
+        public Criteria andAssessPriceLessThan(BigDecimal value) {
+            addCriterion("assess_price <", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assessPrice <=", value, "assessprice");
+        public Criteria andAssessPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_price <=", value, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceIn(List<BigDecimal> values) {
-            addCriterion("assessPrice in", values, "assessprice");
+        public Criteria andAssessPriceIn(List<BigDecimal> values) {
+            addCriterion("assess_price in", values, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceNotIn(List<BigDecimal> values) {
-            addCriterion("assessPrice not in", values, "assessprice");
+        public Criteria andAssessPriceNotIn(List<BigDecimal> values) {
+            addCriterion("assess_price not in", values, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assessPrice between", value1, value2, "assessprice");
+        public Criteria andAssessPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_price between", value1, value2, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andAssesspriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assessPrice not between", value1, value2, "assessprice");
+        public Criteria andAssessPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_price not between", value1, value2, "assessPrice");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueIsNull() {
-            addCriterion("replacementValue is null");
+        public Criteria andReplacementValueIsNull() {
+            addCriterion("replacement_value is null");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueIsNotNull() {
-            addCriterion("replacementValue is not null");
+        public Criteria andReplacementValueIsNotNull() {
+            addCriterion("replacement_value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueEqualTo(String value) {
-            addCriterion("replacementValue =", value, "replacementvalue");
+        public Criteria andReplacementValueEqualTo(String value) {
+            addCriterion("replacement_value =", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueNotEqualTo(String value) {
-            addCriterion("replacementValue <>", value, "replacementvalue");
+        public Criteria andReplacementValueNotEqualTo(String value) {
+            addCriterion("replacement_value <>", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueGreaterThan(String value) {
-            addCriterion("replacementValue >", value, "replacementvalue");
+        public Criteria andReplacementValueGreaterThan(String value) {
+            addCriterion("replacement_value >", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueGreaterThanOrEqualTo(String value) {
-            addCriterion("replacementValue >=", value, "replacementvalue");
+        public Criteria andReplacementValueGreaterThanOrEqualTo(String value) {
+            addCriterion("replacement_value >=", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueLessThan(String value) {
-            addCriterion("replacementValue <", value, "replacementvalue");
+        public Criteria andReplacementValueLessThan(String value) {
+            addCriterion("replacement_value <", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueLessThanOrEqualTo(String value) {
-            addCriterion("replacementValue <=", value, "replacementvalue");
+        public Criteria andReplacementValueLessThanOrEqualTo(String value) {
+            addCriterion("replacement_value <=", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueLike(String value) {
-            addCriterion("replacementValue like", value, "replacementvalue");
+        public Criteria andReplacementValueLike(String value) {
+            addCriterion("replacement_value like", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueNotLike(String value) {
-            addCriterion("replacementValue not like", value, "replacementvalue");
+        public Criteria andReplacementValueNotLike(String value) {
+            addCriterion("replacement_value not like", value, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueIn(List<String> values) {
-            addCriterion("replacementValue in", values, "replacementvalue");
+        public Criteria andReplacementValueIn(List<String> values) {
+            addCriterion("replacement_value in", values, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueNotIn(List<String> values) {
-            addCriterion("replacementValue not in", values, "replacementvalue");
+        public Criteria andReplacementValueNotIn(List<String> values) {
+            addCriterion("replacement_value not in", values, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueBetween(String value1, String value2) {
-            addCriterion("replacementValue between", value1, value2, "replacementvalue");
+        public Criteria andReplacementValueBetween(String value1, String value2) {
+            addCriterion("replacement_value between", value1, value2, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andReplacementvalueNotBetween(String value1, String value2) {
-            addCriterion("replacementValue not between", value1, value2, "replacementvalue");
+        public Criteria andReplacementValueNotBetween(String value1, String value2) {
+            addCriterion("replacement_value not between", value1, value2, "replacementValue");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIsNull() {
-            addCriterion("investmentProfit is null");
+        public Criteria andInvestmentProfitIsNull() {
+            addCriterion("investment_profit is null");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIsNotNull() {
-            addCriterion("investmentProfit is not null");
+        public Criteria andInvestmentProfitIsNotNull() {
+            addCriterion("investment_profit is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitEqualTo(String value) {
-            addCriterion("investmentProfit =", value, "investmentprofit");
+        public Criteria andInvestmentProfitEqualTo(String value) {
+            addCriterion("investment_profit =", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotEqualTo(String value) {
-            addCriterion("investmentProfit <>", value, "investmentprofit");
+        public Criteria andInvestmentProfitNotEqualTo(String value) {
+            addCriterion("investment_profit <>", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitGreaterThan(String value) {
-            addCriterion("investmentProfit >", value, "investmentprofit");
+        public Criteria andInvestmentProfitGreaterThan(String value) {
+            addCriterion("investment_profit >", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitGreaterThanOrEqualTo(String value) {
-            addCriterion("investmentProfit >=", value, "investmentprofit");
+        public Criteria andInvestmentProfitGreaterThanOrEqualTo(String value) {
+            addCriterion("investment_profit >=", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLessThan(String value) {
-            addCriterion("investmentProfit <", value, "investmentprofit");
+        public Criteria andInvestmentProfitLessThan(String value) {
+            addCriterion("investment_profit <", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLessThanOrEqualTo(String value) {
-            addCriterion("investmentProfit <=", value, "investmentprofit");
+        public Criteria andInvestmentProfitLessThanOrEqualTo(String value) {
+            addCriterion("investment_profit <=", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitLike(String value) {
-            addCriterion("investmentProfit like", value, "investmentprofit");
+        public Criteria andInvestmentProfitLike(String value) {
+            addCriterion("investment_profit like", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotLike(String value) {
-            addCriterion("investmentProfit not like", value, "investmentprofit");
+        public Criteria andInvestmentProfitNotLike(String value) {
+            addCriterion("investment_profit not like", value, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitIn(List<String> values) {
-            addCriterion("investmentProfit in", values, "investmentprofit");
+        public Criteria andInvestmentProfitIn(List<String> values) {
+            addCriterion("investment_profit in", values, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotIn(List<String> values) {
-            addCriterion("investmentProfit not in", values, "investmentprofit");
+        public Criteria andInvestmentProfitNotIn(List<String> values) {
+            addCriterion("investment_profit not in", values, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitBetween(String value1, String value2) {
-            addCriterion("investmentProfit between", value1, value2, "investmentprofit");
+        public Criteria andInvestmentProfitBetween(String value1, String value2) {
+            addCriterion("investment_profit between", value1, value2, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInvestmentprofitNotBetween(String value1, String value2) {
-            addCriterion("investmentProfit not between", value1, value2, "investmentprofit");
+        public Criteria andInvestmentProfitNotBetween(String value1, String value2) {
+            addCriterion("investment_profit not between", value1, value2, "investmentProfit");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIsNull() {
-            addCriterion("interestInvestment is null");
+        public Criteria andInterestInvestmentIsNull() {
+            addCriterion("interest_investment is null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIsNotNull() {
-            addCriterion("interestInvestment is not null");
+        public Criteria andInterestInvestmentIsNotNull() {
+            addCriterion("interest_investment is not null");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentEqualTo(String value) {
-            addCriterion("interestInvestment =", value, "interestinvestment");
+        public Criteria andInterestInvestmentEqualTo(String value) {
+            addCriterion("interest_investment =", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotEqualTo(String value) {
-            addCriterion("interestInvestment <>", value, "interestinvestment");
+        public Criteria andInterestInvestmentNotEqualTo(String value) {
+            addCriterion("interest_investment <>", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentGreaterThan(String value) {
-            addCriterion("interestInvestment >", value, "interestinvestment");
+        public Criteria andInterestInvestmentGreaterThan(String value) {
+            addCriterion("interest_investment >", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentGreaterThanOrEqualTo(String value) {
-            addCriterion("interestInvestment >=", value, "interestinvestment");
+        public Criteria andInterestInvestmentGreaterThanOrEqualTo(String value) {
+            addCriterion("interest_investment >=", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLessThan(String value) {
-            addCriterion("interestInvestment <", value, "interestinvestment");
+        public Criteria andInterestInvestmentLessThan(String value) {
+            addCriterion("interest_investment <", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLessThanOrEqualTo(String value) {
-            addCriterion("interestInvestment <=", value, "interestinvestment");
+        public Criteria andInterestInvestmentLessThanOrEqualTo(String value) {
+            addCriterion("interest_investment <=", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentLike(String value) {
-            addCriterion("interestInvestment like", value, "interestinvestment");
+        public Criteria andInterestInvestmentLike(String value) {
+            addCriterion("interest_investment like", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotLike(String value) {
-            addCriterion("interestInvestment not like", value, "interestinvestment");
+        public Criteria andInterestInvestmentNotLike(String value) {
+            addCriterion("interest_investment not like", value, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentIn(List<String> values) {
-            addCriterion("interestInvestment in", values, "interestinvestment");
+        public Criteria andInterestInvestmentIn(List<String> values) {
+            addCriterion("interest_investment in", values, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotIn(List<String> values) {
-            addCriterion("interestInvestment not in", values, "interestinvestment");
+        public Criteria andInterestInvestmentNotIn(List<String> values) {
+            addCriterion("interest_investment not in", values, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentBetween(String value1, String value2) {
-            addCriterion("interestInvestment between", value1, value2, "interestinvestment");
+        public Criteria andInterestInvestmentBetween(String value1, String value2) {
+            addCriterion("interest_investment between", value1, value2, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andInterestinvestmentNotBetween(String value1, String value2) {
-            addCriterion("interestInvestment not between", value1, value2, "interestinvestment");
+        public Criteria andInterestInvestmentNotBetween(String value1, String value2) {
+            addCriterion("interest_investment not between", value1, value2, "interestInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostIsNull() {
-            addCriterion("constructionCost is null");
+        public Criteria andConstructionCostIsNull() {
+            addCriterion("construction_cost is null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostIsNotNull() {
-            addCriterion("constructionCost is not null");
+        public Criteria andConstructionCostIsNotNull() {
+            addCriterion("construction_cost is not null");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostEqualTo(String value) {
-            addCriterion("constructionCost =", value, "constructioncost");
+        public Criteria andConstructionCostEqualTo(String value) {
+            addCriterion("construction_cost =", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostNotEqualTo(String value) {
-            addCriterion("constructionCost <>", value, "constructioncost");
+        public Criteria andConstructionCostNotEqualTo(String value) {
+            addCriterion("construction_cost <>", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostGreaterThan(String value) {
-            addCriterion("constructionCost >", value, "constructioncost");
+        public Criteria andConstructionCostGreaterThan(String value) {
+            addCriterion("construction_cost >", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostGreaterThanOrEqualTo(String value) {
-            addCriterion("constructionCost >=", value, "constructioncost");
+        public Criteria andConstructionCostGreaterThanOrEqualTo(String value) {
+            addCriterion("construction_cost >=", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostLessThan(String value) {
-            addCriterion("constructionCost <", value, "constructioncost");
+        public Criteria andConstructionCostLessThan(String value) {
+            addCriterion("construction_cost <", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostLessThanOrEqualTo(String value) {
-            addCriterion("constructionCost <=", value, "constructioncost");
+        public Criteria andConstructionCostLessThanOrEqualTo(String value) {
+            addCriterion("construction_cost <=", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostLike(String value) {
-            addCriterion("constructionCost like", value, "constructioncost");
+        public Criteria andConstructionCostLike(String value) {
+            addCriterion("construction_cost like", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostNotLike(String value) {
-            addCriterion("constructionCost not like", value, "constructioncost");
+        public Criteria andConstructionCostNotLike(String value) {
+            addCriterion("construction_cost not like", value, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostIn(List<String> values) {
-            addCriterion("constructionCost in", values, "constructioncost");
+        public Criteria andConstructionCostIn(List<String> values) {
+            addCriterion("construction_cost in", values, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostNotIn(List<String> values) {
-            addCriterion("constructionCost not in", values, "constructioncost");
+        public Criteria andConstructionCostNotIn(List<String> values) {
+            addCriterion("construction_cost not in", values, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostBetween(String value1, String value2) {
-            addCriterion("constructionCost between", value1, value2, "constructioncost");
+        public Criteria andConstructionCostBetween(String value1, String value2) {
+            addCriterion("construction_cost between", value1, value2, "constructionCost");
             return (Criteria) this;
         }
 
-        public Criteria andConstructioncostNotBetween(String value1, String value2) {
-            addCriterion("constructionCost not between", value1, value2, "constructioncost");
+        public Criteria andConstructionCostNotBetween(String value1, String value2) {
+            addCriterion("construction_cost not between", value1, value2, "constructionCost");
             return (Criteria) this;
         }
 
