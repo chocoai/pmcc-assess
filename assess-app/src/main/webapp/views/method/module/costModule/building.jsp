@@ -667,6 +667,17 @@
                 item = $.extend(item, formSerializeArray($(n)));
             }
         });
+        item.constructionCost = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();
+        item.interestInvestment = $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html();
+        item.investmentProfit = $("#" + build.config.id).find("." + build.config.inputConfig.investmentProfit.key).html();
+        item.replacementValue = $("#" + build.config.id).find("." + build.config.inputConfig.replacementValue.key).html();
+        item.assessPrice = $("#" + build.config.id).find("." + build.config.inputConfig.assessPrice.key).html();
+
+        item.constructionCost = Number(item.constructionCost);
+        item.interestInvestment = Number(item.interestInvestment);
+        item.investmentProfit = Number(item.investmentProfit);
+        item.replacementValue = Number(item.replacementValue);
+        item.assessPrice = Number(item.assessPrice);
         return item;
     };
 
@@ -678,12 +689,18 @@
      **/
     build.initForm = function (item) {
         var forms = $("#" + build.config.id).find("form");
+        item = JSON.parse(item);
         $.each(forms, function (i, n) {
             $(n).clearAll();
         });
         $.each(forms, function (i, n) {
             $(n).initForm(item);
         });
+        $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(item.constructionCost);
+        $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html(item.interestInvestment);
+        $("#" + build.config.id).find("." + build.config.inputConfig.investmentProfit.key).html(item.investmentProfit);
+        $("#" + build.config.id).find("." + build.config.inputConfig.replacementValue.key).html(item.replacementValue);
+        $("#" + build.config.id).find("." + build.config.inputConfig.assessPrice.key).html(item.assessPrice);
     };
 
     build.newRateModel = {

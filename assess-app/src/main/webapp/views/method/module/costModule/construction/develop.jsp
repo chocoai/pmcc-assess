@@ -64,18 +64,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label class="col-sm-1 control-label">
-                    土地取得相关税费
-                </label>
-                <div class="x-valid">
-                    <div class="col-sm-11">
-                        <input type="text" name="landGetRelevantTax"
-                               placeholder="土地取得相关税费" class="form-control" >
-                    </div>
-                </div>
-            </div>
         </form>
     </div>
 </div>

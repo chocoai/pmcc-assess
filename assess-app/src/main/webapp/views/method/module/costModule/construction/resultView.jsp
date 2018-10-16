@@ -43,7 +43,7 @@
                         </tr>
                         <tr>
                             <td> 在建工程单位价</td>
-                            <td class="constructionAssessmentPrice">0.00</td>
+                            <td class="constructionAssessmentPriceCorrecting">0.00</td>
                         </tr>
                         </tbody>
                     </table>

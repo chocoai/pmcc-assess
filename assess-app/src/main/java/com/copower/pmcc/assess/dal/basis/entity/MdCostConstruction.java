@@ -6,17 +6,17 @@ import java.util.Date;
 public class MdCostConstruction {
     private Integer id;
 
-    private BigDecimal constructionassessmentprice;
+    private BigDecimal constructionAssessmentPriceCorrecting;
 
-    private String constructionassessmentvalue;
+    private String constructionAssessmentValue;
 
-    private String investmentprofit;
+    private String investmentProfit;
 
-    private String interestinvestment;
+    private String interestInvestment;
 
-    private String constructionsubtotal;
+    private String constructionSubtotal;
 
-    private String landgetcosttotal;
+    private String landGetCostTotal;
 
     private String jsonContent;
 
@@ -38,52 +38,52 @@ public class MdCostConstruction {
         this.id = id;
     }
 
-    public BigDecimal getConstructionassessmentprice() {
-        return constructionassessmentprice;
+    public BigDecimal getConstructionAssessmentPriceCorrecting() {
+        return constructionAssessmentPriceCorrecting;
     }
 
-    public void setConstructionassessmentprice(BigDecimal constructionassessmentprice) {
-        this.constructionassessmentprice = constructionassessmentprice;
+    public void setConstructionAssessmentPriceCorrecting(BigDecimal constructionAssessmentPriceCorrecting) {
+        this.constructionAssessmentPriceCorrecting = constructionAssessmentPriceCorrecting;
     }
 
-    public String getConstructionassessmentvalue() {
-        return constructionassessmentvalue;
+    public String getConstructionAssessmentValue() {
+        return constructionAssessmentValue;
     }
 
-    public void setConstructionassessmentvalue(String constructionassessmentvalue) {
-        this.constructionassessmentvalue = constructionassessmentvalue == null ? null : constructionassessmentvalue.trim();
+    public void setConstructionAssessmentValue(String constructionAssessmentValue) {
+        this.constructionAssessmentValue = constructionAssessmentValue == null ? null : constructionAssessmentValue.trim();
     }
 
-    public String getInvestmentprofit() {
-        return investmentprofit;
+    public String getInvestmentProfit() {
+        return investmentProfit;
     }
 
-    public void setInvestmentprofit(String investmentprofit) {
-        this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
+    public void setInvestmentProfit(String investmentProfit) {
+        this.investmentProfit = investmentProfit == null ? null : investmentProfit.trim();
     }
 
-    public String getInterestinvestment() {
-        return interestinvestment;
+    public String getInterestInvestment() {
+        return interestInvestment;
     }
 
-    public void setInterestinvestment(String interestinvestment) {
-        this.interestinvestment = interestinvestment == null ? null : interestinvestment.trim();
+    public void setInterestInvestment(String interestInvestment) {
+        this.interestInvestment = interestInvestment == null ? null : interestInvestment.trim();
     }
 
-    public String getConstructionsubtotal() {
-        return constructionsubtotal;
+    public String getConstructionSubtotal() {
+        return constructionSubtotal;
     }
 
-    public void setConstructionsubtotal(String constructionsubtotal) {
-        this.constructionsubtotal = constructionsubtotal == null ? null : constructionsubtotal.trim();
+    public void setConstructionSubtotal(String constructionSubtotal) {
+        this.constructionSubtotal = constructionSubtotal == null ? null : constructionSubtotal.trim();
     }
 
-    public String getLandgetcosttotal() {
-        return landgetcosttotal;
+    public String getLandGetCostTotal() {
+        return landGetCostTotal;
     }
 
-    public void setLandgetcosttotal(String landgetcosttotal) {
-        this.landgetcosttotal = landgetcosttotal == null ? null : landgetcosttotal.trim();
+    public void setLandGetCostTotal(String landGetCostTotal) {
+        this.landGetCostTotal = landGetCostTotal == null ? null : landGetCostTotal.trim();
     }
 
     public String getJsonContent() {

@@ -6,15 +6,15 @@ import java.util.Date;
 public class MdCostBuilding {
     private Integer id;
 
-    private BigDecimal assessprice;
+    private BigDecimal assessPrice;
 
-    private String replacementvalue;
+    private String replacementValue;
 
-    private String investmentprofit;
+    private String investmentProfit;
 
-    private String interestinvestment;
+    private String interestInvestment;
 
-    private String constructioncost;
+    private String constructionCost;
 
     private String jsonContent;
 
@@ -36,44 +36,44 @@ public class MdCostBuilding {
         this.id = id;
     }
 
-    public BigDecimal getAssessprice() {
-        return assessprice;
+    public BigDecimal getAssessPrice() {
+        return assessPrice;
     }
 
-    public void setAssessprice(BigDecimal assessprice) {
-        this.assessprice = assessprice;
+    public void setAssessPrice(BigDecimal assessPrice) {
+        this.assessPrice = assessPrice;
     }
 
-    public String getReplacementvalue() {
-        return replacementvalue;
+    public String getReplacementValue() {
+        return replacementValue;
     }
 
-    public void setReplacementvalue(String replacementvalue) {
-        this.replacementvalue = replacementvalue == null ? null : replacementvalue.trim();
+    public void setReplacementValue(String replacementValue) {
+        this.replacementValue = replacementValue == null ? null : replacementValue.trim();
     }
 
-    public String getInvestmentprofit() {
-        return investmentprofit;
+    public String getInvestmentProfit() {
+        return investmentProfit;
     }
 
-    public void setInvestmentprofit(String investmentprofit) {
-        this.investmentprofit = investmentprofit == null ? null : investmentprofit.trim();
+    public void setInvestmentProfit(String investmentProfit) {
+        this.investmentProfit = investmentProfit == null ? null : investmentProfit.trim();
     }
 
-    public String getInterestinvestment() {
-        return interestinvestment;
+    public String getInterestInvestment() {
+        return interestInvestment;
     }
 
-    public void setInterestinvestment(String interestinvestment) {
-        this.interestinvestment = interestinvestment == null ? null : interestinvestment.trim();
+    public void setInterestInvestment(String interestInvestment) {
+        this.interestInvestment = interestInvestment == null ? null : interestInvestment.trim();
     }
 
-    public String getConstructioncost() {
-        return constructioncost;
+    public String getConstructionCost() {
+        return constructionCost;
     }
 
-    public void setConstructioncost(String constructioncost) {
-        this.constructioncost = constructioncost == null ? null : constructioncost.trim();
+    public void setConstructionCost(String constructionCost) {
+        this.constructionCost = constructionCost == null ? null : constructionCost.trim();
     }
 
     public String getJsonContent() {

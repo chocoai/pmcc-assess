@@ -3,12 +3,12 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostConstructionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="constructionAssessmentPrice" property="constructionassessmentprice" jdbcType="DECIMAL" />
-    <result column="constructionAssessmentValue" property="constructionassessmentvalue" jdbcType="VARCHAR" />
-    <result column="investmentProfit" property="investmentprofit" jdbcType="VARCHAR" />
-    <result column="interestInvestment" property="interestinvestment" jdbcType="VARCHAR" />
-    <result column="constructionSubtotal" property="constructionsubtotal" jdbcType="VARCHAR" />
-    <result column="landGetCostTotal" property="landgetcosttotal" jdbcType="VARCHAR" />
+    <result column="construction_assessment_price_correcting" property="constructionAssessmentPriceCorrecting" jdbcType="DECIMAL" />
+    <result column="construction_assessment_value" property="constructionAssessmentValue" jdbcType="VARCHAR" />
+    <result column="investment_profit" property="investmentProfit" jdbcType="VARCHAR" />
+    <result column="interest_investment" property="interestInvestment" jdbcType="VARCHAR" />
+    <result column="construction_subtotal" property="constructionSubtotal" jdbcType="VARCHAR" />
+    <result column="land_get_cost_total" property="landGetCostTotal" jdbcType="VARCHAR" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="engineering_id" property="engineeringId" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
@@ -75,9 +75,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, constructionAssessmentPrice, constructionAssessmentValue, investmentProfit, interestInvestment, 
-    constructionSubtotal, landGetCostTotal, json_content, engineering_id, pid, creator, 
-    gmt_modified, gmt_created
+    id, construction_assessment_price_correcting, construction_assessment_value, investment_profit, 
+    interest_investment, construction_subtotal, land_get_cost_total, json_content, engineering_id, 
+    pid, creator, gmt_modified, gmt_created
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstructionExample" >
     select
@@ -113,14 +113,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_construction (constructionAssessmentPrice, constructionAssessmentValue, 
-      investmentProfit, interestInvestment, constructionSubtotal, 
-      landGetCostTotal, json_content, engineering_id, 
+    insert into tb_md_cost_construction (construction_assessment_price_correcting, construction_assessment_value, 
+      investment_profit, interest_investment, construction_subtotal, 
+      land_get_cost_total, json_content, engineering_id, 
       pid, creator, gmt_modified, 
       gmt_created)
-    values (#{constructionassessmentprice,jdbcType=DECIMAL}, #{constructionassessmentvalue,jdbcType=VARCHAR}, 
-      #{investmentprofit,jdbcType=VARCHAR}, #{interestinvestment,jdbcType=VARCHAR}, #{constructionsubtotal,jdbcType=VARCHAR}, 
-      #{landgetcosttotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{engineeringId,jdbcType=INTEGER}, 
+    values (#{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL}, #{constructionAssessmentValue,jdbcType=VARCHAR}, 
+      #{investmentProfit,jdbcType=VARCHAR}, #{interestInvestment,jdbcType=VARCHAR}, #{constructionSubtotal,jdbcType=VARCHAR}, 
+      #{landGetCostTotal,jdbcType=VARCHAR}, #{jsonContent,jdbcType=CHAR}, #{engineeringId,jdbcType=INTEGER}, 
       #{pid,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{gmtCreated,jdbcType=TIMESTAMP})
   </insert>
@@ -130,23 +130,23 @@
     </selectKey>
     insert into tb_md_cost_construction
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="constructionassessmentprice != null" >
-        constructionAssessmentPrice,
+      <if test="constructionAssessmentPriceCorrecting != null" >
+        construction_assessment_price_correcting,
       </if>
-      <if test="constructionassessmentvalue != null" >
-        constructionAssessmentValue,
+      <if test="constructionAssessmentValue != null" >
+        construction_assessment_value,
       </if>
-      <if test="investmentprofit != null" >
-        investmentProfit,
+      <if test="investmentProfit != null" >
+        investment_profit,
       </if>
-      <if test="interestinvestment != null" >
-        interestInvestment,
+      <if test="interestInvestment != null" >
+        interest_investment,
       </if>
-      <if test="constructionsubtotal != null" >
-        constructionSubtotal,
+      <if test="constructionSubtotal != null" >
+        construction_subtotal,
       </if>
-      <if test="landgetcosttotal != null" >
-        landGetCostTotal,
+      <if test="landGetCostTotal != null" >
+        land_get_cost_total,
       </if>
       <if test="jsonContent != null" >
         json_content,
@@ -168,23 +168,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="constructionassessmentprice != null" >
-        #{constructionassessmentprice,jdbcType=DECIMAL},
+      <if test="constructionAssessmentPriceCorrecting != null" >
+        #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
-      <if test="constructionassessmentvalue != null" >
-        #{constructionassessmentvalue,jdbcType=VARCHAR},
+      <if test="constructionAssessmentValue != null" >
+        #{constructionAssessmentValue,jdbcType=VARCHAR},
       </if>
-      <if test="investmentprofit != null" >
-        #{investmentprofit,jdbcType=VARCHAR},
+      <if test="investmentProfit != null" >
+        #{investmentProfit,jdbcType=VARCHAR},
       </if>
-      <if test="interestinvestment != null" >
-        #{interestinvestment,jdbcType=VARCHAR},
+      <if test="interestInvestment != null" >
+        #{interestInvestment,jdbcType=VARCHAR},
       </if>
-      <if test="constructionsubtotal != null" >
-        #{constructionsubtotal,jdbcType=VARCHAR},
+      <if test="constructionSubtotal != null" >
+        #{constructionSubtotal,jdbcType=VARCHAR},
       </if>
-      <if test="landgetcosttotal != null" >
-        #{landgetcosttotal,jdbcType=VARCHAR},
+      <if test="landGetCostTotal != null" >
+        #{landGetCostTotal,jdbcType=VARCHAR},
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
@@ -218,23 +218,23 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.constructionassessmentprice != null" >
-        constructionAssessmentPrice = #{record.constructionassessmentprice,jdbcType=DECIMAL},
+      <if test="record.constructionAssessmentPriceCorrecting != null" >
+        construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
-      <if test="record.constructionassessmentvalue != null" >
-        constructionAssessmentValue = #{record.constructionassessmentvalue,jdbcType=VARCHAR},
+      <if test="record.constructionAssessmentValue != null" >
+        construction_assessment_value = #{record.constructionAssessmentValue,jdbcType=VARCHAR},
       </if>
-      <if test="record.investmentprofit != null" >
-        investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
+      <if test="record.investmentProfit != null" >
+        investment_profit = #{record.investmentProfit,jdbcType=VARCHAR},
       </if>
-      <if test="record.interestinvestment != null" >
-        interestInvestment = #{record.interestinvestment,jdbcType=VARCHAR},
+      <if test="record.interestInvestment != null" >
+        interest_investment = #{record.interestInvestment,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionsubtotal != null" >
-        constructionSubtotal = #{record.constructionsubtotal,jdbcType=VARCHAR},
+      <if test="record.constructionSubtotal != null" >
+        construction_subtotal = #{record.constructionSubtotal,jdbcType=VARCHAR},
       </if>
-      <if test="record.landgetcosttotal != null" >
-        landGetCostTotal = #{record.landgetcosttotal,jdbcType=VARCHAR},
+      <if test="record.landGetCostTotal != null" >
+        land_get_cost_total = #{record.landGetCostTotal,jdbcType=VARCHAR},
       </if>
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
@@ -262,12 +262,12 @@
   <update id="updateByExample" parameterType="map" >
     update tb_md_cost_construction
     set id = #{record.id,jdbcType=INTEGER},
-      constructionAssessmentPrice = #{record.constructionassessmentprice,jdbcType=DECIMAL},
-      constructionAssessmentValue = #{record.constructionassessmentvalue,jdbcType=VARCHAR},
-      investmentProfit = #{record.investmentprofit,jdbcType=VARCHAR},
-      interestInvestment = #{record.interestinvestment,jdbcType=VARCHAR},
-      constructionSubtotal = #{record.constructionsubtotal,jdbcType=VARCHAR},
-      landGetCostTotal = #{record.landgetcosttotal,jdbcType=VARCHAR},
+      construction_assessment_price_correcting = #{record.constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
+      construction_assessment_value = #{record.constructionAssessmentValue,jdbcType=VARCHAR},
+      investment_profit = #{record.investmentProfit,jdbcType=VARCHAR},
+      interest_investment = #{record.interestInvestment,jdbcType=VARCHAR},
+      construction_subtotal = #{record.constructionSubtotal,jdbcType=VARCHAR},
+      land_get_cost_total = #{record.landGetCostTotal,jdbcType=VARCHAR},
       json_content = #{record.jsonContent,jdbcType=CHAR},
       engineering_id = #{record.engineeringId,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
@@ -281,23 +281,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
     <set >
-      <if test="constructionassessmentprice != null" >
-        constructionAssessmentPrice = #{constructionassessmentprice,jdbcType=DECIMAL},
+      <if test="constructionAssessmentPriceCorrecting != null" >
+        construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
       </if>
-      <if test="constructionassessmentvalue != null" >
-        constructionAssessmentValue = #{constructionassessmentvalue,jdbcType=VARCHAR},
+      <if test="constructionAssessmentValue != null" >
+        construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
       </if>
-      <if test="investmentprofit != null" >
-        investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
+      <if test="investmentProfit != null" >
+        investment_profit = #{investmentProfit,jdbcType=VARCHAR},
       </if>
-      <if test="interestinvestment != null" >
-        interestInvestment = #{interestinvestment,jdbcType=VARCHAR},
+      <if test="interestInvestment != null" >
+        interest_investment = #{interestInvestment,jdbcType=VARCHAR},
       </if>
-      <if test="constructionsubtotal != null" >
-        constructionSubtotal = #{constructionsubtotal,jdbcType=VARCHAR},
+      <if test="constructionSubtotal != null" >
+        construction_subtotal = #{constructionSubtotal,jdbcType=VARCHAR},
       </if>
-      <if test="landgetcosttotal != null" >
-        landGetCostTotal = #{landgetcosttotal,jdbcType=VARCHAR},
+      <if test="landGetCostTotal != null" >
+        land_get_cost_total = #{landGetCostTotal,jdbcType=VARCHAR},
       </if>
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
@@ -322,12 +322,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostConstruction" >
     update tb_md_cost_construction
-    set constructionAssessmentPrice = #{constructionassessmentprice,jdbcType=DECIMAL},
-      constructionAssessmentValue = #{constructionassessmentvalue,jdbcType=VARCHAR},
-      investmentProfit = #{investmentprofit,jdbcType=VARCHAR},
-      interestInvestment = #{interestinvestment,jdbcType=VARCHAR},
-      constructionSubtotal = #{constructionsubtotal,jdbcType=VARCHAR},
-      landGetCostTotal = #{landgetcosttotal,jdbcType=VARCHAR},
+    set construction_assessment_price_correcting = #{constructionAssessmentPriceCorrecting,jdbcType=DECIMAL},
+      construction_assessment_value = #{constructionAssessmentValue,jdbcType=VARCHAR},
+      investment_profit = #{investmentProfit,jdbcType=VARCHAR},
+      interest_investment = #{interestInvestment,jdbcType=VARCHAR},
+      construction_subtotal = #{constructionSubtotal,jdbcType=VARCHAR},
+      land_get_cost_total = #{landGetCostTotal,jdbcType=VARCHAR},
       json_content = #{jsonContent,jdbcType=CHAR},
       engineering_id = #{engineeringId,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},

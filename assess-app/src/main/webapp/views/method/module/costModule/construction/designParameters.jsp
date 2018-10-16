@@ -18,14 +18,13 @@
     <div class="x_content">
         <form class="form-horizontal">
             <div class="form-group">
+                <label class="col-sm-1 control-label">
+                    不可预见费率
+                </label>
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        契税率
-                    </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="契税率" class="form-control x-percent" data-rule-number='true' required="required"
-                               name="deedTax">
+                               placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
                     </div>
                 </div>
 
@@ -36,35 +35,10 @@
                     <div class="col-sm-3">
                         <input type="text"
                                placeholder="费率说明" class="form-control"
-                               name="deedTaxExplain">
+                               name="unforeseenExpensesTaxExplain">
                     </div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        交易费率
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="交易费率" class="form-control x-percent" data-rule-number='true' required="required"
-                               name="transactionCostTax">
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="transactionCostTaxExplain">
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -157,54 +131,6 @@
                         <input type="text"
                                placeholder="费率说明" class="form-control"
                                name="investmentProfitTaxExplain">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        营业税金及附加率
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="营业税金及附加率" class="form-control x-percent" data-rule-number='true' required="required"
-                               name="businessAdditionalTax">
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="businessAdditionalTaxExplain">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        土地增值税
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="土地增值税" class="form-control x-percent" data-rule-number='true' required="required"
-                               name="landIncrementTax">
-                    </div>
-                </div>
-
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="landIncrementTaxExplain">
                     </div>
                 </div>
             </div>

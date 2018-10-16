@@ -121,11 +121,9 @@
     };
 
     optionsBuildBox.mdCostBuildingInit = function (data) {
-        data = JSON.parse(data);
         build.initForm(data);
     };
     optionsBuildBox.mdCostConstructionInit = function (data) {
-        data = JSON.parse(data);
         construction.initForm(data);
     };
     /**
@@ -140,6 +138,7 @@
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
+                console.log(mdCostBuilding);
                 //初始化数据
                 optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
                 var mdCostAndDevelopmentOtherBuildingJSON = "${mdCostAndDevelopmentOtherBuilding}";
@@ -156,6 +155,7 @@
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);
+                console.log(mdCostConstruction);
                 //初始化数据
                 optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
                 var mdCostAndDevelopmentOtherConstructionJSON = "${mdCostAndDevelopmentOtherConstruction}";
