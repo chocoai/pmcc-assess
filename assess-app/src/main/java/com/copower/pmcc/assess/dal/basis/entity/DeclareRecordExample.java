@@ -1156,186 +1156,6 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssessAreaIsNull() {
-            addCriterion("assess_area is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaIsNotNull() {
-            addCriterion("assess_area is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaEqualTo(BigDecimal value) {
-            addCriterion("assess_area =", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaNotEqualTo(BigDecimal value) {
-            addCriterion("assess_area <>", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaGreaterThan(BigDecimal value) {
-            addCriterion("assess_area >", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_area >=", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaLessThan(BigDecimal value) {
-            addCriterion("assess_area <", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_area <=", value, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaIn(List<BigDecimal> values) {
-            addCriterion("assess_area in", values, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaNotIn(List<BigDecimal> values) {
-            addCriterion("assess_area not in", values, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_area between", value1, value2, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_area not between", value1, value2, "assessArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceIsNull() {
-            addCriterion("assess_unit_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceIsNotNull() {
-            addCriterion("assess_unit_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceEqualTo(BigDecimal value) {
-            addCriterion("assess_unit_price =", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceNotEqualTo(BigDecimal value) {
-            addCriterion("assess_unit_price <>", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceGreaterThan(BigDecimal value) {
-            addCriterion("assess_unit_price >", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_unit_price >=", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceLessThan(BigDecimal value) {
-            addCriterion("assess_unit_price <", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assess_unit_price <=", value, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceIn(List<BigDecimal> values) {
-            addCriterion("assess_unit_price in", values, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceNotIn(List<BigDecimal> values) {
-            addCriterion("assess_unit_price not in", values, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_unit_price between", value1, value2, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assess_unit_price not between", value1, value2, "assessUnitPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaIsNull() {
-            addCriterion("already_out_area is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaIsNotNull() {
-            addCriterion("already_out_area is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaEqualTo(BigDecimal value) {
-            addCriterion("already_out_area =", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaNotEqualTo(BigDecimal value) {
-            addCriterion("already_out_area <>", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaGreaterThan(BigDecimal value) {
-            addCriterion("already_out_area >", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("already_out_area >=", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaLessThan(BigDecimal value) {
-            addCriterion("already_out_area <", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("already_out_area <=", value, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaIn(List<BigDecimal> values) {
-            addCriterion("already_out_area in", values, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaNotIn(List<BigDecimal> values) {
-            addCriterion("already_out_area not in", values, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("already_out_area between", value1, value2, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
-        public Criteria andAlreadyOutAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("already_out_area not between", value1, value2, "alreadyOutArea");
-            return (Criteria) this;
-        }
-
         public Criteria andInventoryContentKeyIsNull() {
             addCriterion("inventory_content_key is null");
             return (Criteria) this;
@@ -1403,6 +1223,186 @@ public class DeclareRecordExample {
 
         public Criteria andInventoryContentKeyNotBetween(String value1, String value2) {
             addCriterion("inventory_content_key not between", value1, value2, "inventoryContentKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNull() {
+            addCriterion("price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIsNotNull() {
+            addCriterion("price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceEqualTo(BigDecimal value) {
+            addCriterion("price =", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotEqualTo(BigDecimal value) {
+            addCriterion("price <>", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThan(BigDecimal value) {
+            addCriterion("price >", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("price >=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThan(BigDecimal value) {
+            addCriterion("price <", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("price <=", value, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceIn(List<BigDecimal> values) {
+            addCriterion("price in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotIn(List<BigDecimal> values) {
+            addCriterion("price not in", values, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price not between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIsNull() {
+            addCriterion("assess_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIsNotNull() {
+            addCriterion("assess_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaEqualTo(BigDecimal value) {
+            addCriterion("assess_area =", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotEqualTo(BigDecimal value) {
+            addCriterion("assess_area <>", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaGreaterThan(BigDecimal value) {
+            addCriterion("assess_area >", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_area >=", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaLessThan(BigDecimal value) {
+            addCriterion("assess_area <", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("assess_area <=", value, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaIn(List<BigDecimal> values) {
+            addCriterion("assess_area in", values, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotIn(List<BigDecimal> values) {
+            addCriterion("assess_area not in", values, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_area between", value1, value2, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssessAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("assess_area not between", value1, value2, "assessArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaIsNull() {
+            addCriterion("already_out_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaIsNotNull() {
+            addCriterion("already_out_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaEqualTo(BigDecimal value) {
+            addCriterion("already_out_area =", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaNotEqualTo(BigDecimal value) {
+            addCriterion("already_out_area <>", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaGreaterThan(BigDecimal value) {
+            addCriterion("already_out_area >", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("already_out_area >=", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaLessThan(BigDecimal value) {
+            addCriterion("already_out_area <", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("already_out_area <=", value, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaIn(List<BigDecimal> values) {
+            addCriterion("already_out_area in", values, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaNotIn(List<BigDecimal> values) {
+            addCriterion("already_out_area not in", values, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("already_out_area between", value1, value2, "alreadyOutArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAlreadyOutAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("already_out_area not between", value1, value2, "alreadyOutArea");
             return (Criteria) this;
         }
 

@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,9 +38,9 @@ public class DeclareRecordService {
     @Autowired
     private ErpAreaService erpAreaService;
 
-    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws Exception {
+    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) throws BusinessException {
         if (declareRecord == null) {
-            throw new Exception("null point");
+            throw new BusinessException("null point");
         }
         if (declareRecord.getId() == null || declareRecord.getId().intValue() == 0) {
             declareRecord.setCreator(commonService.thisUserAccount());

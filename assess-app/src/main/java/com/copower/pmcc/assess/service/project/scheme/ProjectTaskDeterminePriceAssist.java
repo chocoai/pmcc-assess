@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaJudgeObjectVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -26,6 +27,8 @@ public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SchemeDeteminePriceService schemeDeteminePriceService;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -86,7 +89,12 @@ public class ProjectTaskDeterminePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        SchemeInfo schemeInfo = new SchemeInfo();
+        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        schemeInfo.setProcessInsId(processInsId);
+        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+        schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 
     @Override

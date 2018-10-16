@@ -36,13 +36,13 @@ public class DeclareRecord {
 
     private Date landUseEndDate;
 
+    private String inventoryContentKey;
+
+    private BigDecimal price;
+
     private BigDecimal assessArea;
 
-    private BigDecimal assessUnitPrice;
-
     private BigDecimal alreadyOutArea;
-
-    private String inventoryContentKey;
 
     private Boolean bisGenerateAll;
 
@@ -180,6 +180,22 @@ public class DeclareRecord {
         this.landUseEndDate = landUseEndDate;
     }
 
+    public String getInventoryContentKey() {
+        return inventoryContentKey;
+    }
+
+    public void setInventoryContentKey(String inventoryContentKey) {
+        this.inventoryContentKey = inventoryContentKey == null ? null : inventoryContentKey.trim();
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public BigDecimal getAssessArea() {
         return assessArea;
     }
@@ -188,28 +204,12 @@ public class DeclareRecord {
         this.assessArea = assessArea;
     }
 
-    public BigDecimal getAssessUnitPrice() {
-        return assessUnitPrice;
-    }
-
-    public void setAssessUnitPrice(BigDecimal assessUnitPrice) {
-        this.assessUnitPrice = assessUnitPrice;
-    }
-
     public BigDecimal getAlreadyOutArea() {
         return alreadyOutArea;
     }
 
     public void setAlreadyOutArea(BigDecimal alreadyOutArea) {
         this.alreadyOutArea = alreadyOutArea;
-    }
-
-    public String getInventoryContentKey() {
-        return inventoryContentKey;
-    }
-
-    public void setInventoryContentKey(String inventoryContentKey) {
-        this.inventoryContentKey = inventoryContentKey == null ? null : inventoryContentKey.trim();
     }
 
     public Boolean getBisGenerateAll() {

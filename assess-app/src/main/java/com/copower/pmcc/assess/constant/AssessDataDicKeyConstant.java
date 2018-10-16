@@ -52,7 +52,7 @@ public class AssessDataDicKeyConstant {
      * 测算方法配置
      */
     public static final String MD_INCOME_HISTORY_TYPE_INCOME = "md.income.history.type.income"; //收入类
-    public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //收入类
+    public static final String MD_INCOME_HISTORY_TYPE_COST = "md.income.history.type.cost"; //成本类
 
     /**
      * 税率配置

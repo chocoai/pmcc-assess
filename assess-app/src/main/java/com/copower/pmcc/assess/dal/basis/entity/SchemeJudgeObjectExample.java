@@ -1316,6 +1316,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andOriginalPriceIsNull() {
+            addCriterion("original_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceIsNotNull() {
+            addCriterion("original_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceEqualTo(BigDecimal value) {
+            addCriterion("original_price =", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("original_price <>", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceGreaterThan(BigDecimal value) {
+            addCriterion("original_price >", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("original_price >=", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceLessThan(BigDecimal value) {
+            addCriterion("original_price <", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("original_price <=", value, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceIn(List<BigDecimal> values) {
+            addCriterion("original_price in", values, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("original_price not in", values, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("original_price between", value1, value2, "originalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriginalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("original_price not between", value1, value2, "originalPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andBisSplitIsNull() {
             addCriterion("bis_split is null");
             return (Criteria) this;
