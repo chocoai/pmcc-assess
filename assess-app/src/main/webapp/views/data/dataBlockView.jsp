@@ -197,9 +197,17 @@
                     var data = result.data;
                     if (dataObjFun.isEmpty(data)) {
                         $("#" + dataObjFun.config.father.frm()).initForm(result.data);
-                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.city, "city");
-                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.district, "district");
-                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.province, "province");
+//                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.city, "city");
+//                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.district, "district");
+//                        dataObjFun.objectWriteSelectData(dataObjFun.config.father.frm(), result.data.province, "province");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#province"),
+                            cityTarget: $("#city"),
+                            districtTarget: $("#district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        })
                     }
                     $('#' + dataObjFun.config.father.box()).modal("show");
                 }
