@@ -406,13 +406,12 @@ $(function () {
             }
 
             //省切换
-            defaults.provinceTarget.bind('change', function () {
+            defaults.provinceTarget.unbind('change').bind('change', function () {
                 isProvinceFirstChange = false;
                 defaults.cityTarget.select2('val', '').empty();
                 if (defaults.districtTarget) {
                     defaults.districtTarget.select2('val', '').empty();
                 }
-
                 //加载市
                 AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
                     defaults.cityTarget.append(html);
@@ -436,7 +435,7 @@ $(function () {
                 defaults.districtTarget.select2();
 
                 //市切换
-                defaults.cityTarget.bind('change', function () {
+                defaults.cityTarget.unbind('change').bind('change', function () {
                     isCityFirstChange = false;
                     defaults.districtTarget.select2('val', '').empty();
                     //加载区县
@@ -449,7 +448,7 @@ $(function () {
                 })
             }
 
-
+            defaults.provinceTarget.select2('val', '').empty();
             //获取省数据
             $.ajax({
                 url: getContextPath() + "/area/getProvinceList",
@@ -462,14 +461,11 @@ $(function () {
                         $.each(result.data, function (i, item) {
                             defaults.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
                         });
-                        if (defaults.provinceValue) {
-                            defaults.provinceTarget.val(defaults.provinceValue);
-                            //触发一次change事件
-                            defaults.provinceTarget.trigger('change');
-                        }
 
-                        //初始化设置默认选中项
-                        if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
+                        if (defaults.provinceValue) {
+                            defaults.provinceTarget.select2('val', defaults.provinceValue).trigger('change');
+                        }else if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
+                            //初始化设置默认选中项
                             defaults.provinceTarget.select2('val', defaults.provinceTarget.find("option:contains(" + defaults.provinceDefaultText + ")").val()).trigger('change');
                         }
 
