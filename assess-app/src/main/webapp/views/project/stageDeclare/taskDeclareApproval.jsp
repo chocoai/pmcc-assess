@@ -30,7 +30,7 @@
             </div>
 
             <!-- 房产证 -->
-            <div class="x_panel" id="viewDeclareRealtyHouseCert">
+            <div class="x_panel" id="viewDeclareRealtyHouseCert" style="display: none">
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="x_title">
@@ -58,7 +58,7 @@
             </div>
 
             <!-- 土地证 -->
-            <div id="viewDeclareRealtyLandCert">
+            <div id="viewDeclareRealtyLandCert" style="display: none">
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="x_title">
@@ -81,7 +81,7 @@
             </div>
 
             <!-- 不动产证 -->
-            <div id="viewDeclareRealtyRealEstateCert">
+            <div id="viewDeclareRealtyRealEstateCert" style="display: none">
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="x_title">
@@ -168,9 +168,6 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.init = function () {
-        $("#" + declareRealtyHouseCertConfig.frm + "province").select2();
-        $("#" + declareRealtyHouseCertConfig.frm + "city").select2();
-        $("#" + declareRealtyHouseCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyHouseCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyHouseCertConfig.frm + "city"),
@@ -211,6 +208,14 @@
                         $("#" + declareRealtyHouseCertConfig.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                         $("#" + declareRealtyHouseCertConfig.frm + " input[name='landRegistrationDate']").val(formatDate(data.landRegistrationDate));
                         declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.frm,data.type,"type");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyHouseCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyHouseCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyHouseCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                     //使校验生效
                     $("#" + declareRealtyHouseCertConfig.frm).validate();
@@ -402,6 +407,14 @@
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.purpose,"purpose");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.type,"type");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.useRightType,"useRightType");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyLandCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },
@@ -571,6 +584,14 @@
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.type,"type");
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.useRightType,"useRightType");
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.purpose,"purpose");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },

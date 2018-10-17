@@ -60,16 +60,16 @@ public class ProjectTaskMarketCostController {
 
     @ResponseBody
     @RequestMapping(value = "/listCostAndMatchingCost", name = "获取基础设施费用列表和公共配套设施费用以及基础设施维护", method = RequestMethod.GET)
-    public HttpResult listDataInfrastructureCostAndInfrastructureMatchingCost(Integer projectId) {
+    public HttpResult listDataInfrastructureCostAndInfrastructureMatchingCost(String province,String city,String district) {
         Map<Object, Object> map = Maps.newHashMap();
         map.put(DataInfrastructureCost.class.getSimpleName(), mdMarketCostService.infrastructureCostList());
         map.put(DataInfrastructureMatchingCost.class.getSimpleName(), mdMarketCostService.infrastructureMatchingCosts());
-        if (projectId == null) {
-            map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(null));
-        }else {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(projectInfo));
-        }
+
+        ProjectInfo projectInfo = new ProjectInfo();
+        projectInfo.setProvince(province);
+        projectInfo.setCity(city);
+        projectInfo.setDistrict(district);
+        map.put(InfrastructureVo.class.getSimpleName(), mdMarketCostService.infrastructureList(projectInfo));
         return HttpResult.newCorrectResult(map);
     }
 

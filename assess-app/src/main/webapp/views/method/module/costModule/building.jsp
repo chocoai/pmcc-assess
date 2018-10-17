@@ -206,7 +206,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
             type: "get",
-            data: {projectId: "${projectInfo.id}"},
+            data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",district: "${schemeAreaGroup.district}"},
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
@@ -225,6 +225,42 @@
                         $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
                     }
 
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataTaxRateAllocation/listDataTaxRateAllocation",
+            type: "get",
+            data: {bisNationalUnity:"true"},//全国性质
+            dataType: "json",
+            success: function (result) {
+                $.each(result.data,function (i,n) {
+                    if (n.typeName == "营业税"){
+                        console.log(n.taxRate);
+                    }
+                });
+                if (result.ret) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/dataTaxRateAllocation/listDataTaxRateAllocation",
+                        type: "get",
+                        data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",bisNationalUnity:"false"},//非全国性质
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                $.each(result.data,function (i,k) {
+                                    if (k.typeName == "地方教育税附加"){
+                                        console.log(k.taxRate);
+                                    }
+                                });
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result);
+                        }
+                    });
                 }
             },
             error: function (result) {

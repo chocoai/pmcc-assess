@@ -405,7 +405,7 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
             type: "get",
-            data: {projectId: "${projectInfo.id}"},
+            data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",district: "${schemeAreaGroup.district}"},
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
