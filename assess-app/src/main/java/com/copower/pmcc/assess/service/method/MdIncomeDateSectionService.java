@@ -7,8 +7,6 @@ import com.copower.pmcc.assess.dal.basis.entity.MdIncomeDateSection;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeForecast;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLease;
 import com.copower.pmcc.assess.dal.basis.entity.MdIncomeLeaseCost;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -24,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -39,10 +38,6 @@ public class MdIncomeDateSectionService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private DataCommonService dataCommonService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
     @Autowired
     private MdIncomeDateSectionDao mdIncomeDateSectionDao;
     @Autowired
@@ -100,29 +95,29 @@ public class MdIncomeDateSectionService {
      * @param id
      * @return
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     public boolean deleteDateSection(Integer id) throws BusinessException {
         //先检查各子项有无相关联的数据
         MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(id);
         if (dateSection == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        //删除相关从表数据
         if (dateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.PROPRIETARY.getId())) {
-            if (mdIncomeService.getForecastCountBySectionId(id) > 0)
-                throw new BusinessException("请先删除相关自营的预测数据");
+            mdIncomeService.deleteForecastBySectionId(dateSection.getId());
         }
         if (dateSection.getOperationMode().equals(MethodIncomeOperationModeEnum.LEASE.getId())) {
-            if (mdIncomeService.getLeaseCountBySectionId(id) > 0)
-                throw new BusinessException("请先删除相关租赁的收入数据");
-            if (mdIncomeService.getLeaseCostCountBySectionId(id) > 0)
-                throw new BusinessException("请先删除相关租赁的成本数据");
+            mdIncomeService.deleteLeaseBySectionId(dateSection.getId());
+            mdIncomeService.deleteLeaseCostBySectionId(dateSection.getId());
         }
         return mdIncomeDateSectionDao.deleteDateSection(id);
     }
 
     /**
      * 更新
+     *
      * @param dateSection
      */
-    public void updateDateSection(MdIncomeDateSection dateSection){
+    public void updateDateSection(MdIncomeDateSection dateSection) {
         mdIncomeDateSectionDao.updateDateSection(dateSection);
     }
 

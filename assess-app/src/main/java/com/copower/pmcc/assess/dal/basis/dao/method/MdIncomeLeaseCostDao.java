@@ -83,13 +83,14 @@ public class MdIncomeLeaseCostDao {
 
     /**
      * 更新
+     *
      * @param mdIncomeLeaseCost
      * @return
      */
     public boolean updateIncomeLeaseCost(MdIncomeLeaseCost where, MdIncomeLeaseCost mdIncomeLeaseCost) {
         MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
         MybatisUtils.convertObj2Example(where, example);
-        return mdIncomeLeaseCostMapper.updateByExampleSelective(mdIncomeLeaseCost,example) > 0;
+        return mdIncomeLeaseCostMapper.updateByExampleSelective(mdIncomeLeaseCost, example) > 0;
     }
 
     /**
@@ -102,12 +103,19 @@ public class MdIncomeLeaseCostDao {
         return mdIncomeLeaseCostMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public boolean deleteLeaseCostBySectionId(Integer sectionId) {
+        MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        return mdIncomeLeaseCostMapper.countByExample(example) > 0;
+    }
+
     /**
      * 获取数量
+     *
      * @param sectionId
      * @return
      */
-    public int getCountBySectionId(Integer sectionId){
+    public int getCountBySectionId(Integer sectionId) {
         MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
         example.createCriteria().andSectionIdEqualTo(sectionId);
         return mdIncomeLeaseCostMapper.countByExample(example);

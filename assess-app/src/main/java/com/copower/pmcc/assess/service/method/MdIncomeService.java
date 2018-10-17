@@ -255,6 +255,10 @@ public class MdIncomeService {
         return mdIncomeForecastDao.deleteForecast(id);
     }
 
+    public boolean deleteForecastBySectionId(Integer sectionId) {
+        return mdIncomeForecastDao.deleteForecastBySectionId(sectionId);
+    }
+
     /**
      * 获取数据列表
      *
@@ -441,6 +445,10 @@ public class MdIncomeService {
         }
     }
 
+    public void deleteLeaseBySectionId(Integer sectionId) {
+        mdIncomeLeaseDao.deleteLeaseBySectionId(sectionId);
+    }
+
     /**
      * 获取数量
      *
@@ -478,6 +486,10 @@ public class MdIncomeService {
             incomeDateSection.setCostTotal(total);
             mdIncomeDateSectionDao.updateDateSection(incomeDateSection);
         }
+    }
+
+    public void deleteLeaseCostBySectionId(Integer sectionId) {
+        mdIncomeLeaseCostDao.deleteLeaseCostBySectionId(sectionId);
     }
 
     /**
