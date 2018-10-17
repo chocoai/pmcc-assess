@@ -97,7 +97,8 @@ public class DeclareRealtyLandCertService {
         int startRowNumber = 1;//读取数据的起始行
         int successCount = 0;//导入成功数据条数
         //总行数
-        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+//        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+        int rowLength = sheet.getLastRowNum()  - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -276,7 +277,8 @@ public class DeclareRealtyLandCertService {
         int startRowNumber = 1;//读取数据的起始行
         int successCount = 0;//导入成功数据条数
         //总行数
-        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+//        int rowLength = sheet.getLastRowNum() + 1 - startRowNumber;
+        int rowLength = sheet.getLastRowNum() - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();

@@ -359,6 +359,14 @@
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.purpose,"purpose");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.type,"type");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.useRightType,"useRightType");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyLandCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },

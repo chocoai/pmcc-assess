@@ -330,6 +330,14 @@
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.type, "type");
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.useRightType, "useRightType");
                         declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.purpose, "purpose");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },

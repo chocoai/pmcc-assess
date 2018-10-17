@@ -200,6 +200,14 @@
                         declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.frm,data.type,"type");
                         declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.fileId,AssessDBKey.DeclareRealtyHouseCert, data.id);
                         declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.fileId,AssessDBKey.DeclareRealtyHouseCert, data.id);
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyHouseCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyHouseCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyHouseCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                     //使校验生效
                     $("#" + declareRealtyHouseCertConfig.frm).validate();
@@ -236,9 +244,6 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.init = function () {
-        $("#" + declareRealtyHouseCertConfig.frm + "province").select2();
-        $("#" + declareRealtyHouseCertConfig.frm + "city").select2();
-        $("#" + declareRealtyHouseCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyHouseCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyHouseCertConfig.frm + "city"),

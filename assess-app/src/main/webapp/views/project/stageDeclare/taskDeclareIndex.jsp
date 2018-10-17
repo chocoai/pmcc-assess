@@ -27,17 +27,17 @@
             </div>
 
             <!-- 房产证 -->
-            <div class="x_panel" id="viewDeclareRealtyHouseCert">
+            <div class="x_panel" id="viewDeclareRealtyHouseCert" style="display: none">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
 
             <!-- 土地证 -->
-            <div id="viewDeclareRealtyLandCert">
+            <div id="viewDeclareRealtyLandCert" style="display: none">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
             </div>
 
             <!-- 不动产证 -->
-            <div id="viewDeclareRealtyRealEstateCert">
+            <div id="viewDeclareRealtyRealEstateCert" style="display: none">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
             </div>
 
