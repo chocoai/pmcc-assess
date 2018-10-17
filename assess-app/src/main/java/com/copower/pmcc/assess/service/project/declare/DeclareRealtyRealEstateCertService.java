@@ -2,11 +2,13 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.ocr.house.AnalysisUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.ocr.RealtyRealEstateCertOcrDto;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -303,10 +305,6 @@ public class DeclareRealtyRealEstateCertService {
                     }
                 }
             }
-            /**
-             * cert_use` varchar(100) DEFAULT NULL COMMENT '证载用途',
-             `practical_use` varchar(100) DEFAULT NULL COMMENT '实际用途',
-             */
             try {
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             } catch (Exception e1) {
@@ -315,6 +313,43 @@ public class DeclareRealtyRealEstateCertService {
         }
     }
 
-
+    public DeclareRealtyRealEstateCert parseRealtyEstateCert(String startPath)throws Exception{
+        DeclareRealtyRealEstateCert oo = new DeclareRealtyRealEstateCert();
+        RealtyRealEstateCertOcrDto vo = AnalysisUtils.parseRealtyEstateCert(startPath);
+        if (vo == null){
+            return null;
+        }
+        if (StringUtils.isNotBlank(vo.getNumber())){
+            oo.setNumber(vo.getNumber());
+        }
+        if (StringUtils.isNotBlank(vo.getBeLocated())){
+            oo.setBeLocated(vo.getBeLocated());
+        }
+        if (StringUtils.isNotBlank(vo.getOwnership())){
+            oo.setOwnership(vo.getOwnership());
+        }
+        if (StringUtils.isNotBlank(vo.getUseRightType())){
+            oo.setUseRightType(vo.getUseRightType());
+        }
+        if (StringUtils.isNotBlank(vo.getNature())){
+            oo.setNature(vo.getNature());
+        }
+        if (StringUtils.isNotBlank(vo.getPublicSituation())){
+            oo.setPublicSituation(vo.getPublicSituation());
+        }
+        if (StringUtils.isNotBlank(vo.getRealEstateUnitNumber())){
+            oo.setRealEstateUnitNumber(vo.getRealEstateUnitNumber());
+        }
+        if (StringUtils.isNotBlank(vo.getPurpose())){
+            oo.setPurpose(vo.getPurpose());
+        }
+        if (vo.getFloorArea() != null){
+            oo.setFloorArea(vo.getFloorArea());
+        }
+        if (vo.getTerminationDate() != null){
+            oo.setTerminationDate(vo.getTerminationDate());
+        }
+        return oo;
+    }
 
 }

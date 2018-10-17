@@ -19,18 +19,17 @@ public class StartOcr {
 
     public static void main(String[] args) {
         try {
-            String v = "" ;
-            v = "D:\\temp\\img\\A12.jpg" ;
+            String v = "";
+            v = "D:\\temp\\img\\A12.jpg";
 //            v = "D:\\temp\\img\\A9.png" ;
             String item = start(v);
-            System.out.println("数据:"+item);
+            System.out.println(item);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     /**
-     *
      * 功能描述: 解析传入图像中的数据
      *
      * @param: D:\332A4807-69EE-4a1a-B44B-673C65F81289.png
@@ -38,12 +37,13 @@ public class StartOcr {
      * @auther: zch
      * @date: 2018/9/30 16:41
      */
-    public static   String start(String startPath) throws Exception {
+    public static String start(String startPath) throws Exception {
         String data = null;
         String host = "https://ocrapi-house-cert.taobao.com";
         String path = "/ocrservice/houseCert";
         String method = "POST";
-        String appcode = "a415256d0b42457791b60904237383c3";//以后需要替换为公司账户的code(目前暂时用临时的)
+        //以后需要替换为公司账户的code(目前暂时用临时的)
+        String appcode = "a415256d0b42457791b60904237383c3";
         Map<String, String> headers = new HashMap<String, String>();
         //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
@@ -68,20 +68,20 @@ public class StartOcr {
              */
             HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, bodys);
             //获取response的body
-            data = EntityUtils.toString(response.getEntity()) ;
+            data = EntityUtils.toString(response.getEntity());
             return data;
         } catch (Exception e) {
-            return String.format("exception:%s",e.getMessage());
+            return String.format("exception:%s", e.getMessage());
         }
     }
 
-    public static String changeToBase64(String fileName) throws Exception{
+    public static String changeToBase64(String fileName) throws Exception {
         File file = new File(fileName);
         FileInputStream inputFile = new FileInputStream(file);
-        byte[] buffer = new byte[(int)file.length()];
+        byte[] buffer = new byte[(int) file.length()];
         inputFile.read(buffer);
         inputFile.close();
-        String base64Code=new BASE64Encoder().encode(buffer);
+        String base64Code = new BASE64Encoder().encode(buffer);
         return base64Code;
     }
 }

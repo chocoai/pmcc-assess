@@ -85,7 +85,24 @@ public class DeclareRealtyRealEstateCertDto {
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
 
-    private String creator;
+    private String useRightType;
+
+    private BigDecimal acquisitionPrice;
+
+    private String purpose;
+
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
+    private Date terminationDate;
+
+    private String memo;
+
+    private BigDecimal apportionmentArea;
+
+    private BigDecimal acreage;
+
+    private BigDecimal useRightArea;
+
+    private String realEstateUnitNumber;
 
     public Integer getId() {
         return id;
@@ -383,11 +400,75 @@ public class DeclareRealtyRealEstateCertDto {
         this.registrationDate = registrationDate;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getUseRightType() {
+        return useRightType;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setUseRightType(String useRightType) {
+        this.useRightType = useRightType;
+    }
+
+    public BigDecimal getAcquisitionPrice() {
+        return acquisitionPrice;
+    }
+
+    public void setAcquisitionPrice(BigDecimal acquisitionPrice) {
+        this.acquisitionPrice = acquisitionPrice;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    public Date getTerminationDate() {
+        return terminationDate;
+    }
+
+    public void setTerminationDate(Date terminationDate) {
+        this.terminationDate = terminationDate;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public BigDecimal getApportionmentArea() {
+        return apportionmentArea;
+    }
+
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
+        this.apportionmentArea = apportionmentArea;
+    }
+
+    public BigDecimal getAcreage() {
+        return acreage;
+    }
+
+    public void setAcreage(BigDecimal acreage) {
+        this.acreage = acreage;
+    }
+
+    public BigDecimal getUseRightArea() {
+        return useRightArea;
+    }
+
+    public void setUseRightArea(BigDecimal useRightArea) {
+        this.useRightArea = useRightArea;
+    }
+
+    public String getRealEstateUnitNumber() {
+        return realEstateUnitNumber;
+    }
+
+    public void setRealEstateUnitNumber(String realEstateUnitNumber) {
+        this.realEstateUnitNumber = realEstateUnitNumber;
     }
 }

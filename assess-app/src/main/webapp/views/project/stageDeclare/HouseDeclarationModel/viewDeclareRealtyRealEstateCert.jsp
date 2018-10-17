@@ -13,7 +13,8 @@
                 不动产证
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-success" onclick="declareRealtyRealEstateCert.showAddModel()"
-                                                     data-toggle="modal"> 新增</button>
+                        data-toggle="modal"> 新增
+                </button>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -22,8 +23,11 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate)">下载模板</a></li>
-                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadRealEstate').val('').trigger('click')">导入</a></li>
+                        <li><a class="btn"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealEstateOwnershipCertificate)">下载模板</a>
+                        </li>
+                        <li><a class="btn btn-default"
+                               onclick="$('#ajaxFileUploadRealEstate').val('').trigger('click')">导入</a></li>
                     </ul>
                 </div>
             </h3>
@@ -40,7 +44,8 @@
         </form>
     </div>
 </div>
-<input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;" onchange="declareRealtyRealEstateCert.inputFile();">
+<input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;"
+       onchange="declareRealtyRealEstateCert.inputFile();">
 
 <script>
     var declareRealtyRealEstateCertConfig = {
@@ -50,31 +55,21 @@
         box: "boxDeclareRealtyRealEstateCert",
         fileId: "declareRealtyRealEstateCertFileId",
         newFileId: "declareRealtyRealEstateCertNewFileId",
-        fileView:"declareRealtyRealEstateCertFileView"
+        fileView: "declareRealtyRealEstateCertFileView"
     };
 
     var declareRealtyRealEstateCert = new Object();
-
-    /**
-     * @author:  zch
-     * 描述:房产证 文件上传
-     * @date:2018-09-19
-     **/
-    declareRealtyRealEstateCert.fileUpload = function (target,tableName, id) {
-        FileUtils.uploadFiles({
-            target: target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                projectId: "${projectPlanDetails.projectId}",
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: true
-        });
+    //标识符
+    declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = true;
+    declareRealtyRealEstateCert.startPath = null;
+    declareRealtyRealEstateCert.isEmpty = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
     };
 
-    declareRealtyRealEstateCert.fileUpload2 = function (target,tableName, id) {
+    declareRealtyRealEstateCert.fileUpload2 = function (target, tableName, id) {
         FileUtils.uploadFiles({
             target: target,
             disabledTarget: "btn_submit",
@@ -85,9 +80,16 @@
                     tableId: id
                 };
                 return formData;
-            }, onUploadComplete: function (result,file) {
-                console.log(result);
-                declareRealtyRealEstateCert.showFile(target,tableName,id);
+            }, onUploadComplete: function (result, file) {
+                declareRealtyRealEstateCert.showFile(target, tableName, id);
+                //不动产识别
+                if (target == declareRealtyRealEstateCertConfig.newFileId) {
+                    if (declareRealtyRealEstateCert.isEmpty(result)){
+                        AssessCommon.downloadFtpFileToLocal(result,function (data) {
+                            declareRealtyRealEstateCert.startPath = data;
+                        });
+                    }
+                }
                 declareRealtyRealEstateCert.loadList();
             },
             deleteFlag: true
@@ -99,7 +101,7 @@
      * 描述:房产证 文件显示
      * @date:2018-09-19
      **/
-    declareRealtyRealEstateCert.showFile = function (target,tableName, id) {
+    declareRealtyRealEstateCert.showFile = function (target, tableName, id) {
         FileUtils.getFileShows({
             target: target,
             formData: {
@@ -112,29 +114,21 @@
         })
     };
 
-
-    declareRealtyRealEstateCert.isEmpty = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
     /**
      * @author:  zch
      * 描述:数据拼接
      * @date:2018-09-21
      **/
     declareRealtyRealEstateCert.role = {
-        CertName:{
-            init:function () {
+        CertName: {
+            init: function () {
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val())) {
                         declareRealtyRealEstateCert.role.CertName.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val())) {
                         declareRealtyRealEstateCert.role.CertName.write();
                     }
                 });
@@ -148,7 +142,7 @@
                     }
                 });
             },
-            write:function () {
+            write: function () {
                 var location = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='location']").val();
                 var number = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='number']").val();
                 var id = $("#" + declareRealtyRealEstateCertConfig.frm + " .type").eq(1).val();
@@ -174,35 +168,35 @@
                 }
             }
         },
-        beLocated:{
-            init:function () {
+        beLocated: {
+            init: function () {
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='floor']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='roomNumber']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='streetNumber']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='attachedNumber']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
                 $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").blur(function () {
-                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val())){
+                    if (declareRealtyRealEstateCert.isEmpty($("#" + declareRealtyRealEstateCertConfig.frm + " input[name='buildingNumber']").val())) {
                         declareRealtyRealEstateCert.role.beLocated.write();
                     }
                 });
@@ -216,7 +210,7 @@
                     }
                 });
             },
-            write:function () {
+            write: function () {
                 var temp = "";
                 var district = $("#" + declareRealtyRealEstateCertConfig.frm + " .district").eq(1).val();
                 var unit = $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='unit']").val();
@@ -246,7 +240,7 @@
                 if (!declareRealtyRealEstateCert.isEmpty(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = attachedNumber + "附";
+                    attachedNumber =   "附" + attachedNumber;
                 }
                 if (!declareRealtyRealEstateCert.isEmpty(buildingNumber)) {
                     buildingNumber = "";
@@ -280,19 +274,14 @@
         }
     };
 
-    //标识符
-    declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = true;
 
     declareRealtyRealEstateCert.init = function () {
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + declareRealtyRealEstateCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
         });
         AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
             $("#" + declareRealtyRealEstateCertConfig.frm).find('select.type').empty().html(html).trigger('change');
         });
-        // $("#" + declareRealtyRealEstateCertConfig.frm + "province").select2();
-        // $("#" + declareRealtyRealEstateCertConfig.frm + "city").select2();
-        // $("#" + declareRealtyRealEstateCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
@@ -307,19 +296,19 @@
 
     declareRealtyRealEstateCert.showAddModel = function () {
         $("#" + declareRealtyRealEstateCertConfig.frm).clearAll();
-        if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag){
+        if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag) {
             declareRealtyRealEstateCert.init();
             declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = false;
         }
         $("#" + declareRealtyRealEstateCertConfig.frm).validate();
         $('#' + declareRealtyRealEstateCertConfig.box).modal("show");
-        declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.newFileId,AssessDBKey.DeclareRealtyRealEstateCert,0);
+        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
     };
 
 
     declareRealtyRealEstateCert.editData = function (id) {
         $("#" + declareRealtyRealEstateCertConfig.frm).clearAll();
-        if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag){
+        if (declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag) {
             declareRealtyRealEstateCert.init();
             declareRealtyRealEstateCert.declareRealtyRealEstateCertFlag = false;
         }
@@ -330,17 +319,25 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    var data = result.data ;
-                    if (declareRealtyRealEstateCert.isEmpty(data)){
+                    var data = result.data;
+                    if (declareRealtyRealEstateCert.isEmpty(data)) {
                         $("#" + declareRealtyRealEstateCertConfig.frm).initForm(result.data);
                         $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
                         $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
                         $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
                         $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                         $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.type,"type");
-                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.useRightType,"useRightType");
-                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm,data.purpose,"purpose");
+                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.type, "type");
+                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.useRightType, "useRightType");
+                        declareRealtyRealEstateCert.objectWriteSelectData(declareRealtyRealEstateCertConfig.frm, data.purpose, "purpose");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },
@@ -348,27 +345,28 @@
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
+        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
+        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.newFileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
         $('#' + declareRealtyRealEstateCertConfig.box).modal("show");
         $("#" + declareRealtyRealEstateCertConfig.frm).validate();
     };
 
     /**
-    * @author:  zch
-    * 描述:附件
-    * @date:2018-09-21
-    **/
+     * @author:  zch
+     * 描述:附件
+     * @date:2018-09-21
+     **/
     declareRealtyRealEstateCert.enclosure = function (id) {
-        // declareRealtyRealEstateCert.fileUpload(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
-        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
-        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.fileId,AssessDBKey.DeclareRealtyRealEstateCert,id);
+        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.fileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
+        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.fileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
         $('#' + declareRealtyRealEstateCertConfig.fileView).modal("show");
     };
 
     /**
-    * @author:  zch
-    * 描述:批量导入
-    * @date:2018-09-21
-    **/
+     * @author:  zch
+     * 描述:批量导入
+     * @date:2018-09-21
+     **/
     declareRealtyRealEstateCert.inputFile = function () {
         $.ajaxFileUpload({
             type: "POST",
@@ -381,9 +379,9 @@
             dataType: 'json',//服务器返回的格式
             async: false,
             success: function (result) {
-                if (result.ret){
+                if (result.ret) {
                     declareRealtyRealEstateCert.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {
@@ -394,9 +392,25 @@
     };
 
     declareRealtyRealEstateCert.distinguish = function () {
-        toastr.success('暂时没有提供此方法!');
+        var startPath = declareRealtyRealEstateCert.startPath;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/parseRealtyEstateCert",
+            type: "POST",
+            dataType: "json",
+            data: {startPath: startPath},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    $("#" + declareRealtyRealEstateCertConfig.frm).initForm(result.data);
+                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
+                    declareRealtyRealEstateCert.startPath = null;
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     };
-
 
 
     declareRealtyRealEstateCert.loadList = function () {
@@ -410,9 +424,9 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyRealEstateCert.deleteData(' + row.id + ',\'exampleList\')"><i class="fa fa-remove fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="declareRealtyRealEstateCert.editData(' + row.id + ',\'exampleList\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure("+row.id+")'"+">"+"<i class='fa'>" +"不动产附件"+"</a>" ;
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyRealEstateCert.deleteData(' + row.id + ',\'exampleList\')"><i class="fa fa-remove fa-white"></i></a>';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
                 str += '</div>';
                 return str;
             }
@@ -431,22 +445,26 @@
     };
 
     declareRealtyRealEstateCert.deleteData = function (id) {
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
-            data: {id:id},
-            success: function (result) {
-                if (result.ret) {
-                    declareRealtyRealEstateCert.loadList();
-                    toastr.success('成功!');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+        Alert("是否删除",2,null,
+            function (){
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            declareRealtyRealEstateCert.loadList();
+                            toastr.success('成功!');
+                        } else {
+                            Alert("保存失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (e) {
+                        Alert("调用服务端方法失败，失败原因:" + e);
+                    }
+                });
             }
-        });
+        );
     };
 
     declareRealtyRealEstateCert.saveAndUpdateData = function () {
@@ -481,7 +499,8 @@
 </script>
 
 <!-- 不动产附件 -->
-<div id="declareRealtyRealEstateCertFileView" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareRealtyRealEstateCertFileView" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -504,7 +523,8 @@
                                             上传不动产证
                                         </label>
                                         <div class="col-sm-11">
-                                            <input id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
+                                            <input id="declareRealtyRealEstateCertFileId"
+                                                   name="declareRealtyRealEstateCertFileId"
                                                    required="required" placeholder="上传不动产证" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyRealEstateCertFileId"></div>
@@ -542,6 +562,24 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传不动产证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="declareRealtyRealEstateCertNewFileId"
+                                                   name="declareRealtyRealEstateCertNewFileId"
+                                                   required="required" placeholder="上传不动产证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyRealEstateCertNewFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default"
+                                               onclick="declareRealtyRealEstateCert.distinguish();">识别</label>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
@@ -650,7 +688,8 @@
                                         <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control" data-rule-maxlength="100" data-rule-number='true'
+                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control"
+                                                   data-rule-maxlength="100" data-rule-number='true'
                                                    required="required">
                                         </div>
                                     </div>
@@ -772,7 +811,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="总层数(数字)" name="floorCount" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -780,7 +820,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -788,7 +829,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="套内面积(数字)" name="innerArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -848,7 +890,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="公摊面积(数字)" name="publicArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -931,7 +974,8 @@
                                             使用权类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                            <select required="required" name="useRightType"
+                                                    class="form-control search-select select2 useRightType">
                                                 <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
@@ -996,18 +1040,12 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传不动产证<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input id="declareRealtyRealEstateCertNewFileId" name="declareRealtyRealEstateCertNewFileId"
-                                                   required="required" placeholder="上传不动产证" class="form-control"
-                                                   type="file">
-                                            <div id="_declareRealtyRealEstateCertNewFileId"></div>
+                                        <label class="col-sm-1 control-label">不动产单元号<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-11">
+                                            <textarea class="form-control" name="realEstateUnitNumber" required="required">
+                                            </textarea>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default" onclick="declareRealtyRealEstateCert.distinguish();">识别</label>
                                     </div>
                                 </div>
 

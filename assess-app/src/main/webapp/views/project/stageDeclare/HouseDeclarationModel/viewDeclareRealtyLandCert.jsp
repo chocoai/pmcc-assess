@@ -251,7 +251,7 @@
                 if (!declareRealtyLandCert.isEmpty(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = attachedNumber + "附";
+                    attachedNumber =  "附"+attachedNumber;
                 }
                 if (!declareRealtyLandCert.isEmpty(buildingNumber)) {
                     buildingNumber = "";
@@ -286,9 +286,6 @@
     };
 
     declareRealtyLandCert.init = function () {
-        // $("#" + declareRealtyLandCertConfig.frm + "province").select2();
-        // $("#" + declareRealtyLandCertConfig.frm + "city").select2();
-        // $("#" + declareRealtyLandCertConfig.frm + "district").select2();
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
             cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
@@ -303,7 +300,6 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
             $("#" + declareRealtyLandCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        // $("#" + declareRealtyLandCertConfig.frm + " .useRightType").select2();//加载样式
         declareRealtyLandCert.role.CertName.init();
         declareRealtyLandCert.role.beLocated.init();
     };
@@ -320,22 +316,26 @@
     };
 
     declareRealtyLandCert.deleteData = function (id) {
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
-            data: {id:id},
-            success: function (result) {
-                if (result.ret) {
-                    declareRealtyLandCert.loadList();
-                    toastr.success('成功!');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+        Alert("是否删除",2,null,
+            function (){
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
+                    data: {id:id},
+                    success: function (result) {
+                        if (result.ret) {
+                            declareRealtyLandCert.loadList();
+                            toastr.success('成功!');
+                        } else {
+                            Alert("保存失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (e) {
+                        Alert("调用服务端方法失败，失败原因:" + e);
+                    }
+                });
             }
-        });
+        );
     };
 
     declareRealtyLandCert.editData = function (id) {
@@ -359,6 +359,14 @@
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.purpose,"purpose");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.type,"type");
                         declareRealtyLandCert.objectWriteSelectData(declareRealtyLandCertConfig.frm,data.useRightType,"useRightType");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + declareRealtyLandCertConfig.frm + "province"),
+                            cityTarget: $("#" + declareRealtyLandCertConfig.frm + "city"),
+                            districtTarget: $("#" + declareRealtyLandCertConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },
@@ -393,8 +401,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyLandCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-remove fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="declareRealtyLandCert.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyLandCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-remove fa-white"></i></a>';
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='declareRealtyLandCert.landEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"土地证附件"+"</a>" ;
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='declareRealtyLandCert.houseEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"房产证附件"+"</a>" ;
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证关联' onclick='declareRealtyLandCert.houseCard("+row.id+")'"+">"+"<i class='fa'>" +"房产证关联"+"</a>" ;
@@ -569,7 +577,7 @@
             success: function (result) {
                 if (result.ret){
                     declareRealtyLandCert.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {
@@ -598,7 +606,7 @@
             success: function (result) {
                 if (result.ret){
                     declareRealtyLandCert.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {

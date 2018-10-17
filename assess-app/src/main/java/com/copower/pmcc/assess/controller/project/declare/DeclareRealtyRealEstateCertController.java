@@ -151,6 +151,16 @@ public class DeclareRealtyRealEstateCertController {
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
-
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/parseRealtyEstateCert", name = "解析上传的图片房产证", method = RequestMethod.POST)
+    public HttpResult parseRealtyEstateCert(String startPath) {
+        try {
+            return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.parseRealtyEstateCert(startPath));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }
