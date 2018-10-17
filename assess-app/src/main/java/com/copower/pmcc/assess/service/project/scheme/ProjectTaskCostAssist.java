@@ -44,6 +44,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private SchemeSupportInfoService schemeSupportInfoService;
     @Autowired
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -53,10 +57,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
-        MdCost mdCost = new MdCost();
-        mdCost.setPrice(BigDecimal.valueOf(10));
-        mdCost.setArea(BigDecimal.valueOf(20));
-        modelAndView.addObject("mdCost", mdCost);
         mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
@@ -94,11 +94,6 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostIndex", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         setViewParam(projectPlanDetails, modelAndView);
-        //手动注入 委估对象数据
-        MdCost mdCost = new MdCost();
-        mdCost.setPrice(BigDecimal.valueOf(10));
-        mdCost.setArea(BigDecimal.valueOf(20));
-        modelAndView.addObject("mdCost", mdCost);
         mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
@@ -221,7 +216,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdCostBuilding = JSONObject.parseObject(jsonContent, MdCostBuilding.class);
                 mdCostBuilding.setJsonContent(JSON.toJSONString(jsonContent));
-                if (mdCostBuilding.getId() != null){
+                if (mdCostBuilding.getId() != null) {
                     id = mdMarketCostService.getMdCostBuilding(mdCostBuilding.getId()).getPid();
                 }
                 jsonContent = null;//必须初始化,否则下面判定失败
@@ -230,7 +225,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdCostConstruction = JSONObject.parseObject(jsonContent, MdCostConstruction.class);
                 mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
-                if (mdCostConstruction.getId() != null){
+                if (mdCostConstruction.getId() != null) {
                     id = mdMarketCostService.getMdCostConstruction(mdCostConstruction.getId()).getPid();
                 }
             }
@@ -246,10 +241,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         }
 
         //处理(建筑物)
-        if (!ObjectUtils.isEmpty(mdCostBuilding)){
-            if (mdCostBuilding.getId() != null){
+        if (!ObjectUtils.isEmpty(mdCostBuilding)) {
+            if (mdCostBuilding.getId() != null) {
                 mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding);
-            }else {
+            } else {
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostBuilding.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
                     mdCostBuilding.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
@@ -264,10 +259,10 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         }
 
         //处理(在建工程)
-        if (!ObjectUtils.isEmpty(mdCostConstruction)){
-            if (mdCostConstruction.getId() != null){
+        if (!ObjectUtils.isEmpty(mdCostConstruction)) {
+            if (mdCostConstruction.getId() != null) {
                 mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction);
-            }else {
+            } else {
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostConstruction.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
                     mdCostConstruction.setEngineeringId(mdCostAndDevelopmentOther.getId());//存入从表id
@@ -288,6 +283,17 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
+        if (judgeObjectId != null) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+            if (schemeJudgeObject != null){
+                Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
+                if (areaGroupId != null){
+                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+                    modelAndView.addObject("schemeAreaGroup",schemeAreaGroup);
+                }
+            }
+        }
         //评估支持数据
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         Integer projectId = projectPlanDetails.getProjectId();
@@ -311,28 +317,28 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             mdCostBuilding = new MdCostBuilding();
             mdCostBuilding.setPid(pid);
             List<MdCostBuilding> mdCostBuildingList = mdMarketCostService.mdCostBuildingList(mdCostBuilding);
-            if (!ObjectUtils.isEmpty(mdCostBuildingList)){
+            if (!ObjectUtils.isEmpty(mdCostBuildingList)) {
                 mdCostBuilding = mdCostBuildingList.get(0);//一定会是只有一个或者没有,关于原因 查看save method
                 modelAndView.addObject("mdCostBuildingJSON", mdCostBuilding.getJsonContent());
                 modelAndView.addObject("mdCostBuilding", mdCostBuilding);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostBuilding.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null){
+                if (mdCostAndDevelopmentOther != null) {
                     modelAndView.addObject("mdCostAndDevelopmentOtherBuilding", mdCostAndDevelopmentOther);
                     modelAndView.addObject("mdCostAndDevelopmentOtherBuildingJSON", mdCostAndDevelopmentOther.getJsonContent());
                 }
             }
         }
         //设置在建工程
-        if (pid != null){
+        if (pid != null) {
             mdCostConstruction = new MdCostConstruction();
             mdCostConstruction.setPid(pid);
             List<MdCostConstruction> mdCostConstructionList = mdMarketCostService.getMdCostConstructionList(mdCostConstruction);
-            if (!ObjectUtils.isEmpty(mdCostConstructionList)){
+            if (!ObjectUtils.isEmpty(mdCostConstructionList)) {
                 mdCostConstruction = mdCostConstructionList.get(0);//.....................
                 modelAndView.addObject("mdCostConstructionJSON", mdCostConstruction.getJsonContent());
                 modelAndView.addObject("mdCostConstruction", mdCostConstruction);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdCostConstruction.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null){
+                if (mdCostAndDevelopmentOther != null) {
                     modelAndView.addObject("mdCostAndDevelopmentOtherConstruction", mdCostAndDevelopmentOther);
                     modelAndView.addObject("mdCostAndDevelopmentOtherConstructionJSON", mdCostAndDevelopmentOther.getJsonContent());
                 }

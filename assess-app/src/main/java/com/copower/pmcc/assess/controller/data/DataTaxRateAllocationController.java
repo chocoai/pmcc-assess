@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -95,6 +96,30 @@ public class DataTaxRateAllocationController {
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/listDataTaxRateAllocation",method = {RequestMethod.GET},name = "税率 list")
+    public HttpResult list(String province,String city,String district,String bisNationalUnity){
+        try {
+            DataTaxRateAllocation dataTaxRateAllocation = new DataTaxRateAllocation();
+            if (!StringUtils.isEmpty(province)){
+                dataTaxRateAllocation.setProvince(province);
+            }
+            if (!StringUtils.isEmpty(city)){
+                dataTaxRateAllocation.setCity(city);
+            }
+            if (!StringUtils.isEmpty(district)){
+                dataTaxRateAllocation.setDistrict(district);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(bisNationalUnity)){
+                dataTaxRateAllocation.setBisNationalUnity(Boolean.valueOf(bisNationalUnity));
+            }
+            return HttpResult.newCorrectResult(dataTaxRateAllocationService.landLevels(dataTaxRateAllocation));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s",e.getMessage()),e);
+            return HttpResult.newErrorResult("异常");
         }
     }
 }

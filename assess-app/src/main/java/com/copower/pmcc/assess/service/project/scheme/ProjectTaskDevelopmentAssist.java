@@ -44,6 +44,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
     @Autowired
     private MdDevelopmentService mdDevelopmentService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -53,11 +57,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         setViewParam(projectPlanDetails, modelAndView);
-        mdCostAndDevelopmentOtherService.removePid();
-        MdDevelopment mdDevelopment = new MdDevelopment();
-        mdDevelopment.setPrice(BigDecimal.valueOf(10));
-        mdDevelopment.setArea(BigDecimal.valueOf(20));
-        modelAndView.addObject("mdDevelopment", mdDevelopment);
         mdCostAndDevelopmentOtherService.removePid();
         return modelAndView;
     }
@@ -88,7 +87,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskDevelopmentApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         setViewParam(projectPlanDetails, modelAndView);
-
         return modelAndView;
     }
 
@@ -285,6 +283,17 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
      * @param modelAndView
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
+        if (judgeObjectId != null) {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+            if (schemeJudgeObject != null){
+                Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
+                if (areaGroupId != null){
+                    SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
+                    modelAndView.addObject("schemeAreaGroup",schemeAreaGroup);
+                }
+            }
+        }
         //评估支持数据
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
