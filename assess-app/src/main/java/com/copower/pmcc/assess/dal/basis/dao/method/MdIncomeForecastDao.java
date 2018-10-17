@@ -79,10 +79,10 @@ public class MdIncomeForecastDao {
         return mdIncomeForecastMapper.updateByPrimaryKeySelective(mdIncomeForecast) > 0;
     }
 
-    public boolean updateForecast(MdIncomeForecast where,MdIncomeForecast mdIncomeForecast) {
+    public boolean updateForecast(MdIncomeForecast where, MdIncomeForecast mdIncomeForecast) {
         MdIncomeForecastExample example = new MdIncomeForecastExample();
         MybatisUtils.convertObj2Example(where, example);
-        return mdIncomeForecastMapper.updateByExampleSelective(mdIncomeForecast,example) > 0;
+        return mdIncomeForecastMapper.updateByExampleSelective(mdIncomeForecast, example) > 0;
     }
 
     /**
@@ -95,12 +95,19 @@ public class MdIncomeForecastDao {
         return mdIncomeForecastMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    public boolean deleteForecastBySectionId(Integer sectionId) {
+        MdIncomeForecastExample example = new MdIncomeForecastExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        return mdIncomeForecastMapper.deleteByExample(example) > 0;
+    }
+
     /**
      * 获取数量
+     *
      * @param sectionId
      * @return
      */
-    public int getCountBySectionId(Integer sectionId){
+    public int getCountBySectionId(Integer sectionId) {
         MdIncomeForecastExample example = new MdIncomeForecastExample();
         example.createCriteria().andSectionIdEqualTo(sectionId);
         return mdIncomeForecastMapper.countByExample(example);

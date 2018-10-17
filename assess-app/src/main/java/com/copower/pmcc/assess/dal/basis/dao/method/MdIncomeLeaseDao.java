@@ -24,6 +24,7 @@ public class MdIncomeLeaseDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -33,6 +34,7 @@ public class MdIncomeLeaseDao {
 
     /**
      * 获取数据列表
+     *
      * @param mdIncomeLease
      * @return
      */
@@ -44,6 +46,7 @@ public class MdIncomeLeaseDao {
 
     /**
      * 新增
+     *
      * @param mdIncomeLease
      * @return
      */
@@ -54,6 +57,7 @@ public class MdIncomeLeaseDao {
 
     /**
      * 更新
+     *
      * @param mdIncomeLease
      * @return
      */
@@ -63,30 +67,39 @@ public class MdIncomeLeaseDao {
 
     /**
      * 更新
+     *
      * @param mdIncomeLease
      * @return
      */
-    public boolean updateIncomeLease(MdIncomeLease where,MdIncomeLease mdIncomeLease) {
+    public boolean updateIncomeLease(MdIncomeLease where, MdIncomeLease mdIncomeLease) {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         MybatisUtils.convertObj2Example(where, example);
-        return mdIncomeLeaseMapper.updateByExampleSelective(mdIncomeLease,example) > 0;
+        return mdIncomeLeaseMapper.updateByExampleSelective(mdIncomeLease, example) > 0;
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteIncomeLease(Integer id){
+    public boolean deleteLease(Integer id) {
         return mdIncomeLeaseMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    public boolean deleteLeaseBySectionId(Integer sectionId) {
+        MdIncomeLeaseExample example = new MdIncomeLeaseExample();
+        example.createCriteria().andSectionIdEqualTo(sectionId);
+        return mdIncomeLeaseMapper.countByExample(example) > 0;
     }
 
     /**
      * 获取数量
+     *
      * @param sectionId
      * @return
      */
-    public int getCountBySectionId(Integer sectionId){
+    public int getCountBySectionId(Integer sectionId) {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         example.createCriteria().andSectionIdEqualTo(sectionId);
         return mdIncomeLeaseMapper.countByExample(example);
