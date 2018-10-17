@@ -90,7 +90,7 @@ public class MdIncomeLeaseDao {
     public boolean deleteLeaseBySectionId(Integer sectionId) {
         MdIncomeLeaseExample example = new MdIncomeLeaseExample();
         example.createCriteria().andSectionIdEqualTo(sectionId);
-        return mdIncomeLeaseMapper.countByExample(example) > 0;
+        return mdIncomeLeaseMapper.deleteByExample(example) > 0;
     }
 
     /**

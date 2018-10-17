@@ -772,33 +772,6 @@
         })
     }
 
-    //删除预测信息
-    selfSupport.delForecast = function (id, type) {
-        Alert("确认要删除么？", 2, null, function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/income/deleteForecast",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        toastr.success('删除成功');
-                        selfSupport.loadForecastList(type);
-                    }
-                    else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        })
-    }
-
     //加载预测列表信息
     selfSupport.loadForecastList = function (type) {
         var cols = [];
