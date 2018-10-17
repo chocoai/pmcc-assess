@@ -106,7 +106,7 @@ public class MdIncomeLeaseCostDao {
     public boolean deleteLeaseCostBySectionId(Integer sectionId) {
         MdIncomeLeaseCostExample example = new MdIncomeLeaseCostExample();
         example.createCriteria().andSectionIdEqualTo(sectionId);
-        return mdIncomeLeaseCostMapper.countByExample(example) > 0;
+        return mdIncomeLeaseCostMapper.deleteByExample(example) > 0;
     }
 
     /**

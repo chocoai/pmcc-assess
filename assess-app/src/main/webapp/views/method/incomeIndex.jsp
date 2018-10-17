@@ -34,13 +34,17 @@
                 <label class="col-sm-1 control-label">
                     经营方式<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-3">
+                <div class="col-sm-2 col-sm-offset-1">
                     <div class="x-valid">
                          <span class="radio-inline"><input type="radio" required name="operationMode"
                                                            id="operationMode0"
                                                            onclick="incomeIndex.operationModeChange(this);"
                                                            value="0">
                         <label for="operationMode0">自营</label></span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="x-valid">
                         <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
                                                           onclick="incomeIndex.operationModeChange(this);"
                                                           value="1"><label
@@ -53,10 +57,12 @@
                     <label class="col-sm-1 control-label">
                         租赁限制<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2 col-sm-offset-1">
                     <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
                                                       onchange="incomeIndex.leaseModeChange(this);" value="0"><label
                             for="leaseMode0">限制</label></span>
+                    </div>
+                    <div class="col-sm-2">
                         <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
                                                           onchange="incomeIndex.leaseModeChange(this);"><label
                                 for="leaseMode1">无限制</label></span>
@@ -266,6 +272,21 @@
                     if (result.ret) {
                         toastr.success('删除成功');
                         incomeIndex.loadDateSectionList($("#frm_income").find('[name=operationMode]:checked').val());
+
+                        //刷新从表信息
+                        var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
+                        if (operationMode == 0) {
+                            selfSupport.loadForecastList(0);
+                            selfSupport.loadForecastList(1);
+                        }
+
+                        if (operationMode == 1) {
+                            lease.loadLeaseList();
+                            lease.loadLeaseCostList();
+                            lease.loadLeaseParameterList();
+                            lease.loadCalculationResult();
+                        }
+
                     }
                     else {
                         Alert("删除数据失败，失败原因:" + result.errmsg);

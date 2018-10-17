@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class MdIncomeDateSectionService {
      * @param id
      * @return
      */
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional
     public boolean deleteDateSection(Integer id) throws BusinessException {
         //先检查各子项有无相关联的数据
         MdIncomeDateSection dateSection = mdIncomeDateSectionDao.getDateSectionById(id);
