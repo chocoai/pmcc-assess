@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -356,12 +357,17 @@ public class SchemeJudgeObjectService {
         //3.生成计划任务
         int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectId);
         if (count > 0)
-            throw new BusinessException("还是委估对象未设置评估方法请检查");
+            throw new BusinessException("还有委估对象未设置评估方法请检查");
         saveProgrammeAll(schemeProgrammeDtos);
         projectPlanDetailsService.deletePlanDetailsByPlanId(planId);
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
+
+
+
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
+            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE);
+
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap();
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
@@ -414,6 +420,22 @@ public class SchemeJudgeObjectService {
                                 details.setSorting(k++);
                                 projectPlanDetailsDao.addProjectPlanDetails(details);
                             }
+                        }
+
+                        //添加确定单价的工作事项
+                        if(phaseSurePrice!=null){
+                            ProjectPlanDetails details = new ProjectPlanDetails();
+                            details.setProjectWorkStageId(projectPlan.getWorkStageId());
+                            details.setPlanId(projectPlan.getId());
+                            details.setProjectId(projectPlan.getProjectId());
+                            details.setProjectPhaseName(phaseSurePrice.getProjectPhaseName());
+                            details.setProjectPhaseId(phaseSurePrice.getId());
+                            details.setJudgeObjectId(schemeJudgeObject.getId());
+                            details.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
+                            details.setPid(planDetails.getId());
+                            details.setBisLastLayer(true);
+                            details.setSorting(100);
+                            projectPlanDetailsDao.addProjectPlanDetails(details);
                         }
                     }
                 }
