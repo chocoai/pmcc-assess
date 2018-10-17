@@ -39,9 +39,6 @@
     <result column="other_note" property="otherNote" jdbcType="VARCHAR" />
     <result column="registration_authority" property="registrationAuthority" jdbcType="VARCHAR" />
     <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="use_right_type" property="useRightType" jdbcType="VARCHAR" />
     <result column="acquisition_price" property="acquisitionPrice" jdbcType="DECIMAL" />
     <result column="purpose" property="purpose" jdbcType="VARCHAR" />
@@ -50,6 +47,10 @@
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
     <result column="acreage" property="acreage" jdbcType="DECIMAL" />
     <result column="use_right_area" property="useRightArea" jdbcType="DECIMAL" />
+    <result column="real_estate_unit_number" property="realEstateUnitNumber" jdbcType="VARCHAR" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -115,8 +116,8 @@
     unit, floor, registration_time, nature, planning_use, floor_count, floor_area, evidence_area, 
     inner_area, other, land_number, graph_number, room_number, land_acquisition, use_start_date, 
     use_end_date, public_area, other_note, registration_authority, registration_date, 
-    creator, gmt_created, gmt_modified, use_right_type, acquisition_price, purpose, termination_date, 
-    memo, apportionment_area, acreage, use_right_area
+    use_right_type, acquisition_price, purpose, termination_date, memo, apportionment_area, 
+    acreage, use_right_area, real_estate_unit_number, gmt_modified, gmt_created, creator
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
     select
@@ -164,10 +165,11 @@
       graph_number, room_number, land_acquisition, 
       use_start_date, use_end_date, public_area, 
       other_note, registration_authority, registration_date, 
-      creator, gmt_created, gmt_modified, 
       use_right_type, acquisition_price, purpose, 
       termination_date, memo, apportionment_area, 
-      acreage, use_right_area)
+      acreage, use_right_area, real_estate_unit_number, 
+      gmt_modified, gmt_created, creator
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{certName,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
@@ -180,10 +182,11 @@
       #{graphNumber,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{landAcquisition,jdbcType=VARCHAR}, 
       #{useStartDate,jdbcType=TIMESTAMP}, #{useEndDate,jdbcType=TIMESTAMP}, #{publicArea,jdbcType=DECIMAL}, 
       #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, #{purpose,jdbcType=VARCHAR}, 
       #{terminationDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, #{apportionmentArea,jdbcType=DECIMAL}, 
-      #{acreage,jdbcType=DECIMAL}, #{useRightArea,jdbcType=DECIMAL})
+      #{acreage,jdbcType=DECIMAL}, #{useRightArea,jdbcType=DECIMAL}, #{realEstateUnitNumber,jdbcType=VARCHAR}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -299,15 +302,6 @@
       <if test="registrationDate != null" >
         registration_date,
       </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
       <if test="useRightType != null" >
         use_right_type,
       </if>
@@ -331,6 +325,18 @@
       </if>
       <if test="useRightArea != null" >
         use_right_area,
+      </if>
+      <if test="realEstateUnitNumber != null" >
+        real_estate_unit_number,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="creator != null" >
+        creator,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -442,15 +448,6 @@
       <if test="registrationDate != null" >
         #{registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="useRightType != null" >
         #{useRightType,jdbcType=VARCHAR},
       </if>
@@ -474,6 +471,18 @@
       </if>
       <if test="useRightArea != null" >
         #{useRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="realEstateUnitNumber != null" >
+        #{realEstateUnitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -597,15 +606,6 @@
       <if test="record.registrationDate != null" >
         registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.useRightType != null" >
         use_right_type = #{record.useRightType,jdbcType=VARCHAR},
       </if>
@@ -629,6 +629,18 @@
       </if>
       <if test="record.useRightArea != null" >
         use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.realEstateUnitNumber != null" >
+        real_estate_unit_number = #{record.realEstateUnitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -674,9 +686,6 @@
       other_note = #{record.otherNote,jdbcType=VARCHAR},
       registration_authority = #{record.registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       use_right_type = #{record.useRightType,jdbcType=VARCHAR},
       acquisition_price = #{record.acquisitionPrice,jdbcType=DECIMAL},
       purpose = #{record.purpose,jdbcType=VARCHAR},
@@ -684,7 +693,11 @@
       memo = #{record.memo,jdbcType=VARCHAR},
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
       acreage = #{record.acreage,jdbcType=DECIMAL},
-      use_right_area = #{record.useRightArea,jdbcType=DECIMAL}
+      use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
+      real_estate_unit_number = #{record.realEstateUnitNumber,jdbcType=VARCHAR},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -800,15 +813,6 @@
       <if test="registrationDate != null" >
         registration_date = #{registrationDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
       <if test="useRightType != null" >
         use_right_type = #{useRightType,jdbcType=VARCHAR},
       </if>
@@ -832,6 +836,18 @@
       </if>
       <if test="useRightArea != null" >
         use_right_area = #{useRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="realEstateUnitNumber != null" >
+        real_estate_unit_number = #{realEstateUnitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -874,9 +890,6 @@
       other_note = #{otherNote,jdbcType=VARCHAR},
       registration_authority = #{registrationAuthority,jdbcType=VARCHAR},
       registration_date = #{registrationDate,jdbcType=TIMESTAMP},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       use_right_type = #{useRightType,jdbcType=VARCHAR},
       acquisition_price = #{acquisitionPrice,jdbcType=DECIMAL},
       purpose = #{purpose,jdbcType=VARCHAR},
@@ -884,7 +897,11 @@
       memo = #{memo,jdbcType=VARCHAR},
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
       acreage = #{acreage,jdbcType=DECIMAL},
-      use_right_area = #{useRightArea,jdbcType=DECIMAL}
+      use_right_area = #{useRightArea,jdbcType=DECIMAL},
+      real_estate_unit_number = #{realEstateUnitNumber,jdbcType=VARCHAR},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

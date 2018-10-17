@@ -146,25 +146,30 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.deleteData = function (id) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/deleteDeclareRealtyHouseCertById",
-            type: "post",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('删除成功');
-                    declareRealtyHouseCert.loadList();
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+
+        Alert("是否删除",2,null,
+            function (){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/declareRealtyHouseCert/deleteDeclareRealtyHouseCertById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('删除成功');
+                            declareRealtyHouseCert.loadList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
             }
-        })
-    }
+        );
+    };
 
     /**
      * @author:  zch
@@ -223,7 +228,7 @@
         //使校验生效
         $("#" + declareRealtyHouseCertConfig.frm).validate();
         $('#' + declareRealtyHouseCertConfig.box).modal("show");
-    }
+    };
 
     /**
      * @author:  zch
@@ -247,7 +252,7 @@
         });
         declareRealtyHouseCert.role.writeCertName.init();
         declareRealtyHouseCert.role.beLocated.init();
-    }
+    };
 
     /**
      * @author:  zch
@@ -279,7 +284,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="declareRealtyHouseCert.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'\')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-toggle="modal" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'\')"><i class="fa fa-remove fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyLandCert.showViewModel(' + row.id + ');" ><i class="fa">土地证关联</i></a>';
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='declareRealtyHouseCert.houseEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"房产证附件"+"</a>" ;
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='declareRealtyHouseCert.landEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"土地证附件"+"</a>" ;
@@ -298,7 +303,7 @@
                 $('.tooltips').tooltip();
             }
         });
-    }
+    };
 
     /**
      * @author:  zch
@@ -378,7 +383,7 @@
             success: function (result) {
                 if (result.ret){
                     declareRealtyHouseCert.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {
@@ -402,7 +407,7 @@
             success: function (result) {
                 if (result.ret){
                     declareRealtyHouseCert.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {
@@ -564,7 +569,7 @@
                 if (!declareRealtyHouseCert.isEmpty(attachedNumber)) {
                     attachedNumber = "";
                 } else {
-                    attachedNumber = attachedNumber + "附";
+                    attachedNumber =  "附"+attachedNumber;
                 }
                 if (!declareRealtyHouseCert.isEmpty(buildingNumber)) {
                     buildingNumber = "";
@@ -715,7 +720,10 @@
     $(function () {
         declareRealtyHouseCert.loadList();
     });
+
 </script>
+
+
 
 <!-- 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

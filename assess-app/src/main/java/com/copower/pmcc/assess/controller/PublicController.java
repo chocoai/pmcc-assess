@@ -57,6 +57,16 @@ public class PublicController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/downloadFtpFileToLocal", method = {RequestMethod.GET}, name = "下载ftp附件到本地")
+    public HttpResult downloadFtpFileToLocal(Integer attachmentId) {
+        try {
+            return HttpResult.newCorrectResult(baseAttachmentService.downloadFtpFileToLocal(attachmentId));
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
     public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
         if (sysAttachmentDto != null) {
@@ -94,7 +104,7 @@ public class PublicController {
                 sysAreaDto = erpAreaService.getSysAreaDto(id);
                 if (sysAreaDto != null) {
                     return HttpResult.newCorrectResult(sysAreaDto);
-                }else {
+                } else {
                     return HttpResult.newErrorResult("没有获取到数据!");
                 }
             }

@@ -78,12 +78,6 @@ public class DeclareRealtyRealEstateCert {
 
     private Date registrationDate;
 
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String useRightType;
 
     private BigDecimal acquisitionPrice;
@@ -99,6 +93,14 @@ public class DeclareRealtyRealEstateCert {
     private BigDecimal acreage;
 
     private BigDecimal useRightArea;
+
+    private String realEstateUnitNumber;
+
+    private Date gmtModified;
+
+    private Date gmtCreated;
+
+    private String creator;
 
     public Integer getId() {
         return id;
@@ -396,30 +398,6 @@ public class DeclareRealtyRealEstateCert {
         this.registrationDate = registrationDate;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public String getUseRightType() {
         return useRightType;
     }
@@ -482,5 +460,37 @@ public class DeclareRealtyRealEstateCert {
 
     public void setUseRightArea(BigDecimal useRightArea) {
         this.useRightArea = useRightArea;
+    }
+
+    public String getRealEstateUnitNumber() {
+        return realEstateUnitNumber;
+    }
+
+    public void setRealEstateUnitNumber(String realEstateUnitNumber) {
+        this.realEstateUnitNumber = realEstateUnitNumber == null ? null : realEstateUnitNumber.trim();
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 }

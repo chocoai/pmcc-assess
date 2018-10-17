@@ -559,7 +559,22 @@ $(function () {
                 }
             })
         },
-
+        //下载ftp附件到本地
+        downloadFtpFileToLocal:function (item, callback) {
+            $.ajax({
+                url: getContextPath() + "/public/downloadFtpFileToLocal",
+                type: "get",
+                data: {attachmentId:item},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
         //获取调查附件上传的FieldsName
         getExamineFieldsName: function (planDetailsId, fieldsName) {
             var result = "examine_planDetailsId_" + planDetailsId + "_" + fieldsName;
