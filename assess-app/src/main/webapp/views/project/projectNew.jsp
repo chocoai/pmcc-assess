@@ -37,8 +37,7 @@
                                 <div class="x_content">
                                     <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-dark"
-                                                    onclick="window.open('${pageContext.request.contextPath}/${typeItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}')">
+                                            <button type="button" class="btn btn-dark">
                                                     ${typeItem.value}</button>
                                             <c:if test="${not empty typeItem.keyValueDtos}">
                                                 <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
