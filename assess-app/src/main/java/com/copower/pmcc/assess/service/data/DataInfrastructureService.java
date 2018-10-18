@@ -56,7 +56,7 @@ public class DataInfrastructureService {
     private ProcessControllerComponent processControllerComponent;
 
     public List<InfrastructureVo> infrastructureList(Infrastructure infrastructure) {
-        List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureList(infrastructure);
+        List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureListA(infrastructure);
         List<InfrastructureVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(infrastructureList)) {
             for (Infrastructure oo : infrastructureList) {

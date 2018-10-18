@@ -4,6 +4,13 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/layer/theme/default/layer.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 
 

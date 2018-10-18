@@ -7,12 +7,6 @@
   建筑安装工程费
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
         <table id="landEngineeringDevelopmentID">
@@ -22,45 +16,25 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-6 control-label">
             建安成本小计
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            建筑面积（㎡）
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            单方造价(元/㎡)
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            总造价（万元）
+        <label class="col-sm-6 control-label">
+            单方总造价(元/㎡)
         </label>
     </div>
 
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-6 control-label">
             数据计算值:
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClassA">
-            0
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBCurrencyClassA">
-            0
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClassA">
+        <label class="col-sm-6 control-label constructionInstallationEngineeringFeeBCurrencyClassA">
             0
         </label>
     </div>
@@ -119,19 +93,10 @@
     };
     landEngineeringDevelopment.getColumns = function () {
         var data = null;
-        var precision = 4;//精度
+        var precision = 2;//精度
         data = [[
             {field: 'number', title: '序号', width: 50},
             {field: 'name', title: '工程名称', width: '20%'},
-            {
-                field: 'area',
-                title: '建筑面积',
-                width: 90,
-                editor: {type: "numberbox", options: {precision: precision}},
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            },
             {
                 field: 'currency',
                 title: ' 单方造价(元/㎡)',
@@ -218,37 +183,24 @@
     landEngineeringDevelopment.updateChildren = function (data, changes) {
         if (landEngineeringDevelopment.isNotNull(data)) {
             var currency = null;
-            var area = null;
             if (changes.currency) {//单方造价
                 currency = changes.currency;
                 if (AssessCommon.isNumber(currency)) {
-                    area = data.area;
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (changes.area) {//面积
-                area = changes.area;
-                if (AssessCommon.isNumber(area)) {
-                    currency = data.currency;
+            if (landEngineeringDevelopment.isNotNull(currency)) {
+                //更新节点值
+                $('#' + landEngineeringDevelopment.config().tableId).treegrid('update', {
+                    id: data.id,
+                    row: {currency: currency}
+                });
+                if (!data.parent) {//说明不是父节点
+                    landEngineeringDevelopment.updateFather(data);
                 } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
-            if (landEngineeringDevelopment.isNotNull(area)) {
-                if (landEngineeringDevelopment.isNotNull(currency)) {
-                    //更新节点值
-                    $('#' + landEngineeringDevelopment.config().tableId).treegrid('update', {
-                        id: data.id,
-                        row: {currency: currency, area: area}
-                    });
-                    if (!data.parent) {//说明不是父节点
-                        landEngineeringDevelopment.updateFather(data);
-                    } else {
-                        landEngineeringDevelopment.updateDirectFather();
-                    }
+                    landEngineeringDevelopment.updateDirectFather();
                 }
             }
         }
@@ -267,16 +219,13 @@
     landEngineeringDevelopment.updateFather = function (data) {
         var parent = $('#' + landEngineeringDevelopment.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
-        var area = 0;//建筑面积
         var currency = 0;//单方造价
         if (landEngineeringDevelopment.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency += Number(n.currency);
-                area += Number(n.area);
             });
         }
         parent.currency = currency;
-        parent.area = area;
         //更新节点值
         $('#' + landEngineeringDevelopment.config().tableId).treegrid('update', {
             id: parent.id,
@@ -292,15 +241,12 @@
      * @date:2018-08-14
      **/
     landEngineeringDevelopment.totalCalculation = function () {
-        var area = 0;//建筑面积
         var currency = 0;//单方造价
         $.each($('#' + landEngineeringDevelopment.config().tableId).treegrid('getRoots'), function (i, n) {
             currency += Number(n.currency);
-            area += Number(n.area);
         });
         landEngineeringDevelopment.updateHtml({
-            area: area,
-            currency: currency,
+            currency: currency
         });
     };
     /**
@@ -309,14 +255,7 @@
      * @date:2018-08-14
      **/
     landEngineeringDevelopment.updateHtml = function (data) {
-        var area = $('.' + landEngineeringDevelopment.config().areaClass).html();
-        area = Number(area);
-        area += Number(data.area);
-        var totalCost = 0;
-        totalCost = Number(area) * Number(data.currency);
-        $('.' + landEngineeringDevelopment.config().areaClass).html(area);
         $('.' + landEngineeringDevelopment.config().currencyClass).html(data.currency);
-        $('.' + landEngineeringDevelopment.config().totalCostClass).html(totalCost);
     };
 
     /**
@@ -325,7 +264,7 @@
      * @date:2018-08-14
      **/
     landEngineeringDevelopment.getCalculatedResults = function () {
-        return $('.' + landEngineeringDevelopment.config().totalCostClass).html();
+        return $('.' + landEngineeringDevelopment.config().currencyClass).html();
     };
 
 

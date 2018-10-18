@@ -904,13 +904,11 @@
         constructionInstallationEngineeringFee: function () {
             var a = 0, b = 0, c = 0;
             a = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.tax, null);
-            // b = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.totalGrossFloorArea.key).html();
-            // b = Number(b);
-            // c = (a * b) / 10000;
-            // c = c.toFixed(3);
-            a = a / 10000;
-            a = a.toFixed(3);
-            underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.key, a);
+            b = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 10000;
+            c = c.toFixed(3);
+            underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.key, c);
             underConstruction.algsObj.reconnaissanceDesign();
             underConstruction.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
@@ -994,14 +992,12 @@
         show: function () {
             layer.open({
                 type: 1,
-                area: '1000px;',
+                area: ['920px', '1340px'],
                 offset: 't',
                 content: $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionInstallationEngineeringFee.class)
             });
             $(function () {
                 underDevelopment.viewInit();
-                var total = $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.totalGrossFloorArea.key).html();
-                underDevelopment.setArea(total);
             });
         },
         eventSave: function () {

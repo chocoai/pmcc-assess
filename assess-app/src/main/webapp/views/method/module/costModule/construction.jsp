@@ -416,28 +416,83 @@
 
     construction.loadData = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
+            url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
             type: "get",
-            data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",district: "${schemeAreaGroup.district}"},
+            data: {
+                province: "${schemeAreaGroup.province}",
+                city: "${schemeAreaGroup.city}",
+                district: "${schemeAreaGroup.district}"
+            },
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    var infrastructureVo = result.data.InfrastructureVo;
+                    var dataA = result.data;
                     var optionA = "<option>请选择</option>";
                     var optionB = "<option>请选择</option>";
-                    if (infrastructureVo.length > 0) {
+                    var optionC = "<option>请选择</option>";
+                    if (dataA.length > 0) {
                         var temp = null;
-                        for (var i = 0; i < infrastructureVo.length; i++) {
-                            temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
-                            optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
-                            temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
-                            optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
+                        for (var i = 0; i < dataA.length; i++) {
+                            temp = dataA[i].temp + " (" + dataA[i].priceCost + ")";
+                            optionA += "<option value='" + dataA[i].priceCost + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].priceMarch + ")";
+                            optionB += "<option value='" + dataA[i].priceMarch + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].priceDev + ")";
+                            optionC += "<option value='" + dataA[i].priceDev + "'>" + temp + "</option>";
                         }
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
+                        $("#" + construction.config.id).find("select." + construction.config.inputConfig.devDuring.tax).html(optionC);
                     }
 
                 }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataTaxRateAllocation/specialTreatment",
+            type: "get",
+            data: {
+                province: "${schemeAreaGroup.province}",
+                city: "${schemeAreaGroup.city}", bisNationalUnity: "true"
+            },//传入全国性质,和具体区域
+            dataType: "json",
+            success: function (result) {
+                var a = 0, b = 0, c = 0, d = 0, e = 0,g = 0, h = 0;
+                $.each(result.data, function (i, n) {
+                    if (n.typeName == "营业税") {
+                        a = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//营业税
+                    }
+                    if (n.typeName == "地方教育税附加") {
+                        d = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.localEducation, AssessCommon.pointToPercent(d));//地方教育费附加
+                    }
+                    if (n.typeName == "城建税") {
+                        b = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.urbanMaintenance, AssessCommon.pointToPercent(b));//城建税
+                    }
+                    if (n.typeName == "印花税") {
+                        e = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.stampDuty, AssessCommon.pointToPercent(e));//印花税
+                    }
+                    if (n.typeName == "教育费附加") {
+                        c = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.education, AssessCommon.pointToPercent(c));//教育费附加
+                    }
+                    if (n.typeName == "土地取得契税") {
+                        g = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.inputConfig.deed.tax, AssessCommon.pointToPercent(g));//土地取得契税
+                    }
+                    if (n.typeName == "交易费用") {
+                        h = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.inputConfig.transactionCost.tax, AssessCommon.pointToPercent(h));//交易费用
+                    }
+                });
+                construction.algsObj.businessAdditional();
+                construction.algsObj.landGetRelevant();
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result);
@@ -492,7 +547,7 @@
             var a = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.tax, null);
             if (a >= 0.03 && a <= 0.08) {
                 construction.algsObj.managementExpense();
-            }else {
+            } else {
                 toastr.success('管理费参考值3%-8%');
             }
         },
@@ -544,6 +599,9 @@
                 return false;
             }
             temp = (a * 10000) / b;
+            if (!AssessCommon.isNumber(temp)) {
+                return false;
+            }
             $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionAssessmentPrice.correcting).html(temp.toFixed(4));
         },
         //评估单价=IF(E23=" "," ",E23/(1-G23))
@@ -556,6 +614,9 @@
                 return false;
             }
             temp = a / (1 - b);
+            if (!AssessCommon.isNumber(temp)) {
+                return false;
+            }
             construction.algsObj.getAndSet("set", construction.config.inputConfig.constructionAssessmentPrice.key, temp.toFixed(4));
             construction.algsObj.constructionAssessmentPriceCorrecting();//在建工程单位价
         },
@@ -757,8 +818,10 @@
         //开发期间税费 计算金额
         devDuring: function () {
             var a = 0, b = 0, c = 0;
-            a = construction.algsObj.getAndSet("get", construction.config.inputConfig.devDuring.tax, null);
+            // a = construction.algsObj.getAndSet("get", construction.config.inputConfig.devDuring.tax, null);
             b = construction.algsObj.getAndSet("get", construction.config.inputConfig.developBuildArea.tax, null);
+            a = $("#" + construction.config.id).find("select." + construction.config.inputConfig.devDuring.tax).val();
+            a = Number(a);
             if (!AssessCommon.isNumber(a) || !AssessCommon.isNumber(b)) {
                 return false;
             }
@@ -951,9 +1014,9 @@
         show: function () {
             layer.open({
                 type: 1,
-                area: '1000px;',
+                area: ['920px', '1340px'],
                 offset: 't',
-                content: $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionInstallationEngineeringFee.class)
+                content: $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionInstallationEngineeringFee.class),
             });
             $(function () {
                 constructEngineeringObjectA.viewInit();
@@ -1005,9 +1068,17 @@
                 construction.algsObj.infrastructureMatchingCost();
             });
         },
+        //开发期间税费
+        devDuring:function () {
+            var tax = construction.config.inputConfig.devDuring.tax;
+            $("#" + construction.config.id + " ." + tax).change(function () {
+                construction.algsObj.devDuring();
+            });
+        },
         init: function () {
             construction.monitor.infrastructureCost();
             construction.monitor.infrastructureMatchingCost();
+            construction.monitor.devDuring();
         }
     };
 

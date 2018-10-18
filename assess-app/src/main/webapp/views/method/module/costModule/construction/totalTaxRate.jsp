@@ -11,7 +11,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>合计税率</h2>
+        <h2>合计税率 (税率配置处配置)</h2>
         <div class="clearfix"></div>
     </div>
 
@@ -24,8 +24,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="契税率" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="契税率" class="form-control" readonly="readonly"
                                name="deedTax">
                     </div>
                 </div>
@@ -36,8 +35,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="交易费率" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="交易费率" class="form-control" readonly="readonly"
                                name="transactionCostTax">
                     </div>
                 </div>
@@ -49,8 +47,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="地方教育费附加" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="地方教育费附加" class="form-control" readonly="readonly"
                                name="localEducationTax">
                     </div>
                 </div>
@@ -61,8 +58,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="印花税" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="印花税" class="form-control" readonly="readonly"
                                name="stampDuty">
                     </div>
                 </div>
@@ -74,8 +70,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="营业税" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="营业税" class="form-control" readonly="readonly"
                                name="businessTax">
                     </div>
                 </div>
@@ -86,8 +81,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="城建税" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="城建税" class="form-control" readonly="readonly"
                                name="urbanMaintenanceTax">
                     </div>
                 </div>
@@ -98,8 +92,7 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="教育费附加" class="form-control x-percent" data-rule-number='true'
-                               required="required"
+                               placeholder="教育费附加" class="form-control" readonly="readonly"
                                name="educationTax">
                     </div>
                 </div>

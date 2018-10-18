@@ -42,10 +42,13 @@ public class DataInfrastructureDevTaxController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataInfrastructureDevTaxList",method = {RequestMethod.GET},name = "获取开发期间税费费用列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String name) {
+    public BootstrapTableVo getExamineEstateNetworkList(String name,Integer pid) {
         DataInfrastructureDevTax dataInfrastructureDevTax = new DataInfrastructureDevTax();
         if (!StringUtils.isEmpty(name)){
             dataInfrastructureDevTax.setName(name);
+        }
+        if (pid != null){
+            dataInfrastructureDevTax.setPid(pid);
         }
         BootstrapTableVo vo = null;
         try {

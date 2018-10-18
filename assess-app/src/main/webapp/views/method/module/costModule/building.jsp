@@ -7,25 +7,25 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--勘察设计和前期工程费 (计算金额)--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<input type="text"--%>
-                               <%--placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"--%>
-                               <%--name="reconnaissanceDesign">--%>
-                    <%--</div>--%>
+                <%--<label class="col-sm-1 control-label">--%>
+                <%--勘察设计和前期工程费 (计算金额)--%>
+                <%--</label>--%>
+                <%--<div class="col-sm-3">--%>
+                <%--<input type="text"--%>
+                <%--placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"--%>
+                <%--name="reconnaissanceDesign">--%>
+                <%--</div>--%>
                 <%--</div>--%>
 
                 <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--建筑安装工程费 (计算金额)--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<input type="text"--%>
-                               <%--placeholder="建筑安装工程费" class="form-control" readonly="readonly"--%>
-                               <%--name="constructionInstallationEngineeringFee" value="0">--%>
-                    <%--</div>--%>
+                <%--<label class="col-sm-1 control-label">--%>
+                <%--建筑安装工程费 (计算金额)--%>
+                <%--</label>--%>
+                <%--<div class="col-sm-3">--%>
+                <%--<input type="text"--%>
+                <%--placeholder="建筑安装工程费" class="form-control" readonly="readonly"--%>
+                <%--name="constructionInstallationEngineeringFee" value="0">--%>
+                <%--</div>--%>
                 <%--</div>--%>
 
                 <input type="hidden"
@@ -47,24 +47,24 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--管理费--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<input type="text"--%>
-                               <%--placeholder="管理费" class="form-control" readonly="readonly"--%>
-                               <%--name="managementExpense">--%>
-                    <%--</div>--%>
+                <%--<label class="col-sm-1 control-label">--%>
+                <%--管理费--%>
+                <%--</label>--%>
+                <%--<div class="col-sm-3">--%>
+                <%--<input type="text"--%>
+                <%--placeholder="管理费" class="form-control" readonly="readonly"--%>
+                <%--name="managementExpense">--%>
+                <%--</div>--%>
                 <%--</div>--%>
                 <%--<div class="x-valid">--%>
-                    <%--<label class="col-sm-1 control-label">--%>
-                        <%--不可预见费--%>
-                    <%--</label>--%>
-                    <%--<div class="col-sm-3">--%>
-                        <%--<input type="text"--%>
-                               <%--placeholder="不可预见费" class="form-control" readonly="readonly"--%>
-                               <%--name="unforeseenExpenses">--%>
-                    <%--</div>--%>
+                <%--<label class="col-sm-1 control-label">--%>
+                <%--不可预见费--%>
+                <%--</label>--%>
+                <%--<div class="col-sm-3">--%>
+                <%--<input type="text"--%>
+                <%--placeholder="不可预见费" class="form-control" readonly="readonly"--%>
+                <%--name="unforeseenExpenses">--%>
+                <%--</div>--%>
                 <%--</div>--%>
 
                 <input type="hidden"
@@ -78,6 +78,7 @@
     </div>
 
     <jsp:include page="../costModule/build/resultView.jsp"></jsp:include>
+
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
         <div class="form-group">
@@ -204,25 +205,33 @@
 
     build.loadData = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/marketCost/listCostAndMatchingCost",
+            url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
             type: "get",
-            data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",district: "${schemeAreaGroup.district}"},
+            data: {
+                province: "${schemeAreaGroup.province}",
+                city: "${schemeAreaGroup.city}",
+                district: "${schemeAreaGroup.district}"
+            },
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    var infrastructureVo = result.data.InfrastructureVo;
+                    var dataA = result.data;
                     var optionA = "<option>请选择</option>";
                     var optionB = "<option>请选择</option>";
-                    if (infrastructureVo.length > 0) {
+                    var optionC = "<option>请选择</option>";
+                    if (dataA.length > 0) {
                         var temp = null;
-                        for (var i = 0; i < infrastructureVo.length; i++) {
-                            temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceCost + ")";
-                            optionA += "<option value='" + infrastructureVo[i].priceCost + "'>" + temp + "</option>";
-                            temp = infrastructureVo[i].temp + " (" + infrastructureVo[i].priceMarch + ")";
-                            optionB += "<option value='" + infrastructureVo[i].priceMarch + "'>" + temp + "</option>";
+                        for (var i = 0; i < dataA.length; i++) {
+                            temp = dataA[i].temp + " (" + dataA[i].priceCost + ")";
+                            optionA += "<option value='" + dataA[i].priceCost + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].priceMarch + ")";
+                            optionB += "<option value='" + dataA[i].priceMarch + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].priceDev + ")";
+                            optionC += "<option value='" + dataA[i].priceDev + "'>" + temp + "</option>";
                         }
                         $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
+                        $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).html(optionC);
                     }
 
                 }
@@ -232,36 +241,43 @@
             }
         });
         $.ajax({
-            url: "${pageContext.request.contextPath}/dataTaxRateAllocation/listDataTaxRateAllocation",
+            url: "${pageContext.request.contextPath}/dataTaxRateAllocation/specialTreatment",
             type: "get",
-            data: {bisNationalUnity:"true"},//全国性质
+            data: {
+                province: "${schemeAreaGroup.province}",
+                city: "${schemeAreaGroup.city}", bisNationalUnity: "true"
+            },//传入全国性质,和具体区域
             dataType: "json",
             success: function (result) {
-                $.each(result.data,function (i,n) {
-                    if (n.typeName == "营业税"){
-                        console.log(n.taxRate);
+                var a = 0, b = 0, c = 0, d = 0, e = 0, k = 0;
+                $.each(result.data, function (i, n) {
+                    if (n.typeName == "营业税") {
+                        a = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//营业税
+                    }
+                    if (n.typeName == "地方教育税附加") {
+                        d = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.localEducation, AssessCommon.pointToPercent(d));//地方教育费附加
+                    }
+                    if (n.typeName == "城建税") {
+                        b = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.urbanMaintenance, AssessCommon.pointToPercent(b));//城建税
+                    }
+                    if (n.typeName == "印花税") {
+                        e = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.stampDuty, AssessCommon.pointToPercent(e));//印花税
+                    }
+                    if (n.typeName == "教育费附加") {
+                        c = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.education, AssessCommon.pointToPercent(c));//教育费附加
+                    }
+                    if (n.typeName == "管理费用") {
+                        k = Number(n.taxRate);
+                        build.algsObj.getAndSet("set", build.config.inputConfig.managementExpense.tax, AssessCommon.pointToPercent(k));
                     }
                 });
-                if (result.ret) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/dataTaxRateAllocation/listDataTaxRateAllocation",
-                        type: "get",
-                        data: {province: "${schemeAreaGroup.province}",city: "${schemeAreaGroup.city}",bisNationalUnity:"false"},//非全国性质
-                        dataType: "json",
-                        success: function (result) {
-                            if (result.ret) {
-                                $.each(result.data,function (i,k) {
-                                    if (k.typeName == "地方教育税附加"){
-                                        console.log(k.taxRate);
-                                    }
-                                });
-                            }
-                        },
-                        error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
-                        }
-                    });
-                }
+                build.algsObj.totalTaxRate();
+                build.algsObj.managementExpense();//管理费
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result);
@@ -467,8 +483,10 @@
             a = Number(a);
             b = $("#" + build.config.id + " ." + build.config.inputConfig.infrastructureMatchingCost.tax).eq(1).val();//公共配套设施建设费
             b = Number(b);
+            // d = build.algsObj.getAndSet("get", build.config.inputConfig.devDuring.tax, null);
+            d = $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).val()//开发期间税
+            d = Number(d);
             c = build.algsObj.getAndSet("get", build.config.inputConfig.constructionInstallationEngineeringFee.key, null);
-            d = build.algsObj.getAndSet("get", build.config.inputConfig.devDuring.tax, null);
             e = build.algsObj.getAndSet("get", build.config.inputConfig.otherEngineeringCost.tax, null);
             f = build.algsObj.getAndSet("get", build.config.inputConfig.reconnaissanceDesign.key, null);
             temp = a + b + c + d + e + f;
@@ -479,6 +497,7 @@
             if (!AssessCommon.isNumber(e) || !AssessCommon.isNumber(f)) {
                 return false;
             }
+            console.log("a:" + a + " b:" + b + " c:" + c + " d:" + d + " e:" + e + " f:" + f);
             $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(temp);
             build.algsObj.managementExpense();//管理费
         },
@@ -606,9 +625,12 @@
         show: function () {
             layer.open({
                 type: 1,
-                area: '1000px;',
+                area: ['820px', '640px'],
                 offset: 't',
-                content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class)
+                content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class),
+                // yes: function (index, layero) {
+                //     build.constructionInstallationEngineeringFeeEvent.eventSave();
+                // }
             });
             $(function () {
                 constructEngineeringObject.viewInit();
@@ -675,9 +697,24 @@
                 }
             });
         },
+        //开发期间税费
+        devDuring: function () {
+            var tax = build.config.inputConfig.devDuring.tax;
+            $("#" + build.config.id + " ." + tax).change(function () {
+                var funName = "build.algorithm." + tax + "Fun(" + ")";
+                console.log(funName);
+                try {
+                    eval(funName);
+                } catch (e) {
+                    console.log("没有这个函数");
+                    console.log(e);
+                }
+            });
+        },
         init: function () {
             build.monitor.infrastructureCost();
             build.monitor.infrastructureMatchingCost();
+            build.monitor.devDuring();
         }
     };
 
@@ -749,6 +786,11 @@
         },
         close: function () {
             var v = $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html();
+            v = "" + v + "";
+            var str = v.substring(v.length - 1, v.length);
+            if (str == '%') {//检测是否为百分比
+                v = AssessCommon.percentToPoint(v);
+            }
             build.algsObj.getAndSet("set", build.config.inputConfig.newRate.key, Number(v));//成新率
             $("#" + build.config.inputConfig.newRate.div).modal("hide");
             build.algsObj.newRate();//成新率
@@ -778,14 +820,14 @@
                 return false;
             }
             if (v == 1) {//年限法
-                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(newRateA);
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(AssessCommon.pointToPercent(newRateA));
             }
             if (v == 2) {//观察法
-                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(newRateB.toFixed(4));
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(AssessCommon.pointToPercent(newRateB.toFixed(4)));
             }
             if (v == 12) {//年限/观察法
                 temp = weightA * newRateA + (1 - weightA) * newRateB;
-                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(temp.toFixed(4));
+                $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.correcting).html(AssessCommon.pointToPercent(temp.toFixed(4)));
             }
         },
         //年限法
@@ -817,6 +859,7 @@
                     if (v == 1) {//年限法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").hide();
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='weight']").parent().parent().parent().hide();
                     }
                     if (v == 2) {//观察法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").hide();
@@ -825,6 +868,7 @@
                     if (v == 12) {//年限/观察法
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").show();
                         $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "B").show();
+                        $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm + "A").find("input[name='weight']").parent().parent().parent().show();
                     }
                     $("#" + build.config.inputConfig.newRate.frm).find("." + build.config.inputConfig.newRate.frm).show();
                 });

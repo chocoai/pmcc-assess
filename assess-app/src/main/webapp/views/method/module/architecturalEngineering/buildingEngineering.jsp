@@ -7,13 +7,6 @@
   建筑安装工程费
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@include file="/views/share/main_css.jsp" %>--%>
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
         <table id="buildingEngineering">
@@ -27,21 +20,11 @@
             建安成本小计
         </label>
     </div>
-    <%--<div class="x-valid">--%>
-        <%--<label class="col-sm-3 control-label">--%>
-            <%--建筑面积（㎡）--%>
-        <%--</label>--%>
-    <%--</div>--%>
     <div class="x-valid">
         <label class="col-sm-7 control-label">
             单方总造价(元/㎡)
         </label>
     </div>
-    <%--<div class="x-valid">--%>
-        <%--<label class="col-sm-3 control-label">--%>
-            <%--总造价（万元）--%>
-        <%--</label>--%>
-    <%--</div>--%>
 </div>
 <div class="form-group">
     <div class="x-valid">
@@ -49,21 +32,11 @@
             数据计算值:
         </label>
     </div>
-    <%--<div class="x-valid">--%>
-        <%--<label class="col-sm-3 control-label constructionInstallationEngineeringFeeBAreaClass">--%>
-            <%--0--%>
-        <%--</label>--%>
-    <%--</div>--%>
     <div class="x-valid">
         <label class="col-sm-7 control-label constructionInstallationEngineeringFeeBCurrencyClass">
             0
         </label>
     </div>
-    <%--<div class="x-valid">--%>
-        <%--<label class="col-sm-3 control-label constructionInstallationEngineeringFeeBTotalCostClass">--%>
-            <%--0--%>
-        <%--</label>--%>
-    <%--</div>--%>
 </div>
 
 
@@ -72,38 +45,6 @@
 
     var constructEngineeringObject = new Object();
 
-    /**
-     * @author:  zch
-     * 描述:加法
-     * @date:2018-08-13
-     **/
-    constructEngineeringObject.add = function (arg1, arg2) {
-        arg1 = arg1.toString(), arg2 = arg2.toString();
-        var arg1Arr = arg1.split("."), arg2Arr = arg2.split("."), d1 = arg1Arr.length == 2 ? arg1Arr[1] : "",
-            d2 = arg2Arr.length == 2 ? arg2Arr[1] : "";
-        var maxLen = Math.max(d1.length, d2.length);
-        var m = Math.pow(10, maxLen);
-        var result = Number(((arg1 * m + arg2 * m) / m).toFixed(maxLen));
-        var d = arguments[2];
-        return typeof d === "number" ? Number((result).toFixed(d)) : result;
-    }
-
-    /**
-     * @author:  zch
-     * 描述:乘法
-     * 参数：arg1：第一个乘数；arg2第二个乘数；d要保留的小数位数（可以不传此参数，如果不传则不处理小数位数)
-     * @date:2018-08-13
-     **/
-    constructEngineeringObject.mul = function (arg1, arg2) {
-        if (constructEngineeringObject.isNumber(arg1)) {
-            if (constructEngineeringObject.isNumber(arg2)) {
-                var r1 = arg1.toString(), r2 = arg2.toString(), m, resultVal, d = arguments[2];
-                m = (r1.split(".")[1] ? r1.split(".")[1].length : 0) + (r2.split(".")[1] ? r2.split(".")[1].length : 0);
-                resultVal = Number(r1.replace(".", "")) * Number(r2.replace(".", "")) / Math.pow(10, m);
-                return typeof d !== "number" ? Number(resultVal) : Number(resultVal.toFixed(parseInt(d)));
-            }
-        }
-    }
 
     /**
      * @author:  zch
@@ -128,7 +69,7 @@
         } else {
             return false;
         }
-    }
+    };
     constructEngineeringObject.isNotNull = function (obj) {
         if (obj == 0) {
             return true;
@@ -172,28 +113,19 @@
 
     constructEngineeringObject.getColumns = function () {
         var data = null;
+        var precision = 2;//精度为2
         data = [[
             {field: 'number', title: '序号', width: 50},
             {field: 'name', title: '工程名称', width: '35%'},
-            // {
-            //     field: 'area',
-            //     title: '建筑面积',
-            //     width: 90,
-            //     editor: {type: "numberbox", options: {precision: 7}},//精度为7
-            //     styler: function (value, row, index) {
-            //         return 'background-color:#F0F0F0;color:red;';
-            //     }
-            // },
             {
                 field: 'currency',
                 title: ' 单方造价(元/㎡)',
                 width: 100,
-                editor: {type: "numberbox", options: {precision: 4}},//精度为4
+                editor: {type: "numberbox", options: {precision: precision}},
                 styler: function (value, row, index) {
                     return 'background-color:#F0F0F0;color:red;';
                 }
             },
-            // {field: 'totalCost', title: '总造价', width: 120}
         ]];
         return data;
     };
@@ -217,7 +149,7 @@
                 constructEngineeringObject.updateChildren($('#' + constructEngineeringObject.config().tableId).treegrid('find', row.id), changes);
             }
         });
-    }
+    };
     /**
      * @author:  zch
      * 描述:数据表格初始化数据
@@ -259,7 +191,7 @@
                 }
             });
         }
-    }
+    };
 
     /**
      * @author:  zch
@@ -300,7 +232,7 @@
         var roots = $('#' + constructEngineeringObject.config().tableId).treegrid('getRoots', data.id);
         //更新建安成本小计
         constructEngineeringObject.totalCalculation();
-    }
+    };
 
     /**
      * @author:  zch
@@ -313,7 +245,7 @@
         var currency = 0;
         if (constructEngineeringObject.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
-                currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
+                currency += constructEngineeringObject.specialTreatment(n.currency) ;
             });
         }
         parent.currency = currency;
@@ -324,7 +256,7 @@
         });
         //更新建安成本小计
         constructEngineeringObject.totalCalculation();
-    }
+    };
 
     /**
      * @author:  zch
@@ -336,22 +268,18 @@
         var area = 0;
         var totalCost = 0;
         $.each($('#' + constructEngineeringObject.config().tableId).treegrid('getRoots'), function (i, n) {
-            currency = constructEngineeringObject.add(currency, constructEngineeringObject.specialTreatment(n.currency));
-            // area = constructEngineeringObject.add(area, constructEngineeringObject.specialTreatment(n.area));
-            // totalCost = constructEngineeringObject.add(totalCost, constructEngineeringObject.specialTreatment(n.totalCost));
+            currency +=constructEngineeringObject.specialTreatment(n.currency)
         });
         constructEngineeringObject.updateHtml(currency, area, totalCost);
-    }
+    };
     /**
      * @author:  zch
      * 描述:建安成本小计 写html value
      * @date:2018-08-14
      **/
     constructEngineeringObject.updateHtml = function (currency, area, totalCost) {
-        // $('.' + constructEngineeringObject.config().areaClass).html(area);
         $('.' + constructEngineeringObject.config().currencyClass).html(currency);
-        // $('.' + constructEngineeringObject.config().totalCostClass).html(totalCost);
-    }
+    };
 
     /**
      * @author:  zch
@@ -360,7 +288,7 @@
      **/
     constructEngineeringObject.getCalculatedResults = function () {
         return $('.' + constructEngineeringObject.config().currencyClass).html();
-    }
+    };
 
     /**
      * @author:  zch
@@ -372,7 +300,7 @@
             return obj;
         }
         return 0;
-    }
+    };
 
     /**
      * @author:  zch
@@ -432,7 +360,7 @@
                 });
             }
         });
-    }
+    };
 
     constructEngineeringObject.viewInit = function () {
         constructEngineeringObject.extendOverwrite();
@@ -445,6 +373,6 @@
         $(function () {
             $('#' + constructEngineeringObject.config().tableId).datagrid().datagrid('enableCellEditing');
         });
-    }
+    };
 
 </script>

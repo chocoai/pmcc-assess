@@ -890,13 +890,11 @@
         constructionInstallationEngineeringFee: function () {
             var a = 0, b = 0, c = 0;
             a = landEngineering.algsObj.getAndSet("get", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.tax, null);
-            // b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
-            // b = Number(b);
-            // c = (a * b) / 10000;
-            // c = c.toFixed(3);
-            a = a / 10000;
-            a = a.toFixed(3);
-            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.key, a);
+            b = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
+            b = Number(b);
+            c = (a * b) / 10000;
+            c = c.toFixed(3);
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.key, c);
             landEngineering.algsObj.constructionCostSubtotal();//工程建设成本小计
         },
         //总建筑面积小计 = 预期销售合计 + 不可售建筑面积
@@ -979,14 +977,12 @@
         show: function () {
             layer.open({
                 type: 1,
-                area: '1000px;',
+                area: ['920px', '1340px'],
                 offset: 't',
                 content: $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionInstallationEngineeringFee.class)
             });
             $(function () {
                 landEngineeringDevelopment.viewInit();
-                var total = $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.totalGrossFloorArea.key).html();
-                landEngineeringDevelopment.setArea(total);
             });
         },
         eventSave: function () {

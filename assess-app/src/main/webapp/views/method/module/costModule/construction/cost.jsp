@@ -89,8 +89,9 @@
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
-                        <input type="text"
-                               placeholder="开发期间税费" class="form-control" name="devDuringTax">
+                        <select name="devDuringTax"
+                                class="form-control search-select select2 devDuringTax">
+                        </select>
                     </div>
                 </div>
             </div>

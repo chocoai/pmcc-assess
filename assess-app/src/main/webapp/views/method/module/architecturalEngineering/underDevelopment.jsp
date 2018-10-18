@@ -7,12 +7,6 @@
   建筑安装工程费
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
         <table id="underDevelopmentID">
@@ -22,22 +16,12 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-6 control-label">
             建安成本小计
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            建筑面积（㎡）
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
-            单方造价(元/㎡)
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-6 control-label">
             续建投入总价（万元）
         </label>
     </div>
@@ -45,22 +29,12 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-3 control-label">
+        <label class="col-sm-6 control-label">
             数据计算值:
         </label>
     </div>
     <div class="x-valid">
-        <label class="col-sm-3 control-label underDevelopmentAreaClassA">
-            0
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label underDevelopmentIDCurrencyClassA">
-            0
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-3 control-label underDevelopmentTotalClassA">
+        <label class="col-sm-6 control-label underDevelopmentTotalClassA">
             0
         </label>
     </div>
@@ -116,19 +90,10 @@
     };
     underDevelopment.getColumns = function () {
         var data = null;
-        var precision = 4;//精度
+        var precision = 2;//精度
         data = [[
             {field: 'number', title: '序号', width: 50},
             {field: 'name', title: '工程名称', width: '20%'},
-            {
-                field: 'area',
-                title: '建筑面积',
-                width: 90,
-                editor: {type: "numberbox", options: {precision: precision}},
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            },
             {
                 field: 'currency',
                 title: ' 单方造价(元/㎡)',
@@ -148,7 +113,15 @@
                 }
             },
             {field: 'valuationDateCurrency', title: '估价时点单价(元/㎡)', width: 110},
-            {field: 'continuedConstructionInvestmentCurrency', title: '续建投入单价(元/㎡)', width: 110}
+            {
+                field: 'continuedConstructionInvestmentCurrency',
+                title: '续建投入单价(元/㎡)',
+                width: 110,
+                editor: {type: "numberbox", options: {precision: precision}},
+                styler: function (value, row, index) {
+                    return 'background-color:#F0F0F0;color:red;';
+                }
+            }
         ]];
         return data;
     };
@@ -219,7 +192,7 @@
     };
 
     underDevelopment.specialTreatment = function (obj) {
-        if (underDevelopment.isNotNull(obj)){
+        if (underDevelopment.isNotNull(obj)) {
             var nnn = "" + obj + "";
             var str = nnn.substring(nnn.length - 1, nnn.length);
             if (str == '%') {//检测是否为百分比
@@ -233,18 +206,13 @@
     };
     underDevelopment.algs = function (data) {
         var currency = null;
-        var area = null;
         var valuationDateDegreeCompletion = null;
         var valuationDateCurrency = null;
-        var continuedConstructionInvestmentCurrency = null;
         currency = Number(data.currency);
-        area = Number(data.area);
         valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
         valuationDateDegreeCompletion = underDevelopment.specialTreatment(valuationDateDegreeCompletion);
-        valuationDateCurrency = currency * valuationDateDegreeCompletion ;
-        continuedConstructionInvestmentCurrency = currency - valuationDateCurrency ;
+        valuationDateCurrency = currency * valuationDateDegreeCompletion;
         data.valuationDateCurrency = valuationDateCurrency;
-        data.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
         return data;
     };
 
@@ -256,21 +224,21 @@
     underDevelopment.updateChildren = function (data, changes) {
         if (underDevelopment.isNotNull(data)) {
             var currency = null;
-            var area = null;
             var valuationDateDegreeCompletion = null;
+            var continuedConstructionInvestmentCurrency = null;
             if (changes.currency) {//单方造价
                 currency = changes.currency;
                 if (AssessCommon.isNumber(currency)) {
-                    area = data.area;
+                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
                     valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
                 } else {
                     Alert("请输入数字!");
                     return false;
                 }
             }
-            if (changes.area) {//面积
-                area = changes.area;
-                if (AssessCommon.isNumber(area)) {
+            if (changes.continuedConstructionInvestmentCurrency) {
+                continuedConstructionInvestmentCurrency = changes.continuedConstructionInvestmentCurrency;
+                if (AssessCommon.isNumber(continuedConstructionInvestmentCurrency)) {
                     currency = data.currency;
                     valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
                 } else {
@@ -278,11 +246,11 @@
                     return false;
                 }
             }
-            if (changes.valuationDateDegreeCompletion) {//面积
+            if (changes.valuationDateDegreeCompletion) {
                 valuationDateDegreeCompletion = changes.valuationDateDegreeCompletion;
                 if (underDevelopment.isNotNull(valuationDateDegreeCompletion)) {
                     currency = data.currency;
-                    area = data.area;
+                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
                 } else {
                     Alert("请输入数字!");
                     return false;
@@ -293,7 +261,7 @@
                 id: data.id,
                 row: underDevelopment.algs({
                     currency: currency,
-                    area: area,
+                    continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency,
                     valuationDateDegreeCompletion: valuationDateDegreeCompletion
                 })
             });
@@ -318,7 +286,6 @@
     underDevelopment.updateFather = function (data) {
         var parent = $('#' + underDevelopment.config().tableId).treegrid('getParent', data.id);
         var childrens = parent.children;
-        var area = 0;//建筑面积
         var currency = 0;//单方造价
         var valuationDateDegreeCompletion = 0;
         var valuationDateCurrency = 0;
@@ -326,14 +293,12 @@
         if (underDevelopment.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
                 currency += Number(n.currency);
-                area += Number(n.area);
                 continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
                 valuationDateCurrency += Number(n.valuationDateCurrency);
                 valuationDateDegreeCompletion += Number(underDevelopment.specialTreatment(n.valuationDateDegreeCompletion));
             });
         }
         parent.currency = currency;
-        parent.area = area;
         parent.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
         parent.valuationDateCurrency = valuationDateCurrency;
         parent.valuationDateDegreeCompletion = AssessCommon.pointToPercent(valuationDateDegreeCompletion);
@@ -352,18 +317,12 @@
      * @date:2018-08-14
      **/
     underDevelopment.totalCalculation = function () {
-        var area = 0;//建筑面积
-        var currency = 0;//单方造价
         var continuedConstructionInvestmentCurrency = 0;//续建投入总价
         $.each($('#' + underDevelopment.config().tableId).treegrid('getRoots'), function (i, n) {
-            currency += Number(n.currency);
-            area += Number(n.area);
             continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
         });
         underDevelopment.updateHtml({
-            area: area,
-            currency: currency,
-            continuedConstructionInvestmentCurrency:continuedConstructionInvestmentCurrency
+            continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency
         });
     };
     /**
@@ -372,14 +331,7 @@
      * @date:2018-08-14
      **/
     underDevelopment.updateHtml = function (data) {
-        var area = $('.' + underDevelopment.config().areaClass).html();
-        area = Number(area);
-        area += Number(data.area);
-        var total = 0;
-        total = Number(area) * Number(data.continuedConstructionInvestmentCurrency);
-        $('.' + underDevelopment.config().areaClass).html(area);
-        $('.' + underDevelopment.config().currencyClass).html(data.currency);
-        $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html(total);
+        $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html(data.continuedConstructionInvestmentCurrency);
     };
 
     /**

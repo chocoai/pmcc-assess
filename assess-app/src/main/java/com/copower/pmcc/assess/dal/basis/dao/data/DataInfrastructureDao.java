@@ -18,6 +18,38 @@ public class DataInfrastructureDao {
     @Autowired
     private InfrastructureMapper infrastructureMapper;
 
+    public List<Infrastructure> getInfrastructureListA(Infrastructure infrastructure){
+        InfrastructureExample example = new InfrastructureExample();
+        InfrastructureExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotBlank(infrastructure.getCity())){
+            criteria.andCityEqualTo(infrastructure.getCity());
+        }
+        if (StringUtils.isNotBlank(infrastructure.getDistrict())){
+            criteria.andDistrictEqualTo(infrastructure.getDistrict());
+        }
+        if (StringUtils.isNotBlank(infrastructure.getProvince())){
+            criteria.andProvinceEqualTo(infrastructure.getProvince());
+        }
+        //输入数据 start end
+        //start >
+        //end <
+        if (infrastructure.getEndDate()!= null && infrastructure.getStartDate() != null){
+            criteria.andEndDateLessThanOrEqualTo(infrastructure.getEndDate());
+            criteria.andStartDateGreaterThanOrEqualTo(infrastructure.getStartDate());
+        }
+        if (infrastructure.getEndDate()!= null && infrastructure.getStartDate() == null){
+            criteria.andEndDateLessThanOrEqualTo(infrastructure.getEndDate());
+        }
+        if (infrastructure.getEndDate()== null && infrastructure.getStartDate() != null){
+            criteria.andStartDateGreaterThanOrEqualTo(infrastructure.getStartDate());
+        }
+        if (StringUtils.isNotBlank(infrastructure.getProjectType())){
+            criteria.andProjectTypeEqualTo(infrastructure.getProjectType());
+        }
+        return infrastructureMapper.selectByExample(example) ;
+    }
+
     /**查询发文单位*/
     public List<Infrastructure> getInfrastructureList(Infrastructure infrastructure){
         InfrastructureExample example = new InfrastructureExample();

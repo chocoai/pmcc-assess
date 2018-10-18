@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataTaxRateAllocation;
+import com.copower.pmcc.assess.dto.output.data.DataTaxRateAllocationVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -121,5 +127,29 @@ public class DataTaxRateAllocationController {
             logger.error(String.format("exception: %s",e.getMessage()),e);
             return HttpResult.newErrorResult("异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/specialTreatment",method = {RequestMethod.GET},name = "税率 特殊获取")
+    public HttpResult specialTreatment(String province,String city,String district,String bisNationalUnity){
+        DataTaxRateAllocation d1 = new DataTaxRateAllocation();
+        if (!StringUtils.isEmpty(province)){
+            d1.setProvince(province);
+        }
+        if (!StringUtils.isEmpty(city)){
+            d1.setCity(city);
+        }
+        if (!StringUtils.isEmpty(district)){
+            d1.setDistrict(district);
+        }
+        DataTaxRateAllocation d2 = new DataTaxRateAllocation();
+        // 需要传入 true
+        if (org.apache.commons.lang.StringUtils.isNotBlank(bisNationalUnity)){
+            d2.setBisNationalUnity(Boolean.valueOf(bisNationalUnity));
+        }
+        List<DataTaxRateAllocationVo> vos = Lists.newArrayList();
+        vos.addAll(dataTaxRateAllocationService.landLevels(d1));
+        vos.addAll(dataTaxRateAllocationService.landLevels(d2));
+        return HttpResult.newCorrectResult(vos);
     }
 }

@@ -7,13 +7,6 @@
   建筑安装工程费
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@include file="/views/share/main_css.jsp" %>--%>
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-<link rel="stylesheet"
-      href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 <div class="form-group">
     <div class="col-sm-12">
         <table id="constructionEngineering">
@@ -130,7 +123,7 @@
 
     constructEngineeringObjectA.getColumns = function () {
         var data = null;
-        var precision = 4;//精度
+        var precision = 2;//精度
         data = [[
             {field: 'number', title: '序号', width: 50},
             {field: 'name', title: '工程名称', width: '20%'},
