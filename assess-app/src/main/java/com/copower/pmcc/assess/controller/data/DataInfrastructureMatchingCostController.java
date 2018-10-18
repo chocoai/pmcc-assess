@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostServic
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,15 @@ public class DataInfrastructureMatchingCostController {
 
     @ResponseBody
     @RequestMapping(value = "/list",name = "获取公共配套设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
-    public BootstrapTableVo list(String name){
-        return dataInfrastructureMatchingCostService.getDataInfrastructureCost(name);
+    public BootstrapTableVo list(Integer pid,String name){
+        DataInfrastructureMatchingCost dataInfrastructureMatchingCost = new DataInfrastructureMatchingCost();
+        if (pid != null){
+            dataInfrastructureMatchingCost.setPid(pid);
+        }
+        if (StringUtils.isNotBlank(name)){
+            dataInfrastructureMatchingCost.setName(name);
+        }
+        return dataInfrastructureMatchingCostService.getDataInfrastructureCost(dataInfrastructureMatchingCost);
     }
 
     @ResponseBody
@@ -32,7 +40,7 @@ public class DataInfrastructureMatchingCostController {
     public HttpResult addAndEdit(DataInfrastructureMatchingCost infrastructureMatchingCost){
 
         try {
-            if (infrastructureMatchingCost.getId() != null && infrastructureMatchingCost.getId() > 0){
+            if (infrastructureMatchingCost.getId() != null && infrastructureMatchingCost.getId().intValue() != 0){
                 dataInfrastructureMatchingCostService.editDataInfrastructureCost(infrastructureMatchingCost);
             }
             else {
@@ -41,13 +49,14 @@ public class DataInfrastructureMatchingCostController {
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
+        return HttpResult.newCorrectResult(infrastructureMatchingCost.getPid());
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete",name = "删除公共配套设施费用",method = RequestMethod.POST)
     public HttpResult delete(Integer id){
+        DataInfrastructureMatchingCost infrastructureMatchingCost = dataInfrastructureMatchingCostService.getByDataInfrastructureMatchingCost(id);
         dataInfrastructureMatchingCostService.deleteInfrastructure(id);
-        return  HttpResult.newCorrectResult();
+        return  HttpResult.newCorrectResult(infrastructureMatchingCost.getPid());
     }
 }

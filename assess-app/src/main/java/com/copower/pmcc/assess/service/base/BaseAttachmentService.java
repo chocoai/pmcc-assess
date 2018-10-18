@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/8/10
  * @time: 17:04
  */
@@ -98,8 +98,12 @@ public class BaseAttachmentService {
     public List<SysAttachmentDto> getByField_tableId(int table_id, String fields_name, String tableName) {
         SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setTableId(table_id);
-        sysAttachment.setFieldsName(fields_name);
-        sysAttachment.setTableName(tableName);
+        if (org.apache.commons.lang.StringUtils.isNotBlank(fields_name)) {
+            sysAttachment.setFieldsName(fields_name);
+        }
+        if (org.apache.commons.lang.StringUtils.isNotBlank(tableName)) {
+            sysAttachment.setTableName(tableName);
+        }
         return getAttachmentList(sysAttachment);
     }
 
@@ -239,6 +243,7 @@ public class BaseAttachmentService {
 
     /**
      * 保存上传文件到临时目录
+     *
      * @param multipartFile
      * @return
      * @throws IOException

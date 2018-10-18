@@ -26,14 +26,14 @@ public class DataInfrastructureMatchingCostService {
     @Autowired
     private DataInfrastructureMatchingCostDao infrastructureMatchingCostDao;
 
-    public BootstrapTableVo getDataInfrastructureCost(String name) {
+    public DataInfrastructureMatchingCost getByDataInfrastructureMatchingCost(Integer id){
+        return infrastructureMatchingCostDao.getByDataInfrastructureMatchingCost(id);
+    }
+
+    public BootstrapTableVo getDataInfrastructureCost(DataInfrastructureMatchingCost dataInfrastructureMatchingCost) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        DataInfrastructureMatchingCost dataInfrastructureMatchingCost = new DataInfrastructureMatchingCost();
-        if (!StringUtils.isEmpty(name)){
-            dataInfrastructureMatchingCost.setName(name);
-        }
         List<DataInfrastructureMatchingCost> infrastructureCostList = infrastructureMatchingCostDao.getDataInfrastructureCostList(dataInfrastructureMatchingCost);
         vo.setRows(CollectionUtils.isEmpty(infrastructureCostList) ? new ArrayList<InfrastructureMatchingCost>() : infrastructureCostList);
         vo.setTotal(page.getTotal());

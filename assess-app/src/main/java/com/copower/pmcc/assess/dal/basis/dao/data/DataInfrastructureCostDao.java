@@ -18,6 +18,11 @@ public class DataInfrastructureCostDao {
 
     @Autowired
    private DataInfrastructureCostMapper infrastructureCostMapper;
+
+    public DataInfrastructureCost getByDataInfrastructureCost(Integer id){
+        return infrastructureCostMapper.selectByPrimaryKey(id);
+    }
+
     //删除
     public Boolean deleteDataInfrastructureCost(Integer id){
         int result = infrastructureCostMapper.deleteByPrimaryKey(id);

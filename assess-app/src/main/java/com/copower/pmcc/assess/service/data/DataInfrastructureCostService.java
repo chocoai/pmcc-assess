@@ -24,12 +24,14 @@ public class DataInfrastructureCostService {
     @Autowired
     private DataInfrastructureCostDao infrastructureCostDao;
 
-    public BootstrapTableVo getDataInfrastructureCost(String name){
+    public DataInfrastructureCost getByDataInfrastructureCost(Integer id){
+        return infrastructureCostDao.getByDataInfrastructureCost(id);
+    }
+
+    public BootstrapTableVo getDataInfrastructureCost(DataInfrastructureCost dataInfrastructureCost){
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        DataInfrastructureCost dataInfrastructureCost = new DataInfrastructureCost();
-        dataInfrastructureCost.setName(name);
         List<DataInfrastructureCost> infrastructureCostList = infrastructureCostDao.getDataInfrastructureCostList(dataInfrastructureCost);
         vo.setRows(CollectionUtils.isEmpty(infrastructureCostList) ? new ArrayList<DataInfrastructureCost>() : infrastructureCostList);
         vo.setTotal(page.getTotal());
