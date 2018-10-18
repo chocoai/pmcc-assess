@@ -36,14 +36,7 @@ public class DataLandLevelDao {
     public void removeDataLandLevel(DataLandLevel dataLandLevel){
         DataLandLevelExample example = new DataLandLevelExample();
         MybatisUtils.convertObj2Example(dataLandLevel, example);
-        try {
-            dataLandLevelMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataLandLevelMapper.deleteByExample(example);
     }
 
     public List<DataLandLevel> getDataLandLevelList(DataLandLevel dataLandLevel){
