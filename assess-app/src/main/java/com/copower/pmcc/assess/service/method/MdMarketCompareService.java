@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -52,6 +53,8 @@ public class MdMarketCompareService {
     private ExamineHouseTradingDao examineHouseTradingDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     public MdMarketCompare getMdMarketCompare(Integer id) {
         return mdMarketCompareDao.getMarketCompareById(id);
@@ -106,11 +109,11 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setName("估价对象");
         mdMarketCompareItem.setType(ExamineTypeEnum.EXPLORE.getId());
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
-
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(judgeObject.getProjectId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
         ProjectPlanDetails planDetails = planDetailsList.get(0);
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
+        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectInfo, schemeJudgeObject.getDeclareRecordId(), planDetails.getId(), setUseFieldList));
         mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
 
         return mdMarketCompare;
@@ -136,6 +139,7 @@ public class MdMarketCompareService {
         List<Integer> planDetailsIdList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdString));
         if (CollectionUtils.isNotEmpty(planDetailsIdList)) {
             List<DataSetUseField> setUseFieldList = getFieldList(setUse);
+            ProjectInfo projectInfo = null;
             for (Integer planDetailsId : planDetailsIdList) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
                 MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
@@ -145,7 +149,9 @@ public class MdMarketCompareService {
                 mdMarketCompareItem.setCreator(commonService.thisUserAccount());
                 mdMarketCompareItem.setInitialPrice(getTradingPrice(planDetailsId));
                 mdMarketCompareItem.setMustAdjustPrice(mustAdjustPrice(planDetailsId));
-                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
+                if (projectInfo == null)
+                    projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getJsonContent(projectInfo, projectPlanDetails.getDeclareRecordId(), projectPlanDetails.getId(), setUseFieldList));
                 mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             }
         }
@@ -240,8 +246,9 @@ public class MdMarketCompareService {
      * @param declareId
      * @return
      */
-    public List<ProjectPlanDetails> getCaseAll(Integer declareId) {
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY);
+    public List<ProjectPlanDetails> getCaseAll(Integer declareId, Integer projectId) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY, projectInfo.getProjectCategoryId());
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setDeclareRecordId(declareId);
         projectPlanDetails.setProjectPhaseId(projectPhase.getId());

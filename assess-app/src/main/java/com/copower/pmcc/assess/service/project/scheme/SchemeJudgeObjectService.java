@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -63,6 +64,8 @@ public class SchemeJudgeObjectService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -366,10 +369,11 @@ public class SchemeJudgeObjectService {
 
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
-            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE,projectInfo.getProjectCategoryId());
 
             int i = 0;
-            Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap();
+            Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
                 ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
                 projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
@@ -445,12 +449,12 @@ public class SchemeJudgeObjectService {
 
     }
 
-    private Map<Integer, ProjectPhase> getProjectPhaseMap() {
+    private Map<Integer, ProjectPhase> getProjectPhaseMap(Integer categoryId) {
         //1.取得该阶段所有事项 2.取得方法下字典数据配置
         Map<Integer, ProjectPhase> map = Maps.newHashMap();
         List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         for (BaseDataDic method : methodList) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName(),categoryId);
             if (projectPhase != null)
                 map.put(method.getId(), projectPhase);
         }

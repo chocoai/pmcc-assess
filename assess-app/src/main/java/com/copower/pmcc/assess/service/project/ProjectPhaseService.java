@@ -107,8 +107,9 @@ public class ProjectPhaseService {
         }
     }
 
-    public ProjectPhase getCacheProjectPhaseByKey(String key) {
-        if(StringUtils.isBlank(key)) return null;
+    public ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
+        if (StringUtils.isBlank(key)) return null;
+        key = String.format("%s:%s", key, categoryId);
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, key);
         try {
             ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input));
@@ -130,7 +131,7 @@ public class ProjectPhaseService {
         }
     }
 
-    public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId,Integer workStageId) {
+    public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId, Integer workStageId) {
         List<ProjectPhase> projectPhaseList = getCacheProjectPhaseByCategoryId(categoryId);
         return LangUtils.filter(projectPhaseList, o -> {
             return o.getWorkStageId().equals(workStageId);
@@ -139,26 +140,28 @@ public class ProjectPhaseService {
 
     /**
      * 获取类别下的默认事项
+     *
      * @param typeId
      * @return
      */
     public List<ProjectPhase> getDefaultProjectPhaseByTypeId(Integer typeId) {
         BaseProjectClassify defaultCategory = baseProjectClassifyService.getDefaultCategory(typeId);
-        if(defaultCategory==null) return null;
+        if (defaultCategory == null) return null;
         return getCacheProjectPhaseByCategoryId(defaultCategory.getId());
     }
 
     /**
      * 是否为查勘案例的任务
+     *
      * @param phaseId
      * @return
      */
-    public boolean isExaminePhase(Integer phaseId){
+    public boolean isExaminePhase(Integer phaseId) {
         ProjectPhase projectPhase = getCacheProjectPhaseById(phaseId);
-        if(projectPhase!=null){
-            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE) )
+        if (projectPhase != null) {
+            if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.SCENE_EXPLORE))
                 return true;
-            if(StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY) )
+            if (StringUtils.equals(projectPhase.getPhaseKey(), AssessPhaseKeyConstant.CASE_STUDY))
                 return true;
         }
         return false;

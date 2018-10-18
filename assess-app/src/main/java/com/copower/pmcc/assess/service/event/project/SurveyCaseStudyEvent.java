@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyCaseStudy;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCaseStudyService;
@@ -39,6 +41,8 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
@@ -50,7 +54,7 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             if (Boolean.TRUE.equals(jsonObject.getBoolean("isChecked"))) {
                 try {
-                    synchronize(surveyCaseStudy.getPlanDetailsId(), jsonObject.getInteger("key"));
+                    synchronize(surveyCaseStudy.getProjectId(),surveyCaseStudy.getPlanDetailsId(), jsonObject.getInteger("key"));
                 } catch (BusinessException e) {
                     e.printStackTrace();
                 }
@@ -64,13 +68,14 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
      * @param declareId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void synchronize(Integer currPlanDetailsId, Integer declareId) throws BusinessException {
+    public void synchronize(Integer projectId,Integer currPlanDetailsId, Integer declareId) throws BusinessException {
         ProjectPlanDetails where = new ProjectPlanDetails();
         where.setDeclareRecordId(declareId);
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
         if (CollectionUtils.isEmpty(planDetailsList)) return;
         ProjectPlanDetails projectPlanDetails = null;//找到该证下的任务，为案例调查的任务
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY,projectInfo.getProjectCategoryId());
         for (ProjectPlanDetails details : planDetailsList) {
             if (details.getProjectPhaseId() != null && details.getProjectPhaseId().equals(projectPhase.getId())) {
                 projectPlanDetails = details;
