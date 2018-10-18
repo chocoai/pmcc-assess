@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.dto.output.data;
 import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 
 public class InfrastructureVo extends Infrastructure {
-    public final static String fileName = "file_name";
     private String provinceName;
     private String cityName;
     private String districtName;
@@ -14,6 +13,7 @@ public class InfrastructureVo extends Infrastructure {
     private String endDateName;
     private double priceCost;
     private double priceMarch;
+    private String fileViewName;
 
     public String getProvinceName() {
         return provinceName;
@@ -78,5 +78,13 @@ public class InfrastructureVo extends Infrastructure {
 
     public void setPriceMarch(double priceMarch) {
         this.priceMarch = priceMarch;
+    }
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
     }
 }

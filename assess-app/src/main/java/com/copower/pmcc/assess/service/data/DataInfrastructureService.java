@@ -10,23 +10,22 @@ import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -57,22 +56,18 @@ public class DataInfrastructureService {
         List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureList(infrastructure);
         List<InfrastructureVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(infrastructureList)) {
-            for (Infrastructure infrastru : infrastructureList) {
-                vos.add(change(infrastru));
+            for (Infrastructure oo : infrastructureList) {
+                vos.add(getInfrastructureVo(oo));
             }
         }
         return vos;
     }
 
-    public BootstrapTableVo getInfrastructure(String name) {
+    public BootstrapTableVo getInfrastructure(Infrastructure infrastructure) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<Infrastructure> infrastructureList = dataInfrastructureDao.getInfrastructureList(name);
-        List<InfrastructureVo> vos = new ArrayList<>();
-        for (Infrastructure infrastructure : infrastructureList) {
-            vos.add(change(infrastructure));
-        }
+        List<InfrastructureVo> vos = infrastructureList(infrastructure);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<InfrastructureVo>() : vos);
         return vo;
@@ -80,69 +75,43 @@ public class DataInfrastructureService {
 
     public InfrastructureVo get(Integer id) {
         Infrastructure infrastructure = dataInfrastructureDao.get(id);
-        return change(infrastructure);
+        return getInfrastructureVo(infrastructure);
     }
 
-    @Transactional
-    public boolean addInfrastructure(InfrastructureDto infrastructureDto) throws BusinessException {
+
+    public void saveAndUpdateInfrastructure(InfrastructureDto infrastructureDto) throws Exception {
         Infrastructure infrastructure = new Infrastructure();
         infrastructureDto.setCreator(processControllerComponent.getThisUser());
         BeanUtils.copyProperties(infrastructureDto, infrastructure);
-        int id = dataInfrastructureDao.addInfrastructure(infrastructure);
-        update_SysAttachmentDto(id, InfrastructureVo.fileName);
-        return id > 0;
-    }
-
-    //修改附件中的table id 以及存附件的主表的附件id
-    public boolean update_SysAttachmentDto(int pid, String fields_name) {
-        int TEMP = 0;
-        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(TEMP, fields_name, null);
-        //一般都只有一个
-        if (baseAttachments.size() > 0) {
-            SysAttachmentDto baseAttachment = baseAttachments.get(0);
-            // 更新 存附件的主表
-            baseAttachment.setTableId(pid);
-            baseAttachmentService.updateAttachment(baseAttachment);
-            Infrastructure infrastructure = dataInfrastructureDao.get(pid);
-            infrastructure.setFileName(baseAttachment.getFileName());
-            dataInfrastructureDao.update(infrastructure);
-            return true;
+        if (infrastructure.getId() == null || infrastructure.getId().intValue() == 0) {
+            int id = dataInfrastructureDao.addInfrastructure(infrastructure);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(Infrastructure.class), id);
+            baseAttachmentService.updateTableIdByTableName("tb_data_infrastructure", id);
         } else {
-            return false;
-        }
-    }
-
-    @Transactional
-    public boolean editInfrastructure(InfrastructureDto dto) throws BusinessException {
-        Infrastructure infrastructure = new Infrastructure();
-        dto.setCreator(processControllerComponent.getThisUser());
-        BeanUtils.copyProperties(dto, infrastructure);
-        boolean flag = update_SysAttachmentDto(infrastructure.getId(), InfrastructureVo.fileName);
-        try {
-            InfrastructureVo vo = get(dto.getId());
-            infrastructure.setFileName(vo.getFileName());
-            infrastructure.setCreator(vo.getCreator());
             dataInfrastructureDao.update(infrastructure);
-            flag = true;
-        } catch (Exception e) {
-            flag = false;
-            logger.error("----------------->错误!");
         }
-        return flag;
     }
 
-    public boolean deleteInfrastructure(Integer id) {
-        boolean flag = false;
-        flag = dataInfrastructureDao.deleteInfrastructure(id);
-        return flag;
+
+    public void deleteInfrastructure(Integer id) throws Exception {
+        dataInfrastructureDao.deleteInfrastructure(id);
     }
 
-    public InfrastructureVo change(Infrastructure infrastructure) {
+    public InfrastructureVo getInfrastructureVo(Infrastructure infrastructure) {
         InfrastructureVo vo = new InfrastructureVo();
         BeanUtils.copyProperties(infrastructure, vo);
-        vo.setProvinceName(getProvinceName(Integer.parseInt(infrastructure.getProvince())));
-        vo.setCityName(getSysArea(Integer.parseInt(infrastructure.getCity())));
-        vo.setDistrictName(getSysArea(Integer.parseInt(infrastructure.getDistrict())));
+        //省
+        if (StringUtils.isNotBlank(infrastructure.getProvince())) {
+            vo.setProvinceName(erpAreaService.getSysAreaName(infrastructure.getProvince()));
+        }
+        //市
+        if (StringUtils.isNotBlank(infrastructure.getCity())) {
+            vo.setCityName(erpAreaService.getSysAreaName(infrastructure.getCity()));
+        }
+        //县
+        if (StringUtils.isNotBlank(infrastructure.getDistrict())) {
+            vo.setDistrictName(erpAreaService.getSysAreaName(infrastructure.getDistrict()));
+        }
         if (!ObjectUtils.isEmpty(infrastructure.getEndDate())) {
             vo.setEndDateName(DateHelp.getDateHelp().printDate(infrastructure.getEndDate()));
         }
@@ -177,30 +146,21 @@ public class DataInfrastructureService {
             }
         }
         vo.setPriceMarch(temp);
-        return vo;
-    }
-
-    /*省名称*/
-    public String getProvinceName(int pid) {
-        List<SysAreaDto> provinceLists = erpAreaService.getProvinceList();
-        String s = provinceAndArea(pid, provinceLists);
-        return s;
-    }
-
-    public String provinceAndArea(int id, List<SysAreaDto> sysAreaDtos) {
-        String v = "";
-        inner:
-        for (SysAreaDto s : sysAreaDtos) {
-            if (id == s.getId()) {
-                v = s.getName();
-                break inner;
+        //下面此条语句失效了
+//        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(infrastructure.getId(), null, FormatUtils.entityNameConvertToTableName(Infrastructure.class));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(infrastructure.getId(), null, "tb_data_infrastructure");
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
             }
+            vo.setFileViewName(builder.toString());
         }
-        return v;
-    }
-
-    /*城市名称*/
-    public String getSysArea(Integer id) {
-        return erpAreaService.getSysAreaDto(String.valueOf(id)).getName();
+        return vo;
     }
 }

@@ -20,6 +20,11 @@ import java.util.List;
 public class DataInfrastructureMatchingCostDao {
     @Autowired
     private DataInfrastructureMatchingCostMapper infrastructureMatchingCostMapper;
+
+    public DataInfrastructureMatchingCost getByDataInfrastructureMatchingCost(Integer id){
+        return infrastructureMatchingCostMapper.selectByPrimaryKey(id);
+    }
+
     //删除
     public Boolean deleteDataInfrastructureCost(Integer id){
         int result = infrastructureMatchingCostMapper.deleteByPrimaryKey(id);
