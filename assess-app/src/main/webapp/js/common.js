@@ -464,7 +464,7 @@ $(function () {
 
                         if (defaults.provinceValue) {
                             defaults.provinceTarget.select2('val', defaults.provinceValue).trigger('change');
-                        }else if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
+                        } else if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
                             //初始化设置默认选中项
                             defaults.provinceTarget.select2('val', defaults.provinceTarget.find("option:contains(" + defaults.provinceDefaultText + ")").val()).trigger('change');
                         }
@@ -556,11 +556,11 @@ $(function () {
             })
         },
         //下载ftp附件到本地
-        downloadFtpFileToLocal:function (item, callback) {
+        downloadFtpFileToLocal: function (item, callback) {
             $.ajax({
                 url: getContextPath() + "/public/downloadFtpFileToLocal",
                 type: "get",
-                data: {attachmentId:item},
+                data: {attachmentId: item},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -617,6 +617,18 @@ $(function () {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
+        },
+
+        //获取区域全名
+        getAreaFullName: function (provinceName, cityName, districtName) {
+            var fullName = provinceName;
+            if (cityName) {
+                fullName += cityName;
+            }
+            if (districtName) {
+                fullName += districtName;
+            }
+            return fullName;
         }
     };
 

@@ -28,42 +28,15 @@
                 <%--</div>--%>
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>楼盘基本信息 <label class="btn btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
+                        <h3>楼盘基本信息
+                            <small>
+                                <label class="btn btn-xs btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
+                            </small>
                         </h3>
                         <div class="clearfix"></div>
                     </div>
                     <form class="form-horizontal" id="frm_estate">
                         <input type="hidden" name="id" value="${caseEstate.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                                           name="name" class="form-control" value="${caseEstate.name}">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <select name="blockId" class="form-control search-select select2 blockId"
-                                            required="required">
-                                        <option value="" name="blockId">-请选择-</option>
-                                        <c:forEach items="${dataBlocks}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
-                                <div class="col-sm-3">
-                                    <input type="text" data-rule-maxlength="100" placeholder="楼盘方位" required
-                                           name="position" class="form-control" value="${caseEstate.position}">
-                                </div>
-                            </div>
-
-                        </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">省
@@ -73,17 +46,6 @@
                                             class="form-control search-select select2"
                                             required="required">
                                         <option value="" name="province">-请选择-</option>
-                                        <c:forEach items="${ProvinceList}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.areaId == projectInfo.province}">
-                                                    <option value="${item.areaId}"
-                                                            selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.areaId}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -103,6 +65,30 @@
                                         class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <select id="district" name="district" class="form-control search-select select2"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                                           name="name" class="form-control" value="${caseEstate.name}">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="100" placeholder="楼盘方位" required
+                                           name="position" class="form-control" value="${caseEstate.position}">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
+                                <div class="col-sm-3">
+                                    <select name="blockId" class="form-control search-select select2 blockId"
                                             required="required">
                                     </select>
                                 </div>

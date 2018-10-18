@@ -21,18 +21,13 @@
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>
-                        ${baseViewDto.currentMenu.name}
+            <div class="page-title">
+                <div class="title_left">
+                    <h2><i class="fa "></i>
+                        案例基础数据维护
                     </h2>
-                    <div class="clearfix"></div>
                 </div>
             </div>
-
 
             <div class="x_panel">
                 <div class="x_title collapse-link">
@@ -50,22 +45,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">省
                                     <span class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-1">
                                     <select name="province" id="province"
                                             class="form-control search-select select2"
                                             required="required">
-                                        <option value="" name="province">-请选择-</option>
-                                        <c:forEach items="${ProvinceList}" var="item">
-                                            <c:choose>
-                                                <c:when test="${item.areaId == projectInfo.province}">
-                                                    <option value="${item.areaId}"
-                                                            selected="selected">${item.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${item.areaId}">${item.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -73,50 +56,36 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">市<span
                                         class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-1">
                                     <select id="city" name="city" class="form-control search-select select2"
                                             required="required">
 
                                     </select>
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">县<span
                                         class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-1">
                                     <select id="district" name="district" class="form-control search-select select2"
                                             required="required">
 
                                     </select>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称<span
                                         class="symbol required"></span></label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <input type="text" class="form-control" name="search"
                                            onkeyup="baseFun.caseEstate.searchInput();"/>
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <div class="col-sm-1">
-
-                                </div>
-                                <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseEstate.find()">
+                                <div class="col-sm-2">
+                                    <label class="btn btn-primary" onclick="baseFun.caseEstate.find()">
                                         查询
                                     </label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div class="col-sm-1">
-
-                                </div>
-                                <div class="col-sm-3">
                                     <label class="btn btn-success" onclick="baseFun.caseEstate.newWindow(this)">
                                         新增
                                     </label>
@@ -147,14 +116,9 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseBuild.addData();">
+                                    <label class="btn btn-success" onclick="baseFun.caseBuild.addData();">
                                         新增
                                     </label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseBuild.showMap();">地图显示</label>
-                                </div>
-                                <div class="col-sm-6">
                                 </div>
                             </div>
                         </div>
@@ -187,7 +151,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseUnit.addData();">新增</label>
+                                    <label class="btn btn-success" onclick="baseFun.caseUnit.addData();">新增</label>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +184,7 @@
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-3">
-                                    <label class="btn btn-default" onclick="baseFun.caseHouse.addData()">新增</label>
+                                    <label class="btn btn-success" onclick="baseFun.caseHouse.addData()">新增</label>
                                 </div>
                             </div>
                         </div>
@@ -315,9 +279,8 @@
 
     BaseViewFun.prototype.event = {
         selectInit: function () {
-            $("#province").select2();
-            $("#city").select2();
             AssessCommon.initAreaInfo({
+                useDefaultText: false,
                 provinceTarget: $("#province"),
                 cityTarget: $("#city"),
                 districtTarget: $("#district"),
@@ -359,7 +322,9 @@
                 estate = {search: null, city: null, district: null, province: null};
             }
             var cols = [];
-            cols.push({field: 'number', title: '编号'});
+            cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
+                return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
+            }});
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'coverAnArea', title: '占地面积'});
             cols.push({field: 'volumetricRateName', title: '容积率'});
