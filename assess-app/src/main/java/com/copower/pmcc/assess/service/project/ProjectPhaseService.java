@@ -109,14 +109,14 @@ public class ProjectPhaseService {
 
     public ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
         if (StringUtils.isBlank(key)) return null;
-        key = String.format("%s:%s", key, categoryId);
-        String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, key);
+        String fullKey = String.format("%s:%s", key, categoryId);
+        String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, fullKey);
         try {
-            ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input));
+            ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input,categoryId));
             return projectPhase;
         } catch (Exception e) {
             logger.error("getCacheProjectPhaseByKey error", e);
-            return projectPhaseDao.getProjectPhaseByKey(key);
+            return projectPhaseDao.getProjectPhaseByKey(key,categoryId);
         }
     }
 

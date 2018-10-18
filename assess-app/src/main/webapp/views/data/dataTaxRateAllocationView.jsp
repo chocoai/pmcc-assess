@@ -168,6 +168,15 @@
         },
         showModel: function () {
             $("#" + dataProperty.prototype.config().frm).clearAll();
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#province"),
+                cityTarget: $("#city"),
+                districtTarget: $("#district"),
+                provinceValue: '',
+                cityValue: '',
+                districtValue: ''
+            });
+            $("#region").hide();
             $('#' + dataProperty.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -198,14 +207,6 @@
         select2Load: function () {
             //使数据校验生效
             $("#" + dataProperty.prototype.config().frm).validate();
-            AssessCommon.initAreaInfo({
-                provinceTarget: $("#province"),
-                cityTarget: $("#city"),
-                districtTarget: $("#district"),
-                provinceValue: '',
-                cityValue: '',
-                districtValue: ''
-            });
             AssessCommon.loadDataDicByKey(AssessDicKey.dataTaxRateAllocation, "", function (html, data) {
                 $("#" + dataProperty.prototype.config().frm).find('select.type').html(html);
             });
@@ -232,9 +233,17 @@
                     if (result.ret) {
                         $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.city, "city");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.district, "district");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.province, "province");
+                        $("#" + dataProperty.prototype.config().frm).find('[name=bisNationalUnity]').select2('val',result.data.bisNationalUnity+'').trigger('change');
+                        if(!result.data.bisNationalUnity){
+                            AssessCommon.initAreaInfo({
+                                provinceTarget: $("#province"),
+                                cityTarget: $("#city"),
+                                districtTarget: $("#district"),
+                                provinceValue: result.data.province,
+                                cityValue: result.data.city,
+                                districtValue: result.data.district
+                            })
+                        }
                         $("#" + dataProperty.prototype.config().frm).find('.x-percent').each(function () {
                             $(this).attr('data-value', result.data[$(this).attr('name')]);
                             AssessCommon.elementParsePercent($(this));

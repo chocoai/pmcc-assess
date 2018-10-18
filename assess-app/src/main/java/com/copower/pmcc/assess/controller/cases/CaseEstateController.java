@@ -212,9 +212,6 @@ public class CaseEstateController {
         if (!StringUtils.isEmpty(district)) {
             caseEstate.setDistrict(district);
         }
-        if (StringUtils.isEmpty(name) && StringUtils.isEmpty(province) && StringUtils.isEmpty(city) && StringUtils.isEmpty(district)) {
-            return new BootstrapTableVo();
-        }
         return caseEstateService.getCaseEstateVos(caseEstate);
     }
 

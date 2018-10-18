@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex;
 import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,18 +31,23 @@ public class DataHousePriceIndexDao {
         return dataHousePriceIndexMapper.updateByPrimaryKeySelective(dataHousePriceIndex) == 1;
     }
 
-    public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime) {
+    public List<DataHousePriceIndex> listEndStart(Date startTime, Date endTime, String province, String city, String district) {
         DataHousePriceIndexExample example = new DataHousePriceIndexExample();
         DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-        if (startTime != null && endTime == null) {
+        if (startTime != null) {
             criteria.andYearMonthCalendarGreaterThan(startTime);//大于
         }
-        if (startTime == null && endTime != null) {
+        if (endTime != null) {
             criteria.andYearMonthCalendarLessThan(endTime);//小于
         }
-        if (startTime != null && endTime != null) {
-            criteria.andYearMonthCalendarBetween(startTime, endTime);//之间
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(district)) {
+            criteria.andDistrictEqualTo(district);
         }
         return dataHousePriceIndexMapper.selectByExample(example);
     }

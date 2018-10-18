@@ -152,6 +152,14 @@
         },
         showModel: function () {
             $("#" + dataProperty.prototype.config().frm).clearAll();
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#province"),
+                cityTarget: $("#city"),
+                districtTarget: $("#district"),
+                provinceValue: '',
+                cityValue: '',
+                districtValue: ''
+            })
             $('#' + dataProperty.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -180,19 +188,8 @@
             })
         },
         select2Load: function () {
-            $("#province").select2();
-            $("#city").select2();
-            $("#district").select2();
             //使数据校验生效
             $("#" + dataProperty.prototype.config().frm).validate();
-            AssessCommon.initAreaInfo({
-                provinceTarget: $("#province"),
-                cityTarget: $("#city"),
-                districtTarget: $("#district"),
-                provinceValue: '',
-                cityValue: '',
-                districtValue: ''
-            })
         },
         getAndInit: function (id) {
             $.ajax({
@@ -204,9 +201,15 @@
                     if (result.ret) {
                         $("#" + dataProperty.prototype.config().frm).clearAll();
                         $("#" + dataProperty.prototype.config().frm).initForm(result.data);
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.city, "city");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.district, "district");
-                        dataProperty.prototype.objectWriteSelectData(dataProperty.prototype.config().frm, result.data.province, "province");
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#province"),
+                            cityTarget: $("#city"),
+                            districtTarget: $("#district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        })
+                        $("#" + dataProperty.prototype.config().frm).find('[name=yearMonthCalendar]').val(formatDate(result.data.yearMonthCalendar));
                         $('#' + dataProperty.prototype.config().box).modal("show");
                     }
                 },
@@ -260,18 +263,6 @@
                                             <select id="province" name="province"
                                                     class="form-control search-select select2"
                                                     required="required">
-                                                <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>

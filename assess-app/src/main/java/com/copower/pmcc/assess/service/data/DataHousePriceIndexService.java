@@ -32,30 +32,30 @@ public class DataHousePriceIndexService {
     @Autowired
     private ErpAreaService erpAreaService;
 
-    public Integer saveAndUpdateDataHousePriceIndex(DataHousePriceIndexDto dataHousePriceIndexDto){
+    public Integer saveAndUpdateDataHousePriceIndex(DataHousePriceIndexDto dataHousePriceIndexDto) {
         DataHousePriceIndex dataHousePriceIndex = new DataHousePriceIndex();
-        BeanUtils.copyProperties(dataHousePriceIndexDto,dataHousePriceIndex);
-        if (dataHousePriceIndex.getId()==null){
+        BeanUtils.copyProperties(dataHousePriceIndexDto, dataHousePriceIndex);
+        if (dataHousePriceIndex.getId() == null) {
             dataHousePriceIndex.setCreator(commonService.thisUserAccount());
             return dataHousePriceIndexDao.addDataHousePriceIndex(dataHousePriceIndex);
-        }else {
+        } else {
             dataHousePriceIndexDao.updateDataHousePriceIndex(dataHousePriceIndex);
             return null;
         }
     }
 
-    public DataHousePriceIndex getDataHousePriceIndexById(Integer id){
+    public DataHousePriceIndex getDataHousePriceIndexById(Integer id) {
         return dataHousePriceIndexDao.getDataHousePriceIndexById(id);
     }
 
-    public BootstrapTableVo getDataHousePriceIndexListVos(Date startTime, Date endTime){
+    public BootstrapTableVo getDataHousePriceIndexListVos(Date startTime, Date endTime, String province, String city, String district) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataHousePriceIndexVo> vos = Lists.newArrayList();
-        List<DataHousePriceIndex> dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startTime,endTime);
-        if (!ObjectUtils.isEmpty(dataHousePriceIndexList)){
-            for (DataHousePriceIndex dataHousePriceIndex:dataHousePriceIndexList){
+        List<DataHousePriceIndex> dataHousePriceIndexList = dataHousePriceIndexDao.listEndStart(startTime, endTime, province, city, district);
+        if (!ObjectUtils.isEmpty(dataHousePriceIndexList)) {
+            for (DataHousePriceIndex dataHousePriceIndex : dataHousePriceIndexList) {
                 vos.add(getDataHousePriceIndexVo(dataHousePriceIndex));
             }
         }
@@ -63,25 +63,26 @@ public class DataHousePriceIndexService {
         vo.setRows(vos);
         return vo;
     }
-    public  List<DataHousePriceIndexVo> landLevels(DataHousePriceIndex dataHousePriceIndex){
+
+    public List<DataHousePriceIndexVo> landLevels(DataHousePriceIndex dataHousePriceIndex) {
         List<DataHousePriceIndex> dataHousePriceIndexs = dataHousePriceIndexDao.getDataHousePriceIndexList(dataHousePriceIndex);
         List<DataHousePriceIndexVo> vos = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(dataHousePriceIndexs)){
-            for (DataHousePriceIndex landLevel:dataHousePriceIndexs){
+        if (!ObjectUtils.isEmpty(dataHousePriceIndexs)) {
+            for (DataHousePriceIndex landLevel : dataHousePriceIndexs) {
                 vos.add(getDataHousePriceIndexVo(landLevel));
             }
         }
         return vos;
     }
 
-    public void removeDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex){
+    public void removeDataHousePriceIndex(DataHousePriceIndex dataHousePriceIndex) {
         dataHousePriceIndexDao.removeDataHousePriceIndex(dataHousePriceIndex);
     }
 
-    public DataHousePriceIndexVo getDataHousePriceIndexVo(DataHousePriceIndex dataHousePriceIndex){
+    public DataHousePriceIndexVo getDataHousePriceIndexVo(DataHousePriceIndex dataHousePriceIndex) {
         DataHousePriceIndexVo vo = new DataHousePriceIndexVo();
-        BeanUtils.copyProperties(dataHousePriceIndex,vo);
-        if (dataHousePriceIndex.getYearMonthCalendar() != null){
+        BeanUtils.copyProperties(dataHousePriceIndex, vo);
+        if (dataHousePriceIndex.getYearMonthCalendar() != null) {
             vo.setYearMonthCalendarName(DateHelp.getDateHelp().printDate(dataHousePriceIndex.getYearMonthCalendar()));
         }
         if (StringUtils.isNotBlank(dataHousePriceIndex.getProvince())) {
