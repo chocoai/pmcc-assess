@@ -11,8 +11,15 @@ public class InfrastructureVo extends Infrastructure {
     private String startDateName;
     /**执行结束日期*/
     private String endDateName;
+
+    //基础
     private double priceCost;
+    //公共
     private double priceMarch;
+    //开发
+    private double priceDev;
+    //开发
+    private double priceTax;
     private String fileViewName;
 
     public String getProvinceName() {
@@ -86,5 +93,21 @@ public class InfrastructureVo extends Infrastructure {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public double getPriceDev() {
+        return priceDev;
+    }
+
+    public void setPriceDev(double priceDev) {
+        this.priceDev = priceDev;
+    }
+
+    public double getPriceTax() {
+        return priceTax;
+    }
+
+    public void setPriceTax(double priceTax) {
+        this.priceTax = priceTax;
     }
 }

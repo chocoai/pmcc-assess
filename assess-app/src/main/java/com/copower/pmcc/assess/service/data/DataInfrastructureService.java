@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.data;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataInfrastructureDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureDevTax;
 import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
 import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
@@ -49,6 +50,8 @@ public class DataInfrastructureService {
     private DataInfrastructureMatchingCostService dataInfrastructureMatchingCostService;
     @Autowired
     private DataInfrastructureCostService dataDataInfrastructureCostService;
+    @Autowired
+    private DataInfrastructureDevTaxService dataInfrastructureDevTaxService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
@@ -120,10 +123,13 @@ public class DataInfrastructureService {
         }
         DataInfrastructureCost dataInfrastructureCost = new DataInfrastructureCost();
         DataInfrastructureMatchingCost dataInfrastructureMatchingCost = new DataInfrastructureMatchingCost();
+        DataInfrastructureDevTax dataInfrastructureDevTax = new DataInfrastructureDevTax();
         dataInfrastructureCost.setPid(infrastructure.getId());
         dataInfrastructureMatchingCost.setPid(infrastructure.getId());
+        dataInfrastructureDevTax.setPid(infrastructure.getId());
         List<DataInfrastructureCost> dataInfrastructureCosts = dataDataInfrastructureCostService.getDataInfrastructureCostList(dataInfrastructureCost);
         List<DataInfrastructureMatchingCost> dataInfrastructureMatchingCosts = dataInfrastructureMatchingCostService.infrastructureMatchingCosts(dataInfrastructureMatchingCost);
+        List<DataInfrastructureDevTax> dataInfrastructureDevTaxes = dataInfrastructureDevTaxService.dataInfrastructureDevTaxes(dataInfrastructureDevTax);
         double temp = 0.0;
         if (!ObjectUtils.isEmpty(dataInfrastructureCosts)) {
             for (DataInfrastructureCost cost : dataInfrastructureCosts) {
@@ -146,6 +152,22 @@ public class DataInfrastructureService {
             }
         }
         vo.setPriceMarch(temp);
+        temp = 0;
+        double xxx = 0;
+        if (!ObjectUtils.isEmpty(dataInfrastructureDevTaxes)){
+            for (DataInfrastructureDevTax oo:dataInfrastructureDevTaxes){
+                if (oo.getNumber() != null){
+                    temp += oo.getNumber().doubleValue();
+                }
+                if (oo.getTax() != null){
+                    xxx += oo.getTax().doubleValue();
+                }
+            }
+        }
+        vo.setPriceDev(temp);
+        vo.setPriceTax(xxx);
+        temp = 0;
+        xxx = 0;
         //下面此条语句失效了
 //        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(infrastructure.getId(), null, FormatUtils.entityNameConvertToTableName(Infrastructure.class));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(infrastructure.getId(), null, "tb_data_infrastructure");
