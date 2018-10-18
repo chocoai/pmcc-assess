@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -106,7 +107,7 @@ public class DataInfrastructureController {
 
     @ResponseBody
     @RequestMapping(value = "/listInfrastructure", method = {RequestMethod.GET}, name = "基础设施维护 list")
-    public HttpResult list(String province, String city, String district) {
+    public HttpResult list(String province, String city, String district,String startDate,String endDate,String projectType) {
         try {
             Infrastructure infrastructure = new Infrastructure();
             if (!StringUtils.isEmpty(province)) {
@@ -117,6 +118,15 @@ public class DataInfrastructureController {
             }
             if (!StringUtils.isEmpty(district)) {
                 infrastructure.setDistrict(district);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(startDate)){
+                infrastructure.setStartDate(DateHelp.getDateHelp().parse(startDate,null));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(endDate)){
+                infrastructure.setEndDate(DateHelp.getDateHelp().parse(endDate,null));
+            }
+            if (!StringUtils.isEmpty(projectType)){
+                infrastructure.setProjectType(projectType);
             }
             return HttpResult.newCorrectResult(dataInfrastructureService.infrastructureList(infrastructure));
         } catch (Exception e) {

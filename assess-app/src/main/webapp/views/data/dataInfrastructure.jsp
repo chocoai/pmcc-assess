@@ -94,10 +94,16 @@
         infrastructureMatchingCostView2: "infrastructureMatchingCostView2",
         infrastructureMatchingCostTable:"infrastructureMatchingCostTable",
         infrastructureMatchingCostFrm:"infrastructureMatchingCostFrm",
+
         infrastructureCostView:"infrastructureCostView",
         infrastructureCostView2:"infrastructureCostView2",
         infrastructureCostTable:"infrastructureCostTable",
-        infrastructureCostFrm:"infrastructureCostFrm"
+        infrastructureCostFrm:"infrastructureCostFrm",
+
+        infrastructureDevView:"infrastructureDevView",
+        infrastructureDevView2:"infrastructureDevView2",
+        infrastructureDevTable:"infrastructureDevTable",
+        infrastructureDevFrm:"infrastructureDevFrm"
     };
     DataObjFun.prototype.isEmpty = function (item) {
         if (item) {
@@ -192,6 +198,7 @@
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editDataById(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:dataObjFun.infrastructureMatchingCostShowView(' + row.id + ');" >公共配套设施费用列表</i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:dataObjFun.infrastructureCostShowView(' + row.id + ');" >基础配套设施费用列表</i></a>';
+                str += '<a class="btn btn-xs btn-success" href="javascript:dataObjFun.infrastructureDevShowView(' + row.id + ');" > 开发期间税费 </i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteDataById(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -318,6 +325,98 @@
         $('#' + dataObjFun.config.father.box()).modal("show");
         dataObjFun.fileUpload(dataObjFun.config.father.fileId, "tb_data_infrastructure", 0);
         dataObjFun.showFile(dataObjFun.config.father.fileId, "tb_data_infrastructure", 0);
+    };
+
+
+    //开发期间税费 方法
+    dataObjFun.infrastructureDevShowView = function (id) {
+        $('#' + dataObjFun.config.infrastructureDevView).modal("show");
+        dataObjFun.infrastructureDevList(id);
+        $('#' + dataObjFun.config.infrastructureDevView).find("input[name='pid']").val(id);
+    };
+
+    //开发期间税费 方法
+    dataObjFun.infrastructureDevSaveAndUpdate = function () {
+        if (!$("#" + dataObjFun.config.infrastructureDevFrm).valid()) {
+            return false;
+        }
+        var data = formParams(dataObjFun.config.infrastructureDevFrm);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataInfrastructureDevTax/saveAndUpdateDataInfrastructureDevTax",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('成功');
+                    dataObjFun.infrastructureDevList(result.data);
+                    $('#' + dataObjFun.config.infrastructureDevView2).modal("hide");
+                }
+                else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
+    //开发期间税费 方法
+    dataObjFun.infrastructureDevDelete = function (id) {
+        Alert("是否删除", 2, null, function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataInfrastructureDevTax/deleteDataInfrastructureDevTaxById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('删除成功');
+                        dataObjFun.infrastructureDevList(result.data);
+                    }
+                    else {
+                        Alert("失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    };
+
+    //开发期间税费 方法
+    dataObjFun.infrastructureDevList = function (pid) {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'number', title: '金额'});
+        cols.push({field: 'tax', title: '税费'});
+
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.infrastructureDevDelete(' + row.id + ',\'tb_List1\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#"+dataObjFun.config.infrastructureDevTable).bootstrapTable('destroy');
+        TableInit(dataObjFun.config.infrastructureDevTable, "${pageContext.request.contextPath}/dataInfrastructureDevTax/getDataInfrastructureDevTaxList", cols, {
+            pid: pid
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false
+        });
+    };
+
+    //开发期间税费 方法
+    dataObjFun.infrastructureDevAddView = function () {
+        $('#' + dataObjFun.config.infrastructureDevView2).modal("show");
+        var pid = $('#' + dataObjFun.config.infrastructureDevView).find("input[name='pid']").val();
+        $("#" + dataObjFun.config.infrastructureDevFrm).clearAll();
+        $("#" + dataObjFun.config.infrastructureDevFrm).initForm({pid:pid});
     };
 
 
@@ -506,6 +605,92 @@
 
 </script>
 
+<!-- 开发期间税费 add -->
+<div id="infrastructureDevView2" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">字段</h3>
+            </div>
+            <form id="infrastructureDevFrm" class="form-horizontal">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <input type="hidden" name="pid">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                名称<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-11">
+                                <input type="text" name="name" class="form-control" required="required" placeholder="名称">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                金额<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-11">
+                                <input type="text" name="number" placeholder="金额" class="form-control" data-rule-number='true'
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-1 control-label">
+                                税费<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-11">
+                                <input type="text" name="tax" class="form-control x-percent"
+                                       required="required" placeholder="(数字)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="dataObjFun.infrastructureDevSaveAndUpdate()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 开发期间税费 list -->
+<div id="infrastructureDevView" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">开发期间税费列表</h3>
+                <input type="hidden" name="pid">
+            </div>
+            <div class="panel-body">
+                <span>
+                    <button type="button" class="btn btn-success"
+                            data-toggle="modal" onclick="dataObjFun.infrastructureDevAddView();"> 新增
+                    </button>
+                </span>
+                <table class="table table-bordered" id="infrastructureDevTable">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 基础配套设施费用 add -->
 <div id="infrastructureCostView2" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -521,20 +706,23 @@
                     <div class="form-group">
                         <input type="hidden" name="pid">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-1 control-label">
                                 名称<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="name" class="form-control" required="required">
+                            <div class="col-sm-11">
+                                <input type="text" name="name" class="form-control" required="required" placeholder="名称">
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-1 control-label">
                                 金额<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-11">
                                 <input type="text" name="number" class="form-control"
-                                       required="required">
+                                       required="required" placeholder="金额" data-rule-number='true'>
                             </div>
                         </div>
                     </div>
@@ -565,7 +753,7 @@
                 <input type="hidden" name="pid">
             </div>
             <div class="panel-body">
-                <span id="toolbarSub">
+                <span>
                     <button type="button" class="btn btn-success"
                             data-toggle="modal" onclick="dataObjFun.infrastructureCostAddView();"> 新增
                     </button>
@@ -592,20 +780,23 @@
                     <div class="form-group">
                         <input type="hidden" name="pid">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-1 control-label">
                                 名称<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="name" class="form-control" required="required">
+                            <div class="col-sm-11">
+                                <input type="text" name="name" class="form-control" required="required" placeholder="名称">
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="x-valid">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-1 control-label">
                                 金额<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-11">
                                 <input type="text" name="number" class="form-control"
-                                       required="required">
+                                       required="required" data-rule-number='true' placeholder="金额">
                             </div>
                         </div>
                     </div>
