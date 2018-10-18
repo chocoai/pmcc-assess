@@ -422,7 +422,7 @@ public class SurveyExamineTaskService {
                 if (ExamineTypeEnum.CASE.getId().equals(surveyExamineTaskDto.getExamineType())) {
                     phaseKey = AssessPhaseKeyConstant.CASE_STUDY_EXAMINE;
                 }
-                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey);
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(phaseKey,projectInfo.getProjectCategoryId());
                 for (String userAccount : hashSet) {
                     //添加计划任务子项及待提交任务
                     ProjectPlanDetails taskPlanDetails = new ProjectPlanDetails();

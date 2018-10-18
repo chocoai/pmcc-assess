@@ -104,7 +104,7 @@ public class MdMarketCompareFieldService {
      * @param setUseFieldList
      * @return
      */
-    public String getJsonContent(Integer declareId, Integer planDetailsId, List<DataSetUseField> setUseFieldList) {
+    public String getJsonContent(ProjectInfo projectInfo,Integer declareId, Integer planDetailsId, List<DataSetUseField> setUseFieldList) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             //1.取得楼盘信息
@@ -134,7 +134,7 @@ public class MdMarketCompareFieldService {
             List<ExamineBuilding> buildingList = examineBuildingDao.getByPlanDetailsId(planDetailsId);
             ExamineBuilding examineBuilding = CollectionUtils.isEmpty(buildingList) ? new ExamineBuilding() : buildingList.get(0);
             //9.取得他项权利
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.ASSET_INVENTORY,projectInfo.getProjectCategoryId());
             List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
             ProjectPlanDetails inventoryPlanDetails = planDetailsList.get(0);
             List<SurveyAssetInventoryRight> inventoryRights = surveyAssetInventoryRightDao.getListByPlanDetailsId(inventoryPlanDetails.getId());
