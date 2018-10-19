@@ -74,7 +74,7 @@
                     <div class="x-valid">
                         <div class="col-sm-11">
                             <input type="text"
-                                   placeholder="开发期间税费" class="form-control" name="devDuringTax"  readonly="readonly">
+                                   placeholder="开发期间税费" class="form-control" name="devDuringTax" readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,8 @@
                     <div class="x-valid">
                         <div class="col-sm-11">
                             <input type="text"
-                                   placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax"  readonly="readonly">
+                                   placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax"
+                                   readonly="readonly">
                         </div>
                     </div>
                 </div>
@@ -203,7 +204,8 @@
                         <div class="x-valid">
                             <div class="col-sm-3">
                                 <input type="text"
-                                       placeholder="不可预见费率" readonly="readonly" class="form-control x-percent" name="unforeseenExpensesTax">
+                                       placeholder="不可预见费率" readonly="readonly" class="form-control x-percent"
+                                       name="unforeseenExpensesTax">
                             </div>
                         </div>
                     </div>
@@ -352,7 +354,7 @@
                         <div class="col-sm-7">
                             <div class="input-group">
                                 <input type="text" readonly="readonly"
-                                       placeholder="成新率" value="0" class="form-control" name="newRate">
+                                       placeholder="成新率" value="0" class="form-control x-percent" name="newRate">
                             </div>
                         </div>
                     </div>
@@ -513,6 +515,29 @@
         return false;
     };
 
+    build.specialTreatment = function (obj) {
+        if (build.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
+
+    build.set = function (name, data) {
+        if (build.isEmpty(name)) {
+            if (build.isEmpty(data)) {
+                $("#" + build.config.id).find("input[name='" + name + "']").val(data);
+            }
+        }
+    };
+
     /**
      * @author:  zch
      * 描述:收集数据
@@ -522,9 +547,6 @@
         var item = {};
         var forms = $("#" + build.config.id).find("form");
         $.each(forms, function (i, n) {
-            // if (!$(n).valid()) {
-            //     return false;
-            // }
         });
         $.each(forms, function (i, n) {
             try {
@@ -556,12 +578,32 @@
      **/
     build.initForm = function (item) {
         var forms = $("#" + build.config.id).find("form");
+        var arr = new Array();
         item = JSON.parse(item);
         $.each(forms, function (i, n) {
             $(n).clearAll();
         });
         $.each(forms, function (i, n) {
             $(n).initForm(item);
+        });
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (build.isEmpty(str)) {
+                            str = build.specialTreatment(str);
+                            build.set(name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
         });
         $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(item.constructionCost);
         $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html(item.interestInvestment);
