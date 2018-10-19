@@ -92,7 +92,7 @@
             return true;
         }
         return false;
-    }
+    };
 
     declareRealtyHouseCert.objectWriteSelectData = function (frm, data, name) {
         if (declareRealtyHouseCert.isEmpty(data)) {
@@ -100,7 +100,7 @@
         } else {
             $("#" + frm + " ." + name).val(null).trigger("change");
         }
-    }
+    };
 
     //处理标识符的地方-------start
     declareRealtyHouseCert.declareRealtyHouseCertFlag = true;//父标识符
@@ -649,7 +649,7 @@
                 return false;
             }
             var data = formParams(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm);
-            data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+            <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",

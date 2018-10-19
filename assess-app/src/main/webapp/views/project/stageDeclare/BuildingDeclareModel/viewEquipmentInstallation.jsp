@@ -229,6 +229,14 @@
                         $("#" + equipmentInstallationConfig.frm + " input[name='declarationDate']").val(formatDate(data.declarationDate));
                         $("#" + equipmentInstallationConfig.frm + " input[name='expectedCompletionDate']").val(formatDate(data.expectedCompletionDate));
                         $("#" + equipmentInstallationConfig.frm + " input[name='startDate']").val(formatDate(data.startDate));
+                        AssessCommon.initAreaInfo({
+                            provinceTarget: $("#" + equipmentInstallationConfig.frm + "province"),
+                            cityTarget: $("#" + equipmentInstallationConfig.frm + "city"),
+                            districtTarget: $("#" + equipmentInstallationConfig.frm + "district"),
+                            provinceValue: result.data.province,
+                            cityValue: result.data.city,
+                            districtValue: result.data.district
+                        });
                     }
                 }
             },
@@ -247,21 +255,23 @@
      * @date:2018-09-27
      **/
     equipmentInstallation.deleteData = function (id) {
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById",
-            data: {id:id},
-            success: function (result) {
-                if (result.ret) {
-                    equipmentInstallation.loadList();
-                    toastr.success('成功!');
-                } else {
-                    Alert("保存失败:" + result.errmsg);
+        Alert("是否删除",2,null,function () {
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById",
+                data: {id:id},
+                success: function (result) {
+                    if (result.ret) {
+                        equipmentInstallation.loadList();
+                        toastr.success('成功!');
+                    } else {
+                        Alert("保存失败:" + result.errmsg);
+                    }
+                },
+                error: function (e) {
+                    Alert("调用服务端方法失败，失败原因:" + e);
                 }
-            },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
-            }
+            });
         });
     };
 
@@ -342,7 +352,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareBuildingPermit.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
@@ -417,7 +427,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareLandUsePermit.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
@@ -492,7 +502,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declarePreSalePermit.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
@@ -568,7 +578,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareBuildingConstructionPermit.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
@@ -672,7 +682,7 @@
             if (!equipmentInstallation.isEmpty(attachedNumber)) {
                 attachedNumber = "";
             } else {
-                attachedNumber = attachedNumber + "附";
+                attachedNumber =   "附" + attachedNumber;
             }
             if (!equipmentInstallation.isEmpty(buildingNumber)) {
                 buildingNumber = "";
@@ -806,7 +816,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareRealtyLandCert.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
@@ -910,7 +920,7 @@
             if (!equipmentInstallation.isEmpty(attachedNumber)) {
                 attachedNumber = "";
             } else {
-                attachedNumber = attachedNumber + "附";
+                attachedNumber = "附" + attachedNumber;
             }
             if (!equipmentInstallation.isEmpty(buildingNumber)) {
                 buildingNumber = "";
@@ -1049,7 +1059,7 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareRealtyRealEstateCert.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
@@ -1137,7 +1147,7 @@
             success: function (result) {
                 if (result.ret){
                     equipmentInstallation.loadList();
-                    toastr.success(result.data);
+                    Alert(result.data);
                 }
             },
             error: function (result, status, e) {
