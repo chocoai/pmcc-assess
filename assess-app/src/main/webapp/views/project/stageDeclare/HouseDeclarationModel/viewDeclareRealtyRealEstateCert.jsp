@@ -427,8 +427,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="declareRealtyRealEstateCert.editData(' + row.id + ',\'exampleList\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyRealEstateCert.deleteData(' + row.id + ',\'exampleList\')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="declareRealtyRealEstateCert.editData(' + row.id + ',\'exampleList\')"><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyRealEstateCert.deleteData(' + row.id + ',\'exampleList\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
                 str += '</div>';
                 return str;

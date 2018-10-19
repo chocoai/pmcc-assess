@@ -136,7 +136,7 @@ public class DeclareRealtyHouseCertService {
                 String purpose = PoiUtils.getCellValue(row.getCell(15));
                 BaseDataDic typeDic = baseDataDicService.getDataDicByName(land_uses,purpose);
                 if (typeDic == null) {
-                    builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
+                    builder.append(String.format("\n第%s行异常：用途与系统配置的名称不一致", i));
                     continue;
                 }else {
                     purpose = String.valueOf(typeDic.getId());
