@@ -11,6 +11,8 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +124,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         MdCostConstruction mdCostConstruction = null;
         MdCost mdCost = new MdCost();
         String jsonContent = null;
+        String keyMdCost = null;
         id = mdMarketCostService.saveAndUpdateMdCost(mdCost);
 
         //解析实体 ,并且对json 进行一些处理
@@ -141,6 +144,26 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdCostConstruction = JSONObject.parseObject(jsonContent, MdCostConstruction.class);
                 mdCostConstruction.setJsonContent(JSON.toJSONString(jsonContent));
+            }
+            //确定成本法具体选择的哪一个方法来测算的
+            keyMdCost = jsonObject.getString("mdCost");
+            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdCost)){
+                if (Objects.equal("mdCostBuilding",keyMdCost)){
+                    if (mdCostBuilding != null){
+                        mdCost.setId(id);
+                        mdCost.setPrice(mdCostBuilding.getAssessPrice());
+                        mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+                        mdMarketCostService.saveAndUpdateMdCost(mdCost);
+                    }
+                }
+                if (Objects.equal("mdCostConstruction",keyMdCost)){
+                    if (mdCostConstruction != null){
+                        mdCost.setId(id);
+                        mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
+                        mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+                        mdMarketCostService.saveAndUpdateMdCost(mdCost);
+                    }
+                }
             }
         } catch (Exception e1) {
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));//不需要抛出异常
@@ -203,6 +226,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         JSONObject jsonObject = JSON.parseObject(formData);
         String jsonContent = null;
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
+        String keyMdCost = null;
         Integer pid = 0;
         Integer id = 0;//(id至少会有一个实体含有 否则保存不会提交成功)
         //解析实体 ,并且对json 进行一些处理(id至少会有一个实体含有)
@@ -272,6 +296,29 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
                 if (mdCostAndDevelopmentOther != null) {
                     mdCostAndDevelopmentOther.setPid(pid);
                     mdCostAndDevelopmentOtherService.saveAndUpdateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+                }
+            }
+        }
+        if (pid != null){
+            //确定成本法具体选择的哪一个方法来测算的
+            keyMdCost = jsonObject.getString("mdCost");
+            MdCost mdCost = mdMarketCostService.getByMdCostId(pid);
+            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdCost)){
+                if (Objects.equal("mdCostBuilding",keyMdCost)){
+                    if (mdCostBuilding != null){
+                        mdCost.setId(id);
+                        mdCost.setPrice(mdCostBuilding.getAssessPrice());
+                        mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
+                        mdMarketCostService.saveAndUpdateMdCost(mdCost);
+                    }
+                }
+                if (Objects.equal("mdCostConstruction",keyMdCost)){
+                    if (mdCostConstruction != null){
+                        mdCost.setId(id);
+                        mdCost.setPrice(mdCostConstruction.getConstructionAssessmentPriceCorrecting());
+                        mdCost.setType(FormatUtils.entityNameConvertToTableName(MdCostConstruction.class));
+                        mdMarketCostService.saveAndUpdateMdCost(mdCost);
+                    }
                 }
             }
         }

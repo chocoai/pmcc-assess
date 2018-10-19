@@ -180,6 +180,15 @@
         jsonParams.id = "${mdCostConstruction.id}";//确保修改能成功
         return jsonParams;
     };
+    optionsBuildBox.getBuildKey = function () {
+        var val = $(".optionsBuildBox :radio:checked").val();
+        if (val == 1) {
+            return "mdCostBuilding";
+        }
+        if (val == 2) {
+            return "mdCostConstruction";
+        }
+    };
 
     $(function () {
         optionsBuildBox.tabControl();

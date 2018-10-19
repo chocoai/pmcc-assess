@@ -460,7 +460,7 @@
             },//传入全国性质,和具体区域
             dataType: "json",
             success: function (result) {
-                var a = 0, b = 0, c = 0, d = 0, e = 0,g = 0, h = 0;
+                var a = 0, b = 0, c = 0, d = 0, e = 0, g = 0, h = 0, k = 0;
                 $.each(result.data, function (i, n) {
                     if (n.typeName == "营业税") {
                         a = Number(n.taxRate);
@@ -490,9 +490,14 @@
                         h = Number(n.taxRate);
                         construction.algsObj.getAndSet("set", construction.config.inputConfig.transactionCost.tax, AssessCommon.pointToPercent(h));//交易费用
                     }
+                    if (n.typeName == "管理费用") {
+                        k = Number(n.taxRate);
+                        construction.algsObj.getAndSet("set", construction.config.inputConfig.managementExpense.tax, AssessCommon.pointToPercent(k));
+                    }
                 });
                 construction.algsObj.businessAdditional();
                 construction.algsObj.landGetRelevant();
+                construction.algsObj.managementExpense();
             },
             error: function (result) {
                 Alert("调用服务端方法失败，失败原因:" + result);
@@ -1069,7 +1074,7 @@
             });
         },
         //开发期间税费
-        devDuring:function () {
+        devDuring: function () {
             var tax = construction.config.inputConfig.devDuring.tax;
             $("#" + construction.config.id + " ." + tax).change(function () {
                 construction.algsObj.devDuring();

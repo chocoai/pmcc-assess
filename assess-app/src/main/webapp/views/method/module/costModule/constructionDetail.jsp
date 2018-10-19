@@ -619,6 +619,29 @@
     };
 
 
+    construction.specialTreatment = function (obj) {
+        if (construction.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
+
+    construction.set = function (name, data) {
+        if (construction.isEmpty(name)) {
+            if (construction.isEmpty(data)) {
+                $("#" + construction.config.id).find("input[name='" + name + "']").val(data);
+            }
+        }
+    };
+
     /**
      * @author:  zch
      * 描述:收集数据
@@ -628,9 +651,6 @@
         var item = {};
         var forms = $("#" + construction.config.id).find("form");
         $.each(forms, function (i, n) {
-            // if (!$(n).valid()) {
-            //     return false;
-            // }
         });
         $.each(forms, function (i, n) {
             try {
@@ -663,6 +683,25 @@
         });
         $.each(forms, function (i, n) {
             $(n).initForm(item);
+        });
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (construction.isEmpty(str)) {
+                            str = construction.specialTreatment(str);
+                            construction.set(name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
         });
         $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html(item.landGetCostTotal);
         $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(item.constructionSubtotal);

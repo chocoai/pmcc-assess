@@ -152,6 +152,7 @@
         data.supportInfoList = supportInfoModule.getData();
         data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
         data.mdCostConstruction = optionsBuildBox.getMdCostConstruction();
+        data.mdCost = optionsBuildBox.getBuildKey();
         console.log(data.mdCostConstruction);
 
         if ("${processInsId}" != "0") {
