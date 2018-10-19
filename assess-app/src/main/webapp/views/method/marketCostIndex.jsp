@@ -25,12 +25,12 @@
                 <label>建筑形态</label>
             </span>
             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                 <input type="radio" name="building" value="1" checked="checked">
-                <label>建筑物</label>
+                 <input type="radio" id="building1" name="building" value="1" checked="checked">
+                <label for="building1">建筑物</label>
             </span>
             <span class="col-sm-2  checkbox-inline">
-                <input type="radio" name="building" value="2">
-                <label>在建工程</label>
+                <input type="radio" id="building2" name="building" value="2">
+                <label for="building2">在建工程</label>
             </span>
         </div>
     </div>
