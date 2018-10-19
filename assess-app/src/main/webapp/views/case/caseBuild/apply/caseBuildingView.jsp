@@ -45,6 +45,15 @@
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
+                                    楼栋名称<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="楼栋名称" name="buildingName"
+                                           class="form-control" required="required" value="${caseBuilding.buildingName}">
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
                                     户型区间<span class="symbol required"></span>
                                 </label>
                                 <div class="col-sm-3">
@@ -52,6 +61,9 @@
                                            class="form-control" required="required" value="${caseBuilding.unitInterval}">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     物业费<span class="symbol required"></span>
@@ -61,9 +73,6 @@
                                            data-rule-number='true' class="form-control" required="required">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     公共设施使用费<span class="symbol required"></span>
@@ -71,16 +80,6 @@
                                 <div class="col-sm-3">
                                     <input type="text" placeholder="公共设施使用费(数字)" name="facilitiesUseFee"
                                            data-rule-number='true' class="form-control" required="required" value="${caseBuilding.facilitiesUseFee}">
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    楼层起<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" placeholder="楼层起(数字)" name="floorStart" value="${caseBuilding.floorStart}"
-                                           data-rule-number='true' class="form-control" required="required">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -95,6 +94,15 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    楼层起<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" placeholder="楼层起(数字)" name="floorStart" value="${caseBuilding.floorStart}"
+                                           data-rule-number='true' class="form-control" required="required">
+                                </div>
+                            </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     楼层止<span class="symbol required"></span>
@@ -113,6 +121,9 @@
                                            name="floorCount" class="form-control" required="required" value="${caseBuilding.floorCount}">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     建筑高度<span class="symbol required"></span>
@@ -122,9 +133,6 @@
                                            name="buildingHeight" class="form-control" required="required" value="${caseBuilding.buildingHeight}">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     建筑面积<span class="symbol required"></span>
@@ -143,6 +151,9 @@
                                            name="coverAnArea" class="form-control" required="required" value="${caseBuilding.coverAnArea}">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     层高<span class="symbol required"></span>
@@ -152,9 +163,6 @@
                                            name="floorHeight" class="form-control" required="required" value="${caseBuilding.floorHeight}">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
                                     径深<span class="symbol required"></span>

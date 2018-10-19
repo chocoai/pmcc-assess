@@ -14,6 +14,8 @@ public class CaseBuilding {
 
     private String buildingNumber;
 
+    private String buildingName;
+
     private Integer propertyType;
 
     private Integer floorCount;
@@ -106,6 +108,14 @@ public class CaseBuilding {
 
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
     }
 
     public Integer getPropertyType() {
