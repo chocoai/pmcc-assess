@@ -27,7 +27,7 @@
             </div>
 
             <!-- 房产证 -->
-            <div class="x_panel" id="viewDeclareRealtyHouseCert" style="display: none">
+            <div id="viewDeclareRealtyHouseCert" style="display: none">
                 <%@include file="/views/project/stageDeclare/HouseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
             </div>
 
@@ -105,8 +105,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='classify"+data[j].id+"' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml +="<label for='classify"+data[j].id+"'>"+ data[j].name+"<label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }

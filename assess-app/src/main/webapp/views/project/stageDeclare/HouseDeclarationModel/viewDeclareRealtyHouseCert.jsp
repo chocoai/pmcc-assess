@@ -11,40 +11,39 @@
         <div class="x_title">
             <h3>
                 房产证申报 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.showAddModel()"
-                              data-toggle="modal"> 新增</button>
+                <small>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success" onclick="declareRealtyHouseCert.showAddModel()"
+                                data-toggle="modal"> 新增</button>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a></li>
+                            <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouse').val('').trigger('click')">导入</a></li>
+                        </ul>
+                    </div>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入房产证数据
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a></li>
-                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouse').val('').trigger('click')">导入</a></li>
-                    </ul>
-                </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a></li>
+                            <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouseLand').val('').trigger('click')">导入</a></li>
+                        </ul>
+                    </div>
+                </small>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证数据
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a></li>
-                        <li><a class="btn btn-default" onclick="$('#ajaxFileUploadHouseLand').val('').trigger('click')">导入</a></li>
-                    </ul>
-                </div>
 
             </h3>
             <div class="clearfix"></div>
         </div>
         <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-sm-12">
-
-                </div>
-            </div>
             <div class="form-group">
                 <div class="x-valid">
                     <table class="table table-bordered" id="tableDeclareRealtyHouseCert">
@@ -289,7 +288,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="declareRealtyHouseCert.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-toggle="modal" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'\')"><i class="fa fa-remove fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-toggle="modal" data-placement="top" data-original-title="删除" onclick="declareRealtyHouseCert.deleteData(' + row.id + ',\'\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyHouseCert.sonDeclareRealtyLandCert.showViewModel(' + row.id + ');" ><i class="fa">土地证关联</i></a>';
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='declareRealtyHouseCert.houseEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"房产证附件"+"</a>" ;
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='declareRealtyHouseCert.landEnclosure("+row.id+")'"+">"+"<i class='fa'>" +"土地证附件"+"</a>" ;
