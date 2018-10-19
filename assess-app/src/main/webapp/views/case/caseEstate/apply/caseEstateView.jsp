@@ -826,34 +826,41 @@
          * @date:2018-09-17
          **/
         tempSave: function () {
-            if (!$("#" + caseEstate.config.other.frm()).valid()) {
+            if ($("#" + caseEstate.config.other.frm()).find('input:checkbox:checked').length <= 0) {
+                toastr.info("请选择子项表单");
                 return false;
             }
             var data = formParams(caseEstate.config.other.frm());
+            console.log(data);
             //处理子类显示问题
             if (caseEstate.isEmpty(data)) {
-                var matching = data.matching.split(",");
-                var other = data.other.split(",");
-                $.each(matching, function (i, n) {
-                    AssessCommon.getDataDicInfo(n, function (item) {
-                        var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("." + fieldName);
-                        if (jq.size() > 0) {
-                            jq.toggle();
-                        }
-                        console.log(fieldName);
+                if (data.matching) {
+                    var matching = data.matching.split(",");
+                    $.each(matching, function (i, n) {
+                        AssessCommon.getDataDicInfo(n, function (item) {
+                            var fieldName = caseEstate.other.subFileName(item.fieldName);
+                            var jq = $("." + fieldName);
+                            if (jq.size() > 0) {
+                                jq.toggle();
+                            }
+                            console.log(fieldName);
+                        });
                     });
-                });
-                $.each(other, function (i, n) {
-                    AssessCommon.getDataDicInfo(n, function (item) {
-                        var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("." + fieldName);
-                        if (jq.size() > 0) {
-                            jq.toggle();
-                        }
-                        console.log(fieldName);
+                }
+
+                if (data.other) {
+                    var other = data.other.split(",");
+                    $.each(other, function (i, n) {
+                        AssessCommon.getDataDicInfo(n, function (item) {
+                            var fieldName = caseEstate.other.subFileName(item.fieldName);
+                            var jq = $("." + fieldName);
+                            if (jq.size() > 0) {
+                                jq.toggle();
+                            }
+                            console.log(fieldName);
+                        });
                     });
-                });
+                }
             }
             $("#" + caseEstate.config.other.box()).modal("hide");
         },
