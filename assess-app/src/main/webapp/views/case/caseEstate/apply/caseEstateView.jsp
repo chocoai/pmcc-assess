@@ -30,7 +30,8 @@
                     <div class="x_title">
                         <h3>楼盘基本信息
                             <small>
-                                <label class="btn btn-xs btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
+                                <label class="btn btn-xs btn-primary"
+                                       onclick="caseEstate.other.showBoxDiv();">其它信息</label>
                             </small>
                         </h3>
                         <div class="clearfix"></div>
@@ -825,34 +826,41 @@
          * @date:2018-09-17
          **/
         tempSave: function () {
-            if (!$("#" + caseEstate.config.other.frm()).valid()) {
+            if ($("#" + caseEstate.config.other.frm()).find('input:checkbox:checked').length <= 0) {
+                toastr.info("请选择子项表单");
                 return false;
             }
             var data = formParams(caseEstate.config.other.frm());
+            console.log(data);
             //处理子类显示问题
             if (caseEstate.isEmpty(data)) {
-                var matching = data.matching.split(",");
-                var other = data.other.split(",");
-                $.each(matching, function (i, n) {
-                    AssessCommon.getDataDicInfo(n, function (item) {
-                        var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("." + fieldName);
-                        if (jq.size() > 0) {
-                            jq.toggle();
-                        }
-                        console.log(fieldName);
+                if (data.matching) {
+                    var matching = data.matching.split(",");
+                    $.each(matching, function (i, n) {
+                        AssessCommon.getDataDicInfo(n, function (item) {
+                            var fieldName = caseEstate.other.subFileName(item.fieldName);
+                            var jq = $("." + fieldName);
+                            if (jq.size() > 0) {
+                                jq.toggle();
+                            }
+                            console.log(fieldName);
+                        });
                     });
-                });
-                $.each(other, function (i, n) {
-                    AssessCommon.getDataDicInfo(n, function (item) {
-                        var fieldName = caseEstate.other.subFileName(item.fieldName);
-                        var jq = $("." + fieldName);
-                        if (jq.size() > 0) {
-                            jq.toggle();
-                        }
-                        console.log(fieldName);
+                }
+
+                if (data.other) {
+                    var other = data.other.split(",");
+                    $.each(other, function (i, n) {
+                        AssessCommon.getDataDicInfo(n, function (item) {
+                            var fieldName = caseEstate.other.subFileName(item.fieldName);
+                            var jq = $("." + fieldName);
+                            if (jq.size() > 0) {
+                                jq.toggle();
+                            }
+                            console.log(fieldName);
+                        });
                     });
-                });
+                }
             }
             $("#" + caseEstate.config.other.box()).modal("hide");
         },
@@ -890,8 +898,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='other" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='other" + data[j].id + "'>" + data[j].name + "</label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }
@@ -915,8 +923,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' required='required' name='matching' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='matching" + data[j].id + "' required='required' name='matching' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='matching" + data[j].id + "'>" + data[j].name + "</label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }

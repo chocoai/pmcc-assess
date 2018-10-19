@@ -96,7 +96,7 @@
         var precision = 2;//精度
         data = [[
             {field: 'number', title: '序号', width: 50},
-            {field: 'name', title: '工程名称', width: '20%'},
+            {field: 'name', title: '工程名称', width: 200},
             {
                 field: 'currency',
                 title: ' 单方造价(元/㎡)',

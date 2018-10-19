@@ -284,15 +284,11 @@
     <jsp:include page="../developmentModule/land/resultView.jsp"></jsp:include>
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/landDevelopment.jsp"></jsp:include>
-        <div class="form-group">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <input class="btn btn btn-primary" type="button" value="关闭"
-                       onclick="landEngineering.constructionInstallationEngineeringFeeEvent.close()">
-                <input class="btn btn-success" value="确认" type="button"
-                       onclick="landEngineering.constructionInstallationEngineeringFeeEvent.eventSave()">
-            </div>
+        <div class="modal-footer">
+            <input class="btn btn btn-primary" type="button" value="关闭"
+                   onclick="landEngineering.constructionInstallationEngineeringFeeEvent.close()">
+            <input class="btn btn-success" value="确认" type="button"
+                   onclick="landEngineering.constructionInstallationEngineeringFeeEvent.eventSave()">
         </div>
     </div>
 
@@ -1097,7 +1093,7 @@
         show: function () {
             layer.open({
                 type: 1,
-                area: ['920px', '1340px'],
+                area: ['920px', '740px'],
                 offset: 't',
                 content: $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionInstallationEngineeringFee.class)
             });

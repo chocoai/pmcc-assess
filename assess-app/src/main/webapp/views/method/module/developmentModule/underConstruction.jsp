@@ -282,15 +282,11 @@
     <jsp:include page="../developmentModule/underConstruction/resultView.jsp"></jsp:include>
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/underDevelopment.jsp"></jsp:include>
-        <div class="form-group">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <input class="btn btn btn-primary" type="button" value="关闭"
-                       onclick="underConstruction.constructionInstallationEngineeringFeeEvent.close()">
-                <input class="btn btn-success" value="确认" type="button"
-                       onclick="underConstruction.constructionInstallationEngineeringFeeEvent.eventSave()">
-            </div>
+        <div class="modal-footer">
+            <input class="btn btn btn-primary" type="button" value="关闭"
+                   onclick="underConstruction.constructionInstallationEngineeringFeeEvent.close()">
+            <input class="btn btn-success" value="确认" type="button"
+                   onclick="underConstruction.constructionInstallationEngineeringFeeEvent.eventSave()">
         </div>
     </div>
 </div>

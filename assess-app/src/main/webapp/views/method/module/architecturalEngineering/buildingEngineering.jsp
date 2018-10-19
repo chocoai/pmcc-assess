@@ -143,7 +143,7 @@
             treeField: 'name',//treegrid 树形结构主键 text
             fitColumns: true,
             striped: true,//显示斑马线
-            columns:constructEngineeringObject.getColumns() ,
+            columns: constructEngineeringObject.getColumns(),
             onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
                 //根据id获取值
                 constructEngineeringObject.updateChildren($('#' + constructEngineeringObject.config().tableId).treegrid('find', row.id), changes);
@@ -162,6 +162,7 @@
             }
             return false;
         }
+
         var data = this.data;
         var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
         if (isNotNull(data)) {//引用修改数据继续处理
@@ -245,7 +246,7 @@
         var currency = 0;
         if (constructEngineeringObject.isNotNull(childrens)) {
             $.each(childrens, function (i, n) {
-                currency += constructEngineeringObject.specialTreatment(n.currency) ;
+                currency += parseFloat(constructEngineeringObject.specialTreatment(n.currency));
             });
         }
         parent.currency = currency;
@@ -268,7 +269,7 @@
         var area = 0;
         var totalCost = 0;
         $.each($('#' + constructEngineeringObject.config().tableId).treegrid('getRoots'), function (i, n) {
-            currency +=constructEngineeringObject.specialTreatment(n.currency)
+            currency += parseFloat(constructEngineeringObject.specialTreatment(n.currency));
         });
         constructEngineeringObject.updateHtml(currency, area, totalCost);
     };

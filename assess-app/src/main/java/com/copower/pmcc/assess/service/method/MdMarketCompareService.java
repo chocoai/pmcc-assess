@@ -180,10 +180,15 @@ public class MdMarketCompareService {
         if (houseTrading != null) {
             BaseDataDic transactionDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_NORMAL_TRANSACTION_YES);
             BaseDataDic disposableDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PAYMENT_METHOD_DISPOSABLE);
-            if (houseTrading.getNormalTransaction() != null && !houseTrading.getNormalTransaction().equals(transactionDic.getId()))
-                return true;
-            if (houseTrading.getPaymentMethod() != null && !houseTrading.getPaymentMethod().equals(disposableDic.getId()))
-                return true;
+            if (houseTrading.getNormalTransaction() != null) {
+                if (!Integer.valueOf(houseTrading.getNormalTransaction()).equals(transactionDic.getId()))
+                    return true;
+            }
+
+            if (houseTrading.getPaymentMethod() != null && !houseTrading.getPaymentMethod().equals(disposableDic.getId())){
+                if (!Integer.valueOf(houseTrading.getPaymentMethod()).equals(disposableDic.getId()))
+                    return true;
+            }
         }
         return false;
     }

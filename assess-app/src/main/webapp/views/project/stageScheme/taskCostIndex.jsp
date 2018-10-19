@@ -25,58 +25,11 @@
             <!-- 引入成本法模块 -->
             <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
             <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2>${projectPlanDetails.projectPhaseName}成果提交</h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frm_task" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                实际工时
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <input type="text" required
-                                           placeholder="实际工时" data-rule-number='true'
-                                           id="actualHours" name="actualHours" class="form-control" maxlength="3">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果描述
-                            </label>
-                            <div class="x-valid">
-                                <div class="col-sm-11">
-                                        <textarea required placeholder="成果描述" id="taskRemarks" name="taskRemarks"
-                                                  class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                成果文件
-                            </label>
-                            <div class="col-sm-11">
-                                <input id="apply_file" name="apply_file" type="file" multiple="false">
-                                <div id="_apply_file">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -144,10 +97,6 @@
         if (!supportInfoModule.valid()) {
             return false;
         }
-        if (!$("#frm_task").valid()) {
-            return false;
-        }
-
         var data = {};
         data.supportInfoList = supportInfoModule.getData();
         data.mdCostBuilding = optionsBuildBox.getMdCostBuilding();
@@ -156,10 +105,10 @@
         console.log(data.mdCostConstruction);
 
         if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
+            submitEditToServer(JSON.stringify(data));
         }
         else {
-            submitToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
+            submitToServer(JSON.stringify(data));
         }
     }
 

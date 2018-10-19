@@ -34,12 +34,12 @@
                 <label>经营方式</label><span class="symbol required"></span>
             </span>
             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                 <input type="radio" name="development" value="1" checked="checked">
-                <label>土地</label>
+                 <input type="radio" id="development1" name="development" value="1" checked="checked">
+                <label for="development1">土地</label>
             </span>
             <span class="col-sm-2  checkbox-inline">
-                <input type="radio" name="development" value="2">
-                <label>在建工程</label>
+                <input type="radio" id="development2" name="development" value="2">
+                <label for="development2">在建工程</label>
             </span>
         </div>
         <div class="col-sm-12 form-group">
