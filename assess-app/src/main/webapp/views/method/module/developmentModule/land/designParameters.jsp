@@ -24,21 +24,21 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="契税率" class="form-control x-percent" data-rule-number='true' required="required"
+                               placeholder="契税率" readonly="readonly" class="form-control x-percent" data-rule-number='true' required="required"
                                name="deedTax">
                     </div>
                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="deedTaxExplain">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--费率说明--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="费率说明" class="form-control"--%>
+                               <%--name="deedTaxExplain">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
 
             <div class="form-group">
@@ -49,20 +49,20 @@
                     <div class="col-sm-3">
                         <input type="text"
                                placeholder="交易费率" class="form-control x-percent" data-rule-number='true' required="required"
-                               name="transactionCostTax">
+                               name="transactionCostTax" readonly="readonly">
                     </div>
                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="transactionCostTaxExplain">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--费率说明--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="费率说明" class="form-control"--%>
+                               <%--name="transactionCostTaxExplain">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
 
             <div class="form-group">
@@ -72,21 +72,21 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="管理费率" class="form-control x-percent" data-rule-number='true' required="required"
+                               placeholder="管理费率" class="form-control x-percent" readonly="readonly" data-rule-number='true' required="required"
                                name="managementExpenseTax">
                     </div>
                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="managementExpenseTaxExplain">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--费率说明--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="费率说明" class="form-control"--%>
+                               <%--name="managementExpenseTaxExplain">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
 
             <div class="form-group">
@@ -192,21 +192,21 @@
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="土地增值税" class="form-control x-percent" data-rule-number='true' required="required"
+                               placeholder="土地增值税" class="form-control x-percent" readonly="readonly" data-rule-number='true' required="required"
                                name="landIncrementTax">
                     </div>
                 </div>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        费率说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="费率说明" class="form-control"
-                               name="landIncrementTaxExplain">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--费率说明--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="费率说明" class="form-control"--%>
+                               <%--name="landIncrementTaxExplain">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
 
         </form>

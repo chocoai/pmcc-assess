@@ -11,6 +11,8 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +98,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
         Integer id = 0;
         Integer pid = 0;
+        String keyMdDevelopment = null;
         JSONObject jsonObject = JSON.parseObject(formData);
         List<SchemeSupportInfo> supportInfoList = null;
         MdDevelopmentHypothesis mdDevelopmentHypothesis = null;
@@ -122,6 +125,26 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
+            }
+            //确定假设开发法具体选择的哪一个方法来测算的
+            keyMdDevelopment = jsonObject.getString("mdDevelopment");
+            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)){
+                if (Objects.equal("MdDevelopmentArchitectural",keyMdDevelopment)){
+                    if (mdDevelopmentArchitectural != null){
+                        mdDevelopment.setId(id);
+                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
+                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                    }
+                }
+                if (Objects.equal("MdDevelopmentHypothesis",keyMdDevelopment)){
+                    if (mdDevelopmentHypothesis != null){
+                        mdDevelopment.setId(id);
+                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
+                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                    }
+                }
             }
         } catch (Exception e1) {
             //不需要抛出异常
@@ -187,6 +210,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         JSONObject jsonObject = JSON.parseObject(formData);
+        String keyMdDevelopment = null;
         List<SchemeSupportInfo> supportInfoList = null;
         MdDevelopmentHypothesis mdDevelopmentHypothesis = null;
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
@@ -273,6 +297,29 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 }
             }else {
                 mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            }
+        }
+        //确定假设开发法具体选择的哪一个方法来测算的
+        keyMdDevelopment = jsonObject.getString("mdDevelopment");
+        if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)){
+            if (pid != null){
+                MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
+                if (Objects.equal("MdDevelopmentArchitectural",keyMdDevelopment)){
+                    if (mdDevelopmentArchitectural != null){
+                        mdDevelopment.setId(id);
+                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
+                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                    }
+                }
+                if (Objects.equal("MdDevelopmentHypothesis",keyMdDevelopment)){
+                    if (mdDevelopmentHypothesis != null){
+                        mdDevelopment.setId(id);
+                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
+                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                    }
+                }
             }
         }
     }

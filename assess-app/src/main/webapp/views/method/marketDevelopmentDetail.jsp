@@ -118,6 +118,34 @@
     };
 
     var optionsBuildBox = new Object();
+
+    optionsBuildBox.isEmpty = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+    optionsBuildBox.specialTreatment = function (obj) {
+        if (optionsBuildBox.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
+    optionsBuildBox.set = function (name, data,id) {
+        if (optionsBuildBox.isEmpty(name)) {
+            if (optionsBuildBox.isEmpty(data)) {
+                $("#" + id).find("input[name='" + name + "']").val(data);
+            }
+        }
+    };
     optionsBuildBox.showHypothesisDevelopment = function () {
         $(".landEngineering").show();
         $(".architecturalEngineering").hide();
@@ -165,6 +193,25 @@
         $("#underConstructionModel").find(".landPriceCorrecting").html(data.landPriceCorrecting);
         $("#underConstructionModel").find(".estimateUnitPriceLandC33").html(data.estimateUnitPriceLandC33);
         $("#underConstructionModel").find("#underConstructionParameterFrm" + " table").eq(0).html(data.table);
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("data." + name);
+                        if (optionsBuildBox.isEmpty(str)) {
+                            str = optionsBuildBox.specialTreatment(str);
+                            optionsBuildBox.set(name,str,"underConstructionModel");
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
+        });
     };
 
     //初始化 土地
@@ -188,6 +235,25 @@
         $("#landEngineeringModel").find(".landPriceCorrecting").html(data.landPriceCorrecting);
         $("#landEngineeringModel").find(".estimateUnitPriceLandC33").html(data.estimateUnitPriceLandC33);
         $("#landEngineeringModel").find("#parameterFrm" + " table").eq(0).html(data.table);
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("data." + name);
+                        if (optionsBuildBox.isEmpty(str)) {
+                            str = optionsBuildBox.specialTreatment(str);
+                            optionsBuildBox.set(name,str,"landEngineeringModel");
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
+        });
     };
 
     optionsBuildBox.detailInit = function () {

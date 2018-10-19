@@ -173,6 +173,15 @@
         jsonParams.id = "${mdDevelopmentHypothesis.id}";//确保修改能成功
         return jsonParams;
     };
+    optionsBuildBox.getBuildKey = function () {
+        var val = $(".optionsBuildBox :radio:checked").val();
+        if (val == 1) {
+            return "MdDevelopmentArchitectural" ;
+        }
+        if (val == 2) {
+            return "MdDevelopmentHypothesis";
+        }
+    };
 
     /**
      * @author:  zch

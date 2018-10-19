@@ -12,6 +12,8 @@ public class MdDevelopment {
 
     private BigDecimal price;
 
+    private String type;
+
     private String creator;
 
     private Date gmtCreated;
@@ -48,6 +50,14 @@ public class MdDevelopment {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getCreator() {

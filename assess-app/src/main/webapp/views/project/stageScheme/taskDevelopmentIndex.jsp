@@ -152,6 +152,7 @@
         data.supportInfoList = supportInfoModule.getData();
         data.mdDevelopmentHypothesis = optionsBuildBox.getHypothesisDevelopment();
         data.mdDevelopmentArchitectural = optionsBuildBox.getArchitecturalEngineering();
+        data.mdDevelopment = optionsBuildBox.getBuildKey();
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(data), $("#taskRemarks").val(), $("#actualHours").val());
         }
