@@ -30,7 +30,8 @@
                     <div class="x_title">
                         <h3>楼盘基本信息
                             <small>
-                                <label class="btn btn-xs btn-primary" onclick="caseEstate.other.showBoxDiv();">其它信息</label>
+                                <label class="btn btn-xs btn-primary"
+                                       onclick="caseEstate.other.showBoxDiv();">其它信息</label>
                             </small>
                         </h3>
                         <div class="clearfix"></div>
@@ -890,8 +891,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='other" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='other" + data[j].id + "'>" + data[j].name + "</label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }
@@ -915,8 +916,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' required='required' name='matching' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='matching" + data[j].id + "' required='required' name='matching' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='matching" + data[j].id + "'>" + data[j].name + "</label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }
