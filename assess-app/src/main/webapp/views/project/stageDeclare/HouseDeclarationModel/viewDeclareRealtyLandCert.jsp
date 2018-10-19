@@ -544,7 +544,7 @@
             return false;
         }
         var data = formParams(declareRealtyLandCertConfig.HouseCert.frm);
-        data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
