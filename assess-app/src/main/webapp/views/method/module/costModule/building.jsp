@@ -330,19 +330,19 @@
         managementExpenseTaxFun: function () {
             var b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.tax, null);
             if (b >= 0.03 && b <= 0.07) {
-                build.algsObj.managementExpense();//管理费
             } else {
                 toastr.success('管理费参考值3%-7%');
             }
+            build.algsObj.managementExpense();//管理费
         },
         //不可预见费率
         unforeseenExpensesTaxFun: function () {
             var c = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.tax, null);
             if (c >= 0.03 && c <= 0.08) {
-                build.algsObj.unforeseenExpenses();//不可预见费
             } else {
                 toastr.success('不可预见费参考值3%-7%');
             }
+            build.algsObj.unforeseenExpenses();//不可预见费
         },
         //销售费用率
         salesFeeTaxFun: function () {

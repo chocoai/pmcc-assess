@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyHouseCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,7 +130,7 @@ public class DeclareRealtyHouseCertController {
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
             }
-            return HttpResult.newCorrectResult(declareRealtyHouseCertService.landLevels(declareRealtyHouseCert));
+            return HttpResult.newCorrectResult(declareRealtyHouseCertService.lists(declareRealtyHouseCert));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");
@@ -158,7 +157,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/importDataLand", name = "导入土地证并且关联房产证", method = RequestMethod.POST)
-    public HttpResult importDataLand(HttpServletRequest request, DeclareRealtyHouseCert declareRealtyHouseCert) {
+    public HttpResult importDataLand(HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -166,7 +165,7 @@ public class DeclareRealtyHouseCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyHouseCertService.importDataLand(declareRealtyHouseCert,multipartFile);
+            String str = declareRealtyHouseCertService.importLandAndHouse(multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyLandCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -131,7 +130,7 @@ public class DeclareRealtyLandCertController {
             if (pid != null) {
                 declareRealtyLandCert.setPid(pid);
             }
-            return HttpResult.newCorrectResult(declareRealtyLandCertService.landLevels(declareRealtyLandCert));
+            return HttpResult.newCorrectResult(declareRealtyLandCertService.lists(declareRealtyLandCert));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");
@@ -157,7 +156,7 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/importDataHouse", name = "导入房产证并且关联土地证", method = RequestMethod.POST)
-    public HttpResult importDataLand(HttpServletRequest request,DeclareRealtyLandCert declareRealtyLandCert) {
+    public HttpResult importDataLand(HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -165,7 +164,7 @@ public class DeclareRealtyLandCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyLandCertService.importDataLand(declareRealtyLandCert,multipartFile);
+            String str = declareRealtyLandCertService.importLandAndHouse(multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

@@ -551,10 +551,10 @@
         managementExpenseTaxFun: function () {
             var a = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.tax, null);
             if (a >= 0.03 && a <= 0.08) {
-                construction.algsObj.managementExpense();
             } else {
                 toastr.success('管理费参考值3%-8%');
             }
+            construction.algsObj.managementExpense();
         },
         businessTaxFun: function () {
             construction.algsObj.businessAdditional();//营业税金及附加

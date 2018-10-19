@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.common.DateHelp;
-import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
@@ -10,8 +8,6 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEngineeringVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -38,9 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -57,13 +51,11 @@ public class DeclareBuildEngineeringService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
     private DeclareBuildEngineeringDao declareBuildEngineeringDao;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private DeclarePoiHelp declarePoiHelp;
 
     public String importData(DeclareBuildEngineering declareBuildEngineering, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -78,62 +70,33 @@ public class DeclareBuildEngineeringService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        Sheet sheet = workbook.getSheetAt(0);//只取第一个sheet
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
         //工作表的第一行
         row = sheet.getRow(0);
         //总列数
         int colLength = row.getLastCellNum();
-        int startRowNumber = 1;//读取数据的起始行
-        int successCount = 0;//导入成功数据条数
+        //读取数据的起始行
+        int startRowNumber = 1;
+        //导入成功数据条数
+        int successCount = 0;
         //总行数
         int rowLength = sheet.getLastRowNum();
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
         }
-        //----------------------------||----------------------
         for (int i = startRowNumber; i <= rowLength; i++) {
-            boolean flag = true;//标识符
+            //标识符
+            boolean flag = true;
             DeclareBuildEngineering oo = null;
             try {
                 row = sheet.getRow(i);
                 oo = new DeclareBuildEngineering();
-                String provinceName = PoiUtils.getCellValue(row.getCell(14));//省
-                String cityName = PoiUtils.getCellValue(row.getCell(15));//市或者区
-                String districtName = PoiUtils.getCellValue(row.getCell(16));//县
-                oo.setProvince(provinceName);
-                oo.setCity(cityName);
-                oo.setDistrict(districtName);
-                Map<String,String> map = new HashMap<>();
-                //验证(区域)
-                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
-                    builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
+                oo.setPlanDetailsId(declareBuildEngineering.getPlanDetailsId());
+                if (!declarePoiHelp.buildEngineering(oo,builder,row,i)){
                     continue;
                 }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
-                    oo.setProvince(map.get("province"));
-                }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
-                    oo.setCity(map.get("city"));
-                }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
-                    oo.setDistrict(map.get("district"));
-                }
-                oo.setPlanDetailsId(declareBuildEngineering.getPlanDetailsId());
-                oo.setOccupancyUnit(PoiUtils.getCellValue(row.getCell(0)));//占有单位
-                oo.setName(PoiUtils.getCellValue(row.getCell(1)));//项目名称
-                oo.setBeLocated(PoiUtils.getCellValue(row.getCell(2)));//坐落
-                oo.setStructure(PoiUtils.getCellValue(row.getCell(3)));//结构
-                oo.setBuildArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(4))));//建筑面积
-                oo.setStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(5)), null));//开工日期
-                oo.setExpectedCompletionDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(6)), null));//预期完成日期
-                oo.setSpeedProgress(PoiUtils.getCellValue(row.getCell(7)));//形象进度
-                oo.setPaymentRatio(PoiUtils.getCellValue(row.getCell(8)));//付款比例
-                oo.setBookValue(PoiUtils.getCellValue(row.getCell(9)));//账面价值
-                oo.setBookNetValue(PoiUtils.getCellValue(row.getCell(10)));//帐面净值
-                oo.setDeclarer(PoiUtils.getCellValue(row.getCell(11)));//申报人
-                oo.setDeclarationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(12)), null));//申报日期
-                oo.setRemark(PoiUtils.getCellValue(row.getCell(13)));//申报人
             } catch (Exception e) {
                 flag = false;
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));

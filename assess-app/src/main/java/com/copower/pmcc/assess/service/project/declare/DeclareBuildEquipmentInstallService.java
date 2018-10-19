@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.common.DateHelp;
-import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
@@ -36,9 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -58,6 +54,8 @@ public class DeclareBuildEquipmentInstallService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclareBuildEquipmentInstallDao declareBuildEquipmentInstallDao;
+    @Autowired
+    private DeclarePoiHelp declarePoiHelp;
 
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -72,64 +70,33 @@ public class DeclareBuildEquipmentInstallService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        Sheet sheet = workbook.getSheetAt(0);//只取第一个sheet
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
         //工作表的第一行
         row = sheet.getRow(0);
         //总列数
         int colLength = row.getLastCellNum();
-        int startRowNumber = 1;//读取数据的起始行
-        int successCount = 0;//导入成功数据条数
+        //读取数据的起始行
+        int startRowNumber = 1;
+        //导入成功数据条数
+        int successCount = 0;
         //总行数
         int rowLength = sheet.getLastRowNum();
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
         }
-        //----------------------------||----------------------
         for (int i = startRowNumber; i <= rowLength; i++) {
-            boolean flag = true;//标识符
+            //标识符
+            boolean flag = true;
             DeclareBuildEquipmentInstall oo = null;
             try {
                 row = sheet.getRow(i);
                 oo = new DeclareBuildEquipmentInstall();
-                String provinceName = PoiUtils.getCellValue(row.getCell(16));//省
-                String cityName = PoiUtils.getCellValue(row.getCell(17));//市或者区
-                String districtName = PoiUtils.getCellValue(row.getCell(18));//县
-                oo.setProvince(provinceName);
-                oo.setCity(cityName);
-                oo.setDistrict(districtName);
-                Map<String,String> map = new HashMap<>();
-                //验证(区域)
-                if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
-                    builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
+                oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
+                if (!declarePoiHelp.buildEquipmentInstall(oo,builder,row,i)){
                     continue;
                 }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
-                    oo.setProvince(map.get("province"));
-                }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
-                    oo.setCity(map.get("city"));
-                }
-                if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
-                    oo.setDistrict(map.get("district"));
-                }
-                oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
-                oo.setOccupancyUnit(PoiUtils.getCellValue(row.getCell(0)));//占有单位
-                oo.setName(PoiUtils.getCellValue(row.getCell(1)));//项目名称
-                oo.setBeLocated(PoiUtils.getCellValue(row.getCell(2)));//坐落
-                oo.setSpecificationModel(PoiUtils.getCellValue(row.getCell(3)));//规格型号
-                oo.setManufacturer(PoiUtils.getCellValue(row.getCell(4)));//生产厂家
-                oo.setMeasurementUnit(PoiUtils.getCellValue(row.getCell(5)));//计量单位
-                oo.setNumber(Integer.parseInt(PoiUtils.getCellValue(row.getCell(6))));//数量
-                oo.setStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(7)), null));//开工日期
-                oo.setExpectedCompletionDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(8)), null));//预期完成日期
-                oo.setBookEquipmentFee(PoiUtils.getCellValue(row.getCell(9)));//帐面设备费
-                oo.setBookCapitalCost(PoiUtils.getCellValue(row.getCell(10)));//账面资金成本
-                oo.setBookInstallationFee(PoiUtils.getCellValue(row.getCell(11)));//账面安装费
-                oo.setOther(PoiUtils.getCellValue(row.getCell(12)));//其它
-                oo.setDeclarer(PoiUtils.getCellValue(row.getCell(13)));//申报人
-                oo.setDeclarationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)), null));//申报日期
-                oo.setRemark(PoiUtils.getCellValue(row.getCell(15)));//备注
             } catch (Exception e) {
                 flag = false;
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
@@ -189,23 +156,26 @@ public class DeclareBuildEquipmentInstallService {
         BeanUtils.copyProperties(declareBuildEquipmentInstall, vo);
         if (StringUtils.isNotBlank(declareBuildEquipmentInstall.getProvince())) {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getProvince())) {
-                vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getProvince()));//省
+                //省
+                vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getProvince()));
             }else {
-                vo.setProvinceName(declareBuildEquipmentInstall.getProvince());//省
+                vo.setProvinceName(declareBuildEquipmentInstall.getProvince());
             }
         }
         if (StringUtils.isNotBlank(declareBuildEquipmentInstall.getCity())) {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getCity())) {
-                vo.setCityName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getCity()));//市或者县
+                vo.setCityName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getCity()));
             }else {
-                vo.setCityName(declareBuildEquipmentInstall.getCity());//市或者县
+                //市
+                vo.setCityName(declareBuildEquipmentInstall.getCity());
             }
         }
         if (StringUtils.isNotBlank(declareBuildEquipmentInstall.getDistrict())) {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getDistrict())) {
-                vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getDistrict()));//县
+                //县
+                vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getDistrict()));
             }else {
-                vo.setDistrictName(declareBuildEquipmentInstall.getDistrict());//县
+                vo.setDistrictName(declareBuildEquipmentInstall.getDistrict());
             }
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareBuildEquipmentInstall.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class));
