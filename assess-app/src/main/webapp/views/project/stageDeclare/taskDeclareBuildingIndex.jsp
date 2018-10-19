@@ -27,12 +27,12 @@
             </div>
 
             <!-- 土建 -->
-            <div class="x_panel" id="viewCivilEngineering">
+            <div id="viewCivilEngineering" style="display: none;">
                 <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewCivilEngineering.jsp" %>
             </div>
 
             <!-- 设备安装 -->
-            <div class="x_panel" id="viewEquipmentInstallation">
+            <div id="viewEquipmentInstallation" style="display: none;">
                 <%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEquipmentInstallation.jsp" %>
             </div>
 
@@ -62,11 +62,11 @@
         },
         civilEngineering: {
             name: "土建",
-            view:"viewCivilEngineering"
+            view: "viewCivilEngineering"
         },
         equipmentInstallation: {
             name: "设备安装",
-            view:"viewEquipmentInstallation"
+            view: "viewEquipmentInstallation"
         }
     };
 
@@ -96,8 +96,8 @@
                         if (j < data.length) {
                             resetHtml += "<div class='col-sm-2'>";
                             resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += data[j].name;
+                            resetHtml += "<input type='checkbox' id='other" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
+                            resetHtml += "<label for='other" + data[j].id + "'>" + data[j].name + "</label>";
                             resetHtml += "</span>";
                             resetHtml += "</div>";
                         }
@@ -114,10 +114,10 @@
                 $(n).click(function () {
                     AssessCommon.getProjectClassifyInfo($(n).val(), function (data) {
                         if (declareFunObj.isEmpty(data)) {
-                            if (data.name == config.civilEngineering.name){
+                            if (data.name == config.civilEngineering.name) {
                                 declareFunObj.civilEngineering.toggle();
                             }
-                            if (data.name == config.equipmentInstallation.name){
+                            if (data.name == config.equipmentInstallation.name) {
                                 declareFunObj.equipmentInstallation.toggle();
                             }
                         }
@@ -128,13 +128,13 @@
     };
 
     declareFunObj.civilEngineering = {
-        toggle:function () {
+        toggle: function () {
             $("#" + config.civilEngineering.view).toggle();
         }
     };
 
     declareFunObj.equipmentInstallation = {
-        toggle:function () {
+        toggle: function () {
             $("#" + config.equipmentInstallation.view).toggle();
         }
     }
@@ -155,7 +155,6 @@
     }
 
 </script>
-
 
 
 </html>
