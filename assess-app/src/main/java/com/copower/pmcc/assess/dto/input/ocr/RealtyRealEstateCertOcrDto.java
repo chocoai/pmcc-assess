@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class RealtyRealEstateCertOcrDto {
     private String sid;
-    Integer angle;
+    private Integer angle;
     //房产证编号
     private String number;
     //权利人

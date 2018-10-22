@@ -111,7 +111,7 @@ public class DeclareRealtyRealEstateCertController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareRealtyRealEstateCert", method = {RequestMethod.GET}, name = "不动产维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType) {
         try {
             DeclareRealtyRealEstateCert declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
             if (!StringUtils.isEmpty(province)) {
@@ -129,6 +129,9 @@ public class DeclareRealtyRealEstateCertController {
             if (pid != null) {
                 declareRealtyRealEstateCert.setPid(pid);
             }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+                declareRealtyRealEstateCert.setDeclareType(declareType);
+            }
             return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.landLevels(declareRealtyRealEstateCert));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
@@ -137,7 +140,7 @@ public class DeclareRealtyRealEstateCertController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/importData", name = "导入房产证数据", method = RequestMethod.POST)
+    @RequestMapping(value = "/importData", name = "导入不动产证数据", method = RequestMethod.POST)
     public HttpResult importData(HttpServletRequest request, DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -154,7 +157,7 @@ public class DeclareRealtyRealEstateCertController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/parseRealtyEstateCert", name = "解析上传的图片房产证", method = RequestMethod.POST)
+    @RequestMapping(value = "/parseRealtyEstateCert", name = "解析上传的图片不动产证", method = RequestMethod.POST)
     public HttpResult parseRealtyEstateCert(String startPath) {
         try {
             return HttpResult.newCorrectResult(declareRealtyRealEstateCertService.parseRealtyEstateCert(startPath));

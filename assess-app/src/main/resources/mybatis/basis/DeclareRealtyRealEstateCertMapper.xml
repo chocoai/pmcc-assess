@@ -47,6 +47,7 @@
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
     <result column="acreage" property="acreage" jdbcType="DECIMAL" />
     <result column="use_right_area" property="useRightArea" jdbcType="DECIMAL" />
+    <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
     <result column="real_estate_unit_number" property="realEstateUnitNumber" jdbcType="VARCHAR" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -117,7 +118,8 @@
     inner_area, other, land_number, graph_number, room_number, land_acquisition, use_start_date, 
     use_end_date, public_area, other_note, registration_authority, registration_date, 
     use_right_type, acquisition_price, purpose, termination_date, memo, apportionment_area, 
-    acreage, use_right_area, real_estate_unit_number, gmt_modified, gmt_created, creator
+    acreage, use_right_area, declare_type, real_estate_unit_number, gmt_modified, gmt_created, 
+    creator
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample" >
     select
@@ -167,9 +169,9 @@
       other_note, registration_authority, registration_date, 
       use_right_type, acquisition_price, purpose, 
       termination_date, memo, apportionment_area, 
-      acreage, use_right_area, real_estate_unit_number, 
-      gmt_modified, gmt_created, creator
-      )
+      acreage, use_right_area, declare_type, 
+      real_estate_unit_number, gmt_modified, gmt_created, 
+      creator)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{certName,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{beLocated,jdbcType=VARCHAR}, 
@@ -184,9 +186,9 @@
       #{otherNote,jdbcType=VARCHAR}, #{registrationAuthority,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
       #{useRightType,jdbcType=VARCHAR}, #{acquisitionPrice,jdbcType=DECIMAL}, #{purpose,jdbcType=VARCHAR}, 
       #{terminationDate,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, #{apportionmentArea,jdbcType=DECIMAL}, 
-      #{acreage,jdbcType=DECIMAL}, #{useRightArea,jdbcType=DECIMAL}, #{realEstateUnitNumber,jdbcType=VARCHAR}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}
-      )
+      #{acreage,jdbcType=DECIMAL}, #{useRightArea,jdbcType=DECIMAL}, #{declareType,jdbcType=VARCHAR}, 
+      #{realEstateUnitNumber,jdbcType=VARCHAR}, #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -325,6 +327,9 @@
       </if>
       <if test="useRightArea != null" >
         use_right_area,
+      </if>
+      <if test="declareType != null" >
+        declare_type,
       </if>
       <if test="realEstateUnitNumber != null" >
         real_estate_unit_number,
@@ -471,6 +476,9 @@
       </if>
       <if test="useRightArea != null" >
         #{useRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="declareType != null" >
+        #{declareType,jdbcType=VARCHAR},
       </if>
       <if test="realEstateUnitNumber != null" >
         #{realEstateUnitNumber,jdbcType=VARCHAR},
@@ -630,6 +638,9 @@
       <if test="record.useRightArea != null" >
         use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
       </if>
+      <if test="record.declareType != null" >
+        declare_type = #{record.declareType,jdbcType=VARCHAR},
+      </if>
       <if test="record.realEstateUnitNumber != null" >
         real_estate_unit_number = #{record.realEstateUnitNumber,jdbcType=VARCHAR},
       </if>
@@ -694,6 +705,7 @@
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
       acreage = #{record.acreage,jdbcType=DECIMAL},
       use_right_area = #{record.useRightArea,jdbcType=DECIMAL},
+      declare_type = #{record.declareType,jdbcType=VARCHAR},
       real_estate_unit_number = #{record.realEstateUnitNumber,jdbcType=VARCHAR},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -837,6 +849,9 @@
       <if test="useRightArea != null" >
         use_right_area = #{useRightArea,jdbcType=DECIMAL},
       </if>
+      <if test="declareType != null" >
+        declare_type = #{declareType,jdbcType=VARCHAR},
+      </if>
       <if test="realEstateUnitNumber != null" >
         real_estate_unit_number = #{realEstateUnitNumber,jdbcType=VARCHAR},
       </if>
@@ -898,6 +913,7 @@
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},
       acreage = #{acreage,jdbcType=DECIMAL},
       use_right_area = #{useRightArea,jdbcType=DECIMAL},
+      declare_type = #{declareType,jdbcType=VARCHAR},
       real_estate_unit_number = #{realEstateUnitNumber,jdbcType=VARCHAR},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

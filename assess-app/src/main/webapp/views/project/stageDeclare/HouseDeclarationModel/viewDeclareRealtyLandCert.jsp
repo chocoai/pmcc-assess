@@ -84,6 +84,7 @@
     var declareRealtyLandCert = new Object();
 
     declareRealtyLandCert.declareRealtyLandCertFlag = true;
+    declareRealtyLandCert.startPath = null;
 
     declareRealtyLandCert.fileUpload = function (target, tableName, id) {
         FileUtils.uploadFiles({
@@ -112,6 +113,13 @@
                 return formData;
             }, onUploadComplete: function (result, file) {
                 declareRealtyLandCert.showFile(target, tableName, id);
+                if (target == declareRealtyLandCertConfig.newFileId){
+                    if (declareRealtyLandCert.isEmpty(result)){
+                        AssessCommon.downloadFtpFileToLocal(result,function (data) {
+                            declareRealtyLandCert.startPath = data;
+                        });
+                    }
+                }
                 declareRealtyLandCert.loadList();
             },
             deleteFlag: true
@@ -323,7 +331,7 @@
         }
         $("#" + declareRealtyLandCertConfig.frm).validate();
         $('#' + declareRealtyLandCertConfig.box).modal("show");
-        declareRealtyLandCert.fileUpload(declareRealtyLandCertConfig.newFileId, AssessDBKey.DeclareRealtyLandCert, 0);
+        declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.newFileId, AssessDBKey.DeclareRealtyLandCert, 0);
     };
 
     declareRealtyLandCert.deleteData = function (id) {
@@ -442,6 +450,7 @@
         if (!declareRealtyLandCert.isEmpty(data.id)) {
             data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
             data.pid = "0" ;
+            data.declareType = declareFunObj.getDeclareType("土地证");
         }
         $.ajax({
             type: "POST",
@@ -473,8 +482,29 @@
         declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.fileId, AssessDBKey.DeclareRealtyLandCert, id);
     };
 
+    //土地证识别
     declareRealtyLandCert.distinguish = function () {
-        toastr.success('暂时未提供识别!');
+        var startPath = declareRealtyLandCert.startPath;
+        if (!declareRealtyLandCert.isEmpty(startPath)){
+            toastr.success('稍后再试!');
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRealtyLandCert/parseRealtyLandCertOcr",
+            type: "POST",
+            dataType: "json",
+            data: {startPath: startPath},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    $("#" + declareRealtyLandCertConfig.frm).initForm(data);
+                    declareRealtyLandCert.startPath = null;
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     };
 
     /**
@@ -655,7 +685,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            省
+                                            上传土地证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="declareRealtyLandCertNewFileId"
+                                                   name="declareRealtyLandCertNewFileId" placeholder="上传土地证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyLandCertNewFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default"
+                                               onclick="declareRealtyLandCert.distinguish();">识别</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            省<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <select name="province" id="frmDeclareRealtyLandCertprovince"
@@ -678,7 +725,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            市
+                                            市<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <select id="frmDeclareRealtyLandCertcity" name="city"
@@ -701,7 +748,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            所在地
+                                            所在地<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" name="location" required="required" class="form-control"
@@ -710,7 +757,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            土地使用权人
+                                            土地使用权人<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" name="ownership" required="required" class="form-control"
@@ -732,7 +779,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            类型
+                                            类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <select required="required" name="type"
@@ -742,7 +789,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            年份
+                                            年份<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" required="required" data-rule-maxlength="100"
@@ -752,7 +799,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            编号
+                                            编号<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" required="required" name="number" class="form-control"
@@ -862,7 +909,7 @@
                                             用途
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="purpose"
+                                            <select name="purpose"
                                                     class="form-control search-select select2 purpose">
                                             </select>
                                         </div>
@@ -916,23 +963,19 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">独用面积<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">独用面积</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="独用面积(数字)" name="acreage" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">分摊面积<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">分摊面积</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -971,23 +1014,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传土地证<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input id="declareRealtyLandCertNewFileId"
-                                                   name="declareRealtyLandCertNewFileId" placeholder="上传土地证" class="form-control"
-                                                   type="file">
-                                            <div id="_declareRealtyLandCertNewFileId"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default"
-                                               onclick="declareRealtyLandCert.distinguish();">识别</label>
-                                    </div>
-                                </div>
 
 
                             </div>

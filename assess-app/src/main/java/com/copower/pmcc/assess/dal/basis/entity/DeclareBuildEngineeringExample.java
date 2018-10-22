@@ -1806,6 +1806,76 @@ public class DeclareBuildEngineeringExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareTypeIsNull() {
+            addCriterion("declare_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeIsNotNull() {
+            addCriterion("declare_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeEqualTo(String value) {
+            addCriterion("declare_type =", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeNotEqualTo(String value) {
+            addCriterion("declare_type <>", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeGreaterThan(String value) {
+            addCriterion("declare_type >", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("declare_type >=", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeLessThan(String value) {
+            addCriterion("declare_type <", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeLessThanOrEqualTo(String value) {
+            addCriterion("declare_type <=", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeLike(String value) {
+            addCriterion("declare_type like", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeNotLike(String value) {
+            addCriterion("declare_type not like", value, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeIn(List<String> values) {
+            addCriterion("declare_type in", values, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeNotIn(List<String> values) {
+            addCriterion("declare_type not in", values, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeBetween(String value1, String value2) {
+            addCriterion("declare_type between", value1, value2, "declareType");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareTypeNotBetween(String value1, String value2) {
+            addCriterion("declare_type not between", value1, value2, "declareType");
+            return (Criteria) this;
+        }
+
         public Criteria andRealEstateIdIsNull() {
             addCriterion("real_estate_id is null");
             return (Criteria) this;

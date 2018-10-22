@@ -115,7 +115,72 @@
     declareRealtyHouseCert.declareRealtyHouseCertFlag = true;//父标识符
     declareRealtyHouseCert.sonDeclareRealtyLandCertFlag = true;//子标识符 (土地)
     declareRealtyHouseCert.sonDeclareRealtyRealEstateCert = true;//子标识符 (不动产)
+    declareRealtyHouseCert.startPath = null;
     //----------------------end
+
+    /**
+     * @author:  zch
+     * 描述:房产证 文件上传
+     * @date:2018-09-19
+     **/
+    declareRealtyHouseCert.fileUpload = function (target, tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            onUpload: function (file) {
+                var formData = {
+                    fieldsName: target,
+                    tableName: tableName,
+                    tableId: id
+                };
+                return formData;
+            }, onUploadComplete: function (result, file) {
+                declareRealtyHouseCert.showFile(target, tableName, id);
+                //房产证识别
+                if (target == declareRealtyHouseCertConfig.fileId){
+                    if (declareRealtyHouseCert.isEmpty(result)){
+                        AssessCommon.downloadFtpFileToLocal(result,function (data) {
+                            declareRealtyHouseCert.startPath = data;
+                        });
+                    }
+                }
+                declareRealtyHouseCert.loadList();
+            },
+            deleteFlag: true
+        });
+    };
+    declareRealtyHouseCert.fileUploadNew = function (target, tableName, id) {
+        FileUtils.uploadFiles({
+            target: target,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                projectId: "${projectPlanDetails.projectId}",
+                creater: "${currUserAccount}"
+            },
+            deleteFlag: true
+        });
+    };
+
+    /**
+     * @author:  zch
+     * 描述:房产证 文件显示
+     * @date:2018-09-19
+     **/
+    declareRealtyHouseCert.showFile = function (target, tableName, id) {
+        FileUtils.getFileShows({
+            target: target,
+            formData: {
+                fieldsName: target,
+                tableName: tableName,
+                tableId: id,
+                projectId: 0
+            },
+            deleteFlag: true
+        })
+    };
+
 
     /**
      * @author:  zch
@@ -130,6 +195,7 @@
         if (!declareRealtyHouseCert.isEmpty(data.id)) {
             data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
             data.pid = "0";
+            data.declareType = declareFunObj.getDeclareType("房产证");
         }
         $.ajax({
             type: "POST",
@@ -320,60 +386,6 @@
         });
     };
 
-    /**
-     * @author:  zch
-     * 描述:房产证 文件上传
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.fileUpload = function (target, tableName, id) {
-        FileUtils.uploadFiles({
-            target: target,
-            disabledTarget: "btn_submit",
-            onUpload: function (file) {
-                var formData = {
-                    fieldsName: target,
-                    tableName: tableName,
-                    tableId: id
-                };
-                return formData;
-            }, onUploadComplete: function (result, file) {
-                declareRealtyHouseCert.showFile(target, tableName, id);
-                declareRealtyHouseCert.loadList();
-            },
-            deleteFlag: true
-        });
-    };
-    declareRealtyHouseCert.fileUploadNew = function (target, tableName, id) {
-        FileUtils.uploadFiles({
-            target: target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                projectId: "${projectPlanDetails.projectId}",
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: true
-        });
-    };
-
-    /**
-     * @author:  zch
-     * 描述:房产证 文件显示
-     * @date:2018-09-19
-     **/
-    declareRealtyHouseCert.showFile = function (target, tableName, id) {
-        FileUtils.getFileShows({
-            target: target,
-            formData: {
-                fieldsName: target,
-                tableName: tableName,
-                tableId: id,
-                projectId: 0
-            },
-            deleteFlag: true
-        })
-    };
 
     /**
      * @author:  zch
@@ -381,7 +393,28 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.distinguish = function () {
-        toastr.success('暂时未提供识别!');
+        var startPath = declareRealtyHouseCert.startPath;
+        if (!declareRealtyHouseCert.isEmpty(startPath)){
+            toastr.success('稍后再试!');
+            return false;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRealtyHouseCert/parseRealtyHouseCert",
+            type: "POST",
+            dataType: "json",
+            data: {startPath: startPath},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    $("#" + declareRealtyHouseCertConfig.frm).initForm(data);
+                    $("#" + declareRealtyHouseCertConfig.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
+                    declareRealtyHouseCert.startPath = null;
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     };
 
     declareRealtyHouseCert.inputFileLand = function () {
@@ -759,6 +792,22 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            上传房产证<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <input id="declareRealtyHouseCertFileId" name="declareRealtyHouseCertFileId"
+                                                   required="required" placeholder="上传房产证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyHouseCertFileId"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
                                         <label class="col-sm-1 control-label">省
                                             <span class="symbol required"></span></label>
                                         <div class="col-sm-3">
@@ -876,7 +925,7 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋坐落<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">房屋坐落</label>
                                         <div class="col-sm-11">
                                             <input type="text" readonly="readonly"
                                                    placeholder="房屋坐落" name="beLocated" class="form-control">
@@ -903,46 +952,38 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">栋号<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">栋号</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="栋号(数字)" name="buildingNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">单元<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">单元</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="单元(数字)" name="unit" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">楼层<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">楼层</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="楼层(数字)" name="floor" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房号<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">房号</label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="房号(数字)" name="roomNumber" class="form-control"
-                                                   data-rule-maxlength="100" data-rule-number='true'
-                                                   required="required">
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -962,11 +1003,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">房屋性质<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">房屋性质</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="房屋性质" name="nature" class="form-control"
-                                                   required="required">
+                                                   placeholder="房屋性质" name="nature" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -991,20 +1031,18 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">证载面积<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">证载面积</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100"
+                                                   placeholder="证载面积(数字)" name="evidenceArea" class="form-control" data-rule-maxlength="100"
                                                    data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">套内面积<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">套内面积</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="套内面积(数字)" name="innerArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100"
+                                                   placeholder="套内面积(数字)" name="innerArea" class="form-control" data-rule-maxlength="100"
                                                    data-rule-number='true'>
                                         </div>
                                     </div>
@@ -1012,12 +1050,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">其它<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">其它</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="其它" name="other" class="form-control"
-                                                   required="required">
+                                                   placeholder="其它" name="other" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1029,12 +1065,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">土地取得方式<span
-                                                class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">土地取得方式</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="土地取得方式" name="landAcquisition" class="form-control"
-                                                   required="required">
+                                                   placeholder="土地取得方式" name="landAcquisition" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -1073,11 +1107,10 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附记其它<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">附记其它</label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="附记其它" name="otherNote" class="form-control"
-                                                   required="required">
+                                                   placeholder="附记其它" name="otherNote" class="form-control">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1100,22 +1133,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传房产证<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-5">
-                                            <input id="declareRealtyHouseCertFileId" name="declareRealtyHouseCertFileId"
-                                                   required="required" placeholder="上传房产证" class="form-control"
-                                                   type="file">
-                                            <div id="_declareRealtyHouseCertFileId"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-default" onclick="declareRealtyHouseCert.distinguish();">识别</label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

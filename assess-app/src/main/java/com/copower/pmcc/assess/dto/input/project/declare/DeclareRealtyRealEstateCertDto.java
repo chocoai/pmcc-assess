@@ -103,6 +103,7 @@ public class DeclareRealtyRealEstateCertDto {
     private BigDecimal useRightArea;
 
     private String realEstateUnitNumber;
+    private String declareType;
 
     public Integer getId() {
         return id;
@@ -470,5 +471,13 @@ public class DeclareRealtyRealEstateCertDto {
 
     public void setRealEstateUnitNumber(String realEstateUnitNumber) {
         this.realEstateUnitNumber = realEstateUnitNumber;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType;
     }
 }

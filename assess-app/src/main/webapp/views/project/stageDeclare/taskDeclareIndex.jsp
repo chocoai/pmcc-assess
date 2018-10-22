@@ -86,7 +86,112 @@
             return true;
         }
         return false;
-    }
+    };
+
+    /**
+    * @author:  zch
+    * 描述:获取申报证书类型
+    * @date:2018-10-22
+    **/
+    declareFunObj.getDeclareType = function (name) {
+        var declareType = null ;
+        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+            AssessCommon.getProjectClassifyInfoAsync($(oo).val(), function (data) {
+                if (declareFunObj.isEmpty(data)) {
+                    if (data.name == name){
+                        declareType = data.id;
+                    }
+                }
+            })
+        });
+        return declareType;
+    };
+
+    //返回修改时 显示申报证书
+    declareFunObj.updateInit = function () {
+        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateType, function (html, data) {
+            $.each(data, function (i, n) {
+                if (config.declareRealtyLandCert.name == n.name) {
+                    $.ajax({
+                        type: "get",
+                        url: "${pageContext.request.contextPath}/declareRealtyLandCert/listDeclareRealtyLandCert",
+                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id,enable:"yes"},
+                        success: function (result) {
+                            if (result.ret) {
+                                if (declareFunObj.isEmpty(result.data)){
+                                    if (result.data.length >= 1){
+                                        declareFunObj.declareRealtyLandCert.toggle();//view 显示
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+                                            if ($(oo).val() == n.id){
+                                                $(this).prop("checked",true);//单选框 选中
+                                            }
+                                        });
+                                    }
+                                }
+                            } else {
+                                Alert("失败:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
+                }
+                if (config.declareRealtyHouseCert.name == n.name) {
+                    $.ajax({
+                        type: "get",
+                        url: "${pageContext.request.contextPath}/declareRealtyHouseCert/listDeclareRealtyHouseCert",
+                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id,enable:"yes"},
+                        success: function (result) {
+                            if (result.ret) {
+                                if (declareFunObj.isEmpty(result.data)){
+                                    if (result.data.length >= 1){
+                                        declareFunObj.declareRealtyHouseCert.toggle();//view 显示
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+                                            if ($(oo).val() == n.id){
+                                                $(this).prop("checked",true);//单选框 选中
+                                            }
+                                        });
+                                    }
+                                }
+                            } else {
+                                Alert("失败:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
+                }
+                if (config.declareRealtyRealEstateCert.name == n.name) {
+                    $.ajax({
+                        type: "get",
+                        url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/listDeclareRealtyRealEstateCert",
+                        data: {planDetailsId:'${empty projectPlanDetails.id?0:projectPlanDetails.id}',declareType:n.id},
+                        success: function (result) {
+                            if (result.ret) {
+                                if (declareFunObj.isEmpty(result.data)){
+                                    if (result.data.length >= 1){
+                                        declareFunObj.declareRealtyRealEstateCert.toggle();//view 显示
+                                        $("#" + config.declare.frm + " :checkbox").each(function (j,oo) {
+                                            if ($(oo).val() == n.id){
+                                                $(this).prop("checked",true);//单选框 选中
+                                            }
+                                        });
+                                    }
+                                }
+                            } else {
+                                Alert("失败:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
+                }
+            });
+        });
+    };
 
     declareFunObj.declare = {
         init: function () {
@@ -115,6 +220,7 @@
                 }
                 //HTML
                 $("#" + config.declare.frm + "HTML").append(resetHtml);
+                declareFunObj.updateInit();
                 declareFunObj.declare.monitor();
             });
         },
@@ -148,7 +254,7 @@
         toggle: function () {
             $("#" + config.declareRealtyHouseCert.view).toggle();
         }
-    }
+    };
 
     /**
      * @author:  zch
@@ -159,7 +265,7 @@
         toggle: function () {
             $("#" + config.declareRealtyLandCert.view).toggle();
         },
-    }
+    };
 
     /**
      * @author:  zch
@@ -170,7 +276,7 @@
         toggle: function () {
             $("#" + config.declareRealtyRealEstateCert.view).toggle();
         }
-    }
+    };
 
 
     $(function () {

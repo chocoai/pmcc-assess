@@ -76,6 +76,7 @@ public class DeclareRealtyLandCertDto {
     private String enable;
 
     private String creator;
+    private String declareType;
 
     public Integer getId() {
         return id;
@@ -339,5 +340,13 @@ public class DeclareRealtyLandCertDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType;
     }
 }

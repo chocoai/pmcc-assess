@@ -76,6 +76,8 @@ public class DeclareRealtyHouseCert {
 
     private Date registrationDate;
 
+    private String declareType;
+
     private String enable;
 
     private String creator;
@@ -370,6 +372,14 @@ public class DeclareRealtyHouseCert {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType == null ? null : declareType.trim();
     }
 
     public String getEnable() {

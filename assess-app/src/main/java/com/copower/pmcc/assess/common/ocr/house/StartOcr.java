@@ -20,8 +20,7 @@ public class StartOcr {
     public static void main(String[] args) {
         try {
             String v = "";
-            v = "D:\\temp\\img\\A12.jpg";
-//            v = "D:\\temp\\img\\A9.png" ;
+            v = "D:\\temp\\img\\A2.jpg";
             String item = start(v);
             System.out.println(item);
         } catch (Exception e1) {
