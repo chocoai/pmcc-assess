@@ -113,7 +113,7 @@ public class DeclareBuildEngineeringController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareBuildEngineering", method = {RequestMethod.GET}, name = "土建维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType) {
         try {
             DeclareBuildEngineering declareBuildEngineering = new DeclareBuildEngineering();
             if (!StringUtils.isEmpty(province)) {
@@ -130,6 +130,9 @@ public class DeclareBuildEngineeringController {
             }
             if (pid != null) {
                 declareBuildEngineering.setPid(pid);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+                declareBuildEngineering.setDeclareType(declareType);
             }
             return HttpResult.newCorrectResult(declareBuildEngineeringService.declareBuildEngineeringVoList(declareBuildEngineering));
         } catch (Exception e) {

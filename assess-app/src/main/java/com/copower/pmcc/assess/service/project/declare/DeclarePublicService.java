@@ -99,6 +99,7 @@ public class DeclarePublicService {
                         break inner;
                     }
                 }
+                builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
                 return false;
             }
         }

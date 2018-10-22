@@ -184,6 +184,7 @@
         }
         var data = formParams(equipmentInstallationConfig.frm);
         data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';
+        data.declareType = declareFunObj.getDeclareType("设备安装");
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/saveAndUpdateDeclareBuildEquipmentInstall",
