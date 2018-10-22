@@ -78,13 +78,13 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>
+        <h3>
             市场比较法
             <small id="small_select_case">
                 <input type="button" class="btn btn-primary btn-xs" value="选择案例"
                        onclick="$('#modal_select_case').modal();">
             </small>
-        </h2>
+        </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
