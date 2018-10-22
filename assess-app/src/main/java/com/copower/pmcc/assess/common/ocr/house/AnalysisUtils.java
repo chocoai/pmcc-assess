@@ -3,7 +3,10 @@ package com.copower.pmcc.assess.common.ocr.house;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.DateHelp;
+import com.copower.pmcc.assess.dto.input.ocr.RealtyHouseCertOcrDto;
+import com.copower.pmcc.assess.dto.input.ocr.RealtyLandCertOcrDto;
 import com.copower.pmcc.assess.dto.input.ocr.RealtyRealEstateCertOcrDto;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +25,101 @@ import java.util.regex.Pattern;
  */
 public class AnalysisUtils {
     private final static Logger logger = LoggerFactory.getLogger(AnalysisUtils.class);
+
+
+    /**
+     * 土地证解析
+     * @param startPath 图片地址
+     * @return
+     * @throws Exception
+     */
+    public static RealtyLandCertOcrDto parseRealtyLandCertOcr(String startPath)throws Exception{
+        RealtyLandCertOcrDto landCert = new RealtyLandCertOcrDto();
+        String formData = StartOcr.start(startPath);
+        JSONObject jsonObject = JSON.parseObject(formData);
+        try {
+            JSONObject dataObj = JSON.parseObject(jsonObject.getString("data"));
+            if (org.apache.commons.lang.StringUtils.isNotBlank(jsonObject.getString("sid"))){
+                landCert.setSid(jsonObject.getString("sid"));
+            }
+            if (jsonObject.getInteger("angle") != null){
+                landCert.setAngle(jsonObject.getInteger("angle"));
+            }
+            if (dataObj.getInteger("房产证号") != null){
+                landCert.setNumber(String.format("%d",dataObj.getInteger("房产证号")));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("权利人"))){
+                landCert.setOwnership(dataObj.getString("权利人"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("坐落"))){
+                landCert.setBeLocated(dataObj.getString("坐落"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("土地权利性质/取得方式"))){
+                landCert.setMemo(dataObj.getString("土地权利性质/取得方式"));
+            }
+            if (dataObj.getBigDecimal("建筑面积") != null){
+                landCert.setUseRightArea(dataObj.getBigDecimal("建筑面积"));
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("异常不再抛出 exception:",e1.getMessage()));
+        }
+        return landCert;
+    }
+
+    /**
+     * 房产证 json解析
+     * @param startPath 图片地址
+     * @return
+     * @throws Exception
+     */
+    public static RealtyHouseCertOcrDto parseRealtyHouseCert(String startPath)throws Exception{
+        RealtyHouseCertOcrDto houseCert = new RealtyHouseCertOcrDto();
+        String formData = StartOcr.start(startPath);
+        JSONObject jsonObject = JSON.parseObject(formData);
+        try {
+            JSONObject dataObj = JSON.parseObject(jsonObject.getString("data"));
+            if (org.apache.commons.lang.StringUtils.isNotBlank(jsonObject.getString("sid"))){
+                houseCert.setSid(jsonObject.getString("sid"));
+            }
+            if (jsonObject.getInteger("angle") != null){
+                houseCert.setAngle(jsonObject.getInteger("angle"));
+            }
+            if (dataObj.getInteger("房产证号") != null){
+                houseCert.setNumber(String.format("%d",dataObj.getInteger("房产证号")));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("权利人"))){
+                houseCert.setOwnership(dataObj.getString("权利人"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("共有情况"))){
+                houseCert.setPublicSituation(dataObj.getString("共有情况"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("坐落"))){
+                houseCert.setBeLocated(dataObj.getString("坐落"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("登记时间"))){
+                houseCert.setRegistrationTime(DateUtils.parse(dataObj.getString("登记时间")));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("房屋性质"))){
+                houseCert.setNature(dataObj.getString("房屋性质"));
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("房屋用途"))){
+                houseCert.setPlanningUse(dataObj.getString("房屋用途"));
+            }
+            if (dataObj.getBigDecimal("建筑面积") != null){
+                houseCert.setFloorArea(dataObj.getBigDecimal("建筑面积").toString());
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(dataObj.getString("土地权利类型/取得方式"))){
+                houseCert.setLandAcquisition(dataObj.getString("土地权利类型/取得方式"));
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("异常不再抛出 exception:",e1.getMessage()));
+        }
+        return houseCert;
+    };
+
     /**
      *
-     * 功能描述:
+     * 功能描述:不动产解析 json 解析
      *
      * @param: startPath 图片地址
      * @return: RealtyRealEstateCertOcrDto

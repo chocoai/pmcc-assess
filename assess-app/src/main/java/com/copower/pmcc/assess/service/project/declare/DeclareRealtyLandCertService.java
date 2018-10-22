@@ -1,14 +1,19 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
+import com.copower.pmcc.assess.common.ocr.house.AnalysisUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.ocr.RealtyLandCertOcrDto;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -62,6 +67,8 @@ public class DeclareRealtyLandCertService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclarePublicService declarePoiHelp;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 功能描述: 关联房产证
@@ -116,7 +123,7 @@ public class DeclareRealtyLandCertService {
                     continue;
                 }
                 //不启用 (关联数据)
-                houseCert.setEnable("no");
+                houseCert.setEnable(DeclareTypeEnum.EnableNo.getKey());
                 houseCert.setCreator(commonService.thisUserAccount());
             } catch (Exception e) {
                 flag = false;
@@ -189,6 +196,15 @@ public class DeclareRealtyLandCertService {
      */
     public String importData(DeclareRealtyLandCert declareRealtyLandCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
+        String declareType = null;
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLEHOUSEPROPERTYCERTIFICATETYPE);
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
+            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
+                if (Objects.equal(baseProjectClassify.getName(),DeclareTypeEnum.LAND.getKey())){
+                    declareType = String.format("%d",baseProjectClassify.getId());
+                }
+            }
+        }
         Row row = null;
         StringBuilder builder = new StringBuilder();
         //1.保存文件
@@ -237,11 +253,12 @@ public class DeclareRealtyLandCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
             }
             if (flag) {
+                oo.setDeclareType(declareType);
                 oo.setCreator(commonService.thisUserAccount());
                 oo.setPid(0);
                 oo.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
                 //启用 (非关联数据)
-                oo.setEnable("yes");
+                oo.setEnable(DeclareTypeEnum.Enable.getKey());
                 declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                 successCount++;
             }
@@ -300,7 +317,7 @@ public class DeclareRealtyLandCertService {
             Integer id = null;
             if (pid != null && pid.intValue() != 0) {
                 //不启用 (关联数据)
-                declareRealtyLandCert.setEnable("no");
+                declareRealtyLandCert.setEnable(DeclareTypeEnum.EnableNo.getKey());
                 //处理从表数据写入 tb_declare_record 表问题
                 if (declareRealtyLandCert.getPlanDetailsId() != null){
                     declareRealtyLandCert.setPlanDetailsId(0);
@@ -310,7 +327,7 @@ public class DeclareRealtyLandCertService {
                 this.relation(declareRealtyLandCert);
             } else {
                 //启用 (非关联数据)
-                declareRealtyLandCert.setEnable("yes");
+                declareRealtyLandCert.setEnable(DeclareTypeEnum.Enable.getKey());
                 id = declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
             }
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), id);
@@ -349,7 +366,7 @@ public class DeclareRealtyLandCertService {
     public void removeDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert.getPid() != null){
             DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(declareRealtyLandCert.getPid());
-            if (Objects.equal("no",declareRealtyHouseCert.getEnable())){
+            if (Objects.equal(DeclareTypeEnum.EnableNo.getKey(),declareRealtyHouseCert.getEnable())){
                 DeclareRealtyHouseCert oo = new DeclareRealtyHouseCert();
                 oo.setId(declareRealtyLandCert.getPid());
                 declareRealtyHouseCertDao.removeDeclareRealtyHouseCert(oo);
@@ -437,5 +454,26 @@ public class DeclareRealtyLandCertService {
                 logger.error("写入失败!", e1);
             }
         }
+    }
+
+    public DeclareRealtyLandCert parseRealtyLandCertOcr(String startPath)throws Exception{
+        RealtyLandCertOcrDto landCertOcrDto = AnalysisUtils.parseRealtyLandCertOcr(startPath);
+        DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
+        if (StringUtils.isNotBlank(landCertOcrDto.getBeLocated())){
+            declareRealtyLandCert.setBeLocated(landCertOcrDto.getBeLocated());
+        }
+        if (StringUtils.isNotBlank(landCertOcrDto.getOwnership())){
+            declareRealtyLandCert.setOwnership(landCertOcrDto.getOwnership());
+        }
+        if (StringUtils.isNotBlank(landCertOcrDto.getNumber())){
+            declareRealtyLandCert.setNumber(landCertOcrDto.getNumber());
+        }
+        if (StringUtils.isNotBlank(landCertOcrDto.getMemo())){
+            declareRealtyLandCert.setMemo(landCertOcrDto.getMemo());
+        }
+        if (landCertOcrDto.getUseRightArea() != null){
+            declareRealtyLandCert.setUseRightArea(landCertOcrDto.getUseRightArea());
+        }
+        return declareRealtyLandCert;
     }
 }

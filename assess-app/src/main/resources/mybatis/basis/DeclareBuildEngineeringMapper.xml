@@ -28,6 +28,7 @@
     <result column="land_use_permit_id" property="landUsePermitId" jdbcType="INTEGER" />
     <result column="pre_sale_permit_id" property="preSalePermitId" jdbcType="INTEGER" />
     <result column="land_id" property="landId" jdbcType="INTEGER" />
+    <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
     <result column="real_estate_id" property="realEstateId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -95,8 +96,8 @@
     id, pid, plan_details_id, province, city, district, occupancy_unit, be_located, name, 
     structure, build_area, start_date, expected_completion_date, speed_progress, payment_ratio, 
     book_net_value, book_value, declarer, declaration_date, remark, enable, building_construction_permit_id, 
-    building_permit_id, land_use_permit_id, pre_sale_permit_id, land_id, real_estate_id, 
-    creator, gmt_created, gmt_modified
+    building_permit_id, land_use_permit_id, pre_sale_permit_id, land_id, declare_type, 
+    real_estate_id, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringExample" >
     select
@@ -140,8 +141,9 @@
       book_value, declarer, declaration_date, 
       remark, enable, building_construction_permit_id, 
       building_permit_id, land_use_permit_id, pre_sale_permit_id, 
-      land_id, real_estate_id, creator, 
-      gmt_created, gmt_modified)
+      land_id, declare_type, real_estate_id, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{occupancyUnit,jdbcType=VARCHAR}, 
       #{beLocated,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{structure,jdbcType=VARCHAR}, 
@@ -150,8 +152,9 @@
       #{bookValue,jdbcType=VARCHAR}, #{declarer,jdbcType=VARCHAR}, #{declarationDate,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}, #{buildingConstructionPermitId,jdbcType=INTEGER}, 
       #{buildingPermitId,jdbcType=INTEGER}, #{landUsePermitId,jdbcType=INTEGER}, #{preSalePermitId,jdbcType=INTEGER}, 
-      #{landId,jdbcType=INTEGER}, #{realEstateId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{landId,jdbcType=INTEGER}, #{declareType,jdbcType=VARCHAR}, #{realEstateId,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -233,6 +236,9 @@
       </if>
       <if test="landId != null" >
         land_id,
+      </if>
+      <if test="declareType != null" >
+        declare_type,
       </if>
       <if test="realEstateId != null" >
         real_estate_id,
@@ -322,6 +328,9 @@
       </if>
       <if test="landId != null" >
         #{landId,jdbcType=INTEGER},
+      </if>
+      <if test="declareType != null" >
+        #{declareType,jdbcType=VARCHAR},
       </if>
       <if test="realEstateId != null" >
         #{realEstateId,jdbcType=INTEGER},
@@ -424,6 +433,9 @@
       <if test="record.landId != null" >
         land_id = #{record.landId,jdbcType=INTEGER},
       </if>
+      <if test="record.declareType != null" >
+        declare_type = #{record.declareType,jdbcType=VARCHAR},
+      </if>
       <if test="record.realEstateId != null" >
         real_estate_id = #{record.realEstateId,jdbcType=INTEGER},
       </if>
@@ -469,6 +481,7 @@
       land_use_permit_id = #{record.landUsePermitId,jdbcType=INTEGER},
       pre_sale_permit_id = #{record.preSalePermitId,jdbcType=INTEGER},
       land_id = #{record.landId,jdbcType=INTEGER},
+      declare_type = #{record.declareType,jdbcType=VARCHAR},
       real_estate_id = #{record.realEstateId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -555,6 +568,9 @@
       <if test="landId != null" >
         land_id = #{landId,jdbcType=INTEGER},
       </if>
+      <if test="declareType != null" >
+        declare_type = #{declareType,jdbcType=VARCHAR},
+      </if>
       <if test="realEstateId != null" >
         real_estate_id = #{realEstateId,jdbcType=INTEGER},
       </if>
@@ -597,6 +613,7 @@
       land_use_permit_id = #{landUsePermitId,jdbcType=INTEGER},
       pre_sale_permit_id = #{preSalePermitId,jdbcType=INTEGER},
       land_id = #{landId,jdbcType=INTEGER},
+      declare_type = #{declareType,jdbcType=VARCHAR},
       real_estate_id = #{realEstateId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

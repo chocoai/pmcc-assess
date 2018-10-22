@@ -63,6 +63,7 @@ public class DeclareBuildEngineeringDto {
     private Integer landId;
 
     private Integer realEstateId;
+    private String declareType;
 
     public Integer getId() {
         return id;
@@ -278,5 +279,13 @@ public class DeclareBuildEngineeringDto {
 
     public void setRealEstateId(Integer realEstateId) {
         this.realEstateId = realEstateId;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType;
     }
 }

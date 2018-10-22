@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyLandCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -68,7 +69,7 @@ public class DeclareRealtyLandCertController {
             if (pid != null) {
                 declareRealtyLandCert.setPid(pid);
             }
-            declareRealtyLandCert.setEnable("yes");
+            declareRealtyLandCert.setEnable(DeclareTypeEnum.Enable.getKey());
             vo = declareRealtyLandCertService.getDeclareRealtyLandCertListVos(declareRealtyLandCert);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -112,7 +113,7 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareRealtyLandCert", method = {RequestMethod.GET}, name = "土地证维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType,String enable) {
         try {
             DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
             if (!StringUtils.isEmpty(province)) {
@@ -127,6 +128,12 @@ public class DeclareRealtyLandCertController {
             if (planDetailsId != null) {
                 declareRealtyLandCert.setPlanDetailsId(planDetailsId);
             }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+                declareRealtyLandCert.setDeclareType(declareType);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)){
+                declareRealtyLandCert.setEnable(enable);
+            }
             if (pid != null) {
                 declareRealtyLandCert.setPid(pid);
             }
@@ -138,7 +145,7 @@ public class DeclareRealtyLandCertController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/importData", name = "导入房产证数据", method = RequestMethod.POST)
+    @RequestMapping(value = "/importData", name = "导入土地证数据", method = RequestMethod.POST)
     public HttpResult importData(HttpServletRequest request, DeclareRealtyLandCert declareRealtyLandCert) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -170,5 +177,15 @@ public class DeclareRealtyLandCertController {
             return HttpResult.newErrorResult(e.getMessage());
         }
 
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/parseRealtyLandCertOcr", name = "解析上传的图片 土地证", method = RequestMethod.POST)
+    public HttpResult parseRealtyLandCertOcr(String startPath) {
+        try {
+            return HttpResult.newCorrectResult(declareRealtyLandCertService.parseRealtyLandCertOcr(startPath));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

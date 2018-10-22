@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
 import com.copower.pmcc.assess.dto.input.project.declare.DeclareRealtyHouseCertDto;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
@@ -68,7 +69,7 @@ public class DeclareRealtyHouseCertController {
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
             }
-            declareRealtyHouseCert.setEnable("yes");
+            declareRealtyHouseCert.setEnable(DeclareTypeEnum.Enable.getKey());
             vo = declareRealtyHouseCertService.getDeclareRealtyHouseCertListVos(declareRealtyHouseCert);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -112,7 +113,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareRealtyHouseCert", method = {RequestMethod.GET}, name = "房产证维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType,String enable) {
         try {
             DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
             if (!StringUtils.isEmpty(province)) {
@@ -129,6 +130,12 @@ public class DeclareRealtyHouseCertController {
             }
             if (pid != null) {
                 declareRealtyHouseCert.setPid(pid);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+                declareRealtyHouseCert.setDeclareType(declareType);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)){
+                declareRealtyHouseCert.setEnable(enable);
             }
             return HttpResult.newCorrectResult(declareRealtyHouseCertService.lists(declareRealtyHouseCert));
         } catch (Exception e) {
@@ -170,6 +177,15 @@ public class DeclareRealtyHouseCertController {
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/parseRealtyHouseCert", name = "解析上传的图片 房产证", method = RequestMethod.POST)
+    public HttpResult parseRealtyHouseCert(String startPath) {
+        try {
+            return HttpResult.newCorrectResult(declareRealtyHouseCertService.parseRealtyHouseCert(startPath));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

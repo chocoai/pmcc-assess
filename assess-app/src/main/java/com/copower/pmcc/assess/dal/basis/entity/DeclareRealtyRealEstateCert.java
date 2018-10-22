@@ -94,6 +94,8 @@ public class DeclareRealtyRealEstateCert {
 
     private BigDecimal useRightArea;
 
+    private String declareType;
+
     private String realEstateUnitNumber;
 
     private Date gmtModified;
@@ -460,6 +462,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setUseRightArea(BigDecimal useRightArea) {
         this.useRightArea = useRightArea;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType == null ? null : declareType.trim();
     }
 
     public String getRealEstateUnitNumber() {

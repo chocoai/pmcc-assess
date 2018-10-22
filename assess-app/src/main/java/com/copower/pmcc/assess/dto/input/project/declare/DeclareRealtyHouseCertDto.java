@@ -84,6 +84,7 @@ public class DeclareRealtyHouseCertDto {
 
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date registrationDate;
+    private String declareType;
 
     public Integer getId() {
         return id;
@@ -372,5 +373,13 @@ public class DeclareRealtyHouseCertDto {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType;
     }
 }

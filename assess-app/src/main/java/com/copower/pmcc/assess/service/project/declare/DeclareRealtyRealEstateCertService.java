@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.common.ocr.house.AnalysisUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ocr.RealtyRealEstateCertOcrDto;
@@ -10,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstat
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -19,6 +22,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -59,7 +63,19 @@ public class DeclareRealtyRealEstateCertService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private DeclarePublicService declarePoiHelp;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
+        String declareType = null;
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLEHOUSEPROPERTYCERTIFICATETYPE);
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
+            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
+                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.RealEstate.getKey())){
+                    declareType = String.format("%d",baseProjectClassify.getId());
+                }
+            }
+        }
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -102,6 +118,7 @@ public class DeclareRealtyRealEstateCertService {
                     continue;
                 }
                 oo = new DeclareRealtyRealEstateCert();
+                oo.setDeclareType(declareType);
                 oo.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
                 //excel处理
                 if (!declarePoiHelp.realEstateCert(oo,builder,row,i,land_uses)){

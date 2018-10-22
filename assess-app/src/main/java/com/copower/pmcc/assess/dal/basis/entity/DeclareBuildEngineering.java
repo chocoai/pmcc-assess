@@ -56,6 +56,8 @@ public class DeclareBuildEngineering {
 
     private Integer landId;
 
+    private String declareType;
+
     private Integer realEstateId;
 
     private String creator;
@@ -270,6 +272,14 @@ public class DeclareBuildEngineering {
 
     public void setLandId(Integer landId) {
         this.landId = landId;
+    }
+
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType == null ? null : declareType.trim();
     }
 
     public Integer getRealEstateId() {
