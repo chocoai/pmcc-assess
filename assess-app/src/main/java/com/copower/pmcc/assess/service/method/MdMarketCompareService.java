@@ -19,6 +19,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,12 +181,12 @@ public class MdMarketCompareService {
         if (houseTrading != null) {
             BaseDataDic transactionDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_NORMAL_TRANSACTION_YES);
             BaseDataDic disposableDic = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_HOUSE_PAYMENT_METHOD_DISPOSABLE);
-            if (houseTrading.getNormalTransaction() != null) {
+            if (StringUtils.isNotBlank(houseTrading.getNormalTransaction())) {
                 if (!Integer.valueOf(houseTrading.getNormalTransaction()).equals(transactionDic.getId()))
                     return true;
             }
 
-            if (houseTrading.getPaymentMethod() != null && !houseTrading.getPaymentMethod().equals(disposableDic.getId())){
+            if (StringUtils.isNotBlank(houseTrading.getPaymentMethod()) && !houseTrading.getPaymentMethod().equals(disposableDic.getId())) {
                 if (!Integer.valueOf(houseTrading.getPaymentMethod()).equals(disposableDic.getId()))
                     return true;
             }
