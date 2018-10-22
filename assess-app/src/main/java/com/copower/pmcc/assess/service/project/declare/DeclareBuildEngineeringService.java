@@ -55,7 +55,7 @@ public class DeclareBuildEngineeringService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePoiHelp declarePoiHelp;
+    private DeclarePublicService declarePoiHelp;
 
     public String importData(DeclareBuildEngineering declareBuildEngineering, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;

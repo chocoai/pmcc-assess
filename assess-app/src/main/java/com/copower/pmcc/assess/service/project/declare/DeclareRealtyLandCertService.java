@@ -62,7 +62,7 @@ public class DeclareRealtyLandCertService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePoiHelp declarePoiHelp;
+    private DeclarePublicService declarePoiHelp;
 
     /**
      * 功能描述: 关联房产证
@@ -88,14 +88,15 @@ public class DeclareRealtyLandCertService {
         Sheet sheet = workbook.getSheetAt(0);
         //工作表的第一行
         row = sheet.getRow(0);
-        //总列数
-        int colLength = row.getLastCellNum();
         //读取数据的起始行
         int startRowNumber = 1;
         //导入成功数据条数
         int successCount = 0;
+        //总列数
+        int colLength = row.getPhysicalNumberOfCells() !=0?row.getPhysicalNumberOfCells():row.getLastCellNum();
         //总行数
-        int rowLength = sheet.getLastRowNum()  - startRowNumber;
+        int rowLength = sheet.getPhysicalNumberOfRows()!=0?sheet.getPhysicalNumberOfRows():sheet.getLastRowNum() ;
+        rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -106,6 +107,10 @@ public class DeclareRealtyLandCertService {
             boolean flag = true;
             try {
                 row = sheet.getRow(i);
+                if (row==null){
+                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    continue;
+                }
                 houseCert = new DeclareRealtyHouseCert();
                 if (!declarePoiHelp.house(houseCert,builder,row,i)){
                     continue;
@@ -200,14 +205,15 @@ public class DeclareRealtyLandCertService {
         Sheet sheet = workbook.getSheetAt(0);
         //工作表的第一行
         row = sheet.getRow(0);
-        //总列数
-        int colLength = row.getLastCellNum();
         //读取数据的起始行
         int startRowNumber = 1;
         //导入成功数据条数
         int successCount = 0;
+        //总列数
+        int colLength = row.getPhysicalNumberOfCells() !=0?row.getPhysicalNumberOfCells():row.getLastCellNum();
         //总行数
-        int rowLength = sheet.getLastRowNum() - startRowNumber;
+        int rowLength = sheet.getPhysicalNumberOfRows()!=0?sheet.getPhysicalNumberOfRows():sheet.getLastRowNum() ;
+        rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -220,6 +226,10 @@ public class DeclareRealtyLandCertService {
             try {
                 oo = new DeclareRealtyLandCert();
                 row = sheet.getRow(i);
+                if (row==null){
+                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    continue;
+                }
                 if (! declarePoiHelp.land(oo,builder,row,i,land_uses)){
                     continue;
                 }

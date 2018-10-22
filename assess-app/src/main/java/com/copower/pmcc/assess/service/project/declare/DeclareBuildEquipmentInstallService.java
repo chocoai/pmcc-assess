@@ -55,7 +55,7 @@ public class DeclareBuildEquipmentInstallService {
     @Autowired
     private DeclareBuildEquipmentInstallDao declareBuildEquipmentInstallDao;
     @Autowired
-    private DeclarePoiHelp declarePoiHelp;
+    private DeclarePublicService declarePoiHelp;
 
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;

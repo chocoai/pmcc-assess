@@ -58,7 +58,7 @@ public class DeclareRealtyRealEstateCertService {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private DeclarePoiHelp declarePoiHelp;
+    private DeclarePublicService declarePoiHelp;
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
         Row row = null;
@@ -74,16 +74,17 @@ public class DeclareRealtyRealEstateCertService {
         }
         //只取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
-        //工作表的第一行
-        row = sheet.getRow(0);
-        //总列数
-        int colLength = row.getLastCellNum();
         //读取数据的起始行
         int startRowNumber = 1;
         //导入成功数据条数
         int successCount = 0;
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //总列数
+        int colLength = row.getPhysicalNumberOfCells() !=0?row.getPhysicalNumberOfCells():row.getLastCellNum();
         //总行数
-        int rowLength = sheet.getLastRowNum()  - startRowNumber;
+        int rowLength = sheet.getPhysicalNumberOfRows()!=0?sheet.getPhysicalNumberOfRows():sheet.getLastRowNum() ;
+        rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -96,6 +97,10 @@ public class DeclareRealtyRealEstateCertService {
             DeclareRealtyRealEstateCert oo = null;
             try {
                 row = sheet.getRow(i);
+                if (row==null){
+                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    continue;
+                }
                 oo = new DeclareRealtyRealEstateCert();
                 oo.setPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId());
                 //excel处理
@@ -107,6 +112,7 @@ public class DeclareRealtyRealEstateCertService {
                 builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
             }
             if (flag) {
+                oo.setCreator(commonService.thisUserAccount());
                 declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(oo);
                 successCount++;
             }
