@@ -24,8 +24,7 @@ public class DeclareRealtyHouseCertDto {
     private String city;
 
     private String district;
-
-    private Integer type;
+    private String type;
 
     private String number;
 
@@ -142,13 +141,6 @@ public class DeclareRealtyHouseCertDto {
         this.district = district;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
 
     public String getNumber() {
         return number;
@@ -372,5 +364,13 @@ public class DeclareRealtyHouseCertDto {
 
     public void setLandRegistrationDate(Date landRegistrationDate) {
         this.landRegistrationDate = landRegistrationDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

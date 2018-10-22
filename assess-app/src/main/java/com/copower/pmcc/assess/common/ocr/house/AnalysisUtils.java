@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dto.input.ocr.RealtyRealEstateCertOcrDto;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
  * @Description:
  */
 public class AnalysisUtils {
-
+    private final static Logger logger = LoggerFactory.getLogger(AnalysisUtils.class);
     /**
      *
      * 功能描述:
@@ -47,58 +49,61 @@ public class AnalysisUtils {
         Map<String, String> keys = setEstateCertKey();
         RealtyRealEstateCertOcrDto certificateOcrDto = new RealtyRealEstateCertOcrDto();
         JSONObject jsonObject = JSON.parseObject(formData);
-        JSONObject dataObj = JSON.parseObject(jsonObject.getString("data"));
-        if (!StringUtils.isEmpty(jsonObject.getString(keys.get("sid")))) {
-            certificateOcrDto.setSid(jsonObject.getString(keys.get("sid")));
-        }
-        if (jsonObject.getInteger(keys.get("angle")) != null) {
-            certificateOcrDto.setAngle(jsonObject.getInteger(keys.get("angle")));
-        }
-        if (!StringUtils.isEmpty(dataObj.getString(keys.get("A1")))) {
-            certificateOcrDto.setNumber(dataObj.getString(keys.get("A1")));
-        }
-        if (!StringUtils.isEmpty(dataObj.getString(keys.get("A2")))) {
-            certificateOcrDto.setOwnership(dataObj.getString(keys.get("A2")));
-        }
-        if (!StringUtils.isEmpty(dataObj.getString(keys.get("A3")))) {
-            certificateOcrDto.setPublicSituation(dataObj.getString(keys.get("A3")));
-        }
-        if (!StringUtils.isEmpty(dataObj.getString(keys.get("A4")))) {
-            certificateOcrDto.setBeLocated(dataObj.getString(keys.get("A4")));
-        }
-        if (!StringUtils.isEmpty(dataObj.getString(keys.get("A5")))) {
-            certificateOcrDto.setRealEstateUnitNumber(dataObj.getString(keys.get("A5")));
-        }
-        temp = String.format("%s%s", dataObj.getString(keys.get("A6")), dataObj.getString(keys.get("A7")));
-        if (!StringUtils.isEmpty(temp)) {
-            certificateOcrDto.setUseRightType(temp);
-            temp = null;
-        }
-        temp = String.format("%s%s", dataObj.getString(keys.get("A8")), dataObj.getString(keys.get("A9")));
-        if (!StringUtils.isEmpty(temp)) {
-            certificateOcrDto.setNature(temp);
-            temp = null;
-        }
-        temp = String.format("%s%s", dataObj.getString(keys.get("A10")), dataObj.getString(keys.get("A11")));
-        if (!StringUtils.isEmpty(temp)) {
-            certificateOcrDto.setPurpose(temp);
-            temp = null;
-        }
-        if (dataObj.getInteger(keys.get("A12")) != null) {
-            certificateOcrDto.setFloorArea(new BigDecimal(dataObj.getInteger(keys.get("A12"))));
-        }
-        //解析字符中的文字
-        temp = dataObj.getString(keys.get("A13"));
-        if (!StringUtils.isEmpty(temp)) {
-            Matcher matcher = Pattern.compile("[0-9]{4}[年][0-9]{1,2}[月][0-9]{1,2}[日]").matcher(temp);
-            while (matcher.find()) {
-                if (!StringUtils.isEmpty(matcher.group(0))) {
-                    Date terminationDate = DateHelp.getDateHelp().parse(matcher.group(0), "yyyy年MM月dd日");
-                    certificateOcrDto.setTerminationDate(terminationDate);
+        try {
+            JSONObject dataObj = JSON.parseObject(jsonObject.getString("data"));
+            if (!StringUtils.isEmpty(jsonObject.getString(keys.get("sid")))) {
+                certificateOcrDto.setSid(jsonObject.getString(keys.get("sid")));
+            }
+            if (jsonObject.getInteger(keys.get("angle")) != null) {
+                certificateOcrDto.setAngle(jsonObject.getInteger(keys.get("angle")));
+            }
+            if (!StringUtils.isEmpty(dataObj.getString(keys.get("A1")))) {
+                certificateOcrDto.setNumber(dataObj.getString(keys.get("A1")));
+            }
+            if (!StringUtils.isEmpty(dataObj.getString(keys.get("A2")))) {
+                certificateOcrDto.setOwnership(dataObj.getString(keys.get("A2")));
+            }
+            if (!StringUtils.isEmpty(dataObj.getString(keys.get("A3")))) {
+                certificateOcrDto.setPublicSituation(dataObj.getString(keys.get("A3")));
+            }
+            if (!StringUtils.isEmpty(dataObj.getString(keys.get("A4")))) {
+                certificateOcrDto.setBeLocated(dataObj.getString(keys.get("A4")));
+            }
+            if (!StringUtils.isEmpty(dataObj.getString(keys.get("A5")))) {
+                certificateOcrDto.setRealEstateUnitNumber(dataObj.getString(keys.get("A5")));
+            }
+            temp = String.format("%s%s", dataObj.getString(keys.get("A6")), dataObj.getString(keys.get("A7")));
+            if (!StringUtils.isEmpty(temp)) {
+                certificateOcrDto.setUseRightType(temp);
+                temp = null;
+            }
+            temp = String.format("%s%s", dataObj.getString(keys.get("A8")), dataObj.getString(keys.get("A9")));
+            if (!StringUtils.isEmpty(temp)) {
+                certificateOcrDto.setNature(temp);
+                temp = null;
+            }
+            temp = String.format("%s%s", dataObj.getString(keys.get("A10")), dataObj.getString(keys.get("A11")));
+            if (!StringUtils.isEmpty(temp)) {
+                certificateOcrDto.setPurpose(temp);
+                temp = null;
+            }
+            if (dataObj.getInteger(keys.get("A12")) != null) {
+                certificateOcrDto.setFloorArea(new BigDecimal(dataObj.getInteger(keys.get("A12"))));
+            }
+            //解析字符中的文字
+            temp = dataObj.getString(keys.get("A13"));
+            if (!StringUtils.isEmpty(temp)) {
+                Matcher matcher = Pattern.compile("[0-9]{4}[年][0-9]{1,2}[月][0-9]{1,2}[日]").matcher(temp);
+                while (matcher.find()) {
+                    if (!StringUtils.isEmpty(matcher.group(0))) {
+                        Date terminationDate = DateHelp.getDateHelp().parse(matcher.group(0), "yyyy年MM月dd日");
+                        certificateOcrDto.setTerminationDate(terminationDate);
+                    }
                 }
             }
+        } catch (Exception e1) {
+            logger.error(String.format("异常不再抛出 exception:",e1.getMessage()));
         }
-        System.out.println(certificateOcrDto);
         return certificateOcrDto;
     }
 

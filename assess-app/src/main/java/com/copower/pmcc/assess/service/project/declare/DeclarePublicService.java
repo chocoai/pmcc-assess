@@ -2,12 +2,17 @@ package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.google.common.base.Objects;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -19,13 +24,16 @@ import java.util.Map;
  */
 @Service
 public class DeclarePublicService {
-
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+
     /**
      * 不动产
+     *
      * @param oo
      * @param builder
      * @param row
@@ -34,41 +42,42 @@ public class DeclarePublicService {
      * @return
      * @throws Exception
      */
-    public boolean realEstateCert(DeclareRealtyRealEstateCert oo, StringBuilder builder, Row row, int i, List<BaseDataDic> land_uses)throws Exception{
+    public boolean realEstateCert(DeclareRealtyRealEstateCert oo, StringBuilder builder, Row row, int i, List<BaseDataDic> land_uses) throws Exception {
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
         //省
-        String provinceName = PoiUtils.getCellValue(row.getCell(40)) ;
+        String provinceName = PoiUtils.getCellValue(row.getCell(40));
         //市
-        String cityName = PoiUtils.getCellValue(row.getCell(41)) ;
+        String cityName = PoiUtils.getCellValue(row.getCell(41));
         //县或者区
-        String districtName = PoiUtils.getCellValue(row.getCell(42)) ;
+        String districtName = PoiUtils.getCellValue(row.getCell(42));
         oo.setProvince(provinceName);
         oo.setCity(cityName);
         oo.setDistrict(districtName);
 
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
+        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
             oo.setProvince(map.get("province"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
             oo.setCity(map.get("city"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             oo.setDistrict(map.get("district"));
         }
         //验证 类型(省略已经在excel配置了下拉框)
 
         //验证基础字典中数据
         String purpose = PoiUtils.getCellValue(row.getCell(31));
-        BaseDataDic typeDic = baseDataDicService.getDataDicByName(land_uses,purpose);
+        BaseDataDic typeDic = baseDataDicService.getDataDicByName(land_uses, purpose);
         if (typeDic == null) {
             builder.append(String.format("\n第%s行异常：类型与系统配置的名称不一致", i));
             return false;
-        }else {
+        } else {
             purpose = String.valueOf(typeDic.getId());
         }
         //用途
@@ -80,7 +89,19 @@ public class DeclarePublicService {
         //编号
         oo.setNumber(PoiUtils.getCellValue(row.getCell(2)));
         //类型
-        oo.setType(PoiUtils.getCellValue(row.getCell(3)));
+        String type = PoiUtils.getCellValue(row.getCell(3));
+        inner:
+        if (StringUtils.isNotBlank(type)) {
+            if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+                for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                    if (Objects.equal(type, baseProjectClassify.getName())) {
+                        oo.setType(baseProjectClassify.getId().toString());
+                        break inner;
+                    }
+                }
+                return false;
+            }
+        }
         //房屋所有权人
         oo.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
         //共有情况
@@ -160,6 +181,7 @@ public class DeclarePublicService {
 
     /**
      * 土地证
+     *
      * @param declareRealtyLandCert
      * @param builder
      * @param row
@@ -168,7 +190,8 @@ public class DeclarePublicService {
      * @return
      * @throws Exception
      */
-    public boolean land(DeclareRealtyLandCert declareRealtyLandCert, StringBuilder builder, Row row, int i, List<BaseDataDic> land_uses)throws Exception{
+    public boolean land(DeclareRealtyLandCert declareRealtyLandCert, StringBuilder builder, Row row, int i, List<BaseDataDic> land_uses) throws Exception {
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_LAND_PROPERTY_CERTIFICATE_TYPE_LAND_CATEGORY);
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(25));
         //市
@@ -178,9 +201,9 @@ public class DeclarePublicService {
         declareRealtyLandCert.setProvince(provinceName);
         declareRealtyLandCert.setCity(cityName);
         declareRealtyLandCert.setDistrict(districtName);
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
+        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
         }
@@ -195,13 +218,13 @@ public class DeclarePublicService {
         }
         //用途
         declareRealtyLandCert.setPurpose(purpose);
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
             declareRealtyLandCert.setProvince(map.get("province"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
             declareRealtyLandCert.setCity(map.get("city"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             declareRealtyLandCert.setDistrict(map.get("district"));
         }
         //验证 类型(省略已经在excel配置了下拉框)
@@ -209,10 +232,19 @@ public class DeclarePublicService {
         declareRealtyLandCert.setLandCertName(PoiUtils.getCellValue(row.getCell(0)));
         //所在地
         declareRealtyLandCert.setLocation(PoiUtils.getCellValue(row.getCell(1)));
-        String type = PoiUtils.getCellValue(row.getCell(2));
         //类型
-        if (!org.springframework.util.StringUtils.isEmpty(type)) {
-            declareRealtyLandCert.setType(type);
+        String type = PoiUtils.getCellValue(row.getCell(2));
+        inner:
+        if (StringUtils.isNotBlank(type)) {
+            if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+                for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                    if (Objects.equal(type, baseProjectClassify.getName())) {
+                        declareRealtyLandCert.setType(baseProjectClassify.getId().toString());
+                        break inner;
+                    }
+                }
+                return false;
+            }
         }
         //土地使用权人
         declareRealtyLandCert.setOwnership(PoiUtils.getCellValue(row.getCell(3)));
@@ -271,6 +303,7 @@ public class DeclarePublicService {
      * @param row
      */
     public boolean house(DeclareRealtyHouseCert declareRealtyHouseCert, StringBuilder builder, Row row, int i) throws Exception {
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_HOUSE_CATEGORY);
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(29));
         //市
@@ -300,10 +333,19 @@ public class DeclarePublicService {
         declareRealtyHouseCert.setCertName(PoiUtils.getCellValue(row.getCell(0)));
         declareRealtyHouseCert.setLocation(PoiUtils.getCellValue(row.getCell(1)));
         declareRealtyHouseCert.setNumber(PoiUtils.getCellValue(row.getCell(2)));
-        String type = PoiUtils.getCellValue(row.getCell(3));
         //类型
-        if (!org.springframework.util.StringUtils.isEmpty(type)) {
-            declareRealtyHouseCert.setType(type);
+        String type = PoiUtils.getCellValue(row.getCell(3));
+        inner:
+        if (StringUtils.isNotBlank(type)) {
+            if (!ObjectUtils.isEmpty(baseProjectClassifies)) {
+                for (BaseProjectClassify baseProjectClassify : baseProjectClassifies) {
+                    if (Objects.equal(type, baseProjectClassify.getName())) {
+                        declareRealtyHouseCert.setType(baseProjectClassify.getId().toString());
+                        break inner;
+                    }
+                }
+                return false;
+            }
         }
         //房屋所有权人
         declareRealtyHouseCert.setOwnership(PoiUtils.getCellValue(row.getCell(4)));
@@ -364,6 +406,7 @@ public class DeclarePublicService {
 
     /**
      * 在建工程（土建）
+     *
      * @param oo
      * @param builder
      * @param row
@@ -371,7 +414,7 @@ public class DeclarePublicService {
      * @return
      * @throws Exception
      */
-    public boolean buildEngineering(DeclareBuildEngineering oo, StringBuilder builder, Row row, int i)throws Exception{
+    public boolean buildEngineering(DeclareBuildEngineering oo, StringBuilder builder, Row row, int i) throws Exception {
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(14));
         //市或者区
@@ -381,19 +424,19 @@ public class DeclarePublicService {
         oo.setProvince(provinceName);
         oo.setCity(cityName);
         oo.setDistrict(districtName);
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
+        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
             oo.setProvince(map.get("province"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
             oo.setCity(map.get("city"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             oo.setDistrict(map.get("district"));
         }
         //占有单位
@@ -429,6 +472,7 @@ public class DeclarePublicService {
 
     /**
      * 在建工程（设备安装）
+     *
      * @param oo
      * @param builder
      * @param row
@@ -436,7 +480,7 @@ public class DeclarePublicService {
      * @return
      * @throws Exception
      */
-    public boolean buildEquipmentInstall(DeclareBuildEquipmentInstall oo,StringBuilder builder,Row row, int i)throws Exception{
+    public boolean buildEquipmentInstall(DeclareBuildEquipmentInstall oo, StringBuilder builder, Row row, int i) throws Exception {
         //省
         String provinceName = PoiUtils.getCellValue(row.getCell(16));
         //市
@@ -446,19 +490,19 @@ public class DeclarePublicService {
         oo.setProvince(provinceName);
         oo.setCity(cityName);
         oo.setDistrict(districtName);
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         //验证(区域)
-        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder,map)) {
+        if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
             builder.append(String.format("\n第%s行异常：区域类型与系统配置的名称不一致 ===>请检查省市区(县) ", i));
             return false;
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("province"))) {
             oo.setProvince(map.get("province"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("city"))) {
             oo.setCity(map.get("city"));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))){
+        if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             oo.setDistrict(map.get("district"));
         }
         //占有单位
