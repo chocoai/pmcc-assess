@@ -1,13 +1,17 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEquipmentInstallVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -17,6 +21,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -56,8 +61,19 @@ public class DeclareBuildEquipmentInstallService {
     private DeclareBuildEquipmentInstallDao declareBuildEquipmentInstallDao;
     @Autowired
     private DeclarePublicService declarePoiHelp;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
+        String declareType = null;
+        List<BaseProjectClassify> baseProjectClassifies = baseProjectClassifyService.getCacheProjectClassifyListByKey(AssessProjectClassifyConstant.SINGLE_DECLARE_BUILDING_CERTIFICATE_TYPE);
+        if (!ObjectUtils.isEmpty(baseProjectClassifies)){
+            for (BaseProjectClassify baseProjectClassify:baseProjectClassifies){
+                if (Objects.equal(baseProjectClassify.getName(), DeclareTypeEnum.DeclareBuildEquipmentInstall.getKey())){
+                    declareType = String.format("%d",baseProjectClassify.getId());
+                }
+            }
+        }
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -94,6 +110,7 @@ public class DeclareBuildEquipmentInstallService {
                 row = sheet.getRow(i);
                 oo = new DeclareBuildEquipmentInstall();
                 oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
+                oo.setDeclareType(declareType);
                 if (!declarePoiHelp.buildEquipmentInstall(oo,builder,row,i)){
                     continue;
                 }

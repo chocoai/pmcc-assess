@@ -67,7 +67,7 @@
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"
        onchange="declareRealtyLandCert.landEnclosureFun();">
 <input type="file" id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId" name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
-       onchange="declareRealtyLandCert.houseEnclosureFun();">
+       onchange="declareRealtyLandCert.houseEnclosureFun();" style="display: none">
 <script>
     var declareRealtyLandCertConfig = {
         frm: "frmDeclareRealtyLandCert",
@@ -580,6 +580,7 @@
                 url: "${pageContext.request.contextPath}/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
                 type: "get",
                 dataType: "json",
+                async: false,
                 data: {id: data.pid, planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
                 success: function (result) {
                     if (result.ret) {
