@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -53,7 +53,6 @@ public class DeclarePublicService {
         oo.setProvince(provinceName);
         oo.setCity(cityName);
         oo.setDistrict(districtName);
-
         Map<String, String> map = new HashMap<>();
         //验证(区域)
         if (!erpAreaService.checkArea(provinceName, cityName, districtName, builder, map)) {
@@ -69,8 +68,6 @@ public class DeclarePublicService {
         if (!org.springframework.util.StringUtils.isEmpty(map.get("district"))) {
             oo.setDistrict(map.get("district"));
         }
-        //验证 类型(省略已经在excel配置了下拉框)
-
         //验证基础字典中数据
         String purpose = PoiUtils.getCellValue(row.getCell(31));
         BaseDataDic typeDic = baseDataDicService.getDataDicByName(land_uses, purpose);
@@ -108,7 +105,7 @@ public class DeclarePublicService {
         //共有情况
         oo.setPublicSituation(PoiUtils.getCellValue(row.getCell(5)));
         //建筑面积
-        oo.setFloorArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
+        oo.setFloorArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(6))):new BigDecimal(""));
         //房屋坐落
         oo.setBeLocated(PoiUtils.getCellValue(row.getCell(7)));
         //街道号
@@ -124,21 +121,21 @@ public class DeclarePublicService {
         //单元
         oo.setUnit(PoiUtils.getCellValue(row.getCell(11)));
         //楼层
-        oo.setFloor(Integer.parseInt(PoiUtils.getCellValue(row.getCell(12))));
+        oo.setFloor(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))?Integer.parseInt(PoiUtils.getCellValue(row.getCell(12))):null);
         //房号
         oo.setRoomNumber(PoiUtils.getCellValue(row.getCell(13)));
         //登记时间
-        oo.setRegistrationTime(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)), null));
+        oo.setRegistrationTime(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(14))):null);
         //房屋性质
         oo.setNature(PoiUtils.getCellValue(row.getCell(15)));
         //规划用途
         oo.setPlanningUse(PoiUtils.getCellValue(row.getCell(16)));
         //总层数
-        oo.setFloorCount(Integer.parseInt(PoiUtils.getCellValue(row.getCell(17))));
+        oo.setFloorCount(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(17)))?Integer.parseInt(PoiUtils.getCellValue(row.getCell(17))):null);
         //证载面积
-        oo.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));
+        oo.setEvidenceArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(18))):new BigDecimal(""));
         //套内面积
-        oo.setInnerArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(19))));
+        oo.setInnerArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(19))):new BigDecimal(""));
         //其它
         oo.setOther(PoiUtils.getCellValue(row.getCell(20)));
         //土地证号
@@ -146,33 +143,32 @@ public class DeclarePublicService {
         //土地取得方式
         oo.setLandAcquisition(PoiUtils.getCellValue(row.getCell(22)));
         //土地使用年限起
-        oo.setUseStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(23)), null));
+        oo.setUseStartDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(23))):null);
         //土地使用年限止
-        oo.setUseEndDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(24)), null));
+        oo.setUseEndDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(24))):null);
         //公摊面积
-        oo.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));
-        //附记其它
+        oo.setPublicArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(25)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(25))):new BigDecimal(""));
         oo.setOtherNote(PoiUtils.getCellValue(row.getCell(26)));
         //登记机关
         oo.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(27)));
         //登记日期
-        oo.setRegistrationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(28)), null));
+        oo.setRegistrationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(28)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(28))):null);
         //地号
         oo.setLandNumber(PoiUtils.getCellValue(row.getCell(29)));
         //图号
         oo.setGraphNumber(PoiUtils.getCellValue(row.getCell(30)));
         //取得价格
-        oo.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(32))));
+        oo.setAcquisitionPrice(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(32)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(32))):new BigDecimal(""));
         //使用权类型
         oo.setUseRightType(PoiUtils.getCellValue(row.getCell(33)));
         //终止日期
-        oo.setTerminationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(34)), null));
+        oo.setTerminationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(34)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(34))):null);
         //使用权面积
-        oo.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(35))));
+        oo.setUseRightArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(35)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(35))):new BigDecimal(""));
         //使用权面积
-        oo.setAcreage(new BigDecimal(PoiUtils.getCellValue(row.getCell(36))));
+        oo.setAcreage(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(36)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(36))):new BigDecimal(""));
         //分摊面积
-        oo.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(37))));
+        oo.setApportionmentArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(37)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(37))):new BigDecimal(""));
         //记事
         oo.setMemo(PoiUtils.getCellValue(row.getCell(38)));
         //不动产单元号
@@ -276,21 +272,21 @@ public class DeclarePublicService {
         //图号
         declareRealtyLandCert.setGraphNumber(PoiUtils.getCellValue(row.getCell(14)));
         //取得价格
-        declareRealtyLandCert.setAcquisitionPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(16))));
+        declareRealtyLandCert.setAcquisitionPrice(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(16)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(16))):new BigDecimal(""));
         //使用权类型
         declareRealtyLandCert.setUseRightType(PoiUtils.getCellValue(row.getCell(17)));
         //终止日期
-        declareRealtyLandCert.setTerminationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(18)), null));
+        declareRealtyLandCert.setTerminationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(18))):null);
         //使用权面积
-        declareRealtyLandCert.setUseRightArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(19))));
+        declareRealtyLandCert.setUseRightArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(19)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(19))):new BigDecimal(""));
         //独用面积
-        declareRealtyLandCert.setAcreage(new BigDecimal(PoiUtils.getCellValue(row.getCell(20))));
+        declareRealtyLandCert.setAcreage(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(20)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(20))):new BigDecimal(""));
         //分摊面积
-        declareRealtyLandCert.setApportionmentArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(21))));
+        declareRealtyLandCert.setApportionmentArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(21)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(21))):new BigDecimal(""));
         //登记机关
         declareRealtyLandCert.setRegistrationAuthority(PoiUtils.getCellValue(row.getCell(22)));
         //登记日期
-        declareRealtyLandCert.setRegistrationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(23)), null));
+        declareRealtyLandCert.setRegistrationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(23))):null);
         //记事
         declareRealtyLandCert.setMemo(PoiUtils.getCellValue(row.getCell(24)));
         return true;
@@ -373,15 +369,15 @@ public class DeclarePublicService {
         //房号
         declareRealtyHouseCert.setRoomNumber(PoiUtils.getCellValue(row.getCell(13)));
         //登记时间
-        declareRealtyHouseCert.setRegistrationTime(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)), null));
+        declareRealtyHouseCert.setRegistrationTime(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(14))):null);
         //登记日期
-        declareRealtyHouseCert.setRegistrationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(15)), null));
+        declareRealtyHouseCert.setRegistrationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(15)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(15))):null);
         //规划用途
         declareRealtyHouseCert.setPlanningUse(PoiUtils.getCellValue(row.getCell(16)));
         //总层数
         declareRealtyHouseCert.setFloorCount(PoiUtils.getCellValue(row.getCell(17)));
         //证载面积
-        declareRealtyHouseCert.setEvidenceArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(18))));
+        declareRealtyHouseCert.setEvidenceArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(18))):new BigDecimal(""));
         //套内面积
         declareRealtyHouseCert.setInnerArea(PoiUtils.getCellValue(row.getCell(19)));
         //其它
@@ -391,9 +387,9 @@ public class DeclarePublicService {
         //土地取得方式
         declareRealtyHouseCert.setLandAcquisition(PoiUtils.getCellValue(row.getCell(22)));
         //土地使用年限起
-        declareRealtyHouseCert.setUseStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(23)), null));
+        declareRealtyHouseCert.setUseStartDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(23)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(23))):null);
         //土地使用年限止
-        declareRealtyHouseCert.setUseEndDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(24)), null));
+        declareRealtyHouseCert.setUseEndDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(24))):null);
         //公摊面积
         declareRealtyHouseCert.setPublicArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(25))));
         //附记其它
@@ -449,11 +445,11 @@ public class DeclarePublicService {
         //结构
         oo.setStructure(PoiUtils.getCellValue(row.getCell(3)));
         //建筑面积
-        oo.setBuildArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(4))));
+        oo.setBuildArea(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(4)))?new BigDecimal(PoiUtils.getCellValue(row.getCell(4))):new BigDecimal(""));
         //开工日期
-        oo.setStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(5)), null));
+        oo.setStartDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(5)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(5))):null);
         //预期完成日期
-        oo.setExpectedCompletionDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(6)), null));
+        oo.setExpectedCompletionDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(6))):null);
         //形象进度
         oo.setSpeedProgress(PoiUtils.getCellValue(row.getCell(7)));
         //付款比例
@@ -465,7 +461,7 @@ public class DeclarePublicService {
         //申报人
         oo.setDeclarer(PoiUtils.getCellValue(row.getCell(11)));
         //申报日期
-        oo.setDeclarationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(12)), null));
+        oo.setDeclarationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(12)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(12))):null);
         //申报人
         oo.setRemark(PoiUtils.getCellValue(row.getCell(13)));
         return true;
@@ -519,11 +515,11 @@ public class DeclarePublicService {
         //计量单位
         oo.setMeasurementUnit(PoiUtils.getCellValue(row.getCell(5)));
         //数量
-        oo.setNumber(Integer.parseInt(PoiUtils.getCellValue(row.getCell(6))));
+        oo.setNumber(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(6)))?Integer.parseInt(PoiUtils.getCellValue(row.getCell(6))):null);
         //开工日期
-        oo.setStartDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(7)), null));
+        oo.setStartDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(7)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(7))):null);
         //预期完成日期
-        oo.setExpectedCompletionDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(8)), null));
+        oo.setExpectedCompletionDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(8)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(8))):null);
         //帐面设备费
         oo.setBookEquipmentFee(PoiUtils.getCellValue(row.getCell(9)));
         //账面资金成本
@@ -535,7 +531,7 @@ public class DeclarePublicService {
         //申报人
         oo.setDeclarer(PoiUtils.getCellValue(row.getCell(13)));
         //申报日期
-        oo.setDeclarationDate(DateHelp.getDateHelp().parse(PoiUtils.getCellValue(row.getCell(14)), null));
+        oo.setDeclarationDate(StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(14)))? DateUtils.parse(PoiUtils.getCellValue(row.getCell(14))):null);
         //备注
         oo.setRemark(PoiUtils.getCellValue(row.getCell(15)));
         return true;

@@ -1177,36 +1177,19 @@
                 //HTML
                 $("#" + config.declare.frm + "HTML").append(resetHtml);
                 declareFunObj.updateInit();
-                declareFunObj.declare.monitor();
             });
         },
-        monitor: function () {
-            $.each($("#" + config.declare.frm + " :checkbox"), function (i, n) {
-                $(n).click(function () {
-                    AssessCommon.getProjectClassifyInfo($(n).val(), function (data) {
-                        if (declareFunObj.isEmpty(data)) {
-                            if (data.name == config.civilEngineering.name){
-                                declareFunObj.civilEngineering.toggle();
-                            }
-                            if (data.name == config.equipmentInstallation.name){
-                                declareFunObj.equipmentInstallation.toggle();
-                            }
-                        }
-                    })
-                });
-            });
-        }
     };
 
     declareFunObj.civilEngineering = {
         toggle:function () {
-            $("#" + config.civilEngineering.view).toggle();
+            $("#" + config.civilEngineering.view).show();
         }
     };
 
     declareFunObj.equipmentInstallation = {
         toggle:function () {
-            $("#" + config.equipmentInstallation.view).toggle();
+            $("#" + config.equipmentInstallation.view).show();
         }
     }
 
