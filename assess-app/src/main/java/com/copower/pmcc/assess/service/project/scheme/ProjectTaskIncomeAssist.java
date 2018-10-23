@@ -135,7 +135,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         DataTaxRateAllocation taxRateAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_LAND_REPLACEMENT_VALUE, areaGroup.getProvince(), areaGroup.getCity(), null);
         if (taxRateAllocation != null)
             modelAndView.addObject("replacementValue", taxRateAllocation.getAmount());
-        //取租赁税费 房产税+印花税+营业税*(城建税+地方教育费附加+教育费附加)
+        //取租赁税费 房产税+印花税+增值税*(城建税+地方教育费附加+教育费附加)
         modelAndView.addObject("additionalRatio", mdIncomeService.getAdditionalRatio(areaGroup.getProvince(), areaGroup.getCity(), null));
         modelAndView.addObject("mdIncome", mdIncome);
     }

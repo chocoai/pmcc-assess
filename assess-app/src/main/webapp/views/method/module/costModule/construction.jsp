@@ -162,11 +162,11 @@
 
                 <%--<div class="x-valid">--%>
                 <%--<label class="col-sm-1 control-label">--%>
-                <%--营业税金及附加率--%>
+                <%--增值税金及附加率--%>
                 <%--</label>--%>
                 <%--<div class="col-sm-3">--%>
                 <%--<input type="text"--%>
-                <%--placeholder="营业税金及附加率" class="form-control" readonly="readonly"--%>
+                <%--placeholder="增值税金及附加率" class="form-control" readonly="readonly"--%>
                 <%--name="businessAdditional">--%>
                 <%--</div>--%>
                 <%--</div>--%>
@@ -177,7 +177,7 @@
                        placeholder="管理费率" class="form-control" readonly="readonly"
                        name="managementExpense">
                 <input type="hidden"
-                       placeholder="营业税金及附加率" class="form-control" readonly="readonly"
+                       placeholder="增值税金及附加率" class="form-control" readonly="readonly"
                        name="businessAdditional">
             </div>
 
@@ -251,7 +251,7 @@
         totalTaxRate: {
             key: "totalTaxRate",
             name: "合计税率",
-            business: "businessTax",//营业税
+            business: "businessTax",//增值税
             urbanMaintenance: "urbanMaintenanceTax",//城建税
             education: "educationTax",//教育费附加
             localEducation: "localEducationTax",//地方教育费附加
@@ -382,7 +382,7 @@
             businessAdditional: {
                 key: "businessAdditional",
                 tax: "businessAdditionalTax",
-                name: "营业税金及附加"
+                name: "增值税金及附加"
             },
             landIncrement: {
                 key: "landIncrement",
@@ -458,9 +458,9 @@
             success: function (result) {
                 var a = 0, b = 0, c = 0, d = 0, e = 0, g = 0, h = 0, k = 0;
                 $.each(result.data, function (i, n) {
-                    if (n.typeName == "营业税") {
+                    if (n.typeName == "增值税") {
                         a = Number(n.taxRate);
-                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//营业税
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//增值税
                     }
                     if (n.typeName == "地方教育税附加") {
                         d = Number(n.taxRate);
@@ -553,19 +553,19 @@
             construction.algsObj.managementExpense();
         },
         businessTaxFun: function () {
-            construction.algsObj.businessAdditional();//营业税金及附加
+            construction.algsObj.businessAdditional();//增值税金及附加
         },
         urbanMaintenanceTaxFun: function () {
-            construction.algsObj.businessAdditional();//营业税金及附加
+            construction.algsObj.businessAdditional();//增值税金及附加
         },
         educationTaxFun: function () {
-            construction.algsObj.businessAdditional();//营业税金及附加
+            construction.algsObj.businessAdditional();//增值税金及附加
         },
         localEducationTaxFun: function () {
-            construction.algsObj.businessAdditional();//营业税金及附加
+            construction.algsObj.businessAdditional();//增值税金及附加
         },
         stampDutyFun: function () {
-            construction.algsObj.businessAdditional();//营业税金及附加
+            construction.algsObj.businessAdditional();//增值税金及附加
         },
         //投资利息率
         interestInvestmentTaxFun: function () {
@@ -734,10 +734,10 @@
             $("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html(temp.toFixed(4));
             construction.algsObj.constructionAssessmentValue();//在建工程评估价值
         },
-        //营业税金及附加 = H30+D30+D30*(E30+F30+G30)
+        //增值税金及附加 = H30+D30+D30*(E30+F30+G30)
         businessAdditional: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
-            a = construction.algsObj.getAndSet("get", construction.config.totalTaxRate.business, null);//营业税 D30
+            a = construction.algsObj.getAndSet("get", construction.config.totalTaxRate.business, null);//增值税 D30
             b = construction.algsObj.getAndSet("get", construction.config.totalTaxRate.education, null);//教育费附加 F30
             c = construction.algsObj.getAndSet("get", construction.config.totalTaxRate.localEducation, null);//地方教育费附加 G30
             d = construction.algsObj.getAndSet("get", construction.config.totalTaxRate.stampDuty, null);//印花税 H30
