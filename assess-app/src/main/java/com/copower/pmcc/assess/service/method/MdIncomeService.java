@@ -618,7 +618,7 @@ public class MdIncomeService {
     }
 
     /**
-     * 获取租赁税费 房产税+印花税+营业税*(1+城建税+地方教育费附加+教育费附加)
+     * 获取租赁税费 房产税+印花税+增值税*(1+城建税+地方教育费附加+教育费附加)
      *
      * @param province
      * @param city
@@ -628,7 +628,7 @@ public class MdIncomeService {
     public BigDecimal getAdditionalRatio(String province, String city, String district) {
         BigDecimal propertyTax = new BigDecimal("0");//房产税
         BigDecimal stampDuty = new BigDecimal("0");//印花税
-        BigDecimal salesTax = new BigDecimal("0");//营业税
+        BigDecimal salesTax = new BigDecimal("0");//增值税
         BigDecimal constructionTax = new BigDecimal("0");//城建税
         BigDecimal localEducationTax = new BigDecimal("0");//地方教育费附加
         BigDecimal educationFeePlus = new BigDecimal("0");//教育费附加
@@ -640,7 +640,7 @@ public class MdIncomeService {
         propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_STAMP_DUTY);
         if (propertyTaxAllocation != null)
             stampDuty = propertyTaxAllocation.getTaxRate();
-        //营业税
+        //增值税
         propertyTaxAllocation = dataTaxRateAllocationService.getTaxRateByKey(AssessDataDicKeyConstant.DATA_TAX_RATE_ALLOCATION_SALES_TAX);
         if (propertyTaxAllocation != null)
             salesTax = propertyTaxAllocation.getTaxRate();

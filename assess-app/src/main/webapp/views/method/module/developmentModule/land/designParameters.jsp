@@ -164,11 +164,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        营业税金及附加率
+                        增值税金及附加率
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="营业税金及附加率" class="form-control x-percent" data-rule-number='true' required="required"
+                               placeholder="增值税金及附加率" class="form-control x-percent" data-rule-number='true' required="required"
                                name="businessAdditionalTax">
                     </div>
                 </div>

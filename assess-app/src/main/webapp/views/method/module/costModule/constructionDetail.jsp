@@ -133,11 +133,11 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            营业税
+                            增值税
                         </label>
                         <div class="col-sm-3">
                             <input type="text"
-                                   placeholder="营业税" class="form-control x-percent" data-rule-number='true'
+                                   placeholder="增值税" class="form-control x-percent" data-rule-number='true'
                                    readonly="readonly"
                                    name="businessTax">
                         </div>
@@ -459,7 +459,7 @@
         totalTaxRate: {
             key: "totalTaxRate",
             name: "合计税率",
-            business: "businessTax",//营业税
+            business: "businessTax",//增值税
             urbanMaintenance: "urbanMaintenanceTax",//城建税
             education: "educationTax",//教育费附加
             localEducation: "localEducationTax",//地方教育费附加
@@ -590,7 +590,7 @@
             businessAdditional: {
                 key: "businessAdditional",
                 tax: "businessAdditionalTax",
-                name: "营业税金及附加"
+                name: "增值税金及附加"
             },
             landIncrement: {
                 key: "landIncrement",

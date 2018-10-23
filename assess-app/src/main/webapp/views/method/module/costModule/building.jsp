@@ -100,7 +100,7 @@
         totalTaxRate: {
             key: "totalTaxRate",
             name: "合计税率",
-            business: "businessTax",//营业税
+            business: "businessTax",//增值税
             urbanMaintenance: "urbanMaintenanceTax",//城建税
             education: "educationTax",//教育费附加
             localEducation: "localEducationTax",//地方教育费附加
@@ -247,9 +247,9 @@
             success: function (result) {
                 var a = 0, b = 0, c = 0, d = 0, e = 0, k = 0;
                 $.each(result.data, function (i, n) {
-                    if (n.typeName == "营业税") {
+                    if (n.typeName == "增值税") {
                         a = Number(n.taxRate);
-                        build.algsObj.getAndSet("set", build.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//营业税
+                        build.algsObj.getAndSet("set", build.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//增值税
                     }
                     if (n.typeName == "地方教育税附加") {
                         d = Number(n.taxRate);
@@ -516,7 +516,7 @@
         totalTaxRate: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, temp = 0;
             b = build.algsObj.getAndSet("get", build.config.totalTaxRate.urbanMaintenance, null);//城建税
-            a = build.algsObj.getAndSet("get", build.config.totalTaxRate.business, null);//营业税
+            a = build.algsObj.getAndSet("get", build.config.totalTaxRate.business, null);//增值税
             c = build.algsObj.getAndSet("get", build.config.totalTaxRate.education, null);//教育费附加
             d = build.algsObj.getAndSet("get", build.config.totalTaxRate.localEducation, null);//地方教育费附加
             e = build.algsObj.getAndSet("get", build.config.totalTaxRate.stampDuty, null);//印花税

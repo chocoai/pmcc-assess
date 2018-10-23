@@ -21,11 +21,11 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        营业税
+                        增值税
                     </label>
                     <div class="col-sm-3">
                         <input type="text"
-                               placeholder="营业税" class="form-control x-percent"  readonly="readonly"
+                               placeholder="增值税" class="form-control x-percent"  readonly="readonly"
                                name="businessTax">
                     </div>
                 </div>

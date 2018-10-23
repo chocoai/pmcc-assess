@@ -427,7 +427,7 @@
             businessAdditional: {
                 key: "businessAdditional",
                 tax: "businessAdditionalTax",
-                name: "营业税金及附加"
+                name: "增值税金及附加"
             },
             landIncrement: {
                 key: "landIncrement",
@@ -593,7 +593,7 @@
             underConstruction.algsObj.investmentProfit();//投资利润 金额
             underConstruction.algsObj.investmentProfitCorrecting();//投资利润 计算率
         },
-        //营业税金及附加
+        //增值税金及附加
         businessAdditionalTaxFun: function () {
             underConstruction.algsObj.salesTaxAndAdditionalCorrecting();//销售税金及附加 计算率
         },
@@ -727,10 +727,10 @@
             underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.landPrice.key, temp);//地价金额
             underConstruction.algsObj.landPriceCorrecting();
         },
-        //销售税金及附加 计算率 = C31+E31 ==> 营业税金及附加率+土地增值率
+        //销售税金及附加 计算率 = C31+E31 ==> 增值税金及附加率+土地增值率
         salesTaxAndAdditionalCorrecting: function () {
             var a = 0, b = 0, c = 0;
-            a = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.businessAdditional.tax, null);//营业税金及附加率
+            a = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.businessAdditional.tax, null);//增值税金及附加率
             b = underConstruction.algsObj.getAndSet("get", underConstruction.config.inputConfig.landIncrement.tax, null);//土地增值率
             if (!AssessCommon.isNumber(a)) {
                 return false;
