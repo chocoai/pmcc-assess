@@ -170,7 +170,7 @@
                     <div class="col-sm-7">
                         <div class="input-group">
                             <input type="text" readonly="readonly"
-                                   placeholder="成新率" value="0" class="form-control" name="newRate">
+                                   placeholder="成新率" value="0" class="form-control x-percent" name="newRate">
                             <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
