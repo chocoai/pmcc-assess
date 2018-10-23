@@ -1115,6 +1115,20 @@
     };
 
 
+    construction.specialTreatment2 = function (obj) {
+        if (construction.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
     /**
      * @author:  zch
      * 描述:赋值
@@ -1128,6 +1142,25 @@
         });
         $.each(forms, function (i, n) {
             $(n).initForm(item);
+        });
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (construction.isEmpty(str)) {
+                            str = construction.specialTreatment2(str);
+                            construction.algsObj.getAndSet("set",name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
         });
         $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html(item.landGetCostTotal);
         $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(item.constructionSubtotal);

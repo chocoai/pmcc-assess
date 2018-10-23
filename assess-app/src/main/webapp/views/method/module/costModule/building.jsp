@@ -750,6 +750,21 @@
         return item;
     };
 
+    build.specialTreatment2 = function (obj) {
+        if (build.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
+
 
     /**
      * @author:  zch
@@ -764,6 +779,25 @@
         });
         $.each(forms, function (i, n) {
             $(n).initForm(item);
+        });
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (build.isEmpty(str)) {
+                            str = build.specialTreatment2(str);
+                            build.algsObj.getAndSet("set",name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
         });
         $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(item.constructionCost);
         $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html(item.interestInvestment);
