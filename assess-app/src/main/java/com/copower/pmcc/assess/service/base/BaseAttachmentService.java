@@ -10,17 +10,17 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 描述:
@@ -41,6 +41,7 @@ public class BaseAttachmentService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
 
@@ -262,5 +263,30 @@ public class BaseAttachmentService {
         in.close();
         out.close();
         return fileFullPath;
+    }
+
+    public String importAjaxFile(MultipartFile multipartFile, String tableName, String tableId, String fieldsName) throws Exception {
+        String filePath = this.saveUploadFile(multipartFile);
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(org.apache.commons.lang.StringUtils.isNotBlank(tableId) ? Integer.parseInt(tableId) : 0);
+        sysAttachmentDto.setTableName(tableName);
+        sysAttachmentDto.setFieldsName(fieldsName);
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
+        sysAttachmentDto.setFileName(multipartFile.getOriginalFilename());
+        sysAttachmentDto.setFileExtension(multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1, multipartFile.getOriginalFilename().length()));
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setProjectId(0);
+        sysAttachmentDto.setFileSize(String.format("%d%s", multipartFile.getBytes().length / 8, "kb"));
+        try {
+            String ftpBasePath = String.format("%s/%s/%s/%s",createFTPBasePath(),DateUtils.format(new Date(),"yyyy-MM-dd"),commonService.thisUserAccount(),UUID.randomUUID().toString());
+            String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
+            sysAttachmentDto.setFilePath(ftpBasePath);
+            sysAttachmentDto.setFtpFileName(ftpFileName);
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath,new FileInputStream(filePath),ftpFileName);
+        } catch (Exception e1) {
+            logger.info(e1.getMessage());
+        }
+        this.addAttachment(sysAttachmentDto);
+        return String.format("%d", sysAttachmentDto.getId());
     }
 }

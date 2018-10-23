@@ -24,9 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by kings on 2018-5-10.
@@ -45,6 +51,22 @@ public class PublicController {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+
+    @ResponseBody
+    @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
+    public HttpResult importAjaxFile(HttpServletRequest request,String tableName,@RequestParam(defaultValue = "0") String tableId,String fieldsName) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFile,tableName,tableId,fieldsName));
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getSysAttachmentDto", method = {RequestMethod.GET}, name = "获取附件")

@@ -50,6 +50,8 @@
 <input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;"
        onchange="declareRealtyRealEstateCert.inputFile();">
 
+<input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId" style="display: none;"
+       onchange="declareRealtyRealEstateCert.enclosureFun();">
 <script>
     var declareRealtyRealEstateCertConfig = {
         frm: "frmDeclareRealtyRealEstateCert",
@@ -354,15 +356,40 @@
         $("#" + declareRealtyRealEstateCertConfig.frm).validate();
     };
 
+    declareRealtyRealEstateCert.enclosureFun = function () {
+        var id = $("#"+declareRealtyRealEstateCertConfig.fileId).attr("data-id");
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/public/importAjaxFile",
+            data: {
+                planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
+                tableName:AssessDBKey.DeclareRealtyRealEstateCert,
+                tableId:id,
+                fieldsName:declareRealtyRealEstateCertConfig.newFileId
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: declareRealtyRealEstateCertConfig.fileId,//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    declareRealtyRealEstateCert.loadList();
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
     /**
      * @author:  zch
      * 描述:附件
      * @date:2018-09-21
      **/
     declareRealtyRealEstateCert.enclosure = function (id) {
-        declareRealtyRealEstateCert.showFile(declareRealtyRealEstateCertConfig.fileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
-        declareRealtyRealEstateCert.fileUpload2(declareRealtyRealEstateCertConfig.fileId, AssessDBKey.DeclareRealtyRealEstateCert, id);
-        $('#' + declareRealtyRealEstateCertConfig.fileView).modal("show");
+        $("#"+declareRealtyRealEstateCertConfig.fileId).attr("data-id",id);
+        $("#"+declareRealtyRealEstateCertConfig.fileId).trigger('click');
     };
 
     /**
@@ -508,52 +535,7 @@
     });
 </script>
 
-<!-- 不动产附件 -->
-<div id="declareRealtyRealEstateCertFileView" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">不动产附件 &nbsp;&nbsp;&nbsp;&nbsp;
 
-                </h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            上传不动产证
-                                        </label>
-                                        <div class="col-sm-11">
-                                            <input id="declareRealtyRealEstateCertFileId"
-                                                   name="declareRealtyRealEstateCertFileId"
-                                                   required="required" placeholder="上传不动产证" class="form-control"
-                                                   type="file">
-                                            <div id="_declareRealtyRealEstateCertFileId"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- 不动产 add -->
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
