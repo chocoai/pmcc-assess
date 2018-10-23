@@ -798,6 +798,14 @@
                             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                             equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
                             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
+                            AssessCommon.initAreaInfo({
+                                provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "province"),
+                                cityTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "city"),
+                                districtTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "district"),
+                                provinceValue: data.province,
+                                cityValue: data.city,
+                                districtValue: data.district
+                            });
                         }
                     }
                 },
@@ -1041,6 +1049,14 @@
                             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                             equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
                             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
+                            AssessCommon.initAreaInfo({
+                                provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "province"),
+                                cityTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "city"),
+                                districtTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "district"),
+                                provinceValue: data.province,
+                                cityValue: data.city,
+                                districtValue: data.district
+                            });
                         }
                     }
                 },

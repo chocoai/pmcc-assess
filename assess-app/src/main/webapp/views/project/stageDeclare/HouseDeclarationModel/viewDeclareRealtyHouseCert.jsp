@@ -67,10 +67,10 @@
 <input type="file" id="ajaxFileUploadHouseLand" name="file" style="display: none;"
        onchange="declareRealtyHouseCert.inputFileLand();">
 
-<input type="file" id="sonDeclareRealtyLandCertFileId" name="sonDeclareRealtyLandCertFileId" onchange="declareRealtyHouseCert.landEnclosureClick()">
+<input type="file" id="declareRealtyHouseCertFileIdNew" name="declareRealtyHouseCertFileIdNew" style="display: none"
+       onchange="declareRealtyHouseCert.enclosureServer();">
 
-<input type="file" id="declareRealtyHouseCertFileIdNew" name="declareRealtyHouseCertFileIdNew" style="display: none;"
-       onchange="declareRealtyHouseCert.houseEnclosureClick();">
+<input type="file" id="sonDeclareRealtyLandCertFileId" name="file" style="display: none" onchange="declareRealtyHouseCert.enclosureServer2()">
 
 <script>
 
@@ -477,24 +477,24 @@
      * @date:2018-10-23
      **/
     declareRealtyHouseCert.houseEnclosure = function (id) {
-        $("#"+declareRealtyHouseCertConfig.fileIdNew).attr("data-id",id);
-        $("#"+declareRealtyHouseCertConfig.fileIdNew).trigger('click');
+        $("#" + declareRealtyHouseCertConfig.fileIdNew).attr("data-id", id);
+        $("#" + declareRealtyHouseCertConfig.fileIdNew).trigger('click');
     };
     /**
-    * @author:  zch
-    * 描述:房产证附件 服务端
-    * @date:2018-10-23
-    **/
-    declareRealtyHouseCert.houseEnclosureClick = function () {
-        var id = $("#"+declareRealtyHouseCertConfig.fileIdNew).attr("data-id");
+     * @author:  zch
+     * 描述:附件处理服务端
+     * @date:2018-10-23
+     **/
+    declareRealtyHouseCert.enclosureServer = function () {
+        var id = $("#" + declareRealtyHouseCertConfig.fileIdNew).attr("data-id");
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/public/importAjaxFile",
             data: {
                 planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
-                tableName:AssessDBKey.DeclareRealtyHouseCert,
-                tableId:id,
-                fieldsName:declareRealtyHouseCertConfig.fileId
+                tableName: AssessDBKey.DeclareRealtyHouseCert,
+                tableId: id,
+                fieldsName: declareRealtyHouseCertConfig.fileId
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
             fileElementId: declareRealtyHouseCertConfig.fileIdNew,//文件选择框的id属性
@@ -512,21 +512,17 @@
         });
     };
 
-    /**
-     * @author:  zch
-     * 描述:土地证附件 服务端
-     * @date:2018-10-23
-     **/
-    declareRealtyHouseCert.landEnclosureClick = function () {
-        var id = $("#"+declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).attr("data-id");
+
+    declareRealtyHouseCert.enclosureServer2 = function () {
+        var id = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).attr("data-id");
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/public/importAjaxFile",
             data: {
                 planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
-                tableName:AssessDBKey.DeclareRealtyLandCert,
-                tableId:id,
-                fieldsName:declareRealtyHouseCertConfig.landFileId
+                tableName: AssessDBKey.DeclareRealtyLandCert,
+                tableId: id,
+                fieldsName: declareRealtyHouseCertConfig.landFileId
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
             fileElementId: declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId,//文件选择框的id属性
@@ -544,10 +540,10 @@
         });
     };
     /**
-    * @author:  zch
-    * 描述:土地证附件 页面
-    * @date:2018-10-23
-    **/
+     * @author:  zch
+     * 描述:土地证附件 页面
+     * @date:2018-10-23
+     **/
     declareRealtyHouseCert.landEnclosure = function (id) {
         var item = $("#" + declareRealtyHouseCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (declareRealtyHouseCert.isEmpty(item.pid)) {
@@ -555,14 +551,14 @@
                 url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
                 type: "get",
                 dataType: "json",
+                async:false,
                 data: {id: item.pid, planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'},
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
                         if (declareRealtyHouseCert.isEmpty(data)) {
-                            console.log("无法触发事件");
-                            $("#"+declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).attr("data-id",data.id);
-                            $("#"+declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).trigger("click");
+                            $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).attr("data-id", data.id);
+                            $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.fileId).trigger('click');
                         } else {
                             toastr.success('关联的土地证数据已经被删除!');
                             toastr.success('请重新填写!');
@@ -760,8 +756,8 @@
                                 declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm, data.type, "type");
                                 declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm, data.purpose, "purpose");
                                 declareRealtyHouseCert.objectWriteSelectData(declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm, data.useRightType, "useRightType");
-                                declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.landFileId,AssessDBKey.DeclareRealtyLandCert,data.id);
-                                declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.landFileId,AssessDBKey.DeclareRealtyLandCert,data.id);
+                                declareRealtyHouseCert.showFile(declareRealtyHouseCertConfig.landFileId, AssessDBKey.DeclareRealtyLandCert, data.id);
+                                declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.landFileId, AssessDBKey.DeclareRealtyLandCert, data.id);
                             } else {
                                 toastr.success('关联的土地证数据已经被删除!');
                                 toastr.success('请重新填写!');
@@ -792,16 +788,16 @@
                             $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).initForm(
                                 {
                                     pid: id,
-                                    beLocated:resultA.data.beLocated,
-                                    streetNumber:resultA.data.streetNumber,
-                                    attachedNumber:resultA.data.attachedNumber,
-                                    buildingNumber:resultA.data.buildingNumber,
-                                    unit:resultA.data.unit,
-                                    roomNumber:resultA.data.roomNumber,
-                                    floor:resultA.data.floor
+                                    beLocated: resultA.data.beLocated,
+                                    streetNumber: resultA.data.streetNumber,
+                                    attachedNumber: resultA.data.attachedNumber,
+                                    buildingNumber: resultA.data.buildingNumber,
+                                    unit: resultA.data.unit,
+                                    roomNumber: resultA.data.roomNumber,
+                                    floor: resultA.data.floor
                                 }
                             );
-                            declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.landFileId,AssessDBKey.DeclareRealtyLandCert,0);
+                            declareRealtyHouseCert.fileUpload(declareRealtyHouseCertConfig.landFileId, AssessDBKey.DeclareRealtyLandCert, 0);
                         }
                     },
                     error: function (resultA) {
@@ -1619,7 +1615,8 @@
                                             上传土地证附件<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-5">
-                                            <input id="declareRealtyHouseCert_land_FileId" name="declareRealtyHouseCert_land_FileId"
+                                            <input id="declareRealtyHouseCert_land_FileId"
+                                                   name="declareRealtyHouseCert_land_FileId"
                                                    required="required" placeholder="上传土地证附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyHouseCert_land_FileId"></div>
