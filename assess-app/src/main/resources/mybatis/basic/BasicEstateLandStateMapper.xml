@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicEstateLandStateMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="land_use_type" property="landUseType" jdbcType="INTEGER" />
+    <result column="land_use_category" property="landUseCategory" jdbcType="INTEGER" />
+    <result column="land_level" property="landLevel" jdbcType="INTEGER" />
+    <result column="land_area" property="landArea" jdbcType="VARCHAR" />
+    <result column="east_to" property="eastTo" jdbcType="VARCHAR" />
+    <result column="south_to" property="southTo" jdbcType="VARCHAR" />
+    <result column="west_to" property="westTo" jdbcType="VARCHAR" />
+    <result column="north_to" property="northTo" jdbcType="VARCHAR" />
+    <result column="shape_state" property="shapeState" jdbcType="VARCHAR" />
+    <result column="planeness" property="planeness" jdbcType="VARCHAR" />
+    <result column="development_degree" property="developmentDegree" jdbcType="VARCHAR" />
+    <result column="restrictive_condition" property="restrictiveCondition" jdbcType="VARCHAR" />
+    <result column="soil" property="soil" jdbcType="VARCHAR" />
+    <result column="topographic_terrain" property="topographicTerrain" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, estate_id, name, land_use_type, land_use_category, land_level, land_area, east_to, 
+    south_to, west_to, north_to, shape_state, planeness, development_degree, restrictive_condition, 
+    soil, topographic_terrain, creator, version, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandStateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_basic_estate_land_state
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_basic_estate_land_state
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_basic_estate_land_state
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandStateExample" >
+    delete from tb_basic_estate_land_state
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_estate_land_state (estate_id, name, land_use_type, 
+      land_use_category, land_level, land_area, 
+      east_to, south_to, west_to, 
+      north_to, shape_state, planeness, 
+      development_degree, restrictive_condition, 
+      soil, topographic_terrain, creator, 
+      version, gmt_created, gmt_modified
+      )
+    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
+      #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
+      #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
+      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, 
+      #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
+      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_estate_land_state
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="estateId != null" >
+        estate_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="landUseType != null" >
+        land_use_type,
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category,
+      </if>
+      <if test="landLevel != null" >
+        land_level,
+      </if>
+      <if test="landArea != null" >
+        land_area,
+      </if>
+      <if test="eastTo != null" >
+        east_to,
+      </if>
+      <if test="southTo != null" >
+        south_to,
+      </if>
+      <if test="westTo != null" >
+        west_to,
+      </if>
+      <if test="northTo != null" >
+        north_to,
+      </if>
+      <if test="shapeState != null" >
+        shape_state,
+      </if>
+      <if test="planeness != null" >
+        planeness,
+      </if>
+      <if test="developmentDegree != null" >
+        development_degree,
+      </if>
+      <if test="restrictiveCondition != null" >
+        restrictive_condition,
+      </if>
+      <if test="soil != null" >
+        soil,
+      </if>
+      <if test="topographicTerrain != null" >
+        topographic_terrain,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="estateId != null" >
+        #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseType != null" >
+        #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        #{landUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="landLevel != null" >
+        #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landArea != null" >
+        #{landArea,jdbcType=VARCHAR},
+      </if>
+      <if test="eastTo != null" >
+        #{eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="southTo != null" >
+        #{southTo,jdbcType=VARCHAR},
+      </if>
+      <if test="westTo != null" >
+        #{westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="northTo != null" >
+        #{northTo,jdbcType=VARCHAR},
+      </if>
+      <if test="shapeState != null" >
+        #{shapeState,jdbcType=VARCHAR},
+      </if>
+      <if test="planeness != null" >
+        #{planeness,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentDegree != null" >
+        #{developmentDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="restrictiveCondition != null" >
+        #{restrictiveCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="soil != null" >
+        #{soil,jdbcType=VARCHAR},
+      </if>
+      <if test="topographicTerrain != null" >
+        #{topographicTerrain,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandStateExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_estate_land_state
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_basic_estate_land_state
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateId != null" >
+        estate_id = #{record.estateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landUseType != null" >
+        land_use_type = #{record.landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="record.landUseCategory != null" >
+        land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.landLevel != null" >
+        land_level = #{record.landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.landArea != null" >
+        land_area = #{record.landArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eastTo != null" >
+        east_to = #{record.eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.southTo != null" >
+        south_to = #{record.southTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.westTo != null" >
+        west_to = #{record.westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.northTo != null" >
+        north_to = #{record.northTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shapeState != null" >
+        shape_state = #{record.shapeState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planeness != null" >
+        planeness = #{record.planeness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developmentDegree != null" >
+        development_degree = #{record.developmentDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.restrictiveCondition != null" >
+        restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.soil != null" >
+        soil = #{record.soil,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topographicTerrain != null" >
+        topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_basic_estate_land_state
+    set id = #{record.id,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      land_use_type = #{record.landUseType,jdbcType=INTEGER},
+      land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
+      land_level = #{record.landLevel,jdbcType=INTEGER},
+      land_area = #{record.landArea,jdbcType=VARCHAR},
+      east_to = #{record.eastTo,jdbcType=VARCHAR},
+      south_to = #{record.southTo,jdbcType=VARCHAR},
+      west_to = #{record.westTo,jdbcType=VARCHAR},
+      north_to = #{record.northTo,jdbcType=VARCHAR},
+      shape_state = #{record.shapeState,jdbcType=VARCHAR},
+      planeness = #{record.planeness,jdbcType=VARCHAR},
+      development_degree = #{record.developmentDegree,jdbcType=VARCHAR},
+      restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
+      soil = #{record.soil,jdbcType=VARCHAR},
+      topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=INTEGER},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
+    update tb_basic_estate_land_state
+    <set >
+      <if test="estateId != null" >
+        estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseType != null" >
+        land_use_type = #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category = #{landUseCategory,jdbcType=INTEGER},
+      </if>
+      <if test="landLevel != null" >
+        land_level = #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landArea != null" >
+        land_area = #{landArea,jdbcType=VARCHAR},
+      </if>
+      <if test="eastTo != null" >
+        east_to = #{eastTo,jdbcType=VARCHAR},
+      </if>
+      <if test="southTo != null" >
+        south_to = #{southTo,jdbcType=VARCHAR},
+      </if>
+      <if test="westTo != null" >
+        west_to = #{westTo,jdbcType=VARCHAR},
+      </if>
+      <if test="northTo != null" >
+        north_to = #{northTo,jdbcType=VARCHAR},
+      </if>
+      <if test="shapeState != null" >
+        shape_state = #{shapeState,jdbcType=VARCHAR},
+      </if>
+      <if test="planeness != null" >
+        planeness = #{planeness,jdbcType=VARCHAR},
+      </if>
+      <if test="developmentDegree != null" >
+        development_degree = #{developmentDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="restrictiveCondition != null" >
+        restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="soil != null" >
+        soil = #{soil,jdbcType=VARCHAR},
+      </if>
+      <if test="topographicTerrain != null" >
+        topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
+    update tb_basic_estate_land_state
+    set estate_id = #{estateId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      land_use_type = #{landUseType,jdbcType=INTEGER},
+      land_use_category = #{landUseCategory,jdbcType=INTEGER},
+      land_level = #{landLevel,jdbcType=INTEGER},
+      land_area = #{landArea,jdbcType=VARCHAR},
+      east_to = #{eastTo,jdbcType=VARCHAR},
+      south_to = #{southTo,jdbcType=VARCHAR},
+      west_to = #{westTo,jdbcType=VARCHAR},
+      north_to = #{northTo,jdbcType=VARCHAR},
+      shape_state = #{shapeState,jdbcType=VARCHAR},
+      planeness = #{planeness,jdbcType=VARCHAR},
+      development_degree = #{developmentDegree,jdbcType=VARCHAR},
+      restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
+      soil = #{soil,jdbcType=VARCHAR},
+      topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
