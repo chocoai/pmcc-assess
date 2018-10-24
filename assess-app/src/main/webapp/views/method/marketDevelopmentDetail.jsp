@@ -259,6 +259,23 @@
     optionsBuildBox.detailInit = function () {
         var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}";
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}";
+        var mdDevelopment = "${mdDevelopment.type}";
+        if(mdDevelopment == "tb_md_development_hypothesis"){
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "2"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+            optionsBuildBox.showArchitecturalEngineering();
+        }
+        if(mdDevelopment == "tb_md_development_architectural"){
+            optionsBuildBox.showHypothesisDevelopment();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "1"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
         if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)) {
             mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();
             try {

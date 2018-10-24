@@ -156,12 +156,14 @@
     optionsBuildBox.hypothesisDevelopmentInit = function (data) {
         data = JSON.parse(data);
         underConstruction.initForm(data);
+        underConstruction.dataObject = data;
     };
 
     //初始化 土地
     optionsBuildBox.architecturalEngineeringInit = function (data) {
         data = JSON.parse(data);
         landEngineering.initForm(data);
+        landEngineering.dataObject = data;
     };
     /**
      * @author:  zch
@@ -197,6 +199,23 @@
     optionsBuildBox.updateInit = function () {
         var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}";
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}";
+        var mdDevelopment = "${mdDevelopment.type}";
+        if(mdDevelopment == "tb_md_development_hypothesis"){
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "2"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+            optionsBuildBox.showArchitecturalEngineering();
+        }
+        if(mdDevelopment == "tb_md_development_architectural"){
+            optionsBuildBox.showHypothesisDevelopment();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "1"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
 
         if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)) {
             mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();

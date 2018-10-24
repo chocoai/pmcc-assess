@@ -101,8 +101,24 @@
     optionsBuildBox.detailInit = function () {
         var mdCostBuilding = "${mdCostBuilding}";
         var mdCostConstruction = "${mdCostConstruction}";
+        var mdCost = "${mdCost.type}";
+        if (mdCost == "tb_md_cost_construction"){
+            optionsBuildBox.showConstruction();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "2"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
+        if (mdCost == "tb_md_cost_building"){
+            optionsBuildBox.showBuilding();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "1"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
-            // optionsBuildBox.showBuilding();
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
@@ -112,7 +128,6 @@
             }
         }
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
-            // optionsBuildBox.showConstruction();
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);

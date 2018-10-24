@@ -361,6 +361,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         }
         //设置 (建筑物)
         if (pid != null) {
+            MdCost mdCost = mdMarketCostService.getByMdCostId(pid);
+            modelAndView.addObject("mdCost",mdCost);
             mdCostBuilding = new MdCostBuilding();
             mdCostBuilding.setPid(pid);
             List<MdCostBuilding> mdCostBuildingList = mdMarketCostService.mdCostBuildingList(mdCostBuilding);

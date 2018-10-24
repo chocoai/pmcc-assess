@@ -450,6 +450,16 @@
         return false;
     };
 
+    underConstruction.dataObject = null;
+
+    underConstruction.select2InitMethodWrite = function (data, name) {
+        if (underConstruction.isEmpty(data)){
+            $("#"+underConstruction.config.id).find("select."+name).val(data).trigger("change");
+        }else {
+            $("#"+underConstruction.config.id).find("select."+name).val(null).trigger("change");
+        }
+    };
+
     underConstruction.loadData = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
@@ -479,6 +489,9 @@
                         $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
                         $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.devDuring.tax).html(optionC);
+                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.infrastructureCost.tax),underConstruction.config.inputConfig.infrastructureCost.tax);
+                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.infrastructureMatchingCost.tax),underConstruction.config.inputConfig.infrastructureMatchingCost.tax);
+                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.devDuring.tax),underConstruction.config.inputConfig.devDuring.tax);
                     }
                 }
             },
@@ -1225,7 +1238,20 @@
         return item;
     };
 
-
+    underConstruction.specialTreatment2 = function (obj) {
+        if (underConstruction.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
     /**
      * @author:  zch
      * 描述:赋值
@@ -1275,6 +1301,25 @@
         if (underConstruction.isEmpty(item.table)) {
             $("#" + underConstruction.config.id).find("#" + underParameter.config.frm + " table").eq(0).html(item.table);
         }
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (underConstruction.isEmpty(str)) {
+                            str = underConstruction.specialTreatment2(str);
+                            underConstruction.algsObj.getAndSet("set",name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
+        });
         $(function () {
             underParameter.init();
         });

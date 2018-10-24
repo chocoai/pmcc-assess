@@ -122,9 +122,11 @@
 
     optionsBuildBox.mdCostBuildingInit = function (data) {
         build.initForm(data);
+        build.dataObject = JSON.parse(data);
     };
     optionsBuildBox.mdCostConstructionInit = function (data) {
         construction.initForm(data);
+        construction.dataObject = JSON.parse(data);
     };
     /**
      * @author:  zch
@@ -134,6 +136,23 @@
     optionsBuildBox.updateInit = function () {
         var mdCostBuilding = "${mdCostBuilding}";
         var mdCostConstruction = "${mdCostConstruction}";
+        var mdCost = "${mdCost.type}";
+        if (mdCost == "tb_md_cost_construction"){
+            optionsBuildBox.showConstruction();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "2"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
+        if (mdCost == "tb_md_cost_building"){
+            optionsBuildBox.showBuilding();
+            $(".optionsBuildBox :radio").each(function (i,n) {
+                if ($(n).val() == "1"){
+                    $(n).attr("checked",'checked');
+                }
+            });
+        }
         if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
