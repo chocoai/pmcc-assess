@@ -6,8 +6,12 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.event.project.SurveyAssetInventoryEvent;
+import com.copower.pmcc.assess.service.event.project.SurveyExamineTaskEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -36,6 +40,8 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -120,7 +126,11 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-
+        try {
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyAssetInventoryEvent.class.getSimpleName());//修改监听器
+        } catch (BpmException e) {
+            e.printStackTrace();
+        }
         surveyAssetInventoryService.save(projectPlanDetails, processInsId, surveyAssetInventoryService.format(formData));
     }
 
