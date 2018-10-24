@@ -60,7 +60,7 @@
     <!-- 通过@Mapper注解的形式使用Mapper Interface -->
     <!-- =========================================== -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.copower.pmcc.assess.dal.cases"/>
+        <property name="basePackage" value="com.copower.pmcc.assess.dal.basic"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBasic"/>
     </bean>
 

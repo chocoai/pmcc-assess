@@ -46,6 +46,12 @@ public class SurveyAssetInventoryContentService {
         vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryContentVos) ? new ArrayList<SurveyAssetInventoryContent>() : surveyAssetInventoryContentVos);
         return vo;
     }
+
+    public List<SurveyAssetInventoryContent> getContentListByPlanDetailsId(Integer planDetailsId){
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContentsList = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(planDetailsId);
+        return surveyAssetInventoryContentsList;
+    }
+
     public List<SurveyAssetInventoryContentVo> getVoList(List<SurveyAssetInventoryContent> list) {
         if (CollectionUtils.isEmpty(list)) return null;
         return LangUtils.transform(list, p -> {
