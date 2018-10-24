@@ -453,6 +453,16 @@
         return false;
     };
 
+    landEngineering.dataObject = null;
+
+    landEngineering.select2InitMethodWrite = function (data, name) {
+        if (landEngineering.isEmpty(data)){
+            $("#"+landEngineering.config.id).find("select."+name).val(data).trigger("change");
+        }else {
+            $("#"+landEngineering.config.id).find("select."+name).val(null).trigger("change");
+        }
+    };
+
     landEngineering.loadData = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
@@ -482,6 +492,9 @@
                         $("#" + landEngineering.config.id).find("select." + landEngineering.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + landEngineering.config.id).find("select." + landEngineering.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
                         $("#" + landEngineering.config.id).find("select." + landEngineering.config.inputConfig.devDuring.tax).html(optionC);
+                        landEngineering.select2InitMethodWrite(eval("landEngineering.dataObject."+landEngineering.config.inputConfig.infrastructureCost.tax),landEngineering.config.inputConfig.infrastructureCost.tax);
+                        landEngineering.select2InitMethodWrite(eval("landEngineering.dataObject."+landEngineering.config.inputConfig.infrastructureMatchingCost.tax),landEngineering.config.inputConfig.infrastructureMatchingCost.tax);
+                        landEngineering.select2InitMethodWrite(eval("landEngineering.dataObject."+landEngineering.config.inputConfig.devDuring.tax),landEngineering.config.inputConfig.devDuring.tax);
                     }
                 }
             },
@@ -1220,6 +1233,20 @@
         return item;
     };
 
+    landEngineering.specialTreatment2 = function (obj) {
+        if (landEngineering.isEmpty(obj)) {
+            var nnn = "" + obj + "";
+            var str = nnn.substring(nnn.length - 1, nnn.length);
+            if (str == '%') {//检测是否为百分比
+                return nnn;
+            } else {
+                str = AssessCommon.pointToPercent(Number(nnn));
+                return str;
+            }
+            return obj;
+        }
+        return 0;
+    };
 
     /**
      * @author:  zch
@@ -1271,6 +1298,25 @@
         if (landEngineering.isEmpty(item.table)) {
             $("#" + landEngineering.config.id).find("#" + parameter.config.frm + " table").eq(0).html(item.table);
         }
+        $.each(forms, function (i, n) {
+            var inputs = $(n).find(":input");
+            $.each(inputs, function (i, k) {
+                var kk = $(k);
+                var className = kk.attr("class");
+                var str = null;
+                var name = kk.attr("name");
+                if (className.indexOf("x-percent") != -1) {
+                    try {
+                        str = eval("item." + name);
+                        if (landEngineering.isEmpty(str)) {
+                            str = landEngineering.specialTreatment2(str);
+                            landEngineering.algsObj.getAndSet("set",name,str);
+                        }
+                    } catch (e) {
+                    }
+                }
+            });
+        });
         $(function () {
             parameter.init();
         });

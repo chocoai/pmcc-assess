@@ -410,6 +410,16 @@
         return false;
     };
 
+    construction.dataObject = null;
+
+    construction.select2InitMethodWrite = function (data, name) {
+        if (construction.isEmpty(data)) {
+            $("#" + construction.config.id).find("select." + name).val(data).trigger("change");
+        } else {
+            $("#" + construction.config.id).find("select." + name).val(null).trigger("change");
+        }
+    };
+
     construction.loadData = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
@@ -439,12 +449,11 @@
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.devDuring.tax).html(optionC);
+                        construction.select2InitMethodWrite(eval("construction.dataObject." + construction.config.inputConfig.infrastructureCost.tax), construction.config.inputConfig.infrastructureCost.tax);
+                        construction.select2InitMethodWrite(eval("construction.dataObject." + construction.config.inputConfig.infrastructureMatchingCost.tax), construction.config.inputConfig.infrastructureMatchingCost.tax);
+                        construction.select2InitMethodWrite(eval("construction.dataObject." + construction.config.inputConfig.devDuring.tax), construction.config.inputConfig.devDuring.tax);
                     }
-
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
         $.ajax({
@@ -1155,7 +1164,7 @@
                         str = eval("item." + name);
                         if (construction.isEmpty(str)) {
                             str = construction.specialTreatment2(str);
-                            construction.algsObj.getAndSet("set",name,str);
+                            construction.algsObj.getAndSet("set", name, str);
                         }
                     } catch (e) {
                     }

@@ -94,6 +94,8 @@
 <script>
     var build = new Object();
 
+    build.dataObject = null;
+
     build.config = {
         id: "buildModel",
         /*说明:key代表计算出的金额,correcting代表费率校正值,tax代表费率,name代表名称*/
@@ -199,6 +201,14 @@
         return false;
     };
 
+    build.select2InitMethodWrite = function (data, name) {
+        if (build.isEmpty(data)){
+            $("#"+build.config.id).find("select."+name).val(data).trigger("change");
+        }else {
+            $("#"+build.config.id).find("select."+name).val(null).trigger("change");
+        }
+    };
+
     build.loadData = function () {
         $.ajax({
             url: "${pageContext.request.contextPath}/infrastructure/listInfrastructure",
@@ -228,6 +238,9 @@
                         $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureCost.tax).html(optionA);
                         $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
                         $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).html(optionC);
+                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.infrastructureCost.tax),build.config.inputConfig.infrastructureCost.tax);
+                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.infrastructureMatchingCost.tax),build.config.inputConfig.infrastructureMatchingCost.tax);
+                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.devDuring.tax),build.config.inputConfig.devDuring.tax);
                     }
 
                 }

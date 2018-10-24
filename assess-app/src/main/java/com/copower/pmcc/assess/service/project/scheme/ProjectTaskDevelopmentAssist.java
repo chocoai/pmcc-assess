@@ -359,6 +359,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         }
         //设置假设开发法 在建工程
         if (pid != null) {
+            MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
+            modelAndView.addObject("mdDevelopment",mdDevelopment);
             mdDevelopmentHypothesis = new MdDevelopmentHypothesis();
             mdDevelopmentHypothesis.setPid(pid);
             List<MdDevelopmentHypothesis> mdDevelopmentHypothesisList = mdDevelopmentService.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
