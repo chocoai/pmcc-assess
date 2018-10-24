@@ -153,7 +153,7 @@
                                     <td>
                                         <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="差异原因" required
-                                                   id="differenceReason${item.id}" name="differenceReason"
+                                                   id="differenceReason${item.id}" name="differenceReason${item.id}"
                                                    class="form-control" value="${item.differenceReason}">
                                         </div>
                                     </td>
@@ -166,21 +166,21 @@
                                     </td>
                                     <td>
                                         <div class="show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input id="credentialAccessory${item.id}" name="credentialAccessory" type="file" multiple="false" >
+                                            <input id="credentialAccessory${item.id}" name="credentialAccessory${item.id}" type="file" multiple="false" >
                                             <div id="_credentialAccessory${item.id}"></div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="证明人" required
-                                                   id="voucher${item.id}" name="voucher"
+                                                   id="voucher${item.id}" name="voucher${item.id}"
                                                    class="form-control" value="${item.voucher}">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input placeholder="调查时间" id="surveyTime${item.id}"
-                                                   name="surveyTime" required
+                                                   name="surveyTime${item.id}" required
                                                    data-date-format="yyyy-mm-dd"
                                                    class="form-control date-picker dbdate"
                                                    readonly="readonly"
@@ -215,13 +215,9 @@
                         </button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary"
-                                onclick="$('#ajaxFileUpload').val('').trigger('click')">导入数据
-                        </button>
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">
+                                aria-expanded="false">导入数据
                             <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="javascript://"

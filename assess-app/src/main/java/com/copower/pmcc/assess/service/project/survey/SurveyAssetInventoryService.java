@@ -58,6 +58,7 @@ public class SurveyAssetInventoryService {
                 surveyAssetInventory.setProjectId(projectId);
                 surveyAssetInventory.setPlanDetailId(planDetailsId);
                 surveyAssetInventory.setProcessInsId(processInsId);
+                surveyAssetInventory.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
                 surveyAssetInventory.setCreator(commonService.thisUserAccount());
                 surveyAssetInventoryDao.save(surveyAssetInventory);
 
