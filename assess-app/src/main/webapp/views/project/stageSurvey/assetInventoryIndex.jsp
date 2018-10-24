@@ -116,9 +116,9 @@
                             <thead>
                             <tr>
                                 <th style="width: 10%">一致性内容</th>
-                                <th style="width: 6%">是否一致</th>
                                 <th style="width: 10%">登记</th>
                                 <th style="width: 10%">实际</th>
+                                <th style="width: 6%">是否一致</th>
                                 <th style="width: 10%">差异原因</th>
                                 <th style="width: 10%">证明文件</th>
                                 <th style="width: 10%">证明文件附件</th>
@@ -131,62 +131,58 @@
                             <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
                                 <tr>
                                     <input type="hidden" id="id" name="id" value="${item.id}">
-                                    <td name="inventoryContent"
-                                        dic-id="${item.inventoryContent}">${item.inventoryContentName}</td>
-                                    <td>
-                                        <input id="areConsistent${item.id}" name="areConsistent" type="checkbox"
-                                               value="一致" style="vertical-align:middle;"
-                                               onclick="showHiddenCheck(this,${item.id})"/>
-                                        <label style="vertical-align:middle;font-weight: normal;margin-bottom: 0px;"
-                                               for="areConsistent${item.id}">一致</label>
-                                    </td>
+                                    <td>${item.inventoryContentName}</td>
                                     <td>
                                         <div class="x-valid">
                                             <input type="text" data-rule-maxlength="50" placeholder="登记" required
-                                                   id="registrationAddress${item.id}"
-                                                   name="registrationAddress${item.id}"
-                                                   class="form-control showHidden" value="${item.registrationAddress}">
+                                                   id="registration${item.id}" onkeyup="isAgreement(this);"
+                                                   name="registration${item.id}"
+                                                   class="form-control " value="${item.registration}">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="x-valid">
                                             <input type="text" data-rule-maxlength="50" placeholder="实际" required
-                                                   id="actualAddress${item.id}" name="actualAddress${item.id}"
-                                                   class="form-control showHidden" value="${item.actualAddress}">
+                                                   id="actual${item.id}" onkeyup="isAgreement(this);" name="actual${item.id}"
+                                                   class="form-control " value="${item.actual}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid">
+                                        <label data-name="areConsistent">${item.areConsistent}</label>
+                                    </td>
+                                    <td>
+                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="差异原因" required
-                                                   id="differenceReason${item.id}" name="differenceReason${item.id}"
-                                                   class="form-control showHidden" value="${item.differenceReason}">
+                                                   id="differenceReason${item.id}" name="differenceReason"
+                                                   class="form-control" value="${item.differenceReason}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid">
+                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="证明文件" required
-                                                   id="credential${item.id}" name="credential${item.id}"
-                                                   class="form-control showHidden" value="${item.credential}">
+                                                   id="credential${item.id}" name="credential"
+                                                   class="form-control" value="${item.credential}">
                                         </div>
                                     </td>
                                     <td>
-                                        <input id="credentialAccessory${item.id}" name="credentialAccessory"
-                                               type="file" multiple="false" class="showHidden">
-                                        <div id="_credentialAccessory${item.id}" class="showHidden"></div>
+                                        <div class="show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
+                                            <input id="credentialAccessory${item.id}" name="credentialAccessory" type="file" multiple="false" >
+                                            <div id="_credentialAccessory${item.id}"></div>
+                                        </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid">
+                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input type="text" data-rule-maxlength="50" placeholder="证明人" required
-                                                   id="voucher${item.id}" name="voucher${item.id}"
-                                                   class="form-control showHidden" value="${item.voucher}">
+                                                   id="voucher${item.id}" name="voucher"
+                                                   class="form-control" value="${item.voucher}">
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="x-valid">
+                                        <div class="x-valid show-hide" style="display: ${item.areConsistent eq '一致'?'none':'block'}">
                                             <input placeholder="调查时间" id="surveyTime${item.id}"
-                                                   name="surveyTime${item.id}" required
+                                                   name="surveyTime" required
                                                    data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate showHidden"
+                                                   class="form-control date-picker dbdate"
                                                    readonly="readonly"
                                                    value='<fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>'>
                                         </div>
@@ -200,10 +196,6 @@
                                         //清查内容附件上传和加载
                                         uploadFileCommon("${item.id}");
                                         showFileCommon("${item.id}");
-
-                                        if ("${item.areConsistent}" == "一致") {
-                                            $('#areConsistent${item.id}').trigger("click");
-                                        }
                                     })
                                 </script>
                             </c:forEach>
@@ -517,6 +509,24 @@
         });
     });
 
+    //验证登记与实际是否一致，如果不一致需填写相关内容
+    function isAgreement(_this) {
+        var tr = $(_this).closest('tr');
+        var registration = tr.find('[name^=registration]').val();//登记
+        var actual = tr.find('[name^=actual]').val();//实际
+        if (AssessCommon.isNumber(registration) && AssessCommon.isNumber(actual)) {
+            registration = parseFloat(registration);
+            actual = parseFloat(actual);
+        }
+        if (registration == actual) {
+            tr.find('[data-name=areConsistent]').text('一致');
+            tr.find('.show-hide').hide();
+        } else {
+            tr.find('[data-name=areConsistent]').text('不一致');
+            tr.find('.show-hide').show();
+        }
+    }
+
 
     //加载他项权利附件
     function loadInventoryRightFile(tableId) {
@@ -606,19 +616,13 @@
         var dataItem = [];
         $.each(trs, function (i, tr) {
             var item = {};
-            var temp = $(tr).find('[name="areConsistent"]:checked').prop("checked");    //是否一致
-            if (temp) {
-                item.areConsistent = "一致";    //是否一致
-            } else {
-                item.areConsistent = "不一致";
-            }
-            item.inventoryContent = $(tr).find('[name^="inventoryContent"]').attr("dic-id");    //清查内容
-            item.registrationAddress = $(tr).find('[name^="registrationAddress"]').val();    //登记面积
-            item.actualAddress = $(tr).find('[name^="actualAddress"]').val();                //实际面积
-            item.differenceReason = $(tr).find('[name^="differenceReason"]').val();          //差异原因
-            item.credential = $(tr).find('[name^="credential"]').val();                      //证明文件
-            item.voucher = $(tr).find('[name^="voucher"]').val();                            //证明人
-            item.surveyTime = $(tr).find('[name^="surveyTime"]').val();                      //查勘时间
+            item.registration = $(tr).find('[name^="registration"]').val();    //登记面积
+            item.actual = $(tr).find('[name^="actual"]').val();                //实际面积
+            item.areConsistent = $(tr).find('[data-name="areConsistent"]').text();   //是否一致
+            item.differenceReason = $(tr).find('[name^="differenceReason"]').val(); //差异原因
+            item.credential = $(tr).find('[name^="credential"]').val(); //证明文件
+            item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
+            item.surveyTime = $(tr).find('[name^="surveyTime"]').val(); //查勘时间
             item.projectId = ${projectPlanDetails.projectId};
             item.planDetailId = ${projectPlanDetails.id};
             item.id = $(tr).find('[name="id"]').val();    //id

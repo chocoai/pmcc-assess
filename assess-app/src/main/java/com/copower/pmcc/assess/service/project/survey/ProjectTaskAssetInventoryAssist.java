@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
@@ -17,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -32,8 +33,6 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     @Autowired
     private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private DeclareRecordService declareRecordService;
@@ -44,16 +43,28 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         List<BaseDataDic> inventoryContentList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
+        Collections.sort(inventoryContentList, Comparator.comparing(BaseDataDic::getSorting).reversed());//降序排列
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
         List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
-        if(CollectionUtils.isEmpty(list)){
+        if (CollectionUtils.isEmpty(list)) {
             for (BaseDataDic baseDataDic : inventoryContentList) {
-                Integer inventoryContent = baseDataDic.getId();
                 Integer projectId = projectPlanDetails.getProjectId();
                 SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
                 surveyAssetInventoryContent.setProjectId(projectId);
                 surveyAssetInventoryContent.setPlanDetailsId(projectPlanDetails.getId());
-                surveyAssetInventoryContent.setInventoryContent(inventoryContent);
+                surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
+                switch (baseDataDic.getFieldName()) {
+                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS://登记地址与实际地址
+                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS://房产证与土地证证载地址
+                        surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+                        break;
+                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE://登记用途与实际用途
+                        surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
+                        break;
+                    case AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA://登记面积与实际面积
+                        surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
+                        break;
+                }
                 surveyAssetInventoryContentDao.save(surveyAssetInventoryContent);
             }
             list = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(projectPlanDetails.getId());
@@ -62,9 +73,10 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
         modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList); //数据字典
         modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
-        modelAndView.addObject("surveyAssetInventoryContentVos",surveyAssetInventoryContentVos);
+        modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
         return modelAndView;
     }
+
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
@@ -93,7 +105,7 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
     }
 
     private void setModelViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        modelAndView.addObject("thisUserInfo",processControllerComponent.getThisUserInfo());    //当前操作用户信息
+        modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
 
@@ -101,9 +113,9 @@ public class ProjectTaskAssetInventoryAssist implements ProjectTaskInterface {
         modelAndView.addObject("surveyAssetInventory", surveyAssetInventory);
         List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(surveyAssetInventory.getPlanDetailId());
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContents);
-        modelAndView.addObject("surveyAssetInventoryContentVos",surveyAssetInventoryContentVos);
+        modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
         List<BaseDataDic> inventoryRightTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.INVENTORY_RIGHT_TYPE);
-        modelAndView.addObject("inventoryRightTypeList",inventoryRightTypeList);
+        modelAndView.addObject("inventoryRightTypeList", inventoryRightTypeList);
     }
 
     @Override

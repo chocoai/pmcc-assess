@@ -13,9 +13,9 @@ public class SurveyAssetInventoryContent {
 
     private String areConsistent;
 
-    private String registrationAddress;
+    private String registration;
 
-    private String actualAddress;
+    private String actual;
 
     private String differenceReason;
 
@@ -73,20 +73,20 @@ public class SurveyAssetInventoryContent {
         this.areConsistent = areConsistent == null ? null : areConsistent.trim();
     }
 
-    public String getRegistrationAddress() {
-        return registrationAddress;
+    public String getRegistration() {
+        return registration;
     }
 
-    public void setRegistrationAddress(String registrationAddress) {
-        this.registrationAddress = registrationAddress == null ? null : registrationAddress.trim();
+    public void setRegistration(String registration) {
+        this.registration = registration == null ? null : registration.trim();
     }
 
-    public String getActualAddress() {
-        return actualAddress;
+    public String getActual() {
+        return actual;
     }
 
-    public void setActualAddress(String actualAddress) {
-        this.actualAddress = actualAddress == null ? null : actualAddress.trim();
+    public void setActual(String actual) {
+        this.actual = actual == null ? null : actual.trim();
     }
 
     public String getDifferenceReason() {

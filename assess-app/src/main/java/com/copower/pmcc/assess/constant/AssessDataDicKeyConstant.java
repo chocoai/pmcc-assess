@@ -37,6 +37,13 @@ public class AssessDataDicKeyConstant {
      */
     public static final String INVENTORY_CONTENT = "project.survey.inventory.content"; //清查内容
     public static final String INVENTORY_CONTENT_DEFAULT = "project.survey.inventory.content.default"; //清查内容默认
+    public static final String INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS = "project.survey.inventory.content.default.actual.address"; //登记地址与实际地址
+    public static final String INVENTORY_CONTENT_DEFAULT_STRUCTURE = "project.survey.inventory.content.default.structure"; //登记结构与实际结构
+    public static final String INVENTORY_CONTENT_DEFAULT_USE = "project.survey.inventory.content.default.use"; //登记用途与实际用途
+    public static final String INVENTORY_CONTENT_DEFAULT_AREA = "project.survey.inventory.content.default.area"; //登记面积与实际面积
+    public static final String INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS = "project.survey.inventory.content.default.house.land.address"; //房产证与土地证证载地址
+
+
     public static final String INVENTORY_RIGHT_TYPE = "project.survey.inventory.right.type";//他权类型
     public static final String INVENTORY_RIGHT_TYPE_HOUSE_LEASEHOLD = "project.survey.inventory.right.type.house.leasehold";//租赁权
 

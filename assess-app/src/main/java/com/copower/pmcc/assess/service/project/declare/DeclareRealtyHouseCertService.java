@@ -444,6 +444,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setName(oo.getCertName());
             declareRecord.setOwnership(oo.getOwnership());
             declareRecord.setSeat(oo.getBeLocated());
+            declareRecord.setCertUse(oo.getPlanningUse());
             declareRecord.setFloorArea(oo.getEvidenceArea());
             declareRecord.setHouseUseEndDate(oo.getUseEndDate());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);

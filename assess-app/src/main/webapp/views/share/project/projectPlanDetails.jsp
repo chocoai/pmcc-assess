@@ -140,6 +140,7 @@
                 boxId: "${boxId}",
                 processInsId: "${processInsId}",
                 taskId: "${taskId}",
+                activityId: "${activityId}",
                 activityName: "${activityName}",
                 activityCnName: "${activityCnName}",
                 CurrentStep: "${CurrentStep}",

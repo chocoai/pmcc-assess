@@ -415,143 +415,143 @@ public class SurveyAssetInventoryContentExample {
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressIsNull() {
-            addCriterion("registration_address is null");
+        public Criteria andRegistrationIsNull() {
+            addCriterion("registration is null");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressIsNotNull() {
-            addCriterion("registration_address is not null");
+        public Criteria andRegistrationIsNotNull() {
+            addCriterion("registration is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressEqualTo(String value) {
-            addCriterion("registration_address =", value, "registrationAddress");
+        public Criteria andRegistrationEqualTo(String value) {
+            addCriterion("registration =", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressNotEqualTo(String value) {
-            addCriterion("registration_address <>", value, "registrationAddress");
+        public Criteria andRegistrationNotEqualTo(String value) {
+            addCriterion("registration <>", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressGreaterThan(String value) {
-            addCriterion("registration_address >", value, "registrationAddress");
+        public Criteria andRegistrationGreaterThan(String value) {
+            addCriterion("registration >", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressGreaterThanOrEqualTo(String value) {
-            addCriterion("registration_address >=", value, "registrationAddress");
+        public Criteria andRegistrationGreaterThanOrEqualTo(String value) {
+            addCriterion("registration >=", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressLessThan(String value) {
-            addCriterion("registration_address <", value, "registrationAddress");
+        public Criteria andRegistrationLessThan(String value) {
+            addCriterion("registration <", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressLessThanOrEqualTo(String value) {
-            addCriterion("registration_address <=", value, "registrationAddress");
+        public Criteria andRegistrationLessThanOrEqualTo(String value) {
+            addCriterion("registration <=", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressLike(String value) {
-            addCriterion("registration_address like", value, "registrationAddress");
+        public Criteria andRegistrationLike(String value) {
+            addCriterion("registration like", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressNotLike(String value) {
-            addCriterion("registration_address not like", value, "registrationAddress");
+        public Criteria andRegistrationNotLike(String value) {
+            addCriterion("registration not like", value, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressIn(List<String> values) {
-            addCriterion("registration_address in", values, "registrationAddress");
+        public Criteria andRegistrationIn(List<String> values) {
+            addCriterion("registration in", values, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressNotIn(List<String> values) {
-            addCriterion("registration_address not in", values, "registrationAddress");
+        public Criteria andRegistrationNotIn(List<String> values) {
+            addCriterion("registration not in", values, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressBetween(String value1, String value2) {
-            addCriterion("registration_address between", value1, value2, "registrationAddress");
+        public Criteria andRegistrationBetween(String value1, String value2) {
+            addCriterion("registration between", value1, value2, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andRegistrationAddressNotBetween(String value1, String value2) {
-            addCriterion("registration_address not between", value1, value2, "registrationAddress");
+        public Criteria andRegistrationNotBetween(String value1, String value2) {
+            addCriterion("registration not between", value1, value2, "registration");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressIsNull() {
-            addCriterion("actual_address is null");
+        public Criteria andActualIsNull() {
+            addCriterion("actual is null");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressIsNotNull() {
-            addCriterion("actual_address is not null");
+        public Criteria andActualIsNotNull() {
+            addCriterion("actual is not null");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressEqualTo(String value) {
-            addCriterion("actual_address =", value, "actualAddress");
+        public Criteria andActualEqualTo(String value) {
+            addCriterion("actual =", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressNotEqualTo(String value) {
-            addCriterion("actual_address <>", value, "actualAddress");
+        public Criteria andActualNotEqualTo(String value) {
+            addCriterion("actual <>", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressGreaterThan(String value) {
-            addCriterion("actual_address >", value, "actualAddress");
+        public Criteria andActualGreaterThan(String value) {
+            addCriterion("actual >", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressGreaterThanOrEqualTo(String value) {
-            addCriterion("actual_address >=", value, "actualAddress");
+        public Criteria andActualGreaterThanOrEqualTo(String value) {
+            addCriterion("actual >=", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressLessThan(String value) {
-            addCriterion("actual_address <", value, "actualAddress");
+        public Criteria andActualLessThan(String value) {
+            addCriterion("actual <", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressLessThanOrEqualTo(String value) {
-            addCriterion("actual_address <=", value, "actualAddress");
+        public Criteria andActualLessThanOrEqualTo(String value) {
+            addCriterion("actual <=", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressLike(String value) {
-            addCriterion("actual_address like", value, "actualAddress");
+        public Criteria andActualLike(String value) {
+            addCriterion("actual like", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressNotLike(String value) {
-            addCriterion("actual_address not like", value, "actualAddress");
+        public Criteria andActualNotLike(String value) {
+            addCriterion("actual not like", value, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressIn(List<String> values) {
-            addCriterion("actual_address in", values, "actualAddress");
+        public Criteria andActualIn(List<String> values) {
+            addCriterion("actual in", values, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressNotIn(List<String> values) {
-            addCriterion("actual_address not in", values, "actualAddress");
+        public Criteria andActualNotIn(List<String> values) {
+            addCriterion("actual not in", values, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressBetween(String value1, String value2) {
-            addCriterion("actual_address between", value1, value2, "actualAddress");
+        public Criteria andActualBetween(String value1, String value2) {
+            addCriterion("actual between", value1, value2, "actual");
             return (Criteria) this;
         }
 
-        public Criteria andActualAddressNotBetween(String value1, String value2) {
-            addCriterion("actual_address not between", value1, value2, "actualAddress");
+        public Criteria andActualNotBetween(String value1, String value2) {
+            addCriterion("actual not between", value1, value2, "actual");
             return (Criteria) this;
         }
 

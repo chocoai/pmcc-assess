@@ -75,9 +75,9 @@
                         <thead>
                         <tr>
                             <th style="width: 10%">一致性内容</th>
-                            <th style="width: 6%">是否一致</th>
                             <th style="width: 10%">登记</th>
                             <th style="width: 10%">实际</th>
+                            <th style="width: 6%">是否一致</th>
                             <th style="width: 10%">差异原因</th>
                             <th style="width: 10%">证明文件</th>
                             <th style="width: 10%">证明文件附件</th>
@@ -86,44 +86,46 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${surveyAssetInventoryContentVos}" var="items" varStatus="s">
+                        <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
                             <tr>
                                 <td>
-                                    <label class="form-control">${items.inventoryContentName}</label>
+                                    <label class="form-control">${item.inventoryContentName}</label>
                                 </td>
                                 <td>
-                                    <label class="form-control">${items.areConsistent}</label>
+                                    <label class="form-control">${item.registration}</label>
                                 </td>
                                 <td>
-                                    <label class="form-control">${items.registrationAddress}</label>
+                                    <label class="form-control">${item.actual}</label>
                                 </td>
                                 <td>
-                                    <label class="form-control">${items.actualAddress}</label>
+                                    <label class="form-control">${item.areConsistent}</label>
                                 </td>
-                                <td>
-                                    <label class="form-control">${items.differenceReason}</label>
-                                </td>
-                                <td>
-                                    <label class="form-control">${items.credential}</label>
-                                </td>
-                                <td>
-                                    <div id="_credentialAccessory${items.id}"></div>
-                                </td>
-                                <td>
-                                    <label class="form-control">${items.voucher}</label>
-                                </td>
-                                <td>
-                                    <label class="form-control">
-                                        <fmt:formatDate value="${items.surveyTime}" pattern="yyyy-MM-dd"/>
-                                    </label>
-                                </td>
+                                <c:if test="${item.areConsistent eq '不一致'}">
+                                    <td>
+                                        <label class="form-control">${item.differenceReason}</label>
+                                    </td>
+                                    <td>
+                                        <label class="form-control">${item.credential}</label>
+                                    </td>
+                                    <td>
+                                        <div id="_credentialAccessory${item.id}"></div>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                //清查内容附件加载
+                                                showFileCommon("${item.id}");
+                                            })
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <label class="form-control">${item.voucher}</label>
+                                    </td>
+                                    <td>
+                                        <label class="form-control">
+                                            <fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>
+                                        </label>
+                                    </td>
+                                </c:if>
                             </tr>
-                            <script type="text/javascript">
-                                $(function () {
-                                    //清查内容附件加载
-                                    showFileCommon("${items.id}");
-                                })
-                            </script>
                         </c:forEach>
                         </tbody>
                     </table>
