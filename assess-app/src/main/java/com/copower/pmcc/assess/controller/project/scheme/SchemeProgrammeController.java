@@ -227,7 +227,7 @@ public class SchemeProgrammeController {
 
     @ResponseBody
     @RequestMapping(value = "/getSchemeJudgeFunctions", name = "获取估价对象设置的评估方法 ", method = RequestMethod.GET)
-    public Object getSchemeJudgeFunctions(Integer judgeObjectId) {
+    public HttpResult getSchemeJudgeFunctions(Integer judgeObjectId) {
         try {
             List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getSchemeJudgeFunctions(judgeObjectId);
             return HttpResult.newCorrectResult(judgeFunctions);

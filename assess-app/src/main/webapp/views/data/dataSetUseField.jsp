@@ -238,6 +238,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                        是否可收缩
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <label class="radio-inline">
+                                            <input type="checkbox" id="subCanShrink" name="canShrink" value="true"
+                                                   checked="checked">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             排序
@@ -475,6 +486,7 @@
         $("#subBisPrimaryKey").prop("checked", false);
         $("#subBisPrice").prop("checked", false);
         $("#subBisOnlyView").prop("checked", false);
+        $("#subCanShrink").prop("checked", false);
     }
 
     //编辑子项
@@ -487,6 +499,7 @@
             $("#subBisPrimaryKey").prop("checked", row.bisPrimaryKey);
             $("#subBisPrice").prop("checked", row.bisPrice);
             $("#subBisOnlyView").prop("checked", row.bisOnlyView);
+            $("#subCanShrink").prop("checked", row.canShrink);
         }
         $('#divSubSetUseFieldManage').modal();
     }
@@ -505,6 +518,7 @@
             data.bisPrimaryKey = $("#subBisPrimaryKey").prop("checked");
             data.bisPrice = $("#subBisPrice").prop("checked");
             data.bisOnlyView = $("#subBisOnlyView").prop("checked");
+            data.canShrink = $("#subCanShrink").prop("checked");
             data.remark = $("#subRemark").val();
             if ($("#subFieldName").val()) {
                 data.fieldName = $("#subFieldName").val();

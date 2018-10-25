@@ -333,6 +333,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         if (judgeObjectId != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+            modelAndView.addObject("judgeObject",schemeJudgeObject);
             if (schemeJudgeObject != null){
                 Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
                 if (areaGroupId != null){

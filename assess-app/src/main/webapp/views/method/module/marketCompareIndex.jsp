@@ -6,9 +6,9 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>
+        <h3>
             房价指数
-        </h2>
+        </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">
@@ -30,7 +30,7 @@
                     </label>
                     <div class="col-sm-1">
                         <input type="text" data-date-format="yyyy-mm-dd"
-                               placeholder="结束日期"  name="endTime"
+                               placeholder="结束日期" name="endTime"
                                class="form-control date-picker dbdate">
                     </div>
                 </div>
@@ -380,9 +380,9 @@
                         if (item.remark) {
                             text += '<span style="font-size: 12px;color: red;font-weight: normal;">(' + item.remark + ')<span>';
                         }
-                        bodyHtml += '<tr><td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px">' + text + '</td></tr>';
+                        bodyHtml += '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" onclick="marketCompare.childrenToggle(this);"><td colspan="' + colspan + '" style="font-weight: 800;font-size: 16px">' + text + '</td></tr>';
                     } else {
-                        var trHtml = '<tr data-group="' + item.fieldName + '" data-name="utext"';
+                        var trHtml = '<tr data-field-id="' + item.id + '" data-field-parent-id="' + item.pid + '" data-group="' + item.fieldName + '" data-name="utext"';
                         item.bisPrimaryKey == true ? trHtml += ' data-bisPrimaryKey="true" ' : '';
                         item.bisPrice == true ? trHtml += ' data-bisPrice="true" ' : '';
                         trHtml += '>'
@@ -398,9 +398,9 @@
                         trHtml += ' </tr>';
                         bodyHtml += trHtml;
                     }
-
                 } else {//可能需要填写数据的字段
                     var rowHtml = getTempHtml(item.bisPrice ? "pRowPriceTemp" : "pRowTemp", defaluts.readonly);
+                    rowHtml = rowHtml.replace(/{fieldId}/g, toString(item.id)).replace(/{fieldParentId}/g, toString(item.pid));
                     rowHtml = rowHtml.replace(/{fieldName}/g, toString(item.fieldName)).replace(/{fieldValue}/g, toString(item.name));
                     rowHtml = rowHtml.replace(/{evaluationText}/g, toString(evaluationItem.value)).replace(/{evaluationScore}/g, toString(evaluationItem.score));
                     rowHtml = rowHtml.replace(/{evaluationRatio}/g, toString(evaluationItem.ratio)).replace(/{itemId}/g, toString(defaluts.evaluation.id));
@@ -791,6 +791,12 @@
             })
         }
 
+        //控制子项的显示隐藏
+        marketCompare.childrenToggle = function (_this) {
+            var fieldParentId = $(_this).attr('data-field-id');
+            $(_this).closest('table').find('[data-field-parent-id='+fieldParentId+']').toggle();
+        }
+
         window.marketCompare = marketCompare;
     })(jQuery)
 </script>
@@ -908,7 +914,7 @@
 
 <%--行数据模板--%>
 <script type="text/html" id="pRowTemp">
-    <tbody style="background-color: #fbfbfb">
+    <tbody data-field-id="{fieldId}" data-field-parent-id="{fieldParentId}" style="background-color: #fbfbfb">
     <tr data-group="{fieldName}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="field">
         <td rowspan="4" style="vertical-align: middle">{fieldValue}</td>
     </tr>

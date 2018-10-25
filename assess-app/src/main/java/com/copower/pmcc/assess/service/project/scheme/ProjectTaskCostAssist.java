@@ -21,7 +21,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -333,6 +332,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         if (judgeObjectId != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+            modelAndView.addObject("judgeObject",schemeJudgeObject);
             if (schemeJudgeObject != null){
                 Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
                 if (areaGroupId != null){

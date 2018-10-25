@@ -21,6 +21,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
             <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入成本法模块 -->
             <jsp:include page="/views/method/marketCostIndex.jsp"></jsp:include>
