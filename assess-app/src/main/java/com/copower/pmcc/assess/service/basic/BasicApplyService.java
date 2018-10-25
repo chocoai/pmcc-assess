@@ -50,7 +50,7 @@ public class BasicApplyService {
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
         processInfo.setFolio(String.format("流程描述案例基础数据:%s", DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss")));
-        String boxName = null;
+        final String boxName = "8e4533ae-26c4-4649-9264-4512342d7883";
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         processInfo.setTableName(tableName);
         processInfo.setBoxId(boxReDto.getId());

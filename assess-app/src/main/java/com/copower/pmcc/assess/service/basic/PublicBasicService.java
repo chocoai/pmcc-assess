@@ -35,28 +35,32 @@ public class PublicBasicService {
     @Autowired
     private BasicApplyService basicApplyService;
 
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void saveBasic(String formData, Boolean bisNextUser) throws Exception {
         if (StringUtils.isEmpty(formData)) {
             return;
         }
-        BasicApply basicApply = new BasicApply();
-        basicApplyService.saveBasicApply(basicApply);
+        try {
+            BasicApply basicApply = new BasicApply();
+            basicApplyService.saveBasicApply(basicApply);
 
-        JSONObject jsonObject = JSON.parseObject(formData);
-        String jsonContent = null;
+            JSONObject jsonObject = JSON.parseObject(formData);
+            String jsonContent = null;
 
-        jsonContent = jsonObject.getString("basicEstate");
-        if (StringUtils.isNotBlank(jsonContent)) {
-            BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
-            basicEstate.setApplyId(basicApply.getId());
-            basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+            jsonContent = jsonObject.getString("basicEstate");
+            if (StringUtils.isNotBlank(jsonContent)) {
+                BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+                basicEstate.setApplyId(basicApply.getId());
+                basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+            }
+            ProcessUserDto processUserDto = basicApplyService.sumTask(basicApply.getId(), FormatUtils.entityNameConvertToTableName(BasicApply.class));
+            basicApply.setProcessInsId(processUserDto.getProcessInsId());
+            basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
+            basicApplyService.updateBasicApply(basicApply);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
         }
-
-        ProcessUserDto processUserDto = basicApplyService.sumTask(basicApply.getId(), FormatUtils.entityNameConvertToTableName(BasicApply.class));
-        basicApply.setProcessInsId(processUserDto.getProcessInsId());
-        basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
-        basicApplyService.updateBasicApply(basicApply);
     }
 }
