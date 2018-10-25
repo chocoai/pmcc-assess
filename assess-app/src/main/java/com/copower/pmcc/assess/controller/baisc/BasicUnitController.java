@@ -84,14 +84,14 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "楼栋 信息自动补全")
+    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "单元 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String unitNumber, Integer maxRows,Integer buildingId){
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setUnitNumber(unitNumber);
         basicUnit.setBuildingId(buildingId);
         try {
-            List<BasicUnit> list = basicUnitService.basicUnitList(basicUnit);
+            List<BasicUnit> list = basicUnitService.autoComplete(basicUnit);
             for (BasicUnit oo:list){
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(oo.getId()));

@@ -222,10 +222,12 @@ public class CaseEstateController {
         KeyValueDto keyValueDto = new KeyValueDto();
         try {
             List<CaseEstate> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
-            for (CaseEstate caseEstate : caseEstateList) {
-                keyValueDto.setKey(String.valueOf(caseEstate.getId()));
-                keyValueDto.setValue(caseEstate.getName());
-                keyValueDtos.add(keyValueDto);
+            if (!ObjectUtils.isEmpty(caseEstateList)){
+                for (CaseEstate caseEstate : caseEstateList) {
+                    keyValueDto.setKey(String.valueOf(caseEstate.getId()));
+                    keyValueDto.setValue(caseEstate.getName());
+                    keyValueDtos.add(keyValueDto);
+                }
             }
             return HttpResult.newCorrectResult(keyValueDtos);
         } catch (Exception e1) {

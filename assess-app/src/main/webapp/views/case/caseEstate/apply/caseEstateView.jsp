@@ -87,10 +87,9 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">基础版块</label>
                                 <div class="col-sm-3">
-                                    <select name="blockId" class="form-control search-select select2 blockId"
-                                            required="required">
+                                    <select name="blockId" class="form-control search-select select2 blockId">
                                     </select>
                                 </div>
                             </div>

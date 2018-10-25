@@ -165,6 +165,66 @@ public class BasicUnitExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplyIdIsNull() {
+            addCriterion("apply_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdIsNotNull() {
+            addCriterion("apply_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdEqualTo(Integer value) {
+            addCriterion("apply_id =", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdNotEqualTo(Integer value) {
+            addCriterion("apply_id <>", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdGreaterThan(Integer value) {
+            addCriterion("apply_id >", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("apply_id >=", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdLessThan(Integer value) {
+            addCriterion("apply_id <", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("apply_id <=", value, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdIn(List<Integer> values) {
+            addCriterion("apply_id in", values, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdNotIn(List<Integer> values) {
+            addCriterion("apply_id not in", values, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdBetween(Integer value1, Integer value2) {
+            addCriterion("apply_id between", value1, value2, "applyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("apply_id not between", value1, value2, "applyId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingIdIsNull() {
             addCriterion("building_id is null");
             return (Criteria) this;

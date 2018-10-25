@@ -84,14 +84,14 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "房屋 信息自动补全")
+    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "房屋 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String houseNumber, Integer maxRows,Integer unitId){
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setHouseNumber(houseNumber);
         basicHouse.setUnitId(unitId);
         try {
-            List<BasicHouse> list = basicHouseService.basicHouseList(basicHouse);
+            List<BasicHouse> list = basicHouseService.autoComplete(basicHouse);
             for (BasicHouse oo:list){
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(oo.getId()));

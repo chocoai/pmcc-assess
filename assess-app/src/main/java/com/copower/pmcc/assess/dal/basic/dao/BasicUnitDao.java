@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitExample;
 import com.copower.pmcc.assess.dal.basic.mapper.BasicUnitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,19 @@ public class BasicUnitDao {
     public List<BasicUnit> basicUnitList(BasicUnit basicUnit)throws SQLException{
         BasicUnitExample example = new BasicUnitExample();
         MybatisUtils.convertObj2Example(basicUnit, example);
+        return basicUnitMapper.selectByExample(example);
+    }
+
+    public List<BasicUnit> autoComplete(BasicUnit basicUnit)throws SQLException{
+        BasicUnitExample example = new BasicUnitExample();
+        BasicUnitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (basicUnit.getBuildingId() != null){
+            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
+        }
+        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())){
+            criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
+        }
         return basicUnitMapper.selectByExample(example);
     }
 }

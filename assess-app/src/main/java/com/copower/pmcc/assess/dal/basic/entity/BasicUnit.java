@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicUnit {
     private Integer id;
 
+    private Integer applyId;
+
     private Integer buildingId;
 
     private String unitNumber;
@@ -25,6 +27,14 @@ public class BasicUnit {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getApplyId() {
+        return applyId;
+    }
+
+    public void setApplyId(Integer applyId) {
+        this.applyId = applyId;
     }
 
     public Integer getBuildingId() {

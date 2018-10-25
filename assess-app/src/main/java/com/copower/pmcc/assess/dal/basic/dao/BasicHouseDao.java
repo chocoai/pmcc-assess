@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseExample;
 import com.copower.pmcc.assess.dal.basic.mapper.BasicHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,19 @@ public class BasicHouseDao {
     public List<BasicHouse> basicHouseList(BasicHouse basicHouse)throws SQLException{
         BasicHouseExample example = new BasicHouseExample();
         MybatisUtils.convertObj2Example(basicHouse, example);
+        return basicHouseMapper.selectByExample(example);
+    }
+
+    public List<BasicHouse> autoComplete(BasicHouse basicHouse)throws SQLException{
+        BasicHouseExample example = new BasicHouseExample();
+        BasicHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (basicHouse.getUnitId() != null){
+            criteria.andUnitIdEqualTo(basicHouse.getUnitId());
+        }
+        if (StringUtils.isNotBlank(basicHouse.getHouseNumber())){
+            criteria.andHouseNumberLike(new StringBuilder("%").append(basicHouse.getHouseNumber()).append("%").toString());
+        }
         return basicHouseMapper.selectByExample(example);
     }
 }

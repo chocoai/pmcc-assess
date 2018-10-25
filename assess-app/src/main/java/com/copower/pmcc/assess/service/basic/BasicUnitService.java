@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -9,6 +10,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -34,63 +38,80 @@ public class BasicUnitService {
 
     /**
      * 获取数据
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public BasicUnit getBasicUnitById(Integer id)throws Exception{
+    public BasicUnit getBasicUnitById(Integer id) throws Exception {
         return basicUnitDao.getBasicUnitById(id);
     }
 
     /**
      * 新增或者修改
+     *
      * @param basicUnit
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit)throws Exception{
-        if (basicUnit.getId()== null || basicUnit.getId().intValue()==0){
+    public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit) throws Exception {
+        if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
-            if (basicUnit.getVersion() == null){
+            if (basicUnit.getVersion() == null) {
                 basicUnit.setVersion(0);
             }
             return basicUnitDao.saveBasicUnit(basicUnit);
-        }else {
+        } else {
+            BasicUnit oo = basicUnitDao.getBasicUnitById(basicUnit.getId());
+            basicUnit.setVersion(oo.getVersion() + 1);
             basicUnitDao.updateBasicUnit(basicUnit);
-            if (basicUnit.getVersion() != null){
-                basicUnit.setVersion(basicUnit.getVersion()+1);
-            }
             return null;
         }
     }
 
     /**
      * 删除数据
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public boolean deleteBasicUnit(Integer id)throws Exception{
+    public boolean deleteBasicUnit(Integer id) throws Exception {
         return basicUnitDao.deleteBasicUnit(id);
     }
 
     /**
      * 获取数据列表
+     *
      * @param basicUnit
      * @return
      * @throws Exception
      */
-    public List<BasicUnit> basicUnitList(BasicUnit basicUnit)throws Exception{
+    public List<BasicUnit> basicUnitList(BasicUnit basicUnit) throws Exception {
         return basicUnitDao.basicUnitList(basicUnit);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit)throws Exception{
+    public List<BasicUnit> autoComplete(BasicUnit basicUnit) throws Exception {
+        List<BasicUnit> basicUnits = basicUnitDao.autoComplete(basicUnit);
+        if (!org.springframework.util.ObjectUtils.isEmpty(basicUnits)) {
+            Ordering<BasicUnit> ordering = Ordering.from(new Comparator<BasicUnit>() {
+                @Override
+                public int compare(BasicUnit o1, BasicUnit o2) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+            }).reverse();
+            Collections.sort(basicUnits, ordering);
+        }
+        return basicUnits;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicUnit> basicUnitList = basicUnitDao.basicUnitList(basicUnit);
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicUnitList)?new ArrayList<BasicUnit>(10):basicUnitList);
+        vo.setRows(ObjectUtils.isEmpty(basicUnitList) ? new ArrayList<BasicUnit>(10) : basicUnitList);
         return vo;
     }
 

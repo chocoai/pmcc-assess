@@ -46,6 +46,11 @@ public class BasicApplyDao {
         return basicApplyMapper.insertSelective(caseBlock) > 0;
     }
 
+    public Integer saveBasicApply(BasicApply basicApply){
+        basicApplyMapper.insertSelective(basicApply) ;
+        return basicApply.getId();
+    }
+
     /**
      * 编辑
      * @param caseBlock

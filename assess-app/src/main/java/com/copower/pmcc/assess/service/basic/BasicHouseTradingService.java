@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseTradingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -56,10 +57,9 @@ public class BasicHouseTradingService {
             }
             return basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
         }else {
+            BasicHouseTrading oo = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
+            basicHouseTrading.setVersion(oo.getVersion()+1);
             basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
-            if (basicHouseTrading.getVersion() != null){
-                basicHouseTrading.setVersion(basicHouseTrading.getVersion()+1);
-            }
             return null;
         }
     }

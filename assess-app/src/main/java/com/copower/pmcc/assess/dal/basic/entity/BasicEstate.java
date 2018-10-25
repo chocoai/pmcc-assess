@@ -6,6 +6,8 @@ import java.util.Date;
 public class BasicEstate {
     private Integer id;
 
+    private Integer applyId;
+
     private String province;
 
     private String city;
@@ -58,6 +60,14 @@ public class BasicEstate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getApplyId() {
+        return applyId;
+    }
+
+    public void setApplyId(Integer applyId) {
+        this.applyId = applyId;
     }
 
     public String getProvince() {

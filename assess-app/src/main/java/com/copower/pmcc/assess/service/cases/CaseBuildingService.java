@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingFunctionVo;
@@ -12,12 +13,16 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -126,13 +131,31 @@ public class CaseBuildingService {
     }
 
     public CaseBuilding getCaseBuildingById(Integer id) {
-
         return caseBuildingDao.getBuildingById(id);
+    }
+
+    public List<CaseBuilding> autoComplete(String identifier,Integer estateId , Integer maxRows)throws Exception{
+        List<CaseBuilding> caseBuildingList = Lists.newArrayList();
+        List<CaseBuilding> list = caseBuildingDao.autoComplete(identifier, estateId);
+        Ordering<CaseBuilding> ordering = Ordering.from(new Comparator<CaseBuilding>() {
+            @Override
+            public int compare(CaseBuilding o1, CaseBuilding o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        Collections.sort(list,ordering);
+        if (!ObjectUtils.isEmpty(list)) {
+            for (int i = 0; i < maxRows; i++) {
+                if (i < list.size()) {
+                    caseBuildingList.add(list.get(i));
+                }
+            }
+        }
+        return caseBuildingList;
     }
 
     public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
         Integer id = null;
-
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
@@ -149,14 +172,18 @@ public class CaseBuildingService {
                     oo.setVersion(0);
                 }
             }
-            caseBuilding.setVersion(oo.getVersion() + 1);
-            caseBuildingDao.updateBuilding(caseBuilding);
-            return null;
+            oo.setVersion(oo.getVersion() + 1);
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuilding,oo);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            id = caseBuildingDao.addBuilding(caseBuilding);
+            this.initAndUpdateSon(id);
+            return id;
         }
     }
 
     public boolean deleteCaseBuilding(Integer id) {
-
         return caseBuildingDao.deleteBuilding(id);
     }
 }

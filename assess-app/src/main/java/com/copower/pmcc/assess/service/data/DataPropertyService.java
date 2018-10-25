@@ -132,4 +132,8 @@ public class DataPropertyService {
     public boolean updateDataProperty(DataProperty dataProperty){
         return dataPropertyDao.updateDataProperty(dataProperty);
     }
+
+    public List<DataProperty> dataPropertyList(DataProperty dataProperty){
+        return dataPropertyDao.dataPropertyList(dataProperty);
+    }
 }

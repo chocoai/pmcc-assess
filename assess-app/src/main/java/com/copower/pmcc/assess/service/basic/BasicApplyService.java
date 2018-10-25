@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -21,12 +24,26 @@ import java.util.Date;
 @Service
 public class BasicApplyService {
     @Autowired
+    private BasicApplyDao basicApplyDao;
+    @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public Integer saveBasicApply(BasicApply basicApply){
+        basicApply.setCreator(commonService.thisUserAccount());
+        basicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());
+        Integer id = basicApplyDao.saveBasicApply(basicApply);
+        basicApply.setId(id);
+        return  id;
+    }
+
+    public boolean updateBasicApply(BasicApply basicApply){
+        return basicApplyDao.updateBlock(basicApply);
+    }
 
     public ProcessUserDto sumTask(Integer tableId,String tableName) {
         ProcessUserDto processUserDto = new ProcessUserDto();

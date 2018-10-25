@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -9,6 +10,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -56,10 +60,9 @@ public class BasicHouseService {
             }
             return basicHouseDao.saveBasicHouse(basicHouse);
         }else {
+            BasicHouse oo = basicHouseDao.getBasicHouseById(basicHouse.getId());
+            basicHouse.setVersion(oo.getVersion()+1);
             basicHouseDao.updateBasicHouse(basicHouse);
-            if (basicHouse.getVersion() != null){
-                basicHouse.setVersion(basicHouse.getVersion()+1);
-            }
             return null;
         }
     }
@@ -82,6 +85,20 @@ public class BasicHouseService {
      */
     public List<BasicHouse> basicHouseList(BasicHouse basicHouse)throws Exception{
         return basicHouseDao.basicHouseList(basicHouse);
+    }
+
+    public List<BasicHouse> autoComplete(BasicHouse basicHouse)throws Exception{
+        List<BasicHouse> basicHouses = basicHouseDao.autoComplete(basicHouse);
+        if (!ObjectUtils.isEmpty(basicHouses)){
+            Ordering<BasicHouse> ordering = Ordering.from(new Comparator<BasicHouse>() {
+                @Override
+                public int compare(BasicHouse o1, BasicHouse o2) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+            }).reverse();
+            Collections.sort(basicHouses,ordering);
+        }
+        return basicHouseDao.autoComplete(basicHouse);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse)throws Exception{

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -56,11 +57,10 @@ public class BasicEstateLandStateService {
             }
             return basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
         }else {
+            BasicEstateLandState oo = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
+            basicEstateLandState.setVersion(oo.getVersion()+1);
             basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState);
-            if (basicEstateLandState.getVersion() != null){
-                basicEstateLandState.setVersion(basicEstateLandState.getVersion()+1);
-            }
-            return null;
+            return  null;
         }
     }
 

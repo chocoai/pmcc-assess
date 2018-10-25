@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.data;
 import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
 import com.copower.pmcc.assess.dal.basis.entity.DataPropertyExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataPropertyMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -104,5 +105,11 @@ public class DataPropertyDao {
      */
     public boolean updateDataProperty(DataProperty dataProperty){
         return dataPropertyMapper.updateByPrimaryKeySelective(dataProperty)==1;
+    }
+
+    public List<DataProperty> dataPropertyList(DataProperty oo){
+        DataPropertyExample example = new DataPropertyExample();
+        MybatisUtils.convertObj2Example(oo, example);
+        return dataPropertyMapper.selectByExample(example);
     }
 }

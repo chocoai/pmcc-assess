@@ -35,83 +35,104 @@ public class DataBlockController {
     @Autowired
     private ErpAreaService erpAreaService;
 
-    @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
+    @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/data/dataBlockView" ;
+        String view = "/data/dataBlockView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockById",method = {RequestMethod.GET},name = "获取基础版块维护")
+    @RequestMapping(value = "/getDataBlockById", method = {RequestMethod.GET}, name = "获取基础版块维护")
     public HttpResult getDataBlockById(Integer id) {
         DataBlock dataBlock = null;
         try {
-            if (id!=null){
+            if (id != null) {
                 dataBlock = dataBlockService.getDataBlockById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataBlock);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockList",method = {RequestMethod.GET},name = "获取基础版块维护列表")
+    @RequestMapping(value = "/getDataBlockList", method = {RequestMethod.GET}, name = "获取基础版块维护列表")
     public BootstrapTableVo getDataBlockList(String name) {
         DataBlock dataBlock = new DataBlock();
         BootstrapTableVo vo = null;
         try {
-            if (!StringUtils.isEmpty(name)){
+            if (!StringUtils.isEmpty(name)) {
                 dataBlock.setName(name);
             }
             vo = dataBlockService.getDataBlockListVos(dataBlock);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s",e1.getMessage()),e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteDataBlockById",method = {RequestMethod.POST},name = "删除基础版块维护")
+    @RequestMapping(value = "/deleteDataBlockById", method = {RequestMethod.POST}, name = "删除基础版块维护")
     public HttpResult deleteDataBlockById(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 DataBlock dataBlock = new DataBlock();
                 dataBlock.setId(id);
                 dataBlockService.removeDataBlock(dataBlock);
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateDataBlock",method = {RequestMethod.POST},name = "更新基础版块维护")
-    public HttpResult saveAndUpdateDataBlock(DataBlock dataBlock){
+    @RequestMapping(value = "/saveAndUpdateDataBlock", method = {RequestMethod.POST}, name = "更新基础版块维护")
+    public HttpResult saveAndUpdateDataBlock(DataBlock dataBlock) {
         try {
             dataBlockService.saveAndUpdateDataBlock(dataBlock);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockListByArea",method = {RequestMethod.GET},name = "获取版块信息by区域")
-    public HttpResult getDataBlockListByArea(String province,String city,String district){
+    @RequestMapping(value = "/getDataBlockListByArea", method = {RequestMethod.GET}, name = "获取版块信息by区域")
+    public HttpResult getDataBlockListByArea(String province, String city, String district) {
         try {
-            return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province,city,district));
+            return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province, city, district));
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/dataBlockList", method = {RequestMethod.GET}, name = "获取版块信息 list")
+    public HttpResult dataBlockList(String province, String city, String district) {
+        try {
+            DataBlock dataBlock = new DataBlock();
+            if (org.apache.commons.lang.StringUtils.isNotBlank(province)) {
+                dataBlock.setProvince(province);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(city)) {
+                dataBlock.setCity(city);
+            }
+            if (org.apache.commons.lang.StringUtils.isNotBlank(district)) {
+                dataBlock.setDistrict(district);
+            }
+            return HttpResult.newCorrectResult(dataBlockService.dataBlockVos(dataBlock));
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }
 }

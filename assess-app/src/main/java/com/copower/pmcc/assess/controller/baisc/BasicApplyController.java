@@ -1,23 +1,18 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.service.CrmCustomerService;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
-import com.copower.pmcc.assess.service.project.ProjectTaskAllService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by kings on 2018-10-24.
@@ -30,23 +25,11 @@ public class BasicApplyController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
     private ErpAreaService erpAreaService;
-    @Autowired
-    private HttpServletRequest request;
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
     @Autowired
-    private ProjectPlanService projectPlanService;
-    @Autowired
-    private ProjectTaskAllService projectTaskAllService;
-    @Autowired
-    private CrmCustomerService crmCustomerService;
-    @Autowired
-    private BasicApplyService basicApplyService;
+    private PublicBasicService publicBasicService;
 
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
@@ -57,6 +40,17 @@ public class BasicApplyController {
         //可选的执业部门
         modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/basicApplySubmit", name = "案例基础数据 提交", method = RequestMethod.POST)
+    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser) {
+        try {
+            publicBasicService.saveBasic(formData,bisNextUser);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 
     @RequestMapping(value = "/basicApplyEdit", name = "案例基础数据 修改页面")

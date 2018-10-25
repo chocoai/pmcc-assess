@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
-import com.copower.pmcc.assess.dto.output.cases.CaseMatchingFinanceVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -13,6 +13,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -241,13 +243,12 @@ public class CaseEstateService {
         }
     }
 
-    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
 
+    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
             int id = caseEstateDao.addEstate(caseEstate) ;
-            //
             this.initAndUpdateSon(id);
             return id;
         } else {
@@ -258,21 +259,31 @@ public class CaseEstateService {
                     oo.setVersion(0);
                 }
             }
-            caseEstate.setVersion(oo.getVersion()+1);
-            caseEstateDao.updateEstate(caseEstate);
-            return null;
+            oo.setVersion(oo.getVersion()+1);
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstate,oo);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            int id = caseEstateDao.addEstate(oo) ;
+            this.initAndUpdateSon(id);
+            return id;
         }
     }
 
     public boolean deleteCaseEstate(Integer id) {
-
         return caseEstateDao.deleteEstate(id);
     }
 
     public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows){
-
         List<CaseEstate> caseEstates = Lists.newArrayList();
         List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name,null,null,null);
+        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
+            @Override
+            public int compare(CaseEstate o1, CaseEstate o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        Collections.sort(caseEstateList,ordering);
         if (!ObjectUtils.isEmpty(caseEstateList)) {
             for (int i = 0; i < maxRows; i++) {
                 if (i < caseEstateList.size()) {
@@ -291,13 +302,16 @@ public class CaseEstateService {
         nt.setMinimumFractionDigits(2);
         BeanUtils.copyProperties(caseEstate,vo);
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getProvince())) {
-            vo.setProvinceName(erpAreaService.getSysAreaName(caseEstate.getProvince()));//省
+            //省
+            vo.setProvinceName(erpAreaService.getSysAreaName(caseEstate.getProvince()));
         }
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getCity())) {
-            vo.setCityName(erpAreaService.getSysAreaName(caseEstate.getCity()));//市或者县
+            //市或者县
+            vo.setCityName(erpAreaService.getSysAreaName(caseEstate.getCity()));
         }
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getDistrict())) {
-            vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));//县
+            //县
+            vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
         }
         if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getVolumetricRate())){
             if (NumberUtils.isNumber(caseEstate.getVolumetricRate())){

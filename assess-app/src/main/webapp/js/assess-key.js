@@ -25,6 +25,8 @@ AssessDBKey.CaseEstateParking = "tb_case_estate_parking";
 AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment";
 AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 
+AssessDBKey.BasicEstate = "tb_basic_estate";
+
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";

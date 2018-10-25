@@ -6,6 +6,8 @@ import java.util.Date;
 public class BasicHouseTrading {
     private Integer id;
 
+    private Integer applyId;
+
     private Integer houseId;
 
     private Date tradingTime;
@@ -54,6 +56,14 @@ public class BasicHouseTrading {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getApplyId() {
+        return applyId;
+    }
+
+    public void setApplyId(Integer applyId) {
+        this.applyId = applyId;
     }
 
     public Integer getHouseId() {

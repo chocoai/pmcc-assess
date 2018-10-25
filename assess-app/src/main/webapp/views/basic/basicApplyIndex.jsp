@@ -51,17 +51,20 @@
                                     楼盘名称
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="basicEstate" placeholder="楼盘名称" onkeydown="objectData.autocompleteEstate()">
+                                    <input type="text" class="form-control" name="basicEstate" placeholder="楼盘名称"
+                                           onkeydown="objectData.autocompleteEstate()">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">详细信息</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.estate.details()"
+                                           value="详细信息">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">修改</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.estate.edit()"
+                                           value="修改">
                                 </div>
                             </div>
                         </div>
@@ -72,17 +75,18 @@
                                     楼栋编号
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="basicBuilding" placeholder="楼栋编号" onkeydown="objectData.autocompleteBuilding()">
+                                    <input type="text" class="form-control" name="basicBuilding" placeholder="楼栋编号"
+                                           onkeydown="objectData.autocompleteBuilding()">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">详细信息</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()" value="详细信息">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">修改</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.edit()" value="修改">
                                 </div>
                             </div>
                         </div>
@@ -93,7 +97,8 @@
                                     单元编号
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="" placeholder="单元编号">
+                                    <input type="text" class="form-control" name="basicUnit" placeholder="单元编号"
+                                           onkeydown="objectData.autocompleteUnit();">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -114,7 +119,8 @@
                                     房屋编号
                                 </label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="" placeholder="房屋编号">
+                                    <input type="text" class="form-control" name="basicHouse" placeholder="房屋编号"
+                                           onkeydown="objectData.autocompleteHouse()">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -147,40 +153,40 @@
                 </div>
                 <div class="x_content">
                     <div role="tabpanel" data-example-id="togglable-tabs">
-                        <ul class="nav nav-tabs bar_tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#caseEstate" id="home-tab" role="tab"
-                                                                      data-toggle="tab" aria-expanded="true">楼盘</a>
+                        <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
+                            <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
+                                                                data-toggle="tab" aria-expanded="true"
+                                                                onclick="objectData.estate.init({})">楼盘</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab"
-                                                                data-toggle="tab" aria-expanded="false">楼栋</a>
+                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
+                                                                data-toggle="tab" aria-expanded="false" onclick="objectData.building.init({})">楼栋</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab2"
+                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
                                                                 data-toggle="tab" aria-expanded="false">单元</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab3"
+                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
                                                                 data-toggle="tab" aria-expanded="false">房屋</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade" id="caseEstate" aria-labelledby="home-tab">
-                                <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu
-                                    stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg
-                                    carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
-                                    synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                            <div role="tabpanel" class="tab-pane fade" id="caseEstate" aria-labelledby="profile-tab1">
+                                <div>
+                                    <%@include file="/views/basic/modelView/estateView.jsp" %>
+                                </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab">
+                            <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
                                 <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
                                     squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes
                                     anderson artisan four loko farm-to-table craft beer twee. Qui photo
                                     booth letterpress, commodo enim craft beer mlkshk aliquip</p>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab2">
+                            <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                                 <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
                                     squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes
                                     anderson artisan four loko farm-to-table craft beer twee. Qui photo
                                     booth letterpress, commodo enim craft beer mlkshk </p>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab3">
+                            <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                                 <p>
                                     hjsdjsjsd </p>
                             </div>
@@ -216,13 +222,30 @@
     objectData.config = {
         id: "basicApplyId",
         option: {},
-        basicEstate:{
-            key:"basicEstate",
-            name:"楼盘"
+        basicEstate: {
+            key: "basicEstate",
+            name: "楼盘",
+            frm: "basicEstateFrm",
+            files: {
+                filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
+                waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
+                powerSupplyPlan: "power_supply_plan",//供电平面图id和字段
+                airSupplyPlan: "air_supply_plan",//供气平面图id和字段
+                heatingPlan: "heating_plan",//采暖平面图id和字段
+                fileAppearance: "estate_floor_Appearance_figure" //外观图id和字段
+            }
         },
-        basicBuilding:{
-            key:"basicBuilding",
-            name:"楼栋"
+        basicBuilding: {
+            key: "basicBuilding",
+            name: "楼栋"
+        },
+        basicUnit: {
+            key: "basicUnit",
+            name: "单元"
+        },
+        basicHouse: {
+            key: "basicHouse",
+            name: "房屋"
         }
     };
 
@@ -241,34 +264,43 @@
         }
     };
 
-    objectData.formParams = function () {
-        var item = {};
-        var forms = $("#" + objectData.config.id).find("form");
-        $.each(forms, function (i, n) {
-            // if (!$(n).valid()) {
-            //     return false;
-            // }
+
+    objectData.uploadFile = function (fieldsName, table, id) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                fieldsName: fieldsName,
+                tableName: table,
+                tableId: objectData.isNotBlank(id) ? id : "0",
+                creater: "${currUserAccount}"
+            },
+            deleteFlag: true
         });
-        $.each(forms, function (i, n) {
-            try {
-                /*Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。 ECMAScript6 (可能不兼容) */
-                item = Object.assign(item, formSerializeArray($(n)));
-            } catch (e) {
-                item = $.extend(item, formSerializeArray($(n)));
-            }
-        });
+    };
+    objectData.showFile = function (fieldsName, table, id) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: table,
+                tableId: objectData.isNotBlank(id) ? id : "0",
+                creater: "${currUserAccount}"
+            },
+            deleteFlag: true
+        })
     };
 
     /**
      * 楼盘 信息自动补全
      */
     objectData.autocompleteEstate = function () {
-        $("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").autocomplete(
+        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val();
+                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").val();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicEstate/autoComplete",
+                        url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -276,14 +308,14 @@
                             name: itemVal
                         },
                         success: function (result) {
-                            if (result.ret){
+                            if (result.ret) {
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
                                         value: item.key
                                     }
                                 }));
-                            }else {
+                            } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         }
@@ -292,10 +324,10 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    $("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").attr("data-id",ele.item.key);
+                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id", ele.item.key);
                 },
                 /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
-                focus:function (event, ui) {
+                focus: function (event, ui) {
                 }
             }
         );
@@ -305,33 +337,38 @@
      * 楼栋 信息自动补全
      */
     objectData.autocompleteBuilding = function () {
-        var estateId = $("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").attr("data-id");
-        if (!objectData.isNotBlank(estateId)){
+        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+        if (!objectData.isNotBlank(estateId)) {
             Alert("请先选择楼盘然后在选择楼栋!");
             return false;
         }
-        $("#"+objectData.config.id).find("input[name='"+objectData.config.basicBuilding.key+"']").autocomplete(
+        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#"+objectData.config.id).find("input[name='"+objectData.config.basicBuilding.key+"']").val();
+                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuilding/autoComplete",
+                        url: "${pageContext.request.contextPath}/caseBuilding/autoCompleteCaseBuilding",
                         type: "get",
                         dataType: "json",
                         data: {
                             maxRows: 10,
                             identifier: itemVal,
-                            estateId:estateId
+                            estateId: estateId
                         },
                         success: function (result) {
-                            if (result.ret){
+                            if (result.ret) {
+                                if (objectData.isNotBlank(result.data)) {
+                                    if (result.data.length == 0) {
+                                        Alert("此楼盘下无楼栋信息!");
+                                    }
+                                }
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
                                         value: item.key
                                     }
                                 }));
-                            }else {
+                            } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         }
@@ -340,24 +377,336 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    $("#"+objectData.config.id).find("input[name='"+objectData.config.basicBuilding.key+"']").attr("data-id",ele.item.key);
+                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id", ele.item.key);
                 },
-                focus:function (event, ui) {
+                focus: function (event, ui) {
                 }
             }
         );
     };
 
+    /**
+     * 单元信息自动补全
+     */
+    objectData.autocompleteUnit = function () {
+        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        if (!objectData.isNotBlank(buildingId)) {
+            Alert("请先选择楼栋然后在选择单元!");
+            return false;
+        }
+        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").autocomplete(
+            {
+                source: function (request, response) {
+                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/basicUnit/autoComplete",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            maxRows: 10,
+                            unitNumber: itemVal,
+                            buildingId: buildingId
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                if (objectData.isNotBlank(result.data)) {
+                                    if (result.data.length == 0) {
+                                        Alert("此楼栋下无单元信息!");
+                                    }
+                                }
+                                response($.each(result.data, function (i, item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.key
+                                    }
+                                }));
+                            } else {
+                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                            }
+                        }
+                    });
+                },
+                minLength: 1,
+                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
+                select: function (event, ele) {
+                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id", ele.item.key);
+                },
+                focus: function (event, ui) {
+                }
+            }
+        );
+    };
+
+    /**
+     * 房屋信息自动补全
+     */
+    objectData.autocompleteHouse = function () {
+        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+        if (!objectData.isNotBlank(unitId)) {
+            Alert("请先选择单元然后在选择房屋!");
+            return false;
+        }
+        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").autocomplete(
+            {
+                source: function (request, response) {
+                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val();
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/basicHouse/autoComplete",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            maxRows: 10,
+                            houseNumber: itemVal,
+                            unitId: unitId
+                        },
+                        success: function (result) {
+                            if (result.ret) {
+                                if (objectData.isNotBlank(result.data)) {
+                                    if (result.data.length == 0) {
+                                        Alert("此单元下无房屋信息!");
+                                    }
+                                }
+                                response($.each(result.data, function (i, item) {
+                                    return {
+                                        label: item.value,
+                                        value: item.key
+                                    }
+                                }));
+                            } else {
+                                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                            }
+                        }
+                    });
+                },
+                minLength: 1,
+                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
+                select: function (event, ele) {
+                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id", ele.item.key);
+                },
+                focus: function (event, ui) {
+                }
+            }
+        );
+    };
+
+
+    //处理 楼盘
+    objectData.estate = {
+        show: function (item) {
+            $('#caseTab a:first').tab('show')
+            objectData.estate.init(item);
+        },
+        details: function () {
+            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(estateId)) {
+                Alert("请查询楼盘!");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
+                type: "get",
+                dataType: "json",
+                data: {id: estateId},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (!objectData.isNotBlank(readonly)) {
+                                $(n).attr("readonly", "readonly");
+                            }
+                        });
+                        objectData.estate.show(result.data);
+                    } else {
+                        Alert("没有查询到与此相关的楼盘信息");
+                        objectData.estate.show({});
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        edit: function () {
+            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(estateId)) {
+                Alert("请查询楼盘!");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
+                type: "get",
+                dataType: "json",
+                data: {id: estateId},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (objectData.isNotBlank(readonly)) {
+                                $(n).removeAttr("readonly");
+                            }
+                        });
+                        objectData.estate.show(result.data);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        init: function (item) {
+            $("#" + objectData.config.basicEstate.frm).clearAll();
+            $("#" + objectData.config.basicEstate.frm).initForm(item);
+            $.each(objectData.config.basicEstate.files, function (i, n) {
+                objectData.uploadFile(n, AssessDBKey.BasicEstate, item.id);
+            });
+            AssessCommon.initAreaInfo({
+                provinceTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.province"),
+                cityTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.city"),
+                districtTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.district"),
+                provinceValue: item.province,
+                cityValue: item.city,
+                districtValue: item.district
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataProperty/dataPropertyList",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        var gradeNum = data.length;
+                        var option = "<option value=''>请选择</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            }
+                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.developerId").empty().html(option);
+                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.developerId, "developerId");
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.info(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataBlock/dataBlockList",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        var gradeNum = data.length;
+                        var option = "<option value=''>请选择</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            }
+                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.blockId").empty().html(option);
+                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.blockId, "blockId");
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.info(result);
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        var gradeNum = data.length;
+                        var option = "<option value=''>请选择</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                            }
+                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").empty().html(option);
+                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.landLevel, "landLevel");
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").change(function () {
+                var id = $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
+                    type: "get",
+                    dataType: "json",
+                    async: false,
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            var data = result.data;
+                            if (objectData.isNotBlank(data)) {
+                                $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("input[name='street']").val(data.street);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+            });
+        }
+    };
+
+    //处理 楼栋
+    objectData.building = {
+        show:function (item) {
+            objectData.building.init(item);
+        },
+        details:function () {
+            objectData.building.show({});
+        },
+        edit:function () {
+            objectData.building.show({});
+        },
+        init:function (item) {
+
+        }
+    };
+
+
+    objectData.formParams = function () {
+        var item = {};
+        var forms = $("#" + objectData.config.id).find("form");
+        $.each(forms, function (i, n) {
+
+        });
+        var basicEstate = formParams(objectData.config.basicEstate.frm);
+        item.basicEstate = basicEstate ;
+        return item;
+    };
 </script>
 
 <script>
+
     //提交
     function submit() {
-        if ("${processInsId}" != "0") {
-            submitEditToServer();
-        }
-        else {
-            submitToServer();
-        }
+        var formData = JSON.stringify(objectData.formParams());
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {formData: formData},
+            success: function (result) {
+                if (result.ret) {
+                    Alert("成功!");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 </script>
