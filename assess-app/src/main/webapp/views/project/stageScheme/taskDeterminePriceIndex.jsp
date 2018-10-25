@@ -13,85 +13,31 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <div id="panel_judge_objet_list">
-                <c:forEach items="${areaJudgeObjectVos}" var="item">
-                    <div class="x_panel area_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                            </ul>
-                            <h2>
-                                <label>${item.areaGroupName}</label>
-                            </h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse">
-                            <form class="form-horizontal">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 5%">编号</th>
-                                        <th style="width: 10%">权证号</th>
-                                        <th style="width: 5%">所有权人</th>
-                                        <th style="width: 15%">坐落</th>
-                                        <th style="width: 10%">证载用途</th>
-                                        <th style="width: 10%">实际用途</th>
-                                        <th style="width: 10%">设定用途</th>
-                                        <th style="width: 10%">最佳利用描述</th>
-                                        <th style="width: 5%">评估单价</th>
-                                        <th style="width: 10%">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${item.judgeObjectVoList}" var="judgeObject">
-                                        <tr>
-                                            <td>
-                                                <input type="hidden" name="id" value="${judgeObject.id}">
-                                                <label class="form-control">${judgeObject.number}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.name}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.ownership}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.seat}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.certUse}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.practicalUse}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.setUse}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control">${judgeObject.bestUse}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control"
-                                                       data-name="price">${judgeObject.price}</label>
-                                            </td>
-                                            <td>
-                                                <a href="javascript://" onclick="determinePrice.surePrice(this);"
-                                                   class="btn btn-xs btn-success judge-split tooltips">确定单价</a>
-                                                <c:if test="${judgeObject.bisMerge}">
-                                                    <a href="javascript://" onclick="determinePrice.adjustPrice(this);"
-                                                       class="btn btn-xs btn-success judge-split tooltips">调整评估价</a>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </form>
+            <div class="x_panel">
+                <form  class="form-horizontal">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>方法名称</th>
+                            <th>试算价格</th>
+                            <th>权重</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_data_section1">
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                最终单价
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="price" class="form-control" readonly="readonly">
+                            </div>
                         </div>
                     </div>
-                </c:forEach>
+                </form>
             </div>
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
