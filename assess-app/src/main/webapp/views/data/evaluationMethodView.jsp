@@ -191,7 +191,6 @@
         if (fieldArray && fieldArray.length > 0) {
             var html = '';
             $.each(fieldArray, function (i, item) {
-                field = fieldArray;
                 html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.applicableReason-field').append(html);
@@ -206,7 +205,6 @@
         if (fieldArray && fieldArray.length > 0) {
             var html = '';
             $.each(fieldArray, function (i, item) {
-                Nofield = fieldArray;
                 html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.not-applicableReason-field').append(html);
