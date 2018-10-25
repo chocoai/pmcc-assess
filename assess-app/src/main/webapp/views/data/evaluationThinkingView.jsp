@@ -117,7 +117,8 @@
                                         <div class="col-sm-10" id="method">
                                             <c:forEach items="${methodDicList}" var="item">
                                                     <span class="checkbox-inline">
-                                                    <input type="checkbox" id="method${item.id}" name="method" value="${item.id}">
+                                                    <input type="checkbox" id="method${item.id}" name="method"
+                                                           value="${item.id}">
                                                         <label for="method${item.id}">${item.name}</label>
                                                     </span>
                                             </c:forEach>
@@ -127,29 +128,14 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            适用原因模板<span class="symbol required"></span>
+                                            模板内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea placeholder="请填写适用原因" class="form-control" id="applicableReason"
-                                                      name="applicableReason" required="required" onkeyup="extractApplicableField();">
+                                            <textarea placeholder="模板内容" class="form-control" id="templateContent"
+                                                      name="templateContent" required="required"
+                                                      onkeyup="extractTemplateContentField();">
                                             </textarea>
                                             <div class="applicableReason-field">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            不适用原因模板<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea placeholder="请填写不适用原因" class="form-control"
-                                                      id="notApplicableReason" name="notApplicableReason"
-                                                      required="required" onkeyup="extractNotApplicableField();">
-                                            </textarea>
-                                            <div class="not-applicableReason-field">
 
                                             </div>
                                         </div>
@@ -160,7 +146,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default" >
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="saveThinking()">
@@ -175,40 +161,30 @@
 
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
+    var currCategory = undefined;
 
     $(function () {
         loadThinkingList();
-        objMethod.event.init();
-        objMethod.event.change();
+        loadType();
+
+        $("#frm").find('select.type').change(function () {
+            if ($(this).val()) {
+                loadCategory($(this).val(), currCategory);
+            }
+        })
     })
- 
-    //提取显示适用的字段
-    function extractApplicableField() {
-        var text = $("#applicableReason").val();
+
+    //提取模板内容的字段
+    function extractTemplateContentField() {
+        var text = $("#templateContent").val();
         $('.applicableReason-field').empty();
         var fieldArray = AssessCommon.extractField(text);
         if (fieldArray && fieldArray.length > 0) {
             var html = '';
             $.each(fieldArray, function (i, item) {
-                field = fieldArray;
                 html += '<span class="label label-default">' + item + '</span> ';
             })
             $('.applicableReason-field').append(html);
-        }
-    }
-
-    //提取显示不适用的字段
-    function extractNotApplicableField() {
-        var text = $("#notApplicableReason").val();
-        $('.not-applicableReason-field').empty();
-        var fieldArray = AssessCommon.extractField(text);
-        if (fieldArray && fieldArray.length > 0) {
-            var html = '';
-            $.each(fieldArray, function (i, item) {
-                Nofield = fieldArray;
-                html += '<span class="label label-default">' + item + '</span> ';
-            })
-            $('.not-applicableReason-field').append(html);
         }
     }
 
@@ -219,8 +195,7 @@
         cols.push({field: 'methodStr', title: '评估方法'});
         cols.push({field: 'categoryName', title: '类别'});
         cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'applicableReason', title: '适用原因模板', width: '40%'});
-        cols.push({field: 'notApplicableReason', title: '不适用原因模板', width: '40%'});
+        cols.push({field: 'templateContent', title: '模板内容', width: '40%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -270,12 +245,11 @@
             })
         })
     }
-    
+
     //对新增 评估技术思路 数据处理
     function addThinking() {
         $("#frm").clearAll();
-        extractApplicableField();
-        extractNotApplicableField();
+        extractTemplateContentField();
     }
     //新增 评估技术思路 数据
     function saveThinking() {
@@ -307,114 +281,78 @@
     function editThinking(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
         $("#frm").clearAll();
+        currCategory = row.category;
         $("#frm").initForm(row);
-        objMethod.event.init();
-        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"),row.method.split(','));
-        extractApplicableField();
-        extractNotApplicableField();
+
+        AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
+        extractTemplateContentField();
         $('#divBox').modal();
     }
 
-    /**
-     * @author:  zch
-     * 描述:加载一些select2数据 (类型 类别)
-     * @date:2018-08-30
-     **/
-    var objMethod = new Object();
-    objMethod.flag = true;
-    objMethod.isEmpty = function (data) {
-        if (data) {
-            return true;
-        }
-        return false;
-    }
-    objMethod.writeSelect = function (frm, data, name) {
-        if (objMethod.isEmpty(data)) {
-            $("#" + frm + " ." + name).val(data).trigger("change");
-        } else {
-            $("#" + frm + " ." + name).val(null).trigger("change");
-        }
-    }
-    objMethod.event = {
-        init:function () {
-            if (objMethod.flag){
-                objMethod.event.type();
-                objMethod.flag = false;
-            }
-        },
-        //类型
-        type:function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
-                type: "post",
-                dataType: "json",
-                data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (data.length >= 1) {
-                            var option = "<option value=''>请选择</option>";
-                            for (var i = 0; i < data.length; i++) {
+    function loadType(val) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseProjectClassify/getProjectClassifyListByFieldName",
+            type: "post",
+            dataType: "json",
+            data: {fieldName: "single"},//字段为固定 请参照BaseProjectClassifyController中....
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    $("#frm").find('select.type').empty();
+                    if (data.length >= 1) {
+                        var option = "<option value=''>请选择</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            if (val && val == data[i].id) {
+                                option += "<option selected='selected' value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            } else {
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
-                            $("#frm").find('select.type').html(option);
-                            // $("#frm" + " .type").html(option);
-                            // $("#frm" + " .type").select2();
-                            // $("#frm" + " .category").select2();
                         }
+                        $("#frm").find('select.type').html(option);
                     }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            });
-        },
-        change:function () {
-            objMethod.event.category();
-        },
-        //类别
-        category:function () {
-            //监听change 事件 并做出......
-            $("#frm" + " .type").change(function () {
-                var pid = $("#frm" + " .type").eq(1).val();
-                if (!objMethod.isEmpty(pid)) {
-                    return false;
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
                 }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
-                    type: "post",
-                    dataType: "json",
-                    data: {pid: pid},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            if (data.length >= 1) {
-                                var option = "<option value=''>请选择</option>";
-                                for (var i = 0; i < data.length; i++) {
-                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                }
-                                // if ($("#frm" + " .category").prev(".category").size() > 0) {
-                                //     $("#frm" + " .category").prev(".category").remove();
-                                // }
-                                // $("#frm" + " .category").empty();
-                                // $("#frm" + " .category").html(option);
-                                // $("#frm" + " .category").select2();
-                                $("#frm").find('select.category').html(option);
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    function loadCategory(pid, val) {
+
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
+            type: "post",
+            dataType: "json",
+            data: {pid: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    if (data.length >= 1) {
+                        $("#frm").find('select.category').empty();
+                        var option = "<option value=''>请选择</option>";
+                        for (var i = 0; i < data.length; i++) {
+                            if (val && val == data[i].id) {
+                                option += "<option selected='selected' value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            } else {
+                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                         }
-                        else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        $("#frm").find('select.category').html(option).trigger('change');
                     }
-                })
-            });
-        }
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 
 

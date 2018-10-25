@@ -48,6 +48,14 @@ public class SchemeJudgeFunctionService {
         return schemeJudgeFunctionDao.getSchemeJudgeFunction(schemeJudgeFunction);
     }
 
+    @Transactional
+    public void changeFunctionContent(List<SchemeJudgeFunction> functionList){
+        if(CollectionUtils.isEmpty(functionList)) return;
+        for (SchemeJudgeFunction schemeJudgeFunction : functionList) {
+            schemeJudgeFunctionDao.updateSchemeJudgeFunction(schemeJudgeFunction);
+        }
+    }
+
 
     public boolean updateSchemeJudgeFunction(SchemeJudgeFunction schemeJudgeFunction) {
         return schemeJudgeFunctionDao.updateSchemeJudgeFunction(schemeJudgeFunction);

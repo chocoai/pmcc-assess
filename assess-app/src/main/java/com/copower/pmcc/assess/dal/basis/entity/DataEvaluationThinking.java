@@ -7,21 +7,19 @@ public class DataEvaluationThinking {
 
     private String name;
 
+    private Integer type;
+
+    private Integer category;
+
     private String method;
 
-    private String applicableReason;
-
-    private String notApplicableReason;
+    private String templateContent;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer type;
-
-    private Integer category;
 
     public Integer getId() {
         return id;
@@ -39,6 +37,22 @@ public class DataEvaluationThinking {
         this.name = name == null ? null : name.trim();
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
     public String getMethod() {
         return method;
     }
@@ -47,20 +61,12 @@ public class DataEvaluationThinking {
         this.method = method == null ? null : method.trim();
     }
 
-    public String getApplicableReason() {
-        return applicableReason;
+    public String getTemplateContent() {
+        return templateContent;
     }
 
-    public void setApplicableReason(String applicableReason) {
-        this.applicableReason = applicableReason == null ? null : applicableReason.trim();
-    }
-
-    public String getNotApplicableReason() {
-        return notApplicableReason;
-    }
-
-    public void setNotApplicableReason(String notApplicableReason) {
-        this.notApplicableReason = notApplicableReason == null ? null : notApplicableReason.trim();
+    public void setTemplateContent(String templateContent) {
+        this.templateContent = templateContent == null ? null : templateContent.trim();
     }
 
     public String getCreator() {
@@ -85,21 +91,5 @@ public class DataEvaluationThinking {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
     }
 }

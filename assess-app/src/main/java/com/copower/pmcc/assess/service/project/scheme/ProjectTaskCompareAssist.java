@@ -129,6 +129,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
         modelAndView.addObject("casesJSON", JSON.toJSONString(caseList));
         modelAndView.addObject("mcId", marketCompare.getId());
         modelAndView.addObject("setUse", judgeObject.getSetUse());
+        modelAndView.addObject("judgeObject", judgeObject);
     }
 
 

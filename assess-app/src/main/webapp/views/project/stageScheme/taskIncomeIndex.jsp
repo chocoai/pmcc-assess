@@ -14,6 +14,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
             <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
             <div class="x_panel">

@@ -21,6 +21,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <jsp:include page="/views/project/stageScheme/module/ftContentChangeModule.jsp"></jsp:include>
             <jsp:include page="/views/project/stageScheme/module/supportInfoModule.jsp"></jsp:include>
             <!-- 引入假设开发法模块 -->
             <jsp:include page="/views/method/marketDevelopmentIndex.jsp"></jsp:include>

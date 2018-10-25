@@ -795,6 +795,66 @@ public class DataSetUseFieldExample {
             return (Criteria) this;
         }
 
+        public Criteria andCanShrinkIsNull() {
+            addCriterion("can_shrink is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkIsNotNull() {
+            addCriterion("can_shrink is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkEqualTo(Boolean value) {
+            addCriterion("can_shrink =", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkNotEqualTo(Boolean value) {
+            addCriterion("can_shrink <>", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkGreaterThan(Boolean value) {
+            addCriterion("can_shrink >", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("can_shrink >=", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkLessThan(Boolean value) {
+            addCriterion("can_shrink <", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkLessThanOrEqualTo(Boolean value) {
+            addCriterion("can_shrink <=", value, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkIn(List<Boolean> values) {
+            addCriterion("can_shrink in", values, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkNotIn(List<Boolean> values) {
+            addCriterion("can_shrink not in", values, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkBetween(Boolean value1, Boolean value2) {
+            addCriterion("can_shrink between", value1, value2, "canShrink");
+            return (Criteria) this;
+        }
+
+        public Criteria andCanShrinkNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("can_shrink not between", value1, value2, "canShrink");
+            return (Criteria) this;
+        }
+
         public Criteria andSortingIsNull() {
             addCriterion("sorting is null");
             return (Criteria) this;

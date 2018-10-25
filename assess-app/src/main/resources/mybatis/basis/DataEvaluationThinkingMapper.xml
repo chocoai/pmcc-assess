@@ -4,14 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="INTEGER" />
     <result column="method" property="method" jdbcType="VARCHAR" />
-    <result column="applicable_reason" property="applicableReason" jdbcType="VARCHAR" />
-    <result column="not_applicable_reason" property="notApplicableReason" jdbcType="VARCHAR" />
+    <result column="template_content" property="templateContent" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, method, applicable_reason, not_applicable_reason, creator, gmt_created, 
-    gmt_modified, type, category
+    id, name, type, category, method, template_content, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinkingExample" >
     select
@@ -109,14 +107,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_evaluation_thinking (name, method, applicable_reason, 
-      not_applicable_reason, creator, gmt_created, 
-      gmt_modified, type, category
-      )
-    values (#{name,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{applicableReason,jdbcType=VARCHAR}, 
-      #{notApplicableReason,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}
-      )
+    insert into tb_data_evaluation_thinking (name, type, category, 
+      method, template_content, creator, 
+      gmt_created, gmt_modified)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
+      #{method,jdbcType=VARCHAR}, #{templateContent,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -127,14 +123,17 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
       <if test="method != null" >
         method,
       </if>
-      <if test="applicableReason != null" >
-        applicable_reason,
-      </if>
-      <if test="notApplicableReason != null" >
-        not_applicable_reason,
+      <if test="templateContent != null" >
+        template_content,
       </if>
       <if test="creator != null" >
         creator,
@@ -145,25 +144,22 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="category != null" >
-        category,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
       <if test="method != null" >
         #{method,jdbcType=VARCHAR},
       </if>
-      <if test="applicableReason != null" >
-        #{applicableReason,jdbcType=VARCHAR},
-      </if>
-      <if test="notApplicableReason != null" >
-        #{notApplicableReason,jdbcType=VARCHAR},
+      <if test="templateContent != null" >
+        #{templateContent,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -173,12 +169,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -197,14 +187,17 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=INTEGER},
+      </if>
       <if test="record.method != null" >
         method = #{record.method,jdbcType=VARCHAR},
       </if>
-      <if test="record.applicableReason != null" >
-        applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
-      </if>
-      <if test="record.notApplicableReason != null" >
-        not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
+      <if test="record.templateContent != null" >
+        template_content = #{record.templateContent,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -215,12 +208,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -230,14 +217,13 @@
     update tb_data_evaluation_thinking
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      category = #{record.category,jdbcType=INTEGER},
       method = #{record.method,jdbcType=VARCHAR},
-      applicable_reason = #{record.applicableReason,jdbcType=VARCHAR},
-      not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
+      template_content = #{record.templateContent,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      type = #{record.type,jdbcType=INTEGER},
-      category = #{record.category,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -248,14 +234,17 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=INTEGER},
+      </if>
       <if test="method != null" >
         method = #{method,jdbcType=VARCHAR},
       </if>
-      <if test="applicableReason != null" >
-        applicable_reason = #{applicableReason,jdbcType=VARCHAR},
-      </if>
-      <if test="notApplicableReason != null" >
-        not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
+      <if test="templateContent != null" >
+        template_content = #{templateContent,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -266,26 +255,19 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationThinking" >
     update tb_data_evaluation_thinking
     set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      category = #{category,jdbcType=INTEGER},
       method = #{method,jdbcType=VARCHAR},
-      applicable_reason = #{applicableReason,jdbcType=VARCHAR},
-      not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
+      template_content = #{templateContent,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      type = #{type,jdbcType=INTEGER},
-      category = #{category,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

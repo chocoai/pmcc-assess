@@ -235,6 +235,126 @@ public class DataEvaluationThinkingExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNull() {
+            addCriterion("category is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIsNotNull() {
+            addCriterion("category is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryEqualTo(Integer value) {
+            addCriterion("category =", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotEqualTo(Integer value) {
+            addCriterion("category <>", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThan(Integer value) {
+            addCriterion("category >", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category >=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThan(Integer value) {
+            addCriterion("category <", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
+            addCriterion("category <=", value, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryIn(List<Integer> values) {
+            addCriterion("category in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotIn(List<Integer> values) {
+            addCriterion("category not in", values, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryBetween(Integer value1, Integer value2) {
+            addCriterion("category between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
+            addCriterion("category not between", value1, value2, "category");
+            return (Criteria) this;
+        }
+
         public Criteria andMethodIsNull() {
             addCriterion("method is null");
             return (Criteria) this;
@@ -305,143 +425,73 @@ public class DataEvaluationThinkingExample {
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonIsNull() {
-            addCriterion("applicable_reason is null");
+        public Criteria andTemplateContentIsNull() {
+            addCriterion("template_content is null");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonIsNotNull() {
-            addCriterion("applicable_reason is not null");
+        public Criteria andTemplateContentIsNotNull() {
+            addCriterion("template_content is not null");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonEqualTo(String value) {
-            addCriterion("applicable_reason =", value, "applicableReason");
+        public Criteria andTemplateContentEqualTo(String value) {
+            addCriterion("template_content =", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonNotEqualTo(String value) {
-            addCriterion("applicable_reason <>", value, "applicableReason");
+        public Criteria andTemplateContentNotEqualTo(String value) {
+            addCriterion("template_content <>", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonGreaterThan(String value) {
-            addCriterion("applicable_reason >", value, "applicableReason");
+        public Criteria andTemplateContentGreaterThan(String value) {
+            addCriterion("template_content >", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonGreaterThanOrEqualTo(String value) {
-            addCriterion("applicable_reason >=", value, "applicableReason");
+        public Criteria andTemplateContentGreaterThanOrEqualTo(String value) {
+            addCriterion("template_content >=", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonLessThan(String value) {
-            addCriterion("applicable_reason <", value, "applicableReason");
+        public Criteria andTemplateContentLessThan(String value) {
+            addCriterion("template_content <", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonLessThanOrEqualTo(String value) {
-            addCriterion("applicable_reason <=", value, "applicableReason");
+        public Criteria andTemplateContentLessThanOrEqualTo(String value) {
+            addCriterion("template_content <=", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonLike(String value) {
-            addCriterion("applicable_reason like", value, "applicableReason");
+        public Criteria andTemplateContentLike(String value) {
+            addCriterion("template_content like", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonNotLike(String value) {
-            addCriterion("applicable_reason not like", value, "applicableReason");
+        public Criteria andTemplateContentNotLike(String value) {
+            addCriterion("template_content not like", value, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonIn(List<String> values) {
-            addCriterion("applicable_reason in", values, "applicableReason");
+        public Criteria andTemplateContentIn(List<String> values) {
+            addCriterion("template_content in", values, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonNotIn(List<String> values) {
-            addCriterion("applicable_reason not in", values, "applicableReason");
+        public Criteria andTemplateContentNotIn(List<String> values) {
+            addCriterion("template_content not in", values, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonBetween(String value1, String value2) {
-            addCriterion("applicable_reason between", value1, value2, "applicableReason");
+        public Criteria andTemplateContentBetween(String value1, String value2) {
+            addCriterion("template_content between", value1, value2, "templateContent");
             return (Criteria) this;
         }
 
-        public Criteria andApplicableReasonNotBetween(String value1, String value2) {
-            addCriterion("applicable_reason not between", value1, value2, "applicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonIsNull() {
-            addCriterion("not_applicable_reason is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonIsNotNull() {
-            addCriterion("not_applicable_reason is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonEqualTo(String value) {
-            addCriterion("not_applicable_reason =", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonNotEqualTo(String value) {
-            addCriterion("not_applicable_reason <>", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonGreaterThan(String value) {
-            addCriterion("not_applicable_reason >", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonGreaterThanOrEqualTo(String value) {
-            addCriterion("not_applicable_reason >=", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonLessThan(String value) {
-            addCriterion("not_applicable_reason <", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonLessThanOrEqualTo(String value) {
-            addCriterion("not_applicable_reason <=", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonLike(String value) {
-            addCriterion("not_applicable_reason like", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonNotLike(String value) {
-            addCriterion("not_applicable_reason not like", value, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonIn(List<String> values) {
-            addCriterion("not_applicable_reason in", values, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonNotIn(List<String> values) {
-            addCriterion("not_applicable_reason not in", values, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonBetween(String value1, String value2) {
-            addCriterion("not_applicable_reason between", value1, value2, "notApplicableReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andNotApplicableReasonNotBetween(String value1, String value2) {
-            addCriterion("not_applicable_reason not between", value1, value2, "notApplicableReason");
+        public Criteria andTemplateContentNotBetween(String value1, String value2) {
+            addCriterion("template_content not between", value1, value2, "templateContent");
             return (Criteria) this;
         }
 
@@ -632,126 +682,6 @@ public class DataEvaluationThinkingExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIsNull() {
-            addCriterion("category is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIsNotNull() {
-            addCriterion("category is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryEqualTo(Integer value) {
-            addCriterion("category =", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotEqualTo(Integer value) {
-            addCriterion("category <>", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryGreaterThan(Integer value) {
-            addCriterion("category >", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryGreaterThanOrEqualTo(Integer value) {
-            addCriterion("category >=", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryLessThan(Integer value) {
-            addCriterion("category <", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryLessThanOrEqualTo(Integer value) {
-            addCriterion("category <=", value, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIn(List<Integer> values) {
-            addCriterion("category in", values, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotIn(List<Integer> values) {
-            addCriterion("category not in", values, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryBetween(Integer value1, Integer value2) {
-            addCriterion("category between", value1, value2, "category");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryNotBetween(Integer value1, Integer value2) {
-            addCriterion("category not between", value1, value2, "category");
             return (Criteria) this;
         }
     }

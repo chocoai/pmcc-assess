@@ -33,7 +33,7 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         </ul>
-                        <h2>
+                        <h3>
                             <label>${item.areaName}</label>
                             <small>
                                 <c:if test="${item.bisMerge eq true}">
@@ -47,7 +47,7 @@
                                     </button>
                                 </c:if>
                             </small>
-                        </h2>
+                        </h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content collapse">
@@ -104,7 +104,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h2>他项权利</h2>
+                    <h3>他项权利</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content collapse">
@@ -170,7 +170,7 @@
                                                 </span>
 
                                                 <span class="radio-inline">
-                                                <input type="radio" required onclick="applicableChange(this,false)"
+                                                <input type="radio"  onclick="applicableChange(this,false)"
                                                        name="bisApplicable" id="rdoNotApplicable${method.id}"
                                                        value="false">
                                                 <label for="rdoNotApplicable${method.id}">不适用</label>
@@ -178,47 +178,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">
-                                            方法模板
-                                        </label>
-                                        <div class="x-valid">
-                                            <div class="col-sm-4">
-                                                <select class="form-control" name="methodTemplate"
-                                                        onchange="evaluationMethodChange(this);">
-                                                    <option value="">-请选择-</option>
-                                                    <c:forEach items="${evaluationMethodMap.get(method.id)}"
-                                                               var="evaluationMethod">
-                                                        <option value="${evaluationMethod.id}"
-                                                                data-applicable="${evaluationMethod.applicableReason}"
-                                                                data-not-applicable="${evaluationMethod.notApplicableReason}">
-                                                                ${evaluationMethod.name}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <label class="col-sm-2 control-label">
-                                            思路模板
-                                        </label>
-                                        <div class="x-valid">
-                                            <div class="col-sm-4">
-                                                <select class="form-control" name="thinkingTemplate"
-                                                        onchange="evaluationThinkingChange(this);">
-                                                    <option value="">-请选择-</option>
-                                                    <c:forEach items="${evaluationThinkingMap.get(method.id)}"
-                                                               var="evaluationThinking">
-                                                        <option value="${evaluationThinking.id}"
-                                                                data-applicable="${evaluationThinking.applicableReason}"
-                                                                data-not-applicable="${evaluationThinking.notApplicableReason}">
-                                                                ${evaluationThinking.name}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="applicable" style="display: none;">
                                         <div class="well">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">
+                                                    方法模板
+                                                </label>
+                                                <div class="x-valid">
+                                                    <div class="col-sm-4">
+                                                        <select class="form-control" name="methodTemplate"
+                                                                onchange="evaluationMethodChange(this);">
+                                                            <option value="">-请选择-</option>
+                                                            <c:forEach items="${evaluationMethodMap.get(method.id)}"
+                                                                       var="evaluationMethod">
+                                                                <option value="${evaluationMethod.id}"
+                                                                        data-applicable="${evaluationMethod.applicableReason}"
+                                                                        data-not-applicable="${evaluationMethod.notApplicableReason}">
+                                                                        ${evaluationMethod.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group ">
                                                 <label class="col-sm-2 control-label">
                                                     方法适用原因<span class="symbol required"></span>
@@ -234,20 +215,6 @@
 
                                             </div>
                                         </div>
-                                        <div class="well">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">
-                                                    思路适用原因<span class="symbol required"></span>
-                                                </label>
-                                                <div class="x-valid">
-                                                    <div class="col-sm-10">
-                                        <textarea required placeholder="思路适用原因" name="applicableThinking"
-                                                  class="form-control"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="applicableThinking-field"></div>
-                                        </div>
                                     </div>
                                     <div class="not-applicable" style="display: none;">
                                         <div class="well">
@@ -257,28 +224,47 @@
                                                 </label>
                                                 <div class="x-valid">
                                                     <div class="col-sm-10">
-                                        <textarea required placeholder="方法不适用原因" name="notApplicableReason"
+                                        <textarea required  placeholder="方法不适用原因" name="notApplicableReason"
                                                   class="form-control"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="notApplicableReason-field"></div>
                                         </div>
-                                        <div class="well">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">
-                                                    思路不适用原因<span class="symbol required"></span>
-                                                </label>
-                                                <div class="x-valid">
-                                                    <div class="col-sm-10">
-                                                        <textarea required placeholder="思路不适用原因"
-                                                                  name="notApplicableThinking"
-                                                                  class="form-control"></textarea>
-                                                    </div>
+
+                                    </div>
+                                    <div class="well thinkingWell" style="display: none;">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">
+                                                思路模板
+                                            </label>
+                                            <div class="x-valid">
+                                                <div class="col-sm-4">
+                                                    <select class="form-control" name="thinkingTemplate"
+                                                            onchange="evaluationThinkingChange(this);">
+                                                        <option value="">-请选择-</option>
+                                                        <c:forEach items="${evaluationThinkingMap.get(method.id)}"
+                                                                   var="evaluationThinking">
+                                                            <option value="${evaluationThinking.id}"
+                                                                    data-templateContent="${evaluationThinking.templateContent}">${evaluationThinking.name}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="notApplicableThinking-field"></div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">
+                                                评估思路<span class="symbol required"></span>
+                                            </label>
+                                            <div class="x-valid">
+                                                <div class="col-sm-10">
+                                                        <textarea required placeholder="评估思路"
+                                                                  name="thinking"
+                                                                  class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="thinking-field"></div>
                                     </div>
                                 </form>
                             </div>
@@ -635,7 +621,7 @@
 
     //区域合并
     programme.areaMerge = function (_this) {
-        var areaName = $(_this).closest('h2').find('label').text();
+        var areaName = $(_this).closest('h3').find('label').text();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
         var html = programme.config.areaItemHtml;
         if (programme.config.areaPopIndex <= 0) {
@@ -1173,28 +1159,16 @@
         tabPane.find('[name="notApplicableReason"]').val(template);
     }
 
-    //思路适用原因字段替换
-    function thinkingApplicableFieldReplace(_this) {
+    //思路字段替换
+    function thinkingFieldReplace(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-applicable");
-        tabPane.find('.applicableThinking-field').find('input:text').each(function () {
+        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-templateContent");
+        tabPane.find('.thinking-field').find('input:text').each(function () {
             if ($(this).val()) {
                 template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
             }
         })
-        tabPane.find('[name="applicableThinking"]').val(template);
-    }
-
-    //思路不适用原因字段替换
-    function thinkingNotApplicableFieldReplace(_this) {
-        var tabPane = $(_this).closest(".tab-pane");
-        var template = tabPane.find('[name="thinkingTemplate"]').find('option:selected').attr("data-not-applicable");
-        tabPane.find('.notApplicableThinking-field').find('input:text').each(function () {
-            if ($(this).val()) {
-                template = AssessCommon.replaceTemplate(template, $(this).attr('data-name'), $(this).val());
-            }
-        })
-        tabPane.find('[name="notApplicableThinking"]').val(template);
+        tabPane.find('[name="thinking"]').val(template);
     }
 
     //创建动态字段html
@@ -1237,8 +1211,7 @@
             judgeFunction.bisApplicable = $(this).find('[name="bisApplicable"]:checked').val();
             judgeFunction.applicableReason = $(this).find('[name="applicableReason"]').val();
             judgeFunction.notApplicableReason = $(this).find('[name="notApplicableReason"]').val();
-            judgeFunction.applicableThinking = $(this).find('[name="applicableThinking"]').val();
-            judgeFunction.notApplicableThinking = $(this).find('[name="notApplicableThinking"]').val();
+            judgeFunction.thinking = $(this).find('[name="thinking"]').val();
             judgeFunctionList.push(judgeFunction);
         })
         //检查各个方法数据是否填写完整
@@ -1278,9 +1251,12 @@
         if (judgeFunction) {
             if (judgeFunction.bisApplicable == undefined) return false;
             if (judgeFunction.bisApplicable == 'true') {
-                if (!judgeFunction.applicableReason || !judgeFunction.applicableThinking) return false;
+                if (!judgeFunction.applicableReason) return false;
             } else {
-                if (!judgeFunction.notApplicableReason || !judgeFunction.notApplicableThinking) return false;
+                if (!judgeFunction.notApplicableReason) return false;
+            }
+            if (!judgeFunction.thinking) {
+                return false;
             }
         }
         return true;
@@ -1314,10 +1290,10 @@
                             tabPane.find('[name="bisApplicable"][value="false"]').prop('checked', true);
                             tabPane.find('.not-applicable').show();
                         }
+                        tabPane.find('.thinkingWell').show();
                         tabPane.find('[name="applicableReason"]').val(item.applicableReason);
                         tabPane.find('[name="notApplicableReason"]').val(item.notApplicableReason);
-                        tabPane.find('[name="applicableThinking"]').val(item.applicableThinking);
-                        tabPane.find('[name="notApplicableThinking"]').val(item.notApplicableThinking);
+                        tabPane.find('[name="thinking"]').val(item.thinking);
                     })
                 }
             },
@@ -1338,18 +1314,18 @@
         $("#myTabContent").find('[name="bisApplicable"]').attr("checked", false);
         $("#myTabContent").find('[name="applicableReason"]').val('');
         $("#myTabContent").find('[name="notApplicableReason"]').val('');
-        $("#myTabContent").find('[name="applicableThinking"]').val('');
-        $("#myTabContent").find('[name="notApplicableThinking"]').val('');
+        $("#myTabContent").find('[name="thinking"]').val('');
 
         $("#myTabContent").find('[name="methodTemplate"]').val('');
         $("#myTabContent").find('[name="thinkingTemplate"]').val('');
 
         $("#myTabContent").find('.applicable').hide();
         $("#myTabContent").find('.not-applicable').hide();
+        $("#myTabContent").find('.thinkingWell').hide();
         $("#myTabContent").find('.applicableReason-field').empty();
-        $("#myTabContent").find('.applicableThinking-field').empty();
         $("#myTabContent").find('.notApplicableReason-field').empty();
-        $("#myTabContent").find('.notApplicableThinking-field').empty();
+        $("#myTabContent").find('.thinking-field').empty();
+
     }
 
     //评估方法模板选项change
@@ -1379,24 +1355,13 @@
     //评估思路模板选项change
     function evaluationThinkingChange(_this) {
         var tabPane = $(_this).closest(".tab-pane");
-        var bisApplicable = tabPane.find('[name=bisApplicable]:checked').val();
         var option = $(_this).find('option:selected');
-        tabPane.find('.applicableThinking-field').empty();
-        tabPane.find('.notApplicableThinking-field').empty();
-        if (bisApplicable == "true") {
-            tabPane.find('[name="applicableThinking"]').val(option.attr("data-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'thinkingApplicableFieldReplace');
-                tabPane.find('.applicableThinking-field').append(html);
-            }
-        } else if (bisApplicable == "false") {
-            tabPane.find('[name="notApplicableThinking"]').val(option.attr("data-not-applicable"));
-            var fieldArray = AssessCommon.extractField(option.attr("data-not-applicable"));
-            if (fieldArray && fieldArray.length > 0) {
-                var html = createDynaicFieldHtml(fieldArray, 'thinkingNotApplicableFieldReplace');
-                tabPane.find('.notApplicableThinking-field').append(html);
-            }
+        tabPane.find('.thinking-field').empty();
+        tabPane.find('[name="thinking"]').val(option.attr("data-templateContent"));
+        var fieldArray = AssessCommon.extractField(option.attr("data-templateContent"));
+        if (fieldArray && fieldArray.length > 0) {
+            var html = createDynaicFieldHtml(fieldArray, 'thinkingFieldReplace');
+            tabPane.find('.thinking-field').append(html);
         }
     }
 
@@ -1413,6 +1378,7 @@
             tabPane.find('.applicable').hide();
             tabPane.find('.not-applicable').show();
         }
+        tabPane.find('.thinkingWell').show();
     }
 </script>
 
