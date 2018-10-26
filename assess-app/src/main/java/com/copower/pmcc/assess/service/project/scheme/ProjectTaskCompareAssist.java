@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -43,6 +44,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private SchemeInfoService schemeInfoService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     @Override
@@ -57,7 +60,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
                 schemeInfo.setProjectId(projectPlanDetails.getProjectId());
                 schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
                 schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-                schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+                schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE).getId());
                 schemeInfo.setMethodDataId(marketCompare.getId());
                 try {
                     schemeInfoService.saveSchemeInfo(schemeInfo);

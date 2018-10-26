@@ -29,6 +29,16 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-2 control-label">
+                                权重说明
+                            </label>
+                            <div class="col-sm-4">
+                                <textarea name="weightExplain" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
                                 最终单价
                             </label>
                             <div class="col-sm-4">

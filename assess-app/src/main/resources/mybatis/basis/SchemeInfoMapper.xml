@@ -7,7 +7,7 @@
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
-    <result column="method_type" property="methodType" jdbcType="VARCHAR" />
+    <result column="method_type" property="methodType" jdbcType="INTEGER" />
     <result column="method_data_id" property="methodDataId" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -114,7 +114,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=VARCHAR}, #{methodDataId,jdbcType=INTEGER}, 
+      #{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, #{methodDataId,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -166,7 +166,7 @@
         #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
-        #{methodType,jdbcType=VARCHAR},
+        #{methodType,jdbcType=INTEGER},
       </if>
       <if test="methodDataId != null" >
         #{methodDataId,jdbcType=INTEGER},
@@ -207,7 +207,7 @@
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="record.methodType != null" >
-        method_type = #{record.methodType,jdbcType=VARCHAR},
+        method_type = #{record.methodType,jdbcType=INTEGER},
       </if>
       <if test="record.methodDataId != null" >
         method_data_id = #{record.methodDataId,jdbcType=INTEGER},
@@ -233,7 +233,7 @@
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
-      method_type = #{record.methodType,jdbcType=VARCHAR},
+      method_type = #{record.methodType,jdbcType=INTEGER},
       method_data_id = #{record.methodDataId,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -258,7 +258,7 @@
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
-        method_type = #{methodType,jdbcType=VARCHAR},
+        method_type = #{methodType,jdbcType=INTEGER},
       </if>
       <if test="methodDataId != null" >
         method_data_id = #{methodDataId,jdbcType=INTEGER},
@@ -281,7 +281,7 @@
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
-      method_type = #{methodType,jdbcType=VARCHAR},
+      method_type = #{methodType,jdbcType=INTEGER},
       method_data_id = #{methodDataId,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -50,6 +51,8 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -128,17 +131,17 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
             //确定假设开发法具体选择的哪一个方法来测算的
             keyMdDevelopment = jsonObject.getString("mdDevelopment");
-            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)){
-                if (Objects.equal("MdDevelopmentArchitectural",keyMdDevelopment)){
-                    if (mdDevelopmentArchitectural != null){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
+                if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
+                    if (mdDevelopmentArchitectural != null) {
                         mdDevelopment.setId(id);
                         mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
                         mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
                         mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
                     }
                 }
-                if (Objects.equal("MdDevelopmentHypothesis",keyMdDevelopment)){
-                    if (mdDevelopmentHypothesis != null){
+                if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
+                    if (mdDevelopmentHypothesis != null) {
                         mdDevelopment.setId(id);
                         mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
                         mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
@@ -197,7 +200,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_HYPOTHESIS);
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_HYPOTHESIS).getId());
         schemeInfo.setMethodDataId(id);
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
@@ -214,7 +217,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         List<SchemeSupportInfo> supportInfoList = null;
         MdDevelopmentHypothesis mdDevelopmentHypothesis = null;
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
-        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null ;
+        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
         String jsonContent = null;
         //(id至少会有一个实体含有 否则保存不会提交成功)
         Integer id = 0;
@@ -234,7 +237,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
                 //必须初始化,否则下面判定失败
                 jsonContent = null;
-                if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis.getId())){
+                if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis.getId())) {
                     id = mdDevelopmentService.getMdDevelopmentHypothesis(mdDevelopmentHypothesis.getId()).getPid();
                 }
             }
@@ -242,7 +245,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
-                if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural.getId())){
+                if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural.getId())) {
                     id = mdDevelopmentService.getMdDevelopmentArchitectural(mdDevelopmentArchitectural.getId()).getPid();
                 }
             }
@@ -260,7 +263,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
 
         //处理假设开发法 在建工程
         if (mdDevelopmentHypothesis != null) {
-            if (mdDevelopmentHypothesis.getId() == null){
+            if (mdDevelopmentHypothesis.getId() == null) {
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
                     //存入从表id
@@ -274,14 +277,14 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                     mdCostAndDevelopmentOther.setPid(pid);
                     mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
                 }
-            }else {
+            } else {
                 mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
             }
         }
 
         //处理假设开发法 土地
         if (mdDevelopmentArchitectural != null) {
-            if (mdDevelopmentArchitectural.getId() == null){
+            if (mdDevelopmentArchitectural.getId() == null) {
                 mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
                 if (mdCostAndDevelopmentOther != null) {
                     //存入从表id
@@ -295,25 +298,25 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                     mdCostAndDevelopmentOther.setPid(pid);
                     mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
                 }
-            }else {
+            } else {
                 mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
             }
         }
         //确定假设开发法具体选择的哪一个方法来测算的
         keyMdDevelopment = jsonObject.getString("mdDevelopment");
-        if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)){
-            if (pid != null){
+        if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
+            if (pid != null) {
                 MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
-                if (Objects.equal("MdDevelopmentArchitectural",keyMdDevelopment)){
-                    if (mdDevelopmentArchitectural != null){
+                if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
+                    if (mdDevelopmentArchitectural != null) {
                         mdDevelopment.setId(id);
                         mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
                         mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
                         mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
                     }
                 }
-                if (Objects.equal("MdDevelopmentHypothesis",keyMdDevelopment)){
-                    if (mdDevelopmentHypothesis != null){
+                if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
+                    if (mdDevelopmentHypothesis != null) {
                         mdDevelopment.setId(id);
                         mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
                         mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
@@ -333,12 +336,12 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         if (judgeObjectId != null) {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            modelAndView.addObject("judgeObject",schemeJudgeObject);
-            if (schemeJudgeObject != null){
+            modelAndView.addObject("judgeObject", schemeJudgeObject);
+            if (schemeJudgeObject != null) {
                 Integer areaGroupId = schemeJudgeObject.getAreaGroupId();
-                if (areaGroupId != null){
+                if (areaGroupId != null) {
                     SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
-                    modelAndView.addObject("schemeAreaGroup",schemeAreaGroup);
+                    modelAndView.addObject("schemeAreaGroup", schemeAreaGroup);
                 }
             }
         }
@@ -361,7 +364,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         //设置假设开发法 在建工程
         if (pid != null) {
             MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
-            modelAndView.addObject("mdDevelopment",mdDevelopment);
+            modelAndView.addObject("mdDevelopment", mdDevelopment);
             mdDevelopmentHypothesis = new MdDevelopmentHypothesis();
             mdDevelopmentHypothesis.setPid(pid);
             List<MdDevelopmentHypothesis> mdDevelopmentHypothesisList = mdDevelopmentService.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
@@ -371,7 +374,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
                 modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentHypothesis.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null){
+                if (mdCostAndDevelopmentOther != null) {
                     modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
                     modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
                 }
@@ -382,13 +385,13 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             mdDevelopmentArchitectural = new MdDevelopmentArchitectural();
             mdDevelopmentArchitectural.setPid(pid);
             List<MdDevelopmentArchitectural> mdDevelopmentArchitecturalList = mdDevelopmentService.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
-            if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)){
+            if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)) {
                 //一定会是 只有一个或者没有,原因...
                 mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);
-                modelAndView.addObject("mdDevelopmentArchitecturalJSON",mdDevelopmentArchitectural.getJsonContent());
-                modelAndView.addObject("mdDevelopmentArchitectural",mdDevelopmentArchitectural);
+                modelAndView.addObject("mdDevelopmentArchitecturalJSON", mdDevelopmentArchitectural.getJsonContent());
+                modelAndView.addObject("mdDevelopmentArchitectural", mdDevelopmentArchitectural);
                 MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentArchitectural.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null){
+                if (mdCostAndDevelopmentOther != null) {
                     modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
                     modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
                 }

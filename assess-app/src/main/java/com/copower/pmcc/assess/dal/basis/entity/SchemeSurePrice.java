@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class SchemeSurePrice {
@@ -10,13 +9,13 @@ public class SchemeSurePrice {
 
     private Integer judgeObjectId;
 
-    private String methodName;
+    private Integer planDetailsId;
 
-    private BigDecimal trialPrice;
+    private String processInsId;
 
-    private BigDecimal weight;
+    private String status;
 
-    private BigDecimal errorRate;
+    private String weightExplain;
 
     private String creator;
 
@@ -48,36 +47,36 @@ public class SchemeSurePrice {
         this.judgeObjectId = judgeObjectId;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName == null ? null : methodName.trim();
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
-    public BigDecimal getTrialPrice() {
-        return trialPrice;
+    public String getProcessInsId() {
+        return processInsId;
     }
 
-    public void setTrialPrice(BigDecimal trialPrice) {
-        this.trialPrice = trialPrice;
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
-    public BigDecimal getWeight() {
-        return weight;
+    public String getStatus() {
+        return status;
     }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
-    public BigDecimal getErrorRate() {
-        return errorRate;
+    public String getWeightExplain() {
+        return weightExplain;
     }
 
-    public void setErrorRate(BigDecimal errorRate) {
-        this.errorRate = errorRate;
+    public void setWeightExplain(String weightExplain) {
+        this.weightExplain = weightExplain == null ? null : weightExplain.trim();
     }
 
     public String getCreator() {

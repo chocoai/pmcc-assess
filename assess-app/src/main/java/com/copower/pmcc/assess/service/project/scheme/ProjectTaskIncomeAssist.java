@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -53,6 +54,8 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private DataTaxRateAllocationService dataTaxRateAllocationService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -163,7 +166,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
         schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-        schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_INCOME);
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
         schemeInfo.setMethodDataId(mdIncome.getId());
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -49,6 +50,8 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -207,7 +210,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setMethodType(AssessDataDicKeyConstant.MD_COST);
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST).getId());
         schemeInfo.setMethodDataId(id);
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
