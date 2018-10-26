@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SchemeSurePrice {
@@ -16,6 +17,8 @@ public class SchemeSurePrice {
     private String status;
 
     private String weightExplain;
+
+    private BigDecimal price;
 
     private String creator;
 
@@ -77,6 +80,14 @@ public class SchemeSurePrice {
 
     public void setWeightExplain(String weightExplain) {
         this.weightExplain = weightExplain == null ? null : weightExplain.trim();
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getCreator() {

@@ -9,6 +9,7 @@
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="weight_explain" property="weightExplain" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, judge_object_id, plan_details_id, process_ins_id, status, weight_explain, 
-    creator, gmt_created, gmt_modified
+    price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_scheme_sure_price (project_id, judge_object_id, plan_details_id, 
       process_ins_id, status, weight_explain, 
-      creator, gmt_created, gmt_modified
-      )
+      price, creator, gmt_created, 
+      gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{weightExplain,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{price,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePrice" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="weightExplain != null" >
         weight_explain,
+      </if>
+      <if test="price != null" >
+        price,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="weightExplain != null" >
         #{weightExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.weightExplain != null" >
         weight_explain = #{record.weightExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       weight_explain = #{record.weightExplain,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="weightExplain != null" >
         weight_explain = #{weightExplain,jdbcType=VARCHAR},
       </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       weight_explain = #{weightExplain,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

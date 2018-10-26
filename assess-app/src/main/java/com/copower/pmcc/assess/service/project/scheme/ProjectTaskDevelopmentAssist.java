@@ -199,8 +199,9 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         SchemeInfo schemeInfo = new SchemeInfo();
         schemeInfo.setProjectId(projectPlanDetails.getProjectId());
         schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
         schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_HYPOTHESIS).getId());
+        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT).getId());
         schemeInfo.setMethodDataId(id);
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.dto.input.project.scheme;
 
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePrice;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,9 +9,19 @@ import java.util.List;
  * Created by kings on 2018-10-16.
  */
 public class SchemeSurePriceApplyDto {
+    private Integer id;
     private Integer judgeObjectId;
+    private String weightExplain;
     private BigDecimal price;
-    private List<SchemeSurePrice> surePriceList;
+    private List<SchemeSurePriceItem> surePriceItemList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getJudgeObjectId() {
         return judgeObjectId;
@@ -19,6 +29,14 @@ public class SchemeSurePriceApplyDto {
 
     public void setJudgeObjectId(Integer judgeObjectId) {
         this.judgeObjectId = judgeObjectId;
+    }
+
+    public String getWeightExplain() {
+        return weightExplain;
+    }
+
+    public void setWeightExplain(String weightExplain) {
+        this.weightExplain = weightExplain;
     }
 
     public BigDecimal getPrice() {
@@ -29,11 +47,11 @@ public class SchemeSurePriceApplyDto {
         this.price = price;
     }
 
-    public List<SchemeSurePrice> getSurePriceList() {
-        return surePriceList;
+    public List<SchemeSurePriceItem> getSurePriceItemList() {
+        return surePriceItemList;
     }
 
-    public void setSurePriceList(List<SchemeSurePrice> surePriceList) {
-        this.surePriceList = surePriceList;
+    public void setSurePriceItemList(List<SchemeSurePriceItem> surePriceItemList) {
+        this.surePriceItemList = surePriceItemList;
     }
 }

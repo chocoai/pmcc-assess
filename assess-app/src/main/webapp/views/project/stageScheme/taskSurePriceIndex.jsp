@@ -14,7 +14,15 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <div class="x_panel">
-                <form class="form-horizontal">
+                <div class="x_title collapse-link">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                    </ul>
+                    <h3>${judgeObjectName}</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <form class="form-horizontal" id="sure_price_form">
+                    <input type="hidden" name="id" value="${schemeSurePrice.id}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -29,10 +37,11 @@
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-sm-1 control-label">
-                                权重说明
+                                权重说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-11">
-                                <textarea name="weightExplain" class="form-control"></textarea>
+                                <textarea name="weightExplain" required
+                                          class="form-control">${schemeSurePrice.weightExplain}</textarea>
                             </div>
                         </div>
                     </div>
@@ -42,15 +51,43 @@
                                 最终单价
                             </label>
                             <div class="col-sm-3">
-                                <input type="text" name="price" class="form-control" readonly="readonly">
+                                <input type="text" name="price" class="form-control" readonly="readonly"
+                                       value="${schemeSurePrice.price}">
                             </div>
-                            <label class="col-sm-1 control-label">
-                                <div class="btn btn-parimary">单价调整</div>
-                            </label>
+                            <div class="btn btn-primary"
+                                 onclick="surePrice.adjustPrice('${projectPlanDetails.judgeObjectId}');">单价调整
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
+            <c:if test="${not empty subJudgeObjectList}">
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>调整单价</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>权证号</th>
+                            <th>价格</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_data_section1">
+                        <c:forEach items="${subJudgeObjectList}" var="item">
+                            <tr>
+                                <td>${item.name}</td>
+                                <td>${item.price}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:if>
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -166,12 +203,25 @@
     })
 
     function submit() {
-        var data = {};
+        var surePriceApply = {};
+        var form = $("#sure_price_form");
+        surePriceApply.id = form.find('[name=id]').val();
+        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
+        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
+        surePriceApply.price = form.find('[name=price]').val();
+        surePriceApply.surePriceItemList = [];
+        $("#tbody_data_section tr").each(function () {
+            var schemeSurePriceItem = {};
+            schemeSurePriceItem.id = $(this).find('[name=id]').val();
+            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
+            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
+        })
+
         if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(data));
+            submitEditToServer(JSON.stringify(surePriceApply));
         }
         else {
-            submitToServer(JSON.stringify(data));
+            submitToServer(JSON.stringify(surePriceApply));
         }
     }
 
@@ -211,6 +261,25 @@
 
     //计算单价
     surePrice.computePrice = function (_this) {
+        //自动计算最后一个方法的权重
+        var i = 0;
+        var lastWeightElement = undefined;
+        var lastDataValue = 1;
+        $(_this).closest('tbody').find('[name=weight]').each(function () {
+            var val = $(this).val();
+            if (val) {
+                lastDataValue = lastDataValue - parseFloat(AssessCommon.percentToPoint(val));
+            } else {
+                lastWeightElement = $(this);
+                i++;
+            }
+        })
+        if (i == 1) {
+            lastWeightElement.attr('data-value', lastDataValue);
+            AssessCommon.elementParsePercent(lastWeightElement);
+        }
+
+
         var resultPrice = 0;
         $(_this).closest('tbody').find('tr').each(function () {
             var trialPrice = $(this).find("[data-name=trialPrice]").text();
@@ -219,7 +288,7 @@
                 resultPrice += parseFloat(trialPrice) * parseFloat(weight);
             }
         })
-        $("#frm_data_section").find('[name=price]').val(resultPrice.toFixed(2));
+        $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(2));
     }
 
     //保存单价
@@ -262,8 +331,7 @@
     }
 
     //调整评估单价
-    surePrice.adjustPrice = function (_this) {
-        var judgeObjectId = $(_this).closest('tr').find('[name=id]').val();
+    surePrice.adjustPrice = function (judgeObjectId) {
         $("#modal_adjustment_price").find('[name=judgeObjectId]').val(judgeObjectId);
         surePrice.loadJudgeDetailList();
         $("#modal_adjustment_price").modal();

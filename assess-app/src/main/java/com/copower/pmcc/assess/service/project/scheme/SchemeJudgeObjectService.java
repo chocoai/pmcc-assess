@@ -103,6 +103,14 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
+    public List<SchemeJudgeObject> getListByPid(Integer pid) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setPid(pid);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        return judgeObjectList;
+    }
+
     /**
      * 获取估价对象数据列表
      *
@@ -366,11 +374,10 @@ public class SchemeJudgeObjectService {
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupList(projectId);
 
 
-
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE,projectInfo.getProjectCategoryId());
+            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
 
             int i = 0;
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
@@ -427,7 +434,7 @@ public class SchemeJudgeObjectService {
                         }
 
                         //添加确定单价的工作事项
-                        if(phaseSurePrice!=null){
+                        if (phaseSurePrice != null) {
                             ProjectPlanDetails details = new ProjectPlanDetails();
                             details.setProjectWorkStageId(projectPlan.getWorkStageId());
                             details.setPlanId(projectPlan.getId());
@@ -454,7 +461,7 @@ public class SchemeJudgeObjectService {
         Map<Integer, ProjectPhase> map = Maps.newHashMap();
         List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.EVALUATION_METHOD);
         for (BaseDataDic method : methodList) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName(),categoryId);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(method.getFieldName(), categoryId);
             if (projectPhase != null)
                 map.put(method.getId(), projectPhase);
         }
