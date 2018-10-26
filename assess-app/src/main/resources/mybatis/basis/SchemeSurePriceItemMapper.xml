@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeInfo" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeSurePriceItemMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
     <result column="method_type" property="methodType" jdbcType="INTEGER" />
-    <result column="method_data_id" property="methodDataId" jdbcType="INTEGER" />
+    <result column="method_name" property="methodName" jdbcType="VARCHAR" />
+    <result column="trial_price" property="trialPrice" jdbcType="DECIMAL" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="error_rate" property="errorRate" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -72,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_details_id, process_ins_id, judge_object_id, method_type, method_data_id, 
-    creator, gmt_created, gmt_modified
+    id, judge_object_id, method_type, method_name, trial_price, weight, error_rate, creator, 
+    gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfoExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItemExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_scheme_info
+    from tb_scheme_sure_price_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_scheme_info
+    from tb_scheme_sure_price_item
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_scheme_info
+    delete from tb_scheme_sure_price_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfoExample" >
-    delete from tb_scheme_info
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItemExample" >
+    delete from tb_scheme_sure_price_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfo" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_info (project_id, plan_details_id, process_ins_id, 
-      judge_object_id, method_type, method_data_id, 
+    insert into tb_scheme_sure_price_item (judge_object_id, method_type, method_name, 
+      trial_price, weight, error_rate, 
       creator, gmt_created, gmt_modified
       )
-    values (#{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, #{methodDataId,jdbcType=INTEGER}, 
+    values (#{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, #{methodName,jdbcType=VARCHAR}, 
+      #{trialPrice,jdbcType=DECIMAL}, #{weight,jdbcType=DECIMAL}, #{errorRate,jdbcType=DECIMAL}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfo" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_info
+    insert into tb_scheme_sure_price_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="planDetailsId != null" >
-        plan_details_id,
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id,
-      </if>
       <if test="judgeObjectId != null" >
         judge_object_id,
       </if>
       <if test="methodType != null" >
         method_type,
       </if>
-      <if test="methodDataId != null" >
-        method_data_id,
+      <if test="methodName != null" >
+        method_name,
+      </if>
+      <if test="trialPrice != null" >
+        trial_price,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="errorRate != null" >
+        error_rate,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,23 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
-        #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
         #{methodType,jdbcType=INTEGER},
       </if>
-      <if test="methodDataId != null" >
-        #{methodDataId,jdbcType=INTEGER},
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="trialPrice != null" >
+        #{trialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="errorRate != null" >
+        #{errorRate,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -182,26 +182,17 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfoExample" resultType="java.lang.Integer" >
-    select count(*) from tb_scheme_info
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItemExample" resultType="java.lang.Integer" >
+    select count(*) from tb_scheme_sure_price_item
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_scheme_info
+    update tb_scheme_sure_price_item
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=INTEGER},
-      </if>
-      <if test="record.planDetailsId != null" >
-        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="record.processInsId != null" >
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
@@ -209,8 +200,17 @@
       <if test="record.methodType != null" >
         method_type = #{record.methodType,jdbcType=INTEGER},
       </if>
-      <if test="record.methodDataId != null" >
-        method_data_id = #{record.methodDataId,jdbcType=INTEGER},
+      <if test="record.methodName != null" >
+        method_name = #{record.methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trialPrice != null" >
+        trial_price = #{record.trialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.errorRate != null" >
+        error_rate = #{record.errorRate,jdbcType=DECIMAL},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -227,14 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_scheme_info
+    update tb_scheme_sure_price_item
     set id = #{record.id,jdbcType=INTEGER},
-      project_id = #{record.projectId,jdbcType=INTEGER},
-      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       method_type = #{record.methodType,jdbcType=INTEGER},
-      method_data_id = #{record.methodDataId,jdbcType=INTEGER},
+      method_name = #{record.methodName,jdbcType=VARCHAR},
+      trial_price = #{record.trialPrice,jdbcType=DECIMAL},
+      weight = #{record.weight,jdbcType=DECIMAL},
+      error_rate = #{record.errorRate,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -242,26 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfo" >
-    update tb_scheme_info
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
+    update tb_scheme_sure_price_item
     <set >
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
-        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="methodType != null" >
         method_type = #{methodType,jdbcType=INTEGER},
       </if>
-      <if test="methodDataId != null" >
-        method_data_id = #{methodDataId,jdbcType=INTEGER},
+      <if test="methodName != null" >
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="trialPrice != null" >
+        trial_price = #{trialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="errorRate != null" >
+        error_rate = #{errorRate,jdbcType=DECIMAL},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -275,14 +275,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeInfo" >
-    update tb_scheme_info
-    set project_id = #{projectId,jdbcType=INTEGER},
-      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
+    update tb_scheme_sure_price_item
+    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
       method_type = #{methodType,jdbcType=INTEGER},
-      method_data_id = #{methodDataId,jdbcType=INTEGER},
+      method_name = #{methodName,jdbcType=VARCHAR},
+      trial_price = #{trialPrice,jdbcType=DECIMAL},
+      weight = #{weight,jdbcType=DECIMAL},
+      error_rate = #{errorRate,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

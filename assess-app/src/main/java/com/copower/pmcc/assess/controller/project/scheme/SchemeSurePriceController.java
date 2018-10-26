@@ -2,8 +2,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeCertAdjustmentFactor;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePrice;
-import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.service.project.scheme.SchemeCertAdjustmentFactorService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -27,29 +26,17 @@ public class SchemeSurePriceController {
     @Autowired
     private SchemeCertAdjustmentFactorService schemeCertAdjustmentFactorService;
 
-    @GetMapping(value = "/getSchemeSurePriceList", name = "获取确定单价数据信息")
+    @GetMapping(value = "/getSchemeSurePriceItemList", name = "获取确定单价明细数据信息")
     @ResponseBody
-    public HttpResult getSchemeSurePriceList(Integer judgeObjectId) {
+    public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId) {
         try {
-            List<SchemeSurePrice> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceList(judgeObjectId);
+            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId,true);
             return HttpResult.newCorrectResult(schemeSurePriceList);
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取数据异常");
         }
     }
 
-
-    @PostMapping(value = "/saveSurePrice", name = "保存单价")
-    @ResponseBody
-    public HttpResult saveSurePrice(String formData) {
-        try {
-            SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSON.parseObject(formData, SchemeSurePriceApplyDto.class);
-            schemeSurePriceService.saveSurePrice(schemeSurePriceApplyDto);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            return HttpResult.newErrorResult("获取数据异常");
-        }
-    }
 
     @GetMapping(value = "/getCertAdjustmentFactors", name = "获取调整单价系数")
     @ResponseBody

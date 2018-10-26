@@ -53,7 +53,7 @@ public class AssessDataDicKeyConstant {
     public static final String MD_MARKET_COMPARE = "md.market.compare"; //市场比较法
     public static final String MD_INCOME = "md.income"; //收益法
     public static final String MD_COST = "md.cost"; //成本法
-    public static final String MD_HYPOTHESIS = "md.hypothesis"; //假设开发法
+    public static final String MD_DEVELOPMENT = "md.development"; //假设开发法
 
     /*
      * 测算方法配置

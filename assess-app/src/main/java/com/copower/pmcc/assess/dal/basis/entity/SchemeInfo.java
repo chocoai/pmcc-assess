@@ -13,7 +13,7 @@ public class SchemeInfo {
 
     private Integer judgeObjectId;
 
-    private String methodType;
+    private Integer methodType;
 
     private Integer methodDataId;
 
@@ -63,12 +63,12 @@ public class SchemeInfo {
         this.judgeObjectId = judgeObjectId;
     }
 
-    public String getMethodType() {
+    public Integer getMethodType() {
         return methodType;
     }
 
-    public void setMethodType(String methodType) {
-        this.methodType = methodType == null ? null : methodType.trim();
+    public void setMethodType(Integer methodType) {
+        this.methodType = methodType;
     }
 
     public Integer getMethodDataId() {

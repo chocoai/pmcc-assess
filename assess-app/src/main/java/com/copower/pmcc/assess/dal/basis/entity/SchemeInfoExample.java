@@ -425,62 +425,52 @@ public class SchemeInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeEqualTo(String value) {
+        public Criteria andMethodTypeEqualTo(Integer value) {
             addCriterion("method_type =", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeNotEqualTo(String value) {
+        public Criteria andMethodTypeNotEqualTo(Integer value) {
             addCriterion("method_type <>", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeGreaterThan(String value) {
+        public Criteria andMethodTypeGreaterThan(Integer value) {
             addCriterion("method_type >", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andMethodTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("method_type >=", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeLessThan(String value) {
+        public Criteria andMethodTypeLessThan(Integer value) {
             addCriterion("method_type <", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeLessThanOrEqualTo(String value) {
+        public Criteria andMethodTypeLessThanOrEqualTo(Integer value) {
             addCriterion("method_type <=", value, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeLike(String value) {
-            addCriterion("method_type like", value, "methodType");
-            return (Criteria) this;
-        }
-
-        public Criteria andMethodTypeNotLike(String value) {
-            addCriterion("method_type not like", value, "methodType");
-            return (Criteria) this;
-        }
-
-        public Criteria andMethodTypeIn(List<String> values) {
+        public Criteria andMethodTypeIn(List<Integer> values) {
             addCriterion("method_type in", values, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeNotIn(List<String> values) {
+        public Criteria andMethodTypeNotIn(List<Integer> values) {
             addCriterion("method_type not in", values, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeBetween(String value1, String value2) {
+        public Criteria andMethodTypeBetween(Integer value1, Integer value2) {
             addCriterion("method_type between", value1, value2, "methodType");
             return (Criteria) this;
         }
 
-        public Criteria andMethodTypeNotBetween(String value1, String value2) {
+        public Criteria andMethodTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("method_type not between", value1, value2, "methodType");
             return (Criteria) this;
         }

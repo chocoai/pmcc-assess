@@ -17,7 +17,6 @@ import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
 import com.copower.pmcc.assess.service.BaseReportService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -88,8 +87,6 @@ public class CsrBorrowerService {
     private BaseReportService baseReportService;
     @Autowired
     private CsrBorrowerMortgageService csrBorrowerMortgageService;
-    @Autowired
-    private FormConfigureService formConfigureService;
 
     public BootstrapTableVo borrowerLists(String secondLevelBranch, String firstLevelBranch, Integer csrProjectInfoID, Integer csrProjectInfoGroupID) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -456,7 +453,6 @@ public class CsrBorrowerService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         Map<String, Object> stringMap = null;
         final String tableName =  "tb_csr_borrower" ;
-        List<KeyValueDto>  keyValueDtos = formConfigureService.getFieldList(tableName);
         for (CsrBorrower csrBorrower:csrBorrowers){
             if (!ObjectUtils.isEmpty(csrBorrower)){
                 stringMap = new HashMap<>();

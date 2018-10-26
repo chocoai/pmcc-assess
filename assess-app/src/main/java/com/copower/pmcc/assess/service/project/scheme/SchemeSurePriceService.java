@@ -6,9 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -30,6 +28,8 @@ public class SchemeSurePriceService {
     @Autowired
     private SchemeSurePriceDao schemeSurePriceDao;
     @Autowired
+    private SchemeSurePriceItemDao schemeSurePriceItemDao;
+    @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
     private DeclareRecordDao declareRecordDao;
@@ -47,36 +47,74 @@ public class SchemeSurePriceService {
     private MdDevelopmentDao mdDevelopmentDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SchemeJudgeFunctionDao schemeJudgeFunctionDao;
+
+    /**
+     * 保存确定单价信息
+     *
+     * @param schemeSurePrice
+     */
+    public void saveSchemeSurePrice(SchemeSurePrice schemeSurePrice) {
+        if (schemeSurePrice.getId() == null || schemeSurePrice.getId() == 0) {
+            schemeSurePrice.setCreator(commonService.thisUserAccount());
+            schemeSurePriceDao.addSurePrice(schemeSurePrice);
+        } else {
+            schemeSurePriceDao.updateSurePrice(schemeSurePrice);
+        }
+    }
+
+    /**
+     * 获取数据by planDetailsId
+     * @param planDetailsId
+     * @return
+     */
+    public SchemeSurePrice getSurePriceByPlanDetailsId(Integer planDetailsId){
+        SchemeSurePrice where =new SchemeSurePrice();
+        where.setPlanDetailsId(planDetailsId);
+        return schemeSurePriceDao.getSchemeSurePrice(where);
+    }
 
 
     /**
-     * 获取委估对象单价确定信息
+     * 获取单价确定明细数据
      *
      * @param judgeObjectId
      * @return
      */
-    public List<SchemeSurePrice> getSchemeSurePriceList(Integer judgeObjectId) {
-        SchemeSurePrice where = new SchemeSurePrice();
+    @Transactional
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId,boolean isUpdatePrice) {
+        SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
-        List<SchemeSurePrice> surePriceList = schemeSurePriceDao.getSurePriceList(where);
-        if (CollectionUtils.isNotEmpty(surePriceList)) return surePriceList;
+        List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
+        if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
+            if(isUpdatePrice){
+                for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
+                    schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
+                    schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
+                }
+            }else{
+                return surePriceItemList;
+            }
 
-        SchemeInfo schemeInfoWhere = new SchemeInfo();
-        schemeInfoWhere.setJudgeObjectId(judgeObjectId);
-        List<SchemeInfo> infoList = schemeInfoDao.getInfoList(schemeInfoWhere);
-        if (CollectionUtils.isNotEmpty(infoList)) {
-            for (SchemeInfo schemeInfo : infoList) {
-                if (StringUtils.isEmpty(schemeInfo.getMethodType())) continue;
-                SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
-                schemeSurePrice.setJudgeObjectId(judgeObjectId);
-                schemeSurePrice.setMethodName(getMethodName(schemeInfo.getMethodType()));
-                schemeSurePrice.setTrialPrice(getPrice(schemeInfo.getMethodType(), schemeInfo.getMethodDataId()));
-                schemeSurePrice.setProjectId(schemeInfo.getProjectId());
-                schemeSurePrice.setCreator(commonService.thisUserAccount());
-                schemeSurePriceDao.addSurePrice(schemeSurePrice);
+        } else {//初始化数据
+            SchemeJudgeFunction functionWhere = new SchemeJudgeFunction();
+            functionWhere.setBisApplicable(true);
+            functionWhere.setJudgeObjectId(judgeObjectId);
+            List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionDao.getSchemeJudgeFunction(functionWhere);
+            if (CollectionUtils.isNotEmpty(judgeFunctions)) {
+                for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
+                    SchemeSurePriceItem schemeSurePriceItem = new SchemeSurePriceItem();
+                    schemeSurePriceItem.setJudgeObjectId(judgeObjectId);
+                    schemeSurePriceItem.setMethodType(judgeFunction.getMethodType());
+                    schemeSurePriceItem.setMethodName(baseDataDicService.getNameById(judgeFunction.getMethodType()));
+                    schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, judgeFunction.getMethodType()));
+                    schemeSurePriceItem.setCreator(commonService.thisUserAccount());
+                    schemeSurePriceItemDao.addSurePriceItem(schemeSurePriceItem);
+                }
             }
         }
-        return schemeSurePriceDao.getSurePriceList(where);
+        return schemeSurePriceItemDao.getSurePriceItemList(where);
     }
 
     /**
@@ -93,16 +131,22 @@ public class SchemeSurePriceService {
     }
 
     /**
-     * 获取方法测试价格
+     * 获取方法测算价格
      *
      * @param methodType
-     * @param methodDataId
+     * @param judgeObjectId
      * @return
      */
-    private BigDecimal getPrice(String methodType, Integer methodDataId) {
-        if (StringUtils.isEmpty(methodType)) return null;
-        BigDecimal price = new BigDecimal("0");
-        switch (methodType) {
+    private BigDecimal getPrice(Integer judgeObjectId, Integer methodType) {
+        SchemeInfo where = new SchemeInfo();
+        where.setJudgeObjectId(judgeObjectId);
+        where.setMethodType(methodType);
+        SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(where);
+        if (schemeInfo == null) return null;
+        Integer methodDataId = schemeInfo.getMethodDataId();
+        String methTypeKey = baseDataDicService.getDataDicById(methodType).getFieldName();
+        BigDecimal price = null;
+        switch (methTypeKey) {
             case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
                 MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(methodDataId);
                 if (marketCompare != null)
@@ -118,7 +162,7 @@ public class SchemeSurePriceService {
                 if (mdCost != null)
                     price = mdCost.getPrice();
                 break;
-            case AssessDataDicKeyConstant.MD_HYPOTHESIS:
+            case AssessDataDicKeyConstant.MD_DEVELOPMENT:
                 MdDevelopment mdDevelopment = mdDevelopmentDao.getMdDevelopmentById(methodDataId);
                 if (mdDevelopment != null)
                     price = mdDevelopment.getPrice();
@@ -133,11 +177,28 @@ public class SchemeSurePriceService {
      * @param schemeSurePriceApplyDto
      */
     @Transactional
-    public void saveSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto) {
-        List<SchemeSurePrice> priceList = schemeSurePriceApplyDto.getSurePriceList();
-        if (CollectionUtils.isNotEmpty(priceList)) {
-            for (SchemeSurePrice schemeSurePrice : priceList) {
-                schemeSurePriceDao.updateSurePrice(schemeSurePrice);
+    public void saveSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto,ProjectPlanDetails projectPlanDetails,String processInsId) {
+        if (schemeSurePriceApplyDto.getId() == null || schemeSurePriceApplyDto.getId() <= 0) {
+            SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
+            schemeSurePrice.setProjectId(projectPlanDetails.getProjectId());
+            schemeSurePrice.setJudgeObjectId(schemeSurePriceApplyDto.getJudgeObjectId());
+            schemeSurePrice.setPlanDetailsId(projectPlanDetails.getId());
+            schemeSurePrice.setProcessInsId(processInsId);
+            schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
+            schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
+            schemeSurePrice.setCreator(commonService.thisUserAccount());
+            schemeSurePriceDao.addSurePrice(schemeSurePrice);
+        } else {
+            SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
+            schemeSurePrice.setId(schemeSurePriceApplyDto.getId());
+            schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
+            schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
+            schemeSurePriceDao.updateSurePrice(schemeSurePrice);
+        }
+        List<SchemeSurePriceItem> surePriceItems = schemeSurePriceApplyDto.getSurePriceItemList();
+        if (CollectionUtils.isNotEmpty(surePriceItems)) {
+            for (SchemeSurePriceItem surePriceItem : surePriceItems) {
+                schemeSurePriceItemDao.updateSurePriceItem(surePriceItem);
             }
         }
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(schemeSurePriceApplyDto.getJudgeObjectId());
@@ -156,6 +217,7 @@ public class SchemeSurePriceService {
                     judgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
                     schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
 
+                    //同步更新申报记录单价
                     DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(judgeObject.getDeclareRecordId());
                     declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
                     declareRecordDao.updateDeclareRecord(declareRecord);
