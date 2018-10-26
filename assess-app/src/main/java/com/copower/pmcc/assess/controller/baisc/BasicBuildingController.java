@@ -82,26 +82,4 @@ public class BasicBuildingController {
             return HttpResult.newErrorResult(500,e.getMessage());
         }
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "楼栋 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String identifier, Integer maxRows,Integer estateId){
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        BasicBuilding basicBuilding = new BasicBuilding();
-        basicBuilding.setIdentifier(identifier);
-        basicBuilding.setEstateId(estateId);
-        try {
-            List<BasicBuilding> list = basicBuildingService.autoComplete(basicBuilding);
-            for (BasicBuilding oo:list){
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(oo.getId()));
-                keyValueDto.setValue(String.valueOf(oo.getIdentifier()));
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
-        }
-    }
 }

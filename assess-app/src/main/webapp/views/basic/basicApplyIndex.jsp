@@ -181,10 +181,7 @@
                                     booth letterpress, commodo enim craft beer mlkshk aliquip</p>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
-                                <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
-                                    squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes
-                                    anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                                    booth letterpress, commodo enim craft beer mlkshk </p>
+                                <%@include file="/views/basic/modelView/unitView.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                                 <p>
@@ -309,6 +306,7 @@
                         },
                         success: function (result) {
                             if (result.ret) {
+                                console.info(result);
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,

@@ -219,11 +219,11 @@ public class CaseEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        KeyValueDto keyValueDto = new KeyValueDto();
         try {
             List<CaseEstate> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
-            if (!ObjectUtils.isEmpty(caseEstateList)){
+            if (!ObjectUtils.isEmpty(caseEstateList)) {
                 for (CaseEstate caseEstate : caseEstateList) {
+                    KeyValueDto keyValueDto = new KeyValueDto();
                     keyValueDto.setKey(String.valueOf(caseEstate.getId()));
                     keyValueDto.setValue(caseEstate.getName());
                     keyValueDtos.add(keyValueDto);

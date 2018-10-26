@@ -3,8 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicBuildingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="case_building_id" property="caseBuildingId" jdbcType="INTEGER" />
+    <result column="basic_building_main_id" property="basicBuildingMainId" jdbcType="INTEGER" />
     <result column="builder_id" property="builderId" jdbcType="INTEGER" />
     <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
@@ -30,7 +30,6 @@
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
     <result column="building_structure_pid" property="buildingStructurePid" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
-    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -96,12 +95,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, estate_id, builder_id, property_Id, building_number, building_name, 
-    property_type, floor_count, unit_interval, property_fee, facilities_use_fee, floor_start, 
-    floor_end, building_height, building_area, cover_an_area, building_category, open_time, 
-    room_time, floor_height, diameter_depth, land_use_year, location, net_height, building_structure, 
-    building_structure_pid, json_content, identifier, version, creator, name, gmt_created, 
-    gmt_modified
+    id, case_building_id, basic_building_main_id, builder_id, property_Id, building_number, 
+    building_name, property_type, floor_count, unit_interval, property_fee, facilities_use_fee, 
+    floor_start, floor_end, building_height, building_area, cover_an_area, building_category, 
+    open_time, room_time, floor_height, diameter_depth, land_use_year, location, net_height, 
+    building_structure, building_structure_pid, json_content, version, creator, name, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingExample" >
     select
@@ -137,30 +136,30 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building (apply_id, estate_id, builder_id, 
-      property_Id, building_number, building_name, 
-      property_type, floor_count, unit_interval, 
-      property_fee, facilities_use_fee, floor_start, 
-      floor_end, building_height, building_area, 
-      cover_an_area, building_category, open_time, 
-      room_time, floor_height, diameter_depth, 
-      land_use_year, location, net_height, 
-      building_structure, building_structure_pid, 
-      json_content, identifier, version, 
-      creator, name, gmt_created, 
-      gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, 
-      #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
-      #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, 
-      #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, 
-      #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, 
-      #{buildingStructure,jdbcType=INTEGER}, #{buildingStructurePid,jdbcType=INTEGER}, 
-      #{jsonContent,jdbcType=CHAR}, #{identifier,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_building (case_building_id, basic_building_main_id, 
+      builder_id, property_Id, building_number, 
+      building_name, property_type, floor_count, 
+      unit_interval, property_fee, facilities_use_fee, 
+      floor_start, floor_end, building_height, 
+      building_area, cover_an_area, building_category, 
+      open_time, room_time, floor_height, 
+      diameter_depth, land_use_year, location, 
+      net_height, building_structure, building_structure_pid, 
+      json_content, version, creator, 
+      name, gmt_created, gmt_modified
+      )
+    values (#{caseBuildingId,jdbcType=INTEGER}, #{basicBuildingMainId,jdbcType=INTEGER}, 
+      #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, 
+      #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
+      #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, 
+      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
+      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructurePid,jdbcType=INTEGER}, 
+      #{jsonContent,jdbcType=CHAR}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -168,11 +167,11 @@
     </selectKey>
     insert into tb_basic_building
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
-        apply_id,
+      <if test="caseBuildingId != null" >
+        case_building_id,
       </if>
-      <if test="estateId != null" >
-        estate_id,
+      <if test="basicBuildingMainId != null" >
+        basic_building_main_id,
       </if>
       <if test="builderId != null" >
         builder_id,
@@ -249,9 +248,6 @@
       <if test="jsonContent != null" >
         json_content,
       </if>
-      <if test="identifier != null" >
-        identifier,
-      </if>
       <if test="version != null" >
         version,
       </if>
@@ -269,11 +265,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
-        #{applyId,jdbcType=INTEGER},
+      <if test="caseBuildingId != null" >
+        #{caseBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
+      <if test="basicBuildingMainId != null" >
+        #{basicBuildingMainId,jdbcType=INTEGER},
       </if>
       <if test="builderId != null" >
         #{builderId,jdbcType=INTEGER},
@@ -350,9 +346,6 @@
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
       </if>
-      <if test="identifier != null" >
-        #{identifier,jdbcType=VARCHAR},
-      </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
       </if>
@@ -382,11 +375,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.applyId != null" >
-        apply_id = #{record.applyId,jdbcType=INTEGER},
+      <if test="record.caseBuildingId != null" >
+        case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
+      <if test="record.basicBuildingMainId != null" >
+        basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
       </if>
       <if test="record.builderId != null" >
         builder_id = #{record.builderId,jdbcType=INTEGER},
@@ -463,9 +456,6 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
-      <if test="record.identifier != null" >
-        identifier = #{record.identifier,jdbcType=VARCHAR},
-      </if>
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
@@ -489,8 +479,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_building
     set id = #{record.id,jdbcType=INTEGER},
-      apply_id = #{record.applyId,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
+      case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
+      basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
       builder_id = #{record.builderId,jdbcType=INTEGER},
       property_Id = #{record.propertyId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
@@ -516,7 +506,6 @@
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
-      identifier = #{record.identifier,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -529,11 +518,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     update tb_basic_building
     <set >
-      <if test="applyId != null" >
-        apply_id = #{applyId,jdbcType=INTEGER},
+      <if test="caseBuildingId != null" >
+        case_building_id = #{caseBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
+      <if test="basicBuildingMainId != null" >
+        basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
       </if>
       <if test="builderId != null" >
         builder_id = #{builderId,jdbcType=INTEGER},
@@ -610,9 +599,6 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
-      <if test="identifier != null" >
-        identifier = #{identifier,jdbcType=VARCHAR},
-      </if>
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
       </if>
@@ -633,8 +619,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     update tb_basic_building
-    set apply_id = #{applyId,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set case_building_id = #{caseBuildingId,jdbcType=INTEGER},
+      basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
       builder_id = #{builderId,jdbcType=INTEGER},
       property_Id = #{propertyId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
@@ -660,7 +646,6 @@
       building_structure = #{buildingStructure,jdbcType=INTEGER},
       building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
-      identifier = #{identifier,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

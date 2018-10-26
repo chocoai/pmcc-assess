@@ -46,6 +46,25 @@ public class BasicBuildingService {
         return basicBuildingDao.getBasicBuildingById(id);
     }
 
+    public boolean update(BasicBuilding basicBuilding)throws Exception{
+        return basicBuildingDao.updateBasicBuilding(basicBuilding);
+    }
+
+    public Integer upgradeVersion(BasicBuilding basicBuilding)throws Exception{
+        if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
+            basicBuilding.setCreator(commonService.thisUserAccount());
+            if (basicBuilding.getVersion() == null) {
+                basicBuilding.setVersion(0);
+            }
+            return basicBuildingDao.saveBasicBuilding(basicBuilding);
+        } else {
+            BasicBuilding oo = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
+            basicBuilding.setVersion(oo.getVersion() + 1);
+            basicBuildingDao.updateBasicBuilding(basicBuilding);
+            return null;
+        }
+    }
+
     /**
      * 新增或者修改
      *
@@ -56,13 +75,8 @@ public class BasicBuildingService {
     public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) throws Exception {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
-            if (basicBuilding.getVersion() == null) {
-                basicBuilding.setVersion(0);
-            }
             return basicBuildingDao.saveBasicBuilding(basicBuilding);
         } else {
-            BasicBuilding oo = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
-            basicBuilding.setVersion(oo.getVersion() + 1);
             basicBuildingDao.updateBasicBuilding(basicBuilding);
             return null;
         }
@@ -88,18 +102,6 @@ public class BasicBuildingService {
      */
     public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding) throws Exception {
         return basicBuildingDao.basicBuildingList(basicBuilding);
-    }
-
-    public List<BasicBuilding> autoComplete(BasicBuilding basicBuilding) throws Exception {
-        List<BasicBuilding> basicBuildingList = basicBuildingDao.autoComplete(basicBuilding);
-        Ordering<BasicBuilding> ordering = Ordering.from(new Comparator<BasicBuilding>() {
-            @Override
-            public int compare(BasicBuilding o1, BasicBuilding o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(basicBuildingList, ordering);
-        return basicBuildingDao.autoComplete(basicBuilding);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {

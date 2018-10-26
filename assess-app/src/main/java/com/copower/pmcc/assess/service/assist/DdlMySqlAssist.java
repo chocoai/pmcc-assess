@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.service.assist;
 
+import com.copower.pmcc.assess.dal.basic.custom.mapper.CustomBasicDdlTableMapper;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomDdlTable;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +22,13 @@ import java.util.Map;
 public class DdlMySqlAssist {
     @Autowired
     private CustomDdlTableMapper customDdlTableMapper;
+    @Autowired
+    private CustomBasicDdlTableMapper customBasicDdlTableMapper;
+
+    @Deprecated
+    public void insertBasicEstate(BasicEstate basicEstate)throws SQLException{
+        customBasicDdlTableMapper.insertBasicEstate(basicEstate);
+    }
 
     public void customTableDdl(String sql) {
         customDdlTableMapper.customTableDdl(sql);

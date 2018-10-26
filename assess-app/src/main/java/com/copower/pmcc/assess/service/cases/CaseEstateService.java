@@ -62,14 +62,14 @@ public class CaseEstateService {
     private CaseMatchingEducationService caseMatchingEducationService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate){
+    public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate) {
         List<CaseEstateVo> vos = Lists.newArrayList();
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(),caseEstate.getProvince(),caseEstate.getCity(),caseEstate.getDistrict());
-        if (!ObjectUtils.isEmpty(caseEstateList)){
-            for (CaseEstate oo:caseEstateList){
+        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
+        if (!ObjectUtils.isEmpty(caseEstateList)) {
+            for (CaseEstate oo : caseEstateList) {
                 vos.add(getCaseEstateVo(oo));
             }
         }
@@ -89,7 +89,6 @@ public class CaseEstateService {
     }
 
     /**
-     *
      * 功能描述: 初始化子类
      *
      * @param:
@@ -97,7 +96,7 @@ public class CaseEstateService {
      * @auther: zch
      * @date: 2018/9/17 15:12
      */
-    public void initAndUpdateSon(Integer id){
+    public void initAndUpdateSon(Integer id) {
         CaseEstateParking estateParking = new CaseEstateParking();
         estateParking.setEstateId(0);
         CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
@@ -116,7 +115,7 @@ public class CaseEstateService {
         caseMatchingFinance.setEstateId(0);
         CaseMatchingEnvironment caseMatchingEnvironment = new CaseMatchingEnvironment();
         caseMatchingEnvironment.setEstateId(0);
-        CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation() ;
+        CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation();
         caseMatchingEducation.setEstateId(0);
         List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
         List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
@@ -128,114 +127,114 @@ public class CaseEstateService {
         List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
         List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
         List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
-        if (id==null){//初始化
-            if (!ObjectUtils.isEmpty(caseEstateParkings)){
-                for (CaseEstateParking caseEstateParking:caseEstateParkings){
+        if (id == null) {//初始化
+            if (!ObjectUtils.isEmpty(caseEstateParkings)) {
+                for (CaseEstateParking caseEstateParking : caseEstateParkings) {
                     caseEstateParkingService.deleteEstateParking(caseEstateParking.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateNetworks)){
-                for (CaseEstateNetwork caseEstateNetwork1:caseEstateNetworks){
+            if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
+                for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
                     caseEstateNetworkService.deleteEstateNetwork(caseEstateNetwork1.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateSupplies)){
-                for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
+            if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
+                for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
                     caseEstateSupplyService.deleteCaseEstateSupply(caseEstateSupply1.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingTraffics)){
-                for (CaseMatchingTraffic oo :caseMatchingTraffics){
+            if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
+                for (CaseMatchingTraffic oo : caseMatchingTraffics) {
                     caseMatchingTrafficService.deleteMatchingTraffic(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingMedicals)){
-                for (CaseMatchingMedical oo :caseMatchingMedicals){
+            if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
+                for (CaseMatchingMedical oo : caseMatchingMedicals) {
                     caseMatchingMedicalService.deleteCaseMatchingMedical(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingMaterials)){
-                for (CaseMatchingMaterial oo :caseMatchingMaterials){
+            if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
+                for (CaseMatchingMaterial oo : caseMatchingMaterials) {
                     caseMatchingMaterialService.deleteCaseMatchingMaterial(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)){
-                for (CaseMatchingLeisurePlace oo :caseMatchingLeisurePlaces){
+            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
+                for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
                     caseMatchingLeisurePlaceService.deleteCaseMatchingLeisurePlace(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingFinances)){
-                for (CaseMatchingFinance oo :caseMatchingFinances){
+            if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
+                for (CaseMatchingFinance oo : caseMatchingFinances) {
                     caseMatchingFinanceService.deleteCaseMatchingFinance(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)){
-                for (CaseMatchingEnvironment oo :caseMatchingEnvironments){
+            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
+                for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
                     caseMatchingEnvironmentService.deleteCaseMatchingEnvironment(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingEducations)){
-                for (CaseMatchingEducation oo :caseMatchingEducations){
+            if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
+                for (CaseMatchingEducation oo : caseMatchingEducations) {
                     caseMatchingEducationService.deleteCaseMatchingEducation(oo.getId());
                 }
             }
-        }else {//修改子类
-            if (!ObjectUtils.isEmpty(caseEstateParkings)){
-                for (CaseEstateParking caseEstateParking:caseEstateParkings){
+        } else {//修改子类
+            if (!ObjectUtils.isEmpty(caseEstateParkings)) {
+                for (CaseEstateParking caseEstateParking : caseEstateParkings) {
                     caseEstateParking.setEstateId(id);
                     caseEstateParkingService.updateEstateParking(caseEstateParking);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateNetworks)){
-                for (CaseEstateNetwork caseEstateNetwork1:caseEstateNetworks){
+            if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
+                for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
                     caseEstateNetwork1.setEstateId(id);
                     caseEstateNetworkService.updateEstateNetwork(caseEstateNetwork1);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateSupplies)){
-                for (CaseEstateSupply caseEstateSupply1:caseEstateSupplies){
+            if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
+                for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
                     caseEstateSupply1.setEstateId(id);
                     caseEstateSupplyService.updateCaseEstateSupply(caseEstateSupply1);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingTraffics)){
-                for (CaseMatchingTraffic oo :caseMatchingTraffics){
+            if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
+                for (CaseMatchingTraffic oo : caseMatchingTraffics) {
                     oo.setEstateId(id);
                     caseMatchingTrafficService.updateMatchingTraffic(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingMedicals)){
-                for (CaseMatchingMedical oo :caseMatchingMedicals){
+            if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
+                for (CaseMatchingMedical oo : caseMatchingMedicals) {
                     oo.setEstateId(id);
                     caseMatchingMedicalService.updateCaseMatchingMedical(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingMaterials)){
-                for (CaseMatchingMaterial oo :caseMatchingMaterials){
+            if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
+                for (CaseMatchingMaterial oo : caseMatchingMaterials) {
                     oo.setEstateId(id);
                     caseMatchingMaterialService.updateCaseMatchingMaterial(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)){
-                for (CaseMatchingLeisurePlace oo :caseMatchingLeisurePlaces){
+            if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
+                for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
                     oo.setEstateId(id);
                     caseMatchingLeisurePlaceService.updateCaseMatchingLeisurePlace(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingFinances)){
-                for (CaseMatchingFinance oo :caseMatchingFinances){
+            if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
+                for (CaseMatchingFinance oo : caseMatchingFinances) {
                     oo.setEstateId(id);
                     caseMatchingFinanceService.updateCaseMatchingFinance(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)){
-                for (CaseMatchingEnvironment oo :caseMatchingEnvironments){
+            if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
+                for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
                     oo.setEstateId(id);
                     caseMatchingEnvironmentService.updateCaseMatchingEnvironment(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseMatchingEducations)){
-                for (CaseMatchingEducation oo :caseMatchingEducations){
+            if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
+                for (CaseMatchingEducation oo : caseMatchingEducations) {
                     oo.setEstateId(id);
                     caseMatchingEducationService.updateCaseMatchingEducation(oo);
                 }
@@ -247,8 +246,21 @@ public class CaseEstateService {
     public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
+            int id = caseEstateDao.addEstate(caseEstate);
+            this.initAndUpdateSon(id);
+            return id;
+        } else {
+            this.initAndUpdateSon(caseEstate.getId());
+            caseEstateDao.updateEstate(caseEstate);
+            return null;
+        }
+    }
+
+    public Integer upgradeVersion(CaseEstate caseEstate) {
+        if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
+            caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
-            int id = caseEstateDao.addEstate(caseEstate) ;
+            int id = caseEstateDao.addEstate(caseEstate);
             this.initAndUpdateSon(id);
             return id;
         } else {
@@ -259,12 +271,13 @@ public class CaseEstateService {
                     oo.setVersion(0);
                 }
             }
-            oo.setVersion(oo.getVersion()+1);
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstate,oo);
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstate, oo);
+            oo.setVersion(version);
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            int id = caseEstateDao.addEstate(oo) ;
+            int id = caseEstateDao.addEstate(oo);
             this.initAndUpdateSon(id);
             return id;
         }
@@ -274,16 +287,16 @@ public class CaseEstateService {
         return caseEstateDao.deleteEstate(id);
     }
 
-    public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows){
+    public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
         List<CaseEstate> caseEstates = Lists.newArrayList();
-        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name,null,null,null);
+        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name, null, null, null);
         Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
             @Override
             public int compare(CaseEstate o1, CaseEstate o2) {
                 return o1.getId().compareTo(o2.getId());
             }
         }).reverse();
-        Collections.sort(caseEstateList,ordering);
+        Collections.sort(caseEstateList, ordering);
         if (!ObjectUtils.isEmpty(caseEstateList)) {
             for (int i = 0; i < maxRows; i++) {
                 if (i < caseEstateList.size()) {
@@ -294,13 +307,13 @@ public class CaseEstateService {
         return caseEstates;
     }
 
-    public CaseEstateVo getCaseEstateVo(CaseEstate caseEstate){
+    public CaseEstateVo getCaseEstateVo(CaseEstate caseEstate) {
         CaseEstateVo vo = new CaseEstateVo();
         //获取格式化对象
         NumberFormat nt = NumberFormat.getPercentInstance();
         //设置百分数精确度2即保留两位小数
         nt.setMinimumFractionDigits(2);
-        BeanUtils.copyProperties(caseEstate,vo);
+        BeanUtils.copyProperties(caseEstate, vo);
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getProvince())) {
             //省
             vo.setProvinceName(erpAreaService.getSysAreaName(caseEstate.getProvince()));
@@ -313,13 +326,13 @@ public class CaseEstateService {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getVolumetricRate())){
-            if (NumberUtils.isNumber(caseEstate.getVolumetricRate())){
+        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getVolumetricRate())) {
+            if (NumberUtils.isNumber(caseEstate.getVolumetricRate())) {
                 vo.setVolumetricRateName(nt.format(Double.parseDouble(caseEstate.getVolumetricRate())));
             }
         }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getGreeningRate())){
-            if (NumberUtils.isNumber(caseEstate.getGreeningRate())){
+        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getGreeningRate())) {
+            if (NumberUtils.isNumber(caseEstate.getGreeningRate())) {
                 vo.setGreeningRateName(nt.format(Double.parseDouble(caseEstate.getGreeningRate())));
             }
         }

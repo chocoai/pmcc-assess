@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basic.custom.mapper.CustomBasicDdlTableMapper">
+
+
+    <insert id="insertBasicEstate" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstate">
+      INSERT INTO tb_basic_estate
+            (id, apply_id, province, city,
+            district, block_id, developer_id,
+            name, street, number,
+            land_level, attach_number, floor_area,
+            cover_an_area, volumetric_rate, greening_rate,
+            building_number, position, description,
+            average_price, price_range, version,
+            creator, gmt_created, gmt_modified)
+            values (
+            #{id,jdbcType=INTEGER},
+            #{applyId,jdbcType=INTEGER},
+            #{province,jdbcType=VARCHAR},
+            #{city,jdbcType=VARCHAR},
+            #{district,jdbcType=VARCHAR},
+            #{blockId,jdbcType=INTEGER},
+            #{developerId,jdbcType=INTEGER},
+            #{name,jdbcType=VARCHAR},
+            #{street,jdbcType=VARCHAR},
+            #{number,jdbcType=VARCHAR},
+            #{landLevel,jdbcType=INTEGER},
+            #{attachNumber,jdbcType=VARCHAR},
+            #{floorArea,jdbcType=DECIMAL},
+            #{coverAnArea,jdbcType=DECIMAL},
+            #{volumetricRate,jdbcType=VARCHAR},
+            #{greeningRate,jdbcType=VARCHAR},
+            #{buildingNumber,jdbcType=INTEGER},
+            #{position,jdbcType=VARCHAR},
+            #{description,jdbcType=VARCHAR},
+            #{averagePrice,jdbcType=VARCHAR},
+            #{priceRange,jdbcType=VARCHAR},
+            #{version,jdbcType=INTEGER},
+            #{creator,jdbcType=VARCHAR},
+            #{gmtCreated,jdbcType=TIMESTAMP},
+            #{gmtModified,jdbcType=TIMESTAMP} )
+    </insert>
+
+
+</mapper>
+

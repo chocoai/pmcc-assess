@@ -154,7 +154,22 @@ public class CaseBuildingService {
         return caseBuildingList;
     }
 
-    public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
+    public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding){
+        Integer id = null;
+        if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
+            caseBuilding.setCreator(commonService.thisUserAccount());
+            id = caseBuildingDao.addBuilding(caseBuilding);
+            this.initAndUpdateSon(id);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
+            return id;
+        }else {
+            caseBuildingDao.updateBuilding(caseBuilding);
+            return null;
+        }
+    }
+
+    public Integer upgradeVersion(CaseBuilding caseBuilding) {
         Integer id = null;
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
@@ -172,12 +187,14 @@ public class CaseBuildingService {
                     oo.setVersion(0);
                 }
             }
-            oo.setVersion(oo.getVersion() + 1);
+            int version = oo.getVersion() + 1;
             BeanCopyHelp.copyPropertiesIgnoreNull(caseBuilding,oo);
+            oo.setVersion(version);
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             id = caseBuildingDao.addBuilding(caseBuilding);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             this.initAndUpdateSon(id);
             return id;
         }

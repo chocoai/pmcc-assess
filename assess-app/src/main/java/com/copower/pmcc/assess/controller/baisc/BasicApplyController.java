@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -30,6 +33,8 @@ public class BasicApplyController {
     private ErpRpcDepartmentService erpRpcDepartmentService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
@@ -59,16 +64,53 @@ public class BasicApplyController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/basicApplyApproval", name = "案例基础数据 审批页面")
+    @RequestMapping(value = "/basicApplyApproval", name = "案例基础数据 审批页面",method = RequestMethod.GET)
     public ModelAndView basicApplyApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
+        try {
+            this.setViewParam(processInsId,modelAndView);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+        }
         return modelAndView;
     }
 
-    @RequestMapping(value = "/basicApplyDetails", name = "案例基础数据 详情页面")
+
+    @RequestMapping(value = "/basicApplyDetails", name = "案例基础数据 详情页面",method = RequestMethod.GET)
     public ModelAndView basicApplyDetails(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyDetails", processInsId, boxId, taskId, agentUserAccount);
+        try {
+            this.setViewParam(processInsId,modelAndView);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+        }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectApprovalSubmit", name = "审批页面 提交")
+    public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto){
+        try {
+            publicBasicService.approvalAndWrite(approvalModelDto);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+            return HttpResult.newErrorResult(e1);
+        }
+    }
+
+    /**
+     * 设置参数
+     * @param processInsId
+     * @param modelAndView
+     * @throws Exception
+     */
+    private void setViewParam(String processInsId,ModelAndView modelAndView)throws Exception{
+        modelAndView.addObject("processInsId",processInsId);
+        BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
+        if (basicApply != null){
+            modelAndView.addObject("basicApply",basicApply);
+            modelAndView.addObject("basicEstate",publicBasicService.getByAppIdBasicEstate(basicApply.getId()));
+        }
     }
 
 

@@ -6,6 +6,8 @@ import java.util.Date;
 public class BasicEstate {
     private Integer id;
 
+    private Integer caseEstateId;
+
     private Integer applyId;
 
     private String province;
@@ -60,6 +62,14 @@ public class BasicEstate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseEstateId() {
+        return caseEstateId;
+    }
+
+    public void setCaseEstateId(Integer caseEstateId) {
+        this.caseEstateId = caseEstateId;
     }
 
     public Integer getApplyId() {

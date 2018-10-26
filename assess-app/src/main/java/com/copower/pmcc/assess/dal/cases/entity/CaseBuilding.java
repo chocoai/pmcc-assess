@@ -6,6 +6,8 @@ import java.util.Date;
 public class CaseBuilding {
     private Integer id;
 
+    private Integer caseBuildingMainId;
+
     private Integer estateId;
 
     private Integer builderId;
@@ -76,6 +78,14 @@ public class CaseBuilding {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseBuildingMainId() {
+        return caseBuildingMainId;
+    }
+
+    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
+        this.caseBuildingMainId = caseBuildingMainId;
     }
 
     public Integer getEstateId() {

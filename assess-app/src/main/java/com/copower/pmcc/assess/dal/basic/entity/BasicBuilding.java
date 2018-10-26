@@ -6,9 +6,9 @@ import java.util.Date;
 public class BasicBuilding {
     private Integer id;
 
-    private Integer applyId;
+    private Integer caseBuildingId;
 
-    private Integer estateId;
+    private Integer basicBuildingMainId;
 
     private Integer builderId;
 
@@ -60,8 +60,6 @@ public class BasicBuilding {
 
     private String jsonContent;
 
-    private String identifier;
-
     private Integer version;
 
     private String creator;
@@ -80,20 +78,20 @@ public class BasicBuilding {
         this.id = id;
     }
 
-    public Integer getApplyId() {
-        return applyId;
+    public Integer getCaseBuildingId() {
+        return caseBuildingId;
     }
 
-    public void setApplyId(Integer applyId) {
-        this.applyId = applyId;
+    public void setCaseBuildingId(Integer caseBuildingId) {
+        this.caseBuildingId = caseBuildingId;
     }
 
-    public Integer getEstateId() {
-        return estateId;
+    public Integer getBasicBuildingMainId() {
+        return basicBuildingMainId;
     }
 
-    public void setEstateId(Integer estateId) {
-        this.estateId = estateId;
+    public void setBasicBuildingMainId(Integer basicBuildingMainId) {
+        this.basicBuildingMainId = basicBuildingMainId;
     }
 
     public Integer getBuilderId() {
@@ -294,14 +292,6 @@ public class BasicBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier == null ? null : identifier.trim();
     }
 
     public Integer getVersion() {

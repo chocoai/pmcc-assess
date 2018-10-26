@@ -45,16 +45,4 @@ public class BasicBuildingDao {
         return basicBuildingMapper.selectByExample(example);
     }
 
-    public List<BasicBuilding> autoComplete(BasicBuilding basicBuilding)throws SQLException{
-        BasicBuildingExample example = new BasicBuildingExample();
-        BasicBuildingExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-        if (StringUtils.isNotBlank(basicBuilding.getIdentifier())){
-            criteria.andIdentifierLike(new StringBuilder("%").append(basicBuilding.getIdentifier()).append("%").toString());
-        }
-        if (basicBuilding.getEstateId() != null){
-            criteria.andEstateIdEqualTo(basicBuilding.getEstateId());
-        }
-        return basicBuildingMapper.selectByExample(example);
-    }
 }
