@@ -1,13 +1,10 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataDeclareFormDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BaseForm;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeclareForm;
 import com.copower.pmcc.assess.dto.output.data.DataDeclareFormVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -15,7 +12,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,8 +34,6 @@ public class DataDeclareFormService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseFormService baseFormService;
 
     /**
      * 获取数据列表
@@ -67,29 +61,8 @@ public class DataDeclareFormService {
                 if (baseDataDic != null)
                     dataDeclareFormVo.setAssessClassName(baseDataDic.getName());
             }
-            if (p.getFormId() != null) {
-                BaseForm baseForm = baseFormService.getBaseForm(p.getFormId());
-                if (baseForm != null)
-                    dataDeclareFormVo.setFormIdName(baseForm.getCnName());
-            }
             return dataDeclareFormVo;
         });
-    }
-
-    /**
-     * 获取表单
-     *
-     * @param id
-     * @return
-     */
-    public DataDeclareForm getCacheDataDeclareForm(Integer id) {
-        String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DECLARE_FORM, String.valueOf(id));
-        try {
-            DataDeclareForm dataDeclareForm = LangUtils.singleCache(cacheKey, id, DataDeclareForm.class, p -> dataDeclareFormDao.getDataDeclareForm(p));
-            return dataDeclareForm;
-        } catch (Exception e) {
-            return dataDeclareFormDao.getDataDeclareForm(id);
-        }
     }
 
     /**

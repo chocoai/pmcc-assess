@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.service.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareUseClassifyDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareUseClassify;
 import com.copower.pmcc.assess.dto.output.base.BaseFormModuleVo;
-import com.copower.pmcc.assess.service.base.BaseFormService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.base.FormConfigureService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -14,7 +14,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,17 +26,11 @@ public class DeclareInfoService {
     @Autowired
     private DeclareInfoDao declareInfoDao;
     @Autowired
-    private FormConfigureService formConfigureService;
-    @Autowired
     private CommonService commonService;
     @Autowired
     private DeclareUseClassifyDao declareUseClassifyDao;
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private BaseFormService baseFormService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 

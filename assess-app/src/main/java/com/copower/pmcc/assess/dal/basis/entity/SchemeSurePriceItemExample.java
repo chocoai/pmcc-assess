@@ -226,6 +226,66 @@ public class SchemeSurePriceItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andMethodTypeIsNull() {
+            addCriterion("method_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeIsNotNull() {
+            addCriterion("method_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeEqualTo(Integer value) {
+            addCriterion("method_type =", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotEqualTo(Integer value) {
+            addCriterion("method_type <>", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeGreaterThan(Integer value) {
+            addCriterion("method_type >", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("method_type >=", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeLessThan(Integer value) {
+            addCriterion("method_type <", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("method_type <=", value, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeIn(List<Integer> values) {
+            addCriterion("method_type in", values, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotIn(List<Integer> values) {
+            addCriterion("method_type not in", values, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeBetween(Integer value1, Integer value2) {
+            addCriterion("method_type between", value1, value2, "methodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("method_type not between", value1, value2, "methodType");
+            return (Criteria) this;
+        }
+
         public Criteria andMethodNameIsNull() {
             addCriterion("method_name is null");
             return (Criteria) this;

@@ -112,8 +112,6 @@ public class CsrProjectInfoService {
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     @Autowired
-    private DataCsrFieldRelationService dataCsrFieldRelationService;
-    @Autowired
     private CsrBorrowerDao csrBorrowerDao;
     @Autowired
     private CsrBorrowerMortgageDao csrBorrowerMortgageDao;
@@ -132,11 +130,11 @@ public class CsrProjectInfoService {
     @Autowired
     private BaseReportService baseReportService;
     @Autowired
-    private FormConfigureService formConfigureService;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DatabaseJdbcService databaseJdbcService;
 
     /**
      * 获取vo
@@ -712,7 +710,7 @@ public class CsrProjectInfoService {
                     for (String tableName : tableSet) {
                         switch (tableName) {
                             case AssessTableNameConstant.CSR_BORROWER:
-                                objectMap = formConfigureService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
+                                objectMap = databaseJdbcService.getObjectSingle(AssessTableNameConstant.CSR_BORROWER, integer);
                                 if (objectMap != null)
                                     map.put(tableName, objectMap);
                                 break;
@@ -730,7 +728,7 @@ public class CsrProjectInfoService {
                                 break;
                             case AssessTableNameConstant.CSR_PROJECT_INFO:
                                 sql = String.format("select * from %s where id=%s", tableName, csrProjectId);
-                                objectMap = formConfigureService.getObjectSingle(sql, new Object[0]);
+                                objectMap = databaseJdbcService.getObjectSingle(sql, new Object[0]);
                                 if (objectMap != null)
                                     map.put(tableName, objectMap);
                                 break;

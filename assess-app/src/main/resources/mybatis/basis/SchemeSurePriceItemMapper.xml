@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
+    <result column="method_type" property="methodType" jdbcType="INTEGER" />
     <result column="method_name" property="methodName" jdbcType="VARCHAR" />
     <result column="trial_price" property="trialPrice" jdbcType="DECIMAL" />
     <result column="weight" property="weight" jdbcType="DECIMAL" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, judge_object_id, method_name, trial_price, weight, error_rate, creator, gmt_created, 
-    gmt_modified
+    id, judge_object_id, method_type, method_name, trial_price, weight, error_rate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItemExample" >
     select
@@ -108,12 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_sure_price_item (judge_object_id, method_name, trial_price, 
-      weight, error_rate, creator, 
-      gmt_created, gmt_modified)
-    values (#{judgeObjectId,jdbcType=INTEGER}, #{methodName,jdbcType=VARCHAR}, #{trialPrice,jdbcType=DECIMAL}, 
-      #{weight,jdbcType=DECIMAL}, #{errorRate,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_scheme_sure_price_item (judge_object_id, method_type, method_name, 
+      trial_price, weight, error_rate, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{judgeObjectId,jdbcType=INTEGER}, #{methodType,jdbcType=INTEGER}, #{methodName,jdbcType=VARCHAR}, 
+      #{trialPrice,jdbcType=DECIMAL}, #{weight,jdbcType=DECIMAL}, #{errorRate,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -123,6 +126,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="judgeObjectId != null" >
         judge_object_id,
+      </if>
+      <if test="methodType != null" >
+        method_type,
       </if>
       <if test="methodName != null" >
         method_name,
@@ -149,6 +155,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="judgeObjectId != null" >
         #{judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="methodType != null" >
+        #{methodType,jdbcType=INTEGER},
       </if>
       <if test="methodName != null" >
         #{methodName,jdbcType=VARCHAR},
@@ -188,6 +197,9 @@
       <if test="record.judgeObjectId != null" >
         judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       </if>
+      <if test="record.methodType != null" >
+        method_type = #{record.methodType,jdbcType=INTEGER},
+      </if>
       <if test="record.methodName != null" >
         method_name = #{record.methodName,jdbcType=VARCHAR},
       </if>
@@ -218,6 +230,7 @@
     update tb_scheme_sure_price_item
     set id = #{record.id,jdbcType=INTEGER},
       judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      method_type = #{record.methodType,jdbcType=INTEGER},
       method_name = #{record.methodName,jdbcType=VARCHAR},
       trial_price = #{record.trialPrice,jdbcType=DECIMAL},
       weight = #{record.weight,jdbcType=DECIMAL},
@@ -234,6 +247,9 @@
     <set >
       <if test="judgeObjectId != null" >
         judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="methodType != null" >
+        method_type = #{methodType,jdbcType=INTEGER},
       </if>
       <if test="methodName != null" >
         method_name = #{methodName,jdbcType=VARCHAR},
@@ -262,6 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem" >
     update tb_scheme_sure_price_item
     set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      method_type = #{methodType,jdbcType=INTEGER},
       method_name = #{methodName,jdbcType=VARCHAR},
       trial_price = #{trialPrice,jdbcType=DECIMAL},
       weight = #{weight,jdbcType=DECIMAL},

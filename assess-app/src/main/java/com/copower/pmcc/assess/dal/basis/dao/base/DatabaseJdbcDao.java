@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by kings on 2018-3-21.
  */
 @Repository
-public class FormConfigureDao {
+public class DatabaseJdbcDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

@@ -8,6 +8,8 @@ public class SchemeSurePriceItem {
 
     private Integer judgeObjectId;
 
+    private Integer methodType;
+
     private String methodName;
 
     private BigDecimal trialPrice;
@@ -36,6 +38,14 @@ public class SchemeSurePriceItem {
 
     public void setJudgeObjectId(Integer judgeObjectId) {
         this.judgeObjectId = judgeObjectId;
+    }
+
+    public Integer getMethodType() {
+        return methodType;
+    }
+
+    public void setMethodType(Integer methodType) {
+        this.methodType = methodType;
     }
 
     public String getMethodName() {

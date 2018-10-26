@@ -71,45 +71,31 @@ public class SchemeSurePriceService {
      * @param judgeObjectId
      * @return
      */
+    @Transactional
     public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId) {
         SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
-
+            for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
+                schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
+                schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
+            }
         } else {//初始化数据
             SchemeJudgeFunction functionWhere = new SchemeJudgeFunction();
             functionWhere.setBisApplicable(true);
             functionWhere.setJudgeObjectId(judgeObjectId);
             List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionDao.getSchemeJudgeFunction(functionWhere);
-            if(CollectionUtils.isNotEmpty(judgeFunctions)){
+            if (CollectionUtils.isNotEmpty(judgeFunctions)) {
                 for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                     SchemeSurePriceItem schemeSurePriceItem = new SchemeSurePriceItem();
                     schemeSurePriceItem.setJudgeObjectId(judgeObjectId);
+                    schemeSurePriceItem.setMethodType(judgeFunction.getMethodType());
                     schemeSurePriceItem.setMethodName(baseDataDicService.getNameById(judgeFunction.getMethodType()));
-
-                    //schemeSurePriceItem.setTrialPrice(getPrice(schemeInfo.getMethodType(), schemeInfo.getMethodDataId()));
+                    schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, judgeFunction.getMethodType()));
                     schemeSurePriceItem.setCreator(commonService.thisUserAccount());
                     schemeSurePriceItemDao.addSurePriceItem(schemeSurePriceItem);
                 }
-            }
-        }
-
-        //应该取得该委估对象所适用的方法，并取出该适用方法所测试出来的单价
-
-
-        SchemeInfo schemeInfoWhere = new SchemeInfo();
-        schemeInfoWhere.setJudgeObjectId(judgeObjectId);
-        List<SchemeInfo> infoList = schemeInfoDao.getInfoList(schemeInfoWhere);
-        if (CollectionUtils.isNotEmpty(infoList)) {
-            for (SchemeInfo schemeInfo : infoList) {
-                if (StringUtils.isEmpty(schemeInfo.getMethodType())) continue;
-                SchemeSurePriceItem schemeSurePriceItem = new SchemeSurePriceItem();
-                schemeSurePriceItem.setJudgeObjectId(judgeObjectId);
-//                schemeSurePriceItem.setMethodName(getMethodName(schemeInfo.getMethodType()));
-//                schemeSurePriceItem.setTrialPrice(getPrice(schemeInfo.getMethodType(), schemeInfo.getMethodDataId()));
-                schemeSurePriceItem.setCreator(commonService.thisUserAccount());
-                schemeSurePriceItemDao.addSurePriceItem(schemeSurePriceItem);
             }
         }
         return schemeSurePriceItemDao.getSurePriceItemList(where);
@@ -129,16 +115,22 @@ public class SchemeSurePriceService {
     }
 
     /**
-     * 获取方法测试价格
+     * 获取方法测算价格
      *
      * @param methodType
-     * @param methodDataId
+     * @param judgeObjectId
      * @return
      */
-    private BigDecimal getPrice(String methodType, Integer methodDataId) {
-        if (StringUtils.isEmpty(methodType)) return null;
-        BigDecimal price = new BigDecimal("0");
-        switch (methodType) {
+    private BigDecimal getPrice(Integer judgeObjectId, Integer methodType) {
+        SchemeInfo where = new SchemeInfo();
+        where.setJudgeObjectId(judgeObjectId);
+        where.setMethodType(methodType);
+        SchemeInfo schemeInfo = schemeInfoDao.getSchemeInfo(where);
+        if (schemeInfo == null) return null;
+        Integer methodDataId = schemeInfo.getMethodDataId();
+        String methTypeKey = baseDataDicService.getDataDicById(methodType).getFieldName();
+        BigDecimal price = null;
+        switch (methTypeKey) {
             case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
                 MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(methodDataId);
                 if (marketCompare != null)

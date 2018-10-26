@@ -39,8 +39,6 @@ public class BaseProjectClassifyService {
     private BaseProjectClassifyDao baseProjectClassifyDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseFormService baseFormService;
 
     //region 获取项目分类列表
 
