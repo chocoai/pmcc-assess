@@ -1,0 +1,88 @@
+package com.copower.pmcc.assess.dto.output.basic;
+
+import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
+
+
+/**
+ * @Auther: zch
+ * @Date: 2018/10/29 11:16
+ * @Description:
+ */
+public class BasicBuildingVo extends BasicBuilding {
+    private String openTimeName;
+
+    private String roomTimeName;
+
+    private String buildingStructureLowerName;
+
+    private String buildingStructureName;
+
+    private String dataBuildingName;
+    private String propertyName;
+    private String propertyTypeName;
+    private String buildingCategoryName;
+
+    public String getOpenTimeName() {
+        return openTimeName;
+    }
+
+    public void setOpenTimeName(String openTimeName) {
+        this.openTimeName = openTimeName;
+    }
+
+    public String getRoomTimeName() {
+        return roomTimeName;
+    }
+
+    public void setRoomTimeName(String roomTimeName) {
+        this.roomTimeName = roomTimeName;
+    }
+
+    public String getBuildingStructureLowerName() {
+        return buildingStructureLowerName;
+    }
+
+    public void setBuildingStructureLowerName(String buildingStructureLowerName) {
+        this.buildingStructureLowerName = buildingStructureLowerName;
+    }
+
+    public String getBuildingStructureName() {
+        return buildingStructureName;
+    }
+
+    public void setBuildingStructureName(String buildingStructureName) {
+        this.buildingStructureName = buildingStructureName;
+    }
+
+    public String getDataBuildingName() {
+        return dataBuildingName;
+    }
+
+    public void setDataBuildingName(String dataBuildingName) {
+        this.dataBuildingName = dataBuildingName;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    public String getPropertyTypeName() {
+        return propertyTypeName;
+    }
+
+    public void setPropertyTypeName(String propertyTypeName) {
+        this.propertyTypeName = propertyTypeName;
+    }
+
+    public String getBuildingCategoryName() {
+        return buildingCategoryName;
+    }
+
+    public void setBuildingCategoryName(String buildingCategoryName) {
+        this.buildingCategoryName = buildingCategoryName;
+    }
+}

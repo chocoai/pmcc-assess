@@ -80,6 +80,26 @@ public class CaseBuildingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/listCaseBuilding", method = {RequestMethod.GET}, name = "获取案例 楼栋")
+    public HttpResult list(Integer caseBuildingMainId,Integer estateId) {
+        CaseBuilding caseBuilding = new CaseBuilding();
+        try {
+            if (caseBuildingMainId != null) {
+                caseBuilding.setCaseBuildingMainId(caseBuildingMainId);
+            }
+            if (estateId != null){
+                caseBuilding.setEstateId(estateId);
+            }
+            List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(caseBuilding);
+            return HttpResult.newCorrectResult(caseBuildingList);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+
+    @ResponseBody
     @RequestMapping(value = "/getCaseBuildingList", method = {RequestMethod.GET}, name = "获取案例 楼栋列表")
     public BootstrapTableVo getCaseBuildingList(Integer estateId) {
         CaseBuilding caseBuilding = new CaseBuilding();

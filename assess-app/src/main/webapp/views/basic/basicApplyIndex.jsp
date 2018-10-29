@@ -157,18 +157,18 @@
                     <div role="tabpanel" data-example-id="togglable-tabs">
                         <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
                             <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
-                                                                data-toggle="tab" aria-expanded="true"
-                                                                onclick="objectData.estate.init({})">楼盘</a>
+                                                                aria-expanded="true"
+                                                                onclick="objectData.estate.show({})">楼盘</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                                data-toggle="tab" aria-expanded="false"
-                                                                onclick="objectData.building.init({})">楼栋</a>
+                                                                aria-expanded="false"
+                                                                onclick="objectData.building.show({})">楼栋</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                data-toggle="tab" aria-expanded="false">单元</a>
+                                                                aria-expanded="false">单元</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                data-toggle="tab" aria-expanded="false">房屋</a>
+                                                                aria-expanded="false">房屋</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -254,11 +254,36 @@
         }
     };
 
+    /**
+     * 判断字符串以及null等
+     */
     objectData.isNotBlank = function (item) {
         if (item) {
             return true;
         }
         return false;
+    };
+
+    /**
+     * 判断对象 属性
+     */
+    objectData.isNotBlankObjectProperty = function (obj) {
+        for (var key in obj) {
+            if (objectData.isNotBlank(obj[key])) {
+                return true;
+            }
+        }
+        return false
+    };
+
+    /**
+     * 判断对象
+     */
+    objectData.isNotBlankObject = function (obj) {
+        for (var key in obj) {
+            return true;
+        }
+        return false
     };
 
     objectData.select2Assignment = function (frm, data, name) {
@@ -314,7 +339,6 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                console.info(result);
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
@@ -499,7 +523,7 @@
     //处理 楼盘
     objectData.estate = {
         show: function (item) {
-            $('#caseTab a:first').tab('show')
+            $('#caseTab a:first').tab('show');
             objectData.estate.init(item);
         },
         details: function () {
@@ -668,34 +692,143 @@
     //处理 楼栋
     objectData.building = {
         show: function (item) {
+            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(estateId)) {
+                Alert("请先查询楼盘!");
+                return false;
+            }
             objectData.building.init(item);
         },
         details: function () {
-            objectData.building.show({});
+            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(buildingId)) {
+                Alert("请查询楼栋!");
+                objectData.building.show({});
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseBuildingMain/getcaseBuildingMainById",
+                type: "get",
+                dataType: "json",
+                data: {id: buildingId},
+                success: function (result) {
+                    if (result.ret) {
+                        if (objectData.isNotBlankObjectProperty(result.data)) {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/caseBuilding/listCaseBuilding",
+                                type: "get",
+                                dataType: "json",
+                                data: {caseBuildingMainId: result.data.id},
+                                success: function (resultA) {
+                                    if (resultA.ret) {
+                                        if (objectData.isNotBlank(resultA.data)) {
+                                            $.each(resultA.data, function (i, n) {
+                                                navButtonBuild.setObjArrayElement(i + 1, n);
+                                            });
+                                            $("#identifier").attr("readonly", "readonly").val(result.data.identifier);
+                                            $("#caseBuildingMainId").val(result.data.id);
+                                            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
+                                                var readonly = $(n).attr("readonly");
+                                                if (!objectData.isNotBlank(readonly)) {
+                                                    $(n).attr("readonly", "readonly");
+                                                }
+                                            });
+                                            var temp = resultA.data[0];
+                                            if (objectData.isNotBlankObjectProperty(temp)) {
+                                                objectData.building.show(temp);
+                                            }else {
+                                                objectData.building.show({});
+                                            }
+                                        }
+                                    }
+                                },
+                                error: function (result) {
+                                    Alert("调用服务端方法失败，失败原因:" + result);
+                                }
+                            });
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
         edit: function () {
-            objectData.building.show({});
+            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(buildingId)) {
+                Alert("请查询楼栋!");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseBuildingMain/getcaseBuildingMainById",
+                type: "get",
+                dataType: "json",
+                data: {id: buildingId},
+                success: function (result) {
+                    if (result.ret) {
+                        if (objectData.isNotBlankObjectProperty(result.data)) {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/caseBuilding/listCaseBuilding",
+                                type: "get",
+                                dataType: "json",
+                                data: {caseBuildingMainId: result.data.id},
+                                success: function (resultA) {
+                                    if (resultA.ret) {
+                                        if (objectData.isNotBlank(resultA.data)) {
+                                            $.each(resultA.data, function (i, n) {
+                                                navButtonBuild.setObjArrayElement(i + 1, n);
+                                            });
+                                            $("#identifier").removeAttr("readonly").val(result.data.identifier);
+                                            $("#caseBuildingMainId").val(result.data.id);
+                                            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
+                                                var readonly = $(n).attr("readonly");
+                                                if (objectData.isNotBlank(readonly)) {
+                                                    $(n).removeAttr("readonly");
+                                                }
+                                            });
+                                            var temp = resultA.data[0];
+                                            if (objectData.isNotBlankObjectProperty(temp)) {
+                                                objectData.building.show(temp);
+                                            }else {
+                                                objectData.building.show({});
+                                            }
+                                        }
+                                    }
+                                },
+                                error: function (result) {
+                                    Alert("调用服务端方法失败，失败原因:" + result);
+                                }
+                            });
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
         init: function (item) {
+            $('#caseTab a').eq(1).tab('show');
             $.each(objectData.config.basicBuilding.files, function (i, n) {
                 objectData.uploadFile(n, AssessDBKey.BasicBuilding, item.id);
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, item.buildingCategory, function (html, data) {
                 $("#" + objectData.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, null, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, item.buildingStructure, function (html, data) {
                 $("#" + objectData.config.basicBuilding.frm).find('select.buildingStructure').empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, null, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, item.propertyType, function (html, data) {
                 $("#" + objectData.config.basicBuilding.frm).find('select.propertyType').empty().html(html).trigger('change');
             });
+            $("#" + objectData.config.basicBuilding.frm).find('select.buildingStructure').val(item.buildingStructure).trigger("change");
             $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").change(function () {
                 /**
                  * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
                  **/
                 var id = $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").val();
                 if (objectData.isNotBlank(id)) {
-                    AssessCommon.loadDataDicByPid(id, null, function (html, data) {
+                    AssessCommon.loadDataDicByPid(id, item.buildingStructureLower, function (html, data) {
                         $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").html(html);
                     });
                 }
@@ -704,7 +837,7 @@
                 url: "${pageContext.request.contextPath}/dataBuilder/dataBuilderList",
                 type: "get",
                 dataType: "json",
-                data:{name:null},
+                data: {name: null},
                 success: function (result) {
                     if (result.ret) {
                         var item = result.data;
@@ -714,6 +847,7 @@
                                 option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
                             }
                             $("#" + objectData.config.basicBuilding.frm).find('select.builderId').empty().html(option).trigger('change');
+                            objectData.select2Assignment(objectData.config.basicBuilding.frm,item.builderId,"builderId");
                         }
                     }
                 },
@@ -734,6 +868,7 @@
                                 option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
                             }
                             $("#" + objectData.config.basicBuilding.frm).find('select.propertyId').empty().html(option).trigger('change');
+                            objectData.select2Assignment(objectData.config.basicBuilding.frm,item.propertyId,"propertyId");
                         }
                     }
                 },
@@ -741,26 +876,47 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-            navButtonBuild.identifierWrite();
-            navButtonBuild.one($("#navButtonBuild button").eq(0)[0],1)
+            navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
         }
     };
 
 
+    //收集数据
     objectData.formParams = function () {
-        try {
-            //在收集数据前收集一次
-            navButtonBuild.tempSaveData();
-        } catch (e) {
-            console.error(e);
-        }
         var item = {};
         var forms = $("#" + objectData.config.id).find("form");
         $.each(forms, function (i, n) {
 
         });
+        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         var basicEstate = formParams(objectData.config.basicEstate.frm);
-        item.basicEstate = basicEstate;
+        var basicBuildings = new Array();
+        for (var i = 1; i <= 4; i++) {
+            if (objectData.isNotBlankObjectProperty(navButtonBuild.getObjArray(i))) {
+                basicBuildings.unshift(navButtonBuild.getObjArray(i))
+            }
+        }
+        //确定收集过楼栋信息
+        var num = 1;
+        $.each(basicBuildings, function (i, obj) {
+            if (objectData.isNotBlankObjectProperty(obj)) {
+                num++;
+            }
+        });
+
+        if (num > 1) {
+            item.basicBuildingMain = {
+                id: $("#caseBuildingMainId").val(),
+                identifier: $("#identifier").val(),
+                estateId: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id")
+            };
+            item.basicBuildings = basicBuildings;
+        }
+        if (num <= 1) {
+            item.basicBuildings = null;
+            item.basicBuildingMain = null;
+        }
+        item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
         return item;
     };
 </script>
@@ -769,6 +925,11 @@
 
     //提交
     function submit() {
+        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+        if (!objectData.isNotBlank(estateId)) {
+            Alert("请先查询楼盘!");
+            return false;
+        }
         var formData = JSON.stringify(objectData.formParams());
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
@@ -779,6 +940,7 @@
             success: function (result) {
                 if (result.ret) {
                     Alert("成功!");
+                    window.location.reload();
                 }
             },
             error: function (result) {
