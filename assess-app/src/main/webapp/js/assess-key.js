@@ -26,6 +26,7 @@ AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment";
 AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 
 AssessDBKey.BasicEstate = "tb_basic_estate";
+AssessDBKey.BasicBuilding = "tb_basic_building";
 
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";

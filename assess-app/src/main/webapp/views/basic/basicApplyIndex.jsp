@@ -81,12 +81,14 @@
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()" value="详细信息">
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()"
+                                           value="详细信息">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.edit()" value="修改">
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.edit()"
+                                           value="修改">
                                 </div>
                             </div>
                         </div>
@@ -159,7 +161,8 @@
                                                                 onclick="objectData.estate.init({})">楼盘</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                                data-toggle="tab" aria-expanded="false" onclick="objectData.building.init({})">楼栋</a>
+                                                                data-toggle="tab" aria-expanded="false"
+                                                                onclick="objectData.building.init({})">楼栋</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
                                                                 data-toggle="tab" aria-expanded="false">单元</a>
@@ -175,10 +178,9 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
-                                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee
-                                    squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes
-                                    anderson artisan four loko farm-to-table craft beer twee. Qui photo
-                                    booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+                                <div>
+                                    <%@include file="/views/basic/modelView/buildingView.jsp" %>
+                                </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                                 <%@include file="/views/basic/modelView/unitView.jsp" %>
@@ -234,7 +236,13 @@
         },
         basicBuilding: {
             key: "basicBuilding",
-            name: "楼栋"
+            name: "楼栋",
+            frm: "basicBuildFrm",
+            files: {
+                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
+                building_figure_outside: "building_figure_outside",//外装图id和字段
+                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
+            }
         },
         basicUnit: {
             key: "basicUnit",
@@ -345,7 +353,7 @@
                 source: function (request, response) {
                     var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/caseBuilding/autoCompleteCaseBuilding",
+                        url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -659,29 +667,100 @@
 
     //处理 楼栋
     objectData.building = {
-        show:function (item) {
+        show: function (item) {
             objectData.building.init(item);
         },
-        details:function () {
+        details: function () {
             objectData.building.show({});
         },
-        edit:function () {
+        edit: function () {
             objectData.building.show({});
         },
-        init:function (item) {
-
+        init: function (item) {
+            $.each(objectData.config.basicBuilding.files, function (i, n) {
+                objectData.uploadFile(n, AssessDBKey.BasicBuilding, item.id);
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, null, function (html, data) {
+                $("#" + objectData.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, null, function (html, data) {
+                $("#" + objectData.config.basicBuilding.frm).find('select.buildingStructure').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, null, function (html, data) {
+                $("#" + objectData.config.basicBuilding.frm).find('select.propertyType').empty().html(html).trigger('change');
+            });
+            $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").change(function () {
+                /**
+                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
+                 **/
+                var id = $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").val();
+                if (objectData.isNotBlank(id)) {
+                    AssessCommon.loadDataDicByPid(id, null, function (html, data) {
+                        $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").html(html);
+                    });
+                }
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataBuilder/dataBuilderList",
+                type: "get",
+                dataType: "json",
+                data:{name:null},
+                success: function (result) {
+                    if (result.ret) {
+                        var item = result.data;
+                        var option = "<option value=''>请选择</option>";
+                        if (item.length > 0) {
+                            for (var i = 0; i < item.length; i++) {
+                                option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
+                            }
+                            $("#" + objectData.config.basicBuilding.frm).find('select.builderId').empty().html(option).trigger('change');
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataProperty/dataPropertyList",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var item = result.data;
+                        var option = "<option value=''>请选择</option>";
+                        if (item.length > 0) {
+                            for (var i = 0; i < item.length; i++) {
+                                option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
+                            }
+                            $("#" + objectData.config.basicBuilding.frm).find('select.propertyId').empty().html(option).trigger('change');
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+            navButtonBuild.identifierWrite();
+            navButtonBuild.one($("#navButtonBuild button").eq(0)[0],1)
         }
     };
 
 
     objectData.formParams = function () {
+        try {
+            //在收集数据前收集一次
+            navButtonBuild.tempSaveData();
+        } catch (e) {
+            console.error(e);
+        }
         var item = {};
         var forms = $("#" + objectData.config.id).find("form");
         $.each(forms, function (i, n) {
 
         });
         var basicEstate = formParams(objectData.config.basicEstate.frm);
-        item.basicEstate = basicEstate ;
+        item.basicEstate = basicEstate;
         return item;
     };
 </script>
