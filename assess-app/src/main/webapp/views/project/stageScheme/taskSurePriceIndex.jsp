@@ -54,9 +54,6 @@
                                 <input type="text" name="price" class="form-control" readonly="readonly"
                                        value="${schemeSurePrice.price}">
                             </div>
-                            <div class="btn btn-primary"
-                                 onclick="surePrice.adjustPrice('${projectPlanDetails.judgeObjectId}');">单价调整
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -67,21 +64,47 @@
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
                         </ul>
-                        <h3>调整单价</h3>
+                        <h3>
+                            调整单价
+                            <small>
+                                <div class="btn btn-xs btn-warning"
+                                     onclick="surePrice.pasteBatch();">粘贴
+                                </div>
+                            </small>
+                        </h3>
                         <div class="clearfix"></div>
                     </div>
-                    <table class="table">
+                    <table id="adjust_factor_table" class="table">
                         <thead>
                         <tr>
-                            <th>权证号</th>
-                            <th>价格</th>
+                            <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
+                            <th width="20%">权证号</th>
+                            <th width="10%">价格</th>
+                            <th width="50%">因素</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody id="tbody_data_section1">
+                        <tbody>
                         <c:forEach items="${subJudgeObjectList}" var="item">
-                            <tr>
+                            <tr data-id="${item.id}">
+                                <td><input type="checkbox"></td>
                                 <td>${item.name}</td>
-                                <td>${item.price}</td>
+                                <td data-name="price">${item.price}</td>
+                                <td data-name="coefficient">${item.coefficient}</td>
+                                <td>
+                                    <div class="btn btn-xs btn-primary"
+                                         onclick="surePrice.adjustFactor(${item.id},${item.declareRecordId})">调整
+                                    </div>
+                                    <div class="btn btn-xs btn-primary copy"
+                                         onclick="surePrice.copy(this);">复制
+                                    </div>
+                                    <div class="btn btn-xs btn-primary cancel-copy" style="display:none;"
+                                         onclick="surePrice.cancelCopy(this)">取消复制
+                                    </div>
+                                    <div class="btn btn-xs btn-warning paste" style="display:none;"
+                                         onclick="surePrice.paste(this)">粘贴
+                                    </div>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -104,6 +127,21 @@
         </div>
     </div>
 </div>
+
+<%--确定单价模板--%>
+<script type="text/html" id="surePriceTemp">
+    <tr>
+        <td>
+            <input type="hidden" name="id" value="{id}">
+            {methodName}
+        </td>
+        <td data-name="trialPrice">{trialPrice}</td>
+        <td>
+            <input type="text" class="form-control x-percent" name="weight" data-value="{weight}"
+                   onblur="surePrice.computePrice(this);">
+        </td>
+    </tr>
+</script>
 
 <%--调整评估价--%>
 <div id="modal_adjustment_price" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -145,6 +183,8 @@
                     <tr>
                         <th>因素</th>
                         <th>说明</th>
+                        <th>类型</th>
+                        <th>系数</th>
                     </tr>
                     </thead>
                     <tbody id="tbody_factor">
@@ -165,38 +205,31 @@
 </div>
 </body>
 
-<%--确定单价模板--%>
-<script type="text/html" id="surePriceTemp">
-    <tr>
-        <td>
-            <input type="hidden" name="id" value="{id}">
-            {methodName}
-        </td>
-        <td data-name="trialPrice">{trialPrice}</td>
-        <td>
-            <input type="text" class="form-control x-percent" name="weight" data-value="{weight}"
-                   onblur="surePrice.computePrice(this);">
-        </td>
-    </tr>
-</script>
-
 <%--调整因素模板--%>
 <script type="text/html" id="adjustFatorTemp">
     <tr>
         <td>
-            <input type="text" class="form-control x-percent" name="factor" data-value="{factor}">
+            <input type="text" class="form-control " name="factor" value="{factor}">
         </td>
         <td><input type="text" class="form-control" name="remark" value="{remark}"></td>
+        <td>
+            <select name="type" class="form-control" onchange="surePrice.changeType(this);" required>
+                <option value="0">绝对值</option>
+                <option value="1" selected="selected">相对值</option>
+            </select>
+        </td>
+        <td>
+            <input type="text" class="form-control" data-rule-number='true' name="coefficient-absolute"
+                   value="{coefficient}" style="display: none;">
+            <input type="text" class="form-control x-percent" name="coefficient-relative" data-value="{coefficient}">
+        </td>
         <td>
             <a class="btn btn-xs btn-warning tooltips" data-placement="top" onclick="$(this).closest('tr').remove();"><i
                     class="fa fa-minus fa-white"></i></a>
         </td>
     </tr>
 </script>
-
 <%@include file="/views/share/main_footer.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
-
 <script type="application/javascript">
     $(function () {
         surePrice.surePrice('${projectPlanDetails.judgeObjectId}');
@@ -291,83 +324,10 @@
         $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(2));
     }
 
-    //保存单价
-    surePrice.savePrice = function () {
-        var surePriceApply = {};
-        var judgeObjectId = $("#frm_data_section").find('[name=judgeObjectId]').val();
-        surePriceApply.judgeObjectId = judgeObjectId;
-        surePriceApply.price = $("#frm_data_section").find('[name=price]').val();
-        surePriceApply.surePriceList = [];
-        $("#tbody_data_section tr").each(function () {
-            var schemeSurePrice = {};
-            schemeSurePrice.id = $(this).find('[name=id]').val();
-            schemeSurePrice.weight = $(this).find('[name=weight]').attr('data-value');
-            surePriceApply.surePriceList.push(schemeSurePrice);
-        })
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/schemeSurePrice/saveSurePrice",
-            data: {
-                formData: JSON.stringify(surePriceApply)
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("保存成功");
-                    $("#panel_judge_objet_list").find('[name=id][value=' + judgeObjectId + ']').closest('tr').find('[data-name="price"]').text(surePriceApply.price);
-                    $("#modal_sure_price").modal('hide');
-                }
-                else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
-    }
-
-    //调整评估单价
-    surePrice.adjustPrice = function (judgeObjectId) {
-        $("#modal_adjustment_price").find('[name=judgeObjectId]').val(judgeObjectId);
-        surePrice.loadJudgeDetailList();
-        $("#modal_adjustment_price").modal();
-    }
-
-    //加载合并对象的明细
-    surePrice.loadJudgeDetailList = function () {
-        var cols = [];
-        cols.push({field: 'name', title: '权证号'});
-        cols.push({field: 'originalPrice', title: '原单价'});
-        cols.push({field: 'price', title: '调整单价'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="surePrice.adjustFactor(' + row.id + ',' + row.declareRecordId + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#tb_judge_detail_list").bootstrapTable('destroy');
-        TableInit("tb_judge_detail_list", "${pageContext.request.contextPath}/schemeProgramme/getJudgeObjectListByPid", cols, {
-            pid: $("#modal_adjustment_price").find('[name=judgeObjectId]').val()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();   //提示
-            }
-        });
-    };
-
     //调整因素
     surePrice.adjustFactor = function (judgeObjectId, declareId) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/schemeSurePrice/getCertAdjustmentFactors",
+            url: "${pageContext.request.contextPath}/schemeSurePrice/getSurePriceFactors",
             data: {
                 declareId: declareId
             },
@@ -381,7 +341,9 @@
                         var html = $("#adjustFatorTemp").html();
                         html = html.replace(/{factor}/g, AssessCommon.toString(item.factor));
                         html = html.replace(/{remark}/g, AssessCommon.toString(item.remark));
+                        html = html.replace(/{coefficient}/g, AssessCommon.toString(item.coefficient));
                         $("#tbody_factor").append(html);
+                        $("#tbody_factor").find('tr:last').find('[name=type]').val(item.type).trigger('change');
                     })
                     $("#tbody_factor").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
@@ -400,11 +362,23 @@
         $("#modal_factor").modal();
     }
 
+    //类型调整
+    surePrice.changeType = function (_this) {
+        if ($(_this).val() == 0) {
+            $(_this).closest('tr').find('[name=coefficient-absolute]').show();
+            $(_this).closest('tr').find('[name=coefficient-relative]').hide();
+        } else {
+            $(_this).closest('tr').find('[name=coefficient-absolute]').hide();
+            $(_this).closest('tr').find('[name=coefficient-relative]').show();
+        }
+    }
+
     //添加调整因素
     surePrice.addAdjustFactor = function () {
         var html = $("#adjustFatorTemp").html();
         html = html.replace(/{factor}/g, '');
         html = html.replace(/{remark}/g, '');
+        html = html.replace(/{coefficient}/g, '');
         $("#tbody_factor").append(html);
     }
 
@@ -413,14 +387,22 @@
         var factorArray = [];
         $("#tbody_factor tr").each(function () {
             var adjustFactor = {};
-            adjustFactor.factor = $(this).find('[name=factor]').attr('data-value');
+            adjustFactor.factor = $(this).find('[name=factor]').val();
             adjustFactor.remark = $(this).find('[name=remark]').val();
+            adjustFactor.type = $(this).find('[name=type]').val();
+            if (adjustFactor.type == 0) {
+                adjustFactor.coefficient = $(this).find('[name=coefficient-absolute]').val();
+            } else {
+                adjustFactor.coefficient = $(this).find('[name=coefficient-relative]').attr('data-value');
+            }
             factorArray.push(adjustFactor);
         })
+        var judgeObjectId = $("#modal_factor").find('[name=judgeObjectId]').val();
+        Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/schemeSurePrice/saveCertAdjustmentFactor",
+            url: "${pageContext.request.contextPath}/schemeSurePrice/saveSurePriceFactor",
             data: {
-                judgeObjectId: $("#modal_factor").find('[name=judgeObjectId]').val(),
+                judgeObjectId: judgeObjectId,
                 formData: JSON.stringify(factorArray)
             },
             type: "post",
@@ -428,9 +410,11 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("保存成功");
+                    toastr.success("保存成功");
+                    var tr = $('#adjust_factor_table').find('[data-id=' + judgeObjectId + ']');
+                    tr.find('[data-name=price]').text(result.data.price);
+                    tr.find('[data-name=coefficient]').text(result.data.coefficient);
                     $("#modal_factor").modal('hide');
-                    surePrice.loadJudgeDetailList();
                 }
                 else {
                     Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
@@ -439,6 +423,122 @@
             error: function (result) {
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
+    //checkbox选择切换
+    surePrice.checkboxToggle = function (_this) {
+        $(_this).closest('table').find(':checkbox').prop('checked', $(_this).prop('checked'));
+    }
+
+    //被复制对象id
+    surePrice.beCopyJudgeObject = undefined;
+
+    //调整因素复制
+    surePrice.copy = function (_this) {
+        //1.设置被复制元素的id
+        //2.隐藏当前复制按钮，显示取消复制按钮
+        //3.其它权证数据的复制按钮隐藏，显示出粘贴按钮
+        var tr = $(_this).closest('tr');
+        surePrice.beCopyJudgeObject = {};
+        surePrice.beCopyJudgeObject.id = tr.attr('data-id');
+        surePrice.beCopyJudgeObject.price = tr.find('[data-name=price]').text();
+        surePrice.beCopyJudgeObject.coefficient = tr.find('[data-name=coefficient]').text();
+        $(_this).hide();
+        var td = $(_this).closest('td');
+        td.find('.cancel-copy').show();
+        td.find('.paste').hide();
+        tr.siblings().each(function () {
+            $(this).find('.copy,.cancel-copy').hide();
+            $(this).find('.paste').show();
+        })
+    }
+
+    //调整因素取消复制
+    surePrice.cancelCopy = function (_this) {
+        surePrice.beCopyJudgeObject = undefined;
+        var tr = $(_this).closest('tr');
+        $(_this).hide();
+        var td = $(_this).closest('td');
+        td.find('.copy').show();
+        td.find('.paste,.cancel-copy').hide();
+        tr.siblings().each(function () {
+            $(this).find('.copy').show();
+            $(this).find('.paste,.cancel-copy').hide();
+        })
+    }
+
+    //调整因素粘贴
+    surePrice.paste = function (_this) {
+        if (!surePrice.beCopyJudgeObject) {
+            Alert('请选择被复制对象');
+            return false;
+        }
+        var judgeObjectId = $(_this).closest('tr').attr('data-id');
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/copySurePriceFactor",
+            data: {
+                judgeObjectId: judgeObjectId,
+                beCopyJudgeObjectId: surePrice.beCopyJudgeObject.id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("保存成功");
+                    //更新元素信息
+                    $(_this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
+                    $(_this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+    }
+
+    //调整因素批量粘贴
+    surePrice.pasteBatch = function () {
+        if (!surePrice.beCopyJudgeObject) {
+            Alert('请选择被复制对象');
+            return false;
+        }
+        var judgeObjectIdArray = [];
+        $("#adjust_factor_table tbody").find(':checkbox:checked').each(function () {
+            var id = $(this).closest('tr').attr('data-id');
+            if (id != surePrice.beCopyJudgeObject.id) {
+                judgeObjectIdArray.push(id);
+            }
+        })
+        if (judgeObjectIdArray.length <= 0) {
+            Alert('请选择勾选参与复制对象');
+            return false;
+        }
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/copySurePriceFactorBatch",
+            data: {
+                judgeObjectIds: judgeObjectIdArray.join(),
+                beCopyJudgeObjectId: surePrice.beCopyJudgeObject.id
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("保存成功");
+                    //更新元素信息
+                    $("#adjust_factor_table tbody").find(':checkbox:checked').each(function () {
+                        $(this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
+                        $(this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
+                    })
+                }
+                else {
+                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
             }
         });
     }

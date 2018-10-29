@@ -62,6 +62,37 @@
                     </div>
                 </form>
             </div>
+            <c:if test="${not empty subJudgeObjectList}">
+                <div class="x_panel">
+                    <div class="x_title collapse-link">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+                        </ul>
+                        <h3>
+                            调整单价
+                        </h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <table id="adjust_factor_table" class="table">
+                        <thead>
+                        <tr>
+                            <th width="20%">权证号</th>
+                            <th width="10%">价格</th>
+                            <th width="50%">因素</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${subJudgeObjectList}" var="item">
+                            <tr data-id="${item.id}">
+                                <td>${item.name}</td>
+                                <td data-name="price">${item.price}</td>
+                                <td data-name="coefficient">${item.coefficient}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:if>
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>

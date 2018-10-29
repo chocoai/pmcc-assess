@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String setUseName;
     private String bestUseName;
+    private String coefficient;
 
     public String getSetUseName() {
         return setUseName;
@@ -23,5 +24,13 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
 
     public void setBestUseName(String bestUseName) {
         this.bestUseName = bestUseName;
+    }
+
+    public String getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(String coefficient) {
+        this.coefficient = coefficient;
     }
 }
