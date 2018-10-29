@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
@@ -156,12 +157,18 @@ public class PublicBasicService {
                                 caseBuilding = new CaseBuilding();
                                 BeanCopyHelp.copyPropertiesIgnoreNull(basicBuilding, caseBuilding);
                                 caseBuilding.setCaseBuildingMainId(caseBuildingMainId);
+                                caseBuilding.setId(null);
+                                caseBuilding.setGmtCreated(null);
+                                caseBuilding.setGmtModified(null);
                             }
                         }
-                        if (basicBuilding.getCaseBuildingId() == null){
+                        if (basicBuilding.getCaseBuildingId() == null) {
                             caseBuilding = new CaseBuilding();
                             BeanCopyHelp.copyPropertiesIgnoreNull(basicBuilding, caseBuilding);
                             caseBuilding.setCaseBuildingMainId(caseBuildingMainId);
+                            caseBuilding.setId(null);
+                            caseBuilding.setGmtCreated(null);
+                            caseBuilding.setGmtModified(null);
                         }
                         caseBuildingService.upgradeVersion(caseBuilding);
                     }
@@ -197,7 +204,11 @@ public class PublicBasicService {
                 basicEstate.setCaseEstateId(basicEstate.getId());
                 basicEstate.setId(null);
             }
-            basicEstateService.upgradeVersion(basicEstate);
+            try {
+                basicEstateService.upgradeVersion(basicEstate);
+            } catch (Exception e1) {
+
+            }
         }
         jsonContent = null;
         jsonContent = jsonObject.getString("basicBuildingMain");
@@ -208,17 +219,33 @@ public class PublicBasicService {
                 basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
                 basicBuildingMain.setId(null);
             }
-            Integer id = basicBuildingMainService.upgradeVersion(basicBuildingMain);
+            Integer id = null;
+            try {
+                id = basicBuildingMainService.upgradeVersion(basicBuildingMain);
+            } catch (Exception e1) {
+
+            }
             jsonContent = null;
             jsonContent = jsonObject.getString("basicBuildings");
-            List<BasicBuilding> basicBuildingList = JSONObject.parseArray(jsonContent, BasicBuilding.class);
+            List<BasicBuilding> basicBuildingList = null;
+            try {
+                basicBuildingList = JSONObject.parseArray(jsonContent, BasicBuilding.class);
+            } catch (Exception e1) {
+                logger.error(e1.getMessage(), e1);
+            }
             if (!ObjectUtils.isEmpty(basicBuildingList)) {
                 for (BasicBuilding basicBuilding : basicBuildingList) {
                     if (basicBuilding.getId() != null) {
                         basicBuilding.setCaseBuildingId(basicBuilding.getId());
                         basicBuilding.setId(null);
+                    }
+                    if (id != null) {
                         basicBuilding.setBasicBuildingMainId(id);
-                        basicBuildingService.upgradeVersion(basicBuilding);
+                        try {
+                            basicBuildingService.upgradeVersion(basicBuilding);
+                        } catch (Exception e1) {
+
+                        }
                     }
                 }
             }
@@ -247,5 +274,15 @@ public class PublicBasicService {
         } else {
             return null;
         }
+    }
+
+    public List<BasicBuilding> getMainById(BasicBuildingMain buildingMain)throws Exception{
+        BasicBuilding basicBuilding = new BasicBuilding();
+        basicBuilding.setBasicBuildingMainId(buildingMain.getId());
+        return basicBuildingService.basicBuildingList(basicBuilding);
+    }
+
+    public BasicBuildingVo getBasicBuildingVo(BasicBuilding basicBuilding){
+        return basicBuildingService.getBasicBuildingVo(basicBuilding);
     }
 }

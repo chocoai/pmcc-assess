@@ -1706,63 +1706,63 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIsNull() {
-            addCriterion("building_structure_pid is null");
+        public Criteria andBuildingStructureLowerIsNull() {
+            addCriterion("building_structure_lower is null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIsNotNull() {
-            addCriterion("building_structure_pid is not null");
+        public Criteria andBuildingStructureLowerIsNotNull() {
+            addCriterion("building_structure_lower is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidEqualTo(Integer value) {
-            addCriterion("building_structure_pid =", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerEqualTo(Integer value) {
+            addCriterion("building_structure_lower =", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotEqualTo(Integer value) {
-            addCriterion("building_structure_pid <>", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotEqualTo(Integer value) {
+            addCriterion("building_structure_lower <>", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidGreaterThan(Integer value) {
-            addCriterion("building_structure_pid >", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerGreaterThan(Integer value) {
+            addCriterion("building_structure_lower >", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("building_structure_pid >=", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerGreaterThanOrEqualTo(Integer value) {
+            addCriterion("building_structure_lower >=", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidLessThan(Integer value) {
-            addCriterion("building_structure_pid <", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerLessThan(Integer value) {
+            addCriterion("building_structure_lower <", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidLessThanOrEqualTo(Integer value) {
-            addCriterion("building_structure_pid <=", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerLessThanOrEqualTo(Integer value) {
+            addCriterion("building_structure_lower <=", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIn(List<Integer> values) {
-            addCriterion("building_structure_pid in", values, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerIn(List<Integer> values) {
+            addCriterion("building_structure_lower in", values, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotIn(List<Integer> values) {
-            addCriterion("building_structure_pid not in", values, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotIn(List<Integer> values) {
+            addCriterion("building_structure_lower not in", values, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidBetween(Integer value1, Integer value2) {
-            addCriterion("building_structure_pid between", value1, value2, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerBetween(Integer value1, Integer value2) {
+            addCriterion("building_structure_lower between", value1, value2, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotBetween(Integer value1, Integer value2) {
-            addCriterion("building_structure_pid not between", value1, value2, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotBetween(Integer value1, Integer value2) {
+            addCriterion("building_structure_lower not between", value1, value2, "buildingStructureLower");
             return (Criteria) this;
         }
 

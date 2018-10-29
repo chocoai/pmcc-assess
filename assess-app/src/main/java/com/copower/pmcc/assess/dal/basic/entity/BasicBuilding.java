@@ -56,7 +56,7 @@ public class BasicBuilding {
 
     private Integer buildingStructure;
 
-    private Integer buildingStructurePid;
+    private Integer buildingStructureLower;
 
     private String jsonContent;
 
@@ -278,12 +278,12 @@ public class BasicBuilding {
         this.buildingStructure = buildingStructure;
     }
 
-    public Integer getBuildingStructurePid() {
-        return buildingStructurePid;
+    public Integer getBuildingStructureLower() {
+        return buildingStructureLower;
     }
 
-    public void setBuildingStructurePid(Integer buildingStructurePid) {
-        this.buildingStructurePid = buildingStructurePid;
+    public void setBuildingStructureLower(Integer buildingStructureLower) {
+        this.buildingStructureLower = buildingStructureLower;
     }
 
     public String getJsonContent() {

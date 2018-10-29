@@ -56,12 +56,12 @@ public class CaseBuildingMainController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String identifier, Integer estateId , Integer maxRows) {
+    public HttpResult autoCompleteCaseEstate(String identifier, Integer estateId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        KeyValueDto keyValueDto = new KeyValueDto();
         try {
             List<CaseBuildingMain> buildingMains = caseBuildingMainService.autoCompleteCaseBuildingMain(identifier, estateId, maxRows);
             for (CaseBuildingMain caseBuilding : buildingMains) {
+                KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(caseBuilding.getId()));
                 keyValueDto.setValue(caseBuilding.getIdentifier());
                 keyValueDtos.add(keyValueDto);

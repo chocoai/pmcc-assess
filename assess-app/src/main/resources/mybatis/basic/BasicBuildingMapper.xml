@@ -28,7 +28,7 @@
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
-    <result column="building_structure_pid" property="buildingStructurePid" jdbcType="INTEGER" />
+    <result column="building_structure_lower" property="buildingStructureLower" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -99,7 +99,7 @@
     building_name, property_type, floor_count, unit_interval, property_fee, facilities_use_fee, 
     floor_start, floor_end, building_height, building_area, cover_an_area, building_category, 
     open_time, room_time, floor_height, diameter_depth, land_use_year, location, net_height, 
-    building_structure, building_structure_pid, json_content, version, creator, name, 
+    building_structure, building_structure_lower, json_content, version, creator, name, 
     gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingExample" >
@@ -144,7 +144,7 @@
       building_area, cover_an_area, building_category, 
       open_time, room_time, floor_height, 
       diameter_depth, land_use_year, location, 
-      net_height, building_structure, building_structure_pid, 
+      net_height, building_structure, building_structure_lower, 
       json_content, version, creator, 
       name, gmt_created, gmt_modified
       )
@@ -156,7 +156,7 @@
       #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
       #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
       #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
-      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructurePid,jdbcType=INTEGER}, 
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructureLower,jdbcType=INTEGER}, 
       #{jsonContent,jdbcType=CHAR}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -242,8 +242,8 @@
       <if test="buildingStructure != null" >
         building_structure,
       </if>
-      <if test="buildingStructurePid != null" >
-        building_structure_pid,
+      <if test="buildingStructureLower != null" >
+        building_structure_lower,
       </if>
       <if test="jsonContent != null" >
         json_content,
@@ -340,8 +340,8 @@
       <if test="buildingStructure != null" >
         #{buildingStructure,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructurePid != null" >
-        #{buildingStructurePid,jdbcType=INTEGER},
+      <if test="buildingStructureLower != null" >
+        #{buildingStructureLower,jdbcType=INTEGER},
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
@@ -450,8 +450,8 @@
       <if test="record.buildingStructure != null" >
         building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingStructurePid != null" >
-        building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      <if test="record.buildingStructureLower != null" >
+        building_structure_lower = #{record.buildingStructureLower,jdbcType=INTEGER},
       </if>
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
@@ -504,7 +504,7 @@
       location = #{record.location,jdbcType=VARCHAR},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
-      building_structure_pid = #{record.buildingStructurePid,jdbcType=INTEGER},
+      building_structure_lower = #{record.buildingStructureLower,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
       version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -593,8 +593,8 @@
       <if test="buildingStructure != null" >
         building_structure = #{buildingStructure,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructurePid != null" >
-        building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      <if test="buildingStructureLower != null" >
+        building_structure_lower = #{buildingStructureLower,jdbcType=INTEGER},
       </if>
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
@@ -644,7 +644,7 @@
       location = #{location,jdbcType=VARCHAR},
       net_height = #{netHeight,jdbcType=DECIMAL},
       building_structure = #{buildingStructure,jdbcType=INTEGER},
-      building_structure_pid = #{buildingStructurePid,jdbcType=INTEGER},
+      building_structure_lower = #{buildingStructureLower,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
       version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

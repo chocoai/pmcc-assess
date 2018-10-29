@@ -8,11 +8,12 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼栋标识符
+                    楼栋编号
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼栋标识符 (必要的)" name="identifier"
-                           class="form-control" id="identifier" onblur="navButtonBuild.identifierWrite()">
+                    <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId">
+                    <input type="text" placeholder="楼栋编号 (必要的查询下面楼栋所需)" name="identifier"
+                           class="form-control" id="identifier">
                 </div>
             </div>
         </div>
@@ -112,15 +113,7 @@
                            data-rule-number='true' class="form-control" required="required">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    编号
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="编号" name="identifier"
-                           class="form-control">
-                </div>
-            </div>
+
         </div>
 
         <div class="form-group">
@@ -271,7 +264,8 @@
                     建筑结构(下级)<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="buildingStructureLower" class="form-control search-select select2 buildingStructureLower">
+                    <select name="buildingStructureLower"
+                            class="form-control search-select select2 buildingStructureLower">
                         <option>请先选择建筑结构上级</option>
                     </select>
                 </div>
@@ -343,7 +337,7 @@
 </div>
 
 <script type="text/javascript">
-    var navButtonBuild ;
+    var navButtonBuild;
     (function () {
         navButtonBuild = new Object();
 
@@ -376,18 +370,18 @@
             var identifier = "";
             identifier = navButtonBuild.randomNum(100, 90000);
             identifier = parseInt(identifier) * parseInt(str);
-            identifier = identifierNumber +":"+identifier;
+            identifier = identifierNumber + ":" + identifier;
             return identifier;
         };
         //编号 write
         navButtonBuild.identifierWrite = function () {
             var identifier = $("#identifier").val();
-            if (navButtonBuild.isNotBlank(identifier)){
+            if (navButtonBuild.isNotBlank(identifier)) {
                 identifier = navButtonBuild.rule(identifier);
                 $("#identifier").val(identifier);
             }
         };
-        var objArray = [{},{},{},{},{}];
+        var objArray = [{}, {}, {}, {}, {}];
         //获取存储的所有数据
         navButtonBuild.getAllObjArray = function () {
             return objArray;
@@ -414,19 +408,43 @@
         //收集数据
         navButtonBuild.tempSaveData = function () {
             var data = formParams(objectData.config.basicBuilding.frm);
-            var switchNumber = navButtonBuild.switchNumber ;
-            if (navButtonBuild.isNotBlank(switchNumber)){
-                switchNumber = 1;
+            var switchNumber = navButtonBuild.switchNumber;
+            if (navButtonBuild.isNotBlank(switchNumber)) {
+                navButtonBuild.setObjArrayElement(switchNumber, data);
             }
-            navButtonBuild.setObjArrayElement(switchNumber,data);
+            console.info(navButtonBuild.getAllObjArray());
         };
         //赋值
         navButtonBuild.initData = function (switchNumber) {
             var data = navButtonBuild.getObjArray(switchNumber);
             $("#" + objectData.config.basicBuilding.frm).initForm(data);
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingCategory,"buildingCategory");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingStructure,"buildingStructure");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.propertyType,"propertyType");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingStructureLower,"buildingStructureLower");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.builderId,"builderId");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.propertyId,"propertyId");
         };
         navButtonBuild.clearAll = function () {
             $("#" + objectData.config.basicBuilding.frm).clearAll();
+        };
+        navButtonBuild.inputBlur = function () {
+            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i,n) {
+                $(n).blur(function () {
+                    var str = $(n).val();
+                    if (navButtonBuild.isNotBlank(str)){
+                        navButtonBuild.tempSaveData();
+                    }
+                });
+            });
+            $("#" + objectData.config.basicBuilding.frm).find("select").each(function (i,n) {
+                $(n).change(function () {
+                    var str = $(n).val();
+                    if (navButtonBuild.isNotBlank(str)){
+                        navButtonBuild.tempSaveData();
+                    }
+                });
+            });
         };
     })();
 
@@ -434,7 +452,6 @@
     //楼栋切换号码
     navButtonBuild.switchNumber = 0;
     navButtonBuild.switchInit = function (target, number) {
-        navButtonBuild.tempSaveData();
         navButtonBuild.clearAll();
         navButtonBuild.switchNumber = number;
         navButtonBuild.initData(navButtonBuild.switchNumber);
@@ -464,7 +481,9 @@
         //改变按钮颜色
         $(target).removeClass();
         $(target).addClass("btn btn-primary");
-        console.info(navButtonBuild);
-        console.info(navButtonBuild.getAllObjArray());
     };
+
+    $(function () {
+        navButtonBuild.inputBlur();
+    });
 </script>

@@ -193,7 +193,7 @@ public class CaseBuildingService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            id = caseBuildingDao.addBuilding(caseBuilding);
+            id = caseBuildingDao.addBuilding(oo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             this.initAndUpdateSon(id);
             return id;
