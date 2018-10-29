@@ -66,11 +66,12 @@ public class SchemeSurePriceService {
 
     /**
      * 获取数据by planDetailsId
+     *
      * @param planDetailsId
      * @return
      */
-    public SchemeSurePrice getSurePriceByPlanDetailsId(Integer planDetailsId){
-        SchemeSurePrice where =new SchemeSurePrice();
+    public SchemeSurePrice getSurePriceByPlanDetailsId(Integer planDetailsId) {
+        SchemeSurePrice where = new SchemeSurePrice();
         where.setPlanDetailsId(planDetailsId);
         return schemeSurePriceDao.getSchemeSurePrice(where);
     }
@@ -83,17 +84,17 @@ public class SchemeSurePriceService {
      * @return
      */
     @Transactional
-    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId,boolean isUpdatePrice) {
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) {
         SchemeSurePriceItem where = new SchemeSurePriceItem();
         where.setJudgeObjectId(judgeObjectId);
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceItemDao.getSurePriceItemList(where);
         if (CollectionUtils.isNotEmpty(surePriceItemList)) {//更新试算价格
-            if(isUpdatePrice){
+            if (isUpdatePrice) {
                 for (SchemeSurePriceItem schemeSurePriceItem : surePriceItemList) {
                     schemeSurePriceItem.setTrialPrice(getPrice(judgeObjectId, schemeSurePriceItem.getMethodType()));
                     schemeSurePriceItemDao.updateSurePriceItem(schemeSurePriceItem);
                 }
-            }else{
+            } else {
                 return surePriceItemList;
             }
 
@@ -177,7 +178,7 @@ public class SchemeSurePriceService {
      * @param schemeSurePriceApplyDto
      */
     @Transactional
-    public void saveSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto,ProjectPlanDetails projectPlanDetails,String processInsId) {
+    public void saveSurePrice(SchemeSurePriceApplyDto schemeSurePriceApplyDto, ProjectPlanDetails projectPlanDetails, String processInsId) {
         if (schemeSurePriceApplyDto.getId() == null || schemeSurePriceApplyDto.getId() <= 0) {
             SchemeSurePrice schemeSurePrice = new SchemeSurePrice();
             schemeSurePrice.setProjectId(projectPlanDetails.getProjectId());
@@ -213,14 +214,17 @@ public class SchemeSurePriceService {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
-                    judgeObject.setPrice(schemeSurePriceApplyDto.getPrice());
-                    judgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
-                    schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
+                    //先检查是否调整过单价，如果调整过则不做更新处理
+                    if (judgeObject.getPrice() == null) {
+                        judgeObject.setPrice(schemeSurePriceApplyDto.getPrice());
+                        judgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
+                        schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
 
-                    //同步更新申报记录单价
-                    DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(judgeObject.getDeclareRecordId());
-                    declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
-                    declareRecordDao.updateDeclareRecord(declareRecord);
+                        //同步更新申报记录单价
+                        DeclareRecord declareRecord = declareRecordDao.getDeclareRecordById(judgeObject.getDeclareRecordId());
+                        declareRecord.setPrice(schemeSurePriceApplyDto.getPrice());
+                        declareRecordDao.updateDeclareRecord(declareRecord);
+                    }
                 }
             }
         } else {

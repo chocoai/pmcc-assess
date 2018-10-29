@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
+import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
@@ -21,6 +23,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -66,6 +69,8 @@ public class SchemeJudgeObjectService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private SchemeSurePriceFactorDao schemeSurePriceFactorDao;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -103,12 +108,38 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
-    public List<SchemeJudgeObject> getListByPid(Integer pid) {
-        BootstrapTableVo vo = new BootstrapTableVo();
+    public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
-        return judgeObjectList;
+        if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+
+        List<SchemeJudgeObjectVo> judgeObjectVos = LangUtils.transform(judgeObjectList, o -> {
+            SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
+            BeanUtils.copyProperties(o, schemeJudgeObjectVo);
+            //取得调整因素信息
+            schemeJudgeObjectVo.setCoefficient(getCoefficientByDeclareId(o.getDeclareRecordId()));
+            return schemeJudgeObjectVo;
+        });
+        return judgeObjectVos;
+    }
+
+    public String getCoefficientByDeclareId(Integer declareId) {
+        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByDeclareId(declareId);
+        if (CollectionUtils.isNotEmpty(factorList)) {
+            StringBuilder coefficient = new StringBuilder();
+            for (SchemeSurePriceFactor schemeSurePriceFactor : factorList) {
+                coefficient.append(schemeSurePriceFactor.getFactor()).append(schemeSurePriceFactor.getRemark()).append(":");
+                if (schemeSurePriceFactor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
+                    coefficient.append(schemeSurePriceFactor.getCoefficient().setScale(2));
+                } else {
+                    coefficient.append(schemeSurePriceFactor.getCoefficient().multiply(new BigDecimal("100")).setScale(2)).append("%");
+                }
+                coefficient.append(";");
+            }
+            return coefficient.toString();
+        }
+        return null;
     }
 
     /**

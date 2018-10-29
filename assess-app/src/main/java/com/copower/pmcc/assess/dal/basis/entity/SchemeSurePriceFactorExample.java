@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SchemeCertAdjustmentFactorExample {
+public class SchemeSurePriceFactorExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SchemeCertAdjustmentFactorExample() {
+    public SchemeSurePriceFactorExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -236,52 +236,62 @@ public class SchemeCertAdjustmentFactorExample {
             return (Criteria) this;
         }
 
-        public Criteria andFactorEqualTo(BigDecimal value) {
+        public Criteria andFactorEqualTo(String value) {
             addCriterion("factor =", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorNotEqualTo(BigDecimal value) {
+        public Criteria andFactorNotEqualTo(String value) {
             addCriterion("factor <>", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorGreaterThan(BigDecimal value) {
+        public Criteria andFactorGreaterThan(String value) {
             addCriterion("factor >", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andFactorGreaterThanOrEqualTo(String value) {
             addCriterion("factor >=", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorLessThan(BigDecimal value) {
+        public Criteria andFactorLessThan(String value) {
             addCriterion("factor <", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andFactorLessThanOrEqualTo(String value) {
             addCriterion("factor <=", value, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorIn(List<BigDecimal> values) {
+        public Criteria andFactorLike(String value) {
+            addCriterion("factor like", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorNotLike(String value) {
+            addCriterion("factor not like", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorIn(List<String> values) {
             addCriterion("factor in", values, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorNotIn(List<BigDecimal> values) {
+        public Criteria andFactorNotIn(List<String> values) {
             addCriterion("factor not in", values, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andFactorBetween(String value1, String value2) {
             addCriterion("factor between", value1, value2, "factor");
             return (Criteria) this;
         }
 
-        public Criteria andFactorNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andFactorNotBetween(String value1, String value2) {
             addCriterion("factor not between", value1, value2, "factor");
             return (Criteria) this;
         }
@@ -353,6 +363,126 @@ public class SchemeCertAdjustmentFactorExample {
 
         public Criteria andRemarkNotBetween(String value1, String value2) {
             addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientIsNull() {
+            addCriterion("coefficient is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientIsNotNull() {
+            addCriterion("coefficient is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientEqualTo(BigDecimal value) {
+            addCriterion("coefficient =", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientNotEqualTo(BigDecimal value) {
+            addCriterion("coefficient <>", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientGreaterThan(BigDecimal value) {
+            addCriterion("coefficient >", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("coefficient >=", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientLessThan(BigDecimal value) {
+            addCriterion("coefficient <", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("coefficient <=", value, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientIn(List<BigDecimal> values) {
+            addCriterion("coefficient in", values, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientNotIn(List<BigDecimal> values) {
+            addCriterion("coefficient not in", values, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("coefficient between", value1, value2, "coefficient");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoefficientNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("coefficient not between", value1, value2, "coefficient");
             return (Criteria) this;
         }
 
