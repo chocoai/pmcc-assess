@@ -76,13 +76,13 @@ public class PublicBasicService {
         if (basicApply != null) {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
             BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
+            CaseEstate caseEstate = null;
             //-----------------------------------||---------------------------
             if (basicEstate != null) {
                 SysAttachmentDto query = new SysAttachmentDto();
                 query.setTableId(basicEstate.getId());
                 query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
                 sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-                CaseEstate caseEstate = null;
                 if (basicEstate.getCaseEstateId() != null) {
                     caseEstate = caseEstateService.getCaseEstateById(basicEstate.getCaseEstateId());
                     //虽然有 案例id但是无法找到具体数据的情况(一般不会发生)
@@ -146,6 +146,7 @@ public class PublicBasicService {
                 }
                 //升级版本 以及更改某些数据  或者 新添数据
                 if (caseBuildingMain != null) {
+                    caseBuildingMain.setEstateId(caseEstate.getId());
                     caseBuildingMainId = caseBuildingMainService.upgradeVersion(caseBuildingMain);
                 }
                 BasicBuilding basicBuildingQuery = new BasicBuilding();
@@ -211,8 +212,6 @@ public class PublicBasicService {
             logger.error(e.getMessage(), e);
             throw e;
         }
-        //暂时使用此方法回写
-        this.flowWrite(approvalModelDto.getProcessInsId());
     }
 
 

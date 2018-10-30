@@ -1,9 +1,11 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
-import com.copower.pmcc.assess.service.project.declare.DeclareInfoService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.executor.ProcessEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,28 +16,30 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class BasicApplyEvent extends ProjectTaskEvent {
+public class BasicApplyEvent implements ProcessEventExecutor {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private DeclareInfoService declareInfoService;
-    @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+
+    @Override
+    public void processStartExecute(String processInstanceId) throws Exception {
+
+    }
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) {
-        super.processFinishExecute(processExecution);
-        DeclareInfo declareInfo = declareInfoService.getDeclareInfoByProcessInsId(processExecution.getProcessInstanceId());
-        if (declareInfo == null) {
-            return;
-        }
-
-        if (declareInfo != null){
-            if (declareInfo.getProcessInsId() != null){
-                try {
-                    publicBasicService.flowWrite(declareInfo.getProcessInsId());
-                } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+        if (processExecution != null){
+            try {
+                BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());
+                if (basicApply != null){
+                    basicApply.setStatus(ProjectStatusEnum.FINISH.getKey());
+                    basicApplyService.updateBasicApply(basicApply);
                 }
+                publicBasicService.flowWrite(processExecution.getProcessInstanceId());
+            } catch (Exception e1) {
+                logger.error(e1.getMessage(),e1);
             }
         }
     }

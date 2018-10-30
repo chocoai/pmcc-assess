@@ -525,6 +525,7 @@
     objectData.estate = {
         show: function (item) {
             $('#caseTab a:first').tab('show');
+            $("#" + objectData.config.basicEstate.frm).initForm(item);
             if (objectData.estateFlag){
                 objectData.estate.init(item);
                 objectData.estateFlag = false;
@@ -593,7 +594,6 @@
             });
         },
         init: function (item) {
-            $("#" + objectData.config.basicEstate.frm).initForm(item);
             $.each(objectData.config.basicEstate.files, function (i, n) {
                 objectData.uploadFile(n, AssessDBKey.BasicEstate,objectData.isNotBlank(item.id)?item.id:0);
             });
