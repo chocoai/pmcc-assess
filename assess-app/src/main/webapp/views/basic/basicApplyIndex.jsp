@@ -520,18 +520,24 @@
     };
 
 
+    objectData.estateFlag = true;
     //处理 楼盘
     objectData.estate = {
         show: function (item) {
             $('#caseTab a:first').tab('show');
-            objectData.estate.init(item);
+            if (objectData.estateFlag){
+                objectData.estate.init(item);
+                objectData.estateFlag = false;
+            }
         },
         details: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
                 toastr.success('未找到查询的数据');
+                $("#" + objectData.config.basicEstate.frm).clearAll();
                 objectData.estate.show({});
             }
+            $("#" + objectData.config.basicEstate.frm).clearAll();
             if (objectData.isNotBlank(estateId)){
                 $.ajax({
                     url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
@@ -577,6 +583,7 @@
                                 $(n).removeAttr("readonly");
                             }
                         });
+                        $("#" + objectData.config.basicEstate.frm).clearAll();
                         objectData.estate.show(result.data);
                     }
                 },
@@ -586,7 +593,6 @@
             });
         },
         init: function (item) {
-            $("#" + objectData.config.basicEstate.frm).clearAll();
             $("#" + objectData.config.basicEstate.frm).initForm(item);
             $.each(objectData.config.basicEstate.files, function (i, n) {
                 objectData.uploadFile(n, AssessDBKey.BasicEstate,objectData.isNotBlank(item.id)?item.id:0);

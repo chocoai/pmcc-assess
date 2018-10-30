@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
-import com.copower.pmcc.assess.service.event.BaseProcessEvent;
+import com.copower.pmcc.assess.service.event.project.BasicApplyEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -76,9 +76,9 @@ public class BasicApplyService {
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
-        processInfo.setProcessEventExecutor(BaseProcessEvent.class);
+        processInfo.setProcessEventExecutor(BasicApplyEvent.class);
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
-        processInfo.setProcessEventExecutorName(BaseProcessEvent.class.getSimpleName());
+        processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
         processInfo.setTableId(basicApply.getId());
         try {
             processUserDto = processControllerComponent.processStart(processInfo, processControllerComponent.getThisUser(), false);

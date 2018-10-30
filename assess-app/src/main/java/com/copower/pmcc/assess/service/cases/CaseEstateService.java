@@ -262,6 +262,7 @@ public class CaseEstateService {
             caseEstate.setVersion(0);
             int id = caseEstateDao.addEstate(caseEstate);
             this.initAndUpdateSon(id);
+            caseEstate.setId(id);
             return id;
         } else {
             //更新版本
@@ -279,6 +280,7 @@ public class CaseEstateService {
             oo.setGmtCreated(null);
             int id = caseEstateDao.addEstate(oo);
             this.initAndUpdateSon(id);
+            caseEstate.setId(id);
             return id;
         }
     }

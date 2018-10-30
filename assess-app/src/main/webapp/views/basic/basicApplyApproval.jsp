@@ -379,7 +379,8 @@
                                                     物业费
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="物业费(数字)" name="propertyFee" class="form-control"
+                                                    <input type="text" placeholder="物业费(数字)" name="propertyFee"
+                                                           class="form-control"
                                                            readonly="readonly">
                                                 </div>
                                             </div>
@@ -403,7 +404,7 @@
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="楼层起(数字)" name="floorStart"
-                                                            class="form-control"
+                                                           class="form-control"
                                                            readonly="readonly">
                                                 </div>
                                             </div>
@@ -413,7 +414,7 @@
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="楼层止(数字)" name="floorEnd"
-                                                            class="form-control"
+                                                           class="form-control"
                                                            readonly="readonly">
                                                 </div>
                                             </div>
@@ -545,7 +546,8 @@
                                                     建筑结构(下级)
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="建筑结构下级" name="buildingStructureLowerName"
+                                                    <input type="text" placeholder="建筑结构下级"
+                                                           name="buildingStructureLowerName"
                                                            class="form-control" readonly="readonly">
                                                 </div>
                                             </div>
@@ -580,6 +582,44 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="form-group" id="navButtonBuildGroupFileId">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">平面图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input id="building_floor_plan" name="frm_estate_floor_total_plan"
+                                                           required="required" placeholder="上传附件" class="form-control"
+                                                           type="file">
+                                                    <div id="_building_floor_plan"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">外装图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input id="building_figure_outside"
+                                                           name="frm_estate_floor_total_plan"
+                                                           required="required" placeholder="上传附件" class="form-control"
+                                                           type="file">
+                                                    <div id="_building_figure_outside"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">外观图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input id="building_floor_Appearance_figure"
+                                                           name="frm_estate_floor_total_plan"
+                                                           required="required" placeholder="上传附件" class="form-control"
+                                                           type="file">
+                                                    <div id="_building_floor_Appearance_figure"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </form>
                                 </div>
                             </div>
@@ -721,7 +761,7 @@
                 tableId: objectData.isNotBlank(id) ? id : "0",
                 creater: "${currUserAccount}"
             },
-            deleteFlag: true
+            deleteFlag: false
         })
     };
 
@@ -736,15 +776,52 @@
     var navButtonBuild;
     (function () {
         navButtonBuild = new Object();
+        navButtonBuild.groupFileId = "navButtonBuildGroupFileId";
         navButtonBuild.isNotBlank = function (item) {
             if (item) {
                 return true;
             }
             return false;
         };
+
+        function writeUpdateFileId(num) {
+            var fieldsName = "";
+            var labelName = "";
+            if (num == 0) {
+                labelName = "平面图";
+                fieldsName = objectData.config.basicBuilding.files.building_floor_plan + "" + navButtonBuild.switchNumber;
+            }
+            if (num == 1) {
+                labelName = "外装图";
+                fieldsName = objectData.config.basicBuilding.files.building_figure_outside + "" + navButtonBuild.switchNumber;
+            }
+            if (num == 2) {
+                labelName = "外观图";
+                fieldsName = objectData.config.basicBuilding.files.building_floor_Appearance_figure + "" + navButtonBuild.switchNumber;
+            }
+            var label = "<label class='col-sm-1 control-label'>" + labelName + "</label>";
+            var div = "<div class='col-sm-3'>";
+            div += "<div id='" + "_" + fieldsName + "'>" + "</div>";
+            div += "</div>";
+            return label.concat(div);
+        };
+
+        //每次切换更改附件 id
+        navButtonBuild.updateFileId = function () {
+            var html = "";
+            for (var i = 0; i <= 2; i++) {
+                html += "<div class='x-valid'>";
+                html += writeUpdateFileId(i);
+                html += "</div>";
+            }
+            $("#" + navButtonBuild.groupFileId).empty().append(html);
+        };
         //赋值
         navButtonBuild.initData = function (data) {
             $("#" + objectData.config.basicBuilding.frm).initForm(data);
+            $.each(objectData.config.basicBuilding.files, function (i, n) {
+                objectData.showFile(n + "" + navButtonBuild.switchNumber,AssessDBKey.BasicBuilding, data.id);
+            });
         };
         navButtonBuild.clearAll = function () {
             $("#" + objectData.config.basicBuilding.frm).clearAll();
@@ -752,22 +829,25 @@
     })();
 
 
-    navButtonBuild.switchInit = function (target, data) {
+    navButtonBuild.switchNumber = 0;
+    navButtonBuild.switchInit = function (target, data,number) {
         if (objectData.isNotBlank(data)) {
             navButtonBuild.clearAll();
+            navButtonBuild.switchNumber = number;
+            navButtonBuild.updateFileId();
             navButtonBuild.initData(data);
             navButtonBuild.dataButtonWrite(target);
-        }else {
+        } else {
             toastr.success('无数据!');
         }
     };
     //第一栋
     navButtonBuild.one = function (target, number) {
         if (number == '1') {
-            if (objectData.isNotBlank('${oneBasicBuildingJson}')){
+            if (objectData.isNotBlank('${oneBasicBuildingJson}')) {
                 var data = JSON.parse('${oneBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data);
-            }else {
+                navButtonBuild.switchInit(target, data,number);
+            } else {
                 toastr.success('无数据!');
             }
         }
@@ -775,10 +855,10 @@
     //第二栋
     navButtonBuild.two = function (target, number) {
         if (number == '2') {
-            if (objectData.isNotBlank('${twoBasicBuildingJson}')){
+            if (objectData.isNotBlank('${twoBasicBuildingJson}')) {
                 var data = JSON.parse('${twoBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data);
-            }else {
+                navButtonBuild.switchInit(target, data,number);
+            } else {
                 toastr.success('无数据!');
             }
         }
@@ -786,10 +866,10 @@
     //第三栋
     navButtonBuild.three = function (target, number) {
         if (number == '3') {
-            if (objectData.isNotBlank('${threeBasicBuildingJson}')){
+            if (objectData.isNotBlank('${threeBasicBuildingJson}')) {
                 var data = JSON.parse('${threeBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data);
-            }else {
+                navButtonBuild.switchInit(target, data,number);
+            } else {
                 toastr.success('无数据!');
             }
         }
@@ -797,10 +877,10 @@
     //第四栋
     navButtonBuild.four = function (target, number) {
         if (number == '4') {
-            if (objectData.isNotBlank('${fourBasicBuildingJson}')){
+            if (objectData.isNotBlank('${fourBasicBuildingJson}')) {
                 var data = JSON.parse('${fourBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data);
-            }else {
+                navButtonBuild.switchInit(target, data,number);
+            } else {
                 toastr.success('无数据!');
             }
         }
@@ -815,10 +895,10 @@
         $(target).addClass("btn btn-primary");
     };
 
-    objectData.build  = {
-        init:function (number) {
+    objectData.build = {
+        init: function (number) {
             var target = $("#navButtonBuild button").eq(0)[0];
-            navButtonBuild.one(target,number);
+            navButtonBuild.one(target, number);
         }
     };
 </script>

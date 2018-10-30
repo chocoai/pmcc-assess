@@ -11,11 +11,13 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -57,30 +59,29 @@ public class PublicBasicService {
     private CaseEstateService caseEstateService;
     @Autowired
     private CaseBuildingService caseBuildingService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * 审批之后 回写数据并且升级版本
-     *
-     * @param approvalModelDto
+     * 回写数据并且升级版本
+     * @param processInsId
      * @throws Exception
      */
-    public void approvalAndWrite(ApprovalModelDto approvalModelDto) throws Exception {
-        try {
-            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        }
-        String processInsId = approvalModelDto.getProcessInsId();
+    public void flowWrite(String processInsId)throws Exception{
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
         BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
         if (basicApply != null) {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
             BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
             //-----------------------------------||---------------------------
             if (basicEstate != null) {
+                SysAttachmentDto query = new SysAttachmentDto();
+                query.setTableId(basicEstate.getId());
+                query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
                 CaseEstate caseEstate = null;
                 if (basicEstate.getCaseEstateId() != null) {
                     caseEstate = caseEstateService.getCaseEstateById(basicEstate.getCaseEstateId());
@@ -109,6 +110,13 @@ public class PublicBasicService {
                 //升级版本 以及更改某些数据  或者 新添数据
                 if (caseEstate != null) {
                     caseEstateService.upgradeVersion(caseEstate);
+                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                        for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                            sysAttachmentDto.setTableId(caseEstate.getId());
+                            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+                        }
+                        sysAttachmentDtoList = null;
+                    }
                 }
             }
             //-----------------------------------||---------------------------
@@ -145,6 +153,10 @@ public class PublicBasicService {
                 List<BasicBuilding> basicBuildingList = basicBuildingService.basicBuildingList(basicBuildingQuery);
                 if (!ObjectUtils.isEmpty(basicBuildingList)) {
                     for (BasicBuilding basicBuilding : basicBuildingList) {
+                        SysAttachmentDto queryFile = new SysAttachmentDto();
+                        queryFile.setTableId(basicBuilding.getId());
+                        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
                         CaseBuilding caseBuilding = null;
                         if (basicBuilding.getCaseBuildingId() != null) {
                             caseBuilding = caseBuildingService.getCaseBuildingById(basicBuilding.getCaseBuildingId());
@@ -171,11 +183,36 @@ public class PublicBasicService {
                             caseBuilding.setGmtModified(null);
                         }
                         caseBuildingService.upgradeVersion(caseBuilding);
+                        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                            for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                                sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                                sysAttachmentDto.setTableId(caseBuilding.getId());
+                                baseAttachmentService.updateAttachment(sysAttachmentDto);
+                            }
+                            sysAttachmentDtoList = null;
+                        }
                     }
                 }
             }
             //-----------------------------------||---------------------------
         }
+    }
+
+    /**
+     * 审批
+     *
+     * @param approvalModelDto
+     * @throws Exception
+     */
+    public void approvalAndWrite(ApprovalModelDto approvalModelDto) throws Exception {
+        try {
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+        //暂时使用此方法回写
+        this.flowWrite(approvalModelDto.getProcessInsId());
     }
 
 

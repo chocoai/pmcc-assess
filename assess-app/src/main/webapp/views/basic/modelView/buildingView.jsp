@@ -340,6 +340,7 @@
     var navButtonBuild;
     (function () {
         navButtonBuild = new Object();
+        navButtonBuild.flag = true;
         navButtonBuild.groupFileId = "navButtonBuildGroupFileId";
         navButtonBuild.isNotBlank = function (item) {
             if (item) {
@@ -461,7 +462,6 @@
             if (navButtonBuild.isNotBlank(switchNumber)) {
                 navButtonBuild.setObjArrayElement(switchNumber, data);
             }
-            console.info(navButtonBuild.getAllObjArray());
         };
         //赋值
         navButtonBuild.initData = function (switchNumber) {
@@ -474,8 +474,8 @@
             objectData.select2Assignment(objectData.config.basicBuilding.frm, data.builderId, "builderId");
             objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyId, "propertyId");
             $.each(objectData.config.basicBuilding.files, function (i, n) {
-                console.log(n + "" + navButtonBuild.switchNumber);
                 navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
+                navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, data.id);
             });
         };
         navButtonBuild.clearAll = function () {
@@ -518,6 +518,7 @@
             var label = "<label class='col-sm-1 control-label'>" + labelName + "</label>";
             var div = "<div class='col-sm-3'>";
             div += "<input placeholder='上传附件' class='form-control' type='file' id='" + fieldsName + "' name='" + fieldsName + "'>";
+            div += "<div id='" + "_" + fieldsName + "'>" + "</div>";
             div += "</div>";
             return label.concat(div);
         }
@@ -570,21 +571,24 @@
         $(target).addClass("btn btn-primary");
     };
     navButtonBuild.init = function () {
-        this.inputBlur();
-        $("#identifier").bind("blur", navButtonBuild.identifierWrite);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('楼栋初始化成功!');
+        if (navButtonBuild.flag){
+            this.inputBlur();
+            $("#identifier").bind("blur", navButtonBuild.identifierWrite);
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('楼栋初始化成功!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+            });
+            navButtonBuild.flag = false;
+        }
     };
 
 </script>

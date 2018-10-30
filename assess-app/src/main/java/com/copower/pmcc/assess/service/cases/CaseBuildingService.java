@@ -178,6 +178,7 @@ public class CaseBuildingService {
             this.initAndUpdateSon(id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
+            caseBuilding.setId(id);
             return id;
         } else {
             //更新版本
@@ -196,6 +197,7 @@ public class CaseBuildingService {
             id = caseBuildingDao.addBuilding(oo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             this.initAndUpdateSon(id);
+            caseBuilding.setId(id);
             return id;
         }
     }
