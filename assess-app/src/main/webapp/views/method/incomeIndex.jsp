@@ -276,8 +276,8 @@
                         //刷新从表信息
                         var operationMode = $("#frm_income").find('[name=operationMode]:checked').val();
                         if (operationMode == 0) {
-                            selfSupport.loadForecastList(0);
-                            selfSupport.loadForecastList(1);
+                            selfSupport.loadForecastIncomeList();
+                            selfSupport.loadForecastCostList();
                         }
 
                         if (operationMode == 1) {
@@ -311,8 +311,8 @@
             $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();
             selfSupport.loadHistoryList(0);
             selfSupport.loadHistoryList(1);
-            selfSupport.loadForecastList(0);
-            selfSupport.loadForecastList(1);
+            selfSupport.loadForecastIncomeList();
+            selfSupport.loadForecastCostList();
             selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
             $("#self_support_info").hide();

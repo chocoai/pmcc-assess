@@ -10,9 +10,19 @@
     <result column="first_level_number" property="firstLevelNumber" jdbcType="VARCHAR" />
     <result column="second_level_number" property="secondLevelNumber" jdbcType="VARCHAR" />
     <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
+    <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="utilization_ratio" property="utilizationRatio" jdbcType="DECIMAL" />
+    <result column="utilization_ratio_explain" property="utilizationRatioExplain" jdbcType="VARCHAR" />
+    <result column="make_price" property="makePrice" jdbcType="DECIMAL" />
+    <result column="make_price_explain" property="makePriceExplain" jdbcType="VARCHAR" />
+    <result column="executive_price" property="executivePrice" jdbcType="DECIMAL" />
+    <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
+    <result column="discount_rate_explain" property="discountRateExplain" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -77,7 +87,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, income_id, type, year, accounting_subject, first_level_number, second_level_number, 
-    month, unit_price, number, amount_money, creator, gmt_created, gmt_modified
+    month, unit, unit_price, number, amount_money, begin_date, end_date, utilization_ratio, 
+    utilization_ratio_explain, make_price, make_price_explain, executive_price, discount_rate, 
+    discount_rate_explain, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistoryExample" >
     select
@@ -115,14 +127,20 @@
     </selectKey>
     insert into tb_md_income_history (income_id, type, year, 
       accounting_subject, first_level_number, second_level_number, 
-      month, unit_price, number, 
-      amount_money, creator, gmt_created, 
-      gmt_modified)
+      month, unit, unit_price, 
+      number, amount_money, begin_date, 
+      end_date, utilization_ratio, utilization_ratio_explain, 
+      make_price, make_price_explain, executive_price, 
+      discount_rate, discount_rate_explain, creator, 
+      gmt_created, gmt_modified)
     values (#{incomeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{year,jdbcType=VARCHAR}, 
       #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
-      #{month,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, 
-      #{amountMoney,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{month,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, #{beginDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{utilizationRatio,jdbcType=DECIMAL}, #{utilizationRatioExplain,jdbcType=VARCHAR}, 
+      #{makePrice,jdbcType=DECIMAL}, #{makePriceExplain,jdbcType=VARCHAR}, #{executivePrice,jdbcType=DECIMAL}, 
+      #{discountRate,jdbcType=DECIMAL}, #{discountRateExplain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +169,9 @@
       <if test="month != null" >
         month,
       </if>
+      <if test="unit != null" >
+        unit,
+      </if>
       <if test="unitPrice != null" >
         unit_price,
       </if>
@@ -159,6 +180,33 @@
       </if>
       <if test="amountMoney != null" >
         amount_money,
+      </if>
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="utilizationRatio != null" >
+        utilization_ratio,
+      </if>
+      <if test="utilizationRatioExplain != null" >
+        utilization_ratio_explain,
+      </if>
+      <if test="makePrice != null" >
+        make_price,
+      </if>
+      <if test="makePriceExplain != null" >
+        make_price_explain,
+      </if>
+      <if test="executivePrice != null" >
+        executive_price,
+      </if>
+      <if test="discountRate != null" >
+        discount_rate,
+      </if>
+      <if test="discountRateExplain != null" >
+        discount_rate_explain,
       </if>
       <if test="creator != null" >
         creator,
@@ -192,6 +240,9 @@
       <if test="month != null" >
         #{month,jdbcType=VARCHAR},
       </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
       <if test="unitPrice != null" >
         #{unitPrice,jdbcType=DECIMAL},
       </if>
@@ -200,6 +251,33 @@
       </if>
       <if test="amountMoney != null" >
         #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utilizationRatio != null" >
+        #{utilizationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="utilizationRatioExplain != null" >
+        #{utilizationRatioExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="makePrice != null" >
+        #{makePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="makePriceExplain != null" >
+        #{makePriceExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="executivePrice != null" >
+        #{executivePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRateExplain != null" >
+        #{discountRateExplain,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -245,6 +323,9 @@
       <if test="record.month != null" >
         month = #{record.month,jdbcType=VARCHAR},
       </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
       <if test="record.unitPrice != null" >
         unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       </if>
@@ -253,6 +334,33 @@
       </if>
       <if test="record.amountMoney != null" >
         amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.beginDate != null" >
+        begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.utilizationRatio != null" >
+        utilization_ratio = #{record.utilizationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.utilizationRatioExplain != null" >
+        utilization_ratio_explain = #{record.utilizationRatioExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.makePrice != null" >
+        make_price = #{record.makePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.makePriceExplain != null" >
+        make_price_explain = #{record.makePriceExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executivePrice != null" >
+        executive_price = #{record.executivePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discountRate != null" >
+        discount_rate = #{record.discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.discountRateExplain != null" >
+        discount_rate_explain = #{record.discountRateExplain,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -278,9 +386,19 @@
       first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
       second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
       month = #{record.month,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
       unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       number = #{record.number,jdbcType=INTEGER},
       amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      utilization_ratio = #{record.utilizationRatio,jdbcType=DECIMAL},
+      utilization_ratio_explain = #{record.utilizationRatioExplain,jdbcType=VARCHAR},
+      make_price = #{record.makePrice,jdbcType=DECIMAL},
+      make_price_explain = #{record.makePriceExplain,jdbcType=VARCHAR},
+      executive_price = #{record.executivePrice,jdbcType=DECIMAL},
+      discount_rate = #{record.discountRate,jdbcType=DECIMAL},
+      discount_rate_explain = #{record.discountRateExplain,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -312,6 +430,9 @@
       <if test="month != null" >
         month = #{month,jdbcType=VARCHAR},
       </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
       <if test="unitPrice != null" >
         unit_price = #{unitPrice,jdbcType=DECIMAL},
       </if>
@@ -320,6 +441,33 @@
       </if>
       <if test="amountMoney != null" >
         amount_money = #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utilizationRatio != null" >
+        utilization_ratio = #{utilizationRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="utilizationRatioExplain != null" >
+        utilization_ratio_explain = #{utilizationRatioExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="makePrice != null" >
+        make_price = #{makePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="makePriceExplain != null" >
+        make_price_explain = #{makePriceExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="executivePrice != null" >
+        executive_price = #{executivePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRate != null" >
+        discount_rate = #{discountRate,jdbcType=DECIMAL},
+      </if>
+      <if test="discountRateExplain != null" >
+        discount_rate_explain = #{discountRateExplain,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -342,9 +490,19 @@
       first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
       second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
       month = #{month,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
       amount_money = #{amountMoney,jdbcType=DECIMAL},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      utilization_ratio = #{utilizationRatio,jdbcType=DECIMAL},
+      utilization_ratio_explain = #{utilizationRatioExplain,jdbcType=VARCHAR},
+      make_price = #{makePrice,jdbcType=DECIMAL},
+      make_price_explain = #{makePriceExplain,jdbcType=VARCHAR},
+      executive_price = #{executivePrice,jdbcType=DECIMAL},
+      discount_rate = #{discountRate,jdbcType=DECIMAL},
+      discount_rate_explain = #{discountRateExplain,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

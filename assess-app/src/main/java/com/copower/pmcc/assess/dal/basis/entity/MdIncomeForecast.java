@@ -14,6 +14,20 @@ public class MdIncomeForecast {
 
     private BigDecimal initialAmount;
 
+    private BigDecimal operatingCost;
+
+    private BigDecimal operatingExpenses;
+
+    private BigDecimal operatingTax;
+
+    private BigDecimal managementCost;
+
+    private BigDecimal financialCost;
+
+    private BigDecimal operatingProfit;
+
+    private BigDecimal excessProfit;
+
     private BigDecimal growthRate;
 
     private String creator;
@@ -60,6 +74,62 @@ public class MdIncomeForecast {
 
     public void setInitialAmount(BigDecimal initialAmount) {
         this.initialAmount = initialAmount;
+    }
+
+    public BigDecimal getOperatingCost() {
+        return operatingCost;
+    }
+
+    public void setOperatingCost(BigDecimal operatingCost) {
+        this.operatingCost = operatingCost;
+    }
+
+    public BigDecimal getOperatingExpenses() {
+        return operatingExpenses;
+    }
+
+    public void setOperatingExpenses(BigDecimal operatingExpenses) {
+        this.operatingExpenses = operatingExpenses;
+    }
+
+    public BigDecimal getOperatingTax() {
+        return operatingTax;
+    }
+
+    public void setOperatingTax(BigDecimal operatingTax) {
+        this.operatingTax = operatingTax;
+    }
+
+    public BigDecimal getManagementCost() {
+        return managementCost;
+    }
+
+    public void setManagementCost(BigDecimal managementCost) {
+        this.managementCost = managementCost;
+    }
+
+    public BigDecimal getFinancialCost() {
+        return financialCost;
+    }
+
+    public void setFinancialCost(BigDecimal financialCost) {
+        this.financialCost = financialCost;
+    }
+
+    public BigDecimal getOperatingProfit() {
+        return operatingProfit;
+    }
+
+    public void setOperatingProfit(BigDecimal operatingProfit) {
+        this.operatingProfit = operatingProfit;
+    }
+
+    public BigDecimal getExcessProfit() {
+        return excessProfit;
+    }
+
+    public void setExcessProfit(BigDecimal excessProfit) {
+        this.excessProfit = excessProfit;
     }
 
     public BigDecimal getGrowthRate() {

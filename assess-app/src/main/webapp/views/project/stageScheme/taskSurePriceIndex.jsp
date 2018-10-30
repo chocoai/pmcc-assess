@@ -403,6 +403,7 @@
             url: "${pageContext.request.contextPath}/schemeSurePrice/saveSurePriceFactor",
             data: {
                 judgeObjectId: judgeObjectId,
+                price: $('#sure_price_form').find('[name=price]').val(),
                 formData: JSON.stringify(factorArray)
             },
             type: "post",

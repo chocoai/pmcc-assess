@@ -88,6 +88,8 @@ public class MdMarketCompareFieldService {
     @Autowired
     private ExamineHouseRoomDecorateDao examineHouseRoomDecorateDao;
     @Autowired
+    private ExamineHouseEquipmentDao examineHouseEquipmentDao;
+    @Autowired
     private ExamineMatchingEducationDao examineMatchingEducationDao;
     @Autowired
     private ExamineMatchingLeisurePlaceDao examineMatchingLeisurePlaceDao;
@@ -147,7 +149,8 @@ public class MdMarketCompareFieldService {
             List<ExamineBuildingFunction> buildingFunctions = examineBuildingFunctionDao.getExamineBuildingFunctionList(planDetailsId);
             //13.取得楼盘供应信息（供水、供电、供热、供气）
             List<ExamineEstateSupply> estateSupplyList = examineEstateSupplyDao.getExamineEstateSupplyList(planDetailsId);
-
+            //14.取得房间供应信息(供暖、空调、新风)
+            List<ExamineHouseEquipment> equipmentList = examineHouseEquipmentDao.getHouseEquipmentList(planDetailsId);
 
             StringBuilder stringBuilder = null;
             BaseDataDic baseDataDic = null;
@@ -224,7 +227,53 @@ public class MdMarketCompareFieldService {
                         }
                         break;
                     case AssessMarketCompareConstant.URBAN_INFRASTRUCTURE://城市基础设施
+                        stringBuilder = new StringBuilder();
+                        //楼盘下供电
+                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                            for (ExamineEstateSupply supply : estateSupplyList) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYPOWER.getName())) {
+                                    getCommonSupply(stringBuilder, supply);
+                                }
+                            }
+                        }
 
+                        //楼盘下供排水
+                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                            for (ExamineEstateSupply supply : estateSupplyList) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYWATER.getName())) {
+                                    getCommonSupply(stringBuilder, supply);
+                                }
+                            }
+                        }
+
+                        //楼盘下采暖供热
+                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                            for (ExamineEstateSupply supply : estateSupplyList) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYHEATING.getName())) {
+                                    getCommonSupply(stringBuilder, supply);
+                                }
+                            }
+                        }
+
+                        //楼盘下供气
+                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
+                            for (ExamineEstateSupply supply : estateSupplyList) {
+                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYGAS.getName())) {
+                                    getCommonSupply(stringBuilder, supply);
+                                }
+                            }
+                        }
+
+                        //楼盘下通信网络
+                        List<ExamineEstateNetwork> networkList = examineEstateNetworkDao.getEstateNetworkList(planDetailsId);
+                        if (CollectionUtils.isNotEmpty(networkList)) {
+                            for (ExamineEstateNetwork network : networkList) {
+                                stringBuilder.append(StringUtils.isEmpty(network.getName()) ? "" : String.format("名称:%s、", network.getName()));
+                                stringBuilder.append(StringUtils.isEmpty(network.getServiceContent()) ? "" : String.format("服务内容:%s、", network.getServiceContent()));
+                                stringBuilder.append(StringUtils.isEmpty(network.getIndexParameter()) ? "" : String.format("指标参数:%s、", network.getIndexParameter()));
+                            }
+                        }
+                        list.add(getMarketCompareItemDto(AssessMarketCompareConstant.URBAN_INFRASTRUCTURE, stringBuilder.toString()));
                         break;
                     case AssessMarketCompareConstant.PUBLIC_SERVICE_FACILITIES://公共服务设施
                         stringBuilder = new StringBuilder();
@@ -483,64 +532,32 @@ public class MdMarketCompareFieldService {
                             list.add(getMarketCompareItemDto(AssessMarketCompareConstant.WATERPROOF, stringBuilder.toString()));
                         }
                         break;
-                    case AssessMarketCompareConstant.INTELLIGENT_LEVEL://设施设备及智能化程度
-
+                    case AssessMarketCompareConstant.INTELLIGENT_LEVEL://设施设备及智能化程度(新风情况)
+                        if(CollectionUtils.isNotEmpty(equipmentList)){
+                            stringBuilder = new StringBuilder();
+                            for (ExamineHouseEquipment examineHouseEquipment : equipmentList) {
+                                if(StringUtils.equals(examineHouseEquipment.getType(),"")){
+                                    stringBuilder.append(baseDataDicService.getNameById(examineHouseEquipment.getCategory()));
+                                    stringBuilder.append(examineHouseEquipment.getEquipment()).append(examineHouseEquipment.getEquipmentPrice()).append("、");
+                                }
+                            }
+                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.INTELLIGENT_LEVEL, stringBuilder.toString()));
+                        }
                         break;
                     case AssessMarketCompareConstant.POWER_SUPPLY_MODE://供电方式
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            stringBuilder = new StringBuilder();
-                            for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYPOWER.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
-                                }
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.POWER_SUPPLY_MODE, stringBuilder.toString()));
-                        }
+
                         break;
                     case AssessMarketCompareConstant.WATER_SUPPLY_DRAINAGE_MODE://供（排）水方式
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            stringBuilder = new StringBuilder();
-                            for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYWATER.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
-                                }
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.WATER_SUPPLY_DRAINAGE_MODE, stringBuilder.toString()));
-                        }
+
                         break;
                     case AssessMarketCompareConstant.HEATING_MODE://采暖供热方式
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            stringBuilder = new StringBuilder();
-                            for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYHEATING.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
-                                }
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.HEATING_MODE, stringBuilder.toString()));
-                        }
+
                         break;
                     case AssessMarketCompareConstant.GAS_SUPPLY_MODE://供气方式
-                        if (CollectionUtils.isNotEmpty(estateSupplyList)) {
-                            stringBuilder = new StringBuilder();
-                            for (ExamineEstateSupply supply : estateSupplyList) {
-                                if (StringUtils.equals(supply.getType(), ExamineEstateSupplyEnumType.ESTATESUPPLYGAS.getName())) {
-                                    getCommonSupply(stringBuilder, supply);
-                                }
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.GAS_SUPPLY_MODE, stringBuilder.toString()));
-                        }
+
                         break;
                     case AssessMarketCompareConstant.NETWORK://通讯网络
-                        List<ExamineEstateNetwork> networkList = examineEstateNetworkDao.getEstateNetworkList(planDetailsId);
-                        if (CollectionUtils.isNotEmpty(networkList)) {
-                            stringBuilder = new StringBuilder();
-                            for (ExamineEstateNetwork network : networkList) {
-                                stringBuilder.append(StringUtils.isEmpty(network.getName()) ? "" : String.format("名称:%s、", network.getName()));
-                                stringBuilder.append(StringUtils.isEmpty(network.getServiceContent()) ? "" : String.format("服务内容:%s、", network.getServiceContent()));
-                                stringBuilder.append(StringUtils.isEmpty(network.getIndexParameter()) ? "" : String.format("指标参数:%s、", network.getIndexParameter()));
-                            }
-                            list.add(getMarketCompareItemDto(AssessMarketCompareConstant.NETWORK, stringBuilder.toString()));
-                        }
+
                         break;
                     case AssessMarketCompareConstant.ELEVATOR_HOUSEHOLD_RATIO://电梯梯户比
                         ExamineUnit examineUnit = examineUnitDao.getUnitByPlanDetailsId(planDetailsId);

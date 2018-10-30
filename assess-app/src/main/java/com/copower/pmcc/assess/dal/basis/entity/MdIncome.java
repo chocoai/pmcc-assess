@@ -16,6 +16,8 @@ public class MdIncome {
 
     private Integer leaseMode;
 
+    private Integer type;
+
     private String restrictionExplain;
 
     private String averageProfitRate;
@@ -78,6 +80,14 @@ public class MdIncome {
 
     public void setLeaseMode(Integer leaseMode) {
         this.leaseMode = leaseMode;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getRestrictionExplain() {
