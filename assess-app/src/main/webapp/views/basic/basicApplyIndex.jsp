@@ -724,7 +724,7 @@
                                             $.each(resultA.data, function (i, n) {
                                                 navButtonBuild.setObjArrayElement(i + 1, n);
                                             });
-                                            $("#identifier").off().removeAttr("readonly").val(result.data.identifier);
+                                            $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
                                             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                                                 var readonly = $(n).attr("readonly");
@@ -732,12 +732,13 @@
                                                     $(n).attr("readonly", "readonly");
                                                 }
                                             });
+                                            var temp = resultA.data[0];
                                             if (objectData.isNotBlankObjectProperty(temp)) {
                                                 objectData.building.show(temp);
                                             }else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur",eval("navButtonBuild.identifierWrite()"));
+                                            $("#identifier").bind("blur",navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },
@@ -778,7 +779,7 @@
                                             $.each(resultA.data, function (i, n) {
                                                 navButtonBuild.setObjArrayElement(i + 1, n);
                                             });
-                                            $("#identifier").off().removeAttr("readonly").val(result.data.identifier);
+                                            $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
                                             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                                                 var readonly = $(n).attr("readonly");
@@ -792,7 +793,7 @@
                                             }else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur",eval("navButtonBuild.identifierWrite()"));
+                                            $("#identifier").bind("blur",navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },

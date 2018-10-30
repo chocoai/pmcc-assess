@@ -13,7 +13,7 @@
                 <div class="col-sm-3">
                     <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId">
                     <input type="text" placeholder="楼栋编号 (必要的查询下面楼栋所需)" name="identifier"
-                           class="form-control" id="identifier" onblur="navButtonBuild.identifierWrite()">
+                           class="form-control" id="identifier">
                 </div>
             </div>
         </div>
@@ -485,5 +485,6 @@
 
     $(function () {
         navButtonBuild.inputBlur();
+        $("#identifier").bind("blur",navButtonBuild.identifierWrite);
     });
 </script>
