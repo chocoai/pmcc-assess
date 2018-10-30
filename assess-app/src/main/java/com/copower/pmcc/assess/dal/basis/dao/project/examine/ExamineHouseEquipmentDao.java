@@ -41,6 +41,12 @@ public class ExamineHouseEquipmentDao {
         return examineHouseEquipmentMapper.selectByExample(example);
     }
 
+    public List<ExamineHouseEquipment> getHouseEquipmentList(Integer planDetailsId) {
+        ExamineHouseEquipmentExample example = new ExamineHouseEquipmentExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineHouseEquipmentMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineHouseEquipment

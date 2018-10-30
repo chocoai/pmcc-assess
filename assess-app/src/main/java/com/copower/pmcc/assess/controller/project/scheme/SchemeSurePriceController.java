@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -54,10 +55,10 @@ public class SchemeSurePriceController {
 
     @PostMapping(value = "/saveSurePriceFactor", name = "保存调整系数及价格")
     @ResponseBody
-    public HttpResult saveSurePriceFactor(Integer judgeObjectId, String formData) {
+    public HttpResult saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, String formData) {
         try {
             List<SchemeSurePriceFactor> factorList = JSON.parseArray(formData, SchemeSurePriceFactor.class);
-            return HttpResult.newCorrectResult(schemeSurePriceFactorService.saveSurePriceFactor(judgeObjectId, factorList));
+            return HttpResult.newCorrectResult(schemeSurePriceFactorService.saveSurePriceFactor(judgeObjectId,price, factorList));
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取数据异常");
         }

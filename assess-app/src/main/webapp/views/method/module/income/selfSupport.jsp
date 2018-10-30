@@ -123,8 +123,9 @@
                         </label>
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" required class="form-control x-percent" name="rewardRate" placeholder="报酬率"
-                                    data-value="${mdIncome.rewardRate}"   onblur="selfSupport.computePrice();">
+                                <input type="text" required class="form-control x-percent" name="rewardRate"
+                                       placeholder="报酬率"
+                                       data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
                                 <span class="input-group-btn">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
                                      onclick="selfSupport.getRewardRate(this);"/>
@@ -140,7 +141,8 @@
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
-                                   data-value="${mdIncome.averageProfitRate}"  class="form-control x-percent" onblur="selfSupport.computeOperatingProfit();" required="required">
+                                   data-value="${mdIncome.averageProfitRate}" class="form-control x-percent"
+                                   onblur="selfSupport.computeOperatingProfit();" required="required">
                         </div>
                     </div>
                 </div>
@@ -150,7 +152,8 @@
                             取数说明
                         </label>
                         <div class="col-sm-11">
-                            <textarea name="averageProfitRateRemark" class="form-control" placeholder="行业经营平均利润率取数说明" >${mdIncome.averageProfitRateRemark}</textarea>
+                            <textarea name="averageProfitRateRemark" class="form-control"
+                                      placeholder="行业经营平均利润率取数说明">${mdIncome.averageProfitRateRemark}</textarea>
                         </div>
                     </div>
                 </div>
@@ -278,6 +281,17 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            单位<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="unit" placeholder="单位" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             单价<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
@@ -286,8 +300,6 @@
                                                    data-rule-number="true" class="form-control" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             数量<span class="symbol required"></span>
@@ -298,6 +310,9 @@
                                                    data-rule-digits="true" class="form-control" required="required">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             金额<span class="symbol required"></span>
@@ -326,7 +341,8 @@
     </div>
 </div>
 
-<div id="modal_forecast" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<%--收入预测数据--%>
+<div id="modal_forecast_income" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -336,7 +352,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">预测数据</h3>
             </div>
-            <form id="frm_forecast" class="form-horizontal">
+            <form id="frm_forecast_income" class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="type">
                 <input type="hidden" name="sectionId">
@@ -366,7 +382,134 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="selfSupport.saveForecast();">
+                    <button type="button" class="btn btn-primary" onclick="selfSupport.saveForecastIncome();">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%--成本预测数据--%>
+<div id="modal_forecast_cost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">预测数据</h3>
+            </div>
+            <form id="frm_forecast_cost" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type">
+                <input type="hidden" name="sectionId">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营成本<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingCost" placeholder="经营成本" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营费用<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingExpenses" placeholder="经营费用" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营税金及附加<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingTax" placeholder="经营税金及附加" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                管理费用<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="managementCost" placeholder="管理费用" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                财务费用<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="financialCost" placeholder="财务费用" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                经营利润<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="operatingProfit" placeholder="经营利润" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                特许权超额利润<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="excessProfit" placeholder="特许权超额利润" data-rule-number="true"
+                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                初始金额<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="initialAmount" placeholder="初始金额" data-rule-number="true"
+                                       class="form-control" required="required">
+                            </div>
+                        </div>
+                        <div class="x-valid">
+                            <label class="col-sm-2 control-label">
+                                增长率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="text" name="growthRate" placeholder="增长率" class="form-control x-percent"
+                                       required="required">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="selfSupport.saveForecastCost();">
                         保存
                     </button>
                 </div>
@@ -539,6 +682,8 @@
 
 
     var selfSupport = {};
+    selfSupport.frmForecastIncome = $('#frm_forecast_income');
+    selfSupport.frmForecastCost = $('#frm_forecast_cost');
 
     //添加自营金额列表信息
     selfSupport.addHistory = function (type, frm, modal) {
@@ -704,6 +849,7 @@
         cols.push({field: 'firstLevelNumber', title: '一级编号'});
         cols.push({field: 'secondLevelNumber', title: '二级编号'});
         cols.push({field: 'month', title: '月度'});
+        cols.push({field: 'unit', title: '单位'});
         cols.push({field: 'unitPrice', title: '单价'});
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'amountMoney', title: '金额'});
@@ -731,21 +877,30 @@
     }
 
     //编辑预测信息
-    selfSupport.editForecast = function (index, type) {
-        var row = $("#" + selfSupport.getForecastListId(type)).bootstrapTable('getData')[index];
-        $("#frm_forecast").clearAll();
-        $("#frm_forecast").initForm(row);
-        $("#frm_forecast").find('[name=growthRate]').attr('data-value', row.growthRate);
-        AssessCommon.elementParsePercent($("#frm_forecast").find('[name=growthRate]'));
-        $('#modal_forecast').modal();
+    selfSupport.editForecastIncome = function (index) {
+        var row = $("#tb_forecast_income_list").bootstrapTable('getData')[index];
+        selfSupport.frmForecastIncome.clearAll();
+        selfSupport.frmForecastIncome.initForm(row);
+        selfSupport.frmForecastIncome.find('[name=growthRate]').attr('data-value', row.growthRate);
+        AssessCommon.elementParsePercent(selfSupport.frmForecastIncome.find('[name=growthRate]'));
+        $('#modal_forecast_income').modal();
     }
 
-    //保存预测信息
-    selfSupport.saveForecast = function () {
-        if (!$("#frm_forecast").valid()) {
+    selfSupport.editForecastCost = function (index) {
+        var row = $("#tb_forecast_cost_list").bootstrapTable('getData')[index];
+        selfSupport.frmForecastCost.clearAll();
+        selfSupport.frmForecastCost.initForm(row);
+        selfSupport.frmForecastCost.find('[name=growthRate]').attr('data-value', row.growthRate);
+        AssessCommon.elementParsePercent(selfSupport.frmForecastCost.find('[name=growthRate]'));
+        $('#modal_forecast_cost').modal();
+    }
+
+    //保存收入预测信息
+    selfSupport.saveForecastIncome = function () {
+        if (!selfSupport.frmForecastIncome.valid()) {
             return false;
         }
-        var data = formParams("frm_forecast");
+        var data = formSerializeArray(selfSupport.frmForecastIncome);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveForecast",
@@ -756,10 +911,9 @@
                 Loading.progressHide();
                 if (result.ret) {
                     toastr.success('保存成功');
-                    var type = $("#frm_forecast").find('[name=type]').val();
-                    selfSupport.loadForecastList(type);
+                    selfSupport.loadForecastIncomeList();
                     selfSupport.loadCalculationResult();
-                    $('#modal_forecast').modal('hide');
+                    $('#modal_forecast_income').modal('hide');
                 }
                 else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -772,8 +926,39 @@
         })
     }
 
-    //加载预测列表信息
-    selfSupport.loadForecastList = function (type) {
+    //保存预测信息
+    selfSupport.saveForecastCost = function () {
+        if (!selfSupport.frmForecastCost.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(selfSupport.frmForecastCost);
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/income/saveForecast",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('保存成功');
+                    selfSupport.loadForecastCostList();
+                    selfSupport.loadCalculationResult();
+                    $('#modal_forecast_cost').modal('hide');
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    //加载收入预测列表信息
+    selfSupport.loadForecastIncomeList = function () {
         var cols = [];
         cols.push({
             field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
@@ -795,15 +980,65 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecast(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncome(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#" + selfSupport.getForecastListId(type)).bootstrapTable('destroy');
-        TableInit(selfSupport.getForecastListId(type), "${pageContext.request.contextPath}/income/getForecastList", cols, {
-            type: type,
+        $("#tb_forecast_income_list").bootstrapTable('destroy');
+        TableInit("tb_forecast_income_list", "${pageContext.request.contextPath}/income/getForecastList", cols, {
+            type: 0,
+            incomeId: $("#frm_income").find('[name=id]').val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //加载成本预测列表信息
+    selfSupport.loadForecastCostList = function () {
+        var cols = [];
+        cols.push({
+            field: 'beginDate', title: '开始时间', formatter: function (value, row, index) {
+                return formatDate(row.beginDate, false);
+            }
+        });
+        cols.push({
+            field: 'endDate', title: '结束时间', formatter: function (value, row, index) {
+                return formatDate(row.endDate, false);
+            }
+        });
+        cols.push({field: 'yearCount', title: '年份数'});
+        cols.push({field: 'operatingCost', title: '经营成本'});
+        cols.push({field: 'operatingExpenses', title: '经营费用'});
+        cols.push({field: 'operatingTax', title: '经营税金及附加'});
+        cols.push({field: 'managementCost', title: '管理费用'});
+        cols.push({field: 'financialCost', title: '财务费用'});
+        cols.push({field: 'operatingProfit', title: '经营利润'});
+        cols.push({field: 'excessProfit', title: '特许权超额利润'});
+        cols.push({field: 'initialAmount', title: '初始金额'});
+        cols.push({
+            field: 'growthRate', title: '增长率', formatter: function (value, row, index) {
+                return AssessCommon.pointToPercent(value);
+            }
+        });
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastCost(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#tb_forecast_cost_list").bootstrapTable('destroy');
+        TableInit("tb_forecast_cost_list", "${pageContext.request.contextPath}/income/getForecastList", cols, {
+            type: 1,
             incomeId: $("#frm_income").find('[name=id]').val()
         }, {
             showColumns: false,
@@ -1044,6 +1279,41 @@
             formData.dateSectionList.push(section);
         })
         return formData;
+    }
+
+    //自动计算初始金额
+    selfSupport.computeInitialAmount = function (_this) {
+        var form = $(_this).closest('form');
+        var initialAmount = 0;
+        var operatingCost = form.find('[name=operatingCost]').val();
+        if (operatingCost && AssessCommon.isNumber(operatingCost)) {
+            initialAmount += parseFloat(operatingCost);
+        }
+        var operatingExpenses = form.find('[name=operatingExpenses]').val();
+        if (operatingExpenses && AssessCommon.isNumber(operatingExpenses)) {
+            initialAmount += parseFloat(operatingExpenses);
+        }
+        var operatingTax = form.find('[name=operatingTax]').val();
+        if (operatingTax && AssessCommon.isNumber(operatingTax)) {
+            initialAmount += parseFloat(operatingTax);
+        }
+        var managementCost = form.find('[name=managementCost]').val();
+        if (managementCost && AssessCommon.isNumber(managementCost)) {
+            initialAmount += parseFloat(managementCost);
+        }
+        var financialCost = form.find('[name=financialCost]').val();
+        if (financialCost && AssessCommon.isNumber(financialCost)) {
+            initialAmount += parseFloat(financialCost);
+        }
+        var operatingProfit = form.find('[name=operatingProfit]').val();
+        if (operatingProfit && AssessCommon.isNumber(operatingProfit)) {
+            initialAmount += parseFloat(operatingProfit);
+        }
+        var excessProfit = form.find('[name=excessProfit]').val();
+        if (excessProfit && AssessCommon.isNumber(excessProfit)) {
+            initialAmount += parseFloat(excessProfit);
+        }
+        form.find('[name=initialAmount]').val(initialAmount);
     }
 </script>
 <%--测算--%>

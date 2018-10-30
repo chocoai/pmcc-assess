@@ -44,34 +44,35 @@ public class SchemeSurePriceFactorService {
      * @throws BusinessException
      */
     @Transactional
-    public SchemeJudgeObjectVo saveSurePriceFactor(Integer judgeObjectId, List<SchemeSurePriceFactor> factors) throws BusinessException {
+    public SchemeJudgeObjectVo saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, List<SchemeSurePriceFactor> factors) throws BusinessException {
         if (CollectionUtils.isEmpty(factors))
             return null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        BigDecimal price = schemeJudgeObject.getOriginalPrice();
+        BigDecimal resultPrice = schemeJudgeObject.getOriginalPrice();
+        if (resultPrice == null) resultPrice = price;
         //先删除
         schemeSurePriceFactorDao.deleteSurePriceFactorByDeclareId(schemeJudgeObject.getDeclareRecordId());
         //再添加
         for (SchemeSurePriceFactor factor : factors) {
             if (factor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
-                price = price.add(factor.getCoefficient());
+                resultPrice = resultPrice.add(factor.getCoefficient());
             } else {
-                price = price.multiply(factor.getCoefficient());
+                resultPrice = resultPrice.multiply(factor.getCoefficient());
             }
             factor.setDeclareId(schemeJudgeObject.getDeclareRecordId());
             factor.setCreator(commonService.thisUserAccount());
             schemeSurePriceFactorDao.addSurePriceFactor(factor);
         }
         //更新调整后的价格
-        price = price.setScale(2, BigDecimal.ROUND_HALF_UP);
-        declareRecord.setPrice(price);
+        resultPrice = resultPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+        declareRecord.setPrice(resultPrice);
         declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-        schemeJudgeObject.setPrice(price);
+        schemeJudgeObject.setPrice(resultPrice);
         schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
 
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
-        schemeJudgeObjectVo.setPrice(price);
+        schemeJudgeObjectVo.setPrice(resultPrice);
         schemeJudgeObjectVo.setCoefficient(schemeJudgeObjectService.getCoefficientByDeclareId(declareRecord.getId()));
         return schemeJudgeObjectVo;
     }

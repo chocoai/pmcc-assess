@@ -20,11 +20,31 @@ public class MdIncomeHistory {
 
     private String month;
 
+    private String unit;
+
     private BigDecimal unitPrice;
 
     private Integer number;
 
     private BigDecimal amountMoney;
+
+    private Date beginDate;
+
+    private Date endDate;
+
+    private BigDecimal utilizationRatio;
+
+    private String utilizationRatioExplain;
+
+    private BigDecimal makePrice;
+
+    private String makePriceExplain;
+
+    private BigDecimal executivePrice;
+
+    private BigDecimal discountRate;
+
+    private String discountRateExplain;
 
     private String creator;
 
@@ -96,6 +116,14 @@ public class MdIncomeHistory {
         this.month = month == null ? null : month.trim();
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit == null ? null : unit.trim();
+    }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -118,6 +146,78 @@ public class MdIncomeHistory {
 
     public void setAmountMoney(BigDecimal amountMoney) {
         this.amountMoney = amountMoney;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public BigDecimal getUtilizationRatio() {
+        return utilizationRatio;
+    }
+
+    public void setUtilizationRatio(BigDecimal utilizationRatio) {
+        this.utilizationRatio = utilizationRatio;
+    }
+
+    public String getUtilizationRatioExplain() {
+        return utilizationRatioExplain;
+    }
+
+    public void setUtilizationRatioExplain(String utilizationRatioExplain) {
+        this.utilizationRatioExplain = utilizationRatioExplain == null ? null : utilizationRatioExplain.trim();
+    }
+
+    public BigDecimal getMakePrice() {
+        return makePrice;
+    }
+
+    public void setMakePrice(BigDecimal makePrice) {
+        this.makePrice = makePrice;
+    }
+
+    public String getMakePriceExplain() {
+        return makePriceExplain;
+    }
+
+    public void setMakePriceExplain(String makePriceExplain) {
+        this.makePriceExplain = makePriceExplain == null ? null : makePriceExplain.trim();
+    }
+
+    public BigDecimal getExecutivePrice() {
+        return executivePrice;
+    }
+
+    public void setExecutivePrice(BigDecimal executivePrice) {
+        this.executivePrice = executivePrice;
+    }
+
+    public BigDecimal getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(BigDecimal discountRate) {
+        this.discountRate = discountRate;
+    }
+
+    public String getDiscountRateExplain() {
+        return discountRateExplain;
+    }
+
+    public void setDiscountRateExplain(String discountRateExplain) {
+        this.discountRateExplain = discountRateExplain == null ? null : discountRateExplain.trim();
     }
 
     public String getCreator() {
