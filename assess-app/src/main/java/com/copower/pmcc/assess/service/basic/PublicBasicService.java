@@ -195,10 +195,10 @@ public class PublicBasicService {
 
         JSONObject jsonObject = JSON.parseObject(formData);
         String jsonContent = null;
-
+        BasicEstate basicEstate = null;
         jsonContent = jsonObject.getString("basicEstate");
         if (StringUtils.isNotBlank(jsonContent)) {
-            BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+            basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
             basicEstate.setApplyId(basicApply.getId());
             if (basicEstate.getId() != null) {
                 basicEstate.setCaseEstateId(basicEstate.getId());
@@ -212,16 +212,23 @@ public class PublicBasicService {
         }
         jsonContent = null;
         jsonContent = jsonObject.getString("basicBuildingMain");
+        BasicBuildingMain basicBuildingMain = null;
         if (StringUtils.isNotBlank(jsonContent)) {
-            BasicBuildingMain basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
+            basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
             basicBuildingMain.setApplyId(basicApply.getId());
             if (basicBuildingMain.getId() != null) {
                 basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
                 basicBuildingMain.setId(null);
             }
-            Integer id = null;
+            if (basicBuildingMain.getEstateId() == null){
+                basicBuildingMain.setEstateId(basicEstate.getId());
+                //当楼栋数据未包含楼盘 那么楼盘必须是新增的情况
+                if (basicEstate.getId() == null){
+                    throw new Exception();
+                }
+            }
             try {
-                id = basicBuildingMainService.upgradeVersion(basicBuildingMain);
+               basicBuildingMainService.upgradeVersion(basicBuildingMain);
             } catch (Exception e1) {
 
             }
@@ -239,8 +246,8 @@ public class PublicBasicService {
                         basicBuilding.setCaseBuildingId(basicBuilding.getId());
                         basicBuilding.setId(null);
                     }
-                    if (id != null) {
-                        basicBuilding.setBasicBuildingMainId(id);
+                    if (basicBuildingMain.getId() != null) {
+                        basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
                         try {
                             basicBuildingService.upgradeVersion(basicBuilding);
                         } catch (Exception e1) {

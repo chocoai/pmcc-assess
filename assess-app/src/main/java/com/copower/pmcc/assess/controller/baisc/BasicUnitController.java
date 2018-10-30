@@ -89,7 +89,7 @@ public class BasicUnitController {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setUnitNumber(unitNumber);
-        basicUnit.setBuildingId(buildingId);
+//        basicUnit.setBuildingId(buildingId);
         try {
             List<BasicUnit> list = basicUnitService.autoComplete(basicUnit);
             for (BasicUnit oo:list){

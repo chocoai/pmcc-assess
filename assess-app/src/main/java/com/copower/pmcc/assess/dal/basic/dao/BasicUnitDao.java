@@ -49,9 +49,9 @@ public class BasicUnitDao {
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (basicUnit.getBuildingId() != null){
-            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
-        }
+//        if (basicUnit.getBuildingId() != null){
+//            criteria.andBuildingIdEqualTo(basicUnit.getBuildingId());
+//        }
         if (StringUtils.isNotBlank(basicUnit.getUnitNumber())){
             criteria.andUnitNumberLike(new StringBuilder("%").append(basicUnit.getUnitNumber()).append("%").toString());
         }

@@ -67,6 +67,17 @@ public class BasicApplyController {
         return HttpResult.newCorrectResult();
     }
 
+    @RequestMapping(value = "/basicApplyApproval", name = "审批页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyDetail(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
+        try {
+            this.setViewParam(processInsId,modelAndView);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(),e1);
+        }
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/projectApprovalSubmit", name = "审批页面 提交")
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {

@@ -89,11 +89,13 @@ public class BasicBuildingMainService {
             }
             Integer id = basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingMain.class), id);
+            basicBuildingMain.setId(id);
             return  id ;
         } else {
             BasicBuildingMain oo = basicBuildingMainDao.getBasicBuildingMainById(basicBuildingMain.getId());
             basicBuildingMain.setVersion(oo.getVersion() + 1);
             basicBuildingMainDao.updateBasicBuildingMain(basicBuildingMain);
+            basicBuildingMain.setId(basicBuildingMain.getId());
             return null;
         }
     }

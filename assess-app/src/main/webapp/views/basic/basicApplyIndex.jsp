@@ -529,32 +529,34 @@
         details: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
-                Alert("请查询楼盘!");
-                return false;
+                toastr.success('未找到查询的数据');
+                objectData.estate.show({});
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
-                type: "get",
-                dataType: "json",
-                data: {id: estateId},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (!objectData.isNotBlank(readonly)) {
-                                $(n).attr("readonly", "readonly");
-                            }
-                        });
-                        objectData.estate.show(result.data);
-                    } else {
-                        Alert("没有查询到与此相关的楼盘信息");
-                        objectData.estate.show({});
+            if (objectData.isNotBlank(estateId)){
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: estateId},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
+                                var readonly = $(n).attr("readonly");
+                                if (!objectData.isNotBlank(readonly)) {
+                                    $(n).attr("readonly", "readonly");
+                                }
+                            });
+                            objectData.estate.show(result.data);
+                        } else {
+                            Alert("没有查询到与此相关的楼盘信息");
+                            objectData.estate.show({});
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
+                });
+            }
         },
         edit: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
@@ -587,7 +589,7 @@
             $("#" + objectData.config.basicEstate.frm).clearAll();
             $("#" + objectData.config.basicEstate.frm).initForm(item);
             $.each(objectData.config.basicEstate.files, function (i, n) {
-                objectData.uploadFile(n, AssessDBKey.BasicEstate, item.id);
+                objectData.uploadFile(n, AssessDBKey.BasicEstate,objectData.isNotBlank(item.id)?item.id:0);
             });
             AssessCommon.initAreaInfo({
                 provinceTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.province"),
@@ -694,15 +696,14 @@
         show: function (item) {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
-                Alert("请先查询楼盘!");
-                return false;
+                toastr.success('未选择楼盘');
             }
             objectData.building.init(item);
         },
         details: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
-                Alert("请查询楼栋!");
+                toastr.success("无查询到楼栋数据,请添加!");
                 objectData.building.show({});
             }
             $.ajax({
@@ -910,7 +911,7 @@
             item.basicBuildingMain = {
                 id: $("#caseBuildingMainId").val(),
                 identifier: $("#identifier").val(),
-                estateId: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id")
+                estateId: objectData.isNotBlank(estateId)?estateId:null
             };
             item.basicBuildings = basicBuildings;
         }
@@ -929,8 +930,7 @@
     function submit() {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         if (!objectData.isNotBlank(estateId)) {
-            Alert("请先查询楼盘!");
-            return false;
+           //请先查询楼盘 不再验证
         }
         var formData = JSON.stringify(objectData.formParams());
         $.ajax({

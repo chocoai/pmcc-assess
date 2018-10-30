@@ -115,6 +115,7 @@ public class BasicEstateService {
         }
         Integer id = basicEstateDao.saveBasicEstate(basicEstate);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
+        basicEstate.setId(id);
         return  id ;
     }
 
