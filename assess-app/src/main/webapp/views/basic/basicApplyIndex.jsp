@@ -812,8 +812,8 @@
         },
         init: function (item) {
             $('#caseTab a').eq(1).tab('show');
-            $.each(objectData.config.basicBuilding.files, function (i, n) {
-                objectData.uploadFile(n, AssessDBKey.BasicBuilding, item.id);
+            $(function () {
+                navButtonBuild.init();
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, item.buildingCategory, function (html, data) {
                 $("#" + objectData.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');

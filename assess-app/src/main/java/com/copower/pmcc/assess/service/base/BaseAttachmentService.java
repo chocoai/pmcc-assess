@@ -55,6 +55,14 @@ public class BaseAttachmentService {
         return erpRpcAttachmentService.createNoRepeatFileName(suffix);
     }
 
+    public boolean deleteAttachment(Integer id){
+        return erpRpcAttachmentService.deleteAttachment(id);
+    }
+
+    public int deleteAttachmentByDto(SysAttachmentDto sysAttachmentDto){
+        return erpRpcAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
+    }
+
     /**
      * 创建文件存放目录
      *

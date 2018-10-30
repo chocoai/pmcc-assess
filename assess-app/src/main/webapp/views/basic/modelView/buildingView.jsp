@@ -305,7 +305,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="navButtonBuildGroupFileId">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">平面图<span class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -340,12 +340,61 @@
     var navButtonBuild;
     (function () {
         navButtonBuild = new Object();
-
+        navButtonBuild.groupFileId = "navButtonBuildGroupFileId";
         navButtonBuild.isNotBlank = function (item) {
             if (item) {
                 return true;
             }
             return false;
+        };
+        navButtonBuild.uploadFile = function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                onUpload: function (file) {
+                    var formData = {
+                        fieldsName: fieldsName,
+                        tableName: AssessDBKey.BasicBuilding,
+                        tableId: navButtonBuild.isNotBlank(id) ? id : "0"
+                    };
+                    return formData;
+                }, onUploadComplete: function (result, file) {
+                    navButtonBuild.showFile(fieldsName, id);
+                    if (navButtonBuild.isNotBlank(result)) {
+                        AssessCommon.getSysAttachmentDto(result, function (data) {
+                            var switchNumber = navButtonBuild.switchNumber;
+                            var item = navButtonBuild.getObjArray(switchNumber);
+                            // item[fieldsName] = data.id ;
+                        });
+                    }
+                },
+                deleteFlag: true
+            });
+        };
+        navButtonBuild.uploadFile2 = function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicBuilding,
+                    tableId: objectData.isNotBlank(id) ? id : "0",
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            });
+        };
+        navButtonBuild.showFile = function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicBuilding,
+                    tableId: navButtonBuild.isNotBlank(id) ? id : "0",
+                    creater: "${currUserAccount}"
+                },
+                deleteFlag: true
+            })
         };
         //生成从minNum到maxNum的随机数 (请尽量设置大一些 以免重复)
         navButtonBuild.randomNum = function (minNum, maxNum) {
@@ -418,33 +467,70 @@
         navButtonBuild.initData = function (switchNumber) {
             var data = navButtonBuild.getObjArray(switchNumber);
             $("#" + objectData.config.basicBuilding.frm).initForm(data);
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingCategory,"buildingCategory");
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingStructure,"buildingStructure");
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.propertyType,"propertyType");
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.buildingStructureLower,"buildingStructureLower");
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.builderId,"builderId");
-            objectData.select2Assignment(objectData.config.basicBuilding.frm,data.propertyId,"propertyId");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingCategory, "buildingCategory");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingStructure, "buildingStructure");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyType, "propertyType");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingStructureLower, "buildingStructureLower");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.builderId, "builderId");
+            objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyId, "propertyId");
+            $.each(objectData.config.basicBuilding.files, function (i, n) {
+                console.log(n + "" + navButtonBuild.switchNumber);
+                navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
+            });
         };
         navButtonBuild.clearAll = function () {
             $("#" + objectData.config.basicBuilding.frm).clearAll();
         };
         navButtonBuild.inputBlur = function () {
-            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i,n) {
+            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                 $(n).blur(function () {
                     var str = $(n).val();
-                    if (navButtonBuild.isNotBlank(str)){
+                    if (navButtonBuild.isNotBlank(str)) {
                         navButtonBuild.tempSaveData();
                     }
                 });
             });
-            $("#" + objectData.config.basicBuilding.frm).find("select").each(function (i,n) {
+            $("#" + objectData.config.basicBuilding.frm).find("select").each(function (i, n) {
                 $(n).change(function () {
                     var str = $(n).val();
-                    if (navButtonBuild.isNotBlank(str)){
+                    if (navButtonBuild.isNotBlank(str)) {
                         navButtonBuild.tempSaveData();
                     }
                 });
             });
+        };
+
+        function writeUpdateFileId(num) {
+            var fieldsName = "";
+            var labelName = "";
+            if (num == 0) {
+                labelName = "平面图";
+                fieldsName = objectData.config.basicBuilding.files.building_floor_plan + "" + navButtonBuild.switchNumber;
+            }
+            if (num == 1) {
+                labelName = "外装图";
+                fieldsName = objectData.config.basicBuilding.files.building_figure_outside + "" + navButtonBuild.switchNumber;
+            }
+            if (num == 2) {
+                labelName = "外观图";
+                fieldsName = objectData.config.basicBuilding.files.building_floor_Appearance_figure + "" + navButtonBuild.switchNumber;
+            }
+            var label = "<label class='col-sm-1 control-label'>" + labelName + "</label>";
+            var div = "<div class='col-sm-3'>";
+            div += "<input placeholder='上传附件' class='form-control' type='file' id='" + fieldsName + "' name='" + fieldsName + "'>";
+            div += "</div>";
+            return label.concat(div);
+        }
+
+        //每次切换更改附件 id
+        navButtonBuild.updateFileId = function () {
+            var html = "";
+            for (var i = 0; i <= 2; i++) {
+                html += "<div class='x-valid'>";
+                html += writeUpdateFileId(i);
+                html += "</div>";
+            }
+            $("#" + navButtonBuild.groupFileId).empty().append(html);
         };
     })();
 
@@ -454,6 +540,7 @@
     navButtonBuild.switchInit = function (target, number) {
         navButtonBuild.clearAll();
         navButtonBuild.switchNumber = number;
+        navButtonBuild.updateFileId();
         navButtonBuild.initData(navButtonBuild.switchNumber);
         navButtonBuild.dataButtonWrite(target);
     };
@@ -482,9 +569,22 @@
         $(target).removeClass();
         $(target).addClass("btn btn-primary");
     };
+    navButtonBuild.init = function () {
+        this.inputBlur();
+        $("#identifier").bind("blur", navButtonBuild.identifierWrite);
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('楼栋初始化成功!');
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
 
-    $(function () {
-        navButtonBuild.inputBlur();
-        $("#identifier").bind("blur",navButtonBuild.identifierWrite);
-    });
 </script>

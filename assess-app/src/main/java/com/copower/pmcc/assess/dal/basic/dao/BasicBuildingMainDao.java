@@ -35,6 +35,12 @@ public class BasicBuildingMainDao {
         return basicBuildingMainMapper.updateByPrimaryKeySelective(basicBuildingMain)==1;
     }
 
+    public void removeBasicBuildingMain(BasicBuildingMain basicBuildingMain)throws SQLException{
+        BasicBuildingMainExample example = new BasicBuildingMainExample();
+        MybatisUtils.convertObj2Example(basicBuildingMain, example);
+        basicBuildingMainMapper.deleteByExample(example);
+    }
+
     public boolean deleteBasicBuildingMain(Integer id)throws SQLException{
         return  basicBuildingMainMapper.deleteByPrimaryKey(id)==1;
     }

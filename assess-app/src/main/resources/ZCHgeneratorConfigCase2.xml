@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\lib\mysql-connector-java-5.1.23.jar"/>
+
+    <context id="ticket-pms">
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
+                        <!--connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_case"-->
+                        <!--userId="root" password="123456">-->
+        <!--</jdbcConnection>-->
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess_basic"
+                        userId="root" password="123456">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- entity 位置-->
+        <!--<javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.cases.entity"-->
+                            <!--targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">-->
+            <!--<property name="enableSubPackages" value="false"/>-->
+            <!--<property name="trimStrings" value="true"/>-->
+        <!--</javaModelGenerator>-->
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basic.entity"
+                            targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+
+        <!-- mapper xml 位置 -->
+        <!--<sqlMapGenerator targetPackage="mybatis.cases"-->
+                         <!--targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">-->
+        <!--</sqlMapGenerator>-->
+        <sqlMapGenerator targetPackage="mybatis.basic"
+                         targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
+        </sqlMapGenerator>
+
+
+        <!--mapper 接口位置-->
+        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.cases.mapper"-->
+                             <!--targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">-->
+            <!--<property name="enableSubPackages" value="false"/>-->
+        <!--</javaClientGenerator>-->
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basic.mapper"
+                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 具体表 -->
+
+        <table tableName="tb_basic_estate" domainObjectName="BasicEstate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_house" domainObjectName="BasicHouse">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_building" domainObjectName="BasicBuilding">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_basic_building_main" domainObjectName="BasicBuildingMain">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_basic_house_trading" domainObjectName="BasicHouseTrading">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_unit" domainObjectName="BasicUnit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_building_function" domainObjectName="BasicBuildingFunction">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_building_maintenance" domainObjectName="BasicBuildingMaintenance">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_building_outfit" domainObjectName="BasicBuildingOutfit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_building_surface" domainObjectName="BasicBuildingSurface">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+    </context>
+
+</generatorConfiguration>

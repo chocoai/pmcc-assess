@@ -76,7 +76,20 @@ public class BasicBuildingController {
     @RequestMapping(value = "/basicBuildingList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicBuildingList(BasicBuilding basicBuilding){
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.basicBuildingList(basicBuilding));
+            List<BasicBuilding> basicBuildingList = basicBuildingService.basicBuildingList(basicBuilding);
+            return HttpResult.newCorrectResult(basicBuildingList);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initBuilding", name = "初始化", method = {RequestMethod.POST})
+    public HttpResult basicBuildingList(){
+        try {
+            basicBuildingService.init(null,null);
+            return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());
