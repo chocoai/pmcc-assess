@@ -423,7 +423,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
@@ -483,7 +483,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
@@ -754,7 +754,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
@@ -818,7 +818,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {

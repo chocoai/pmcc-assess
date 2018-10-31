@@ -189,7 +189,7 @@
                 var year = $("#" + declareRealtyLandCertConfig.frm + " input[name='year']").val();
                 var number = $("#" + declareRealtyLandCertConfig.frm + " input[name='number']").val();
                 if (declareRealtyLandCert.isEmpty(id)) {
-                    AssessCommon.getProjectClassifyInfo(id, function (data) {
+                    AssessCommon.getDataDicInfo(id, function (data) {
                         if (declareRealtyLandCert.isEmpty(data)) {
                             var temp = location + data.name + year + "第" + number + "号";
                             $("#" + declareRealtyLandCertConfig.frm + " input[name='landCertName']").val(temp);
@@ -316,8 +316,11 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + declareRealtyLandCertConfig.frm).find('select.type').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+            $("#" + declareRealtyLandCertConfig.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + declareRealtyLandCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
@@ -427,9 +430,9 @@
                 var str = '<div class="btn-margin">';
                 str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="declareRealtyLandCert.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="declareRealtyLandCert.deleteData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证关联' onclick='declareRealtyLandCert.houseCard(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证关联" + "</a>";
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='declareRealtyLandCert.landEnclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
                 str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='declareRealtyLandCert.houseEnclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证关联' onclick='declareRealtyLandCert.houseCard(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证关联" + "</a>";
                 str += '</div>';
                 return str;
             }
@@ -669,6 +672,12 @@
                                     floor:result.data.floor
                                 }
                                 );
+                            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,result.data.type, function (html, data) {
+                                $("#" + declareRealtyLandCertConfig.HouseCert.frm).find('select.type').empty().html(html).trigger('change');
+                            });
+                            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,'', function (html, data) {
+                                $("#" + declareRealtyLandCertConfig.HouseCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
+                            });
                             declareRealtyLandCert.fileUpload2(declareRealtyLandCertConfig.houseFileId, AssessDBKey.DeclareRealtyHouseCert, 0);
                         }
                     }
@@ -1160,17 +1169,6 @@
                                                     class="form-control search-select select2"
                                                     required="required">
                                                 <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
@@ -1277,9 +1275,8 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="共有情况" name="publicSituation" class="form-control"
-                                                   required="required">
+                                            <select required name="publicSituation" class="form-control search-select select2 publicSituation">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">

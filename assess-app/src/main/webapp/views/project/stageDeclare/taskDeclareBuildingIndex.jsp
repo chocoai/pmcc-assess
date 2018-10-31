@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -53,8 +54,10 @@
     </div>
 </div>
 </body>
+<%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicators.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script>
     var config = {
         declare: {

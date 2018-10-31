@@ -741,7 +741,7 @@
             var year = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='year']").val();
             var number = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='number']").val();
             if (equipmentInstallation.isEmpty(id)) {
-                AssessCommon.getProjectClassifyInfo(id, function (data) {
+                AssessCommon.getDataDicInfo(id, function (data) {
                     if (equipmentInstallation.isEmpty(data)) {
                         var temp = location +  data.name +year+ "第" + number + "号";
                         $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
@@ -762,11 +762,14 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "",function (html, data) {
+            $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
         equipmentInstallation.declareRealtyLandCertCertRoleCertName.init();
         equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.init();
@@ -989,7 +992,7 @@
                 id = "";
             }
             if (equipmentInstallation.isEmpty(id)) {
-                AssessCommon.getProjectClassifyInfo(id, function (data) {
+                AssessCommon.getDataDicInfo(id, function (data) {
                     if (equipmentInstallation.isEmpty(data)) {
                         var temp = location + "房权证" + data.name + "字地" + number + "号";
                         $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='certName']").val(temp);
@@ -1010,11 +1013,17 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "",function (html, data) {
+            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.useRightType').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, "",function (html, data) {
+            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
         });
         equipmentInstallation.declareRealtyRealEstateCertRoleCertName.init();
         equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.init();
@@ -2598,9 +2607,9 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="共有情况" name="publicSituation" class="form-control"
-                                                   required="required">
+                                            <select name="publicSituation" class="form-control search-select select2 publicSituation"
+                                                    required="required">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">

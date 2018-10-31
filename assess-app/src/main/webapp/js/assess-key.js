@@ -58,13 +58,17 @@ AssessProjectClassifyKey.comprehensive = "comprehensive";//综合资产
 
 AssessProjectClassifyKey.singleHousePropertyCertificateType = "single.house.property.certificate.type";//房产证书类型
 AssessProjectClassifyKey.singleDeclareBuildingCertificateType = "single.declare.building.certificate.type";//在建工程
-AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory = "single.house.property.certificate.type.house.category";//房产证 类别
-AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory = "single.land.property.certificate.type.land.category";//土地证 类别
 
 /**
  * 数据字典key
  */
 var AssessDicKey = {}
+//项目申报
+AssessDicKey.projectDeclareHouseCertificateType = "project.declare.house.certificate.type";//房产证类型
+AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";//共有情况
+AssessDicKey.projectDeclareLandCertificateType = "project.declare.land.certificate.type";//土地证类型
+AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//使用权类型
+
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
