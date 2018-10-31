@@ -120,7 +120,34 @@ public class BasicBuildingOutfitService {
         BasicBuildingOutfitVo vo = new BasicBuildingOutfitVo();
         BeanUtils.copyProperties(basicBuildingOutfit,vo);
         BaseDataDic dataDic = null;
-
+        if (basicBuildingOutfit.getDecoratingMaterial() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingOutfit.getDecoratingMaterial());
+            if (dataDic != null){
+                vo.setDecoratingMaterialName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingOutfit.getDecorationPart() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingOutfit.getDecorationPart());
+            if (dataDic != null){
+                vo.setDecorationPartName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingOutfit.getMaterialPrice() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingOutfit.getMaterialPrice());
+            if (dataDic != null){
+                vo.setMaterialPriceName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingOutfit.getConstructionTechnology() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingOutfit.getConstructionTechnology());
+            if (dataDic != null){
+                vo.setConstructionTechnologyName(dataDic.getName());
+                dataDic = null;
+            }
+        }
         return vo;
     }
     

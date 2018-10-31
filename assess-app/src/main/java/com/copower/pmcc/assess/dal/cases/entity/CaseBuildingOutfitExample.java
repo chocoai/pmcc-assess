@@ -165,6 +165,136 @@ public class CaseBuildingOutfitExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuildingNumberIsNull() {
+            addCriterion("building_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberIsNotNull() {
+            addCriterion("building_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberEqualTo(String value) {
+            addCriterion("building_number =", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberNotEqualTo(String value) {
+            addCriterion("building_number <>", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberGreaterThan(String value) {
+            addCriterion("building_number >", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("building_number >=", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberLessThan(String value) {
+            addCriterion("building_number <", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberLessThanOrEqualTo(String value) {
+            addCriterion("building_number <=", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberLike(String value) {
+            addCriterion("building_number like", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberNotLike(String value) {
+            addCriterion("building_number not like", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberIn(List<String> values) {
+            addCriterion("building_number in", values, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberNotIn(List<String> values) {
+            addCriterion("building_number not in", values, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberBetween(String value1, String value2) {
+            addCriterion("building_number between", value1, value2, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberNotBetween(String value1, String value2) {
+            addCriterion("building_number not between", value1, value2, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNull() {
+            addCriterion("version is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNotNull() {
+            addCriterion("version is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionEqualTo(Integer value) {
+            addCriterion("version =", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotEqualTo(Integer value) {
+            addCriterion("version <>", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThan(Integer value) {
+            addCriterion("version >", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("version >=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThan(Integer value) {
+            addCriterion("version <", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThanOrEqualTo(Integer value) {
+            addCriterion("version <=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIn(List<Integer> values) {
+            addCriterion("version in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotIn(List<Integer> values) {
+            addCriterion("version not in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionBetween(Integer value1, Integer value2) {
+            addCriterion("version between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotBetween(Integer value1, Integer value2) {
+            addCriterion("version not between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingIdIsNull() {
             addCriterion("building_id is null");
             return (Criteria) this;

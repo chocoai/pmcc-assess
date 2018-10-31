@@ -165,6 +165,66 @@ public class BasicBuildingSurfaceExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseSurfaceIdIsNull() {
+            addCriterion("case_surface_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdIsNotNull() {
+            addCriterion("case_surface_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdEqualTo(Integer value) {
+            addCriterion("case_surface_id =", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdNotEqualTo(Integer value) {
+            addCriterion("case_surface_id <>", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdGreaterThan(Integer value) {
+            addCriterion("case_surface_id >", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_surface_id >=", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdLessThan(Integer value) {
+            addCriterion("case_surface_id <", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_surface_id <=", value, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdIn(List<Integer> values) {
+            addCriterion("case_surface_id in", values, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdNotIn(List<Integer> values) {
+            addCriterion("case_surface_id not in", values, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_surface_id between", value1, value2, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseSurfaceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_surface_id not between", value1, value2, "caseSurfaceId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

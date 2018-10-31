@@ -8,4 +8,23 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMaintenance;
  * @Description:
  */
 public class BasicBuildingMaintenanceVo extends BasicBuildingMaintenance {
+    private String categoryName;
+
+    private String materialQualityName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getMaterialQualityName() {
+        return materialQualityName;
+    }
+
+    public void setMaterialQualityName(String materialQualityName) {
+        this.materialQualityName = materialQualityName;
+    }
 }

@@ -120,7 +120,13 @@ public class BasicBuildingSurfaceService {
         BasicBuildingSurfaceVo vo = new BasicBuildingSurfaceVo();
         BeanUtils.copyProperties(basicBuildingSurface,vo);
         BaseDataDic dataDic = null;
-
+        if (basicBuildingSurface.getStructure() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingSurface.getStructure());
+            if (dataDic != null){
+                vo.setStructureName(dataDic.getName());
+                dataDic = null;
+            }
+        }
         return vo;
     }
     

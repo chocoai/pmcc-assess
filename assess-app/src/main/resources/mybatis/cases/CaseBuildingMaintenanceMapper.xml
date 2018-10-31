@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMaintenanceMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, building_id, name, category, material_quality, creator, gmt_created, gmt_modified, 
-    build_number
+    id, building_number, version, building_id, name, category, material_quality, creator, 
+    gmt_created, gmt_modified, build_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenanceExample" >
     select
@@ -108,12 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_building_maintenance (building_id, name, category, 
-      material_quality, creator, gmt_created, 
-      gmt_modified, build_number)
-    values (#{buildingId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
-      #{materialQuality,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{buildNumber,jdbcType=VARCHAR})
+    insert into tb_case_building_maintenance (building_number, version, building_id, 
+      name, category, material_quality, 
+      creator, gmt_created, gmt_modified, 
+      build_number)
+    values (#{buildingNumber,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{materialQuality,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{buildNumber,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -121,6 +125,12 @@
     </selectKey>
     insert into tb_case_building_maintenance
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
       <if test="buildingId != null" >
         building_id,
       </if>
@@ -147,6 +157,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
       </if>
@@ -185,6 +201,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.buildingId != null" >
         building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
@@ -217,6 +239,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_building_maintenance
     set id = #{record.id,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=INTEGER},
       building_id = #{record.buildingId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
@@ -232,6 +256,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance" >
     update tb_case_building_maintenance
     <set >
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
       </if>
@@ -261,7 +291,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance" >
     update tb_case_building_maintenance
-    set building_id = #{buildingId,jdbcType=INTEGER},
+    set building_number = #{buildingNumber,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      building_id = #{buildingId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       material_quality = #{materialQuality,jdbcType=INTEGER},

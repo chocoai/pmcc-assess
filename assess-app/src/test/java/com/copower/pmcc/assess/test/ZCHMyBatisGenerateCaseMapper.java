@@ -26,7 +26,7 @@ public class ZCHMyBatisGenerateCaseMapper {
     public static void main(String[] args) throws Exception {
 
         List<File> files = new ArrayList();
-        findFiles(System.getProperty("user.dir"), "ZCHgeneratorConfigCase2.xml", files);
+        findFiles(System.getProperty("user.dir"), "ZCHgeneratorConfigCase.xml", files);
 //        findFiles(System.getProperty("user.dir"), "ZCHgeneratorConfigCase.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {

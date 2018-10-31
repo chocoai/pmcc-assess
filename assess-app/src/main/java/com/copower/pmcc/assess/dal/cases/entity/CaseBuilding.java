@@ -6,9 +6,9 @@ import java.util.Date;
 public class CaseBuilding {
     private Integer id;
 
-    private Integer caseBuildingMainId;
-
     private Integer estateId;
+
+    private Integer caseBuildingMainId;
 
     private Integer builderId;
 
@@ -80,20 +80,20 @@ public class CaseBuilding {
         this.id = id;
     }
 
-    public Integer getCaseBuildingMainId() {
-        return caseBuildingMainId;
-    }
-
-    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
-        this.caseBuildingMainId = caseBuildingMainId;
-    }
-
     public Integer getEstateId() {
         return estateId;
     }
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public Integer getCaseBuildingMainId() {
+        return caseBuildingMainId;
+    }
+
+    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
+        this.caseBuildingMainId = caseBuildingMainId;
     }
 
     public Integer getBuilderId() {

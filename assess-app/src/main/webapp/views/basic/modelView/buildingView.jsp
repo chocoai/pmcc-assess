@@ -18,7 +18,6 @@
             </div>
         </div>
     </form>
-
     <form class="form-horizontal" id="basicBuildFrm">
         <input type="hidden" name="id">
         <div class="form-group" id="navButtonBuild">
@@ -335,7 +334,7 @@
         </div>
     </form>
 </div>
-
+<%@include file="/views/basic/modelView/build/sonBuildView.jsp" %>
 <script type="text/javascript">
     var navButtonBuild;
     (function () {
@@ -365,7 +364,6 @@
                         AssessCommon.getSysAttachmentDto(result, function (data) {
                             var switchNumber = navButtonBuild.switchNumber;
                             var item = navButtonBuild.getObjArray(switchNumber);
-                            // item[fieldsName] = data.id ;
                         });
                     }
                 },
@@ -544,6 +542,7 @@
         navButtonBuild.updateFileId();
         navButtonBuild.initData(navButtonBuild.switchNumber);
         navButtonBuild.dataButtonWrite(target);
+        buildingModel.prototype.viewInit();
     };
     //第一栋
     navButtonBuild.one = function (target, number) {
@@ -569,6 +568,10 @@
         //改变按钮颜色
         $(target).removeClass();
         $(target).addClass("btn btn-primary");
+        $("."+buildingModel.prototype.config().sonTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingSurfaceTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber+"部分");
     };
     navButtonBuild.init = function () {
         if (navButtonBuild.flag){

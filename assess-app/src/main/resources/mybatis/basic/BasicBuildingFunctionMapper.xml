@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicBuildingFunctionMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_function_id" property="caseFunctionId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
@@ -76,9 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, building_number, building_id, decoration_part, decorating_material, material_price, 
-    construction_technology, creator, water_proof, heat_preservation, build_number, heat_insulation, 
-    gmt_created, gmt_modified
+    id, case_function_id, building_number, building_id, decoration_part, decorating_material, 
+    material_price, construction_technology, creator, water_proof, heat_preservation, 
+    build_number, heat_insulation, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunctionExample" >
     select
@@ -114,16 +115,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building_function (building_number, building_id, decoration_part, 
-      decorating_material, material_price, construction_technology, 
-      creator, water_proof, heat_preservation, 
-      build_number, heat_insulation, gmt_created, 
-      gmt_modified)
-    values (#{buildingNumber,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
-      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{waterProof,jdbcType=VARCHAR}, #{heatPreservation,jdbcType=VARCHAR}, 
-      #{buildNumber,jdbcType=VARCHAR}, #{heatInsulation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_building_function (case_function_id, building_number, building_id, 
+      decoration_part, decorating_material, material_price, 
+      construction_technology, creator, water_proof, 
+      heat_preservation, build_number, heat_insulation, 
+      gmt_created, gmt_modified)
+    values (#{caseFunctionId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, 
+      #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, 
+      #{constructionTechnology,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{waterProof,jdbcType=VARCHAR}, 
+      #{heatPreservation,jdbcType=VARCHAR}, #{buildNumber,jdbcType=VARCHAR}, #{heatInsulation,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -131,6 +132,9 @@
     </selectKey>
     insert into tb_basic_building_function
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseFunctionId != null" >
+        case_function_id,
+      </if>
       <if test="buildingNumber != null" >
         building_number,
       </if>
@@ -172,6 +176,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseFunctionId != null" >
+        #{caseFunctionId,jdbcType=INTEGER},
+      </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
       </if>
@@ -225,6 +232,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.caseFunctionId != null" >
+        case_function_id = #{record.caseFunctionId,jdbcType=INTEGER},
+      </if>
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
@@ -272,6 +282,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_building_function
     set id = #{record.id,jdbcType=INTEGER},
+      case_function_id = #{record.caseFunctionId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_id = #{record.buildingId,jdbcType=INTEGER},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
@@ -292,6 +303,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     update tb_basic_building_function
     <set >
+      <if test="caseFunctionId != null" >
+        case_function_id = #{caseFunctionId,jdbcType=INTEGER},
+      </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
@@ -336,7 +350,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     update tb_basic_building_function
-    set building_number = #{buildingNumber,jdbcType=VARCHAR},
+    set case_function_id = #{caseFunctionId,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},

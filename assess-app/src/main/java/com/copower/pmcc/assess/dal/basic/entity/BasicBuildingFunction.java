@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicBuildingFunction {
     private Integer id;
 
+    private Integer caseFunctionId;
+
     private String buildingNumber;
 
     private Integer buildingId;
@@ -37,6 +39,14 @@ public class BasicBuildingFunction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseFunctionId() {
+        return caseFunctionId;
+    }
+
+    public void setCaseFunctionId(Integer caseFunctionId) {
+        this.caseFunctionId = caseFunctionId;
     }
 
     public String getBuildingNumber() {

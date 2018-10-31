@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @Auther: zch
  * @Date: 2018/10/30 14:24
- * @Description:
+ * @Description:楼栋建筑功能
  */
 @RequestMapping(value = "/basicBuildingFunction")
 @Controller

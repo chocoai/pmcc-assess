@@ -165,6 +165,66 @@ public class BasicBuildingMaintenanceExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseMaintenanceIdIsNull() {
+            addCriterion("case_maintenance_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdIsNotNull() {
+            addCriterion("case_maintenance_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdEqualTo(Integer value) {
+            addCriterion("case_maintenance_id =", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdNotEqualTo(Integer value) {
+            addCriterion("case_maintenance_id <>", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdGreaterThan(Integer value) {
+            addCriterion("case_maintenance_id >", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_maintenance_id >=", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdLessThan(Integer value) {
+            addCriterion("case_maintenance_id <", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_maintenance_id <=", value, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdIn(List<Integer> values) {
+            addCriterion("case_maintenance_id in", values, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdNotIn(List<Integer> values) {
+            addCriterion("case_maintenance_id not in", values, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_maintenance_id between", value1, value2, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseMaintenanceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_maintenance_id not between", value1, value2, "caseMaintenanceId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

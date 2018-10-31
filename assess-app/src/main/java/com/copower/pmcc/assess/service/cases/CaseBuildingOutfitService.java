@@ -1,15 +1,18 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingOutfitDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingOutfitVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +41,8 @@ public class CaseBuildingOutfitService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     /**
      * 获取数据信息
@@ -117,6 +122,35 @@ public class CaseBuildingOutfitService {
         return caseBuildingOutfitDao.addBuildingOutfit(caseBuildingOutfit);
     }
 
+    public Integer upgradeVersion(CaseBuildingOutfit caseBuildingOutfit)throws Exception {
+        Integer id = null;
+        if (caseBuildingOutfit.getId() == null) {
+            caseBuildingOutfit.setCreator(commonService.thisUserAccount());
+            caseBuildingOutfit.setVersion(0);
+            id = caseBuildingOutfitDao.saveCaseBuildingOutfit(caseBuildingOutfit);
+            caseBuildingOutfit.setId(id);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class), id);
+        }
+        if (caseBuildingOutfit.getId() != null) {
+            CaseBuildingOutfit oo = this.getCaseBuildingOutfitById(caseBuildingOutfit.getId());
+            if (oo != null) {
+                if (oo.getVersion() == null) {
+                    oo.setVersion(0);
+                }
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingOutfit, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            id = caseBuildingOutfitDao.saveCaseBuildingOutfit(oo);
+            caseBuildingOutfit.setId(id);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class), id);
+        }
+        return id;
+    }
+
     /**
      * 编辑
      *
@@ -137,14 +171,14 @@ public class CaseBuildingOutfitService {
         return caseBuildingOutfitDao.deleteBuildingOutfit(id);
     }
 
-    public boolean removeCaseBuildingOutfit(CaseBuildingOutfit caseBuildingOutfit){
+    public boolean removeCaseBuildingOutfit(CaseBuildingOutfit caseBuildingOutfit) {
         try {
             caseBuildingOutfitDao.deleteBuildingOutfit(caseBuildingOutfit.getId());
-            return  true;
+            return true;
         } catch (Exception e1) {
-            return  false;
+            return false;
         }
     }
 
-   
+
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicBuildingMaintenance {
     private Integer id;
 
+    private Integer caseMaintenanceId;
+
     private String buildingNumber;
 
     private Integer buildingId;
@@ -29,6 +31,14 @@ public class BasicBuildingMaintenance {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseMaintenanceId() {
+        return caseMaintenanceId;
+    }
+
+    public void setCaseMaintenanceId(Integer caseMaintenanceId) {
+        this.caseMaintenanceId = caseMaintenanceId;
     }
 
     public String getBuildingNumber() {

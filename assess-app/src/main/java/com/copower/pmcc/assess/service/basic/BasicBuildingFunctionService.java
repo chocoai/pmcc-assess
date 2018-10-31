@@ -119,7 +119,34 @@ public class BasicBuildingFunctionService {
         BasicBuildingFunctionVo vo = new BasicBuildingFunctionVo();
         BeanUtils.copyProperties(basicBuildingFunction,vo);
         BaseDataDic dataDic = null;
-
+        if (basicBuildingFunction.getDecoratingMaterial() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getDecoratingMaterial());
+            if (dataDic != null){
+                vo.setDecoratingMaterialName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingFunction.getDecorationPart() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getDecorationPart());
+            if (dataDic != null){
+                vo.setDecorationPartName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingFunction.getMaterialPrice() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getMaterialPrice());
+            if (dataDic != null){
+                vo.setMaterialPriceName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicBuildingFunction.getConstructionTechnology() != null){
+            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getConstructionTechnology());
+            if (dataDic != null){
+                vo.setConstructionTechnologyName(dataDic.getName());
+                dataDic = null;
+            }
+        }
         return vo;
     }
 }

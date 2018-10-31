@@ -947,8 +947,9 @@
             data: {formData: formData},
             success: function (result) {
                 if (result.ret) {
-                    Alert("成功!");
-                    window.location.reload();
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.location.reload();
+                    });
                 }
             },
             error: function (result) {

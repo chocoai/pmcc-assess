@@ -5,6 +5,10 @@ import java.util.Date;
 public class CaseBuildingMaintenance {
     private Integer id;
 
+    private String buildingNumber;
+
+    private Integer version;
+
     private Integer buildingId;
 
     private String name;
@@ -27,6 +31,22 @@ public class CaseBuildingMaintenance {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getBuildingId() {

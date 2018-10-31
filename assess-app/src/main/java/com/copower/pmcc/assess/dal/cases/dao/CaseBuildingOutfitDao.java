@@ -50,6 +50,11 @@ public class CaseBuildingOutfitDao {
         return caseBuildingOutfitMapper.insertSelective(caseBuildingOutfit) > 0;
     }
 
+    public Integer saveCaseBuildingOutfit(CaseBuildingOutfit caseBuildingOutfit){
+        caseBuildingOutfitMapper.insertSelective(caseBuildingOutfit);
+        return caseBuildingOutfit.getId();
+    }
+
     /**
      * 编辑
      * @param caseBuildingOutfit

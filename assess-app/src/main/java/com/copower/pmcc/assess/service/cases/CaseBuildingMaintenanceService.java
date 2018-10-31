@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMaintenanceDao;
@@ -38,6 +39,7 @@ public class CaseBuildingMaintenanceService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+
     /**
      * 获取数据信息
      *
@@ -107,6 +109,28 @@ public class CaseBuildingMaintenanceService {
         return caseBuildingMaintenanceDao.addBuildingMaintenance(caseBuildingMaintenance);
     }
 
+    public Integer upgradeVersion(CaseBuildingMaintenance caseBuildingMaintenance) throws Exception {
+        if (caseBuildingMaintenance.getId() == null) {
+            caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
+            caseBuildingMaintenance.setVersion(0);
+            caseBuildingMaintenanceDao.addBuildingMaintenance(caseBuildingMaintenance);
+        }
+        if (caseBuildingMaintenance.getId() != null) {
+            CaseBuildingMaintenance oo = this.getCaseBuildingMaintenanceById(caseBuildingMaintenance.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingMaintenance, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            caseBuildingMaintenanceDao.addBuildingMaintenance(oo);
+        }
+        return null;
+    }
+
     /**
      * 编辑
      *
@@ -127,12 +151,12 @@ public class CaseBuildingMaintenanceService {
         return caseBuildingMaintenanceDao.deleteBuildingMaintenance(id);
     }
 
-    public boolean removeCaseBuildingMaintenance(CaseBuildingMaintenance caseBuildingMaintenance){
+    public boolean removeCaseBuildingMaintenance(CaseBuildingMaintenance caseBuildingMaintenance) {
         try {
             caseBuildingMaintenanceDao.deleteBuildingMaintenance(caseBuildingMaintenance.getId());
-            return  true;
+            return true;
         } catch (Exception e1) {
-            return  false;
+            return false;
         }
     }
 }

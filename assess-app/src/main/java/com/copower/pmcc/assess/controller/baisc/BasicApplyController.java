@@ -71,9 +71,9 @@ public class BasicApplyController {
     public ModelAndView basicApplyDetail(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
         try {
-            this.setViewParam(processInsId,modelAndView);
+            this.setViewParam(processInsId, modelAndView);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(),e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -114,9 +114,16 @@ public class BasicApplyController {
                         return o1.getId().compareTo(o2.getId());
                     }
                 }).reverse();
-                Collections.sort(basicBuildingList,ordering);
-                if (!ObjectUtils.isEmpty(basicBuildingList)){
-                    for (int i = 0; i <= 3; i++) {
+                Collections.sort(basicBuildingList, ordering);
+                if (!ObjectUtils.isEmpty(basicBuildingList)) {
+                    int num = 0;
+                    if (basicBuildingList.size() > 4) {
+                        num = 4;
+                    }
+                    if (basicBuildingList.size() <= 4) {
+                        num = basicBuildingList.size();
+                    }
+                    for (int i = 0; i < num; i++) {
                         if (i == 0) {
                             modelAndView.addObject("oneBasicBuildingJson", JSONObject.toJSONString(publicBasicService.getBasicBuildingVo(basicBuildingList.get(0))));
                             modelAndView.addObject("oneBasicBuilding", basicBuildingList.get(0));

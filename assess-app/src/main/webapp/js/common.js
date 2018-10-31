@@ -300,8 +300,6 @@ $(function () {
                                     retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
                                 }
                             });
-                            console.log(value);
-                            console.log(retHtml);
                             if (callback) {
                                 callback(retHtml, result.data);
                             }

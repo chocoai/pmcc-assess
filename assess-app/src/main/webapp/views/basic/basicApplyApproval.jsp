@@ -622,6 +622,7 @@
 
                                     </form>
                                 </div>
+                                <%@include file="/views/basic/modelView/build/sonBuildApprovalView.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                                 <div class="x_content">
@@ -837,6 +838,7 @@
             navButtonBuild.updateFileId();
             navButtonBuild.initData(data);
             navButtonBuild.dataButtonWrite(target);
+            buildingModel.prototype.viewInit();
         } else {
             toastr.success('无数据!');
         }
@@ -893,6 +895,10 @@
         //改变按钮颜色
         $(target).removeClass();
         $(target).addClass("btn btn-primary");
+        $("."+buildingModel.prototype.config().sonTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingSurfaceTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber+"部分");
+        $("."+buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber+"部分");
     };
 
     objectData.build = {
@@ -918,7 +924,6 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    console.info(result);
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();
                     });
@@ -928,7 +933,6 @@
                 }
             },
             error: function (result) {
-                console.info(result);
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }

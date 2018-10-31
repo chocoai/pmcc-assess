@@ -165,6 +165,66 @@ public class BasicBuildingFunctionExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseFunctionIdIsNull() {
+            addCriterion("case_function_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdIsNotNull() {
+            addCriterion("case_function_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdEqualTo(Integer value) {
+            addCriterion("case_function_id =", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdNotEqualTo(Integer value) {
+            addCriterion("case_function_id <>", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdGreaterThan(Integer value) {
+            addCriterion("case_function_id >", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_function_id >=", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdLessThan(Integer value) {
+            addCriterion("case_function_id <", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_function_id <=", value, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdIn(List<Integer> values) {
+            addCriterion("case_function_id in", values, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdNotIn(List<Integer> values) {
+            addCriterion("case_function_id not in", values, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_function_id between", value1, value2, "caseFunctionId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseFunctionIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_function_id not between", value1, value2, "caseFunctionId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

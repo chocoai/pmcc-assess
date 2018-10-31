@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -26,6 +27,8 @@ import java.util.List;
 public class BasicBuildingController {
     @Autowired
     private BasicBuildingService basicBuildingService;
+    @Autowired
+    private PublicBasicService publicBasicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -89,6 +92,18 @@ public class BasicBuildingController {
     public HttpResult basicBuildingList(){
         try {
             basicBuildingService.init(null,null);
+            return HttpResult.newCorrectResult(200,"success");
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
+    public HttpResult appWriteBuilding(Integer caseBuildId){
+        try {
+            publicBasicService.appWriteBuilding(caseBuildId);
             return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

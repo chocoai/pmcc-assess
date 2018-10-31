@@ -165,6 +165,66 @@ public class BasicBuildingOutfitExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseOutfitIdIsNull() {
+            addCriterion("case_outfit_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdIsNotNull() {
+            addCriterion("case_outfit_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdEqualTo(Integer value) {
+            addCriterion("case_outfit_id =", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdNotEqualTo(Integer value) {
+            addCriterion("case_outfit_id <>", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdGreaterThan(Integer value) {
+            addCriterion("case_outfit_id >", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_outfit_id >=", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdLessThan(Integer value) {
+            addCriterion("case_outfit_id <", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_outfit_id <=", value, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdIn(List<Integer> values) {
+            addCriterion("case_outfit_id in", values, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdNotIn(List<Integer> values) {
+            addCriterion("case_outfit_id not in", values, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_outfit_id between", value1, value2, "caseOutfitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseOutfitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_outfit_id not between", value1, value2, "caseOutfitId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

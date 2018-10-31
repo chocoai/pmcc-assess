@@ -1,21 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/9/18
-  Time: 17:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <div class="x_content">
     <div class="x_title">
         <h3>
             楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
+                    onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -31,7 +21,7 @@
         <h3>
             层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
+                    onclick="buildingModel.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -47,7 +37,7 @@
         <h3>
             维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
+                    onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -64,7 +54,7 @@
         <h3>
             建筑功能 <label class="control-label examineBuildingFunctionList"></label>
             <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="examineBuilding_.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
+                    onclick="buildingModel.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
             </button>
         </h3>
         <div class="clearfix"></div>
@@ -77,125 +67,29 @@
 </div>
 
 <script type="application/javascript">
-    $(function () {
-        examineBuilding_.prototype.viewInit();
-    });
-</script>
-<script type="application/javascript">
-
-    var examineBuilding_;
+    var buildingModel;
     (function () {
         //配置的局部变量用做 对象属性 (初始化标识符)
-        var flag = true;
-        var sonFlag = true; //子类标识符
-        var examineBuildingMaintenanceFlag = true;//子类 标识符
-        var examineBuildingSurfaceFlag = true;//子类 标识符
-        var examineBuildingFunctionFlag = true;//子类 标识符
-        var navButtonBuildFlag = false;//触发校验机制
-        var attachmentId = null;//临时存储的附件id
-        var objArray = new Array();
-        examineBuilding_ = function () {
-
+        buildingModel = function () {
         };
-        examineBuilding_.prototype = {
-            //获取临时存储的附件id
-            getAttachmentId: function () {
-                return attachmentId;
-            },
-            //设置临时存储的附件id
-            setAttachmentId: function (target) {
-                attachmentId = target;
-            },
-            /**
-             * @author:  zch
-             * 描述:根据索引获取数据
-             * @date:2018-09-03
-             **/
-            getObjArray: function (index) {
-                var data = null;
-                if (examineBuilding_.prototype.isEmpty(index)) {
-                    data = objArray[index];
-                    return data;
-                }
-            },
-            /**
-             * @author:  zch
-             * 描述:设置数据
-             * @date:2018-09-03
-             **/
-            setObjArrayElement: function (index, data) {
-                objArray[index] = data;
-            },
-            setNavButtonBuildFlag: function (flag_) {
-                navButtonBuildFlag = flag_;
-            },
-            getNavButtonBuildFlag: function () {
-                return navButtonBuildFlag;
-            },
-            setExamineBuildingSurfaceFlag: function (flag_) {
-                examineBuildingSurfaceFlag = flag_;
-            },
-            getExamineBuildingSurfaceFlag: function () {
-                return examineBuildingSurfaceFlag;
-            },
-            setExamineBuildingMaintenanceFlag: function (flag_) {
-                examineBuildingMaintenanceFlag = flag_;
-            },
-            getExamineBuildingMaintenanceFlag: function () {
-                return examineBuildingMaintenanceFlag;
-            },
-            setFlag: function (flag_) {
-                flag = flag_;
-            },
-            getFlag: function () {
-                return flag;
-            },
-            setSonFlag: function (sonFlag_) {
-                sonFlag = sonFlag_;
-            },
-            getSonFlag: function () {
-                return sonFlag;
-            },
-            getExamineBuildingFunctionFlag: function () {
-                return examineBuildingFunctionFlag;
-            },
-            setExamineBuildingFunctionFlag: function (target) {
-                examineBuildingFunctionFlag = target;
-            },
-            getIdentifier: function () {
-                var data = formParams(examineBuilding_.prototype.config().frm);
-                var identifier = data.identifier;
-                if (examineBuilding_.prototype.isEmpty(identifier)) {
-                    return identifier;
-                }
-                return "0";
-            },
-            getBuildId: function () {
-                var data = formParams(examineBuilding_.prototype.config().frm);
-                var id = data.id;
-                if (id == 0) {
-                    return 0;
-                }
-                if (id == '') {
-                    return 0;
-                }
-                if (id == null) {
-                    return 0;
-                }
-                return id;
-            },
+        buildingModel.prototype = {
             isEmpty: function (item) {
                 if (item) {
                     return true;
                 }
                 return false;
             },
-            objectWriteSelectData: function (frm, data, name) {
-                if (examineBuilding_.prototype.isEmpty(data)) {
-                    $("#" + frm + " ." + name).val(data).trigger("change");
-                } else {
-                    $("#" + frm + " ." + name).val(null).trigger("change");
+            getBuildingId:function () {
+                var data = navButtonBuild.getObjArray(navButtonBuild.switchNumber);
+                var buildingId = data.id;
+                try {
+                    if (buildingModel.prototype.isEmpty(buildingId)){
+                        return buildingId;
+                    }
+                } catch (e) {
+                    return "0" ;
                 }
+                return "0" ;
             },
             /**
              * @author:  zch
@@ -203,10 +97,10 @@
              * @date: 页面 初始化
              **/
             viewInit: function () {
-                examineBuilding_.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
-                examineBuilding_.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
-                examineBuilding_.prototype.sonModelMethod.buildingSurface.loadDataDicList();
-                examineBuilding_.prototype.sonModelMethod.buildingFunction.loadDataDicList();
+                buildingModel.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
+                buildingModel.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
+                buildingModel.prototype.sonModelMethod.buildingSurface.loadDataDicList();
+                buildingModel.prototype.sonModelMethod.buildingFunction.loadDataDicList();
             },
             /**
              * @author:  zch
@@ -215,10 +109,6 @@
              **/
             config: function () {
                 var data = {};
-                data.table = "ExamineBuilding_List";
-                data.box = "divBoxExamineBuilding_";
-                data.frm = "frmExamineBuilding_";
-
                 data.sonBox = "divBoxExamineBuildingOutfit";
                 data.sonTable = "ExamineBuildingOutfitList";
                 data.sonFrm = "frmExamineBuildingOutfit";
@@ -234,12 +124,6 @@
                 data.examineBuildingFunctionBox = "examineBuildingFunction";
                 data.examineBuildingFunctionTable = "examineBuildingFunctionList";
                 data.examineBuildingFunctionFrm = "examineBuildingFunctionFrm";
-
-                data.type = "null";//
-                data.database_Table = AssessDBKey.ExamineBuilding;//
-                data.building_floor_plan = "building_floor_plan";//平面图id和字段 (楼栋) 根据 ExamineFileUpLoadFieldEnum 配置
-                data.building_figure_outside = "building_figure_outside";//外装图id和字段
-                data.building_floor_Appearance_figure = "building_floor_Appearance_figure";//外观图id和字段
                 return data;
             },
             sonModelMethod: {
@@ -247,30 +131,19 @@
                 buildingOutfit: {
                     getAndInit: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/getCaseBuildingOutfitById",
+                            url: "${pageContext.request.contextPath}/basicBuildingOutfit/getBasicBuildingOutfitById",
                             type: "get",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
-                                    if (examineBuilding_.prototype.getSonFlag()) {
-                                        examineBuilding_.prototype.sonModelMethod.buildingOutfit.init();
-                                        examineBuilding_.prototype.setSonFlag(false);
-                                    }
-                                    $("#" + examineBuilding_.prototype.config().sonFrm).clearAll();
+                                    $("#" + buildingModel.prototype.config().sonFrm).clearAll();
                                     var data = result.data;
-                                    if (examineBuilding_.prototype.isEmpty(data)) {
-                                        $("#" + examineBuilding_.prototype.config().sonFrm).initForm(data);
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().sonFrm,
-                                            data.decoratingMaterial, "decoratingMaterial");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().sonFrm,
-                                            data.materialPrice, "materialPrice");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().sonFrm,
-                                            data.constructionTechnology, "constructionTechnology");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().sonFrm,
-                                            data.decorationPart, "decorationPart");
+                                    if (buildingModel.prototype.isEmpty(data)) {
+                                        $("#" + buildingModel.prototype.config().sonFrm).initForm(data);
+                                        buildingModel.prototype.sonModelMethod.buildingOutfit.init(data);
                                     }
-                                    $('#' + examineBuilding_.prototype.config().sonBox).modal("show");
+                                    $('#' + buildingModel.prototype.config().sonBox).modal("show");
                                 }
                             },
                             error: function (result) {
@@ -279,21 +152,22 @@
                         })
                     },
                     saveData: function () {
-                        if (!$("#" + examineBuilding_.prototype.config().sonFrm).valid()) {
+                        if (!$("#" + buildingModel.prototype.config().sonFrm).valid()) {
                             return false;
                         }
-                        var data = formParams(examineBuilding_.prototype.config().sonFrm);
-                        data.buildingId = '${empty caseBuilding.id?0:caseBuilding.id}' ;
+                        var data = formParams(buildingModel.prototype.config().sonFrm);
+                        data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
+                        data.buildingId = buildingModel.prototype.getBuildingId();
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/saveAndUpdateCaseBuildingOutfit",
+                            url: "${pageContext.request.contextPath}/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
                             type: "post",
                             dataType: "json",
                             data: data,
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('保存成功');
-                                    $('#' + examineBuilding_.prototype.config().sonBox).modal('hide');
-                                    examineBuilding_.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
+                                    $('#' + buildingModel.prototype.config().sonBox).modal('hide');
+                                    buildingModel.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -305,23 +179,20 @@
                         })
                     },
                     showModel: function () {
-                        $("#" + examineBuilding_.prototype.config().sonFrm).clearAll();
-                        if (examineBuilding_.prototype.getSonFlag()) {
-                            examineBuilding_.prototype.sonModelMethod.buildingOutfit.init();
-                            examineBuilding_.prototype.setSonFlag(false);
-                        }
-                        $('#' + examineBuilding_.prototype.config().sonBox).modal("show");
+                        $("#" + buildingModel.prototype.config().sonFrm).clearAll();
+                        buildingModel.prototype.sonModelMethod.buildingOutfit.init({});
+                        $('#' + buildingModel.prototype.config().sonBox).modal("show");
                     },
                     removeData: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/deleteCaseBuildingOutfitById",
+                            url: "${pageContext.request.contextPath}/basicBuildingOutfit/deleteBasicBuildingOutfit",
                             type: "post",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('删除成功');
-                                    examineBuilding_.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
+                                    buildingModel.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -332,95 +203,19 @@
                             }
                         })
                     },
-                    init: function () {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_decorating_material",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                    init: function (item) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.decorationPart, function (html, data) {
+                            $("#" + buildingModel.prototype.config().sonFrm).find('select.decorationPart').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_material_price",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
+                            $("#" + buildingModel.prototype.config().sonFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_construction_technology",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPrice, function (html, data) {
+                            $("#" + buildingModel.prototype.config().sonFrm).find('select.materialPrice').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_decoration_part",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").html(option);
-                                        $("#" + examineBuilding_.prototype.config().sonFrm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
-                        })
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
+                            $("#" + buildingModel.prototype.config().sonFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                        });
                     },
                     loadDataDicList: function () {
                         var cols = [];
@@ -431,15 +226,16 @@
                         cols.push({
                             field: 'id', title: '操作', formatter: function (value, row, index) {
                                 var str = '<div class="btn-margin">';
-                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                                 str += '</div>';
                                 return str;
                             }
                         });
-                        $("#" + examineBuilding_.prototype.config().sonTable).bootstrapTable('destroy');
-                        TableInit(examineBuilding_.prototype.config().sonTable, "${pageContext.request.contextPath}/caseBuildingOutfit/getCaseBuildingOutfitList", cols, {
-                            buildingId: '${empty caseBuilding.id?0:caseBuilding.id}'
+                        $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
+                        TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
+                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
+                            buildingId:buildingModel.prototype.getBuildingId()
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -455,24 +251,19 @@
                 buildingSurface: {
                     getAndInit: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceById",
+                            url: "${pageContext.request.contextPath}/basicBuildingSurface/getBasicBuildingSurfaceById",
                             type: "get",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
-                                    if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()) {
-                                        examineBuilding_.prototype.sonModelMethod.buildingSurface.init();
-                                        examineBuilding_.prototype.setExamineBuildingSurfaceFlag(false);
-                                    }
-                                    $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).clearAll();
+                                    $("#" + buildingModel.prototype.config().examineBuildingSurfaceFrm).clearAll();
                                     var data = result.data;
-                                    if (examineBuilding_.prototype.isEmpty(data)) {
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).initForm(data);
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().examineBuildingSurfaceFrm,
-                                            data.structure, "structure");
+                                    if (buildingModel.prototype.isEmpty(data)) {
+                                        $("#" + buildingModel.prototype.config().examineBuildingSurfaceFrm).initForm(data);
+                                        buildingModel.prototype.sonModelMethod.buildingSurface.init(data);
                                     }
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal("show");
+                                    $('#' + buildingModel.prototype.config().examineBuildingSurfaceBox).modal("show");
                                 }
                             },
                             error: function (result) {
@@ -481,21 +272,22 @@
                         })
                     },
                     saveData: function () {
-                        if (!$("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).valid()) {
+                        if (!$("#" + buildingModel.prototype.config().examineBuildingSurfaceFrm).valid()) {
                             return false;
                         }
-                        var data = formParams(examineBuilding_.prototype.config().examineBuildingSurfaceFrm);
-                        data.buildingId = '${empty caseBuilding.id?0:caseBuilding.id}' ;
+                        var data = formParams(buildingModel.prototype.config().examineBuildingSurfaceFrm);
+                        data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
+                        data.buildingId = buildingModel.prototype.getBuildingId();
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingSurface/saveAndUpdateCaseBuildingSurface",
+                            url: "${pageContext.request.contextPath}/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
                             type: "post",
                             dataType: "json",
                             data: data,
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('保存成功');
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal('hide');
-                                    examineBuilding_.prototype.sonModelMethod.buildingSurface.loadDataDicList();
+                                    $('#' + buildingModel.prototype.config().examineBuildingSurfaceBox).modal('hide');
+                                    buildingModel.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -507,23 +299,20 @@
                         })
                     },
                     showModel: function () {
-                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm).clearAll();
-                        if (examineBuilding_.prototype.getExamineBuildingSurfaceFlag()) {
-                            examineBuilding_.prototype.sonModelMethod.buildingSurface.init();
-                            examineBuilding_.prototype.setExamineBuildingSurfaceFlag(false);
-                        }
-                        $('#' + examineBuilding_.prototype.config().examineBuildingSurfaceBox).modal("show");
+                        $("#" + buildingModel.prototype.config().examineBuildingSurfaceFrm).clearAll();
+                        buildingModel.prototype.sonModelMethod.buildingSurface.init({});
+                        $('#' + buildingModel.prototype.config().examineBuildingSurfaceBox).modal("show");
                     },
                     removeData: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingSurface/deleteCaseBuildingSurfaceById",
+                            url: "${pageContext.request.contextPath}/basicBuildingSurface/deleteBasicBuildingSurface",
                             type: "post",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('删除成功');
-                                    examineBuilding_.prototype.sonModelMethod.buildingSurface.loadDataDicList();
+                                    buildingModel.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -534,29 +323,9 @@
                             }
                         });
                     },
-                    init: function () {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingSurface/examine_building_structure",
-                            type: "get",
-                            async: false,
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceFrm + " .structure").select2();//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                    init: function (item) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_structure, item.structure, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingSurfaceFrm).find('select.structure').empty().html(html).trigger('change');
                         });
                     },
                     loadDataDicList: function () {
@@ -566,15 +335,16 @@
                         cols.push({
                             field: 'id', title: '操作', formatter: function (value, row, index) {
                                 var str = '<div class="btn-margin">';
-                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModel.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModel.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                                 str += '</div>';
                                 return str;
                             }
                         });
-                        $("#" + examineBuilding_.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
-                        TableInit(examineBuilding_.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceList", cols, {
-                            buildingId: '${empty caseBuilding.id?0:caseBuilding.id}'
+                        $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
+                        TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
+                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
+                            buildingId:buildingModel.prototype.getBuildingId()
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -589,26 +359,19 @@
                 buildingMaintenance: {
                     getAndInit: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingMaintenance/getCaseBuildingMaintenanceById",
+                            url: "${pageContext.request.contextPath}/basicBuildingMaintenance/getBasicBuildingMaintenanceById",
                             type: "get",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
-                                    if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()) {
-                                        examineBuilding_.prototype.sonModelMethod.buildingMaintenance.init();
-                                        examineBuilding_.prototype.setExamineBuildingMaintenanceFlag(false);
-                                    }
-                                    $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).clearAll();
+                                    $("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).clearAll();
                                     var data = result.data;
-                                    if (examineBuilding_.prototype.isEmpty(data)) {
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).initForm(data);
-                                        examineBuilding_.prototype.objectWriteSelectData(
-                                            examineBuilding_.prototype.config().examineBuildingMaintenanceFrm, data.category, "category");
-                                        examineBuilding_.prototype.objectWriteSelectData(
-                                            examineBuilding_.prototype.config().examineBuildingMaintenanceFrm, data.materialQuality, "materialQuality");
+                                    if (buildingModel.prototype.isEmpty(data)) {
+                                        $("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).initForm(data);
+                                        buildingModel.prototype.sonModelMethod.buildingMaintenance.init(data);
                                     }
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal("show");
+                                    $('#' + buildingModel.prototype.config().examineBuildingMaintenanceBox).modal("show");
                                 }
                             },
                             error: function (result) {
@@ -617,21 +380,22 @@
                         })
                     },
                     saveData: function () {
-                        if (!$("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).valid()) {
+                        if (!$("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).valid()) {
                             return false;
                         }
-                        var data = formParams(examineBuilding_.prototype.config().examineBuildingMaintenanceFrm);
-                        data.buildingId = '${empty caseBuilding.id?0:caseBuilding.id}' ;
+                        var data = formParams(buildingModel.prototype.config().examineBuildingMaintenanceFrm);
+                        data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
+                        data.buildingId = buildingModel.prototype.getBuildingId();
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingMaintenance/saveAndUpdateCaseBuildingMaintenance",
+                            url: "${pageContext.request.contextPath}/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
                             type: "post",
                             dataType: "json",
                             data: data,
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('保存成功');
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal('hide');
-                                    examineBuilding_.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
+                                    $('#' + buildingModel.prototype.config().examineBuildingMaintenanceBox).modal('hide');
+                                    buildingModel.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -643,23 +407,20 @@
                         })
                     },
                     showModel: function () {
-                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm).clearAll();
-                        if (examineBuilding_.prototype.getExamineBuildingMaintenanceFlag()) {
-                            examineBuilding_.prototype.sonModelMethod.buildingMaintenance.init();
-                            examineBuilding_.prototype.setExamineBuildingMaintenanceFlag(false);
-                        }
-                        $('#' + examineBuilding_.prototype.config().examineBuildingMaintenanceBox).modal("show");
+                        $("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).clearAll();
+                        buildingModel.prototype.sonModelMethod.buildingMaintenance.init({});
+                        $('#' + buildingModel.prototype.config().examineBuildingMaintenanceBox).modal("show");
                     },
                     removeData: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingMaintenance/deleteCaseBuildingMaintenanceById",
+                            url: "${pageContext.request.contextPath}/basicBuildingMaintenance/deleteBasicBuildingMaintenance",
                             type: "post",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('删除成功');
-                                    examineBuilding_.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
+                                    buildingModel.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -670,52 +431,12 @@
                             }
                         });
                     },
-                    init: function () {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingMaintenance/examine_building_maintenance_category",
-                            type: "get",
-                            dataType: "json",
-                            async: false,
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .category").select2();//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                    init: function (item) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_maintenance_category, item.category, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).find('select.category').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingMaintenance/examine_building_materialquality",
-                            type: "get",
-                            async: false,
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceFrm + " .materialQuality").select2();//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_materialquality, item.materialQuality, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingMaintenanceFrm).find('select.materialQuality').empty().html(html).trigger('change');
                         });
                     },
                     loadDataDicList: function () {
@@ -726,15 +447,16 @@
                         cols.push({
                             field: 'id', title: '操作', formatter: function (value, row, index) {
                                 var str = '<div class="btn-margin">';
-                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                                 str += '</div>';
                                 return str;
                             }
                         });
-                        $("#" + examineBuilding_.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
-                        TableInit(examineBuilding_.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/caseBuildingMaintenance/getCaseBuildingMaintenanceList", cols, {
-                            buildingId: '${empty caseBuilding.id?0:caseBuilding.id}'
+                        $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
+                        TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
+                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
+                            buildingId:buildingModel.prototype.getBuildingId()
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -749,30 +471,19 @@
                 buildingFunction: {
                     getAndInit: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingFunction/getCaseBuildingFunctionById",
+                            url: "${pageContext.request.contextPath}/basicBuildingFunction/getBasicBuildingFunctionById",
                             type: "get",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
-                                    if (examineBuilding_.prototype.getExamineBuildingFunctionFlag()) {
-                                        examineBuilding_.prototype.sonModelMethod.buildingFunction.init();
-                                        examineBuilding_.prototype.setExamineBuildingFunctionFlag(false);
-                                    }
-                                    $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm).clearAll();
+                                    $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).clearAll();
                                     var data = result.data;
-                                    if (examineBuilding_.prototype.isEmpty(data)) {
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm).initForm(data);
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().examineBuildingFunctionFrm,
-                                            data.decoratingMaterial, "decoratingMaterial");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().examineBuildingFunctionFrm,
-                                            data.materialPrice, "materialPrice");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().examineBuildingFunctionFrm,
-                                            data.constructionTechnology, "constructionTechnology");
-                                        examineBuilding_.prototype.objectWriteSelectData(examineBuilding_.prototype.config().examineBuildingFunctionFrm,
-                                            data.decorationPart, "decorationPart");
+                                    if (buildingModel.prototype.isEmpty(data)) {
+                                        $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).initForm(data);
+                                        buildingModel.prototype.sonModelMethod.buildingFunction.init(data);
                                     }
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingFunctionBox).modal("show");
+                                    $('#' + buildingModel.prototype.config().examineBuildingFunctionBox).modal("show");
                                 }
                             },
                             error: function (result) {
@@ -781,21 +492,22 @@
                         })
                     },
                     saveData: function () {
-                        if (!$("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm).valid()) {
+                        if (!$("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).valid()) {
                             return false;
                         }
-                        var data = formParams(examineBuilding_.prototype.config().examineBuildingFunctionFrm);
-                        data.buildingId = '${empty caseBuilding.id?0:caseBuilding.id}' ;
+                        var data = formParams(buildingModel.prototype.config().examineBuildingFunctionFrm);
+                        data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
+                        data.buildingId = buildingModel.prototype.getBuildingId();
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingFunction/saveAndUpdateCaseBuildingFunction",
+                            url: "${pageContext.request.contextPath}/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
                             type: "post",
                             dataType: "json",
                             data: data,
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('保存成功');
-                                    $('#' + examineBuilding_.prototype.config().examineBuildingFunctionBox).modal('hide');
-                                    examineBuilding_.prototype.sonModelMethod.buildingFunction.loadDataDicList();
+                                    $('#' + buildingModel.prototype.config().examineBuildingFunctionBox).modal('hide');
+                                    buildingModel.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -807,23 +519,20 @@
                         })
                     },
                     showModel: function () {
-                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm).clearAll();
-                        if (examineBuilding_.prototype.getExamineBuildingFunctionFlag()) {
-                            examineBuilding_.prototype.sonModelMethod.buildingFunction.init();
-                            examineBuilding_.prototype.setExamineBuildingFunctionFlag(false);
-                        }
-                        $('#' + examineBuilding_.prototype.config().examineBuildingFunctionBox).modal("show");
+                        $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).clearAll();
+                        buildingModel.prototype.sonModelMethod.buildingFunction.init({});
+                        $('#' + buildingModel.prototype.config().examineBuildingFunctionBox).modal("show");
                     },
                     removeData: function (id) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingFunction/deleteCaseBuildingFunctionById",
+                            url: "${pageContext.request.contextPath}/basicBuildingFunction/deleteBasicBuildingFunction",
                             type: "post",
                             dataType: "json",
                             data: {id: id},
                             success: function (result) {
                                 if (result.ret) {
                                     toastr.success('删除成功');
-                                    examineBuilding_.prototype.sonModelMethod.buildingFunction.loadDataDicList();
+                                    buildingModel.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                                 }
                                 else {
                                     Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -834,95 +543,19 @@
                             }
                         });
                     },
-                    init: function () {
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_decorating_material",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decoratingMaterial").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decoratingMaterial").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                    init: function (item) {
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decoration_part, item.decorationPart, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).find('select.decorationPart').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_material_price",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .materialPrice").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .materialPrice").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.decoratingMaterial, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).find('select.decoratingMaterial').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_construction_technology",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .constructionTechnology").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .constructionTechnology").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_material_price, item.materialPrice, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).find('select.materialPrice').empty().html(html).trigger('change');
                         });
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/caseBuildingOutfit/examine_building_decoration_part",
-                            type: "get",
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.ret) {
-                                    var data = result.data;
-                                    var gradeNum = data.length;
-                                    var option = "<option value=''>请选择</option>";
-                                    if (gradeNum > 0) {
-                                        for (var i = 0; i < gradeNum; i++) {
-                                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                                        }
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decorationPart").html(option);
-                                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionFrm + " .decorationPart").select2({minimumResultsForSearch: -1});//加载样式
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                Alert("调用服务端方法失败，失败原因:" + result);
-                            }
-                        })
+                        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_technology, item.constructionTechnology, function (html, data) {
+                            $("#" + buildingModel.prototype.config().examineBuildingFunctionFrm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                        });
                     },
                     loadDataDicList: function () {
                         var cols = [];
@@ -936,15 +569,16 @@
                         cols.push({
                             field: 'id', title: '操作', formatter: function (value, row, index) {
                                 var str = '<div class="btn-margin">';
-                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="examineBuilding_.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="examineBuilding_.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModel.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModel.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                                 str += '</div>';
                                 return str;
                             }
                         });
-                        $("#" + examineBuilding_.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
-                        TableInit(examineBuilding_.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/caseBuildingFunction/getCaseBuildingFunctionList", cols, {
-                            buildingId: '${empty caseBuilding.id?0:caseBuilding.id}'
+                        $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
+                        TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
+                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
+                            buildingId:buildingModel.prototype.getBuildingId()
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -955,9 +589,6 @@
                         });
                     }
                 }
-            },
-            file: {
-
             }
         }
     })();
@@ -1038,7 +669,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="examineBuilding_.prototype.sonModelMethod.buildingOutfit.saveData();">
+                            onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.saveData();">
                         保存
                     </button>
                 </div>
@@ -1107,7 +738,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="examineBuilding_.prototype.sonModelMethod.buildingMaintenance.saveData();">
+                            onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.saveData();">
                         保存
                     </button>
                 </div>
@@ -1166,7 +797,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="examineBuilding_.prototype.sonModelMethod.buildingSurface.saveData();">
+                            onclick="buildingModel.prototype.sonModelMethod.buildingSurface.saveData();">
                         保存
                     </button>
                 </div>
@@ -1283,7 +914,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="examineBuilding_.prototype.sonModelMethod.buildingFunction.saveData();">
+                            onclick="buildingModel.prototype.sonModelMethod.buildingFunction.saveData();">
                         保存
                     </button>
                 </div>
