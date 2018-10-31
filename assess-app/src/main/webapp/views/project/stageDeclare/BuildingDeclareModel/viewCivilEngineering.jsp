@@ -95,6 +95,12 @@
             frm: "declareRealtyRealEstateCertFrm",
             fileId: "declareRealtyRealEstateCertFileId",
             name: "不动产"
+        },
+        declareEconomicIndicators: {
+            box: "declareEconomicIndicatorsBox",
+            frm: "declareEconomicIndicatorsFrm",
+            fileId: "declareEconomicIndicatorsFileId",
+            name: "经济指标"
         }
     };
 
@@ -1125,6 +1131,16 @@
         });
     };
 
+    /**
+     * 经济指标
+     */
+    civilEngineering.declareEconomicIndicatorsView = function (id) {
+        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
+        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
+        economicIndicators.loadDataList(id);
+        $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+    };
+
     civilEngineering.loadList = function () {
         var cols = [];
         cols.push({field: 'provinceName', title: '省'});
@@ -1148,6 +1164,7 @@
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" +row.id+")'"+">"+"规划指标"+ "</a>" + "</li>";
                 str += "</ul>" ;
                 str += "</div>";
                 return str;

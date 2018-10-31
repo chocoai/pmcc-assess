@@ -32,6 +32,11 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_INITIATE_URGENCY = "project.initiate.urgency";  //紧急程度
     public static final String VALUE_TYPE = "value.type";  //价值类型
 
+     /*
+     * 项目申报
+     */
+     public static final String PROJECT_DECLARE_ECONOMIC_INDICATORS = "project.declare.economic.indicators";  //紧急程度
+
     /*
      * 项目查勘
      */
