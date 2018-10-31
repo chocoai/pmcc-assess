@@ -161,7 +161,7 @@
                     id = "";
                 }
                 if (declareRealtyRealEstateCert.isEmpty(id)) {
-                    AssessCommon.getProjectClassifyInfo(id, function (data) {
+                    AssessCommon.getDataDicInfo(id, function (data) {
                         if (declareRealtyRealEstateCert.isEmpty(data)) {
                             var temp = location + "房权证" + data.name + "字地" + number + "号";
                             $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='certName']").val(temp);
@@ -284,8 +284,14 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + declareRealtyRealEstateCertConfig.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,'', function (html, data) {
             $("#" + declareRealtyRealEstateCertConfig.frm).find('select.type').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,'', function (html, data) {
+            $("#" + declareRealtyRealEstateCertConfig.frm).find('select.publicSituation').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+            $("#" + declareRealtyRealEstateCertConfig.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
         AssessCommon.initAreaInfo({
             provinceTarget: $("#" + declareRealtyRealEstateCertConfig.frm + "province"),
@@ -582,17 +588,6 @@
                                                     class="form-control search-select select2"
                                                     required="required">
                                                 <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
@@ -671,9 +666,9 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="共有情况" name="publicSituation" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="publicSituation"
+                                                    class="form-control search-select select2 publicSituation">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">

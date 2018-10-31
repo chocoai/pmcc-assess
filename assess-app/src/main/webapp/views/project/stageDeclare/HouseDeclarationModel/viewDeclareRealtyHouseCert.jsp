@@ -334,8 +334,11 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleHousePropertyCertificateTypeCategory, function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareHouseCertificateType,'', function (html, data) {
             $("#" + declareRealtyHouseCertConfig.frm).find('select.type').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation,'', function (html, data) {
+            $("#" + declareRealtyHouseCertConfig.frm).find('select.publicSituation').empty().html(html).trigger('change');
         });
         declareRealtyHouseCert.role.writeCertName.init();
         declareRealtyHouseCert.role.beLocated.init();
@@ -594,7 +597,7 @@
                     /**
                      * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
                      **/
-                    var id = $("#" + declareRealtyHouseCertConfig.frm + " .type").eq(1).val();
+                    var id = $("#" + declareRealtyHouseCertConfig.frm).find('select.type').val();
                     if (declareRealtyHouseCert.isEmpty(id)) {
                         declareRealtyHouseCert.role.writeCertName.write();
                     }
@@ -604,7 +607,7 @@
             write: function () {
                 var location = $("#" + declareRealtyHouseCertConfig.frm + " input[name='location']").val();
                 var number = $("#" + declareRealtyHouseCertConfig.frm + " input[name='number']").val();
-                var id = $("#" + declareRealtyHouseCertConfig.frm + " .type").eq(1).val();
+                var id = $("#" + declareRealtyHouseCertConfig.frm).find('select.type').val();
                 if (!declareRealtyHouseCert.isEmpty(location)) {
                     location = "";
                 }
@@ -615,7 +618,7 @@
                     id = "";
                 }
                 if (declareRealtyHouseCert.isEmpty(id)) {
-                    AssessCommon.getProjectClassifyInfo(id, function (data) {
+                    AssessCommon.getDataDicInfo(id, function (data) {
                         if (declareRealtyHouseCert.isEmpty(data)) {
                             var temp = location + "房权证" + data.name + "字地" + number + "号";
                             $("#" + declareRealtyHouseCertConfig.frm + " input[name='certName']").val(temp);
@@ -831,8 +834,11 @@
             });
         },
         init: function () {
-            AssessCommon.getProjectClassifyListByFieldName(AssessProjectClassifyKey.singleLandPropertyCertificateTypeCategory, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
                 $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+                $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).find('select.useRightType').empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
                 $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
@@ -843,12 +849,12 @@
             //土地权证号
             landCertName: {
                 write: function () {
-                    var id = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " .type").eq(1).val();
+                    var id = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm).find('select.type').val();
                     var year = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='year']").val();
                     var number = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='number']").val();
                     var location = $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='location']").val();
                     if (declareRealtyHouseCert.isEmpty(id)) {
-                        AssessCommon.getProjectClassifyInfo(id, function (data) {
+                        AssessCommon.getDataDicInfo(id, function (data) {
                             if (declareRealtyHouseCert.isEmpty(data)) {
                                 var temp = location + data.name + year + "第" + number + "号";
                                 $("#" + declareRealtyHouseCertConfig.son.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
@@ -1025,9 +1031,9 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text"
-                                                   placeholder="共有情况" name="publicSituation" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="publicSituation"
+                                                    class="form-control search-select select2 publicSituation">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1301,17 +1307,6 @@
                                                     class="form-control search-select select2"
                                                     required="required">
                                                 <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
