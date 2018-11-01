@@ -166,6 +166,66 @@ public class CaseBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPartIsNull() {
+            addCriterion("part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartIsNotNull() {
+            addCriterion("part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartEqualTo(Integer value) {
+            addCriterion("part =", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotEqualTo(Integer value) {
+            addCriterion("part <>", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartGreaterThan(Integer value) {
+            addCriterion("part >", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartGreaterThanOrEqualTo(Integer value) {
+            addCriterion("part >=", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartLessThan(Integer value) {
+            addCriterion("part <", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartLessThanOrEqualTo(Integer value) {
+            addCriterion("part <=", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartIn(List<Integer> values) {
+            addCriterion("part in", values, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotIn(List<Integer> values) {
+            addCriterion("part not in", values, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartBetween(Integer value1, Integer value2) {
+            addCriterion("part between", value1, value2, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotBetween(Integer value1, Integer value2) {
+            addCriterion("part not between", value1, value2, "part");
+            return (Criteria) this;
+        }
+
         public Criteria andEstateIdIsNull() {
             addCriterion("estate_id is null");
             return (Criteria) this;
@@ -1706,63 +1766,63 @@ public class CaseBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIsNull() {
-            addCriterion("building_structure_pid is null");
+        public Criteria andBuildingStructureLowerIsNull() {
+            addCriterion("building_structure_lower is null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIsNotNull() {
-            addCriterion("building_structure_pid is not null");
+        public Criteria andBuildingStructureLowerIsNotNull() {
+            addCriterion("building_structure_lower is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidEqualTo(Integer value) {
-            addCriterion("building_structure_pid =", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerEqualTo(Integer value) {
+            addCriterion("building_structure_lower =", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotEqualTo(Integer value) {
-            addCriterion("building_structure_pid <>", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotEqualTo(Integer value) {
+            addCriterion("building_structure_lower <>", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidGreaterThan(Integer value) {
-            addCriterion("building_structure_pid >", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerGreaterThan(Integer value) {
+            addCriterion("building_structure_lower >", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("building_structure_pid >=", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerGreaterThanOrEqualTo(Integer value) {
+            addCriterion("building_structure_lower >=", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidLessThan(Integer value) {
-            addCriterion("building_structure_pid <", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerLessThan(Integer value) {
+            addCriterion("building_structure_lower <", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidLessThanOrEqualTo(Integer value) {
-            addCriterion("building_structure_pid <=", value, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerLessThanOrEqualTo(Integer value) {
+            addCriterion("building_structure_lower <=", value, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidIn(List<Integer> values) {
-            addCriterion("building_structure_pid in", values, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerIn(List<Integer> values) {
+            addCriterion("building_structure_lower in", values, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotIn(List<Integer> values) {
-            addCriterion("building_structure_pid not in", values, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotIn(List<Integer> values) {
+            addCriterion("building_structure_lower not in", values, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidBetween(Integer value1, Integer value2) {
-            addCriterion("building_structure_pid between", value1, value2, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerBetween(Integer value1, Integer value2) {
+            addCriterion("building_structure_lower between", value1, value2, "buildingStructureLower");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingStructurePidNotBetween(Integer value1, Integer value2) {
-            addCriterion("building_structure_pid not between", value1, value2, "buildingStructurePid");
+        public Criteria andBuildingStructureLowerNotBetween(Integer value1, Integer value2) {
+            addCriterion("building_structure_lower not between", value1, value2, "buildingStructureLower");
             return (Criteria) this;
         }
 
@@ -1833,76 +1893,6 @@ public class CaseBuildingExample {
 
         public Criteria andJsonContentNotBetween(String value1, String value2) {
             addCriterion("json_content not between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierIsNull() {
-            addCriterion("identifier is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierIsNotNull() {
-            addCriterion("identifier is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierEqualTo(String value) {
-            addCriterion("identifier =", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierNotEqualTo(String value) {
-            addCriterion("identifier <>", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierGreaterThan(String value) {
-            addCriterion("identifier >", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierGreaterThanOrEqualTo(String value) {
-            addCriterion("identifier >=", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierLessThan(String value) {
-            addCriterion("identifier <", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierLessThanOrEqualTo(String value) {
-            addCriterion("identifier <=", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierLike(String value) {
-            addCriterion("identifier like", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierNotLike(String value) {
-            addCriterion("identifier not like", value, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierIn(List<String> values) {
-            addCriterion("identifier in", values, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierNotIn(List<String> values) {
-            addCriterion("identifier not in", values, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierBetween(String value1, String value2) {
-            addCriterion("identifier between", value1, value2, "identifier");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdentifierNotBetween(String value1, String value2) {
-            addCriterion("identifier not between", value1, value2, "identifier");
             return (Criteria) this;
         }
 

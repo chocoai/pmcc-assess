@@ -85,6 +85,7 @@ public class CaseBuildingFunctionService {
             caseBuildingFunction.setCreator(commonService.thisUserAccount());
             caseBuildingFunction.setVersion(0);
             caseBuildingFunctionDao.addBuildingOutfit(caseBuildingFunction);
+            return;
         }
         if (caseBuildingFunction.getId() != null){
             CaseBuildingFunction oo = this.getCaseBuildingFunctionById(caseBuildingFunction.getId());
@@ -98,6 +99,7 @@ public class CaseBuildingFunctionService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             caseBuildingFunctionDao.addBuildingOutfit(oo);
+            return;
         }
     }
 

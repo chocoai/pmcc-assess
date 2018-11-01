@@ -6,6 +6,8 @@ import java.util.Date;
 public class CaseBuilding {
     private Integer id;
 
+    private Integer part;
+
     private Integer estateId;
 
     private Integer caseBuildingMainId;
@@ -56,11 +58,9 @@ public class CaseBuilding {
 
     private Integer buildingStructure;
 
-    private Integer buildingStructurePid;
+    private Integer buildingStructureLower;
 
     private String jsonContent;
-
-    private String identifier;
 
     private Integer version;
 
@@ -78,6 +78,14 @@ public class CaseBuilding {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPart() {
+        return part;
+    }
+
+    public void setPart(Integer part) {
+        this.part = part;
     }
 
     public Integer getEstateId() {
@@ -280,12 +288,12 @@ public class CaseBuilding {
         this.buildingStructure = buildingStructure;
     }
 
-    public Integer getBuildingStructurePid() {
-        return buildingStructurePid;
+    public Integer getBuildingStructureLower() {
+        return buildingStructureLower;
     }
 
-    public void setBuildingStructurePid(Integer buildingStructurePid) {
-        this.buildingStructurePid = buildingStructurePid;
+    public void setBuildingStructureLower(Integer buildingStructureLower) {
+        this.buildingStructureLower = buildingStructureLower;
     }
 
     public String getJsonContent() {
@@ -294,14 +302,6 @@ public class CaseBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier == null ? null : identifier.trim();
     }
 
     public Integer getVersion() {

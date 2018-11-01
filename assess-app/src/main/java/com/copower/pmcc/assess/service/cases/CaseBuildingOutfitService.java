@@ -130,6 +130,7 @@ public class CaseBuildingOutfitService {
             id = caseBuildingOutfitDao.saveCaseBuildingOutfit(caseBuildingOutfit);
             caseBuildingOutfit.setId(id);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class), id);
+            return id;
         }
         if (caseBuildingOutfit.getId() != null) {
             CaseBuildingOutfit oo = this.getCaseBuildingOutfitById(caseBuildingOutfit.getId());
@@ -147,8 +148,9 @@ public class CaseBuildingOutfitService {
             id = caseBuildingOutfitDao.saveCaseBuildingOutfit(oo);
             caseBuildingOutfit.setId(id);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class), id);
+            return id;
         }
-        return id;
+        return null;
     }
 
     /**

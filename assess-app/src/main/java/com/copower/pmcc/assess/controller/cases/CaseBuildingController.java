@@ -165,21 +165,5 @@ public class CaseBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String identifier,Integer estateId , Integer maxRows) {
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        KeyValueDto keyValueDto = new KeyValueDto();
-        try {
-            List<CaseBuilding> caseEstateList = caseBuildingService.autoComplete(identifier, estateId, maxRows);
-            for (CaseBuilding caseBuilding : caseEstateList) {
-                keyValueDto.setKey(String.valueOf(caseBuilding.getId()));
-                keyValueDto.setValue(caseBuilding.getIdentifier());
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
-        } catch (Exception e1) {
-            return HttpResult.newErrorResult("异常");
-        }
-    }
+
 }

@@ -217,7 +217,7 @@
 <script type="text/javascript">
 
     var objectData = new Object();
-
+    objectData.flag = true;
     objectData.config = {
         id: "basicApplyId",
         option: {},
@@ -729,7 +729,9 @@
                                     if (resultA.ret) {
                                         if (objectData.isNotBlank(resultA.data)) {
                                             $.each(resultA.data, function (i, n) {
-                                                navButtonBuild.setObjArrayElement(i + 1, n);
+                                                if (objectData.isNotBlank(n.part)){
+                                                    navButtonBuild.setObjArrayElement(n.part, n);
+                                                }
                                             });
                                             $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
@@ -741,7 +743,9 @@
                                             });
                                             var temp = resultA.data[0];
                                             if (objectData.isNotBlankObjectProperty(temp)) {
-                                                objectData.building.show(temp);
+                                                // objectData.building.show(temp);
+                                                objectData.firstRemove.buildFirst();
+                                                objectData.building.appWriteBuilding(temp);
                                             }else {
                                                 objectData.building.show({});
                                             }
@@ -784,7 +788,9 @@
                                     if (resultA.ret) {
                                         if (objectData.isNotBlank(resultA.data)) {
                                             $.each(resultA.data, function (i, n) {
-                                                navButtonBuild.setObjArrayElement(i + 1, n);
+                                                if (objectData.isNotBlank(n.part)){
+                                                    navButtonBuild.setObjArrayElement(n.part, n);
+                                                }
                                             });
                                             $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
@@ -796,7 +802,9 @@
                                             });
                                             var temp = resultA.data[0];
                                             if (objectData.isNotBlankObjectProperty(temp)) {
-                                                objectData.building.show(temp);
+                                                // objectData.building.show(temp);
+                                                objectData.firstRemove.buildFirst();
+                                                objectData.building.appWriteBuilding(temp);
                                             }else {
                                                 objectData.building.show({});
                                             }
@@ -809,6 +817,23 @@
                                 }
                             });
                         }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        appWriteBuilding:function (temp) {
+            var caseMainBuildId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicBuilding/appWriteBuilding",
+                type: "post",
+                data:{caseMainBuildId:caseMainBuildId},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        objectData.building.show(temp);
                     }
                 },
                 error: function (result) {
@@ -890,6 +915,35 @@
     };
 
 
+    //删除 楼盘 楼盘 单元 房屋 下 子类的临时数据!
+    objectData.firstRemove = {
+        buildFirst:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('楼栋删除临时数据!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        init:function () {
+            if (objectData.flag){
+                objectData.flag = false;
+                objectData.firstRemove.buildFirst();
+            }
+        }
+    }
+
+    $(function () {
+        objectData.firstRemove.init();
+    });
+
     //收集数据
     objectData.formParams = function () {
         var item = {};
@@ -928,17 +982,27 @@
         item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
         return item;
     };
+
 </script>
 
 <script>
 
     //提交
     function submit() {
+        var data = objectData.formParams();
+
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-        if (!objectData.isNotBlank(estateId)) {
+        var basicEstate = data.basicEstate;
+
+        //验证机制
+        //楼盘id为null时应当是直接添加的楼盘数据,因此收集的楼盘数据必须不为null,反之当楼盘id选择之后,收集的楼盘数据可以为null
+        if (!objectData.isNotBlank(estateId) && !objectData.isNotBlankObjectProperty(basicEstate)) {
            //请先查询楼盘 不再验证
+            Alert("未选择楼盘或者是没添加新的楼盘数据!");
+            return false;
         }
-        var formData = JSON.stringify(objectData.formParams());
+
+        var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
