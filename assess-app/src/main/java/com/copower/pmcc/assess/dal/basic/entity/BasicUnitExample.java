@@ -165,6 +165,66 @@ public class BasicUnitExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseUnitIdIsNull() {
+            addCriterion("case_unit_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdIsNotNull() {
+            addCriterion("case_unit_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdEqualTo(Integer value) {
+            addCriterion("case_unit_id =", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotEqualTo(Integer value) {
+            addCriterion("case_unit_id <>", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdGreaterThan(Integer value) {
+            addCriterion("case_unit_id >", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_unit_id >=", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdLessThan(Integer value) {
+            addCriterion("case_unit_id <", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_unit_id <=", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdIn(List<Integer> values) {
+            addCriterion("case_unit_id in", values, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotIn(List<Integer> values) {
+            addCriterion("case_unit_id not in", values, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_unit_id between", value1, value2, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_unit_id not between", value1, value2, "caseUnitId");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyIdIsNull() {
             addCriterion("apply_id is null");
             return (Criteria) this;

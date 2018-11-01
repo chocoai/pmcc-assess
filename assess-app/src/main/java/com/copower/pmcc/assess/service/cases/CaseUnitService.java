@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
@@ -15,12 +16,16 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -134,6 +139,59 @@ public class CaseUnitService {
             caseUnitDao.updateUnit(caseUnit);
             return null;
         }
+    }
+
+    public Integer upgradeVersion(CaseUnit caseUnit)throws Exception{
+        Integer id = null;
+        if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
+            caseUnit.setCreator(commonService.thisUserAccount());
+            caseUnit.setVersion(0);
+            id = caseUnitDao.addUnit(caseUnit);
+            this.initAndUpdateSon(id);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
+            return  id;
+        } else {
+            CaseUnit oo = caseUnitDao.getUnitById(caseUnit.getId());
+            if (oo != null) {
+                if (oo.getVersion() == null) {
+                    oo.setVersion(0);
+                }
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseUnit, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            id = caseUnitDao.addUnit(oo);
+            this.initAndUpdateSon(id);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
+            caseUnit.setId(id);
+            return id;
+        }
+    }
+
+    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId, Integer maxRows){
+        List<CaseUnit> caseUnitList = null;
+        caseUnitList = caseUnitDao.autoCompleteCaseUnit(unitNumber, caseBuildingMainId);
+        List<CaseUnit> list = new ArrayList<CaseUnit>(10);
+        Ordering<CaseUnit> ordering = Ordering.from(new Comparator<CaseUnit>() {
+            @Override
+            public int compare(CaseUnit o1, CaseUnit o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        Collections.sort(caseUnitList,ordering);
+        if (!ObjectUtils.isEmpty(caseUnitList)) {
+            for (int i = 0; i < maxRows; i++) {
+                if (i < caseUnitList.size()) {
+                    list.add(caseUnitList.get(i));
+                }
+            }
+        }
+        return list;
     }
 
     public boolean deleteCaseUnit(Integer id) {

@@ -142,17 +142,6 @@ public class BasicEstateService {
         return basicEstateDao.basicEstateList(basicEstate);
     }
 
-    public List<BasicEstate> autoComplete(BasicEstate basicEstate) throws Exception {
-        List<BasicEstate> basicEstates = basicEstateDao.autoComplete(basicEstate);
-        Ordering<BasicEstate> ordering = Ordering.from(new Comparator<BasicEstate>() {
-            @Override
-            public int compare(BasicEstate o1, BasicEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(basicEstates, ordering);
-        return basicEstateDao.autoComplete(basicEstate);
-    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicEstate basicEstate) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();

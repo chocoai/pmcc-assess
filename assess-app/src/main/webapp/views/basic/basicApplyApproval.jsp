@@ -637,14 +637,14 @@
                                                 <label class="col-sm-1 control-label">单元编号</label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="单元编号" readonly="readonly"
-                                                           name="unitNumber" class="form-control">
+                                                           name="unitNumber" class="form-control" value="${basicUnit.unitNumber}">
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">户梯比</label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="户梯比" readonly="readonly"
-                                                           name="elevatorHouseholdRatio" class="form-control">
+                                                           name="elevatorHouseholdRatio" class="form-control" value="${basicUnit.elevatorHouseholdRatio}">
                                                 </div>
                                             </div>
                                         </div>

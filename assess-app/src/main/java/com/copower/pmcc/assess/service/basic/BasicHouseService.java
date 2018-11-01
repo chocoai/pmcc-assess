@@ -87,19 +87,6 @@ public class BasicHouseService {
         return basicHouseDao.basicHouseList(basicHouse);
     }
 
-    public List<BasicHouse> autoComplete(BasicHouse basicHouse)throws Exception{
-        List<BasicHouse> basicHouses = basicHouseDao.autoComplete(basicHouse);
-        if (!ObjectUtils.isEmpty(basicHouses)){
-            Ordering<BasicHouse> ordering = Ordering.from(new Comparator<BasicHouse>() {
-                @Override
-                public int compare(BasicHouse o1, BasicHouse o2) {
-                    return o1.getId().compareTo(o2.getId());
-                }
-            }).reverse();
-            Collections.sort(basicHouses,ordering);
-        }
-        return basicHouseDao.autoComplete(basicHouse);
-    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse)throws Exception{
         BootstrapTableVo vo = new BootstrapTableVo();

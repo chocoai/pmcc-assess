@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicHouse {
     private Integer id;
 
+    private Integer caseHouseId;
+
     private Integer applyId;
 
     private Integer unitId;
@@ -45,6 +47,14 @@ public class BasicHouse {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseHouseId() {
+        return caseHouseId;
+    }
+
+    public void setCaseHouseId(Integer caseHouseId) {
+        this.caseHouseId = caseHouseId;
     }
 
     public Integer getApplyId() {

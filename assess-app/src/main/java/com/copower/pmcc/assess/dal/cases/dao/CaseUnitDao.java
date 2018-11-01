@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -67,6 +68,19 @@ public class CaseUnitDao {
      */
     public boolean deleteUnit(Integer id){
         return caseUnitMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId){
+        CaseUnitExample example = new CaseUnitExample();
+        CaseUnitExample.Criteria criteria =example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotEmpty(unitNumber)){
+            criteria.andUnitNumberLike(String.format("%s%s%s","%",unitNumber,"%"));
+        }
+        if (caseBuildingMainId != null){
+            criteria.andCaseBuildingMainIdEqualTo(caseBuildingMainId);
+        }
+        return caseUnitMapper.selectByExample(example);
     }
 
 }

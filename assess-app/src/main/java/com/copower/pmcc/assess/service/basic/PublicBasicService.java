@@ -70,6 +70,8 @@ public class PublicBasicService {
     private CaseBuildingOutfitService caseBuildingOutfitService;
     @Autowired
     private CaseBuildingSurfaceService caseBuildingSurfaceService;
+    @Autowired
+    private CaseUnitService caseUnitService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate) throws Exception {
@@ -348,6 +350,33 @@ public class PublicBasicService {
         }
     }
 
+    private CaseUnit flowWriteCaseUnit(BasicUnit basicUnit, Integer caseBuildingMainId) throws Exception {
+        CaseUnit caseUnit = null;
+        if (basicUnit.getCaseUnitId() != null) {
+            caseUnit = caseUnitService.getCaseUnitById(basicUnit.getCaseUnitId());
+            if (caseUnit != null) {
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicUnit, caseUnit);
+                caseUnit.setId(basicUnit.getCaseUnitId());
+            }
+            if (caseUnit == null) {
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicUnit, caseUnit);
+                caseUnit.setId(null);
+                caseUnit.setGmtCreated(null);
+                caseUnit.setGmtModified(null);
+            }
+        }
+        if (basicUnit.getCaseUnitId() == null) {
+            caseUnit = new CaseUnit();
+            BeanCopyHelp.copyPropertiesIgnoreNull(basicUnit, caseUnit);
+            caseUnit.setId(null);
+            caseUnit.setGmtCreated(null);
+            caseUnit.setGmtModified(null);
+        }
+        caseUnit.setCaseBuildingMainId(caseBuildingMainId);
+        caseUnitService.upgradeVersion(caseUnit);
+        return caseUnit;
+    }
+
     /**
      * 回写数据并且升级版本
      *
@@ -359,22 +388,44 @@ public class PublicBasicService {
         if (basicApply != null) {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
             BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
+            BasicUnit basicUnit = this.getByByAppIdBasicUnit(basicApply.getId());
+
+            CaseEstate caseEstate = null;
+            CaseBuildingMain caseBuildingMain = null;
+            CaseUnit caseUnit = null;
+
             //处理楼盘
-            CaseEstate caseEstate = this.flowWriteCaseEstate(basicEstate);
+            caseEstate = this.flowWriteCaseEstate(basicEstate);
+
             if (basicBuildingMain != null) {
-                CaseBuildingMain caseBuildingMain = null;
+                if (caseEstate == null && basicBuildingMain.getEstateId() == null) {
+                    throw new Exception("未选择楼盘信息或者是未新增楼盘数据!");
+                }
+                Integer caseEstateId = null;
+                if (caseEstate == null && basicBuildingMain.getEstateId() != null) {
+                    caseEstateId = basicBuildingMain.getEstateId();
+                }
                 if (caseEstate != null) {
-                    //处理楼栋 主表
-                    caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstate.getId());
+                    caseEstateId = caseEstate.getId();
                 }
-                if (caseEstate == null){
-                    if (basicBuildingMain.getEstateId() == null){
-                        throw  new Exception("楼盘id漏了!");
-                    }
-                    caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, basicBuildingMain.getEstateId());
-                }
+                caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstateId);
                 //处理楼栋 关联表
                 this.flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
+            }
+
+            if (basicUnit != null){
+                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() == null){
+                    throw new Exception("未选择楼栋信息或者是未新增楼栋数据!");
+                }
+                Integer caseBuildingMainId = null;
+                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() != null){
+                    caseBuildingMainId = basicUnit.getBasicBuildingMainId();
+                }
+                if (caseBuildingMain != null){
+                    caseBuildingMainId = caseBuildingMain.getId();
+                }
+                //处理单元
+                caseUnit = this.flowWriteCaseUnit(basicUnit, caseBuildingMainId);
             }
         }
     }
@@ -412,42 +463,62 @@ public class PublicBasicService {
         JSONObject jsonObject = JSON.parseObject(formData);
         String jsonContent = null;
         BasicEstate basicEstate = null;
+
+        //楼盘过程数据
         jsonContent = jsonObject.getString("basicEstate");
         if (StringUtils.isNotBlank(jsonContent)) {
             basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
-            basicEstate.setApplyId(basicApply.getId());
-            if (basicEstate.getId() != null) {
-                basicEstate.setCaseEstateId(basicEstate.getId());
-                basicEstate.setId(null);
-            }
-            try {
-                basicEstateService.upgradeVersion(basicEstate);
-            } catch (Exception e1) {
-
+            if (basicEstate != null) {
+                basicEstate.setApplyId(basicApply.getId());
+                if (basicEstate.getId() != null) {
+                    basicEstate.setCaseEstateId(basicEstate.getId());
+                    basicEstate.setId(null);
+                }
+                try {
+                    basicEstateService.upgradeVersion(basicEstate);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
             }
         }
+        //楼栋主过程数据
         jsonContent = null;
         jsonContent = jsonObject.getString("basicBuildingMain");
         BasicBuildingMain basicBuildingMain = null;
         if (StringUtils.isNotBlank(jsonContent)) {
             basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
-            basicBuildingMain.setApplyId(basicApply.getId());
-            if (basicBuildingMain.getId() != null) {
-                basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
-                basicBuildingMain.setId(null);
-            }
-            if (basicBuildingMain.getEstateId() == null) {
-                basicBuildingMain.setEstateId(basicEstate.getId());
+            if (basicBuildingMain != null) {
+                basicBuildingMain.setApplyId(basicApply.getId());
+                if (basicBuildingMain.getId() != null) {
+                    basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
+                    basicBuildingMain.setId(null);
+                }
                 //当楼栋数据未包含楼盘 那么楼盘必须是新增的情况
-                if (basicEstate.getId() == null) {
-                    throw new Exception();
+                //1
+                if (basicEstate == null) {
+                    if (basicBuildingMain.getEstateId() != null) {
+                        //...............
+                    }
+                    if (basicBuildingMain.getEstateId() == null) {
+                        throw new Exception("未选择楼盘!");
+                    }
+                }
+                //2
+                if (basicEstate != null) {
+                    if (basicEstate.getId() != null) {
+                        basicBuildingMain.setEstateId(basicEstate.getId());
+                    }
+                    if (basicEstate.getId() == null) {
+                        throw new Exception("楼盘数据异常!");
+                    }
+                }
+                try {
+                    basicBuildingMainService.upgradeVersion(basicBuildingMain);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
                 }
             }
-            try {
-                basicBuildingMainService.upgradeVersion(basicBuildingMain);
-            } catch (Exception e1) {
-
-            }
+            //楼栋过程数据
             jsonContent = null;
             jsonContent = jsonObject.getString("basicBuildings");
             List<BasicBuilding> basicBuildingList = null;
@@ -467,12 +538,50 @@ public class PublicBasicService {
                         try {
                             basicBuildingService.upgradeVersion(basicBuilding);
                         } catch (Exception e1) {
-
+                            logger.error(e1.getMessage(), e1);
                         }
                     }
                 }
             }
         }
+        //单元过程数据
+        jsonContent = null;
+        jsonContent = jsonObject.getString("basicUnit");
+        BasicUnit basicUnit = null;
+        if (StringUtils.isNotEmpty(jsonContent)) {
+            basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
+            if (basicUnit != null) {
+                basicUnit.setApplyId(basicApply.getId());
+                if (basicUnit.getId() != null) {
+                    basicUnit.setCaseUnitId(basicUnit.getId());
+                    basicUnit.setId(null);
+                }
+                if (basicBuildingMain != null) {
+                    if (basicBuildingMain.getId() != null) {
+                        basicUnit.setBasicBuildingMainId(basicBuildingMain.getId());
+                    }
+                    if (basicBuildingMain.getId() == null) {
+                        throw new Exception("楼栋主数据异常!");
+                    }
+                }
+                if (basicBuildingMain == null) {
+                    if (basicUnit.getBasicBuildingMainId() != null) {
+                        //....................
+                    }
+                    if (basicUnit.getBasicBuildingMainId() == null) {
+                        throw new Exception("未选择楼栋主数据!");
+                    }
+                }
+                try {
+                    basicUnitService.upgradeVersion(basicUnit);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            }
+        }
+        //处理房屋数据
+        jsonContent = null;
+        jsonContent = jsonObject.getString("basicHouse");
         //发起流程
         basicApplyService.sumTask(basicApply, FormatUtils.entityNameConvertToTableName(BasicApply.class));
     }
@@ -494,6 +603,17 @@ public class PublicBasicService {
         List<BasicBuildingMain> basicBuildingMains = basicBuildingMainService.basicBuildingMainList(basicBuildingMain);
         if (!ObjectUtils.isEmpty(basicBuildingMains)) {
             return basicBuildingMains.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public BasicUnit getByByAppIdBasicUnit(Integer appId) throws Exception {
+        BasicUnit basicUnit = new BasicUnit();
+        basicUnit.setApplyId(appId);
+        List<BasicUnit> unitList = basicUnitService.basicUnitList(basicUnit);
+        if (!ObjectUtils.isEmpty(unitList)) {
+            return unitList.get(0);
         } else {
             return null;
         }

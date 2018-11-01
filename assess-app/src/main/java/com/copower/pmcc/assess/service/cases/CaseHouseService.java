@@ -13,12 +13,16 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -223,5 +227,25 @@ public class CaseHouseService {
     public boolean deleteCaseHouse(Integer id){
 
         return caseHouseDao.deleteHouse(id);
+    }
+
+    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId,String houseNumber,Integer maxRows)throws Exception{
+        List<CaseHouse> caseHouseList = caseHouseDao.autoCompleteCaseHouse(unitId, houseNumber);
+        Ordering<CaseHouse> ordering = Ordering.from(new Comparator<CaseHouse>() {
+            @Override
+            public int compare(CaseHouse o1, CaseHouse o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        Collections.sort(caseHouseList,ordering);
+        List<CaseHouse> list = new ArrayList<CaseHouse>(10);
+        if (!ObjectUtils.isEmpty(caseHouseList)) {
+            for (int i = 0; i < maxRows; i++) {
+                if (i < caseHouseList.size()) {
+                    list.add(caseHouseList.get(i));
+                }
+            }
+        }
+        return list;
     }
 }

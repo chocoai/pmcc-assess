@@ -39,15 +39,6 @@ public class BasicEstateDao {
         return basicEstateMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicEstate> autoComplete(BasicEstate basicEstate)throws SQLException{
-        BasicEstateExample example = new BasicEstateExample();
-        if (StringUtils.isNotBlank(basicEstate.getName())) {
-            BasicEstateExample.Criteria criteria = example.createCriteria();
-            criteria.andIdIsNotNull();
-            criteria.andNameLike(new StringBuilder("%").append(basicEstate.getName()).append("%").toString());
-        }
-        return basicEstateMapper.selectByExample(example);
-    }
 
     public List<BasicEstate> basicEstateList(BasicEstate basicEstate) throws SQLException {
         BasicEstateExample example = new BasicEstateExample();

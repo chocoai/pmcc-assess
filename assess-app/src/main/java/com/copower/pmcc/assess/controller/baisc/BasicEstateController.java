@@ -83,24 +83,4 @@ public class BasicEstateController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String name, Integer maxRows){
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        BasicEstate basicEstate = new BasicEstate();
-        basicEstate.setName(name);
-        try {
-            List<BasicEstate> list = basicEstateService.autoComplete(basicEstate);
-            for (BasicEstate oo:list){
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(oo.getId()));
-                keyValueDto.setValue(oo.getName());
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
-        }
-    }
 }

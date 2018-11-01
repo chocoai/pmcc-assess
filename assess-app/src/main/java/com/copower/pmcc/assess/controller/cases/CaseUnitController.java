@@ -5,8 +5,10 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.service.cases.CaseHouseService;
 import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +135,24 @@ public class CaseUnitController {
         try {
             caseUnitService.initAndUpdateSon(null);
             return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
+    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
+        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        try {
+            List<CaseUnit> caseUnitList = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
+            for (CaseUnit caseUnit : caseUnitList) {
+                KeyValueDto keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(String.valueOf(caseUnit.getId()));
+                keyValueDto.setValue(caseUnit.getUnitNumber());
+                keyValueDtos.add(keyValueDto);
+            }
+            return HttpResult.newCorrectResult(keyValueDtos);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

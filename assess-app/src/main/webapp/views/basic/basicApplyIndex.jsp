@@ -105,12 +105,14 @@
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">详细信息</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.unit.details()"
+                                           value="详细信息">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">修改</button>
+                                    <input type="button" class="btn btn-success" onclick="objectData.unit.edit()"
+                                           value="修改">
                                 </div>
                             </div>
                         </div>
@@ -127,12 +129,14 @@
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">详细信息</button>
+                                    <input type="button" class="btn btn-success" value="详细信息"
+                                           onclick="objectData.house.details()">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success">修改</button>
+                                    <input type="button" class="btn btn-success" value="修改"
+                                           onclick="objectData.house.edit()">
                                 </div>
                             </div>
                         </div>
@@ -165,10 +169,12 @@
                                                                 onclick="objectData.building.show({})">楼栋</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                aria-expanded="false">单元</a>
+                                                                aria-expanded="false"
+                                                                onclick="objectData.unit.show({})">单元</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                aria-expanded="false">房屋</a>
+                                                                aria-expanded="false"
+                                                                onclick="objectData.house.show({})">房屋</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -183,11 +189,14 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
-                                <%@include file="/views/basic/modelView/unitView.jsp" %>
+                                <div>
+                                    <%@include file="/views/basic/modelView/unitView.jsp" %>
+                                </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
-                                <p>
-                                    hjsdjsjsd </p>
+                                <div>
+                                    <%@include file="/views/basic/modelView/houseView.jsp" %>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -246,11 +255,14 @@
         },
         basicUnit: {
             key: "basicUnit",
-            name: "单元"
+            name: "单元",
+            frm: "basicUnitFrm"
         },
         basicHouse: {
             key: "basicHouse",
-            name: "房屋"
+            name: "房屋",
+            frm: "basicHouseFrm",
+            tradingFrm:"basicTradingFrm"
         }
     };
 
@@ -429,7 +441,7 @@
                 source: function (request, response) {
                     var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicUnit/autoComplete",
+                        url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -481,7 +493,7 @@
                 source: function (request, response) {
                     var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicHouse/autoComplete",
+                        url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -526,7 +538,7 @@
         show: function (item) {
             $('#caseTab a:first').tab('show');
             $("#" + objectData.config.basicEstate.frm).initForm(item);
-            if (objectData.estateFlag){
+            if (objectData.estateFlag) {
                 objectData.estate.init(item);
                 objectData.estateFlag = false;
             }
@@ -539,7 +551,7 @@
                 objectData.estate.show({});
             }
             $("#" + objectData.config.basicEstate.frm).clearAll();
-            if (objectData.isNotBlank(estateId)){
+            if (objectData.isNotBlank(estateId)) {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
                     type: "get",
@@ -595,7 +607,7 @@
         },
         init: function (item) {
             $.each(objectData.config.basicEstate.files, function (i, n) {
-                objectData.uploadFile(n, AssessDBKey.BasicEstate,objectData.isNotBlank(item.id)?item.id:0);
+                objectData.uploadFile(n, AssessDBKey.BasicEstate, objectData.isNotBlank(item.id) ? item.id : 0);
             });
             AssessCommon.initAreaInfo({
                 provinceTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.province"),
@@ -729,7 +741,7 @@
                                     if (resultA.ret) {
                                         if (objectData.isNotBlank(resultA.data)) {
                                             $.each(resultA.data, function (i, n) {
-                                                if (objectData.isNotBlank(n.part)){
+                                                if (objectData.isNotBlank(n.part)) {
                                                     navButtonBuild.setObjArrayElement(n.part, n);
                                                 }
                                             });
@@ -746,10 +758,10 @@
                                                 // objectData.building.show(temp);
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
-                                            }else {
+                                            } else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur",navButtonBuild.identifierWrite);
+                                            $("#identifier").bind("blur", navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },
@@ -788,7 +800,7 @@
                                     if (resultA.ret) {
                                         if (objectData.isNotBlank(resultA.data)) {
                                             $.each(resultA.data, function (i, n) {
-                                                if (objectData.isNotBlank(n.part)){
+                                                if (objectData.isNotBlank(n.part)) {
                                                     navButtonBuild.setObjArrayElement(n.part, n);
                                                 }
                                             });
@@ -805,10 +817,10 @@
                                                 // objectData.building.show(temp);
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
-                                            }else {
+                                            } else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur",navButtonBuild.identifierWrite);
+                                            $("#identifier").bind("blur", navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },
@@ -824,12 +836,12 @@
                 }
             });
         },
-        appWriteBuilding:function (temp) {
+        appWriteBuilding: function (temp) {
             var caseMainBuildId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicBuilding/appWriteBuilding",
                 type: "post",
-                data:{caseMainBuildId:caseMainBuildId},
+                data: {caseMainBuildId: caseMainBuildId},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -881,7 +893,7 @@
                                 option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
                             }
                             $("#" + objectData.config.basicBuilding.frm).find('select.builderId').empty().html(option).trigger('change');
-                            objectData.select2Assignment(objectData.config.basicBuilding.frm,item.builderId,"builderId");
+                            objectData.select2Assignment(objectData.config.basicBuilding.frm, item.builderId, "builderId");
                         }
                     }
                 },
@@ -902,7 +914,7 @@
                                 option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
                             }
                             $("#" + objectData.config.basicBuilding.frm).find('select.propertyId').empty().html(option).trigger('change');
-                            objectData.select2Assignment(objectData.config.basicBuilding.frm,item.propertyId,"propertyId");
+                            objectData.select2Assignment(objectData.config.basicBuilding.frm, item.propertyId, "propertyId");
                         }
                     }
                 },
@@ -914,10 +926,91 @@
         }
     };
 
+    //处理单元
+    objectData.unit = {
+        show: function () {
+            $('#caseTab a').eq(2).tab('show');
+        },
+        edit: function () {
+            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(unitId)) {
+                Alert("请查询单元!");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseUnit/getCaseUnitById",
+                type: "get",
+                data: {id: unitId},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (objectData.isNotBlankObjectProperty(result.data)) {
+                            $("#" + objectData.config.basicUnit.frm).initForm(result.data);
+                            $("#" + objectData.config.basicUnit.frm).find("input").each(function (i, n) {
+                                var readonly = $(n).attr("readonly");
+                                if (objectData.isNotBlank(readonly)) {
+                                    $(n).removeAttr("readonly");
+                                }
+                            });
+                            objectData.unit.show();
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        details: function () {
+            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(unitId)) {
+                toastr.success('未找到查询的数据');
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseUnit/getCaseUnitById",
+                type: "get",
+                data: {id: unitId},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (objectData.isNotBlankObjectProperty(result.data)) {
+                            $("#" + objectData.config.basicUnit.frm).initForm(result.data);
+                            $("#" + objectData.config.basicUnit.frm).find("input").each(function (i, n) {
+                                var readonly = $(n).attr("readonly");
+                                if (!objectData.isNotBlank(readonly)) {
+                                    $(n).attr("readonly", "readonly");
+                                }
+                            });
+                            objectData.unit.show();
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+    };
+
+    //处理房屋
+    objectData.house = {
+        show: function () {
+            $('#caseTab a').eq(3).tab('show');
+            HouseModelFun.houseInit({});
+            HouseModelFun.tradingInit({});
+        },
+        edit: function () {
+            objectData.house.show();
+        },
+        details: function () {
+            objectData.house.show();
+        }
+    };
+
 
     //删除 楼盘 楼盘 单元 房屋 下 子类的临时数据!
     objectData.firstRemove = {
-        buildFirst:function () {
+        buildFirst: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
                 type: "post",
@@ -932,8 +1025,8 @@
                 }
             });
         },
-        init:function () {
-            if (objectData.flag){
+        init: function () {
+            if (objectData.flag) {
                 objectData.flag = false;
                 objectData.firstRemove.buildFirst();
             }
@@ -944,15 +1037,65 @@
         objectData.firstRemove.init();
     });
 
-    //收集数据
-    objectData.formParams = function () {
-        var item = {};
+    objectData.valid = function () {
+        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        var basicEstate = formParams(objectData.config.basicEstate.frm);
+        var basicUnit = formParams(objectData.config.basicUnit.frm);
+        var basicHouse = formParams(objectData.config.basicHouse.frm);
+        var basicTradingFrm = formParams(objectData.config.basicHouse.tradingFrm);
         var forms = $("#" + objectData.config.id).find("form");
         $.each(forms, function (i, n) {
 
         });
+        var basicBuildings = new Array();
+        for (var i = 1; i <= 4; i++) {
+            if (objectData.isNotBlankObjectProperty(navButtonBuild.getObjArray(i))) {
+                basicBuildings.unshift(navButtonBuild.getObjArray(i))
+            }
+        }
+        //确定收集过楼栋信息
+        var num = 1;
+        $.each(basicBuildings, function (i, obj) {
+            if (objectData.isNotBlankObjectProperty(obj)) {
+                num++;
+            }
+        });
+        if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下验证通过
+            if (objectData.isNotBlank(estateId) || objectData.isNotBlankObjectProperty(basicEstate)) {
+
+            } else {
+                Alert("未选择楼盘或者是没添加新的楼盘数据!");
+                return false;
+            }
+        }
+        if (objectData.isNotBlankObjectProperty(basicUnit)) {//单元检测到有数据 ==> 选择了楼栋 或者说是添加了楼栋数据的情况下才进行赋值
+            if (objectData.isNotBlank(buildingId) || objectData.isNotBlank(num > 1)) {
+
+            } else {
+                Alert("未选择楼栋或者是没添加新的楼栋数据!");
+                return false;
+            }
+        }
+        if (num <= 1 && !objectData.isNotBlankObjectProperty(basicEstate) && !objectData.isNotBlankObjectProperty(basicUnit)) {
+            Alert("未添加任何数据!");
+            return false;
+        }
+        return true;
+    };
+
+    //收集数据
+    objectData.formParams = function () {
+        var item = {};
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
         var basicEstate = formParams(objectData.config.basicEstate.frm);
+        var basicUnit = formParams(objectData.config.basicUnit.frm);
+        var basicHouse = formParams(objectData.config.basicHouse.frm);
+        var basicTradingFrm = formParams(objectData.config.basicHouse.tradingFrm);
+
+        item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
+
         var basicBuildings = new Array();
         for (var i = 1; i <= 4; i++) {
             if (objectData.isNotBlankObjectProperty(navButtonBuild.getObjArray(i))) {
@@ -967,19 +1110,30 @@
             }
         });
 
-        if (num > 1) {
-            item.basicBuildingMain = {
-                id: $("#caseBuildingMainId").val(),
-                identifier: $("#identifier").val(),
-                estateId: objectData.isNotBlank(estateId)?estateId:null
-            };
-            item.basicBuildings = basicBuildings;
+        if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下才进行赋值
+            if (objectData.isNotBlank(estateId) || objectData.isNotBlankObjectProperty(basicEstate)) {
+                item.basicBuildingMain = {
+                    id: $("#caseBuildingMainId").val(),
+                    identifier: $("#identifier").val(),
+                    estateId: objectData.isNotBlank(estateId) ? estateId : null
+                };
+                item.basicBuildings = basicBuildings;
+            }
         }
-        if (num <= 1) {
-            item.basicBuildings = null;
-            item.basicBuildingMain = null;
+
+        if (objectData.isNotBlankObjectProperty(basicUnit)) {//单元检测到有数据 ==> 选择了楼栋 或者说是添加了楼栋数据的情况下才进行赋值
+            if (num <= 1) {
+                //说明 楼栋未添加数据,假如楼盘有数据那么 楼栋必须是选择的
+                if (objectData.isNotBlank(buildingId) && !objectData.isNotBlank(item.basicBuildings)) {
+                    basicUnit.basicBuildingMainId = buildingId;
+                }
+            }
+            //说明 楼栋未添加数据,假如楼盘有数据那么 楼栋必须是选择的
+            if (objectData.isNotBlank(buildingId) || objectData.isNotBlank(basicBuildings)) {
+                item.basicUnit = objectData.isNotBlankObjectProperty(basicUnit) ? basicUnit : null;
+            }
         }
-        item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
+
         return item;
     };
 
@@ -989,19 +1143,11 @@
 
     //提交
     function submit() {
-        var data = objectData.formParams();
-
-        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-        var basicEstate = data.basicEstate;
-
-        //验证机制
-        //楼盘id为null时应当是直接添加的楼盘数据,因此收集的楼盘数据必须不为null,反之当楼盘id选择之后,收集的楼盘数据可以为null
-        if (!objectData.isNotBlank(estateId) && !objectData.isNotBlankObjectProperty(basicEstate)) {
-           //请先查询楼盘 不再验证
-            Alert("未选择楼盘或者是没添加新的楼盘数据!");
+        if (!objectData.valid()) {
             return false;
         }
-
+        var data = objectData.formParams();
+        console.log(data);
         var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
@@ -1011,9 +1157,10 @@
             data: {formData: formData},
             success: function (result) {
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.location.reload();
-                    });
+                    Alert("提交数据成功!");
+                    // Alert("提交数据成功!", 1, null, function () {
+                    //     window.location.reload();
+                    // });
                 }
             },
             error: function (result) {

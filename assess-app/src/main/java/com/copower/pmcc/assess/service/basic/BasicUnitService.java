@@ -57,15 +57,23 @@ public class BasicUnitService {
     public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
-            if (basicUnit.getVersion() == null) {
-                basicUnit.setVersion(0);
-            }
             return basicUnitDao.saveBasicUnit(basicUnit);
         } else {
-            BasicUnit oo = basicUnitDao.getBasicUnitById(basicUnit.getId());
-            basicUnit.setVersion(oo.getVersion() + 1);
             basicUnitDao.updateBasicUnit(basicUnit);
             return null;
+        }
+    }
+
+    public void upgradeVersion(BasicUnit basicUnit)throws Exception{
+        if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
+            basicUnit.setCreator(commonService.thisUserAccount());
+            basicUnit.setVersion(0);
+            Integer id = basicUnitDao.saveBasicUnit(basicUnit);
+            basicUnit.setId(id);
+        } else {
+            BasicUnit oo = this.getBasicUnitById(basicUnit.getId());
+            basicUnit.setVersion(oo.getVersion()+1);
+            basicUnitDao.updateBasicUnit(basicUnit);
         }
     }
 
@@ -91,19 +99,6 @@ public class BasicUnitService {
         return basicUnitDao.basicUnitList(basicUnit);
     }
 
-    public List<BasicUnit> autoComplete(BasicUnit basicUnit) throws Exception {
-        List<BasicUnit> basicUnits = basicUnitDao.autoComplete(basicUnit);
-        if (!org.springframework.util.ObjectUtils.isEmpty(basicUnits)) {
-            Ordering<BasicUnit> ordering = Ordering.from(new Comparator<BasicUnit>() {
-                @Override
-                public int compare(BasicUnit o1, BasicUnit o2) {
-                    return o1.getId().compareTo(o2.getId());
-                }
-            }).reverse();
-            Collections.sort(basicUnits, ordering);
-        }
-        return basicUnits;
-    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();

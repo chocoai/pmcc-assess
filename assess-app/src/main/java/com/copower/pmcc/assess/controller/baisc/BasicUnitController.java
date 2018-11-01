@@ -83,25 +83,4 @@ public class BasicUnitController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/autoComplete", method = {RequestMethod.GET}, name = "单元 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer maxRows,Integer buildingId){
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        BasicUnit basicUnit = new BasicUnit();
-        basicUnit.setUnitNumber(unitNumber);
-//        basicUnit.setBuildingId(buildingId);
-        try {
-            List<BasicUnit> list = basicUnitService.autoComplete(basicUnit);
-            for (BasicUnit oo:list){
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(oo.getId()));
-                keyValueDto.setValue(String.valueOf(oo.getUnitNumber()));
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
-        }
-    }
 }

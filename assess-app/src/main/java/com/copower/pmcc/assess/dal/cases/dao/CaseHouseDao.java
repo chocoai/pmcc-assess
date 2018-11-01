@@ -4,9 +4,11 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,6 +22,19 @@ import java.util.List;
 public class CaseHouseDao {
     @Autowired
     private CaseHouseMapper caseHouseMapper;
+
+    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId,String houseNumber)throws SQLException{
+        CaseHouseExample example = new CaseHouseExample();
+        CaseHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotEmpty(houseNumber)){
+            criteria.andHouseNumberLike(String.format("%s%s%s","%",houseNumber,"%"));
+        }
+        if (unitId != null){
+            criteria.andUnitIdEqualTo(unitId);
+        }
+        return caseHouseMapper.selectByExample(example);
+    }
 
     /**
      * 获取数据信息
