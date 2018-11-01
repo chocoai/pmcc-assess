@@ -27,45 +27,238 @@
                             <th>户型</th>
                             <th>户型面积</th>
                             <th>户数</th>
-                            <th>面积</th>
+                            <th></th>
                         </tr>
                         </thead>
-                        <tr class="treegrid-1">
-                            <td>机会成本</td>
-                            <td><input type="text" style="width: 100px;"></td>
-                            <td><input type="text" style="width: 100px;"></td>
-                            <td><input type="text" style="width: 100px;"></td>
-                            <td><input type="text" style="width: 100px;"></td>
-                            <td><input type="text" style="width: 100px;"></td>
+                        <tr class="treegrid-1" data-key="netLandArea">
+                            <td>一、规划建设净用地面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
                         </tr>
-                        <tr class="treegrid-2">
-                            <td>风险补偿率</td>
+                        <tr class="treegrid-2" data-key="planTotalArea">
+                            <td>二、规划总建筑面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-1 treegrid-parent-2" data-key="groundBuildingArea">
+                            <td>（一）地上计入容积率的建筑面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-1-1 treegrid-parent-2-1" data-key="houseBuildingArea">
+                            <td>1、住宅建筑面积
+                                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                   onclick="economicIndicators.addChild(this,'residentialAreaHtml');"><i
+                                        class="fa fa-plus fa-white"></i></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-1-2 treegrid-parent-2-1" data-key="nonHouseBuildingArea">
+                            <td>2、非住宅建筑面积
+                                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                   onclick="economicIndicators.addChild(this,'nonResidentialAreaHtml');"><i
+                                        class="fa fa-plus fa-white"></i></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+
+                        <tr class="treegrid-2-2 treegrid-parent-2" data-key="groundExcludBuildingArea">
+                            <td>（二）地上不计入容积率的建筑面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-2-1 treegrid-parent-2-2" data-key="overheadBuildingArea">
+                            <td>1、首层架空建筑面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-2-2 treegrid-parent-2-2" data-key="heatBuildingArea">
+                            <td>2、外保温建筑面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-2-3 treegrid-parent-2" data-key="undergroundBuildingArea">
+                            <td>（三）地下建筑面积及层数
+                                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                   onclick="economicIndicators.addChild(this,'substructureAreaHtml');"><i
+                                        class="fa fa-plus fa-white"></i></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-3" data-key="volumetricRate">
+                            <td>三、容积率</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"></td>
+                        </tr>
+                        <tr class="treegrid-4">
+                            <td>四、建筑基底面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
-                        <tr class="treegrid-2-1 treegrid-parent-2">
-                            <td>投资风险补偿</td>
-                            <td><input type="text" class="x-percent"></td>
+                        <tr class="treegrid-4-1 treegrid-parent-4" data-key="buildingBaseTotalArea">
+                            <td>建筑基地总面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
                         </tr>
-                        <tr class="treegrid-2-2 treegrid-parent-2">
-                            <td>管理负担补偿</td>
-                            <td><input type="text" class="x-percent"></td>
+                        <tr class="treegrid-4-2 treegrid-parent-4" data-key="highMainBaseArea">
+                            <td>高层主体基底（基座）面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
                         </tr>
-                        <tr class="treegrid-2-3 treegrid-parent-2">
-                            <td>缺乏流动性补偿</td>
-                            <td><input type="text" class="x-percent"></td>
-                        </tr>
-                        <tr class="treegrid-2-4 treegrid-parent-2">
-                            <td>投资带来的优惠</td>
+                        <tr class="treegrid-5">
+                            <td>五、建筑密度</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
-                        <tr class="treegrid-2-4-1 treegrid-parent-2-4">
-                            <td>易与获得融资的好处</td>
-                            <td><input type="text" class="x-percent"></td>
+                        <tr class="treegrid-5-1 treegrid-parent-5" data-key="totalBuildingDensity">
+                            <td>总建筑密度</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> %</td>
                         </tr>
-                        <tr class="treegrid-2-4-2 treegrid-parent-2-4">
-                            <td>所得税抵扣的好处</td>
-                            <td><input type="text" class="x-percent"></td>
+                        <tr class="treegrid-5-1 treegrid-parent-5" data-key="highMainBuildingDensity">
+                            <td>高层主体建筑密度</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> %</td>
                         </tr>
+                        <tr class="treegrid-6" data-key="greenSpaceRate">
+                            <td>六、绿地率</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> %</td>
+                        </tr>
+                        <tr class="treegrid-6-1 treegrid-parent-6" data-key="greenArea">
+                            <td>绿地面积</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> ㎡</td>
+                        </tr>
+                        <tr class="treegrid-7" data-key="mobileParkingSpace">
+                            <td>七、机动车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1 treegrid-parent-7" data-key="undergroundParkingSpace">
+                            <td>（一）地下停车位
+                                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                   onclick="economicIndicators.addChild(this,'parkingSpaceHtml');"><i
+                                        class="fa fa-plus fa-white"></i></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-1 treegrid-parent-7-1" data-key="residentialParkingSpace">
+                            <td>（1）住宅停车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-2 treegrid-parent-7-1" data-key="commercialParkingSpace">
+                            <td>（2）商业停车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-3 treegrid-parent-7-1" data-key="parkingFacilitie">
+                            <td>（3）配套设施停车位
+                                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+                                   onclick="economicIndicators.addChild(this,'supportingFacilitieHtml');"><i
+                                        class="fa fa-plus fa-white"></i></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-3-1 treegrid-parent-7-1-3" data-key="propertyRoomParking">
+                            <td>物管用房停车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-3-2 treegrid-parent-7-1-3" data-key="publicHousingParking">
+                            <td>社区公共服务用房停车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+                        <tr class="treegrid-7-1-3-3 treegrid-parent-7-1-3" data-key="intelligentCommunityParking">
+                            <td>智慧小区用房停车位</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" name="content" style="width: 100px;"> 辆</td>
+                        </tr>
+
                     </table>
                 </form>
             </div>
@@ -81,41 +274,113 @@
     </div>
 </div>
 
-<script type="text/html" id="12">
-    <tr class="treegrid-{id} treegrid-parent-2-4">
-        <td>{name}</td>
-        <td><input type="text" name="number" style="width: 100px;"></td>
-        <td><input type="text" name="huxing" style="width: 100px;"></td>
-        <td><input type="text" name="huxingArea" style="width: 100px;"></td>
-        <td><input type="text" name="householdCount" style="width: 100px;"></td>
+<%--住宅面积模板--%>
+<script type="text/html" id="residentialAreaHtml">
+    <tr class="treegrid-2-1-1-1 treegrid-parent-2-1-1">
+        <td>
+            <input type="text" name="area" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
         <td><input type="text" name="area" style="width: 100px;"></td>
-        </tr>
+        <td><input type="text" name="area" style="width: 100px;"></td>
+        <td><input type="text" name="area" style="width: 100px;"></td>
+        <td><input type="text" name="area" style="width: 100px;"></td>
+        <td><input type="text" name="area" style="width: 100px;"> ㎡</td>
+    </tr>
+</script>
+
+<%--非住宅面积模板--%>
+<script type="text/html" id="nonResidentialAreaHtml">
+    <tr class="treegrid-2-1-2-1 treegrid-parent-2-1-2">
+        <td>
+            <input type="text" name="area" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" name="area" style="width: 100px;"> ㎡</td>
+    </tr>
+</script>
+
+<%--地下建筑面积模板--%>
+<script type="text/html" id="substructureAreaHtml">
+    <tr class="treegrid-2-3-1 treegrid-parent-2-3">
+        <td>
+            <input type="text" name="area" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" name="area" style="width: 100px;"> ㎡</td>
+    </tr>
+</script>
+
+<%--地下停车位模板--%>
+<script type="text/html" id="parkingSpaceHtml">
+    <tr class="treegrid-7-1-1 treegrid-parent-7-1">
+        <td>
+            <input type="text" name="area" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" name="area" style="width: 100px;"> 辆</td>
+    </tr>
+</script>
+
+<%--配套设施停车位模板--%>
+<script type="text/html" id="supportingFacilitieHtml">
+    <tr class="treegrid-7-1-3-1 treegrid-parent-7-1-3">
+        <td>
+            <input type="text" name="area" style="width: 100px;">
+            <a class="btn btn-xs btn-warning tooltips" data-placement="top"
+               onclick="$(this).closest('tr').remove();"><i class="fa fa-minus fa-white"></i></a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><input type="text" name="area" style="width: 100px;"> 辆</td>
+    </tr>
 </script>
 
 <script type="text/javascript">
     $(function () {
-        $('#declareEconomicIndicatorsBox').find('.tree').treegrid();
+        economicIndicators.treegirdParse();
     })
 
-
     var economicIndicators = {};
-    //加载数据列表
-    economicIndicators.loadDataList = function (pid) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/economicIndicators/getEconomicIndicatorsByPid',
-            data: {pid: pid},
-            type: 'get',
-            dataType: 'json',
-            success: function (result) {
-                if (result.ret) {
+    //树形表格解析
+    economicIndicators.treegirdParse = function () {
+        $('#declareEconomicIndicatorsBox').find('.tree').treegrid();
+    }
 
-                    $.each(result.data,function (i,item) {
-
-                    })
-                    console.log(result.data);
-                }
+    //添加子项
+    economicIndicators.addChild = function (_this, template) {
+        var tr = $(_this).closest('tr');
+        var childs = tr.treegrid('getChildNodes');
+        if (childs.length <= 0) {
+            tr.after($('#' + template).html());
+        } else {
+            //如果最后一个子项下还有子项则在子项的子项后添加元素
+            var subChilds = $(childs.get(childs.length - 1)).treegrid('getChildNodes');
+            if (subChilds.length <= 0) {
+                $(childs.get(childs.length - 1)).after($('#' + template).html());
+            } else {
+                $(subChilds.get(subChilds.length - 1)).after($('#' + template).html());
             }
-        })
+        }
+        economicIndicators.treegirdParse();
     }
 
     economicIndicators.onSuccess = undefined;

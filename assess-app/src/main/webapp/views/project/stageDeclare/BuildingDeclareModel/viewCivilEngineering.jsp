@@ -1137,7 +1137,6 @@
     civilEngineering.declareEconomicIndicatorsView = function (id) {
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
-        economicIndicators.loadDataList(id);
         $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
     };
 

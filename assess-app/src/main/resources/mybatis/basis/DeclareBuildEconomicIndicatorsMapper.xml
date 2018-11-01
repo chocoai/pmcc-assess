@@ -5,13 +5,14 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="base_data_dic_id" property="baseDataDicId" jdbcType="INTEGER" />
+    <result column="custom_key" property="customKey" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="huxing" property="huxing" jdbcType="VARCHAR" />
     <result column="huxing_area" property="huxingArea" jdbcType="DECIMAL" />
     <result column="household_count" property="householdCount" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="child_data" property="childData" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, plan_details_id, base_data_dic_id, name, huxing, huxing_area, household_count, 
-    number, area, creator, gmt_created, gmt_modified
+    id, pid, plan_details_id, custom_key, name, huxing, huxing_area, household_count, 
+    number, content, child_data, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicatorsExample" >
     select
@@ -112,16 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_declare_build_economic_indicators (pid, plan_details_id, base_data_dic_id, 
+    insert into tb_declare_build_economic_indicators (pid, plan_details_id, custom_key, 
       name, huxing, huxing_area, 
-      household_count, number, area, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{baseDataDicId,jdbcType=INTEGER}, 
+      household_count, number, content, 
+      child_data, creator, gmt_created, 
+      gmt_modified)
+    values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{customKey,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{huxing,jdbcType=VARCHAR}, #{huxingArea,jdbcType=DECIMAL}, 
-      #{householdCount,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{householdCount,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{childData,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicators" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,8 +136,8 @@
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
-      <if test="baseDataDicId != null" >
-        base_data_dic_id,
+      <if test="customKey != null" >
+        custom_key,
       </if>
       <if test="name != null" >
         name,
@@ -153,8 +154,11 @@
       <if test="number != null" >
         number,
       </if>
-      <if test="area != null" >
-        area,
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="childData != null" >
+        child_data,
       </if>
       <if test="creator != null" >
         creator,
@@ -173,8 +177,8 @@
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="baseDataDicId != null" >
-        #{baseDataDicId,jdbcType=INTEGER},
+      <if test="customKey != null" >
+        #{customKey,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -191,8 +195,11 @@
       <if test="number != null" >
         #{number,jdbcType=INTEGER},
       </if>
-      <if test="area != null" >
-        #{area,jdbcType=DECIMAL},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="childData != null" >
+        #{childData,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -223,8 +230,8 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.baseDataDicId != null" >
-        base_data_dic_id = #{record.baseDataDicId,jdbcType=INTEGER},
+      <if test="record.customKey != null" >
+        custom_key = #{record.customKey,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -241,8 +248,11 @@
       <if test="record.number != null" >
         number = #{record.number,jdbcType=INTEGER},
       </if>
-      <if test="record.area != null" >
-        area = #{record.area,jdbcType=DECIMAL},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.childData != null" >
+        child_data = #{record.childData,jdbcType=CHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -263,13 +273,14 @@
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      base_data_dic_id = #{record.baseDataDicId,jdbcType=INTEGER},
+      custom_key = #{record.customKey,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       huxing = #{record.huxing,jdbcType=VARCHAR},
       huxing_area = #{record.huxingArea,jdbcType=DECIMAL},
       household_count = #{record.householdCount,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
-      area = #{record.area,jdbcType=DECIMAL},
+      content = #{record.content,jdbcType=VARCHAR},
+      child_data = #{record.childData,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -286,8 +297,8 @@
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="baseDataDicId != null" >
-        base_data_dic_id = #{baseDataDicId,jdbcType=INTEGER},
+      <if test="customKey != null" >
+        custom_key = #{customKey,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -304,8 +315,11 @@
       <if test="number != null" >
         number = #{number,jdbcType=INTEGER},
       </if>
-      <if test="area != null" >
-        area = #{area,jdbcType=DECIMAL},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="childData != null" >
+        child_data = #{childData,jdbcType=CHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -323,13 +337,14 @@
     update tb_declare_build_economic_indicators
     set pid = #{pid,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      base_data_dic_id = #{baseDataDicId,jdbcType=INTEGER},
+      custom_key = #{customKey,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       huxing = #{huxing,jdbcType=VARCHAR},
       huxing_area = #{huxingArea,jdbcType=DECIMAL},
       household_count = #{householdCount,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
-      area = #{area,jdbcType=DECIMAL},
+      content = #{content,jdbcType=VARCHAR},
+      child_data = #{childData,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
