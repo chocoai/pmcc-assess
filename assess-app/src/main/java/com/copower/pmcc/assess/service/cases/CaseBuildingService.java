@@ -134,25 +134,7 @@ public class CaseBuildingService {
         return caseBuildingDao.getBuildingById(id);
     }
 
-    public List<CaseBuilding> autoComplete(String identifier,Integer estateId , Integer maxRows)throws Exception{
-        List<CaseBuilding> caseBuildingList = Lists.newArrayList();
-        List<CaseBuilding> list = caseBuildingDao.autoComplete(identifier, estateId);
-        Ordering<CaseBuilding> ordering = Ordering.from(new Comparator<CaseBuilding>() {
-            @Override
-            public int compare(CaseBuilding o1, CaseBuilding o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(list,ordering);
-        if (!ObjectUtils.isEmpty(list)) {
-            for (int i = 0; i < maxRows; i++) {
-                if (i < list.size()) {
-                    caseBuildingList.add(list.get(i));
-                }
-            }
-        }
-        return caseBuildingList;
-    }
+
 
     public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding){
         Integer id = null;

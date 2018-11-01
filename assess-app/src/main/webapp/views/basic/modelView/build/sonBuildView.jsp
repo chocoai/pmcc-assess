@@ -84,7 +84,7 @@
                 var buildingId = data.id;
                 try {
                     if (buildingModel.prototype.isEmpty(buildingId)){
-                        return buildingId;
+                        // return buildingId;
                     }
                 } catch (e) {
                     return "0" ;

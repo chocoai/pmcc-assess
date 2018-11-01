@@ -65,6 +65,7 @@ public class BasicBuildingService {
 
     /**
      * 初始化或者更新
+     *
      * @param id
      * @param buildingNumber
      * @throws Exception
@@ -172,10 +173,9 @@ public class BasicBuildingService {
             }
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
-            this.init(id,BasicBuildingFieldEnum.BuildFour.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildThree.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildTwo.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildOne.getKey());
+            if (basicBuilding.getPart() != null) {
+                this.init(id, String.valueOf(basicBuilding.getPart()));
+            }
             return id;
         } else {
             BasicBuilding oo = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
@@ -197,10 +197,10 @@ public class BasicBuildingService {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
-            this.init(id,BasicBuildingFieldEnum.BuildFour.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildThree.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildTwo.getKey());
-            this.init(id,BasicBuildingFieldEnum.BuildOne.getKey());
+            this.init(id, BasicBuildingFieldEnum.BuildFour.getKey());
+            this.init(id, BasicBuildingFieldEnum.BuildThree.getKey());
+            this.init(id, BasicBuildingFieldEnum.BuildTwo.getKey());
+            this.init(id, BasicBuildingFieldEnum.BuildOne.getKey());
             return id;
         } else {
             basicBuildingDao.updateBasicBuilding(basicBuilding);

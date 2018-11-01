@@ -124,6 +124,7 @@ public class CaseBuildingSurfaceService {
             caseBuildingSurface.setCreator(commonService.thisUserAccount());
             caseBuildingSurface.setVersion(0);
             caseBuildingSurfaceDao.addBuildingSurface(caseBuildingSurface);
+            return;
         }
         if (caseBuildingSurface.getId() != null){
             CaseBuildingSurface oo = this.getCaseBuildingSurfaceById(caseBuildingSurface.getId());
@@ -137,6 +138,7 @@ public class CaseBuildingSurfaceService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             caseBuildingSurfaceDao.addBuildingSurface(oo);
+            return;
         }
     }
 

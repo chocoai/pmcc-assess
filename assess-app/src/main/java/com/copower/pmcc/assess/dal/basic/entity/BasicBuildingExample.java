@@ -166,6 +166,66 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPartIsNull() {
+            addCriterion("part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartIsNotNull() {
+            addCriterion("part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartEqualTo(Integer value) {
+            addCriterion("part =", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotEqualTo(Integer value) {
+            addCriterion("part <>", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartGreaterThan(Integer value) {
+            addCriterion("part >", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartGreaterThanOrEqualTo(Integer value) {
+            addCriterion("part >=", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartLessThan(Integer value) {
+            addCriterion("part <", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartLessThanOrEqualTo(Integer value) {
+            addCriterion("part <=", value, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartIn(List<Integer> values) {
+            addCriterion("part in", values, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotIn(List<Integer> values) {
+            addCriterion("part not in", values, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartBetween(Integer value1, Integer value2) {
+            addCriterion("part between", value1, value2, "part");
+            return (Criteria) this;
+        }
+
+        public Criteria andPartNotBetween(Integer value1, Integer value2) {
+            addCriterion("part not between", value1, value2, "part");
+            return (Criteria) this;
+        }
+
         public Criteria andCaseBuildingIdIsNull() {
             addCriterion("case_building_id is null");
             return (Criteria) this;

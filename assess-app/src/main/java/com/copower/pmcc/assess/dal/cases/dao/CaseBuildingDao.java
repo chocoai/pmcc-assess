@@ -25,18 +25,6 @@ public class CaseBuildingDao {
     @Autowired
     private CaseBuildingMapper caseBuildingMapper;
 
-    public List<CaseBuilding> autoComplete(String identifier,Integer estateId)throws SQLException{
-        CaseBuildingExample example = new CaseBuildingExample();
-        CaseBuildingExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-        if (StringUtils.isNotBlank(identifier)){
-            criteria.andIdentifierLike(String.format("%s%s%s","%",identifier,"%"));
-        }
-        if (estateId != null){
-            criteria.andEstateIdEqualTo(estateId);
-        }
-        return caseBuildingMapper.selectByExample(example);
-    }
 
     /**
      * 获取数据信息

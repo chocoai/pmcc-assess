@@ -258,14 +258,14 @@ public class PublicBasicService {
     private void flowWriteCaseBuildingMaintenance(List<BasicBuildingMaintenance> list, CaseBuilding caseBuilding) throws Exception {
         if (!ObjectUtils.isEmpty(list)) {
             for (BasicBuildingMaintenance oo : list) {
-                CaseBuildingMaintenance caseBuildingMaintenance = null ;
-                if (oo.getCaseMaintenanceId() != null){
+                CaseBuildingMaintenance caseBuildingMaintenance = null;
+                if (oo.getCaseMaintenanceId() != null) {
                     caseBuildingMaintenance = caseBuildingMaintenanceService.getCaseBuildingMaintenanceById(oo.getCaseMaintenanceId());
-                    if (caseBuildingMaintenance != null){
+                    if (caseBuildingMaintenance != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingMaintenance);
                         caseBuildingMaintenance.setId(oo.getCaseMaintenanceId());
                     }
-                    if (caseBuildingMaintenance == null){
+                    if (caseBuildingMaintenance == null) {
                         caseBuildingMaintenance = new CaseBuildingMaintenance();
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingMaintenance);
                         caseBuildingMaintenance.setId(null);
@@ -273,7 +273,7 @@ public class PublicBasicService {
                         caseBuildingMaintenance.setGmtModified(null);
                     }
                 }
-                if (oo.getCaseMaintenanceId() == null){
+                if (oo.getCaseMaintenanceId() == null) {
                     caseBuildingMaintenance = new CaseBuildingMaintenance();
                     BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingMaintenance);
                     caseBuildingMaintenance.setId(null);
@@ -290,13 +290,13 @@ public class PublicBasicService {
         if (!ObjectUtils.isEmpty(list)) {
             for (BasicBuildingSurface oo : list) {
                 CaseBuildingSurface caseBuildingSurface = null;
-                if (oo.getCaseSurfaceId() != null){
+                if (oo.getCaseSurfaceId() != null) {
                     caseBuildingSurface = caseBuildingSurfaceService.getCaseBuildingSurfaceById(oo.getCaseSurfaceId());
-                    if (caseBuildingSurface != null){
+                    if (caseBuildingSurface != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingSurface);
                         caseBuildingSurface.setId(oo.getCaseSurfaceId());
                     }
-                    if (caseBuildingSurface == null){
+                    if (caseBuildingSurface == null) {
                         caseBuildingSurface = new CaseBuildingSurface();
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingSurface);
                         caseBuildingSurface.setId(null);
@@ -304,7 +304,7 @@ public class PublicBasicService {
                         caseBuildingSurface.setGmtModified(null);
                     }
                 }
-                if (oo.getCaseSurfaceId() == null){
+                if (oo.getCaseSurfaceId() == null) {
                     caseBuildingSurface = new CaseBuildingSurface();
                     BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingSurface);
                     caseBuildingSurface.setId(null);
@@ -321,13 +321,13 @@ public class PublicBasicService {
         if (!ObjectUtils.isEmpty(list)) {
             for (BasicBuildingFunction oo : list) {
                 CaseBuildingFunction caseBuildingFunction = null;
-                if (oo.getCaseFunctionId() != null){
+                if (oo.getCaseFunctionId() != null) {
                     caseBuildingFunction = caseBuildingFunctionService.getCaseBuildingFunctionById(oo.getCaseFunctionId());
-                    if (caseBuildingFunction != null){
+                    if (caseBuildingFunction != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingFunction);
                         caseBuildingFunction.setId(oo.getCaseFunctionId());
                     }
-                    if (caseBuildingFunction == null){
+                    if (caseBuildingFunction == null) {
                         caseBuildingFunction = new CaseBuildingFunction();
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingFunction);
                         caseBuildingFunction.setId(null);
@@ -335,7 +335,7 @@ public class PublicBasicService {
                         caseBuildingFunction.setGmtModified(null);
                     }
                 }
-                if (oo.getCaseFunctionId() == null){
+                if (oo.getCaseFunctionId() == null) {
                     caseBuildingFunction = new CaseBuildingFunction();
                     BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingFunction);
                     caseBuildingFunction.setId(null);
@@ -355,7 +355,6 @@ public class PublicBasicService {
      * @throws Exception
      */
     public void flowWrite(String processInsId) throws Exception {
-        List<SysAttachmentDto> sysAttachmentDtoList = null;
         BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
         if (basicApply != null) {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
@@ -363,8 +362,17 @@ public class PublicBasicService {
             //处理楼盘
             CaseEstate caseEstate = this.flowWriteCaseEstate(basicEstate);
             if (basicBuildingMain != null) {
-                //处理楼栋 主表
-                CaseBuildingMain caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstate.getId());
+                CaseBuildingMain caseBuildingMain = null;
+                if (caseEstate != null) {
+                    //处理楼栋 主表
+                    caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstate.getId());
+                }
+                if (caseEstate == null){
+                    if (basicBuildingMain.getEstateId() == null){
+                        throw  new Exception("楼盘id漏了!");
+                    }
+                    caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, basicBuildingMain.getEstateId());
+                }
                 //处理楼栋 关联表
                 this.flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
             }
@@ -503,71 +511,85 @@ public class PublicBasicService {
 
     /**
      * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
-     * @param caseBuildId
+     *
+     * @param caseMainBuildId
      * @throws Exception
      */
-    public void appWriteBuilding(Integer caseBuildId)throws Exception{
-        if (caseBuildId==null){
+    public void appWriteBuilding(Integer caseMainBuildId) throws Exception {
+        if (caseMainBuildId == null) {
             throw new Exception("null point");
         }
-        List<CaseBuildingOutfit> buildingOutfitList = null;
-        List<CaseBuildingMaintenance> maintenanceList = null;
-        List<CaseBuildingSurface> surfaceList = null;
-        List<CaseBuildingFunction> functionList = null;
+
+        CaseBuilding query = new CaseBuilding();
         CaseBuildingOutfit queryOutfit = new CaseBuildingOutfit();
         CaseBuildingMaintenance queryMaintenance = new CaseBuildingMaintenance();
         CaseBuildingSurface querySurface = new CaseBuildingSurface();
         CaseBuildingFunction queryFunction = new CaseBuildingFunction();
 
-        queryOutfit.setBuildingId(caseBuildId);
-        queryMaintenance.setBuildingId(caseBuildId);
-        querySurface.setBuildingId(caseBuildId);
-        queryFunction.setBuildingId(caseBuildId);
+        List<CaseBuilding> buildingList = null;
+        query.setCaseBuildingMainId(caseMainBuildId);
+        buildingList = caseBuildingService.getCaseBuildingList(query);
 
-        buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
-        maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
-        surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
-        functionList = caseBuildingFunctionService.getCaseBuildingFunctionListO(queryFunction);
+        if (!ObjectUtils.isEmpty(buildingList)) {
+            List<CaseBuildingOutfit> buildingOutfitList = null;
+            List<CaseBuildingMaintenance> maintenanceList = null;
+            List<CaseBuildingSurface> surfaceList = null;
+            List<CaseBuildingFunction> functionList = null;
+            for (CaseBuilding ooA : buildingList) {
 
-        if (!ObjectUtils.isEmpty(buildingOutfitList)){
-            BasicBuildingOutfit basicBuildingOutfit = new BasicBuildingOutfit();
-            for (CaseBuildingOutfit oo:buildingOutfitList){
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingOutfit);
-                basicBuildingOutfit.setBuildingId(0);
-                basicBuildingOutfit.setId(null);
-                basicBuildingOutfit.setCaseOutfitId(oo.getId());
-                basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
+                queryOutfit.setBuildingId(ooA.getId());
+                queryMaintenance.setBuildingId(ooA.getId());
+                querySurface.setBuildingId(ooA.getId());
+                queryFunction.setBuildingId(ooA.getId());
+
+                buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
+                maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
+                surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
+                functionList = caseBuildingFunctionService.getCaseBuildingFunctionListO(queryFunction);
+
+                if (!ObjectUtils.isEmpty(buildingOutfitList)) {
+                    BasicBuildingOutfit basicBuildingOutfit = new BasicBuildingOutfit();
+                    for (CaseBuildingOutfit oo : buildingOutfitList) {
+                        BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingOutfit);
+                        basicBuildingOutfit.setBuildingId(0);
+                        basicBuildingOutfit.setId(null);
+                        basicBuildingOutfit.setCaseOutfitId(oo.getId());
+                        basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
+                    }
+                }
+                if (!ObjectUtils.isEmpty(maintenanceList)) {
+                    BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
+                    for (CaseBuildingMaintenance oo : maintenanceList) {
+                        BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingMaintenance);
+                        basicBuildingMaintenance.setBuildingId(0);
+                        basicBuildingMaintenance.setId(null);
+                        basicBuildingMaintenance.setCaseMaintenanceId(oo.getId());
+                        basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
+                    }
+                }
+                if (!ObjectUtils.isEmpty(surfaceList)) {
+                    BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
+                    for (CaseBuildingSurface oo : surfaceList) {
+                        BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingSurface);
+                        basicBuildingSurface.setBuildingId(0);
+                        basicBuildingSurface.setId(null);
+                        basicBuildingSurface.setCaseSurfaceId(oo.getId());
+                        basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
+                    }
+                }
+                if (!ObjectUtils.isEmpty(functionList)) {
+                    BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
+                    for (CaseBuildingFunction oo : functionList) {
+                        BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingFunction);
+                        basicBuildingFunction.setBuildingId(0);
+                        basicBuildingFunction.setId(null);
+                        basicBuildingFunction.setCaseFunctionId(oo.getId());
+                        basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
+                    }
+                }
             }
         }
-        if (!ObjectUtils.isEmpty(maintenanceList)){
-            BasicBuildingMaintenance basicBuildingMaintenance = new BasicBuildingMaintenance();
-            for (CaseBuildingMaintenance oo:maintenanceList){
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingMaintenance);
-                basicBuildingMaintenance.setBuildingId(0);
-                basicBuildingMaintenance.setId(null);
-                basicBuildingMaintenance.setCaseMaintenanceId(oo.getId());
-                basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
-            }
-        }
-        if (!ObjectUtils.isEmpty(surfaceList)){
-            BasicBuildingSurface basicBuildingSurface = new BasicBuildingSurface();
-            for (CaseBuildingSurface oo:surfaceList){
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingSurface);
-                basicBuildingSurface.setBuildingId(0);
-                basicBuildingSurface.setId(null);
-                basicBuildingSurface.setCaseSurfaceId(oo.getId());
-                basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
-            }
-        }
-        if (!ObjectUtils.isEmpty(functionList)){
-            BasicBuildingFunction basicBuildingFunction = new BasicBuildingFunction();
-            for (CaseBuildingFunction oo:functionList){
-                BeanCopyHelp.copyPropertiesIgnoreNull(oo, basicBuildingFunction);
-                basicBuildingFunction.setBuildingId(0);
-                basicBuildingFunction.setId(null);
-                basicBuildingFunction.setCaseFunctionId(oo.getId());
-                basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
-            }
-        }
+
+
     }
 }

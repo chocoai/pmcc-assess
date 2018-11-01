@@ -101,9 +101,9 @@ public class BasicBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteBuilding(Integer caseBuildId){
+    public HttpResult appWriteBuilding(Integer caseMainBuildId){
         try {
-            publicBasicService.appWriteBuilding(caseBuildId);
+            publicBasicService.appWriteBuilding(caseMainBuildId);
             return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

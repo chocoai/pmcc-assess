@@ -457,6 +457,7 @@
         navButtonBuild.tempSaveData = function () {
             var data = formParams(objectData.config.basicBuilding.frm);
             var switchNumber = navButtonBuild.switchNumber;
+            data.part = switchNumber;
             if (navButtonBuild.isNotBlank(switchNumber)) {
                 navButtonBuild.setObjArrayElement(switchNumber, data);
             }
@@ -577,19 +578,6 @@
         if (navButtonBuild.flag){
             this.inputBlur();
             $("#identifier").bind("blur", navButtonBuild.identifierWrite);
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        toastr.success('楼栋初始化成功!');
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
             navButtonBuild.flag = false;
         }
     };
