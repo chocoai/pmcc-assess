@@ -10,7 +10,7 @@ public class DeclareBuildEconomicIndicators {
 
     private Integer planDetailsId;
 
-    private Integer baseDataDicId;
+    private String customKey;
 
     private String name;
 
@@ -22,7 +22,9 @@ public class DeclareBuildEconomicIndicators {
 
     private Integer number;
 
-    private BigDecimal area;
+    private String content;
+
+    private String childData;
 
     private String creator;
 
@@ -54,12 +56,12 @@ public class DeclareBuildEconomicIndicators {
         this.planDetailsId = planDetailsId;
     }
 
-    public Integer getBaseDataDicId() {
-        return baseDataDicId;
+    public String getCustomKey() {
+        return customKey;
     }
 
-    public void setBaseDataDicId(Integer baseDataDicId) {
-        this.baseDataDicId = baseDataDicId;
+    public void setCustomKey(String customKey) {
+        this.customKey = customKey == null ? null : customKey.trim();
     }
 
     public String getName() {
@@ -102,12 +104,20 @@ public class DeclareBuildEconomicIndicators {
         this.number = number;
     }
 
-    public BigDecimal getArea() {
-        return area;
+    public String getContent() {
+        return content;
     }
 
-    public void setArea(BigDecimal area) {
-        this.area = area;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public String getChildData() {
+        return childData;
+    }
+
+    public void setChildData(String childData) {
+        this.childData = childData == null ? null : childData.trim();
     }
 
     public String getCreator() {

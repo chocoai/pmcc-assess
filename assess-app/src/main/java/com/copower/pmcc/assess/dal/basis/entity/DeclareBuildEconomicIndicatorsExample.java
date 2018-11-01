@@ -286,63 +286,73 @@ public class DeclareBuildEconomicIndicatorsExample {
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdIsNull() {
-            addCriterion("base_data_dic_id is null");
+        public Criteria andCustomKeyIsNull() {
+            addCriterion("custom_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdIsNotNull() {
-            addCriterion("base_data_dic_id is not null");
+        public Criteria andCustomKeyIsNotNull() {
+            addCriterion("custom_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdEqualTo(Integer value) {
-            addCriterion("base_data_dic_id =", value, "baseDataDicId");
+        public Criteria andCustomKeyEqualTo(String value) {
+            addCriterion("custom_key =", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdNotEqualTo(Integer value) {
-            addCriterion("base_data_dic_id <>", value, "baseDataDicId");
+        public Criteria andCustomKeyNotEqualTo(String value) {
+            addCriterion("custom_key <>", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdGreaterThan(Integer value) {
-            addCriterion("base_data_dic_id >", value, "baseDataDicId");
+        public Criteria andCustomKeyGreaterThan(String value) {
+            addCriterion("custom_key >", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("base_data_dic_id >=", value, "baseDataDicId");
+        public Criteria andCustomKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("custom_key >=", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdLessThan(Integer value) {
-            addCriterion("base_data_dic_id <", value, "baseDataDicId");
+        public Criteria andCustomKeyLessThan(String value) {
+            addCriterion("custom_key <", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdLessThanOrEqualTo(Integer value) {
-            addCriterion("base_data_dic_id <=", value, "baseDataDicId");
+        public Criteria andCustomKeyLessThanOrEqualTo(String value) {
+            addCriterion("custom_key <=", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdIn(List<Integer> values) {
-            addCriterion("base_data_dic_id in", values, "baseDataDicId");
+        public Criteria andCustomKeyLike(String value) {
+            addCriterion("custom_key like", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdNotIn(List<Integer> values) {
-            addCriterion("base_data_dic_id not in", values, "baseDataDicId");
+        public Criteria andCustomKeyNotLike(String value) {
+            addCriterion("custom_key not like", value, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdBetween(Integer value1, Integer value2) {
-            addCriterion("base_data_dic_id between", value1, value2, "baseDataDicId");
+        public Criteria andCustomKeyIn(List<String> values) {
+            addCriterion("custom_key in", values, "customKey");
             return (Criteria) this;
         }
 
-        public Criteria andBaseDataDicIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("base_data_dic_id not between", value1, value2, "baseDataDicId");
+        public Criteria andCustomKeyNotIn(List<String> values) {
+            addCriterion("custom_key not in", values, "customKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomKeyBetween(String value1, String value2) {
+            addCriterion("custom_key between", value1, value2, "customKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomKeyNotBetween(String value1, String value2) {
+            addCriterion("custom_key not between", value1, value2, "customKey");
             return (Criteria) this;
         }
 
@@ -666,63 +676,143 @@ public class DeclareBuildEconomicIndicatorsExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaIsNull() {
-            addCriterion("area is null");
+        public Criteria andContentIsNull() {
+            addCriterion("content is null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIsNotNull() {
-            addCriterion("area is not null");
+        public Criteria andContentIsNotNull() {
+            addCriterion("content is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaEqualTo(BigDecimal value) {
-            addCriterion("area =", value, "area");
+        public Criteria andContentEqualTo(String value) {
+            addCriterion("content =", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotEqualTo(BigDecimal value) {
-            addCriterion("area <>", value, "area");
+        public Criteria andContentNotEqualTo(String value) {
+            addCriterion("content <>", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaGreaterThan(BigDecimal value) {
-            addCriterion("area >", value, "area");
+        public Criteria andContentGreaterThan(String value) {
+            addCriterion("content >", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("area >=", value, "area");
+        public Criteria andContentGreaterThanOrEqualTo(String value) {
+            addCriterion("content >=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaLessThan(BigDecimal value) {
-            addCriterion("area <", value, "area");
+        public Criteria andContentLessThan(String value) {
+            addCriterion("content <", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("area <=", value, "area");
+        public Criteria andContentLessThanOrEqualTo(String value) {
+            addCriterion("content <=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIn(List<BigDecimal> values) {
-            addCriterion("area in", values, "area");
+        public Criteria andContentLike(String value) {
+            addCriterion("content like", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotIn(List<BigDecimal> values) {
-            addCriterion("area not in", values, "area");
+        public Criteria andContentNotLike(String value) {
+            addCriterion("content not like", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area between", value1, value2, "area");
+        public Criteria andContentIn(List<String> values) {
+            addCriterion("content in", values, "content");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area not between", value1, value2, "area");
+        public Criteria andContentNotIn(List<String> values) {
+            addCriterion("content not in", values, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentBetween(String value1, String value2) {
+            addCriterion("content between", value1, value2, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentNotBetween(String value1, String value2) {
+            addCriterion("content not between", value1, value2, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataIsNull() {
+            addCriterion("child_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataIsNotNull() {
+            addCriterion("child_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataEqualTo(String value) {
+            addCriterion("child_data =", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotEqualTo(String value) {
+            addCriterion("child_data <>", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataGreaterThan(String value) {
+            addCriterion("child_data >", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataGreaterThanOrEqualTo(String value) {
+            addCriterion("child_data >=", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLessThan(String value) {
+            addCriterion("child_data <", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLessThanOrEqualTo(String value) {
+            addCriterion("child_data <=", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataLike(String value) {
+            addCriterion("child_data like", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotLike(String value) {
+            addCriterion("child_data not like", value, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataIn(List<String> values) {
+            addCriterion("child_data in", values, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotIn(List<String> values) {
+            addCriterion("child_data not in", values, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataBetween(String value1, String value2) {
+            addCriterion("child_data between", value1, value2, "childData");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildDataNotBetween(String value1, String value2) {
+            addCriterion("child_data not between", value1, value2, "childData");
             return (Criteria) this;
         }
 
