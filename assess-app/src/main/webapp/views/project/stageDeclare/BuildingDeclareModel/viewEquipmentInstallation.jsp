@@ -88,6 +88,12 @@
             frm:"declareRealtyRealEstateCertFrmE",
             fileId:"declareRealtyRealEstateCertFileIdE",
             name:"不动产"
+        },
+        declareEconomicIndicators: {
+            box: "declareEconomicIndicatorsBox",
+            frm: "declareEconomicIndicatorsFrm",
+            fileId: "declareEconomicIndicatorsFileId",
+            name: "经济指标"
         }
     };
 
@@ -1111,6 +1117,18 @@
         });
     };
 
+    /**
+     * 经济指标
+     */
+    equipmentInstallation.declareEconomicIndicatorsView = function (id) {
+        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).clearAll();
+        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
+        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+        economicIndicators.initForm(id);
+        $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+    };
+
 
     equipmentInstallation.loadList = function () {
         var cols = [];
@@ -1126,7 +1144,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="dropdown">';
-                str += "<button class='btn dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
+                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
                 str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>" ;
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" +row.id+")'"+">"+"删除"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" +row.id+")'"+">"+"编辑"+ "</a>" + "</li>";
@@ -1136,6 +1154,7 @@
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.id + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
                 str += "</ul>" ;
                 str += "</div>";
                 return str;

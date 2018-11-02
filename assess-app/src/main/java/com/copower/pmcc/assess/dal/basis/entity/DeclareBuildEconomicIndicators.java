@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeclareBuildEconomicIndicators {
@@ -15,12 +14,6 @@ public class DeclareBuildEconomicIndicators {
     private String name;
 
     private String huxing;
-
-    private BigDecimal huxingArea;
-
-    private Integer householdCount;
-
-    private Integer number;
 
     private String content;
 
@@ -78,30 +71,6 @@ public class DeclareBuildEconomicIndicators {
 
     public void setHuxing(String huxing) {
         this.huxing = huxing == null ? null : huxing.trim();
-    }
-
-    public BigDecimal getHuxingArea() {
-        return huxingArea;
-    }
-
-    public void setHuxingArea(BigDecimal huxingArea) {
-        this.huxingArea = huxingArea;
-    }
-
-    public Integer getHouseholdCount() {
-        return householdCount;
-    }
-
-    public void setHouseholdCount(Integer householdCount) {
-        this.householdCount = householdCount;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public String getContent() {

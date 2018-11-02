@@ -26,7 +26,8 @@
                             <li><a class="btn"
                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEngineering)">下载模板</a>
                             </li>
-                            <li><a class="btn btn-default" onclick="$('#civilEngineeringUpload').val('').trigger('click')">导入</a>
+                            <li><a class="btn btn-default"
+                                   onclick="$('#civilEngineeringUpload').val('').trigger('click')">导入</a>
                             </li>
                         </ul>
                     </div>
@@ -193,7 +194,7 @@
      * @date:2018-09-27
      **/
     civilEngineering.deleteData = function (id) {
-        Alert("是否删除",2,null,function () {
+        Alert("是否删除", 2, null, function () {
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/declareBuildEngineering/deleteDeclareBuildEngineeringById",
@@ -400,7 +401,7 @@
             if (!civilEngineering.isEmpty(attachedNumber)) {
                 attachedNumber = "";
             } else {
-                attachedNumber =  "附"+attachedNumber;
+                attachedNumber = "附" + attachedNumber;
             }
             if (!civilEngineering.isEmpty(buildingNumber)) {
                 buildingNumber = "";
@@ -481,13 +482,13 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType,'', function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, '', function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, "", function (html, data) {
@@ -657,7 +658,7 @@
             if (!civilEngineering.isEmpty(attachedNumber)) {
                 attachedNumber = "";
             } else {
-                attachedNumber ="附"+attachedNumber;
+                attachedNumber = "附" + attachedNumber;
             }
             if (!civilEngineering.isEmpty(buildingNumber)) {
                 buildingNumber = "";
@@ -736,7 +737,7 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
             $("#" + civilEngineeringConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
@@ -1137,6 +1138,10 @@
     civilEngineering.declareEconomicIndicatorsView = function (id) {
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
+        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
+        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+        economicIndicators.initForm(id);
         $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
     };
 
@@ -1153,18 +1158,18 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="dropdown">';
-                str += "<button class='btn dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
-                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>" ;
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" +row.id+")'"+">"+"删除"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" +row.id+")'"+">"+"编辑"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" +row.id+")'"+">"+"土地证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" +row.id+")'"+">"+"不动产"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" +row.id+")'"+">"+"建设工程规划许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" +row.id+")'"+">"+"规划指标"+ "</a>" + "</li>";
-                str += "</ul>" ;
+                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
+                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.id + ")'" + ">" + "土地证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.id + ")'" + ">" + "不动产" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.id + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
+                str += "</ul>";
                 str += "</div>";
                 return str;
             }
@@ -2631,7 +2636,8 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="publicSituation" class="form-control search-select select2 publicSituation"
+                                            <select name="publicSituation"
+                                                    class="form-control search-select select2 publicSituation"
                                                     required="required">
                                             </select>
                                         </div>

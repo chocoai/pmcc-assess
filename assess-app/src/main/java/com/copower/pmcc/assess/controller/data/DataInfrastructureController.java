@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.common.DateHelp;
-import com.copower.pmcc.assess.dal.basis.entity.Infrastructure;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructure;
 import com.copower.pmcc.assess.dto.input.data.InfrastructureDto;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
@@ -63,8 +63,8 @@ public class DataInfrastructureController {
 
     @ResponseBody
     @RequestMapping(value = "/getInfrastructureList", method = {RequestMethod.GET}, name = "获取基础设施维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String dispatchUnit) {
-        Infrastructure infrastructure = new Infrastructure();
+    public BootstrapTableVo getInfrastructureList(String dispatchUnit) {
+        DataInfrastructure infrastructure = new DataInfrastructure();
         BootstrapTableVo vo = null;
         if (!StringUtils.isEmpty(dispatchUnit)) {
             infrastructure.setDispatchUnit(dispatchUnit);
@@ -109,7 +109,7 @@ public class DataInfrastructureController {
     @RequestMapping(value = "/listInfrastructure", method = {RequestMethod.GET}, name = "基础设施维护 list")
     public HttpResult list(String province, String city, String district,String startDate,String endDate,String projectType) {
         try {
-            Infrastructure infrastructure = new Infrastructure();
+            DataInfrastructure infrastructure = new DataInfrastructure();
             if (!StringUtils.isEmpty(province)) {
                 infrastructure.setProvince(province);
             }

@@ -8,9 +8,6 @@
     <result column="custom_key" property="customKey" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="huxing" property="huxing" jdbcType="VARCHAR" />
-    <result column="huxing_area" property="huxingArea" jdbcType="DECIMAL" />
-    <result column="household_count" property="householdCount" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="child_data" property="childData" jdbcType="CHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -76,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, plan_details_id, custom_key, name, huxing, huxing_area, household_count, 
-    number, content, child_data, creator, gmt_created, gmt_modified
+    id, pid, plan_details_id, custom_key, name, huxing, content, child_data, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicatorsExample" >
     select
@@ -114,13 +111,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_declare_build_economic_indicators (pid, plan_details_id, custom_key, 
-      name, huxing, huxing_area, 
-      household_count, number, content, 
+      name, huxing, content, 
       child_data, creator, gmt_created, 
       gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{customKey,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{huxing,jdbcType=VARCHAR}, #{huxingArea,jdbcType=DECIMAL}, 
-      #{householdCount,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{huxing,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{childData,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -144,15 +139,6 @@
       </if>
       <if test="huxing != null" >
         huxing,
-      </if>
-      <if test="huxingArea != null" >
-        huxing_area,
-      </if>
-      <if test="householdCount != null" >
-        household_count,
-      </if>
-      <if test="number != null" >
-        number,
       </if>
       <if test="content != null" >
         content,
@@ -185,15 +171,6 @@
       </if>
       <if test="huxing != null" >
         #{huxing,jdbcType=VARCHAR},
-      </if>
-      <if test="huxingArea != null" >
-        #{huxingArea,jdbcType=DECIMAL},
-      </if>
-      <if test="householdCount != null" >
-        #{householdCount,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        #{number,jdbcType=INTEGER},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -239,15 +216,6 @@
       <if test="record.huxing != null" >
         huxing = #{record.huxing,jdbcType=VARCHAR},
       </if>
-      <if test="record.huxingArea != null" >
-        huxing_area = #{record.huxingArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.householdCount != null" >
-        household_count = #{record.householdCount,jdbcType=INTEGER},
-      </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=INTEGER},
-      </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
       </if>
@@ -276,9 +244,6 @@
       custom_key = #{record.customKey,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       huxing = #{record.huxing,jdbcType=VARCHAR},
-      huxing_area = #{record.huxingArea,jdbcType=DECIMAL},
-      household_count = #{record.householdCount,jdbcType=INTEGER},
-      number = #{record.number,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       child_data = #{record.childData,jdbcType=CHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -306,15 +271,6 @@
       <if test="huxing != null" >
         huxing = #{huxing,jdbcType=VARCHAR},
       </if>
-      <if test="huxingArea != null" >
-        huxing_area = #{huxingArea,jdbcType=DECIMAL},
-      </if>
-      <if test="householdCount != null" >
-        household_count = #{householdCount,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=INTEGER},
-      </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
       </if>
@@ -340,9 +296,6 @@
       custom_key = #{customKey,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       huxing = #{huxing,jdbcType=VARCHAR},
-      huxing_area = #{huxingArea,jdbcType=DECIMAL},
-      household_count = #{householdCount,jdbcType=INTEGER},
-      number = #{number,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       child_data = #{childData,jdbcType=CHAR},
       creator = #{creator,jdbcType=VARCHAR},

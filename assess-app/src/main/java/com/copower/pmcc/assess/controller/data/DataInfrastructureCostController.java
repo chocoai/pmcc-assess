@@ -22,27 +22,26 @@ public class DataInfrastructureCostController {
     private DataInfrastructureCostService dataDataInfrastructureCostService;
 
     @ResponseBody
-    @RequestMapping(value = "/list",name = "获取基础设施费用列表",method = {RequestMethod.POST,RequestMethod.GET})
-    public BootstrapTableVo list(String name,Integer pid){
+    @RequestMapping(value = "/list", name = "获取基础设施费用列表", method = {RequestMethod.POST, RequestMethod.GET})
+    public BootstrapTableVo list(String name, Integer pid) {
         DataInfrastructureCost infrastructureCost = new DataInfrastructureCost();
-        if (pid != null){
+        if (pid != null) {
             infrastructureCost.setPid(pid);
         }
-        if (StringUtils.isNotBlank(name)){
+        if (StringUtils.isNotBlank(name)) {
             infrastructureCost.setName(name);
         }
         return dataDataInfrastructureCostService.getDataInfrastructureCost(infrastructureCost);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addAndEdit",name = "新增或者编辑",method = RequestMethod.POST)
-    public HttpResult addAndEdit(DataInfrastructureCost infrastructureCost){
+    @RequestMapping(value = "/addAndEdit", name = "新增或者编辑", method = RequestMethod.POST)
+    public HttpResult addAndEdit(DataInfrastructureCost infrastructureCost) {
 
         try {
-            if (infrastructureCost.getId() != null && infrastructureCost.getId().intValue() != 0){
+            if (infrastructureCost.getId() != null && infrastructureCost.getId().intValue() != 0) {
                 dataDataInfrastructureCostService.editDataInfrastructureCost(infrastructureCost);
-            }
-            else {
+            } else {
                 dataDataInfrastructureCostService.addDataInfrastructureCost(infrastructureCost);
             }
         } catch (BusinessException e) {
@@ -52,11 +51,11 @@ public class DataInfrastructureCostController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete",name = "删除基础设施费用",method = RequestMethod.POST)
-    public HttpResult delete(Integer id){
+    @RequestMapping(value = "/delete", name = "删除基础设施费用", method = RequestMethod.POST)
+    public HttpResult delete(Integer id) {
         DataInfrastructureCost infrastructureCost = dataDataInfrastructureCostService.getByDataInfrastructureCost(id);
-         dataDataInfrastructureCostService.deleteInfrastructure(id);
-         return HttpResult.newCorrectResult(infrastructureCost.getPid());
+        dataDataInfrastructureCostService.deleteInfrastructure(id);
+        return HttpResult.newCorrectResult(infrastructureCost.getPid());
     }
 
 }
