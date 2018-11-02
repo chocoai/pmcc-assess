@@ -12,10 +12,12 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +44,17 @@ public class DeclareBuildEconomicIndicatorsService {
         }
     }
 
+    /**
+     * 获取数据列表
+     * @param pid
+     * @return
+     */
+    public List<DeclareBuildEconomicIndicators> getEntityListByPid(Integer pid) {
+        DeclareBuildEconomicIndicators where = new DeclareBuildEconomicIndicators();
+        where.setPid(pid);
+        return declareBuildEconomicIndicatorsDao.getDeclareBuildEconomicIndicatorsList(where);
+    }
+
     public BootstrapTableVo getEconomicIndicatorsListVos(DeclareBuildEconomicIndicators declareBuildEconomicIndicators) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -50,6 +63,21 @@ public class DeclareBuildEconomicIndicatorsService {
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
+    }
+
+    @Transactional
+    public void saveEconomicIndicatorsList(Integer pid, Integer planDetailsId, List<DeclareBuildEconomicIndicators> list) {
+        if (CollectionUtils.isEmpty(list)) return;
+        //先清除原数据
+        DeclareBuildEconomicIndicators where = new DeclareBuildEconomicIndicators();
+        where.setPid(pid);
+        declareBuildEconomicIndicatorsDao.removeDeclareBuildEconomicIndicators(where);
+        for (DeclareBuildEconomicIndicators economicIndicators : list) {
+            economicIndicators.setPid(pid);
+            economicIndicators.setPlanDetailsId(planDetailsId);
+            economicIndicators.setCreator(commonService.thisUserAccount());
+            declareBuildEconomicIndicatorsDao.addDeclareBuildEconomicIndicators(economicIndicators);
+        }
     }
 
     public List<DeclareBuildEconomicIndicators> declareBuildEconomicIndicatorsList(DeclareBuildEconomicIndicators oo) {
