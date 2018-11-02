@@ -994,16 +994,95 @@
 
     //处理房屋
     objectData.house = {
-        show: function () {
+        show: function (item) {
             $('#caseTab a').eq(3).tab('show');
             houseModelFun.houseInit({});
             houseModelFun.tradingInit({});
         },
         edit: function () {
-            objectData.house.show();
+            var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(id)){
+                Alert("请先查询房屋");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
+                type: "get",
+                dataType: "json",
+                data:{id:id},
+                success: function (result) {
+                    if (result.ret) {
+                        $('#caseTab a').eq(3).tab('show');
+                        $("#" + objectData.config.basicHouse.frm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (objectData.isNotBlank(readonly)) {
+                                $(n).removeAttr("readonly");
+                            }
+                        });
+                        $("#" + objectData.config.basicHouse.tradingFrm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (objectData.isNotBlank(readonly)) {
+                                $(n).removeAttr("readonly");
+                            }
+                        });
+                        if (objectData.isNotBlank(result.data.CaseHouse)){
+                            houseModelFun.houseInit(result.data.CaseHouse);
+                        }else {
+                            houseModelFun.houseInit({});
+                        }
+                        if (objectData.isNotBlank(result.data.CaseHouseTrading)){
+                            houseModelFun.tradingInit(result.data.CaseHouseTrading);
+                        }else {
+                            houseModelFun.tradingInit({});
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
         details: function () {
-            objectData.house.show();
+            var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(id)){
+                toastr.success('请先查询房屋');
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
+                type: "get",
+                dataType: "json",
+                data:{id:id},
+                success: function (result) {
+                    if (result.ret) {
+                        $('#caseTab a').eq(3).tab('show');
+                        $("#" + objectData.config.basicHouse.frm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (objectData.isNotBlank(readonly)) {
+                                $(n).attr("readonly", "readonly");
+                            }
+                        });
+                        $("#" + objectData.config.basicHouse.tradingFrm).find("input").each(function (i, n) {
+                            var readonly = $(n).attr("readonly");
+                            if (objectData.isNotBlank(readonly)) {
+                                $(n).attr("readonly", "readonly");
+                            }
+                        });
+                        if (objectData.isNotBlank(result.data.CaseHouse)){
+                            houseModelFun.houseInit(result.data.CaseHouse);
+                        }else {
+                            houseModelFun.houseInit({});
+                        }
+                        if (objectData.isNotBlank(result.data.CaseHouseTrading)){
+                            houseModelFun.tradingInit(result.data.CaseHouseTrading);
+                        }else {
+                            houseModelFun.tradingInit({});
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     };
 

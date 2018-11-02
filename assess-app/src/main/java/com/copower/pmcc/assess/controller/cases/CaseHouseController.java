@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -92,6 +94,29 @@ public class CaseHouseController {
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(caseHouse);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCaseHouseByIdAndTrading", method = {RequestMethod.GET}, name = "获取案例 房屋")
+    public HttpResult getCaseHouseByIdAndTrading(Integer id) {
+        CaseHouse caseHouse = null;
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        try {
+            if (id != null) {
+                caseHouse = caseHouseService.getCaseHouseById(id);
+                CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
+                caseHouseTrading.setHouseId(id);
+                List<CaseHouseTradingVo> houseTradings = caseHouseTradingService.caseHouseTradingList(caseHouseTrading);
+                if (!ObjectUtils.isEmpty(houseTradings)){
+                    objectMap.put(CaseHouseTrading.class.getSimpleName(),houseTradings.get(0));
+                }
+                objectMap.put(CaseHouse.class.getSimpleName(),caseHouse);
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return HttpResult.newCorrectResult(objectMap);
     }
 
     @ResponseBody
