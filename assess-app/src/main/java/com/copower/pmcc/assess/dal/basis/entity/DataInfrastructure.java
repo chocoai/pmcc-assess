@@ -1,27 +1,34 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class Infrastructure {
+public class DataInfrastructure {
     private Integer id;
-    /**省*/
+
     private String province;
-    /**市*/
+
     private String city;
-    /**县*/
+
     private String district;
-    /**发文单位*/
+
     private String dispatchUnit;
-    /**文号*/
+
     private String number;
-    /**文件名称*/
+
     private String fileName;
-    /**项目类别*/
+
     private String projectType;
-    /**执行开始日期*/
+
     private Date startDate;
-    /**执行结束日期*/
+
     private Date endDate;
+
+    private BigDecimal costTotal;
+
+    private BigDecimal matchingCostTotal;
+
+    private BigDecimal devTaxTotal;
 
     private String creator;
 
@@ -107,6 +114,30 @@ public class Infrastructure {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public BigDecimal getCostTotal() {
+        return costTotal;
+    }
+
+    public void setCostTotal(BigDecimal costTotal) {
+        this.costTotal = costTotal;
+    }
+
+    public BigDecimal getMatchingCostTotal() {
+        return matchingCostTotal;
+    }
+
+    public void setMatchingCostTotal(BigDecimal matchingCostTotal) {
+        this.matchingCostTotal = matchingCostTotal;
+    }
+
+    public BigDecimal getDevTaxTotal() {
+        return devTaxTotal;
+    }
+
+    public void setDevTaxTotal(BigDecimal devTaxTotal) {
+        this.devTaxTotal = devTaxTotal;
     }
 
     public String getCreator() {

@@ -228,19 +228,16 @@
                     if (dataA.length > 0) {
                         var temp = null;
                         for (var i = 0; i < dataA.length; i++) {
-                            temp = dataA[i].temp + " (" + dataA[i].priceCost + ")";
-                            optionA += "<option value='" + dataA[i].priceCost + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].priceMarch + ")";
-                            optionB += "<option value='" + dataA[i].priceMarch + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].priceDev + ")";
-                            optionC += "<option value='" + dataA[i].priceDev + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].costTotal + ")";
+                            optionA += "<option value='" + dataA[i].costTotal + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].matchingCostTotal + ")";
+                            optionB += "<option value='" + dataA[i].matchingCostTotal + "'>" + temp + "</option>";
+                            temp = dataA[i].temp + " (" + dataA[i].devTaxTotal + ")";
+                            optionC += "<option value='" + dataA[i].devTaxTotal + "'>" + temp + "</option>";
                         }
-                        $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureCost.tax).html(optionA);
-                        $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
-                        $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).html(optionC);
-                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.infrastructureCost.tax),build.config.inputConfig.infrastructureCost.tax);
-                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.infrastructureMatchingCost.tax),build.config.inputConfig.infrastructureMatchingCost.tax);
-                        build.select2InitMethodWrite(eval("build.dataObject."+build.config.inputConfig.devDuring.tax),build.config.inputConfig.devDuring.tax);
+                        $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureCost.tax).html(optionA).trigger('change');
+                        $("#" + build.config.id).find("select." + build.config.inputConfig.infrastructureMatchingCost.tax).html(optionB).trigger('change');
+                        $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).html(optionC).trigger('change');
                     }
 
                 }

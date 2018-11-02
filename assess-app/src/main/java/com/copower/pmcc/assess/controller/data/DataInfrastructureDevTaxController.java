@@ -83,6 +83,7 @@ public class DataInfrastructureDevTaxController {
     public HttpResult saveAndUpdate(DataInfrastructureDevTax dataInfrastructureDevTax){
         try {
             dataInfrastructureDevTaxService.saveAndUpdateDataInfrastructureDevTax(dataInfrastructureDevTax);
+
             return HttpResult.newCorrectResult(dataInfrastructureDevTax.getPid());
         } catch (Exception e) {
             logger.error(String.format("exception: %s",e.getMessage()),e);

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.method;
 
-import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
@@ -16,7 +15,6 @@ import com.copower.pmcc.assess.service.data.DataInfrastructureMatchingCostServic
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -121,7 +119,7 @@ public class MdMarketCostService {
     }
 
     public List<InfrastructureVo> infrastructureList(ProjectInfo projectInfo) {
-        List<InfrastructureVo> vos = dataInfrastructureService.infrastructureList(new Infrastructure());
+        List<InfrastructureVo> vos = dataInfrastructureService.infrastructureList(new DataInfrastructure());
         List<InfrastructureVo> tela = Lists.newArrayList();
         if (projectInfo == null) {
             return vos;
