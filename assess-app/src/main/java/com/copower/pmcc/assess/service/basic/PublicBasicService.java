@@ -6,6 +6,9 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -72,6 +75,10 @@ public class PublicBasicService {
     private CaseBuildingSurfaceService caseBuildingSurfaceService;
     @Autowired
     private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseHouseService caseHouseService;
+    @Autowired
+    private CaseHouseTradingService caseHouseTradingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate) throws Exception {
@@ -377,6 +384,59 @@ public class PublicBasicService {
         return caseUnit;
     }
 
+    public void flowWriteCaseHouse(BasicHouse basicHouse,BasicHouseTrading basicTrading,Integer unitId)throws Exception{
+        CaseHouseTrading caseHouseTrading = null;
+        CaseHouse caseHouse = null;
+        if (basicHouse.getCaseHouseId() != null){
+            caseHouse = caseHouseService.getCaseHouseById(basicHouse.getCaseHouseId());
+            if (caseHouse != null){
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicHouse, caseHouse);
+                caseHouse.setId(basicHouse.getCaseHouseId());
+            }
+            if (caseHouse == null){
+                caseHouse = new CaseHouse();
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicHouse, caseHouse);
+                caseHouse.setId(null);
+                caseHouse.setGmtCreated(null);
+                caseHouse.setGmtModified(null);
+            }
+        }
+        if (basicHouse.getCaseHouseId() == null){
+            caseHouse = new CaseHouse();
+            BeanCopyHelp.copyPropertiesIgnoreNull(basicHouse, caseHouse);
+            caseHouse.setId(null);
+            caseHouse.setGmtCreated(null);
+            caseHouse.setGmtModified(null);
+        }
+        caseHouse.setUnitId(unitId);
+        caseHouseService.upgradeVersion(caseHouse);
+        if (caseHouse.getId() != null){
+            if (basicTrading.getCaseTradingId() != null){
+                caseHouseTrading = caseHouseTradingService.getCaseHouseTradingById(basicTrading.getCaseTradingId());
+                if (caseHouseTrading != null){
+                    BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                    caseHouse.setId(basicHouse.getCaseHouseId());
+                }
+                if (caseHouseTrading == null){
+                    caseHouseTrading = new CaseHouseTrading();
+                    BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                    caseHouse.setId(null);
+                    caseHouse.setGmtCreated(null);
+                    caseHouse.setGmtModified(null);
+                }
+            }
+            if (basicTrading.getCaseTradingId() == null){
+                caseHouseTrading = new CaseHouseTrading();
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                caseHouse.setId(null);
+                caseHouse.setGmtCreated(null);
+                caseHouse.setGmtModified(null);
+            }
+            caseHouseTrading.setHouseId(caseHouse.getId());
+            caseHouseTradingService.upgradeVersion(caseHouseTrading);
+        }
+    }
+
     /**
      * 回写数据并且升级版本
      *
@@ -389,6 +449,8 @@ public class PublicBasicService {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
             BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
             BasicUnit basicUnit = this.getByByAppIdBasicUnit(basicApply.getId());
+            BasicHouse basicHouse = this.getByAppIdBasicHouseVo(basicApply.getId());
+            BasicHouseTrading basicTrading = this.getByAppIdBasicHouseTrading(basicApply.getId());
 
             CaseEstate caseEstate = null;
             CaseBuildingMain caseBuildingMain = null;
@@ -413,19 +475,33 @@ public class PublicBasicService {
                 this.flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
             }
 
-            if (basicUnit != null){
-                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() == null){
+            if (basicUnit != null) {
+                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() == null) {
                     throw new Exception("未选择楼栋信息或者是未新增楼栋数据!");
                 }
                 Integer caseBuildingMainId = null;
-                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() != null){
+                if (caseBuildingMain == null && basicUnit.getBasicBuildingMainId() != null) {
                     caseBuildingMainId = basicUnit.getBasicBuildingMainId();
                 }
-                if (caseBuildingMain != null){
+                if (caseBuildingMain != null) {
                     caseBuildingMainId = caseBuildingMain.getId();
                 }
                 //处理单元
                 caseUnit = this.flowWriteCaseUnit(basicUnit, caseBuildingMainId);
+            }
+            if (basicHouse != null){
+                if (caseUnit == null && basicHouse.getUnitId() == null) {
+                    throw new Exception("未选择单元信息或者是未新增单元数据!");
+                }
+                Integer unitId = null;
+                if (caseUnit == null && basicHouse.getUnitId() != null){
+                    unitId = basicHouse.getUnitId();
+                }
+                if (caseUnit != null){
+                    unitId = caseUnit.getId();
+                }
+                //处理房屋
+                this.flowWriteCaseHouse(basicHouse,basicTrading,unitId);
             }
         }
     }
@@ -582,11 +658,51 @@ public class PublicBasicService {
         //处理房屋数据
         jsonContent = null;
         jsonContent = jsonObject.getString("basicHouse");
+        BasicHouse basicHouse = null;
+        if (StringUtils.isNotEmpty(jsonContent)) {
+            basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
+            if (basicHouse != null) {
+                if (basicHouse.getId() != null) {
+                    basicHouse.setCaseHouseId(basicHouse.getId());
+                    basicHouse.setId(null);
+                }
+                basicHouse.setApplyId(basicApply.getId());
+                if (basicUnit == null) {
+                    if (basicHouse.getUnitId() != null) {
+                        //
+                    }
+                    if (basicHouse.getUnitId() == null) {
+                        throw new Exception("未选择单元");
+                    }
+                }
+                if (basicUnit != null) {
+                    if (basicUnit.getId() != null) {
+                        basicHouse.setUnitId(basicUnit.getId());
+                    }
+                    if (basicUnit.getId() == null) {
+                        throw new Exception("单元exception");
+                    }
+                }
+                Integer house = basicHouseService.upgradeVersion(basicHouse);
+                try {
+                    BasicHouseTrading basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+                    if (basicTrading.getId() != null) {
+                        basicTrading.setCaseTradingId(basicTrading.getId());
+                        basicTrading.setId(null);
+                    }
+                    basicTrading.setHouseId(house);
+                    basicTrading.setApplyId(basicApply.getId());
+                    basicHouseTradingService.upgradeVersion(basicTrading);
+                } catch (Exception e1) {
+
+                }
+            }
+        }
         //发起流程
         basicApplyService.sumTask(basicApply, FormatUtils.entityNameConvertToTableName(BasicApply.class));
     }
 
-    public BasicEstate getByAppIdBasicEstate(Integer appId) throws Exception {
+    public BasicEstateVo getByAppIdBasicEstate(Integer appId) throws Exception {
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setApplyId(appId);
         List<BasicEstate> basicEstates = basicEstateService.basicEstateList(basicEstate);
@@ -615,6 +731,28 @@ public class PublicBasicService {
         if (!ObjectUtils.isEmpty(unitList)) {
             return unitList.get(0);
         } else {
+            return null;
+        }
+    }
+
+    public BasicHouseTradingVo getByAppIdBasicHouseTrading(Integer appId)throws Exception{
+        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+        basicHouseTrading.setApplyId(appId);
+        List<BasicHouseTrading> basicHouseTradingList = basicHouseTradingService.basicHouseTradingList(basicHouseTrading);
+        if (!ObjectUtils.isEmpty(basicHouseTradingList)){
+            return basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingList.get(0));
+        }else {
+            return null;
+        }
+    }
+
+    public BasicHouseVo getByAppIdBasicHouseVo(Integer appId)throws Exception{
+        BasicHouse basicHouse = new BasicHouseVo();
+        basicHouse.setApplyId(appId);
+        List<BasicHouse> basicHouseList = basicHouseService.basicHouseList(basicHouse);
+        if (!ObjectUtils.isEmpty(basicHouseList)){
+            return basicHouseService.getBasicHouseVo(basicHouseList.get(0));
+        }else {
             return null;
         }
     }

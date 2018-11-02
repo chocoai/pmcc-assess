@@ -39,7 +39,8 @@
                                                                 data-toggle="tab" aria-expanded="false">单元</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                data-toggle="tab" aria-expanded="false">房屋</a>
+                                                                data-toggle="tab" aria-expanded="false"
+                                                                onclick="objectData.house.init();">房屋</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -637,14 +638,16 @@
                                                 <label class="col-sm-1 control-label">单元编号</label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="单元编号" readonly="readonly"
-                                                           name="unitNumber" class="form-control" value="${basicUnit.unitNumber}">
+                                                           name="unitNumber" class="form-control"
+                                                           value="${basicUnit.unitNumber}">
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">户梯比</label>
                                                 <div class="col-sm-3">
                                                     <input type="text" placeholder="户梯比" readonly="readonly"
-                                                           name="elevatorHouseholdRatio" class="form-control" value="${basicUnit.elevatorHouseholdRatio}">
+                                                           name="elevatorHouseholdRatio" class="form-control"
+                                                           value="${basicUnit.elevatorHouseholdRatio}">
                                                 </div>
                                             </div>
                                         </div>
@@ -652,8 +655,334 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
-                                <p>
-                                    hjsdjsjsd </p>
+                                <div class="x_content">
+                                    <div class="x_title">
+                                        <h3>
+                                            <small>
+                                                房屋基本信息
+                                            </small>
+                                        </h3>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <form class="form-horizontal" id="basicHouseFrm">
+                                        <input type="hidden" name="id" value="${basicHouse.id}">
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">房号<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.houseNumber}"
+                                                           placeholder="房号"
+                                                           name="houseNumber"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">所在楼层<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.floor}" placeholder="所在楼层"
+                                                           name="floor"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">使用环境<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.useEnvironmentName}"
+                                                           placeholder="使用环境"
+                                                           name="useEnvironmentName"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">户型选择<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <div class="input-group">
+                                                        <input type="text" value="${basicHouse.huxingName}"
+                                                               placeholder="户型"
+                                                               name="huxingName"
+                                                               class="form-control" readonly="readonly">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">朝向<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.orientation}"
+                                                           placeholder="朝向"
+                                                           name="orientation"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">证载用途<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.certUseName}"
+                                                           placeholder="证载用途"
+                                                           name="certUseName"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">实际用途<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.practicalUseName}"
+                                                           placeholder="实际用途"
+                                                           name="practicalUseName"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">权益限制<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" value="${basicHouse.rightInterestsRestriction}"
+                                                           placeholder="权益限制"
+                                                           name="rightInterestsRestriction"
+                                                           class="form-control" readonly="readonly">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">房屋出租占用情况途描述</label>
+                                                <div class="col-sm-11">
+                                                <textarea class="form-control" name="description" readonly="readonly">
+                                                    ${basicHouse.description}
+                                                </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
+                                                <div class="col-sm-5">
+                                                    <div id="_house_img_plan"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="x_content">
+                                    <div class="x_title">
+                                        <h3>
+                                            <small>
+                                                房屋交易信息
+                                            </small>
+                                        </h3>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <form class="form-horizontal" id="basicTradingFrm">
+                                        <input type="hidden" name="id" value="${basicHouseTrading.id}">
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">财产范围<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="财产范围" readonly="readonly"
+                                                           name="scopeProperty"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.scopeProperty}">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">融资条件<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="融资条件" readonly="readonly"
+                                                           name="financingConditions"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.financingConditions}">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">税费负担<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="税费负担" readonly="readonly"
+                                                           name="taxBurdenName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.taxBurdenName}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">正常交易<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="正常交易" readonly="readonly"
+                                                           name="normalTransactionName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.normalTransactionName}">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">说明事项类型<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="说明事项类型" readonly="readonly"
+                                                           name="descriptionTypeName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.descriptionTypeName}">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">说明事项内容<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="说明事项内容" readonly="readonly"
+                                                           name="descriptionContentName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.descriptionContent}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">交易时间<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="交易时间" readonly="readonly"
+                                                           name="tradingTimeName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.tradingTimeName}">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">交易类型</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="交易类型" readonly="readonly"
+                                                           name="tradingTypeName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.tradingTypeName}">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">交易价格<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="交易价格" readonly="readonly"
+                                                           name="tradingPrice"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.tradingPrice}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group BasicHouseTradingSell" style="display: none">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">买方支付的额外税费</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="买方支付的额外税费" readonly="readonly"
+                                                           name="buyerExtraTaxFee"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.buyerExtraTaxFee}">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">付款方式<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="付款方式" readonly="readonly"
+                                                           name="paymentMethodName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.paymentMethodName}">
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid" style="display: none;">
+                                                <label class="col-sm-1 control-label">出售总额</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="出售总额" readonly="readonly"
+                                                           name="totalSale"
+                                                           class="form-control" value="${basicHouseTrading.totalSale}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group BasicHouseTradingLease" style="display: none">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">承租方支付的额外税费</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="承租方支付的额外税费" readonly="readonly"
+                                                           name="rentingExtraTaxFee"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.rentingExtraTaxFee}">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">押金</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="押金" readonly="readonly"
+                                                           name="deposit"
+                                                           class="form-control" value="${basicHouseTrading.deposit}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="tableTradingLeaseAndSellDiv" style="display: none">
+                                            <div class="x-valid">
+                                                <div class="col-sm-1" style="text-align: right;">
+                                                </div>
+                                                <div class="col-sm-11">
+                                                    <table class="table table-bordered" id="tableTradingLeaseAndSell">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">信息来源分类<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="信息来源分类" readonly="readonly"
+                                                           name="informationTypeName"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.informationTypeName}">
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">信息来源</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="信息来源" readonly="readonly"
+                                                           name="information"
+                                                           class="form-control"
+                                                           value="${basicHouseTrading.information}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -708,7 +1037,16 @@
         },
         basicHouse: {
             key: "basicHouse",
-            name: "房屋"
+            name: "房屋",
+            frm: "basicHouseFrm",
+            tradingFrm:"basicTradingFrm",
+            leaseID: "BasicHouseTradingLease",//房屋出租
+            sellID: "BasicHouseTradingSell",//房屋出售
+            totalSale: "totalSale",//出售总额
+            divBoxSon: "divBoxTradingLeaseAndSell",
+            tableSon: "tableTradingLeaseAndSell",
+            frmSon: "frmTradingLeaseAndSell",
+            houseFileId: "house_img_plan"
         }
     };
 
@@ -821,7 +1159,7 @@
         navButtonBuild.initData = function (data) {
             $("#" + objectData.config.basicBuilding.frm).initForm(data);
             $.each(objectData.config.basicBuilding.files, function (i, n) {
-                objectData.showFile(n + "" + navButtonBuild.switchNumber,AssessDBKey.BasicBuilding, data.id);
+                objectData.showFile(n + "" + navButtonBuild.switchNumber, AssessDBKey.BasicBuilding, data.id);
             });
         };
         navButtonBuild.clearAll = function () {
@@ -831,7 +1169,7 @@
 
 
     navButtonBuild.switchNumber = 0;
-    navButtonBuild.switchInit = function (target, data,number) {
+    navButtonBuild.switchInit = function (target, data, number) {
         if (objectData.isNotBlank(data)) {
             navButtonBuild.clearAll();
             navButtonBuild.switchNumber = number;
@@ -848,7 +1186,7 @@
         if (number == '1') {
             if (objectData.isNotBlank('${oneBasicBuildingJson}')) {
                 var data = JSON.parse('${oneBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data,number);
+                navButtonBuild.switchInit(target, data, number);
             } else {
                 toastr.success('无数据!');
             }
@@ -859,7 +1197,7 @@
         if (number == '2') {
             if (objectData.isNotBlank('${twoBasicBuildingJson}')) {
                 var data = JSON.parse('${twoBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data,number);
+                navButtonBuild.switchInit(target, data, number);
             } else {
                 toastr.success('无数据!');
             }
@@ -870,7 +1208,7 @@
         if (number == '3') {
             if (objectData.isNotBlank('${threeBasicBuildingJson}')) {
                 var data = JSON.parse('${threeBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data,number);
+                navButtonBuild.switchInit(target, data, number);
             } else {
                 toastr.success('无数据!');
             }
@@ -881,7 +1219,7 @@
         if (number == '4') {
             if (objectData.isNotBlank('${fourBasicBuildingJson}')) {
                 var data = JSON.parse('${fourBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data,number);
+                navButtonBuild.switchInit(target, data, number);
             } else {
                 toastr.success('无数据!');
             }
@@ -895,16 +1233,73 @@
         //改变按钮颜色
         $(target).removeClass();
         $(target).addClass("btn btn-primary");
-        $("."+buildingModel.prototype.config().sonTable).html(navButtonBuild.switchNumber+"部分");
-        $("."+buildingModel.prototype.config().examineBuildingSurfaceTable).html(navButtonBuild.switchNumber+"部分");
-        $("."+buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber+"部分");
-        $("."+buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber+"部分");
+        $("." + buildingModel.prototype.config().sonTable).html(navButtonBuild.switchNumber + "部分");
+        $("." + buildingModel.prototype.config().examineBuildingSurfaceTable).html(navButtonBuild.switchNumber + "部分");
+        $("." + buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber + "部分");
+        $("." + buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber + "部分");
     };
 
     objectData.build = {
         init: function (number) {
             var target = $("#navButtonBuild button").eq(0)[0];
             navButtonBuild.one(target, number);
+        }
+    };
+
+    objectData.house = {
+        init: function () {
+            objectData.showFile(objectData.config.basicHouse.houseFileId,AssessDBKey.BasicHouse,'${empty basicHouse.id?0:basicHouse.id}');
+            var tradingID = "${basicHouseTrading.tradingType}" ;
+            var tradingType = null;
+            AssessCommon.getDataDicInfo(tradingID, function (data) {
+                tradingType = data.fieldName;
+                if (tradingType == objectData.config.basicHouse.leaseID) {
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.sellID).hide();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.leaseID).show();
+                    $("#" + objectData.config.basicHouse.tableSon + "Div").show();
+                    objectData.house.subLoadList(objectData.config.basicHouse.leaseID);
+                }
+                if (tradingType == objectData.config.basicHouse.sellID) {
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.sellID).show();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.basicHouse.leaseID).hide();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
+                }
+            });
+            AssessCommon.getDataDicInfo("${basicHouseTrading.paymentMethod}", function (data) {
+                if (data.name == '一次性') {
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().show();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
+                }
+                if (data.name == '分期付款') {
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().hide();
+                    $("#" + objectData.config.basicHouse.tableSon + "Div").show();
+                    objectData.house.subLoadList(objectData.config.basicHouse.sellID);
+                }
+            });
+        },
+        subLoadList:function (type_) {
+            var cols = [];
+            if (type_ == objectData.config.basicHouse.leaseID) {
+                cols.push({field: 'rentGrowthRate', title: '租金增长比率'});
+                cols.push({field: 'rentPaymentTimeStartName', title: '租金支付时间起'});
+                cols.push({field: 'rentPaymentTimeEndName', title: '租金支付时间止'});
+            }
+            if (type_ == objectData.config.basicHouse.sellID) {
+                cols.push({field: 'instalmentInterest', title: '分期支付时间起'});
+                cols.push({field: 'instalmentPeriodStartName', title: '分期支付时间止'});
+                cols.push({field: 'instalmentPeriodEndName', title: '分期支付利息'});
+            }
+            $("#" + objectData.config.basicHouse.tableSon).bootstrapTable('destroy');
+            TableInit(objectData.config.basicHouse.tableSon, "${pageContext.request.contextPath}/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
+                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
         }
     };
 </script>

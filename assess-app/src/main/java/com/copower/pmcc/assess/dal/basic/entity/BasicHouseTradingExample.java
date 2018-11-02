@@ -166,6 +166,66 @@ public class BasicHouseTradingExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseTradingIdIsNull() {
+            addCriterion("case_trading_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdIsNotNull() {
+            addCriterion("case_trading_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdEqualTo(Integer value) {
+            addCriterion("case_trading_id =", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdNotEqualTo(Integer value) {
+            addCriterion("case_trading_id <>", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdGreaterThan(Integer value) {
+            addCriterion("case_trading_id >", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_trading_id >=", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdLessThan(Integer value) {
+            addCriterion("case_trading_id <", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_trading_id <=", value, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdIn(List<Integer> values) {
+            addCriterion("case_trading_id in", values, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdNotIn(List<Integer> values) {
+            addCriterion("case_trading_id not in", values, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_trading_id between", value1, value2, "caseTradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_trading_id not between", value1, value2, "caseTradingId");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyIdIsNull() {
             addCriterion("apply_id is null");
             return (Criteria) this;

@@ -996,8 +996,8 @@
     objectData.house = {
         show: function () {
             $('#caseTab a').eq(3).tab('show');
-            HouseModelFun.houseInit({});
-            HouseModelFun.tradingInit({});
+            houseModelFun.houseInit({});
+            houseModelFun.tradingInit({});
         },
         edit: function () {
             objectData.house.show();
@@ -1040,6 +1040,7 @@
     objectData.valid = function () {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         var basicEstate = formParams(objectData.config.basicEstate.frm);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
         var basicHouse = formParams(objectData.config.basicHouse.frm);
@@ -1077,7 +1078,7 @@
                 return false;
             }
         }
-        if (num <= 1 && !objectData.isNotBlankObjectProperty(basicEstate) && !objectData.isNotBlankObjectProperty(basicUnit)) {
+        if (num <= 1 && !objectData.isNotBlankObjectProperty(basicEstate) && !objectData.isNotBlankObjectProperty(basicUnit) && !objectData.isNotBlankObjectProperty(basicHouse)) {
             Alert("未添加任何数据!");
             return false;
         }
@@ -1089,10 +1090,11 @@
         var item = {};
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         var basicEstate = formParams(objectData.config.basicEstate.frm);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
         var basicHouse = formParams(objectData.config.basicHouse.frm);
-        var basicTradingFrm = formParams(objectData.config.basicHouse.tradingFrm);
+        var basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
 
         item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
 
@@ -1134,6 +1136,14 @@
             }
         }
 
+        if (objectData.isNotBlankObjectProperty(basicHouse)){//房屋检测到有数据 ==? 选择了单元或者添加了单元信息
+            if (objectData.isNotBlank(unitId) || objectData.isNotBlank(item.basicUnit)) {
+                basicHouse.unitId = unitId;
+                item.basicHouse = objectData.isNotBlankObjectProperty(basicHouse) ? basicHouse : null;
+                item.basicTrading = objectData.isNotBlankObjectProperty(basicTrading) ? basicTrading : null;
+            }
+        }
+
         return item;
     };
 
@@ -1157,10 +1167,11 @@
             data: {formData: formData},
             success: function (result) {
                 if (result.ret) {
-                    Alert("提交数据成功!");
-                    // Alert("提交数据成功!", 1, null, function () {
-                    //     window.location.reload();
-                    // });
+                    // Alert("提交数据成功!");
+
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.location.reload();
+                    });
                 }
             },
             error: function (result) {

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -203,13 +204,27 @@ public class CaseHouseService {
 
     public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse){
         Integer id = null ;
+        if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
+            caseHouse.setCreator(commonService.thisUserAccount());
+            id =  caseHouseDao.addHouse(caseHouse);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
+            return id;
+        }else {
+            caseHouseDao.updateHouse(caseHouse);
+            return  null;
+        }
+    }
 
+    public Integer upgradeVersion(CaseHouse caseHouse)throws Exception{
+        Integer id = null ;
         if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
             caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
             id =  caseHouseDao.addHouse(caseHouse);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
+            caseHouse.setId(id);
             return id;
         }else {
             CaseHouse oo = caseHouseDao.getHouseById(caseHouse.getId());
@@ -218,9 +233,16 @@ public class CaseHouseService {
                     oo.setVersion(0);
                 }
             }
-            caseHouse.setVersion(oo.getVersion()+1);
-            caseHouseDao.updateHouse(caseHouse);
-            return  null;
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseHouse, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            id = caseHouseDao.addHouse(oo);
+            caseHouse.setId(id);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
+            return  id;
         }
     }
 

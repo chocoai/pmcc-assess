@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseTradingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_trading_id" property="caseTradingId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
@@ -85,8 +86,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, house_id, trading_time, trading_type, information_type, trading_price, 
-    buyer_extra_tax_fee, renting_extra_tax_fee, description_type, description_content, 
+    id, case_trading_id, apply_id, house_id, trading_time, trading_type, information_type, 
+    trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, description_type, description_content, 
     payment_method, normal_transaction, tax_burden, scope_property, financing_conditions, 
     deposit, creator, total_sale, information, version, gmt_created, gmt_modified
   </sql>
@@ -124,22 +125,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_trading (apply_id, house_id, trading_time, 
-      trading_type, information_type, trading_price, 
-      buyer_extra_tax_fee, renting_extra_tax_fee, description_type, 
-      description_content, payment_method, normal_transaction, 
-      tax_burden, scope_property, financing_conditions, 
-      deposit, creator, total_sale, 
-      information, version, gmt_created, 
-      gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
-      #{tradingType,jdbcType=INTEGER}, #{informationType,jdbcType=VARCHAR}, #{tradingPrice,jdbcType=DECIMAL}, 
-      #{buyerExtraTaxFee,jdbcType=VARCHAR}, #{rentingExtraTaxFee,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, 
-      #{descriptionContent,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=VARCHAR}, #{normalTransaction,jdbcType=VARCHAR}, 
-      #{taxBurden,jdbcType=VARCHAR}, #{scopeProperty,jdbcType=VARCHAR}, #{financingConditions,jdbcType=VARCHAR}, 
-      #{deposit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{totalSale,jdbcType=VARCHAR}, 
-      #{information,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_trading (case_trading_id, apply_id, house_id, 
+      trading_time, trading_type, information_type, 
+      trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, 
+      description_type, description_content, payment_method, 
+      normal_transaction, tax_burden, scope_property, 
+      financing_conditions, deposit, creator, 
+      total_sale, information, version, 
+      gmt_created, gmt_modified)
+    values (#{caseTradingId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
+      #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, #{informationType,jdbcType=VARCHAR}, 
+      #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, #{rentingExtraTaxFee,jdbcType=VARCHAR}, 
+      #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=VARCHAR}, 
+      #{normalTransaction,jdbcType=VARCHAR}, #{taxBurden,jdbcType=VARCHAR}, #{scopeProperty,jdbcType=VARCHAR}, 
+      #{financingConditions,jdbcType=VARCHAR}, #{deposit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{totalSale,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,6 +148,9 @@
     </selectKey>
     insert into tb_basic_house_trading
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseTradingId != null" >
+        case_trading_id,
+      </if>
       <if test="applyId != null" >
         apply_id,
       </if>
@@ -215,6 +219,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseTradingId != null" >
+        #{caseTradingId,jdbcType=INTEGER},
+      </if>
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
       </if>
@@ -295,6 +302,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.caseTradingId != null" >
+        case_trading_id = #{record.caseTradingId,jdbcType=INTEGER},
+      </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
@@ -369,6 +379,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_trading
     set id = #{record.id,jdbcType=INTEGER},
+      case_trading_id = #{record.caseTradingId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
@@ -398,6 +409,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading" >
     update tb_basic_house_trading
     <set >
+      <if test="caseTradingId != null" >
+        case_trading_id = #{caseTradingId,jdbcType=INTEGER},
+      </if>
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
@@ -469,7 +483,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading" >
     update tb_basic_house_trading
-    set apply_id = #{applyId,jdbcType=INTEGER},
+    set case_trading_id = #{caseTradingId,jdbcType=INTEGER},
+      apply_id = #{applyId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
       trading_time = #{tradingTime,jdbcType=TIMESTAMP},
       trading_type = #{tradingType,jdbcType=INTEGER},

@@ -27,6 +27,8 @@ AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 
 AssessDBKey.BasicEstate = "tb_basic_estate";
 AssessDBKey.BasicBuilding = "tb_basic_building";
+AssessDBKey.BasicHouse = "tb_basic_house";
+AssessDBKey.BasicHouseTrading = "tb_basic_house_trading";
 
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
@@ -117,6 +119,9 @@ AssessDicKey.casesHouseTransactionType = "cases.common.transaction.type";//交�
 AssessDicKey.casesEstateOther = "cases.estate.other";//案例楼盘 其它信息
 AssessDicKey.casesEstateMatching = "cases.estate.matching";//案例楼盘 配套信息
 AssessDicKey.casesHouseMatching = "cases.house.matching";//案例房屋 配套信息
+
+//案例过程数据
+AssessDicKey.basicHouseTransactionType = "basic.common.transaction.type";//交易类型
 
 
 /**

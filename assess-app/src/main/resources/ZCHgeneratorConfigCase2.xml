@@ -95,6 +95,18 @@
         <table tableName="tb_basic_building_surface" domainObjectName="BasicBuildingSurface">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
+        <table tableName="tb_basic_house_trading_lease" domainObjectName="BasicHouseTradingLease">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_house_trading_sell" domainObjectName="BasicHouseTradingSell">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_house_room" domainObjectName="BasicHouseRoom">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
+        <table tableName="tb_basic_house_room_decorate" domainObjectName="BasicHouseRoomDecorate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
     </context>
 
 </generatorConfiguration>
