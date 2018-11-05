@@ -592,9 +592,10 @@ public class PublicBasicService {
                                 if (basicEstateLandState.getId() != null) {
                                     basicEstateLandState.setCaseEstateLandStateId(basicEstateLandState.getId());
                                     basicEstateLandState.setId(null);
-                                    basicEstateLandState.setApplyId(basicApply.getId());
-                                    basicEstateLandStateService.upgradeVersion(basicEstateLandState);
                                 }
+                                basicEstateLandState.setEstateId(basicEstate.getId());
+                                basicEstateLandState.setApplyId(basicApply.getId());
+                                basicEstateLandStateService.upgradeVersion(basicEstateLandState);
                             }
                         }
                     }

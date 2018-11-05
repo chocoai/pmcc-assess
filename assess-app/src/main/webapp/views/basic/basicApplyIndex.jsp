@@ -162,7 +162,7 @@
                         <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
                             <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
                                                                 aria-expanded="true"
-                                                                onclick="objectData.estate.show({})">楼盘</a>
+                                                                onclick="objectData.estate.show({},{})">楼盘</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
                                                                 aria-expanded="false"
@@ -234,7 +234,7 @@
             key: "basicEstate",
             name: "楼盘",
             frm: "basicEstateFrm",
-            frmLandState:"basicLandState",
+            frmLandState: "basicLandState",
             files: {
                 filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
                 waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
@@ -263,7 +263,7 @@
             key: "basicHouse",
             name: "房屋",
             frm: "basicHouseFrm",
-            tradingFrm:"basicTradingFrm"
+            tradingFrm: "basicTradingFrm"
         }
     };
 
@@ -305,6 +305,24 @@
         } else {
             $("#" + frm).find("select." + name).val(null).trigger("change");
         }
+    };
+
+    /**
+     * form label 赋值
+     **/
+    objectData.initLabelForm = function (frm, data) {
+        if (!this.isNotBlank(frm)) {
+            return false;
+        }
+        if (!this.isNotBlankObject(data)) {
+            return false;
+        }
+        $("#" + frm).find("label").each(function (i, n) {
+            var name = $(n).attr("data-name");
+            if (objectData.isNotBlank(name)){
+                $(n).html(eval("data."+name));
+            }
+        });
     };
 
 
@@ -536,11 +554,13 @@
     objectData.estateFlag = true;
     //处理 楼盘
     objectData.estate = {
-        show: function (item) {
+        show: function (itemA,itemB) {
             $('#caseTab a:first').tab('show');
-            $("#" + objectData.config.basicEstate.frm).initForm(item);
+            $("#" + objectData.config.basicEstate.frm).initForm(itemA);
+            $("#" + objectData.config.basicEstate.frmLandState).initForm(itemA);
             if (objectData.estateFlag) {
-                objectData.estate.init(item);
+                objectData.estate.init(itemA);
+                objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
         },
@@ -566,10 +586,10 @@
                                     $(n).attr("readonly", "readonly");
                                 }
                             });
-                            objectData.estate.show(result.data);
+                            objectData.estate.show(result.data,{});
                         } else {
                             Alert("没有查询到与此相关的楼盘信息");
-                            objectData.estate.show({});
+                            objectData.estate.show({},{});
                         }
                     },
                     error: function (result) {
@@ -598,7 +618,7 @@
                             }
                         });
                         $("#" + objectData.config.basicEstate.frm).clearAll();
-                        objectData.estate.show(result.data);
+                        objectData.estate.show(result.data,{});
                     }
                 },
                 error: function (result) {
@@ -706,6 +726,40 @@
                         Alert("调用服务端方法失败，失败原因:" + result);
                     }
                 });
+            });
+        },
+        landStateInit: function (item) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
+                $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseType').empty().html(html);
+            });
+            $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").change(function () {
+                var id = $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").val();
+                AssessCommon.loadDataDicByPid(id, null, function (html, data) {
+                    $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseCategory').empty().html(html);
+                    objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseCategory, "landUseCategory");
+                });
+            });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        var gradeNum = data.length;
+                        var option = "<option value=''>请选择</option>";
+                        if (gradeNum > 0) {
+                            for (var i = 0; i < gradeNum; i++) {
+                                option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
+                            }
+                            $("#" + objectData.config.basicEstate.frmLandState).find("select.landLevel").empty().html(option);
+                            objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landLevel, "landLevel");
+                        }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
             });
         }
     };
@@ -1006,7 +1060,7 @@
                 toastr.success('未选择单元');
             }
             $('#caseTab a').eq(3).tab('show');
-            if (objectData.houseFlag){
+            if (objectData.houseFlag) {
                 houseModelFun.houseInit({});
                 houseModelFun.tradingInit({});
                 objectData.houseFlag = false;
@@ -1014,7 +1068,7 @@
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(id)){
+            if (!objectData.isNotBlank(id)) {
                 Alert("请先查询房屋");
                 return false;
             }
@@ -1022,7 +1076,7 @@
                 url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
                 type: "get",
                 dataType: "json",
-                data:{id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         $('#caseTab a').eq(3).tab('show');
@@ -1038,14 +1092,14 @@
                                 $(n).removeAttr("readonly");
                             }
                         });
-                        if (objectData.isNotBlank(result.data.CaseHouse)){
+                        if (objectData.isNotBlank(result.data.CaseHouse)) {
                             houseModelFun.houseInit(result.data.CaseHouse);
-                        }else {
+                        } else {
                             houseModelFun.houseInit({});
                         }
-                        if (objectData.isNotBlank(result.data.CaseHouseTrading)){
+                        if (objectData.isNotBlank(result.data.CaseHouseTrading)) {
                             houseModelFun.tradingInit(result.data.CaseHouseTrading);
-                        }else {
+                        } else {
                             houseModelFun.tradingInit({});
                         }
                     }
@@ -1057,14 +1111,14 @@
         },
         details: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(id)){
+            if (!objectData.isNotBlank(id)) {
                 toastr.success('请先查询房屋');
             }
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
                 type: "get",
                 dataType: "json",
-                data:{id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         $('#caseTab a').eq(3).tab('show');
@@ -1080,14 +1134,14 @@
                                 $(n).attr("readonly", "readonly");
                             }
                         });
-                        if (objectData.isNotBlank(result.data.CaseHouse)){
+                        if (objectData.isNotBlank(result.data.CaseHouse)) {
                             houseModelFun.houseInit(result.data.CaseHouse);
-                        }else {
+                        } else {
                             houseModelFun.houseInit({});
                         }
-                        if (objectData.isNotBlank(result.data.CaseHouseTrading)){
+                        if (objectData.isNotBlank(result.data.CaseHouseTrading)) {
                             houseModelFun.tradingInit(result.data.CaseHouseTrading);
-                        }else {
+                        } else {
                             houseModelFun.tradingInit({});
                         }
                     }
@@ -1170,7 +1224,7 @@
                 return false;
             }
         }
-        if (objectData.isNotBlankObjectProperty(basicHouse)){//检测到 房屋有数据 ==> 选择了单元 或者说是单元数据
+        if (objectData.isNotBlankObjectProperty(basicHouse)) {//检测到 房屋有数据 ==> 选择了单元 或者说是单元数据
             if (objectData.isNotBlank(unitId) || objectData.isNotBlankObjectProperty(basicUnit)) {
 
             } else {
@@ -1238,7 +1292,7 @@
             }
         }
 
-        if (objectData.isNotBlankObjectProperty(basicHouse)){//房屋检测到有数据 ==? 选择了单元或者添加了单元信息
+        if (objectData.isNotBlankObjectProperty(basicHouse)) {//房屋检测到有数据 ==? 选择了单元或者添加了单元信息
             if (objectData.isNotBlank(unitId) || objectData.isNotBlank(item.basicUnit)) {
                 basicHouse.unitId = unitId;
                 item.basicHouse = objectData.isNotBlankObjectProperty(basicHouse) ? basicHouse : null;

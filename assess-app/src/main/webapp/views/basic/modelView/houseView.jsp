@@ -100,9 +100,7 @@
                 <label class="col-sm-1 control-label">房屋出租占用情况途描述<span
                         class="symbol required"></span></label>
                 <div class="col-sm-11">
-                                    <textarea class="form-control" name="description" required="required">
-
-                                    </textarea>
+                                    <textarea class="form-control" name="description" required="required"></textarea>
                 </div>
             </div>
         </div>

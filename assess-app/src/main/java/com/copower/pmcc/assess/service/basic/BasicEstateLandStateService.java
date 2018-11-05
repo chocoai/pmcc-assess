@@ -3,7 +3,11 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -33,6 +37,10 @@ public class BasicEstateLandStateService {
     private CommonService commonService;
     @Autowired
     private BasicEstateLandStateDao basicEstateLandStateDao;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -120,7 +128,28 @@ public class BasicEstateLandStateService {
             return null;
         }
         BasicEstateLandStateVo vo = new BasicEstateLandStateVo();
+        BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicEstateLandState,vo);
+        if (basicEstateLandState.getLandUseType() != null){
+            dataDic = baseDataDicService.getDataDicById(basicEstateLandState.getLandUseType());
+            if (dataDic != null){
+                vo.setLandUseTypeName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicEstateLandState.getLandUseCategory() != null){
+            dataDic = baseDataDicService.getDataDicById(basicEstateLandState.getLandUseCategory());
+            if (dataDic != null){
+                vo.setLandUseCategoryName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicEstateLandState.getLandLevel() != null){
+            DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(basicEstateLandState.getLandLevel());
+            if (dataLandLevel != null) {
+                vo.setLandLevelName(dataLandLevel.getLeve());
+            }
+        }
         return vo;
     }
 
