@@ -147,6 +147,7 @@ public class BaseDataDicService {
 
     }
 
+
     public BaseDataDic getCacheDataDicByFieldName(String fieldName) {
         String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DATA_DIC_FIELD_ITEM, fieldName);
 
@@ -231,33 +232,38 @@ public class BaseDataDicService {
         }
     }
 
-    public TreeViewVo getDataDicTree(String fieldName) {
-
-        BaseDataDic hrBaseDataDic = getCacheDataDicByFieldName(fieldName);
+    /**
+     * 根据key获取树形结构
+     *
+     * @param fieldName
+     * @return
+     */
+    public TreeViewVo getTreeViewByKey(String fieldName) {
+        BaseDataDic baseDataDic = getCacheDataDicByFieldName(fieldName);
         TreeViewVo treeViewVo = new TreeViewVo();
-        if (hrBaseDataDic != null) {
-
-            treeViewVo.setId(hrBaseDataDic.getId());
-            treeViewVo.setText(hrBaseDataDic.getName());
+        if (baseDataDic != null) {
+            treeViewVo.setId(baseDataDic.getId());
+            treeViewVo.setText(baseDataDic.getName());
             treeViewVo.setpId(0);
             treeViewVo.setpName("");
-            treeViewVo.setNodes(getTreeView(hrBaseDataDic.getId()));
+            treeViewVo.setLevel("1");
+            treeViewVo.setNodes(getTreeView(baseDataDic.getId(), treeViewVo.getLevel()));
         }
         return treeViewVo;
     }
 
-    private List<TreeViewVo> getTreeView(Integer pid) {
+    private List<TreeViewVo> getTreeView(Integer pid, String parentLevel) {
         TreeViewVo treeViewVo;
-        List<BaseDataDic> hrBaseDataDics = getCacheDataDicListByPid(pid);
+        List<BaseDataDic> baseDataDics = getCacheDataDicListByPid(pid);
         List<TreeViewVo> treeViewVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(hrBaseDataDics)) {
-
-            for (BaseDataDic item : hrBaseDataDics) {
+        if (CollectionUtils.isNotEmpty(baseDataDics)) {
+            for (BaseDataDic item : baseDataDics) {
                 treeViewVo = new TreeViewVo();
                 treeViewVo.setId(item.getId());
                 treeViewVo.setText(item.getName());
                 treeViewVo.setpId(item.getPid());
-                List<TreeViewVo> treeView = getTreeView(item.getId());
+                treeViewVo.setLevel(parentLevel);
+                List<TreeViewVo> treeView = getTreeView(item.getId(), String.format("%s-%s", parentLevel, item.getId()));
                 if (treeView.size() > 0) {
                     treeViewVo.setNodes(treeView);
                 }
@@ -320,26 +326,28 @@ public class BaseDataDicService {
 
     /**
      * 根据id获取显示的名称
+     *
      * @param id
      * @return
      */
-    public String getNameById(Integer id){
+    public String getNameById(Integer id) {
         BaseDataDic baseDataDic = cmsBaseDataDicDao.getSingleObject(id);
-        if(baseDataDic==null) return "";
+        if (baseDataDic == null) return "";
         return baseDataDic.getName();
     }
 
     /**
      * 从现有集合中根据名称找出对应数据
+     *
      * @param list
      * @param name
      * @return
      */
-    public BaseDataDic getDataDicByName(List<BaseDataDic> list,String name){
-        if(CollectionUtils.isEmpty(list)) return null;
-        if(StringUtils.isBlank(name)) return null;
+    public BaseDataDic getDataDicByName(List<BaseDataDic> list, String name) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        if (StringUtils.isBlank(name)) return null;
         for (BaseDataDic baseDataDic : list) {
-            if(StringUtils.equals(baseDataDic.getName().trim(),name.trim()))
+            if (StringUtils.equals(baseDataDic.getName().trim(), name.trim()))
                 return baseDataDic;
         }
         return null;

@@ -437,14 +437,20 @@
                     var optionB = "<option>请选择</option>";
                     var optionC = "<option>请选择</option>";
                     if (dataA.length > 0) {
-                        var temp = null;
+                        var tempA, tempB, tempC;
                         for (var i = 0; i < dataA.length; i++) {
-                            temp = dataA[i].temp + " (" + dataA[i].costTotal + ")";
-                            optionA += "<option value='" + dataA[i].costTotal + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].matchingCostTotal + ")";
-                            optionB += "<option value='" + dataA[i].matchingCostTotal + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].devTaxTotal + ")";
-                            optionC += "<option value='" + dataA[i].devTaxTotal + "'>" + temp + "</option>";
+                            tempA = dataA[i].temp + " (" + dataA[i].costTotal + ")";
+                            tempB = dataA[i].temp + " (" + dataA[i].matchingCostTotal + ")";
+                            tempC = dataA[i].temp + " (" + dataA[i].devTaxTotal + ")";
+                            if (i == 0) {
+                                optionA += "<option selected='selected' value='" + dataA[i].costTotal + "'>" + tempA + "</option>";
+                                optionB += "<option selected='selected' value='" + dataA[i].matchingCostTotal + "'>" + tempB + "</option>";
+                                optionC += "<option selected='selected' value='" + dataA[i].devTaxTotal + "'>" + tempC + "</option>";
+                            } else {
+                                optionA += "<option value='" + dataA[i].costTotal + "'>" + tempA + "</option>";
+                                optionB += "<option value='" + dataA[i].matchingCostTotal + "'>" + tempB + "</option>";
+                                optionC += "<option value='" + dataA[i].devTaxTotal + "'>" + tempC + "</option>";
+                            }
                         }
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureCost.tax).html(optionA).trigger('change');
                         $("#" + construction.config.id).find("select." + construction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB).trigger('change');
@@ -462,11 +468,17 @@
             },//传入全国性质,和具体区域
             dataType: "json",
             success: function (result) {
-                var a = 0, b = 0, c = 0, d = 0, e = 0, g = 0, h = 0, k = 0;
+                var a = 0, b = 0, c = 0, d = 0, e = 0, k = 0, j = 0;
+                //先获取 增值税进项抵扣率
+                $.each(result.data, function (i, n) {
+                    if (n.typeName == "增值税进项抵扣率") {
+                        j = Number(n.taxRate);
+                    }
+                });
                 $.each(result.data, function (i, n) {
                     if (n.typeName == "增值税") {
                         a = Number(n.taxRate);
-                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.business, AssessCommon.pointToPercent(a));//增值税
+                        construction.algsObj.getAndSet("set", construction.config.totalTaxRate.business, AssessCommon.pointToPercent(a - j));//增值税
                     }
                     if (n.typeName == "地方教育税附加") {
                         d = Number(n.taxRate);
@@ -491,10 +503,6 @@
                     if (n.typeName == "交易费用") {
                         h = Number(n.taxRate);
                         construction.algsObj.getAndSet("set", construction.config.inputConfig.transactionCost.tax, AssessCommon.pointToPercent(h));//交易费用
-                    }
-                    if (n.typeName == "管理费用") {
-                        k = Number(n.taxRate);
-                        construction.algsObj.getAndSet("set", construction.config.inputConfig.managementExpense.tax, AssessCommon.pointToPercent(k));
                     }
                 });
                 construction.algsObj.businessAdditional();

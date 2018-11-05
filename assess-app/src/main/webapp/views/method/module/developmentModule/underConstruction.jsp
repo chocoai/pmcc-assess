@@ -477,21 +477,24 @@
                     var optionB = "<option>请选择</option>";
                     var optionC = "<option>请选择</option>";
                     if (dataA.length > 0) {
-                        var temp = null;
+                        var tempA,tempB,tempC;
                         for (var i = 0; i < dataA.length; i++) {
-                            temp = dataA[i].temp + " (" + dataA[i].priceCost + ")";
-                            optionA += "<option value='" + dataA[i].priceCost + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].priceMarch + ")";
-                            optionB += "<option value='" + dataA[i].priceMarch + "'>" + temp + "</option>";
-                            temp = dataA[i].temp + " (" + dataA[i].priceDev + ")";
-                            optionC += "<option value='" + dataA[i].priceDev + "'>" + temp + "</option>";
+                            tempA = dataA[i].temp + " (" + dataA[i].costTotal + ")";
+                            tempB = dataA[i].temp + " (" + dataA[i].matchingCostTotal + ")";
+                            tempC = dataA[i].temp + " (" + dataA[i].devTaxTotal + ")";
+                            if(i==0){
+                                optionA += "<option selected='selected' value='" + dataA[i].costTotal + "'>" + tempA + "</option>";
+                                optionB += "<option selected='selected' value='" + dataA[i].matchingCostTotal + "'>" + tempB + "</option>";
+                                optionC += "<option selected='selected' value='" + dataA[i].devTaxTotal + "'>" + tempC + "</option>";
+                            }else{
+                                optionA += "<option value='" + dataA[i].costTotal + "'>" + tempA + "</option>";
+                                optionB += "<option value='" + dataA[i].matchingCostTotal + "'>" + tempB + "</option>";
+                                optionC += "<option value='" + dataA[i].devTaxTotal + "'>" + tempC + "</option>";
+                            }
                         }
-                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureCost.tax).html(optionA);
-                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB);
-                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.devDuring.tax).html(optionC);
-                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.infrastructureCost.tax),underConstruction.config.inputConfig.infrastructureCost.tax);
-                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.infrastructureMatchingCost.tax),underConstruction.config.inputConfig.infrastructureMatchingCost.tax);
-                        underConstruction.select2InitMethodWrite(eval("underConstruction.dataObject."+underConstruction.config.inputConfig.devDuring.tax),underConstruction.config.inputConfig.devDuring.tax);
+                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureCost.tax).html(optionA).trigger('change');
+                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.infrastructureMatchingCost.tax).html(optionB).trigger('change');
+                        $("#" + underConstruction.config.id).find("select." + underConstruction.config.inputConfig.devDuring.tax).html(optionC).trigger('change');
                     }
                 }
             },

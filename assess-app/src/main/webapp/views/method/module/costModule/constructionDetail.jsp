@@ -253,9 +253,18 @@
                         其它工程费
                     </label>
                     <div class="x-valid">
-                        <div class="col-sm-11">
+                        <div class="col-sm-5">
                             <input type="text" readonly="readonly"
                                    placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
+                        </div>
+                    </div>
+                    <label class="col-sm-1 control-label">
+                        其它工程费说明
+                    </label>
+                    <div class="x-valid">
+                        <div class="col-sm-5">
+                            <input type="text" readonly="readonly"
+                                   placeholder="其它工程费说明" class="form-control" name="otherEngineeringCostTaxExplain">
                         </div>
                     </div>
                 </div>
@@ -275,28 +284,28 @@
 
         <div class="x_content">
             <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">
-                        不可预见费率
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-3">
-                            <input type="text" readonly="readonly"
-                                   placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">
-                        </div>
-                    </div>
+                <%--<div class="form-group">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--不可预见费率--%>
+                    <%--</label>--%>
+                    <%--<div class="x-valid">--%>
+                        <%--<div class="col-sm-3">--%>
+                            <%--<input type="text" readonly="readonly"--%>
+                                   <%--placeholder="不可预见费率" class="form-control x-percent" name="unforeseenExpensesTax">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="unforeseenExpensesTaxExplain" readonly="readonly">
-                        </div>
-                    </div>
-                </div>
+                    <%--<div class="x-valid">--%>
+                        <%--<label class="col-sm-1 control-label">--%>
+                            <%--费率说明--%>
+                        <%--</label>--%>
+                        <%--<div class="col-sm-3">--%>
+                            <%--<input type="text"--%>
+                                   <%--placeholder="费率说明" class="form-control"--%>
+                                   <%--name="unforeseenExpensesTaxExplain" readonly="readonly">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
