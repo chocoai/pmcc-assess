@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -26,6 +27,8 @@ import java.util.List;
 public class BasicUnitController {
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private PublicBasicService publicBasicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -77,6 +80,30 @@ public class BasicUnitController {
     public HttpResult basicUnitList(BasicUnit basicUnit){
         try {
             return HttpResult.newCorrectResult(basicUnitService.basicUnitList(basicUnit));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initUnit", name = "初始化", method = {RequestMethod.POST})
+    public HttpResult basicBuildingList(){
+        try {
+            basicUnitService.initUpdateSon(0,null);
+            return HttpResult.newCorrectResult(200,"success");
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/appWriteUnit", name = "过程数据转移", method = {RequestMethod.POST})
+    public HttpResult appWriteUnit(Integer caseUnitId){
+        try {
+            publicBasicService.appWriteUnit(caseUnitId);
+            return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

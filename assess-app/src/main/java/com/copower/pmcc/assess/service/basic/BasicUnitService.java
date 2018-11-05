@@ -3,6 +3,9 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
+import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
+import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -33,8 +36,63 @@ public class BasicUnitService {
     @Autowired
     private CommonService commonService;
     @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
+    @Autowired
+    private BasicUnitElevatorService basicUnitElevatorService;
+    @Autowired
+    private BasicUnitDecorateService basicUnitDecorateService;
+    @Autowired
     private BasicUnitDao basicUnitDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
+        BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
+        BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
+        BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
+        queryBasicUnitHuxing.setUnitId(oldId);
+        queryBasicUnitElevator.setUnitId(oldId);
+        queryBasicUnitDecorate.setUnitId(oldId);
+        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
+        List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
+        List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
+        if (newId == null) {
+            if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
+                for (BasicUnitHuxing oo : basicUnitHuxingList) {
+                    basicUnitHuxingService.deleteBasicUnitHuxing(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
+                for (BasicUnitElevator oo : basicUnitElevatorList) {
+                    basicUnitElevatorService.deleteBasicUnitElevator(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
+                for (BasicUnitDecorate oo : basicUnitDecorateList) {
+                    basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
+                }
+            }
+        }
+        if (newId != null) {
+            if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
+                for (BasicUnitHuxing oo : basicUnitHuxingList) {
+                    oo.setUnitId(newId);
+                    basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
+                for (BasicUnitElevator oo : basicUnitElevatorList) {
+                    oo.setUnitId(newId);
+                    basicUnitElevatorService.saveAndUpdateBasicUnitElevator(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
+                for (BasicUnitDecorate oo : basicUnitDecorateList) {
+                    oo.setUnitId(newId);
+                    basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(oo);
+                }
+            }
+        }
+    }
 
     /**
      * 获取数据
@@ -57,25 +115,28 @@ public class BasicUnitService {
     public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
-            return basicUnitDao.saveBasicUnit(basicUnit);
+            Integer id = basicUnitDao.saveBasicUnit(basicUnit);
+            this.initUpdateSon(0, id);
+            return id;
         } else {
             basicUnitDao.updateBasicUnit(basicUnit);
             return null;
         }
     }
 
-    public void upgradeVersion(BasicUnit basicUnit)throws Exception{
+    public void upgradeVersion(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
             basicUnit.setVersion(0);
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
+            this.initUpdateSon(0, id);
             basicUnit.setId(id);
         } else {
             BasicUnit oo = this.getBasicUnitById(basicUnit.getId());
             if (oo.getVersion() == null) {
                 oo.setVersion(0);
             }
-            basicUnit.setVersion(oo.getVersion()+1);
+            basicUnit.setVersion(oo.getVersion() + 1);
             basicUnitDao.updateBasicUnit(basicUnit);
         }
     }

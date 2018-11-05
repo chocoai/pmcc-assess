@@ -58,21 +58,20 @@ public class CaseBuildingService {
         return vo;
     }
 
-    public void initAndUpdateSon(Integer id) {
-        final int  num = 0;
+    public void initAndUpdateSon(Integer oldId,Integer newId) {
         CaseBuildingFunction caseBuildingFunction = new CaseBuildingFunction();
-        caseBuildingFunction.setBuildingId(num);
+        caseBuildingFunction.setBuildingId(oldId);
         CaseBuildingMaintenance caseBuildingMaintenance = new CaseBuildingMaintenance();
-        caseBuildingMaintenance.setBuildingId(num);
+        caseBuildingMaintenance.setBuildingId(oldId);
         CaseBuildingOutfit caseBuildingOutfit = new CaseBuildingOutfit();
-        caseBuildingOutfit.setBuildingId(num);
+        caseBuildingOutfit.setBuildingId(oldId);
         CaseBuildingSurface caseBuildingSurface = new CaseBuildingSurface();
-        caseBuildingSurface.setBuildingId(num);
+        caseBuildingSurface.setBuildingId(oldId);
         List<CaseBuildingFunctionVo> caseBuildingFunctions = caseBuildingFunctionService.getCaseBuildingFunctionList(caseBuildingFunction);
         List<CaseBuildingMaintenance> caseBuildingMaintenances = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(caseBuildingMaintenance);
         List<CaseBuildingOutfit> caseBuildingOutfits = caseBuildingOutfitService.getCaseBuildingOutfitList(caseBuildingOutfit);
         List<CaseBuildingSurface> caseBuildingSurfaces = caseBuildingSurfaceService.getCaseBuildingSurfaceList(caseBuildingSurface);
-        if (id == null) {
+        if (oldId == null) {
             if (!ObjectUtils.isEmpty(caseBuildingFunctions)){
                 for (CaseBuildingFunctionVo oo:caseBuildingFunctions){
                     CaseBuildingFunction caseBuildingFunction1 = new CaseBuildingFunction();
@@ -97,28 +96,28 @@ public class CaseBuildingService {
             }
         }
 
-        if (id != null) {
+        if (oldId != null) {
             if (!ObjectUtils.isEmpty(caseBuildingFunctions)){
                 for (CaseBuildingFunctionVo oo:caseBuildingFunctions){
-                    oo.setBuildingId(id);
+                    oo.setBuildingId(newId);
                     caseBuildingFunctionService.saveAndUpdateCaseBuildingFunction(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseBuildingMaintenances)){
                 for (CaseBuildingMaintenance oo:caseBuildingMaintenances){
-                    oo.setBuildingId(id);
+                    oo.setBuildingId(newId);
                     caseBuildingMaintenanceService.updateCaseBuildingMaintenance(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseBuildingOutfits)){
                 for (CaseBuildingOutfit oo:caseBuildingOutfits){
-                    oo.setBuildingId(id);
+                    oo.setBuildingId(newId);
                     caseBuildingOutfitService.updateCaseBuildingOutfit(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseBuildingSurfaces)){
                 for (CaseBuildingSurface oo:caseBuildingSurfaces){
-                    oo.setBuildingId(id);
+                    oo.setBuildingId(newId);
                     caseBuildingSurfaceService.updateCaseBuildingSurface(oo);
                 }
             }
@@ -126,7 +125,6 @@ public class CaseBuildingService {
     }
 
     public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding) {
-
         return caseBuildingDao.getBuildingList(caseBuilding);
     }
 
@@ -141,7 +139,7 @@ public class CaseBuildingService {
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
             id = caseBuildingDao.addBuilding(caseBuilding);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             return id;
@@ -157,7 +155,7 @@ public class CaseBuildingService {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
             id = caseBuildingDao.addBuilding(caseBuilding);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             caseBuilding.setId(id);
@@ -176,11 +174,12 @@ public class CaseBuildingService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            id = caseBuildingDao.addBuilding(oo);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
-            this.initAndUpdateSon(id);
-            caseBuilding.setId(id);
-            return id;
+            int oldId = caseBuilding.getId();
+            int newId = caseBuildingDao.addBuilding(oo);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), newId);
+            this.initAndUpdateSon(oldId,newId);
+            caseBuilding.setId(newId);
+            return newId;
         }
     }
 

@@ -1171,10 +1171,26 @@
                 }
             });
         },
+        unitFirst:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicUnit/initUnit",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('单元删除临时数据!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
         init: function () {
             if (objectData.flag) {
                 objectData.flag = false;
                 objectData.firstRemove.buildFirst();
+                objectData.firstRemove.unitFirst();
             }
         }
     }

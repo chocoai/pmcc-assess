@@ -182,7 +182,7 @@ public class CaseHouseController {
             }
             Integer id = caseHouseService.saveAndUpdateCaseHouse(caseHouse);
             if (id != null) {
-                caseHouseService.initAndUpdateSon(id);
+                caseHouseService.initAndUpdateSon(0,id);
             }
             if (caseHouseTrading != null) {
                 caseHouseTrading.setHouseId(id);
@@ -239,7 +239,7 @@ public class CaseHouseController {
     @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
     public HttpResult initAndUpdateSon() {
         try {
-            caseHouseService.initAndUpdateSon(null);
+            caseHouseService.initAndUpdateSon(0,null);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

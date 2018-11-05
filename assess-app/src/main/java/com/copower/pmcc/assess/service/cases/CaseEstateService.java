@@ -60,6 +60,10 @@ public class CaseEstateService {
     private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
     @Autowired
     private CaseMatchingEducationService caseMatchingEducationService;
+    @Autowired
+    private CaseEstateLandStateService caseEstateLandStateService;
+    @Autowired
+    private CaseBuildingMainService caseBuildingMainService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate) {
@@ -96,27 +100,31 @@ public class CaseEstateService {
      * @auther: zch
      * @date: 2018/9/17 15:12
      */
-    public void initAndUpdateSon(Integer id) {
+    public void initAndUpdateSon(Integer oldId, Integer newId)throws Exception {
         CaseEstateParking estateParking = new CaseEstateParking();
-        estateParking.setEstateId(0);
+        estateParking.setEstateId(oldId);
         CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
-        caseEstateNetwork.setEstateId(0);
+        caseEstateNetwork.setEstateId(oldId);
         CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
-        caseEstateSupply.setEstateId(0);
+        caseEstateSupply.setEstateId(oldId);
         CaseMatchingTraffic caseMatchingTraffic = new CaseMatchingTraffic();
-        caseMatchingTraffic.setEstateId(0);
+        caseMatchingTraffic.setEstateId(oldId);
         CaseMatchingMedical caseMatchingMedical = new CaseMatchingMedical();
-        caseMatchingMedical.setEstateId(0);
+        caseMatchingMedical.setEstateId(oldId);
         CaseMatchingMaterial caseMatchingMaterial = new CaseMatchingMaterial();
-        caseMatchingMaterial.setEstateId(0);
+        caseMatchingMaterial.setEstateId(oldId);
         CaseMatchingLeisurePlace caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
-        caseMatchingLeisurePlace.setEstateId(0);
+        caseMatchingLeisurePlace.setEstateId(oldId);
         CaseMatchingFinance caseMatchingFinance = new CaseMatchingFinance();
-        caseMatchingFinance.setEstateId(0);
+        caseMatchingFinance.setEstateId(oldId);
         CaseMatchingEnvironment caseMatchingEnvironment = new CaseMatchingEnvironment();
-        caseMatchingEnvironment.setEstateId(0);
+        caseMatchingEnvironment.setEstateId(oldId);
         CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation();
-        caseMatchingEducation.setEstateId(0);
+        caseMatchingEducation.setEstateId(oldId);
+        CaseEstateLandState queryLandState = new CaseEstateLandState();
+        queryLandState.setEstateId(oldId);
+        CaseBuildingMain queryMain = new CaseBuildingMain();
+        queryMain.setEstateId(oldId);
         List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
         List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
         List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
@@ -127,7 +135,10 @@ public class CaseEstateService {
         List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
         List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
         List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
-        if (id == null) {//初始化
+        List<CaseEstateLandState> caseEstateLandStateList = caseEstateLandStateService.getCaseEstateLandStateList(queryLandState);
+        List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainService.getCaseBuildingMainList(queryMain);
+        //初始化
+        if (newId == null) {
             if (!ObjectUtils.isEmpty(caseEstateParkings)) {
                 for (CaseEstateParking caseEstateParking : caseEstateParkings) {
                     caseEstateParkingService.deleteEstateParking(caseEstateParking.getId());
@@ -178,90 +189,113 @@ public class CaseEstateService {
                     caseMatchingEducationService.deleteCaseMatchingEducation(oo.getId());
                 }
             }
-        } else {//修改子类
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
+                for (CaseEstateLandState oo:caseEstateLandStateList){
+                    caseEstateLandStateService.deleteCaseEstateLandState(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
+                for (CaseBuildingMain oo:caseBuildingMainList){
+                    caseBuildingMainService.deleteCaseBuildingMain(oo.getId());
+                }
+            }
+        }
+        //修改子类
+        if (newId != null) {
             if (!ObjectUtils.isEmpty(caseEstateParkings)) {
                 for (CaseEstateParking caseEstateParking : caseEstateParkings) {
-                    caseEstateParking.setEstateId(id);
+                    caseEstateParking.setEstateId(newId);
                     caseEstateParkingService.updateEstateParking(caseEstateParking);
                 }
             }
             if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
                 for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
-                    caseEstateNetwork1.setEstateId(id);
+                    caseEstateNetwork1.setEstateId(newId);
                     caseEstateNetworkService.updateEstateNetwork(caseEstateNetwork1);
                 }
             }
             if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
                 for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
-                    caseEstateSupply1.setEstateId(id);
+                    caseEstateSupply1.setEstateId(newId);
                     caseEstateSupplyService.updateCaseEstateSupply(caseEstateSupply1);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
                 for (CaseMatchingTraffic oo : caseMatchingTraffics) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingTrafficService.updateMatchingTraffic(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
                 for (CaseMatchingMedical oo : caseMatchingMedicals) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingMedicalService.updateCaseMatchingMedical(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
                 for (CaseMatchingMaterial oo : caseMatchingMaterials) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingMaterialService.updateCaseMatchingMaterial(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
                 for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingLeisurePlaceService.updateCaseMatchingLeisurePlace(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
                 for (CaseMatchingFinance oo : caseMatchingFinances) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingFinanceService.updateCaseMatchingFinance(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
                 for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingEnvironmentService.updateCaseMatchingEnvironment(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
                 for (CaseMatchingEducation oo : caseMatchingEducations) {
-                    oo.setEstateId(id);
+                    oo.setEstateId(newId);
                     caseMatchingEducationService.updateCaseMatchingEducation(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
+                for (CaseEstateLandState oo:caseEstateLandStateList){
+                    oo.setEstateId(newId);
+                    caseEstateLandStateService.saveAndUpdateCaseEstateLandState(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
+                for (CaseBuildingMain oo:caseBuildingMainList){
+                    oo.setEstateId(newId);
+                    caseBuildingMainService.saveAndUpdate(oo);
                 }
             }
         }
     }
 
 
-    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) {
+    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate)throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             return id;
         } else {
-            this.initAndUpdateSon(caseEstate.getId());
             caseEstateDao.updateEstate(caseEstate);
             return null;
         }
     }
 
-    public Integer upgradeVersion(CaseEstate caseEstate) {
+    public Integer upgradeVersion(CaseEstate caseEstate)throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             caseEstate.setId(id);
             return id;
         } else {
@@ -278,10 +312,11 @@ public class CaseEstateService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            int id = caseEstateDao.addEstate(oo);
-            this.initAndUpdateSon(id);
-            caseEstate.setId(id);
-            return id;
+            int oldId = caseEstate.getId() ;
+            int newId = caseEstateDao.addEstate(oo);
+            this.initAndUpdateSon(oldId,newId);
+            caseEstate.setId(newId);
+            return newId;
         }
     }
 

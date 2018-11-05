@@ -2,10 +2,7 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitDao;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -47,20 +44,24 @@ public class CaseUnitService {
     private CaseUnitElevatorService caseUnitElevatorService;
     @Autowired
     private CaseUnitHuxingService caseUnitHuxingService;
+    @Autowired
+    private CaseHouseService caseHouseService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void initAndUpdateSon(Integer id){
-        final int num = 0;
+    public void initAndUpdateSon(Integer oldId,Integer newId){
         CaseUnitDecorate caseUnitDecorate = new CaseUnitDecorate();
-        caseUnitDecorate.setUnitId(num);
+        caseUnitDecorate.setUnitId(oldId);
         CaseUnitElevator caseUnitElevator = new CaseUnitElevator();
-        caseUnitElevator.setUnitId(num);
+        caseUnitElevator.setUnitId(oldId);
         CaseUnitHuxing caseUnitHuxing = new CaseUnitHuxing();
-        caseUnitHuxing.setUnitId(num);
+        caseUnitHuxing.setUnitId(oldId);
+        CaseHouse queryHouse = new CaseHouse();
+        queryHouse.setUnitId(oldId);
         List<CaseUnitDecorate> caseUnitDecorates = caseUnitDecorateService.getCaseUnitDecorateList(caseUnitDecorate);
         List<CaseUnitElevator> caseUnitElevators = caseUnitElevatorService.getEstateNetworkLists(caseUnitElevator);
         List<CaseUnitHuxingVo> caseUnitHuxings = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
-        if (id==null){
+        List<CaseHouse> caseHouseList = caseHouseService.getCaseHouseList(queryHouse);
+        if (oldId==null){
             if (!ObjectUtils.isEmpty(caseUnitDecorates)){
                 for (CaseUnitDecorate oo:caseUnitDecorates){
                     caseUnitDecorateService.deleteCaseUnitDecorate(oo.getId());
@@ -76,25 +77,36 @@ public class CaseUnitService {
                     caseUnitHuxingService.deleteCaseUnitHuxing(oo.getId());
                 }
             }
+            if (!ObjectUtils.isEmpty(caseHouseList)){
+                for (CaseHouse oo:caseHouseList){
+                    caseHouseService.deleteCaseHouse(oo.getId());
+                }
+            }
         }
 
-        if (id!=null){
+        if (oldId!=null){
             if (!ObjectUtils.isEmpty(caseUnitDecorates)){
                 for (CaseUnitDecorate oo:caseUnitDecorates){
-                    oo.setUnitId(id);
+                    oo.setUnitId(newId);
                     caseUnitDecorateService.updateCaseUnitDecorate(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseUnitElevators)){
                 for (CaseUnitElevator oo:caseUnitElevators){
-                    oo.setUnitId(id);
+                    oo.setUnitId(newId);
                     caseUnitElevatorService.updateEstateNetwork(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseUnitHuxings)){
                 for (CaseUnitHuxingVo oo:caseUnitHuxings){
-                    oo.setUnitId(id);
+                    oo.setUnitId(newId);
                     caseUnitHuxingService.updateCaseUnitHuxing(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseHouseList)){
+                for (CaseHouse oo:caseHouseList){
+                    oo.setUnitId(newId);
+                    caseHouseService.saveAndUpdateCaseHouse(oo);
                 }
             }
         }
@@ -124,7 +136,7 @@ public class CaseUnitService {
             caseUnit.setCreator(commonService.thisUserAccount());
             caseUnit.setVersion(0);
             id = caseUnitDao.addUnit(caseUnit);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
             return  id;
@@ -147,7 +159,7 @@ public class CaseUnitService {
             caseUnit.setCreator(commonService.thisUserAccount());
             caseUnit.setVersion(0);
             id = caseUnitDao.addUnit(caseUnit);
-            this.initAndUpdateSon(id);
+            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
             return  id;
@@ -164,12 +176,13 @@ public class CaseUnitService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            id = caseUnitDao.addUnit(oo);
-            this.initAndUpdateSon(id);
+            int oldId = caseUnit.getId();
+            int newId = caseUnitDao.addUnit(oo);
+            this.initAndUpdateSon(oldId,newId);
             //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
-            caseUnit.setId(id);
-            return id;
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), newId);
+            caseUnit.setId(newId);
+            return newId;
         }
     }
 

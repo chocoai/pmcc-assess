@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMainDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
@@ -26,7 +27,29 @@ public class CaseBuildingMainService {
     private CommonService commonService;
     @Autowired
     private CaseBuildingMainDao caseBuildingMainDao;
+    @Autowired
+    private CaseUnitService caseUnitService;
 
+    public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
+        CaseUnit queryUnit = new CaseUnit();
+        queryUnit.setCaseBuildingMainId(oldId);
+        List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
+        if (newId == null) {
+            if (!ObjectUtils.isEmpty(caseUnitList)) {
+                for (CaseUnit oo : caseUnitList) {
+                    caseUnitService.deleteCaseUnit(oo.getId());
+                }
+            }
+        }
+        if (newId != null) {
+            if (!ObjectUtils.isEmpty(caseUnitList)) {
+                for (CaseUnit oo : caseUnitList) {
+                    oo.setCaseBuildingMainId(newId);
+                    caseUnitService.saveAndUpdateCaseUnit(oo);
+                }
+            }
+        }
+    }
 
     public List<CaseBuildingMain> getCaseBuildingMainList(CaseBuildingMain caseBuildingMain) {
         return caseBuildingMainDao.getEstateList(caseBuildingMain);
@@ -36,11 +59,12 @@ public class CaseBuildingMainService {
         return caseBuildingMainDao.getEstateById(id);
     }
 
-    public Integer saveAndUpdate(CaseBuildingMain caseBuildingMain) {
+    public Integer saveAndUpdate(CaseBuildingMain caseBuildingMain) throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
             caseBuildingMain.setVersion(0);
             int id = caseBuildingMainDao.addEstate(caseBuildingMain);
+            this.initUpdateSon(0, id);
             return id;
         } else {
             caseBuildingMainDao.updateEstate(caseBuildingMain);
@@ -68,11 +92,12 @@ public class CaseBuildingMainService {
         return caseBuildingMains;
     }
 
-    public Integer upgradeVersion(CaseBuildingMain caseBuildingMain) {
+    public Integer upgradeVersion(CaseBuildingMain caseBuildingMain)throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
             caseBuildingMain.setVersion(0);
             int id = caseBuildingMainDao.addEstate(caseBuildingMain);
+            this.initUpdateSon(0, id);
             return id;
         } else {
             //更新版本
@@ -88,8 +113,10 @@ public class CaseBuildingMainService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            int id = caseBuildingMainDao.addEstate(oo);
-            return id;
+            int oldId = caseBuildingMain.getId() ;
+            int newId = caseBuildingMainDao.addEstate(oo);
+            this.initUpdateSon(oldId, newId);
+            return newId;
         }
     }
 

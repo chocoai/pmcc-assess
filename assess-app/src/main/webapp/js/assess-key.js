@@ -29,6 +29,7 @@ AssessDBKey.BasicEstate = "tb_basic_estate";
 AssessDBKey.BasicBuilding = "tb_basic_building";
 AssessDBKey.BasicHouse = "tb_basic_house";
 AssessDBKey.BasicHouseTrading = "tb_basic_house_trading";
+AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
 
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
@@ -94,6 +95,7 @@ AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用�
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
 AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//实际用途
 AssessDicKey.examineHouseNewsHuxing = "examine.house.newsHuxing";//最新户型
+AssessDicKey.examineHouseHouse_layout= "unit.house_layout";//房型
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型

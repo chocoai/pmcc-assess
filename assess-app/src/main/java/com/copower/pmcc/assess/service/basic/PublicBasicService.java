@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -35,6 +36,12 @@ public class PublicBasicService {
     private BasicHouseService basicHouseService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
+    @Autowired
+    private BasicUnitElevatorService basicUnitElevatorService;
+    @Autowired
+    private BasicUnitDecorateService basicUnitDecorateService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
@@ -76,6 +83,12 @@ public class PublicBasicService {
     @Autowired
     private CaseUnitService caseUnitService;
     @Autowired
+    private CaseUnitDecorateService caseUnitDecorateService;
+    @Autowired
+    private CaseUnitElevatorService caseUnitElevatorService;
+    @Autowired
+    private CaseUnitHuxingService caseUnitHuxingService;
+    @Autowired
     private CaseHouseService caseHouseService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
@@ -83,7 +96,7 @@ public class PublicBasicService {
     private CaseEstateLandStateService caseEstateLandStateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate,BasicEstateLandState basicEstateLandState) throws Exception {
+    private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate, BasicEstateLandState basicEstateLandState) throws Exception {
         CaseEstate caseEstate = null;
         CaseEstateLandState caseEstateLandState = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
@@ -128,15 +141,15 @@ public class PublicBasicService {
                 }
             }
         }
-        if (caseEstate != null){
-            if (caseEstate.getId() != null){
-                if (basicEstateLandState.getCaseEstateLandStateId() != null){
+        if (caseEstate != null) {
+            if (caseEstate.getId() != null) {
+                if (basicEstateLandState.getCaseEstateLandStateId() != null) {
                     caseEstateLandState = caseEstateLandStateService.getCaseEstateLandStateById(basicEstateLandState.getCaseEstateLandStateId());
-                    if (caseEstateLandState != null){
+                    if (caseEstateLandState != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
                         caseEstateLandState.setId(basicEstateLandState.getCaseEstateLandStateId());
                     }
-                    if (caseEstateLandState == null){
+                    if (caseEstateLandState == null) {
                         caseEstateLandState = new CaseEstateLandState();
                         BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
                         caseEstateLandState.setId(null);
@@ -144,14 +157,15 @@ public class PublicBasicService {
                         caseEstateLandState.setGmtModified(null);
                     }
                 }
-                if (basicEstateLandState.getCaseEstateLandStateId() == null){
+                if (basicEstateLandState.getCaseEstateLandStateId() == null) {
                     caseEstateLandState = new CaseEstateLandState();
                     BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
                     caseEstateLandState.setId(null);
                     caseEstateLandState.setGmtCreated(null);
                     caseEstateLandState.setGmtModified(null);
                 }
-                if (caseEstateLandState != null){
+                if (caseEstateLandState != null) {
+                    caseEstateLandState.setEstateId(caseEstate.getId());
                     caseEstateLandStateService.upgradeVersion(caseEstateLandState);
                 }
             }
@@ -489,7 +503,7 @@ public class PublicBasicService {
             CaseUnit caseUnit = null;
 
             //处理楼盘
-            caseEstate = this.flowWriteCaseEstate(basicEstate,basicEstateLandState);
+            caseEstate = this.flowWriteCaseEstate(basicEstate, basicEstateLandState);
 
             if (basicBuildingMain != null) {
                 if (caseEstate == null && basicBuildingMain.getEstateId() == null) {
@@ -780,9 +794,9 @@ public class PublicBasicService {
             }
         }).reverse();
         if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
-            Collections.sort(basicEstateLandStateList,ordering);
+            Collections.sort(basicEstateLandStateList, ordering);
             return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
-        }else {
+        } else {
             return null;
         }
     }
@@ -949,7 +963,56 @@ public class PublicBasicService {
                 }
             }
         }
+    }
 
-
+    /**
+     * 将CaseUnit下的子类 转移到 BasicUnit下的子类中去 (用做过程数据)
+     *
+     * @param caseUnitId
+     * @throws Exception
+     */
+    public void appWriteUnit(Integer caseUnitId) throws Exception {
+        if (caseUnitId == null) {
+            throw new Exception("null point");
+        }
+        CaseUnitDecorate caseUnitDecorate = new CaseUnitDecorate();
+        caseUnitDecorate.setUnitId(caseUnitId);
+        CaseUnitElevator caseUnitElevator = new CaseUnitElevator();
+        caseUnitElevator.setUnitId(caseUnitId);
+        CaseUnitHuxing caseUnitHuxing = new CaseUnitHuxing();
+        caseUnitHuxing.setUnitId(caseUnitId);
+        List<CaseUnitDecorate> caseUnitDecorates = caseUnitDecorateService.getCaseUnitDecorateList(caseUnitDecorate);
+        List<CaseUnitElevator> caseUnitElevators = caseUnitElevatorService.getEstateNetworkLists(caseUnitElevator);
+        List<CaseUnitHuxingVo> caseUnitHuxings = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
+        if (!ObjectUtils.isEmpty(caseUnitDecorates)) {
+            for (CaseUnitDecorate oo : caseUnitDecorates) {
+                BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, queryBasicUnitDecorate);
+                queryBasicUnitDecorate.setId(null);
+                queryBasicUnitDecorate.setUnitId(0);
+                queryBasicUnitDecorate.setCaseId(oo.getId());
+                basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(queryBasicUnitDecorate);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseUnitElevators)){
+            for (CaseUnitElevator oo:caseUnitElevators){
+                BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, queryBasicUnitElevator);
+                queryBasicUnitElevator.setId(null);
+                queryBasicUnitElevator.setUnitId(0);
+                queryBasicUnitElevator.setCaseId(oo.getId());
+                basicUnitElevatorService.saveAndUpdateBasicUnitElevator(queryBasicUnitElevator);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseUnitHuxings)) {
+            for (CaseUnitHuxingVo oo : caseUnitHuxings) {
+                BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
+                BeanCopyHelp.copyPropertiesIgnoreNull(oo, queryBasicUnitHuxing);
+                queryBasicUnitHuxing.setId(null);
+                queryBasicUnitHuxing.setUnitId(0);
+                queryBasicUnitHuxing.setCaseId(oo.getId());
+                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(queryBasicUnitHuxing);
+            }
+        }
     }
 }

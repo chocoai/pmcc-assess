@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
+import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -55,9 +56,11 @@ public class CaseHouseService {
     private CaseHouseWaterService caseHouseWaterService;
     @Autowired
     private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
+    @Autowired
+    private CaseHouseTradingService caseHouseTradingService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse){
+    public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -67,169 +70,188 @@ public class CaseHouseService {
         return vo;
     }
 
-    public void initAndUpdateSon(Integer id){
-        final int num = 0 ;
+    public void initAndUpdateSon(Integer oldId, Integer newId) {
         CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
-        caseHouseTradingLease.setHouseId(num);
+        caseHouseTradingLease.setHouseId(oldId);
         CaseHouseTradingSell caseHouseTradingSell = new CaseHouseTradingSell();
-        caseHouseTradingSell.setHouseId(num);
+        caseHouseTradingSell.setHouseId(oldId);
         CaseHouseEquipment caseHouseEquipment = new CaseHouseEquipment();
-        caseHouseEquipment.setHouseId(num);
+        caseHouseEquipment.setHouseId(oldId);
         CaseHouseFaceStreet caseHouseFaceStreet = new CaseHouseFaceStreet();
-        caseHouseFaceStreet.setHouseId(num);
+        caseHouseFaceStreet.setHouseId(oldId);
         CaseHouseIntelligent caseHouseIntelligent = new CaseHouseIntelligent();
-        caseHouseIntelligent.setHouseId(num);
+        caseHouseIntelligent.setHouseId(oldId);
         CaseHouseRoom caseHouseRoom = new CaseHouseRoom();
-        caseHouseRoom.setHouseId(num);
+        caseHouseRoom.setHouseId(oldId);
         CaseHouseWater caseHouseWater = new CaseHouseWater();
-        caseHouseWater.setHouseId(num);
+        caseHouseWater.setHouseId(oldId);
         CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
-        caseHouseCorollaryEquipment.setHouseId(num);
-        List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell,null);
-        List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease,null);
+        caseHouseCorollaryEquipment.setHouseId(oldId);
+        CaseHouseTrading queryTrading = new CaseHouseTrading();
+        queryTrading.setHouseId(oldId);
+
+        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingList(queryTrading);
+        List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
+        List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
         List<CaseHouseEquipment> caseHouseEquipments = caseHouseEquipmentService.getCaseHouseEquipmentList(caseHouseEquipment);
         List<CaseHouseFaceStreet> caseHouseFaceStreets = caseHouseFaceStreetService.getCaseHouseFaceStreetList(caseHouseFaceStreet);
         List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
         List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
         List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
         List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
-        if (id==null){//初始化
-            if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)){
-                for (CaseHouseTradingSellVo oo:caseHouseTradingSellVos){
+        //初始化
+        if (oldId == null) {
+            if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
+                for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
                     CaseHouseTradingSell caseHouseTradingSell1 = new CaseHouseTradingSell();
                     caseHouseTradingSell1.setId(oo.getId());
                     caseHouseTradingSellService.deleteCaseHouseTradingSell(caseHouseTradingSell1);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)){
-                for (CaseHouseTradingLeaseVo oo:caseHouseTradingLeaseVos){
+            if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
+                for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
                     CaseHouseTradingLease caseHouseTradingLease1 = new CaseHouseTradingLease();
                     caseHouseTradingLease1.setId(oo.getId());
                     caseHouseTradingLeaseService.deleteCaseHouseTradingLease(caseHouseTradingLease1);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseEquipments)){
-                for (CaseHouseEquipment oo:caseHouseEquipments){
+            if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
+                for (CaseHouseEquipment oo : caseHouseEquipments) {
                     caseHouseEquipmentService.deleteCaseHouseEquipment(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseFaceStreets)){
-                for (CaseHouseFaceStreet oo:caseHouseFaceStreets){
+            if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
+                for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
                     caseHouseFaceStreetService.deleteCaseHouseFaceStreet(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseIntelligents)){
-                for (CaseHouseIntelligent oo:caseHouseIntelligents){
+            if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
+                for (CaseHouseIntelligent oo : caseHouseIntelligents) {
                     caseHouseIntelligentService.deleteCaseHouseIntelligent(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseRooms)){
-                for (CaseHouseRoom oo:caseHouseRooms){
+            if (!ObjectUtils.isEmpty(caseHouseRooms)) {
+                for (CaseHouseRoom oo : caseHouseRooms) {
                     caseHouseRoomService.deleteCaseHouseRoom(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseWaters)){
-                for (CaseHouseWater oo:caseHouseWaters){
+            if (!ObjectUtils.isEmpty(caseHouseWaters)) {
+                for (CaseHouseWater oo : caseHouseWaters) {
                     caseHouseWaterService.deleteCaseHouseWater(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)){
-                for (CaseHouseCorollaryEquipment oo :caseHouseCorollaryEquipments){
+            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+                for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
                     caseHouseCorollaryEquipmentService.deleteCaseHouseCorollaryEquipment(oo.getId());
                 }
             }
+            if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
+                for (CaseHouseTradingVo oo : caseHouseTradingList) {
+                    CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
+                    caseHouseTrading.setId(oo.getId());
+                    caseHouseTradingService.deleteCaseHouseTrading(caseHouseTrading);
+                }
+            }
         }
-
-        if (id!=null){//修改子类
-            if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)){
-                for (CaseHouseTradingSellVo oo:caseHouseTradingSellVos){
-                    oo.setHouseId(id);
+        //修改子类
+        if (oldId != null) {
+            if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
+                for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
+                    oo.setHouseId(newId);
                     caseHouseTradingSellService.saveAndUpdateCaseHouseTradingSell(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)){
-                for (CaseHouseTradingLeaseVo oo:caseHouseTradingLeaseVos){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
+                for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
+                    oo.setHouseId(newId);
                     caseHouseTradingLeaseService.saveAndUpdateCaseHouseTradingLease(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseEquipments)){
-                for (CaseHouseEquipment oo:caseHouseEquipments){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
+                for (CaseHouseEquipment oo : caseHouseEquipments) {
+                    oo.setHouseId(newId);
                     caseHouseEquipmentService.updateCaseHouseEquipment(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseFaceStreets)){
-                for (CaseHouseFaceStreet oo:caseHouseFaceStreets){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
+                for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
+                    oo.setHouseId(newId);
                     caseHouseFaceStreetService.updateCaseHouseFaceStreet(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseIntelligents)){
-                for (CaseHouseIntelligent oo:caseHouseIntelligents){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
+                for (CaseHouseIntelligent oo : caseHouseIntelligents) {
+                    oo.setHouseId(newId);
                     caseHouseIntelligentService.updateCaseHouseIntelligent(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseRooms)){
-                for (CaseHouseRoom oo:caseHouseRooms){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseRooms)) {
+                for (CaseHouseRoom oo : caseHouseRooms) {
+                    oo.setHouseId(newId);
                     caseHouseRoomService.updateCaseHouseRoom(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseWaters)){
-                for (CaseHouseWater oo:caseHouseWaters){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseWaters)) {
+                for (CaseHouseWater oo : caseHouseWaters) {
+                    oo.setHouseId(newId);
                     caseHouseWaterService.updateCaseHouseWater(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)){
-                for (CaseHouseCorollaryEquipment oo :caseHouseCorollaryEquipments){
-                    oo.setHouseId(id);
+            if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+                for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
+                    oo.setHouseId(newId);
                     caseHouseCorollaryEquipmentService.updateCaseHouseCorollaryEquipment(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
+                for (CaseHouseTradingVo oo : caseHouseTradingList) {
+                    oo.setHouseId(newId);
+                    caseHouseTradingService.saveAndUpdateCaseHouseTrading(oo);
                 }
             }
         }
     }
 
-    public List<CaseHouse> getCaseHouseList(CaseHouse caseHouse){
+    public List<CaseHouse> getCaseHouseList(CaseHouse caseHouse) {
 
         return caseHouseDao.getHouseList(caseHouse);
     }
 
-    public CaseHouse getCaseHouseById(Integer id){
+    public CaseHouse getCaseHouseById(Integer id) {
 
         return caseHouseDao.getHouseById(id);
     }
 
-    public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse){
-        Integer id = null ;
-        if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
+    public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse) {
+        Integer id = null;
+        if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
             caseHouse.setCreator(commonService.thisUserAccount());
-            id =  caseHouseDao.addHouse(caseHouse);
+            id = caseHouseDao.addHouse(caseHouse);
             //更新附件
+            this.initAndUpdateSon(0, id);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
             return id;
-        }else {
+        } else {
             caseHouseDao.updateHouse(caseHouse);
-            return  null;
+            return null;
         }
     }
 
-    public Integer upgradeVersion(CaseHouse caseHouse)throws Exception{
-        Integer id = null ;
-        if (caseHouse.getId()==null || caseHouse.getId().intValue()==0){
+    public Integer upgradeVersion(CaseHouse caseHouse) throws Exception {
+        Integer id = null;
+        if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
             caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
-            id =  caseHouseDao.addHouse(caseHouse);
+            id = caseHouseDao.addHouse(caseHouse);
+            this.initAndUpdateSon(0, id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
             caseHouse.setId(id);
             return id;
-        }else {
+        } else {
             CaseHouse oo = caseHouseDao.getHouseById(caseHouse.getId());
-            if (oo != null){
-                if (oo.getVersion()==null){
+            if (oo != null) {
+                if (oo.getVersion() == null) {
                     oo.setVersion(0);
                 }
             }
@@ -239,19 +261,21 @@ public class CaseHouseService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            id = caseHouseDao.addHouse(oo);
-            caseHouse.setId(id);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
-            return  id;
+            int oldId = caseHouse.getId();
+            int newId = caseHouseDao.addHouse(oo);
+            this.initAndUpdateSon(oldId, newId);
+            caseHouse.setId(newId);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), newId);
+            return newId;
         }
     }
 
-    public boolean deleteCaseHouse(Integer id){
+    public boolean deleteCaseHouse(Integer id) {
 
         return caseHouseDao.deleteHouse(id);
     }
 
-    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId,String houseNumber,Integer maxRows)throws Exception{
+    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId, String houseNumber, Integer maxRows) throws Exception {
         List<CaseHouse> caseHouseList = caseHouseDao.autoCompleteCaseHouse(unitId, houseNumber);
         Ordering<CaseHouse> ordering = Ordering.from(new Comparator<CaseHouse>() {
             @Override
@@ -259,7 +283,7 @@ public class CaseHouseService {
                 return o1.getId().compareTo(o2.getId());
             }
         }).reverse();
-        Collections.sort(caseHouseList,ordering);
+        Collections.sort(caseHouseList, ordering);
         List<CaseHouse> list = new ArrayList<CaseHouse>(10);
         if (!ObjectUtils.isEmpty(caseHouseList)) {
             for (int i = 0; i < maxRows; i++) {

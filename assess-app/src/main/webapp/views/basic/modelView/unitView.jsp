@@ -26,3 +26,5 @@
         </div>
     </form>
 </div>
+
+<%@include file="/views/basic/modelView/unit/sonUnitView.jsp" %>

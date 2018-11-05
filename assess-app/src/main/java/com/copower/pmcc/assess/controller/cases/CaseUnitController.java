@@ -133,7 +133,7 @@ public class CaseUnitController {
     @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
     public HttpResult initAndUpdateSon() {
         try {
-            caseUnitService.initAndUpdateSon(null);
+            caseUnitService.initAndUpdateSon(0,null);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
