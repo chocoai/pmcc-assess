@@ -504,10 +504,6 @@
                         h = Number(n.taxRate);
                         construction.algsObj.getAndSet("set", construction.config.inputConfig.transactionCost.tax, AssessCommon.pointToPercent(h));//交易费用
                     }
-                    if (n.typeName == "管理费用") {
-                        k = Number(n.taxRate);
-                        construction.algsObj.getAndSet("set", construction.config.inputConfig.managementExpense.tax, AssessCommon.pointToPercent(k));
-                    }
                 });
                 construction.algsObj.businessAdditional();
                 construction.algsObj.landGetRelevant();

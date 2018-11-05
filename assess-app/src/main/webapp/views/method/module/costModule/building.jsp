@@ -289,10 +289,6 @@
                         c = Number(n.taxRate);
                         build.algsObj.getAndSet("set", build.config.totalTaxRate.education, AssessCommon.pointToPercent(c));//教育费附加
                     }
-                    if (n.typeName == "管理费用") {
-                        k = Number(n.taxRate);
-                        build.algsObj.getAndSet("set", build.config.inputConfig.managementExpense.tax, AssessCommon.pointToPercent(k));
-                    }
                 });
                 build.algsObj.totalTaxRate();
                 build.algsObj.managementExpense();//管理费
