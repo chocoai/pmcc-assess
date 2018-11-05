@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -82,10 +79,13 @@ public class PublicBasicService {
     private CaseHouseService caseHouseService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
+    @Autowired
+    private CaseEstateLandStateService caseEstateLandStateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate) throws Exception {
+    private CaseEstate flowWriteCaseEstate(BasicEstate basicEstate,BasicEstateLandState basicEstateLandState) throws Exception {
         CaseEstate caseEstate = null;
+        CaseEstateLandState caseEstateLandState = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
         //-----------------------------------||---------------------------
         if (basicEstate != null) {
@@ -125,6 +125,34 @@ public class PublicBasicService {
                         sysAttachmentDto.setTableId(caseEstate.getId());
                         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
                     }
+                }
+            }
+        }
+        if (caseEstate != null){
+            if (caseEstate.getId() != null){
+                if (basicEstateLandState.getCaseEstateLandStateId() != null){
+                    caseEstateLandState = caseEstateLandStateService.getCaseEstateLandStateById(basicEstateLandState.getCaseEstateLandStateId());
+                    if (caseEstateLandState != null){
+                        BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
+                        caseEstateLandState.setId(basicEstateLandState.getCaseEstateLandStateId());
+                    }
+                    if (caseEstateLandState == null){
+                        caseEstateLandState = new CaseEstateLandState();
+                        BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
+                        caseEstateLandState.setId(null);
+                        caseEstateLandState.setGmtCreated(null);
+                        caseEstateLandState.setGmtModified(null);
+                    }
+                }
+                if (basicEstateLandState.getCaseEstateLandStateId() == null){
+                    caseEstateLandState = new CaseEstateLandState();
+                    BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
+                    caseEstateLandState.setId(null);
+                    caseEstateLandState.setGmtCreated(null);
+                    caseEstateLandState.setGmtModified(null);
+                }
+                if (caseEstateLandState != null){
+                    caseEstateLandStateService.upgradeVersion(caseEstateLandState);
                 }
             }
         }
@@ -450,6 +478,7 @@ public class PublicBasicService {
         BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
         if (basicApply != null) {
             BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
+            BasicEstateLandState basicEstateLandState = this.getByAppIdEstateLandState(basicApply.getId());
             BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
             BasicUnit basicUnit = this.getByByAppIdBasicUnit(basicApply.getId());
             BasicHouse basicHouse = this.getByAppIdBasicHouseVo(basicApply.getId());
@@ -460,7 +489,7 @@ public class PublicBasicService {
             CaseUnit caseUnit = null;
 
             //处理楼盘
-            caseEstate = this.flowWriteCaseEstate(basicEstate);
+            caseEstate = this.flowWriteCaseEstate(basicEstate,basicEstateLandState);
 
             if (basicBuildingMain != null) {
                 if (caseEstate == null && basicBuildingMain.getEstateId() == null) {
@@ -555,6 +584,20 @@ public class PublicBasicService {
                 }
                 try {
                     basicEstateService.upgradeVersion(basicEstate);
+                    if (basicEstate.getId() != null) {
+                        BasicEstateLandState basicEstateLandState = null;
+                        if (StringUtils.isNotEmpty(jsonObject.getString("basicEstateLandState"))) {
+                            basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
+                            if (basicEstateLandState != null) {
+                                if (basicEstateLandState.getId() != null) {
+                                    basicEstateLandState.setCaseEstateLandStateId(basicEstateLandState.getId());
+                                    basicEstateLandState.setId(null);
+                                    basicEstateLandState.setApplyId(basicApply.getId());
+                                    basicEstateLandStateService.upgradeVersion(basicEstateLandState);
+                                }
+                            }
+                        }
+                    }
                 } catch (Exception e1) {
                     logger.error(e1.getMessage(), e1);
                 }
@@ -718,9 +761,27 @@ public class PublicBasicService {
             }
         }).reverse();
         if (!ObjectUtils.isEmpty(basicEstates)) {
-            Collections.sort(basicEstates,ordering);
+            Collections.sort(basicEstates, ordering);
             return basicEstateService.getBasicEstateVo(basicEstates.get(0));
         } else {
+            return null;
+        }
+    }
+
+    public BasicEstateLandStateVo getByAppIdEstateLandState(Integer appId) throws Exception {
+        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setApplyId(appId);
+        List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
+        Ordering<BasicEstateLandState> ordering = Ordering.from(new Comparator<BasicEstateLandState>() {
+            @Override
+            public int compare(BasicEstateLandState o1, BasicEstateLandState o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
+            Collections.sort(basicEstateLandStateList,ordering);
+            return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
+        }else {
             return null;
         }
     }
@@ -736,7 +797,7 @@ public class PublicBasicService {
             }
         }).reverse();
         if (!ObjectUtils.isEmpty(basicBuildingMains)) {
-            Collections.sort(basicBuildingMains,ordering);
+            Collections.sort(basicBuildingMains, ordering);
             return basicBuildingMains.get(0);
         } else {
             return null;
@@ -754,7 +815,7 @@ public class PublicBasicService {
             }
         }).reverse();
         if (!ObjectUtils.isEmpty(unitList)) {
-            Collections.sort(unitList,ordering);
+            Collections.sort(unitList, ordering);
             return unitList.get(0);
         } else {
             return null;

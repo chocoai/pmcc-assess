@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingLeisurePlaceMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlace" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -72,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, type, name, category, grade, distance, creator, gmt_created, gmt_modified
+    id, version, estate_id, type, name, category, grade, distance, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlaceExample" >
     select
@@ -108,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_matching_leisure_place (estate_id, type, name, 
-      category, grade, distance, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{category,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_case_matching_leisure_place (version, estate_id, type, 
+      name, category, grade, 
+      distance, creator, gmt_created, 
+      gmt_modified)
+    values (#{version,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, 
+      #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlace" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -123,6 +125,9 @@
     </selectKey>
     insert into tb_case_matching_leisure_place
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="version != null" >
+        version,
+      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -152,6 +157,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
@@ -193,6 +201,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
@@ -228,6 +239,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_matching_leisure_place
     set id = #{record.id,jdbcType=INTEGER},
+      version = #{record.version,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -244,6 +256,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlace" >
     update tb_case_matching_leisure_place
     <set >
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
@@ -276,7 +291,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlace" >
     update tb_case_matching_leisure_place
-    set estate_id = #{estateId,jdbcType=INTEGER},
+    set version = #{version,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},

@@ -165,6 +165,66 @@ public class BasicHouseTradingSellExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseTradingSellIdIsNull() {
+            addCriterion("case_trading_sell_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdIsNotNull() {
+            addCriterion("case_trading_sell_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdEqualTo(Integer value) {
+            addCriterion("case_trading_sell_id =", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdNotEqualTo(Integer value) {
+            addCriterion("case_trading_sell_id <>", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdGreaterThan(Integer value) {
+            addCriterion("case_trading_sell_id >", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_trading_sell_id >=", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdLessThan(Integer value) {
+            addCriterion("case_trading_sell_id <", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_trading_sell_id <=", value, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdIn(List<Integer> values) {
+            addCriterion("case_trading_sell_id in", values, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdNotIn(List<Integer> values) {
+            addCriterion("case_trading_sell_id not in", values, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_trading_sell_id between", value1, value2, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseTradingSellIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_trading_sell_id not between", value1, value2, "caseTradingSellId");
+            return (Criteria) this;
+        }
+
         public Criteria andHouseIdIsNull() {
             addCriterion("house_id is null");
             return (Criteria) this;

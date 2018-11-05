@@ -78,6 +78,9 @@ public class BasicHouseTradingService {
             return id;
         }else {
             BasicHouseTrading oo = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
             basicHouseTrading.setVersion(oo.getVersion()+1);
             basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
             return basicHouseTrading.getId();

@@ -6,6 +6,8 @@ import java.util.Date;
 public class BasicHouseRoom {
     private Integer id;
 
+    private Integer caseRoomId;
+
     private Integer houseId;
 
     private Integer roomType;
@@ -44,6 +46,14 @@ public class BasicHouseRoom {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseRoomId() {
+        return caseRoomId;
+    }
+
+    public void setCaseRoomId(Integer caseRoomId) {
+        this.caseRoomId = caseRoomId;
     }
 
     public Integer getHouseId() {

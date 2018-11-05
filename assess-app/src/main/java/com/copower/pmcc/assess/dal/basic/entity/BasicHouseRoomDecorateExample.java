@@ -165,6 +165,66 @@ public class BasicHouseRoomDecorateExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseRoomDecorateIdIsNull() {
+            addCriterion("case_room_decorate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdIsNotNull() {
+            addCriterion("case_room_decorate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdEqualTo(Integer value) {
+            addCriterion("case_room_decorate_id =", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdNotEqualTo(Integer value) {
+            addCriterion("case_room_decorate_id <>", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdGreaterThan(Integer value) {
+            addCriterion("case_room_decorate_id >", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_room_decorate_id >=", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdLessThan(Integer value) {
+            addCriterion("case_room_decorate_id <", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_room_decorate_id <=", value, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdIn(List<Integer> values) {
+            addCriterion("case_room_decorate_id in", values, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdNotIn(List<Integer> values) {
+            addCriterion("case_room_decorate_id not in", values, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_room_decorate_id between", value1, value2, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseRoomDecorateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_room_decorate_id not between", value1, value2, "caseRoomDecorateId");
+            return (Criteria) this;
+        }
+
         public Criteria andRoomIdIsNull() {
             addCriterion("room_id is null");
             return (Criteria) this;

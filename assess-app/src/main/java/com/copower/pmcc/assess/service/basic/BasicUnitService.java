@@ -72,6 +72,9 @@ public class BasicUnitService {
             basicUnit.setId(id);
         } else {
             BasicUnit oo = this.getBasicUnitById(basicUnit.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
             basicUnit.setVersion(oo.getVersion()+1);
             basicUnitDao.updateBasicUnit(basicUnit);
         }

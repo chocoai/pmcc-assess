@@ -165,6 +165,66 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseEstateLandStateIdIsNull() {
+            addCriterion("case_estate_land_state_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdIsNotNull() {
+            addCriterion("case_estate_land_state_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdEqualTo(Integer value) {
+            addCriterion("case_estate_land_state_id =", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdNotEqualTo(Integer value) {
+            addCriterion("case_estate_land_state_id <>", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdGreaterThan(Integer value) {
+            addCriterion("case_estate_land_state_id >", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_estate_land_state_id >=", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdLessThan(Integer value) {
+            addCriterion("case_estate_land_state_id <", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_estate_land_state_id <=", value, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdIn(List<Integer> values) {
+            addCriterion("case_estate_land_state_id in", values, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdNotIn(List<Integer> values) {
+            addCriterion("case_estate_land_state_id not in", values, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_estate_land_state_id between", value1, value2, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateLandStateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_estate_land_state_id not between", value1, value2, "caseEstateLandStateId");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyIdIsNull() {
             addCriterion("apply_id is null");
             return (Criteria) this;

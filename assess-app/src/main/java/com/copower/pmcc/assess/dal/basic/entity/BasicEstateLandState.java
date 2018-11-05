@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicEstateLandState {
     private Integer id;
 
+    private Integer caseEstateLandStateId;
+
     private Integer applyId;
 
     private Integer estateId;
@@ -53,6 +55,14 @@ public class BasicEstateLandState {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseEstateLandStateId() {
+        return caseEstateLandStateId;
+    }
+
+    public void setCaseEstateLandStateId(Integer caseEstateLandStateId) {
+        this.caseEstateLandStateId = caseEstateLandStateId;
     }
 
     public Integer getApplyId() {

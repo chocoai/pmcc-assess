@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicEstateLandStateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_estate_land_state_id" property="caseEstateLandStateId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -84,10 +85,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, estate_id, name, land_use_type, land_use_category, land_level, land_area, 
-    east_to, south_to, west_to, north_to, shape_state, planeness, development_degree, 
-    restrictive_condition, soil, topographic_terrain, creator, version, gmt_created, 
-    gmt_modified
+    id, case_estate_land_state_id, apply_id, estate_id, name, land_use_type, land_use_category, 
+    land_level, land_area, east_to, south_to, west_to, north_to, shape_state, planeness, 
+    development_degree, restrictive_condition, soil, topographic_terrain, creator, version, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandStateExample" >
     select
@@ -123,22 +124,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_estate_land_state (apply_id, estate_id, name, 
-      land_use_type, land_use_category, land_level, 
-      land_area, east_to, south_to, 
-      west_to, north_to, shape_state, 
-      planeness, development_degree, restrictive_condition, 
-      soil, topographic_terrain, creator, 
-      version, gmt_created, gmt_modified
-      )
-    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{landUseType,jdbcType=INTEGER}, #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, 
-      #{landArea,jdbcType=VARCHAR}, #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, 
-      #{westTo,jdbcType=VARCHAR}, #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, 
-      #{planeness,jdbcType=VARCHAR}, #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
-      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_estate_land_state (case_estate_land_state_id, apply_id, estate_id, 
+      name, land_use_type, land_use_category, 
+      land_level, land_area, east_to, 
+      south_to, west_to, north_to, 
+      shape_state, planeness, development_degree, 
+      restrictive_condition, soil, topographic_terrain, 
+      creator, version, gmt_created, 
+      gmt_modified)
+    values (#{caseEstateLandStateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, #{landUseCategory,jdbcType=INTEGER}, 
+      #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, #{eastTo,jdbcType=VARCHAR}, 
+      #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, #{northTo,jdbcType=VARCHAR}, 
+      #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, #{developmentDegree,jdbcType=VARCHAR}, 
+      #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -146,6 +147,9 @@
     </selectKey>
     insert into tb_basic_estate_land_state
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseEstateLandStateId != null" >
+        case_estate_land_state_id,
+      </if>
       <if test="applyId != null" >
         apply_id,
       </if>
@@ -211,6 +215,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseEstateLandStateId != null" >
+        #{caseEstateLandStateId,jdbcType=INTEGER},
+      </if>
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
       </if>
@@ -288,6 +295,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.caseEstateLandStateId != null" >
+        case_estate_land_state_id = #{record.caseEstateLandStateId,jdbcType=INTEGER},
+      </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
@@ -359,6 +369,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_estate_land_state
     set id = #{record.id,jdbcType=INTEGER},
+      case_estate_land_state_id = #{record.caseEstateLandStateId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -387,6 +398,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
     update tb_basic_estate_land_state
     <set >
+      <if test="caseEstateLandStateId != null" >
+        case_estate_land_state_id = #{caseEstateLandStateId,jdbcType=INTEGER},
+      </if>
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
@@ -455,7 +469,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
     update tb_basic_estate_land_state
-    set apply_id = #{applyId,jdbcType=INTEGER},
+    set case_estate_land_state_id = #{caseEstateLandStateId,jdbcType=INTEGER},
+      apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       land_use_type = #{landUseType,jdbcType=INTEGER},

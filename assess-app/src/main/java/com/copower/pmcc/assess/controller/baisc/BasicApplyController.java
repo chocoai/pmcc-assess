@@ -104,6 +104,7 @@ public class BasicApplyController {
             modelAndView.addObject("basicApply", basicApply);
             modelAndView.addObject("basicUnit", publicBasicService.getByByAppIdBasicUnit(basicApply.getId()));
             modelAndView.addObject("basicEstate", publicBasicService.getByAppIdBasicEstate(basicApply.getId()));
+            modelAndView.addObject("basicEstateLandState", publicBasicService.getByAppIdEstateLandState(basicApply.getId()));
             modelAndView.addObject("basicHouseTrading", publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId()));
             modelAndView.addObject("basicHouse", publicBasicService.getByAppIdBasicHouseVo(basicApply.getId()));
             BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());

@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseRoomMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_room_id" property="caseRoomId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="room_type" property="roomType" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -79,8 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, room_type, name, area, orientation, aeration, Illumination, sound_insulation, 
-    creator, sunshine, lighting, opening, depth, layer_height, gmt_created, gmt_modified
+    id, case_room_id, house_id, room_type, name, area, orientation, aeration, Illumination, 
+    sound_insulation, creator, sunshine, lighting, opening, depth, layer_height, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomExample" >
     select
@@ -116,18 +118,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_room (house_id, room_type, name, 
-      area, orientation, aeration, 
-      Illumination, sound_insulation, creator, 
-      sunshine, lighting, opening, 
-      depth, layer_height, gmt_created, 
-      gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
-      #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{sunshine,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, 
-      #{depth,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DOUBLE}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_room (case_room_id, house_id, room_type, 
+      name, area, orientation, 
+      aeration, Illumination, sound_insulation, 
+      creator, sunshine, lighting, 
+      opening, depth, layer_height, 
+      gmt_created, gmt_modified)
+    values (#{caseRoomId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, 
+      #{aeration,jdbcType=VARCHAR}, #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, 
+      #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DOUBLE}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +137,9 @@
     </selectKey>
     insert into tb_basic_house_room
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseRoomId != null" >
+        case_room_id,
+      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -185,6 +190,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseRoomId != null" >
+        #{caseRoomId,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -247,6 +255,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.caseRoomId != null" >
+        case_room_id = #{record.caseRoomId,jdbcType=INTEGER},
+      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -303,6 +314,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_room
     set id = #{record.id,jdbcType=INTEGER},
+      case_room_id = #{record.caseRoomId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       room_type = #{record.roomType,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -326,6 +338,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     update tb_basic_house_room
     <set >
+      <if test="caseRoomId != null" >
+        case_room_id = #{caseRoomId,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -379,7 +394,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     update tb_basic_house_room
-    set house_id = #{houseId,jdbcType=INTEGER},
+    set case_room_id = #{caseRoomId,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
       room_type = #{roomType,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},

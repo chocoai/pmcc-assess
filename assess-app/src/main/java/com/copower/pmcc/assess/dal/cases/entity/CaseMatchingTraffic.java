@@ -5,6 +5,8 @@ import java.util.Date;
 public class CaseMatchingTraffic {
     private Integer id;
 
+    private Integer version;
+
     private Integer estateId;
 
     private String type;
@@ -29,6 +31,14 @@ public class CaseMatchingTraffic {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getEstateId() {

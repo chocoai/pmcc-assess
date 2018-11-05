@@ -5,6 +5,8 @@ import java.util.Date;
 public class CaseHouseFaceStreet {
     private Integer id;
 
+    private Integer version;
+
     private Integer houseId;
 
     private String streetName;
@@ -27,6 +29,14 @@ public class CaseHouseFaceStreet {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getHouseId() {

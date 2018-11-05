@@ -15,6 +15,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -65,7 +67,7 @@ public class BasicHouseRoomDecorateService {
             basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseRoomDecorateDao.saveBasicHouseRoomDecorate(basicHouseRoomDecorate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class), id);
-            return  id ;
+            return id;
         } else {
             BasicHouseRoomDecorate oo = basicHouseRoomDecorateDao.getBasicHouseRoomDecorateById(basicHouseRoomDecorate.getId());
             basicHouseRoomDecorateDao.updateBasicHouseRoomDecorate(basicHouseRoomDecorate);
@@ -109,14 +111,45 @@ public class BasicHouseRoomDecorateService {
         return vo;
     }
 
-    public BasicHouseRoomDecorateVo getBasicHouseRoomDecorateVo(BasicHouseRoomDecorate basicHouseRoomDecorate){
-        if (basicHouseRoomDecorate==null){
+    public BasicHouseRoomDecorateVo getBasicHouseRoomDecorateVo(BasicHouseRoomDecorate basicHouseRoomDecorate) {
+        if (basicHouseRoomDecorate == null) {
             return null;
         }
         BasicHouseRoomDecorateVo vo = new BasicHouseRoomDecorateVo();
-        BeanUtils.copyProperties(basicHouseRoomDecorate,vo);
+        BeanUtils.copyProperties(basicHouseRoomDecorate, vo);
         BaseDataDic dataDic = null;
-
+        if (StringUtils.isNotEmpty(basicHouseRoomDecorate.getConstructionTechnology())) {
+            if (NumberUtils.isNumber(basicHouseRoomDecorate.getConstructionTechnology())) {
+                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseRoomDecorate.getConstructionTechnology()));
+                if (dataDic != null) {
+                    vo.setConstructionTechnologyName(dataDic.getName());
+                    dataDic = null;
+                }
+            }
+        }
+        if (StringUtils.isNotEmpty(basicHouseRoomDecorate.getMaterialPrice())) {
+            if (NumberUtils.isNumber(basicHouseRoomDecorate.getMaterialPrice())) {
+                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseRoomDecorate.getMaterialPrice()));
+                if (dataDic != null) {
+                    vo.setMaterialPriceName(dataDic.getName());
+                    dataDic = null;
+                }
+            }
+        }
+        if (basicHouseRoomDecorate.getPart() != null){
+            dataDic = baseDataDicService.getDataDicById(basicHouseRoomDecorate.getPart());
+            if (dataDic != null){
+                vo.setPartName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (basicHouseRoomDecorate.getMaterial() != null){
+            dataDic = baseDataDicService.getDataDicById(basicHouseRoomDecorate.getMaterial());
+            if (dataDic != null){
+                vo.setMaterialName(dataDic.getName());
+                dataDic = null;
+            }
+        }
         return vo;
     }
 }

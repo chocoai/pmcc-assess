@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateLandStateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
 import com.copower.pmcc.erp.common.CommonService;
@@ -23,36 +24,53 @@ public class CaseEstateLandStateService {
     private CommonService commonService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState){
+    public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState) {
 
         return caseEstateLandStateDao.getEstateLandStateList(caseEstateLandState);
     }
 
-    public CaseEstateLandState getCaseEstateLandStateById(Integer id){
+    public CaseEstateLandState getCaseEstateLandStateById(Integer id) {
 
         return caseEstateLandStateDao.getEstateLandStateById(id);
     }
 
-    public boolean saveAndUpdateCaseEstateLandState(CaseEstateLandState caseEstateLandState){
-
-        if (caseEstateLandState.getId()==null || caseEstateLandState.getId().intValue()==0){
+    public Integer upgradeVersion(CaseEstateLandState caseEstateLandState) throws Exception {
+        if (caseEstateLandState.getId() == null || caseEstateLandState.getId().intValue() == 0) {
             caseEstateLandState.setCreator(commonService.thisUserAccount());
             caseEstateLandState.setVersion(0);
-            return caseEstateLandStateDao.addEstateLandState(caseEstateLandState);
-        }else {
+            Integer id = caseEstateLandStateDao.saveCaseEstateLandState(caseEstateLandState);
+            caseEstateLandState.setId(id);
+            return id;
+        } else {
             //更新版本
             CaseEstateLandState oo = caseEstateLandStateDao.getEstateLandStateById(caseEstateLandState.getId());
-            if (oo != null){
-                if (oo.getVersion()==null){
+            if (oo != null) {
+                if (oo.getVersion() == null) {
                     oo.setVersion(0);
                 }
             }
-            caseEstateLandState.setVersion(oo.getVersion()+1);
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateLandState, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            Integer id = caseEstateLandStateDao.saveCaseEstateLandState(oo);
+            caseEstateLandState.setId(id);
+            return id;
+        }
+    }
+
+    public boolean saveAndUpdateCaseEstateLandState(CaseEstateLandState caseEstateLandState) {
+        if (caseEstateLandState.getId() == null || caseEstateLandState.getId().intValue() == 0) {
+            caseEstateLandState.setCreator(commonService.thisUserAccount());
+            return caseEstateLandStateDao.addEstateLandState(caseEstateLandState);
+        } else {
             return caseEstateLandStateDao.updateEstateLandState(caseEstateLandState);
         }
     }
 
-    public boolean deleteCaseEstateLandState(Integer id){
+    public boolean deleteCaseEstateLandState(Integer id) {
 
         return caseEstateLandStateDao.deleteEstateLandState(id);
     }

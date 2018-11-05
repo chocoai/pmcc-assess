@@ -5,6 +5,8 @@ import java.util.Date;
 public class CaseMatchingFinance {
     private Integer id;
 
+    private Integer version;
+
     private Integer estateId;
 
     private String name;
@@ -29,6 +31,14 @@ public class CaseMatchingFinance {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getEstateId() {

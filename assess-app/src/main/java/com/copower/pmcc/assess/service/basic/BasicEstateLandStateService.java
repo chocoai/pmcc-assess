@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -12,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -64,6 +66,25 @@ public class BasicEstateLandStateService {
         }
     }
 
+    public Integer upgradeVersion(BasicEstateLandState basicEstateLandState)throws Exception{
+        if (basicEstateLandState.getId()== null || basicEstateLandState.getId().intValue()==0){
+            basicEstateLandState.setCreator(commonService.thisUserAccount());
+            if (basicEstateLandState.getVersion() == null){
+                basicEstateLandState.setVersion(0);
+            }
+            Integer id = basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
+            return id;
+        }else {
+            BasicEstateLandState oo = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
+            basicEstateLandState.setVersion(oo.getVersion()+1);
+            basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState);
+            return  null;
+        }
+    }
+
     /**
      * 删除数据
      * @param id
@@ -91,6 +112,15 @@ public class BasicEstateLandStateService {
         List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(basicEstateLandStateList)?new ArrayList<BasicEstateLandState>(10):basicEstateLandStateList);
+        return vo;
+    }
+
+    public BasicEstateLandStateVo getBasicEstateLandStateVo(BasicEstateLandState basicEstateLandState){
+        if (basicEstateLandState == null){
+            return null;
+        }
+        BasicEstateLandStateVo vo = new BasicEstateLandStateVo();
+        BeanUtils.copyProperties(basicEstateLandState,vo);
         return vo;
     }
 

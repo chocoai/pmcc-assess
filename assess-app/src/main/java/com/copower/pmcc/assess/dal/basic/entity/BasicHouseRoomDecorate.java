@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicHouseRoomDecorate {
     private Integer id;
 
+    private Integer caseRoomDecorateId;
+
     private Integer roomId;
 
     private Integer part;
@@ -27,6 +29,14 @@ public class BasicHouseRoomDecorate {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseRoomDecorateId() {
+        return caseRoomDecorateId;
+    }
+
+    public void setCaseRoomDecorateId(Integer caseRoomDecorateId) {
+        this.caseRoomDecorateId = caseRoomDecorateId;
     }
 
     public Integer getRoomId() {

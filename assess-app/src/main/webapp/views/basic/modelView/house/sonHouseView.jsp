@@ -20,8 +20,6 @@
 
     var houseRoom;
     (function () {
-        var flag = true;
-        var sonFlag = true;
         houseRoom = function () {
 
         };
@@ -99,25 +97,18 @@
             },
             showModel: function () {
                 $("#" + houseRoom.prototype.config().frm).clearAll();
-                $("#" + houseRoom.prototype.config().frm + " .type").val(houseRoom.prototype.config().type);
                 $('#' + houseRoom.prototype.config().box).modal("show");
                 houseRoom.prototype.init({});
             },
             showModelSubclassSaveView: function () {
-                if ($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").size() > 0) {
-                    var roomId = $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val();
-                    $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
-                    $("#" + houseRoom.prototype.config().frmSubclass + " .roomId").val(roomId);
-                } else {
-                    $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
-                }
-                houseRoom.prototype.subclassInit({});
+                var roomId = $('#' + houseRoom.prototype.config().boxSubclass).find("input[name='roomId']").val();
+                houseRoom.prototype.subclassInit({roomId: roomId});
                 $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal("show");
             },
             showModelSubclass: function (id) {
                 houseRoom.prototype.subclassLoadList(id);
-                if ($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").size() > 0) {
-                    $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val(id);
+                if ($('#' + houseRoom.prototype.config().boxSubclass).find("input[name='roomId']").size() > 0) {
+                    $('#' + houseRoom.prototype.config().boxSubclass).find("input[name='roomId']").val(id);
                 }
                 $('#' + houseRoom.prototype.config().boxSubclass).modal("show");
             },
@@ -137,7 +128,7 @@
                             $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal('hide');
                             var item = result.data;
                             if (houseRoom.prototype.isEmpty(item)) {
-                                houseRoom.prototype.subclassLoadList(item.roomId);
+                                houseRoom.prototype.subclassLoadList(item);
                             }
                         }
                         else {
@@ -158,7 +149,7 @@
                     success: function (result) {
                         if (result.ret) {
                             toastr.success('删除成功');
-                            houseRoom.prototype.subclassLoadList($('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val());
+                            houseRoom.prototype.subclassLoadList(result.data);
                         }
                         else {
                             Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -170,6 +161,8 @@
                 })
             },
             subclassInit: function (item) {
+                $("#" + houseRoom.prototype.config().frmSubclass).clearAll();
+                $("#" + houseRoom.prototype.config().frmSubclass).initForm(item);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_decorating_material, item.material, function (html, data) {
                     $("#" + houseRoom.prototype.config().frmSubclass).find('select.material').empty().html(html).trigger('change');
                 });
@@ -185,10 +178,6 @@
             },
             subclassLoadList: function (id) {
                 var cols = [];
-                var temp = id;
-                if (houseRoom.prototype.isEmpty(temp)) {
-                    temp = $('#' + houseRoom.prototype.config().boxSubclass + " .roomId").val();
-                }
                 cols.push({field: 'materialName', title: '装修材料'});
                 cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                 cols.push({field: 'partName', title: '房间装修部位'});
@@ -203,7 +192,7 @@
                 });
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
-                    roomId: temp,
+                    roomId: id,
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -220,7 +209,7 @@
                 var data = formParams(houseRoom.prototype.config().frm);
                 try {
                     var item = formParams(houseModelFun.config.house.frm);
-                    data.houseId =  houseModelFun.isNotBlank(item.id) ? item.id : "0";
+                    data.houseId = houseModelFun.isNotBlank(item.id) ? item.id : "0";
                 } catch (e) {
                     console.error(e);
                     console.log("非此页面函数!");

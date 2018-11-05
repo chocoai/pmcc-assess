@@ -5,6 +5,8 @@ import java.util.Date;
 public class BasicHouseTradingSell {
     private Integer id;
 
+    private Integer caseTradingSellId;
+
     private Integer houseId;
 
     private Date instalmentPeriodStart;
@@ -27,6 +29,14 @@ public class BasicHouseTradingSell {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCaseTradingSellId() {
+        return caseTradingSellId;
+    }
+
+    public void setCaseTradingSellId(Integer caseTradingSellId) {
+        this.caseTradingSellId = caseTradingSellId;
     }
 
     public Integer getHouseId() {

@@ -234,6 +234,7 @@
             key: "basicEstate",
             name: "楼盘",
             frm: "basicEstateFrm",
+            frmLandState:"basicLandState",
             files: {
                 filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
                 waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
@@ -1191,11 +1192,13 @@
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
         var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         var basicEstate = formParams(objectData.config.basicEstate.frm);
+        var basicEstateLandState = formParams(objectData.config.basicEstate.frmLandState);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
         var basicHouse = formParams(objectData.config.basicHouse.frm);
         var basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
 
         item.basicEstate = objectData.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
+        item.basicEstateLandState = objectData.isNotBlankObjectProperty(basicEstateLandState) ? basicEstateLandState : null;
 
         var basicBuildings = new Array();
         for (var i = 1; i <= 4; i++) {

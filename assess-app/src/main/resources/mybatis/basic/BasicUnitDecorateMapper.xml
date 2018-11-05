@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicUnitDecorateMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="case_id" property="caseId" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
+    <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
+    <result column="material_price_range" property="materialPriceRange" jdbcType="INTEGER" />
+    <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, case_id, unit_id, decoration_part, decorating_material, material_price_range, 
+    construction_technology, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_basic_unit_decorate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_basic_unit_decorate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_basic_unit_decorate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorateExample" >
+    delete from tb_basic_unit_decorate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_unit_decorate (case_id, unit_id, decoration_part, 
+      decorating_material, material_price_range, 
+      construction_technology, creator, gmt_created, 
+      gmt_modified)
+    values (#{caseId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
+      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPriceRange,jdbcType=INTEGER}, 
+      #{constructionTechnology,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_unit_decorate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="caseId != null" >
+        case_id,
+      </if>
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="decorationPart != null" >
+        decoration_part,
+      </if>
+      <if test="decoratingMaterial != null" >
+        decorating_material,
+      </if>
+      <if test="materialPriceRange != null" >
+        material_price_range,
+      </if>
+      <if test="constructionTechnology != null" >
+        construction_technology,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="caseId != null" >
+        #{caseId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="decorationPart != null" >
+        #{decorationPart,jdbcType=INTEGER},
+      </if>
+      <if test="decoratingMaterial != null" >
+        #{decoratingMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="materialPriceRange != null" >
+        #{materialPriceRange,jdbcType=INTEGER},
+      </if>
+      <if test="constructionTechnology != null" >
+        #{constructionTechnology,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorateExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_unit_decorate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_basic_unit_decorate
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseId != null" >
+        case_id = #{record.caseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitId != null" >
+        unit_id = #{record.unitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.decorationPart != null" >
+        decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      </if>
+      <if test="record.decoratingMaterial != null" >
+        decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="record.materialPriceRange != null" >
+        material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
+      </if>
+      <if test="record.constructionTechnology != null" >
+        construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_basic_unit_decorate
+    set id = #{record.id,jdbcType=INTEGER},
+      case_id = #{record.caseId,jdbcType=INTEGER},
+      unit_id = #{record.unitId,jdbcType=INTEGER},
+      decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
+      material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
+      construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
+    update tb_basic_unit_decorate
+    <set >
+      <if test="caseId != null" >
+        case_id = #{caseId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="decorationPart != null" >
+        decoration_part = #{decorationPart,jdbcType=INTEGER},
+      </if>
+      <if test="decoratingMaterial != null" >
+        decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
+      </if>
+      <if test="materialPriceRange != null" >
+        material_price_range = #{materialPriceRange,jdbcType=INTEGER},
+      </if>
+      <if test="constructionTechnology != null" >
+        construction_technology = #{constructionTechnology,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
+    update tb_basic_unit_decorate
+    set case_id = #{caseId,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      decoration_part = #{decorationPart,jdbcType=INTEGER},
+      decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
+      material_price_range = #{materialPriceRange,jdbcType=INTEGER},
+      construction_technology = #{constructionTechnology,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

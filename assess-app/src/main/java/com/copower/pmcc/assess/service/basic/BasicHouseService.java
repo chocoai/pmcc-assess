@@ -141,6 +141,9 @@ public class BasicHouseService {
             return id;
         }else {
             BasicHouse oo = getBasicHouseById(basicHouse.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
             basicHouse.setVersion(oo.getVersion()+1);
             basicHouseDao.updateBasicHouse(basicHouse);
             return basicHouse.getId();

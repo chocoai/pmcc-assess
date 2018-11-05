@@ -83,7 +83,7 @@ public class BasicEstateService {
             basicEstate.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateDao.saveBasicEstate(basicEstate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
-            return  id ;
+            return id;
         } else {
             basicEstateDao.updateBasicEstate(basicEstate);
             return null;
@@ -96,27 +96,34 @@ public class BasicEstateService {
         }
         Integer id = basicEstateDao.saveBasicEstate(basicEstate);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
-        return  id ;
+        return id;
     }
 
-    public Integer upgradeVersion(BasicEstate basicEstate)throws Exception{
+    public Integer upgradeVersion(BasicEstate basicEstate) throws Exception {
         //无 id 情况下save
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
+            if (basicEstate.getVersion() == null) {
+                basicEstate.setVersion(0);
+            }
+            Integer id = basicEstateDao.saveBasicEstate(basicEstate);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
+            basicEstate.setId(id);
+            return id;
             //有id情况下 save
-        }else {
+        } else {
             basicEstate.setCreator(commonService.thisUserAccount());
             //不再使用这种方式
-            ddlMySqlAssist.insertBasicEstate(basicEstate);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
+//            ddlMySqlAssist.insertBasicEstate(basicEstate);
+//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
+            BasicEstate oo = this.getBasicEstateById(basicEstate.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
+            basicEstate.setVersion(oo.getVersion()+1);
+            basicEstateDao.updateBasicEstate(basicEstate);
+            return null;
         }
-        if (basicEstate.getVersion() == null) {
-            basicEstate.setVersion(0);
-        }
-        Integer id = basicEstateDao.saveBasicEstate(basicEstate);
-        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
-        basicEstate.setId(id);
-        return  id ;
     }
 
 
@@ -203,9 +210,10 @@ public class BasicEstateService {
         return vo;
     }
 
-    public final static String insertSql(){
+    public final static String insertSql() {
         StringBuilder builder = new StringBuilder();
-        builder.append("INSERT INTO ").append(FormatUtils.entityNameConvertToTableName(BasicEstate.class)); ;
+        builder.append("INSERT INTO ").append(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        ;
 
         builder.append(" (").append("id, apply_id, province, city, \n" +
                 "      district, block_id, developer_id, \n" +
@@ -215,7 +223,7 @@ public class BasicEstateService {
                 "      building_number, position, description, \n" +
                 "      average_price, price_range, version, \n" +
                 "      creator, gmt_created, gmt_modified").append(") ");
-        builder.append("values (") ;
+        builder.append("values (");
         builder.append("#{id,jdbcType=INTEGER},#{applyId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, \n" +
                 "      #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, \n" +
                 "      #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, \n" +
@@ -227,7 +235,6 @@ public class BasicEstateService {
         builder.append(" ) ");
         return builder.toString();
     }
-
 
 
 }

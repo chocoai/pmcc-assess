@@ -13,6 +13,8 @@ public class CaseEstateNetwork {
 
     private String indexParameter;
 
+    private Integer version;
+
     private String creator;
 
     private Date gmtCreated;
@@ -57,6 +59,14 @@ public class CaseEstateNetwork {
 
     public void setIndexParameter(String indexParameter) {
         this.indexParameter = indexParameter == null ? null : indexParameter.trim();
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getCreator() {

@@ -50,6 +50,11 @@ public class CaseEstateLandStateDao {
         return caseEstateLandStateMapper.insertSelective(caseEstateLandState) > 0;
     }
 
+    public Integer saveCaseEstateLandState(CaseEstateLandState caseEstateLandState){
+        caseEstateLandStateMapper.insertSelective(caseEstateLandState);
+        return caseEstateLandState.getId();
+    }
+
     /**
      * 编辑
      * @param caseEstateLandState

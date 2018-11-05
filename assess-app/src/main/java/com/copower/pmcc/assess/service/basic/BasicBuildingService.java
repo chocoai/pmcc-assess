@@ -179,6 +179,9 @@ public class BasicBuildingService {
             return id;
         } else {
             BasicBuilding oo = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
+            if (oo.getVersion() == null) {
+                oo.setVersion(0);
+            }
             basicBuilding.setVersion(oo.getVersion() + 1);
             basicBuildingDao.updateBasicBuilding(basicBuilding);
             return null;

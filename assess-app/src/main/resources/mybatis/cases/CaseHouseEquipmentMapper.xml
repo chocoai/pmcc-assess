@@ -3,6 +3,7 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseEquipmentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
@@ -71,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, type, category, equipment, equipment_price, creator, gmt_created, gmt_modified
+    id, version, house_id, type, category, equipment, equipment_price, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipmentExample" >
     select
@@ -107,12 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house_equipment (house_id, type, category, 
-      equipment, equipment_price, creator, 
-      gmt_created, gmt_modified)
-    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
-      #{equipment,jdbcType=VARCHAR}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_house_equipment (version, house_id, type, 
+      category, equipment, equipment_price, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{version,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{equipment,jdbcType=VARCHAR}, #{equipmentPrice,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -120,6 +124,9 @@
     </selectKey>
     insert into tb_case_house_equipment
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="version != null" >
+        version,
+      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -146,6 +153,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -184,6 +194,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -216,6 +229,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_house_equipment
     set id = #{record.id,jdbcType=INTEGER},
+      version = #{record.version,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
@@ -231,6 +245,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment" >
     update tb_case_house_equipment
     <set >
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -260,7 +277,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment" >
     update tb_case_house_equipment
-    set house_id = #{houseId,jdbcType=INTEGER},
+    set version = #{version,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       equipment = #{equipment,jdbcType=VARCHAR},
