@@ -89,6 +89,7 @@ AssessDicKey.examine_building_function_type = "building.function.type";//建筑�
 AssessDicKey.examine_building_maintenance_category = "examine.building.maintenance.category";//维护结构分类
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//维护结构材质
 
+AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
 AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//实际用途

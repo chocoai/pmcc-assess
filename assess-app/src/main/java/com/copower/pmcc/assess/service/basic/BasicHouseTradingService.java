@@ -73,12 +73,14 @@ public class BasicHouseTradingService {
             if (basicHouseTrading.getVersion() == null){
                 basicHouseTrading.setVersion(0);
             }
-            return basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
+            Integer id = basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
+            basicHouseTrading.setId(id);
+            return id;
         }else {
             BasicHouseTrading oo = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
             basicHouseTrading.setVersion(oo.getVersion()+1);
             basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
-            return null;
+            return basicHouseTrading.getId();
         }
     }
 

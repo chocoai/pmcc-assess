@@ -297,7 +297,7 @@
         </div>
     </form>
 </div>
-
+<%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
 <script type="text/javascript">
 
     var houseModelFun = new Object();

@@ -16,6 +16,7 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -107,10 +106,17 @@ public class CaseHouseController {
                 CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
                 caseHouseTrading.setHouseId(id);
                 List<CaseHouseTradingVo> houseTradings = caseHouseTradingService.caseHouseTradingList(caseHouseTrading);
-                if (!ObjectUtils.isEmpty(houseTradings)){
-                    objectMap.put(CaseHouseTrading.class.getSimpleName(),houseTradings.get(0));
+                Ordering<CaseHouseTradingVo> ordering = Ordering.from(new Comparator<CaseHouseTradingVo>() {
+                    @Override
+                    public int compare(CaseHouseTradingVo o1, CaseHouseTradingVo o2) {
+                        return o1.getId().compareTo(o2.getId());
+                    }
+                }).reverse();
+                if (!ObjectUtils.isEmpty(houseTradings)) {
+                    Collections.sort(houseTradings,ordering);
+                    objectMap.put(CaseHouseTrading.class.getSimpleName(), houseTradings.get(0));
                 }
-                objectMap.put(CaseHouse.class.getSimpleName(),caseHouse);
+                objectMap.put(CaseHouse.class.getSimpleName(), caseHouse);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
