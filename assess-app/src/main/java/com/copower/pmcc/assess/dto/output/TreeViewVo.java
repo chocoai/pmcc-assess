@@ -18,6 +18,8 @@ public class TreeViewVo {
 
     private String pName;
 
+    private String level;
+
     private List<TreeViewVo> nodes;
 
     public Integer getId() {
@@ -50,6 +52,14 @@ public class TreeViewVo {
 
     public void setpName(String pName) {
         this.pName = pName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public List<TreeViewVo> getNodes() {

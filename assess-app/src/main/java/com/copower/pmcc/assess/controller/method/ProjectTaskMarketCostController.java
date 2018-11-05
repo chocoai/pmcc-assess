@@ -1,12 +1,14 @@
 package com.copower.pmcc.assess.controller.method;
 
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.constant.AssessMarketCostConstant;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureCost;
+import com.copower.pmcc.assess.dal.basis.entity.DataInfrastructureMatchingCost;
+import com.copower.pmcc.assess.dal.basis.entity.MdCostAndDevelopmentOther;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Maps;
@@ -30,21 +32,23 @@ import java.util.Map;
 public class ProjectTaskMarketCostController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
     private MdMarketCostService mdMarketCostService;
     @Autowired
     private MdCostAndDevelopmentOtherService mdCostAndDevelopmentOtherService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @ResponseBody
     @RequestMapping(value = "/getBaseDicTree", name = "获取", method = RequestMethod.GET)
     public BootstrapTableVo getBaseDicTree() {
         BootstrapTableVo vo = mdMarketCostService.getBaseDicTree();
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getTreeView", name = "获取建安工程费树形结构", method = RequestMethod.GET)
+    public HttpResult getTreeView() {
+       return HttpResult.newCorrectResult(baseDataDicService.getTreeViewByKey(AssessMarketCostConstant.BUILD_SECURITY_ENGINEERING_PROJECT));
     }
 
     @ResponseBody
