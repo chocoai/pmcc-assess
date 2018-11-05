@@ -71,6 +71,9 @@ public class BasicHouseRoomController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房间 列表")
     public BootstrapTableVo getBootstrapTableVo(BasicHouseRoom basicHouseRoom){
         try {
+            if (basicHouseRoom==null){
+                basicHouseRoom = new BasicHouseRoom();
+            }
             BootstrapTableVo vo = basicHouseRoomService.getBootstrapTableVo(basicHouseRoom);
             return vo;
         } catch (Exception e) {

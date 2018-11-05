@@ -929,6 +929,10 @@
     //处理单元
     objectData.unit = {
         show: function () {
+            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(buildingId)) {
+                toastr.success('未选择楼栋');
+            }
             $('#caseTab a').eq(2).tab('show');
         },
         edit: function () {
@@ -993,11 +997,19 @@
     };
 
     //处理房屋
+    objectData.houseFlag = true;
     objectData.house = {
         show: function (item) {
+            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+            if (!objectData.isNotBlank(unitId)) {
+                toastr.success('未选择单元');
+            }
             $('#caseTab a').eq(3).tab('show');
-            houseModelFun.houseInit({});
-            houseModelFun.tradingInit({});
+            if (objectData.houseFlag){
+                houseModelFun.houseInit({});
+                houseModelFun.tradingInit({});
+                objectData.houseFlag = false;
+            }
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -1057,13 +1069,13 @@
                         $('#caseTab a').eq(3).tab('show');
                         $("#" + objectData.config.basicHouse.frm).find("input").each(function (i, n) {
                             var readonly = $(n).attr("readonly");
-                            if (objectData.isNotBlank(readonly)) {
+                            if (!objectData.isNotBlank(readonly)) {
                                 $(n).attr("readonly", "readonly");
                             }
                         });
                         $("#" + objectData.config.basicHouse.tradingFrm).find("input").each(function (i, n) {
                             var readonly = $(n).attr("readonly");
-                            if (objectData.isNotBlank(readonly)) {
+                            if (!objectData.isNotBlank(readonly)) {
                                 $(n).attr("readonly", "readonly");
                             }
                         });
@@ -1123,7 +1135,7 @@
         var basicEstate = formParams(objectData.config.basicEstate.frm);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
         var basicHouse = formParams(objectData.config.basicHouse.frm);
-        var basicTradingFrm = formParams(objectData.config.basicHouse.tradingFrm);
+        var basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
         var forms = $("#" + objectData.config.id).find("form");
         $.each(forms, function (i, n) {
 
@@ -1154,6 +1166,14 @@
 
             } else {
                 Alert("未选择楼栋或者是没添加新的楼栋数据!");
+                return false;
+            }
+        }
+        if (objectData.isNotBlankObjectProperty(basicHouse)){//检测到 房屋有数据 ==> 选择了单元 或者说是单元数据
+            if (objectData.isNotBlank(unitId) || objectData.isNotBlankObjectProperty(basicUnit)) {
+
+            } else {
+                Alert("未选择单元或者是没添加新的单元数据!");
                 return false;
             }
         }
