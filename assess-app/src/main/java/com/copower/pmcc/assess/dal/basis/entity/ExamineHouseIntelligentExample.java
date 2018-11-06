@@ -405,6 +405,66 @@ public class ExamineHouseIntelligentExample {
             return (Criteria) this;
         }
 
+        public Criteria andWireMaterialIsNull() {
+            addCriterion("wire_material is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialIsNotNull() {
+            addCriterion("wire_material is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialEqualTo(Integer value) {
+            addCriterion("wire_material =", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialNotEqualTo(Integer value) {
+            addCriterion("wire_material <>", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialGreaterThan(Integer value) {
+            addCriterion("wire_material >", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialGreaterThanOrEqualTo(Integer value) {
+            addCriterion("wire_material >=", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialLessThan(Integer value) {
+            addCriterion("wire_material <", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialLessThanOrEqualTo(Integer value) {
+            addCriterion("wire_material <=", value, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialIn(List<Integer> values) {
+            addCriterion("wire_material in", values, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialNotIn(List<Integer> values) {
+            addCriterion("wire_material not in", values, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialBetween(Integer value1, Integer value2) {
+            addCriterion("wire_material between", value1, value2, "wireMaterial");
+            return (Criteria) this;
+        }
+
+        public Criteria andWireMaterialNotBetween(Integer value1, Integer value2) {
+            addCriterion("wire_material not between", value1, value2, "wireMaterial");
+            return (Criteria) this;
+        }
+
         public Criteria andSwitchCircuitIsNull() {
             addCriterion("switch_circuit is null");
             return (Criteria) this;

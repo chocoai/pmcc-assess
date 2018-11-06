@@ -8,17 +8,19 @@ public class MdIncomeHistory {
 
     private Integer incomeId;
 
+    private Integer forecastAnalyseId;
+
     private Integer type;
 
-    private String year;
+    private Integer year;
+
+    private Integer month;
 
     private Integer accountingSubject;
 
     private String firstLevelNumber;
 
     private String secondLevelNumber;
-
-    private String month;
 
     private String unit;
 
@@ -46,6 +48,8 @@ public class MdIncomeHistory {
 
     private String discountRateExplain;
 
+    private Boolean bisForecast;
+
     private String creator;
 
     private Date gmtCreated;
@@ -68,6 +72,14 @@ public class MdIncomeHistory {
         this.incomeId = incomeId;
     }
 
+    public Integer getForecastAnalyseId() {
+        return forecastAnalyseId;
+    }
+
+    public void setForecastAnalyseId(Integer forecastAnalyseId) {
+        this.forecastAnalyseId = forecastAnalyseId;
+    }
+
     public Integer getType() {
         return type;
     }
@@ -76,12 +88,20 @@ public class MdIncomeHistory {
         this.type = type;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
-        this.year = year == null ? null : year.trim();
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
     public Integer getAccountingSubject() {
@@ -106,14 +126,6 @@ public class MdIncomeHistory {
 
     public void setSecondLevelNumber(String secondLevelNumber) {
         this.secondLevelNumber = secondLevelNumber == null ? null : secondLevelNumber.trim();
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month == null ? null : month.trim();
     }
 
     public String getUnit() {
@@ -218,6 +230,14 @@ public class MdIncomeHistory {
 
     public void setDiscountRateExplain(String discountRateExplain) {
         this.discountRateExplain = discountRateExplain == null ? null : discountRateExplain.trim();
+    }
+
+    public Boolean getBisForecast() {
+        return bisForecast;
+    }
+
+    public void setBisForecast(Boolean bisForecast) {
+        this.bisForecast = bisForecast;
     }
 
     public String getCreator() {

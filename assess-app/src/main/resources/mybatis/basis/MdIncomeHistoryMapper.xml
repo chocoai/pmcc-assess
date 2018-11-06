@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="income_id" property="incomeId" jdbcType="INTEGER" />
+    <result column="forecast_analyse_id" property="forecastAnalyseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
     <result column="accounting_subject" property="accountingSubject" jdbcType="INTEGER" />
     <result column="first_level_number" property="firstLevelNumber" jdbcType="VARCHAR" />
     <result column="second_level_number" property="secondLevelNumber" jdbcType="VARCHAR" />
-    <result column="month" property="month" jdbcType="VARCHAR" />
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -23,6 +24,7 @@
     <result column="executive_price" property="executivePrice" jdbcType="DECIMAL" />
     <result column="discount_rate" property="discountRate" jdbcType="DECIMAL" />
     <result column="discount_rate_explain" property="discountRateExplain" jdbcType="VARCHAR" />
+    <result column="bis_forecast" property="bisForecast" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -86,10 +88,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, income_id, type, year, accounting_subject, first_level_number, second_level_number, 
-    month, unit, unit_price, number, amount_money, begin_date, end_date, utilization_ratio, 
-    utilization_ratio_explain, make_price, make_price_explain, executive_price, discount_rate, 
-    discount_rate_explain, creator, gmt_created, gmt_modified
+    id, income_id, forecast_analyse_id, type, year, month, accounting_subject, first_level_number, 
+    second_level_number, unit, unit_price, number, amount_money, begin_date, end_date, 
+    utilization_ratio, utilization_ratio_explain, make_price, make_price_explain, executive_price, 
+    discount_rate, discount_rate_explain, bis_forecast, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistoryExample" >
     select
@@ -125,22 +127,24 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_income_history (income_id, type, year, 
-      accounting_subject, first_level_number, second_level_number, 
-      month, unit, unit_price, 
-      number, amount_money, begin_date, 
-      end_date, utilization_ratio, utilization_ratio_explain, 
-      make_price, make_price_explain, executive_price, 
-      discount_rate, discount_rate_explain, creator, 
-      gmt_created, gmt_modified)
-    values (#{incomeId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{year,jdbcType=VARCHAR}, 
-      #{accountingSubject,jdbcType=INTEGER}, #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, 
-      #{month,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
-      #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, #{beginDate,jdbcType=TIMESTAMP}, 
-      #{endDate,jdbcType=TIMESTAMP}, #{utilizationRatio,jdbcType=DECIMAL}, #{utilizationRatioExplain,jdbcType=VARCHAR}, 
-      #{makePrice,jdbcType=DECIMAL}, #{makePriceExplain,jdbcType=VARCHAR}, #{executivePrice,jdbcType=DECIMAL}, 
-      #{discountRate,jdbcType=DECIMAL}, #{discountRateExplain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_md_income_history (income_id, forecast_analyse_id, type, 
+      year, month, accounting_subject, 
+      first_level_number, second_level_number, unit, 
+      unit_price, number, amount_money, 
+      begin_date, end_date, utilization_ratio, 
+      utilization_ratio_explain, make_price, make_price_explain, 
+      executive_price, discount_rate, discount_rate_explain, 
+      bis_forecast, creator, gmt_created, 
+      gmt_modified)
+    values (#{incomeId,jdbcType=INTEGER}, #{forecastAnalyseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, #{accountingSubject,jdbcType=INTEGER}, 
+      #{firstLevelNumber,jdbcType=VARCHAR}, #{secondLevelNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+      #{unitPrice,jdbcType=DECIMAL}, #{number,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, 
+      #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{utilizationRatio,jdbcType=DECIMAL}, 
+      #{utilizationRatioExplain,jdbcType=VARCHAR}, #{makePrice,jdbcType=DECIMAL}, #{makePriceExplain,jdbcType=VARCHAR}, 
+      #{executivePrice,jdbcType=DECIMAL}, #{discountRate,jdbcType=DECIMAL}, #{discountRateExplain,jdbcType=VARCHAR}, 
+      #{bisForecast,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,11 +155,17 @@
       <if test="incomeId != null" >
         income_id,
       </if>
+      <if test="forecastAnalyseId != null" >
+        forecast_analyse_id,
+      </if>
       <if test="type != null" >
         type,
       </if>
       <if test="year != null" >
         year,
+      </if>
+      <if test="month != null" >
+        month,
       </if>
       <if test="accountingSubject != null" >
         accounting_subject,
@@ -165,9 +175,6 @@
       </if>
       <if test="secondLevelNumber != null" >
         second_level_number,
-      </if>
-      <if test="month != null" >
-        month,
       </if>
       <if test="unit != null" >
         unit,
@@ -208,6 +215,9 @@
       <if test="discountRateExplain != null" >
         discount_rate_explain,
       </if>
+      <if test="bisForecast != null" >
+        bis_forecast,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -222,11 +232,17 @@
       <if test="incomeId != null" >
         #{incomeId,jdbcType=INTEGER},
       </if>
+      <if test="forecastAnalyseId != null" >
+        #{forecastAnalyseId,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
-        #{year,jdbcType=VARCHAR},
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=INTEGER},
       </if>
       <if test="accountingSubject != null" >
         #{accountingSubject,jdbcType=INTEGER},
@@ -236,9 +252,6 @@
       </if>
       <if test="secondLevelNumber != null" >
         #{secondLevelNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="month != null" >
-        #{month,jdbcType=VARCHAR},
       </if>
       <if test="unit != null" >
         #{unit,jdbcType=VARCHAR},
@@ -279,6 +292,9 @@
       <if test="discountRateExplain != null" >
         #{discountRateExplain,jdbcType=VARCHAR},
       </if>
+      <if test="bisForecast != null" >
+        #{bisForecast,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -305,11 +321,17 @@
       <if test="record.incomeId != null" >
         income_id = #{record.incomeId,jdbcType=INTEGER},
       </if>
+      <if test="record.forecastAnalyseId != null" >
+        forecast_analyse_id = #{record.forecastAnalyseId,jdbcType=INTEGER},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.year != null" >
-        year = #{record.year,jdbcType=VARCHAR},
+        year = #{record.year,jdbcType=INTEGER},
+      </if>
+      <if test="record.month != null" >
+        month = #{record.month,jdbcType=INTEGER},
       </if>
       <if test="record.accountingSubject != null" >
         accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
@@ -319,9 +341,6 @@
       </if>
       <if test="record.secondLevelNumber != null" >
         second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.month != null" >
-        month = #{record.month,jdbcType=VARCHAR},
       </if>
       <if test="record.unit != null" >
         unit = #{record.unit,jdbcType=VARCHAR},
@@ -362,6 +381,9 @@
       <if test="record.discountRateExplain != null" >
         discount_rate_explain = #{record.discountRateExplain,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisForecast != null" >
+        bis_forecast = #{record.bisForecast,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -380,12 +402,13 @@
     update tb_md_income_history
     set id = #{record.id,jdbcType=INTEGER},
       income_id = #{record.incomeId,jdbcType=INTEGER},
+      forecast_analyse_id = #{record.forecastAnalyseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
-      year = #{record.year,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=INTEGER},
+      month = #{record.month,jdbcType=INTEGER},
       accounting_subject = #{record.accountingSubject,jdbcType=INTEGER},
       first_level_number = #{record.firstLevelNumber,jdbcType=VARCHAR},
       second_level_number = #{record.secondLevelNumber,jdbcType=VARCHAR},
-      month = #{record.month,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=VARCHAR},
       unit_price = #{record.unitPrice,jdbcType=DECIMAL},
       number = #{record.number,jdbcType=INTEGER},
@@ -399,6 +422,7 @@
       executive_price = #{record.executivePrice,jdbcType=DECIMAL},
       discount_rate = #{record.discountRate,jdbcType=DECIMAL},
       discount_rate_explain = #{record.discountRateExplain,jdbcType=VARCHAR},
+      bis_forecast = #{record.bisForecast,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -412,11 +436,17 @@
       <if test="incomeId != null" >
         income_id = #{incomeId,jdbcType=INTEGER},
       </if>
+      <if test="forecastAnalyseId != null" >
+        forecast_analyse_id = #{forecastAnalyseId,jdbcType=INTEGER},
+      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
       <if test="year != null" >
-        year = #{year,jdbcType=VARCHAR},
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=INTEGER},
       </if>
       <if test="accountingSubject != null" >
         accounting_subject = #{accountingSubject,jdbcType=INTEGER},
@@ -426,9 +456,6 @@
       </if>
       <if test="secondLevelNumber != null" >
         second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="month != null" >
-        month = #{month,jdbcType=VARCHAR},
       </if>
       <if test="unit != null" >
         unit = #{unit,jdbcType=VARCHAR},
@@ -469,6 +496,9 @@
       <if test="discountRateExplain != null" >
         discount_rate_explain = #{discountRateExplain,jdbcType=VARCHAR},
       </if>
+      <if test="bisForecast != null" >
+        bis_forecast = #{bisForecast,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -484,12 +514,13 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeHistory" >
     update tb_md_income_history
     set income_id = #{incomeId,jdbcType=INTEGER},
+      forecast_analyse_id = #{forecastAnalyseId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
-      year = #{year,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
       accounting_subject = #{accountingSubject,jdbcType=INTEGER},
       first_level_number = #{firstLevelNumber,jdbcType=VARCHAR},
       second_level_number = #{secondLevelNumber,jdbcType=VARCHAR},
-      month = #{month,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=VARCHAR},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
       number = #{number,jdbcType=INTEGER},
@@ -503,6 +534,7 @@
       executive_price = #{executivePrice,jdbcType=DECIMAL},
       discount_rate = #{discountRate,jdbcType=DECIMAL},
       discount_rate_explain = #{discountRateExplain,jdbcType=VARCHAR},
+      bis_forecast = #{bisForecast,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

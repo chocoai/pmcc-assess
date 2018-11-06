@@ -476,63 +476,63 @@ public class MdIncomeExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andFormTypeIsNull() {
+            addCriterion("form_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andFormTypeIsNotNull() {
+            addCriterion("form_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
+        public Criteria andFormTypeEqualTo(Integer value) {
+            addCriterion("form_type =", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andFormTypeNotEqualTo(Integer value) {
+            addCriterion("form_type <>", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
+        public Criteria andFormTypeGreaterThan(Integer value) {
+            addCriterion("form_type >", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andFormTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_type >=", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
+        public Criteria andFormTypeLessThan(Integer value) {
+            addCriterion("form_type <", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andFormTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("form_type <=", value, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andFormTypeIn(List<Integer> values) {
+            addCriterion("form_type in", values, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
+        public Criteria andFormTypeNotIn(List<Integer> values) {
+            addCriterion("form_type not in", values, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
+        public Criteria andFormTypeBetween(Integer value1, Integer value2) {
+            addCriterion("form_type between", value1, value2, "formType");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
+        public Criteria andFormTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_type not between", value1, value2, "formType");
             return (Criteria) this;
         }
 

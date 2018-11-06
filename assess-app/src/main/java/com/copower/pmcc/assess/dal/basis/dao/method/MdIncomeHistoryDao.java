@@ -55,6 +55,7 @@ public class MdIncomeHistoryDao {
     public List<MdIncomeHistory> getHistoryList(MdIncomeHistory mdIncomeHistory) {
         MdIncomeHistoryExample example = new MdIncomeHistoryExample();
         MybatisUtils.convertObj2Example(mdIncomeHistory, example);
+        example.setOrderByClause("year,month");
         return mdIncomeHistoryMapper.selectByExample(example);
     }
 

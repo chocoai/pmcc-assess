@@ -226,6 +226,66 @@ public class MdIncomeHistoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andForecastAnalyseIdIsNull() {
+            addCriterion("forecast_analyse_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdIsNotNull() {
+            addCriterion("forecast_analyse_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdEqualTo(Integer value) {
+            addCriterion("forecast_analyse_id =", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdNotEqualTo(Integer value) {
+            addCriterion("forecast_analyse_id <>", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdGreaterThan(Integer value) {
+            addCriterion("forecast_analyse_id >", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("forecast_analyse_id >=", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdLessThan(Integer value) {
+            addCriterion("forecast_analyse_id <", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("forecast_analyse_id <=", value, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdIn(List<Integer> values) {
+            addCriterion("forecast_analyse_id in", values, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdNotIn(List<Integer> values) {
+            addCriterion("forecast_analyse_id not in", values, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdBetween(Integer value1, Integer value2) {
+            addCriterion("forecast_analyse_id between", value1, value2, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andForecastAnalyseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("forecast_analyse_id not between", value1, value2, "forecastAnalyseId");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -296,63 +356,113 @@ public class MdIncomeHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andYearEqualTo(String value) {
+        public Criteria andYearEqualTo(Integer value) {
             addCriterion("year =", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotEqualTo(String value) {
+        public Criteria andYearNotEqualTo(Integer value) {
             addCriterion("year <>", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearGreaterThan(String value) {
+        public Criteria andYearGreaterThan(Integer value) {
             addCriterion("year >", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearGreaterThanOrEqualTo(String value) {
+        public Criteria andYearGreaterThanOrEqualTo(Integer value) {
             addCriterion("year >=", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearLessThan(String value) {
+        public Criteria andYearLessThan(Integer value) {
             addCriterion("year <", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearLessThanOrEqualTo(String value) {
+        public Criteria andYearLessThanOrEqualTo(Integer value) {
             addCriterion("year <=", value, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearLike(String value) {
-            addCriterion("year like", value, "year");
-            return (Criteria) this;
-        }
-
-        public Criteria andYearNotLike(String value) {
-            addCriterion("year not like", value, "year");
-            return (Criteria) this;
-        }
-
-        public Criteria andYearIn(List<String> values) {
+        public Criteria andYearIn(List<Integer> values) {
             addCriterion("year in", values, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotIn(List<String> values) {
+        public Criteria andYearNotIn(List<Integer> values) {
             addCriterion("year not in", values, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearBetween(String value1, String value2) {
+        public Criteria andYearBetween(Integer value1, Integer value2) {
             addCriterion("year between", value1, value2, "year");
             return (Criteria) this;
         }
 
-        public Criteria andYearNotBetween(String value1, String value2) {
+        public Criteria andYearNotBetween(Integer value1, Integer value2) {
             addCriterion("year not between", value1, value2, "year");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthIsNull() {
+            addCriterion("month is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthIsNotNull() {
+            addCriterion("month is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthEqualTo(Integer value) {
+            addCriterion("month =", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthNotEqualTo(Integer value) {
+            addCriterion("month <>", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthGreaterThan(Integer value) {
+            addCriterion("month >", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthGreaterThanOrEqualTo(Integer value) {
+            addCriterion("month >=", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthLessThan(Integer value) {
+            addCriterion("month <", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthLessThanOrEqualTo(Integer value) {
+            addCriterion("month <=", value, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthIn(List<Integer> values) {
+            addCriterion("month in", values, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthNotIn(List<Integer> values) {
+            addCriterion("month not in", values, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthBetween(Integer value1, Integer value2) {
+            addCriterion("month between", value1, value2, "month");
+            return (Criteria) this;
+        }
+
+        public Criteria andMonthNotBetween(Integer value1, Integer value2) {
+            addCriterion("month not between", value1, value2, "month");
             return (Criteria) this;
         }
 
@@ -553,76 +663,6 @@ public class MdIncomeHistoryExample {
 
         public Criteria andSecondLevelNumberNotBetween(String value1, String value2) {
             addCriterion("second_level_number not between", value1, value2, "secondLevelNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthIsNull() {
-            addCriterion("month is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthIsNotNull() {
-            addCriterion("month is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthEqualTo(String value) {
-            addCriterion("month =", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthNotEqualTo(String value) {
-            addCriterion("month <>", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthGreaterThan(String value) {
-            addCriterion("month >", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthGreaterThanOrEqualTo(String value) {
-            addCriterion("month >=", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthLessThan(String value) {
-            addCriterion("month <", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthLessThanOrEqualTo(String value) {
-            addCriterion("month <=", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthLike(String value) {
-            addCriterion("month like", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthNotLike(String value) {
-            addCriterion("month not like", value, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthIn(List<String> values) {
-            addCriterion("month in", values, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthNotIn(List<String> values) {
-            addCriterion("month not in", values, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthBetween(String value1, String value2) {
-            addCriterion("month between", value1, value2, "month");
-            return (Criteria) this;
-        }
-
-        public Criteria andMonthNotBetween(String value1, String value2) {
-            addCriterion("month not between", value1, value2, "month");
             return (Criteria) this;
         }
 
@@ -1443,6 +1483,66 @@ public class MdIncomeHistoryExample {
 
         public Criteria andDiscountRateExplainNotBetween(String value1, String value2) {
             addCriterion("discount_rate_explain not between", value1, value2, "discountRateExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastIsNull() {
+            addCriterion("bis_forecast is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastIsNotNull() {
+            addCriterion("bis_forecast is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastEqualTo(Boolean value) {
+            addCriterion("bis_forecast =", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastNotEqualTo(Boolean value) {
+            addCriterion("bis_forecast <>", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastGreaterThan(Boolean value) {
+            addCriterion("bis_forecast >", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_forecast >=", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastLessThan(Boolean value) {
+            addCriterion("bis_forecast <", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_forecast <=", value, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastIn(List<Boolean> values) {
+            addCriterion("bis_forecast in", values, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastNotIn(List<Boolean> values) {
+            addCriterion("bis_forecast not in", values, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_forecast between", value1, value2, "bisForecast");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisForecastNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_forecast not between", value1, value2, "bisForecast");
             return (Criteria) this;
         }
 

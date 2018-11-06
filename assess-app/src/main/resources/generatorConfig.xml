@@ -39,6 +39,6 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_infrastructure" domainObjectName="DataInfrastructure"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_md_income_history" domainObjectName="MdIncomeHistory"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 </generatorConfiguration>
