@@ -44,7 +44,7 @@
                     <div class="input-group">
                         <select class="form-control huxingId" name="huxingId">
                         </select>
-                        <label class="input-group-addon btn">刷新户型<i
+                        <label class="input-group-addon btn" onclick="houseModelFun.unitHuxingSelectLoad(this)">刷新户型<i
                                 class="fa fa-refresh"></i></label>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                 <label class="col-sm-1 control-label">房屋出租占用情况途描述<span
                         class="symbol required"></span></label>
                 <div class="col-sm-11">
-                                    <textarea class="form-control" name="description" required="required"></textarea>
+                    <textarea class="form-control" name="description" required="required"></textarea>
                 </div>
             </div>
         </div>
@@ -401,6 +401,36 @@
         });
     };
 
+    houseModelFun.unitHuxingSelectLoad = function (item) {
+        var unitId = houseModelFun.isNotBlank(item.id) ? item.id : "0";
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicUnitHuxing/basicUnitHuxingList",
+            type: "get",
+            dataType: "json",
+            data: {unitId: unitId},
+            success: function (result) {
+                if (result.ret) {
+                    var data = result.data;
+                    var retHtml = '<option value="" selected>-请选择-</option>';
+                    $.each(result.data, function (i, item) {
+                        var houseCategory = "";
+                        try {
+                            houseCategory = unitHuxing.prototype.rule("formatter", JSON.parse(item.houseCategory));
+                        } catch (e) {
+                            console.error(e);
+                            console.log("函数失效!");
+                        }
+                        retHtml += ' <option value="' + item.id + '">' + houseCategory + '</option>';
+                    });
+                    $(item).prev().empty().append(retHtml);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
+
     houseModelFun.tradingInit = function (item) {
         $("#" + this.config.trading.frm).clearAll();
         $("#" + this.config.trading.frm).initForm(item);
@@ -489,7 +519,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' "+"onclick=houseModelFun.tradingSellAndLease.remove("+row.id+",'"+row.tradingType+"'"+")"+">"  ;
+                    str += "<a class='btn btn-xs btn-warning tooltips' data-placement='top' data-original-title='删除' " + "onclick=houseModelFun.tradingSellAndLease.remove(" + row.id + ",'" + row.tradingType + "'" + ")" + ">";
                     str += "<i class='fa fa-minus fa-white'>" + "</i>";
                     str += "</a>";
                     str += '</div>';
@@ -526,6 +556,35 @@
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
+            });
+        }
+    };
+
+    houseModelFun.houseEvent = {
+        changeEvent: function () {
+            $("#" + houseModelFun.config.house.frm).find(".huxingId").change(function () {
+                var id = $("#" + houseModelFun.config.house.frm).find(".huxingId").find("option:selected").val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/basicUnitHuxing/getBasicUnitHuxingById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            if (houseModelFun.isNotBlank(result.data)) {
+                                if (houseModelFun.isNotBlank(result.data.fileViewName)) {
+                                    $("#" + houseModelFun.config.house.frm).find(".house_latest_family_plan").html(result.data.fileViewName);
+                                }
+                            }
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
             });
         }
     };
@@ -592,6 +651,7 @@
 
     $(function () {
         houseModelFun.tradingEvent.changeEvent();
+        houseModelFun.houseEvent.changeEvent();
     });
 </script>
 

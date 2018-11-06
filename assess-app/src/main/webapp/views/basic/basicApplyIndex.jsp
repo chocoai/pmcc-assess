@@ -1011,6 +1011,7 @@
                                     $(n).removeAttr("readonly");
                                 }
                             });
+                            objectData.unit.appWriteUnit(unitId);
                             objectData.unit.show();
                         }
                     }
@@ -1042,6 +1043,22 @@
                             });
                             objectData.unit.show();
                         }
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        appWriteUnit:function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicUnit/appWriteUnit",
+                type: "POST",
+                data: {caseUnitId: id},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('数据转移成功!');
                     }
                 },
                 error: function (result) {

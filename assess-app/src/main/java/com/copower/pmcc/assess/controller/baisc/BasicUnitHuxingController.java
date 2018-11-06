@@ -29,7 +29,7 @@ public class BasicUnitHuxingController {
     @RequestMapping(value = "/getBasicUnitHuxingById", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicUnitHuxingById(Integer id){
         try {
-            return HttpResult.newCorrectResult(200,basicUnitHuxingService.getBasicUnitHuxingById(id));
+            return HttpResult.newCorrectResult(200,basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getBasicUnitHuxingById(id)));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());
