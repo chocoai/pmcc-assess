@@ -6,9 +6,7 @@ import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
-import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
-import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
-import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
+import com.copower.pmcc.assess.dto.output.cases.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -1380,7 +1378,7 @@ public class PublicBasicService {
      * @param caseEstateId
      * @throws Exception
      */
-    public CaseEstate appWriteEstate(Integer caseEstateId) throws Exception {
+    public CaseEstateVo appWriteEstate(Integer caseEstateId) throws Exception {
         if (caseEstateId == null){
             throw new Exception("null point");
         }
@@ -1421,7 +1419,7 @@ public class PublicBasicService {
                 basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
             }
         }
-        return caseEstateService.getCaseEstateById(caseEstateId);
+        return caseEstateService.getCaseEstateVo(caseEstateService.getCaseEstateById(caseEstateId));
     }
 
     /**
@@ -1429,7 +1427,7 @@ public class PublicBasicService {
      * @param caseHouseId
      * @throws Exception
      */
-    public CaseHouse appWriteHouse(Integer caseHouseId) throws Exception{
+    public CaseHouseVo appWriteHouse(Integer caseHouseId) throws Exception{
         if (caseHouseId == null){
             throw  new Exception("null ponit");
         }
@@ -1473,6 +1471,6 @@ public class PublicBasicService {
                 basicHouseRoomService.saveAndUpdateBasicHouseRoom(queryRoom);
             }
         }
-        return  caseHouseService.getCaseHouseById(caseHouseId);
+        return  caseHouseService.getCaseHouseVo(caseHouseService.getCaseHouseById(caseHouseId));
     }
 }

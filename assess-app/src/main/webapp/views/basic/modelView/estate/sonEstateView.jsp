@@ -112,17 +112,9 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateNetwork.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/basicEstateNetwork/getBootstrapTableVo", cols, {
-                    estateId: estateId
+                    estateId: "0"
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -161,13 +153,7 @@
                     return false;
                 }
                 var data = formParams(estateNetwork.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateNetwork.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
                     type: "post",
@@ -246,17 +232,9 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateNetwork.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/basicEstateParking/getBootstrapTableVo", cols, {
-                    estateId: estateId
+                    estateId: "0"
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -295,13 +273,7 @@
                     return false;
                 }
                 var data = formParams(estateParking.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateParking.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateParking/saveAndUpdateBasicEstateParking",
                     type: "post",
@@ -392,14 +364,7 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateSupplyWater.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                var estateId = "0";
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyWater.prototype.config().type,
@@ -443,13 +408,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyWater.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateSupplyWater.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -540,14 +499,7 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateSupplyPower.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                var estateId = "0";
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyPower.prototype.config().type,
@@ -591,13 +543,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyPower.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateParking.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -686,14 +632,7 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateSupplyHeating.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                var estateId = "0";
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyHeating.prototype.config().type,
@@ -737,13 +676,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyHeating.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateSupplyHeating.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -832,14 +765,7 @@
                         return str;
                     }
                 });
-                var estateId = "";
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    estateId = estateSupplyGas.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                var estateId = "0";
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     estateId: estateId,
@@ -883,13 +809,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyGas.prototype.config().frm);
-                try {
-                    var basicEstate = formParams(objectData.config.basicEstate.frm);
-                    data.estateId = estateSupplyGas.prototype.isNotBlank(basicEstate.id) ? basicEstate.id : "0";
-                } catch (e) {
-                    console.log("函数失效");
-                    console.error(e);
-                }
+                data.estateId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",

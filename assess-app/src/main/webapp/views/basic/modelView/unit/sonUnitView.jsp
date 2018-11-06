@@ -74,17 +74,9 @@
                         return str;
                     }
                 });
-                var unitId = null;
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    unitId = unitDecorate.prototype.isNotBlank(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
                 $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/basicUnitDecorate/getBootstrapTableVo", cols, {
-                    unitId: unitId
+                    unitId: 0
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -123,13 +115,7 @@
                     return false;
                 }
                 var data = formParams(unitDecorate.prototype.config().frm);
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    data.unitId = unitDecorate.prototype.isNotBlank(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
+                data.unitId = "0" ;
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
                     type: "post",
@@ -229,17 +215,9 @@
                         return str;
                     }
                 });
-                var unitId = null;
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    unitId = unitHuxing.prototype.isNotNull(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/basicUnitHuxing/getBootstrapTableVo", cols, {
-                    unitId: unitId
+                    unitId: "0"
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -278,13 +256,7 @@
                     return false;
                 }
                 var data = formParams(unitHuxing.prototype.config().frm);
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    data.unitId = unitHuxing.prototype.isNotNull(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
+                data.unitId = "0" ;
                 data.houseCategory = unitHuxing.prototype.rule("get",data);
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
@@ -457,17 +429,9 @@
                         return str;
                     }
                 });
-                var unitId = null;
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    unitId = unitElevator.prototype.isNotNull(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
                 $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/basicUnitElevator/getBootstrapTableVo", cols, {
-                    unitId: unitId
+                    unitId: "0"
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -506,13 +470,7 @@
                     return false;
                 }
                 var data = formParams(unitElevator.prototype.config().frm);
-                try {
-                    var basicUnit = formParams(objectData.config.basicUnit.frm);
-                    data.unitId = unitElevator.prototype.isNotNull(basicUnit.id) ? basicUnit.id : "0";
-                } catch (e) {
-                    console.error(e);
-                    console.log("函数失效!");
-                }
+                data.unitId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicUnitElevator/saveAndUpdateBasicUnitElevator",
                     type: "post",

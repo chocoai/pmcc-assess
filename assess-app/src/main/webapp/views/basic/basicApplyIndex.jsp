@@ -767,6 +767,22 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
+        },
+        appWriteEstate:function (id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicEstate/appWriteEstate",
+                type: "POST",
+                data: {caseEstateId: id},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('数据转移成功!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         }
     };
 
@@ -1396,8 +1412,6 @@
             data: {formData: formData},
             success: function (result) {
                 if (result.ret) {
-                    // Alert("提交数据成功!");
-
                     Alert("提交数据成功!", 1, null, function () {
                         window.location.reload();
                     });

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
+import com.copower.pmcc.assess.dto.output.cases.CaseHouseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -18,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -293,5 +295,11 @@ public class CaseHouseService {
             }
         }
         return list;
+    }
+
+    public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse){
+        CaseHouseVo vo = new CaseHouseVo();
+        BeanUtils.copyProperties(caseHouse,vo);
+        return vo;
     }
 }
