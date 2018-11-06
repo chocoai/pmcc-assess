@@ -327,7 +327,6 @@
     };
 
     landEngineeringDevelopment.viewInit = function () {
-        alert(999);
         landEngineeringDevelopment.extendOverwrite();
         landEngineeringDevelopment.init();
         /**
