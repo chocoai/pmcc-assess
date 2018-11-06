@@ -1,0 +1,127 @@
+package com.copower.pmcc.assess.service.basic;
+
+import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingEnvironmentDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingEnvironmentVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:01
+ * @Description:
+ */
+@Service
+public class BasicMatchingEnvironmentService {
+
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicMatchingEnvironmentDao basicMatchingEnvironmentDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicMatchingEnvironment getBasicMatchingEnvironmentById(Integer id) throws Exception {
+        return basicMatchingEnvironmentDao.getBasicMatchingEnvironmentById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicMatchingEnvironment
+     * @return
+     * @throws Exception
+     */
+    public Integer saveAndUpdateBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
+        if (basicMatchingEnvironment.getId() == null || basicMatchingEnvironment.getId().intValue() == 0) {
+            basicMatchingEnvironment.setCreator(commonService.thisUserAccount());
+            Integer id = basicMatchingEnvironmentDao.saveBasicMatchingEnvironment(basicMatchingEnvironment);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), id);
+            return  id ;
+        } else {
+            BasicMatchingEnvironment oo = basicMatchingEnvironmentDao.getBasicMatchingEnvironmentById(basicMatchingEnvironment.getId());
+            basicMatchingEnvironmentDao.updateBasicMatchingEnvironment(basicMatchingEnvironment);
+            return null;
+        }
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteBasicMatchingEnvironment(Integer id) throws Exception {
+        return basicMatchingEnvironmentDao.deleteBasicMatchingEnvironment(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param basicMatchingEnvironment
+     * @return
+     * @throws Exception
+     */
+    public List<BasicMatchingEnvironment> basicMatchingEnvironmentList(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
+        return basicMatchingEnvironmentDao.basicMatchingEnvironmentList(basicMatchingEnvironment);
+    }
+
+    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment)throws Exception{
+        basicMatchingEnvironmentDao.removeBasicMatchingEnvironment(basicMatchingEnvironment);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicMatchingEnvironment> basicMatchingEnvironmentList = basicMatchingEnvironmentDao.basicMatchingEnvironmentList(basicMatchingEnvironment);
+        List<BasicMatchingEnvironmentVo> vos = Lists.newArrayList();
+        basicMatchingEnvironmentList.forEach(oo -> vos.add(getBasicMatchingEnvironmentVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicMatchingEnvironmentVo>(10) : vos);
+        return vo;
+    }
+
+    public BasicMatchingEnvironmentVo getBasicMatchingEnvironmentVo(BasicMatchingEnvironment basicMatchingEnvironment){
+        if (basicMatchingEnvironment==null){
+            return null;
+        }
+        BasicMatchingEnvironmentVo vo = new BasicMatchingEnvironmentVo();
+        BeanUtils.copyProperties(basicMatchingEnvironment,vo);
+        BaseDataDic dataDic = null;
+
+        return vo;
+    }
+    
+}

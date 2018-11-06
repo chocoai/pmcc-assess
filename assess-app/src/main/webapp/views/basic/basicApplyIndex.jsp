@@ -563,6 +563,12 @@
                 objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
+            estateNetwork.prototype.loadDataDicList();
+            estateParking.prototype.loadDataDicList();
+            estateSupplyWater.prototype.loadDataDicList();
+            estateSupplyPower.prototype.loadDataDicList();
+            estateSupplyHeating.prototype.loadDataDicList();
+            estateSupplyGas.prototype.loadDataDicList();
         },
         details: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
@@ -810,7 +816,6 @@
                                             });
                                             var temp = resultA.data[0];
                                             if (objectData.isNotBlankObjectProperty(temp)) {
-                                                // objectData.building.show(temp);
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
                                             } else {
@@ -869,7 +874,6 @@
                                             });
                                             var temp = resultA.data[0];
                                             if (objectData.isNotBlankObjectProperty(temp)) {
-                                                // objectData.building.show(temp);
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
                                             } else {
@@ -989,6 +993,9 @@
                 toastr.success('未选择楼栋');
             }
             $('#caseTab a').eq(2).tab('show');
+            unitDecorate.prototype.loadDataDicList();
+            unitHuxing.prototype.loadDataDicList();
+            unitElevator.prototype.loadDataDicList();
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -1082,6 +1089,7 @@
                 houseModelFun.tradingInit({});
                 objectData.houseFlag = false;
             }
+            houseRoom.prototype.loadDataDicList();
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -1173,6 +1181,36 @@
 
     //删除 楼盘 楼盘 单元 房屋 下 子类的临时数据!
     objectData.firstRemove = {
+        houseFirst:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicHouse/initHouse",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('房屋删除临时数据!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        estateFirst:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicEstate/initEstate",
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        toastr.success('楼盘删除临时数据!');
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
         buildFirst: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
@@ -1208,6 +1246,8 @@
                 objectData.flag = false;
                 objectData.firstRemove.buildFirst();
                 objectData.firstRemove.unitFirst();
+                objectData.firstRemove.estateFirst();
+                objectData.firstRemove.houseFirst();
             }
         }
     }

@@ -557,12 +557,6 @@
         }
 
     })();
-
-    $(function () {
-        unitDecorate.prototype.loadDataDicList();
-        unitHuxing.prototype.loadDataDicList();
-        unitElevator.prototype.loadDataDicList();
-    });
 </script>
 
 <div id="divBoxExamineUnitDecorate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

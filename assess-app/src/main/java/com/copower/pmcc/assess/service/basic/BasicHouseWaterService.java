@@ -1,0 +1,127 @@
+package com.copower.pmcc.assess.service.basic;
+
+import com.copower.pmcc.assess.dal.basic.dao.BasicHouseWaterDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseWaterVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:21
+ * @Description:
+ */
+@Service
+public class BasicHouseWaterService {
+
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicHouseWaterDao basicHouseWaterDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicHouseWater getBasicHouseWaterById(Integer id) throws Exception {
+        return basicHouseWaterDao.getBasicHouseWaterById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicHouseWater
+     * @return
+     * @throws Exception
+     */
+    public Integer saveAndUpdateBasicHouseWater(BasicHouseWater basicHouseWater) throws Exception {
+        if (basicHouseWater.getId() == null || basicHouseWater.getId().intValue() == 0) {
+            basicHouseWater.setCreator(commonService.thisUserAccount());
+            Integer id = basicHouseWaterDao.saveBasicHouseWater(basicHouseWater);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class), id);
+            return  id ;
+        } else {
+            BasicHouseWater oo = basicHouseWaterDao.getBasicHouseWaterById(basicHouseWater.getId());
+            basicHouseWaterDao.updateBasicHouseWater(basicHouseWater);
+            return null;
+        }
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteBasicHouseWater(Integer id) throws Exception {
+        return basicHouseWaterDao.deleteBasicHouseWater(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param basicHouseWater
+     * @return
+     * @throws Exception
+     */
+    public List<BasicHouseWater> basicHouseWaterList(BasicHouseWater basicHouseWater) throws Exception {
+        return basicHouseWaterDao.basicHouseWaterList(basicHouseWater);
+    }
+
+    public void removeBasicHouseWater(BasicHouseWater basicHouseWater)throws Exception{
+        basicHouseWaterDao.removeBasicHouseWater(basicHouseWater);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseWater basicHouseWater) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicHouseWater> basicHouseWaterList = basicHouseWaterDao.basicHouseWaterList(basicHouseWater);
+        List<BasicHouseWaterVo> vos = Lists.newArrayList();
+        basicHouseWaterList.forEach(oo -> vos.add(getBasicHouseWaterVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseWaterVo>(10) : vos);
+        return vo;
+    }
+
+    public BasicHouseWaterVo getBasicHouseWaterVo(BasicHouseWater basicHouseWater){
+        if (basicHouseWater==null){
+            return null;
+        }
+        BasicHouseWaterVo vo = new BasicHouseWaterVo();
+        BeanUtils.copyProperties(basicHouseWater,vo);
+        BaseDataDic dataDic = null;
+
+        return vo;
+    }
+    
+}

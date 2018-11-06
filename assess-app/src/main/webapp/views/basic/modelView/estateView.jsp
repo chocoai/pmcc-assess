@@ -394,3 +394,5 @@
         </div>
     </form>
 </div>
+
+<%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>

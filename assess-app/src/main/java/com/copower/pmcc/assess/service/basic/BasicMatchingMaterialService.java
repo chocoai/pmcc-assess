@@ -1,0 +1,127 @@
+package com.copower.pmcc.assess.service.basic;
+
+import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingMaterialDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterial;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingMaterialVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:11
+ * @Description:
+ */
+@Service
+public class BasicMatchingMaterialService {
+
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicMatchingMaterialDao basicMatchingMaterialDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicMatchingMaterial getBasicMatchingMaterialById(Integer id) throws Exception {
+        return basicMatchingMaterialDao.getBasicMatchingMaterialById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicMatchingMaterial
+     * @return
+     * @throws Exception
+     */
+    public Integer saveAndUpdateBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
+        if (basicMatchingMaterial.getId() == null || basicMatchingMaterial.getId().intValue() == 0) {
+            basicMatchingMaterial.setCreator(commonService.thisUserAccount());
+            Integer id = basicMatchingMaterialDao.saveBasicMatchingMaterial(basicMatchingMaterial);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), id);
+            return  id ;
+        } else {
+            BasicMatchingMaterial oo = basicMatchingMaterialDao.getBasicMatchingMaterialById(basicMatchingMaterial.getId());
+            basicMatchingMaterialDao.updateBasicMatchingMaterial(basicMatchingMaterial);
+            return null;
+        }
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteBasicMatchingMaterial(Integer id) throws Exception {
+        return basicMatchingMaterialDao.deleteBasicMatchingMaterial(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param basicMatchingMaterial
+     * @return
+     * @throws Exception
+     */
+    public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
+        return basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
+    }
+
+    public void removeBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial)throws Exception{
+        basicMatchingMaterialDao.removeBasicMatchingMaterial(basicMatchingMaterial);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicMatchingMaterial> basicMatchingMaterialList = basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
+        List<BasicMatchingMaterialVo> vos = Lists.newArrayList();
+        basicMatchingMaterialList.forEach(oo -> vos.add(getBasicMatchingMaterialVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicMatchingMaterialVo>(10) : vos);
+        return vo;
+    }
+
+    public BasicMatchingMaterialVo getBasicMatchingMaterialVo(BasicMatchingMaterial basicMatchingMaterial){
+        if (basicMatchingMaterial==null){
+            return null;
+        }
+        BasicMatchingMaterialVo vo = new BasicMatchingMaterialVo();
+        BeanUtils.copyProperties(basicMatchingMaterial,vo);
+        BaseDataDic dataDic = null;
+
+        return vo;
+    }
+    
+}

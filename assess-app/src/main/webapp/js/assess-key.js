@@ -30,6 +30,7 @@ AssessDBKey.BasicBuilding = "tb_basic_building";
 AssessDBKey.BasicHouse = "tb_basic_house";
 AssessDBKey.BasicHouseTrading = "tb_basic_house_trading";
 AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
+AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";
 
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
@@ -75,6 +76,12 @@ AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//使
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
+
+AssessDicKey.estate_car_type = "estate.car.type";//车位类型
+AssessDicKey.estate_line_water_supply_pipe_grade = "estate.line.water.supply.pipe.grade";//线路供水管等级
+AssessDicKey.estate_supplier_grade = "estate.supplier.grade";//供应商等级
+
+
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -26,6 +27,8 @@ import java.util.List;
 public class BasicEstateController {
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private PublicBasicService publicBasicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -77,6 +80,29 @@ public class BasicEstateController {
     public HttpResult basicEstateList(BasicEstate basicEstate){
         try {
             return HttpResult.newCorrectResult(basicEstateService.basicEstateList(basicEstate));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/initEstate", name = "初始化", method = {RequestMethod.POST})
+    public HttpResult initUpdateSon(){
+        try {
+            basicEstateService.initUpdateSon(0,null);
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/appWriteEstate", name = "过程数据转移", method = {RequestMethod.POST})
+    public HttpResult appWriteEstate(Integer caseEstateId){
+        try {
+            return HttpResult.newCorrectResult(200,publicBasicService.appWriteEstate(caseEstateId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

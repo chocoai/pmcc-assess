@@ -1,0 +1,127 @@
+package com.copower.pmcc.assess.service.basic;
+
+import com.copower.pmcc.assess.dal.basic.dao.BasicMatchingTrafficDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:17
+ * @Description:
+ */
+@Service
+public class BasicMatchingTrafficService {
+
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BasicMatchingTrafficDao basicMatchingTrafficDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicMatchingTraffic getBasicMatchingTrafficById(Integer id) throws Exception {
+        return basicMatchingTrafficDao.getBasicMatchingTrafficById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicMatchingTraffic
+     * @return
+     * @throws Exception
+     */
+    public Integer saveAndUpdateBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic) throws Exception {
+        if (basicMatchingTraffic.getId() == null || basicMatchingTraffic.getId().intValue() == 0) {
+            basicMatchingTraffic.setCreator(commonService.thisUserAccount());
+            Integer id = basicMatchingTrafficDao.saveBasicMatchingTraffic(basicMatchingTraffic);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), id);
+            return  id ;
+        } else {
+            BasicMatchingTraffic oo = basicMatchingTrafficDao.getBasicMatchingTrafficById(basicMatchingTraffic.getId());
+            basicMatchingTrafficDao.updateBasicMatchingTraffic(basicMatchingTraffic);
+            return null;
+        }
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteBasicMatchingTraffic(Integer id) throws Exception {
+        return basicMatchingTrafficDao.deleteBasicMatchingTraffic(id);
+    }
+
+    /**
+     * 获取数据列表
+     *
+     * @param basicMatchingTraffic
+     * @return
+     * @throws Exception
+     */
+    public List<BasicMatchingTraffic> basicMatchingTrafficList(BasicMatchingTraffic basicMatchingTraffic) throws Exception {
+        return basicMatchingTrafficDao.basicMatchingTrafficList(basicMatchingTraffic);
+    }
+
+    public void removeBasicMatchingTraffic(BasicMatchingTraffic basicMatchingTraffic)throws Exception{
+        basicMatchingTrafficDao.removeBasicMatchingTraffic(basicMatchingTraffic);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingTraffic basicMatchingTraffic) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicMatchingTraffic> basicMatchingTrafficList = basicMatchingTrafficDao.basicMatchingTrafficList(basicMatchingTraffic);
+        List<BasicMatchingTrafficVo> vos = Lists.newArrayList();
+        basicMatchingTrafficList.forEach(oo -> vos.add(getBasicMatchingTrafficVo(oo)));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicMatchingTrafficVo>(10) : vos);
+        return vo;
+    }
+
+    public BasicMatchingTrafficVo getBasicMatchingTrafficVo(BasicMatchingTraffic basicMatchingTraffic){
+        if (basicMatchingTraffic==null){
+            return null;
+        }
+        BasicMatchingTrafficVo vo = new BasicMatchingTrafficVo();
+        BeanUtils.copyProperties(basicMatchingTraffic,vo);
+        BaseDataDic dataDic = null;
+
+        return vo;
+    }
+    
+}

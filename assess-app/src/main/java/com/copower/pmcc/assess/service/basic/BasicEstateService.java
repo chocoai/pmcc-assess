@@ -2,6 +2,9 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstateParking;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstateSupply;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
@@ -20,7 +23,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +33,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -58,7 +58,68 @@ public class BasicEstateService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
+    @Autowired
+    private BasicEstateNetworkService basicEstateNetworkService;
+    @Autowired
+    private BasicEstateParkingService basicEstateParkingService;
+    @Autowired
+    private BasicEstateSupplyService basicEstateSupplyService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
+        BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
+        BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
+        BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
+
+        queryBasicEstateNetwork.setEstateId(oldId);
+        queryBasicEstateParking.setEstateId(oldId);
+        queryBasicEstateSupply.setEstateId(oldId);
+
+        List<BasicEstateNetwork> basicEstateNetworkList = null;
+        List<BasicEstateParking> basicEstateParkingList = null;
+        List<BasicEstateSupply> basicEstateSupplyList = null;
+        basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
+        basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
+        basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+        if (newId == null) {
+            if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
+                for (BasicEstateNetwork oo : basicEstateNetworkList) {
+                    basicEstateNetworkService.deleteBasicEstateNetwork(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicEstateParkingList)) {
+                for (BasicEstateParking oo : basicEstateParkingList) {
+                    basicEstateParkingService.deleteBasicEstateParking(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
+                for (BasicEstateSupply oo : basicEstateSupplyList) {
+                    basicEstateSupplyService.deleteBasicEstateSupply(oo.getId());
+                }
+            }
+        }
+
+        if (newId != null) {
+            if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
+                for (BasicEstateNetwork oo : basicEstateNetworkList) {
+                    oo.setEstateId(newId);
+                    basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicEstateParkingList)) {
+                for (BasicEstateParking oo : basicEstateParkingList) {
+                    oo.setEstateId(newId);
+                    basicEstateParkingService.saveAndUpdateBasicEstateParking(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
+                for (BasicEstateSupply oo : basicEstateSupplyList) {
+                    oo.setEstateId(newId);
+                    basicEstateSupplyService.saveAndUpdateBasicEstateSupply(oo);
+                }
+            }
+        }
+    }
 
     /**
      * 获取数据
@@ -95,6 +156,7 @@ public class BasicEstateService {
             basicEstate.setCreator(commonService.thisUserAccount());
         }
         Integer id = basicEstateDao.saveBasicEstate(basicEstate);
+        this.initUpdateSon(0,id);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
         return id;
     }
@@ -109,6 +171,7 @@ public class BasicEstateService {
             Integer id = basicEstateDao.saveBasicEstate(basicEstate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
             basicEstate.setId(id);
+            this.initUpdateSon(0,id);
             return id;
             //有id情况下 save
         } else {
@@ -120,7 +183,7 @@ public class BasicEstateService {
             if (oo.getVersion() == null) {
                 oo.setVersion(0);
             }
-            basicEstate.setVersion(oo.getVersion()+1);
+            basicEstate.setVersion(oo.getVersion() + 1);
             basicEstateDao.updateBasicEstate(basicEstate);
             return null;
         }

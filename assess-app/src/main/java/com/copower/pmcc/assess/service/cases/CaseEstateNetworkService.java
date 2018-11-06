@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateNetworkDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,10 +39,29 @@ public class CaseEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:31
      */
-    @Transactional
     public boolean saveCaseEstateNetwork(CaseEstateNetwork examineEstateNetwork) {
         examineEstateNetwork.setCreator(commonService.thisUserAccount());
         return caseEstateNetworkDao.addEstateNetwork(examineEstateNetwork);
+    }
+
+    public void upgradeVersion(CaseEstateNetwork caseEstateNetwork)throws Exception{
+        if (caseEstateNetwork.getId()==null || caseEstateNetwork.getId().intValue() == 0){
+            caseEstateNetwork.setCreator(commonService.thisUserAccount());
+            caseEstateNetwork.setVersion(0);
+            caseEstateNetworkDao.addEstateNetwork(caseEstateNetwork);
+        }else {
+            CaseEstateNetwork oo = getEstateNetworkById(caseEstateNetwork.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            caseEstateNetworkDao.addEstateNetwork(oo);
+        }
     }
 
     /**
@@ -71,7 +91,6 @@ public class CaseEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:33
      */
-    @Transactional
     public boolean updateEstateNetwork(CaseEstateNetwork examineEstateNetwork) {
         return caseEstateNetworkDao.updateEstateNetwork(examineEstateNetwork);
     }
@@ -84,7 +103,6 @@ public class CaseEstateNetworkService {
      * @auther: zch
      * @date: 2018/7/18 14:34
      */
-    @Transactional
     public boolean deleteEstateNetwork(Integer id) {
         return caseEstateNetworkDao.deleteEstateNetwork(id);
     }

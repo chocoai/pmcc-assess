@@ -63,9 +63,17 @@
                         return str;
                     }
                 });
+                var houseId = "";
+                try {
+                    var basicEstate = formParams(objectData.config.basicEstate.frm);
+                    houseId = houseRoom.prototype.isEmpty(basicEstate.id)?basicEstate.id:"0" ;
+                } catch (e) {
+                    console.log("函数失效");
+                    console.error(e);
+                }
                 $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/basicHouseRoom/getBootstrapTableVo", cols, {
-                    type: null
+                    houseId: houseId
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -261,9 +269,6 @@
         }
     })();
 
-    $(function () {
-        houseRoom.prototype.loadDataDicList();
-    });
 </script>
 
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"

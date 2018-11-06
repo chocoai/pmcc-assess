@@ -1,0 +1,11 @@
+package com.copower.pmcc.assess.dto.output.basic;
+
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater;
+
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:20
+ * @Description:
+ */
+public class BasicHouseWaterVo extends BasicHouseWater {
+}

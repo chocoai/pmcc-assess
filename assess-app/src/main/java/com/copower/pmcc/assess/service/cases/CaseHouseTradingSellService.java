@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingSellDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
@@ -51,15 +52,28 @@ public class CaseHouseTradingSellService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
             return id;
         }else {
-            CaseHouseTradingSell oo = caseHouseTradingSellDao.getCaseHouseTradingSellById(caseHouseTradingSell.getId());
-            if (oo != null){
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-                caseHouseTradingSell.setVersion(oo.getVersion()+1);
-            }
             caseHouseTradingSellDao.updateCaseHouseTradingSell(caseHouseTradingSell);
             return null;
+        }
+    }
+
+    public void upgradeVersion(CaseHouseTradingSell po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.saveAndUpdateCaseHouseTradingSell(po);
+        }else {
+            CaseHouseTradingSell oo = getCaseHouseTradingSellById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.saveAndUpdateCaseHouseTradingSell(oo);
         }
     }
 

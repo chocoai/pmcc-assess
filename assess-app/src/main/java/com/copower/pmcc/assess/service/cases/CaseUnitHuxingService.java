@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -52,6 +53,26 @@ public class CaseUnitHuxingService {
      */
     public CaseUnitHuxing getCaseUnitHuxingById(Integer id) {
         return caseUnitHuxingDao.getUnitHuxingById(id);
+    }
+
+    public void upgradeVersion(CaseUnitHuxing po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.addCaseUnitHuxing(po);
+        }else {
+            CaseUnitHuxing oo = getCaseUnitHuxingById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.addCaseUnitHuxing(oo);
+        }
     }
 
     /**

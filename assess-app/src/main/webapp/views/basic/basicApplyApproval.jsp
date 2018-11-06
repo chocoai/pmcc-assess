@@ -36,7 +36,8 @@
                                                                 onclick="objectData.build.init(1)">楼栋</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                data-toggle="tab" aria-expanded="false">单元</a>
+                                                                data-toggle="tab" aria-expanded="false"
+                                                                onclick="objectData.unit.init()">单元</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
                                                                 data-toggle="tab" aria-expanded="false"
@@ -284,6 +285,7 @@
                                     </form>
                                 </div>
 
+
                                 <div class="x_content">
                                     <div class="x_title">
                                         <h3>
@@ -297,7 +299,8 @@
                                         <input type="hidden" name="id">
                                         <div class="form-group">
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土地名称<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">土地名称<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-11">
                                                     <label class="form-control">${basicEstateLandState.name}</label>
                                                 </div>
@@ -319,7 +322,8 @@
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">土地级别<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.landLevelName}</label>
                                                 </div>
@@ -328,19 +332,22 @@
 
                                         <div class="form-group">
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">东至<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">东至<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.eastTo}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">南至<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">南至<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.southTo}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">西至<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">西至<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.westTo}</label>
                                                 </div>
@@ -349,7 +356,8 @@
 
                                         <div class="form-group">
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">北至<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">北至<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.northTo}</label>
                                                 </div>
@@ -362,7 +370,8 @@
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土地平整度<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">土地平整度<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.planeness}</label>
                                                 </div>
@@ -386,7 +395,8 @@
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土壤<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">土壤<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.soil}</label>
                                                 </div>
@@ -395,14 +405,16 @@
 
                                         <div class="form-group">
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">地形地势<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">地形地势<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.topographicTerrain}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土地面积<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">土地面积<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstateLandState.landArea}</label>
                                                 </div>
@@ -410,6 +422,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                <%@include file="/views/basic/modelView/estate/sonEstateApprovalView.jsp" %>
 
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
@@ -781,6 +794,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                <%@include file="/views/basic/modelView/unit/sonUnitApprovalView.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                                 <div class="x_content">
@@ -833,11 +847,17 @@
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <div class="input-group">
-                                                        <input type="text" value="${basicHouse.huxingName}"
+                                                        <input type="text"
                                                                placeholder="户型"
-                                                               name="huxingName"
+                                                               name="huxingName" value=""
                                                                class="form-control" readonly="readonly">
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="x-valid">
+                                                <div class="col-sm-3 house_latest_family_plan">
+
                                                 </div>
                                             </div>
 
@@ -902,7 +922,8 @@
 
                                         <div class="form-group">
                                             <div class="x-valid">
-                                                <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">房屋平面图<span
+                                                        class="symbol required"></span></label>
                                                 <div class="col-sm-5">
                                                     <div id="_house_img_plan"></div>
                                                 </div>
@@ -1110,6 +1131,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                <%@include file="/views/basic/modelView/house/sonHouseApprovalView.jsp" %>
 
                             </div>
                         </div>
@@ -1168,7 +1190,7 @@
             key: "basicHouse",
             name: "房屋",
             frm: "basicHouseFrm",
-            tradingFrm:"basicTradingFrm",
+            tradingFrm: "basicTradingFrm",
             leaseID: "BasicHouseTradingLease",//房屋出租
             sellID: "BasicHouseTradingSell",//房屋出售
             totalSale: "totalSale",//出售总额
@@ -1238,6 +1260,12 @@
             $.each(objectData.config.basicEstate.files, function (i, n) {
                 objectData.showFile(n, AssessDBKey.BasicEstate, "${basicEstate.id}");
             });
+            estateNetwork.prototype.loadDataDicList();
+            estateParking.prototype.loadDataDicList();
+            estateSupplyWater.prototype.loadDataDicList();
+            estateSupplyPower.prototype.loadDataDicList();
+            estateSupplyHeating.prototype.loadDataDicList();
+            estateSupplyGas.prototype.loadDataDicList();
         }
     };
 
@@ -1375,10 +1403,19 @@
         }
     };
 
+    objectData.unit = {
+        init: function () {
+            unitDecorate.prototype.loadDataDicList();
+            unitHuxing.prototype.loadDataDicList();
+            unitElevator.prototype.loadDataDicList();
+        }
+    };
+
     objectData.house = {
         init: function () {
-            objectData.showFile(objectData.config.basicHouse.houseFileId,AssessDBKey.BasicHouse,'${empty basicHouse.id?0:basicHouse.id}');
-            var tradingID = "${basicHouseTrading.tradingType}" ;
+            houseRoom.prototype.loadDataDicList();
+            objectData.showFile(objectData.config.basicHouse.houseFileId, AssessDBKey.BasicHouse, '${empty basicHouse.id?0:basicHouse.id}');
+            var tradingID = "${basicHouseTrading.tradingType}";
             var tradingType = null;
             AssessCommon.getDataDicInfo(tradingID, function (data) {
                 tradingType = data.fieldName;
@@ -1405,8 +1442,29 @@
                     objectData.house.subLoadList(objectData.config.basicHouse.sellID);
                 }
             });
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicUnitHuxing/getBasicUnitHuxingById",
+                type: "get",
+                dataType: "json",
+                data: {id: '${empty basicHouse.huxingId?0:basicHouse.huxingId}'},
+                success: function (result) {
+                    if (result.ret) {
+                        if (objectData.isNotBlank(result.data)) {
+                            if (objectData.isNotBlank(result.data.fileViewName)) {
+                                $("#" + objectData.config.basicHouse.frm).find(".house_latest_family_plan").html(result.data.fileViewName);
+                            }
+                        }
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            });
         },
-        subLoadList:function (type_) {
+        subLoadList: function (type_) {
             var cols = [];
             if (type_ == objectData.config.basicHouse.leaseID) {
                 cols.push({field: 'rentGrowthRate', title: '租金增长比率'});

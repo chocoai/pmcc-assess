@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
@@ -50,15 +51,28 @@ public class CaseHouseTradingLeaseService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
             return id;
         }else {
-            CaseHouseTradingLease oo = caseHouseTradingLeaseDao.getCaseHouseTradingLeaseById(caseHouseTradingLease.getId());
-            if (oo != null){
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-                caseHouseTradingLease.setVersion(oo.getVersion()+1);
-            }
             caseHouseTradingLeaseDao.updateCaseHouseTradingLease(caseHouseTradingLease);
             return null;
+        }
+    }
+
+    public void upgradeVersion(CaseHouseTradingLease po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.saveAndUpdateCaseHouseTradingLease(po);
+        }else {
+            CaseHouseTradingLease oo = getCaseHouseTradingLeaseById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.saveAndUpdateCaseHouseTradingLease(oo);
         }
     }
 
@@ -96,7 +110,6 @@ public class CaseHouseTradingLeaseService {
     }
 
     public CaseHouseTradingLease getCaseHouseTradingLeaseById(Integer id){
-
         return caseHouseTradingLeaseDao.getCaseHouseTradingLeaseById(id);
     }
 

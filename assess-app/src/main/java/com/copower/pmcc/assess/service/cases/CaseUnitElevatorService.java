@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitElevatorDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -36,7 +37,6 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 14:31
      */
-    @Transactional
     public boolean saveCaseUnitElevator(CaseUnitElevator caseUnitElevator) {
         caseUnitElevator.setCreator(commonService.thisUserAccount());
         return caseUnitElevatorDao.addUnitElevator(caseUnitElevator);
@@ -69,7 +69,6 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 14:33
      */
-    @Transactional
     public boolean updateEstateNetwork(CaseUnitElevator caseUnitElevator) {
         return caseUnitElevatorDao.updateUnitElevator(caseUnitElevator);
     }
@@ -109,5 +108,25 @@ public class CaseUnitElevatorService {
      */
     public List<CaseUnitElevator> getEstateNetworkLists(CaseUnitElevator caseUnitElevator) {
         return caseUnitElevatorDao.getUnitElevatorList(caseUnitElevator);
+    }
+
+    public void upgradeVersion(CaseUnitElevator po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.saveCaseUnitElevator(po);
+        }else {
+            CaseUnitElevator oo = getEstateNetworkById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.saveCaseUnitElevator(oo);
+        }
     }
 }
