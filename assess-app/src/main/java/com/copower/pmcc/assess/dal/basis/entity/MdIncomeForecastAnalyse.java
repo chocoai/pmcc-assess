@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class MdIncomeForecastBase {
+public class MdIncomeForecastAnalyse {
     private Integer id;
 
     private Integer incomeId;
@@ -14,7 +14,9 @@ public class MdIncomeForecastBase {
 
     private BigDecimal amountMoney;
 
-    private BigDecimal weight;
+    private BigDecimal quantitativeTrend;
+
+    private BigDecimal univalentTrend;
 
     private String creator;
 
@@ -62,12 +64,20 @@ public class MdIncomeForecastBase {
         this.amountMoney = amountMoney;
     }
 
-    public BigDecimal getWeight() {
-        return weight;
+    public BigDecimal getQuantitativeTrend() {
+        return quantitativeTrend;
     }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setQuantitativeTrend(BigDecimal quantitativeTrend) {
+        this.quantitativeTrend = quantitativeTrend;
+    }
+
+    public BigDecimal getUnivalentTrend() {
+        return univalentTrend;
+    }
+
+    public void setUnivalentTrend(BigDecimal univalentTrend) {
+        this.univalentTrend = univalentTrend;
     }
 
     public String getCreator() {

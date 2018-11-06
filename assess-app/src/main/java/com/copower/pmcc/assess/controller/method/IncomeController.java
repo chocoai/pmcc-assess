@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +80,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type) {
-        return mdIncomeService.getHistoryList(incomeId, type);
+    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Boolean bisForecast) {
+        return mdIncomeService.getHistoryList(incomeId, type, bisForecast);
     }
 
     @ResponseBody
@@ -87,6 +89,19 @@ public class IncomeController {
     public HttpResult saveHistory(MdIncomeHistory mdIncomeHistory) {
         try {
             mdIncomeService.saveHistory(mdIncomeHistory);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/historyToForecast", method = {RequestMethod.POST}, name = "历史数据添加到预测数据")
+    public HttpResult historyToForecast(String ids,Integer forecastAnalyseId) {
+        try {
+            if (StringUtils.isNotBlank(ids))
+                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)),forecastAnalyseId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -125,6 +140,11 @@ public class IncomeController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getForecastAnalyseList", name = "显示预测分析数据列表", method = RequestMethod.GET)
+    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type) {
+        return mdIncomeService.getForecastAnalyseList(incomeId, type);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getForecastList", name = "显示列表", method = RequestMethod.GET)

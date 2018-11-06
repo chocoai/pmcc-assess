@@ -41,6 +41,12 @@ public class ExamineHouseWaterDao {
         return examineHouseWaterMapper.selectByExample(example);
     }
 
+    public List<ExamineHouseWater> getHouseWaterList(Integer planDetailsId) {
+        ExamineHouseWaterExample example = new ExamineHouseWaterExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineHouseWaterMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      * @param examineHouseWater

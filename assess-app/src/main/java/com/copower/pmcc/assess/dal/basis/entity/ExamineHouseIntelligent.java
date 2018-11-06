@@ -13,6 +13,8 @@ public class ExamineHouseIntelligent {
 
     private Integer wireErection;
 
+    private Integer wireMaterial;
+
     private Integer switchCircuit;
 
     private Integer lampsLanterns;
@@ -67,6 +69,14 @@ public class ExamineHouseIntelligent {
 
     public void setWireErection(Integer wireErection) {
         this.wireErection = wireErection;
+    }
+
+    public Integer getWireMaterial() {
+        return wireMaterial;
+    }
+
+    public void setWireMaterial(Integer wireMaterial) {
+        this.wireMaterial = wireMaterial;
     }
 
     public Integer getSwitchCircuit() {

@@ -69,6 +69,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'wireErectionName', title: '电线架设方式'});
+                cols.push({field: 'wireMaterialName', title: '电线材质'});
                 cols.push({field: 'switchCircuitName', title: '开关回路'});
                 cols.push({field: 'lampsLanternsName', title: '灯具'});
                 cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
@@ -192,6 +193,11 @@
                             } else {
                                 $("#" + houseIntelligent.prototype.config().frm + " .intelligentSystem").val(result.data.intelligentSystem).trigger("change");
                             }
+                            if (result.data.wireMaterial == null || result.data.wireMaterial == '') {
+                                $("#" + houseIntelligent.prototype.config().frm + " .wireMaterial").val(null).trigger("change");
+                            } else {
+                                $("#" + houseIntelligent.prototype.config().frm + " .wireMaterial").val(result.data.wireMaterial).trigger("change");
+                            }
                             if (result.data.wireErection == null || result.data.wireErection == '') {
                                 $("#" + houseIntelligent.prototype.config().frm + " .wireErection").val(null).trigger("change");
                             } else {
@@ -206,6 +212,10 @@
                 })
             },
             init: function () {
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseIntelligent_wireMaterial, "", function (html, data) {
+                    $("#" +houseIntelligent.prototype.config().frm ).find("select.wireMaterial").html(html).trigger('change');
+                });
+
                 $.ajax({
                     url: "${pageContext.request.contextPath}/examineHouseIntelligent/examine_house_intelligent_system",
                     type: "get",
@@ -358,10 +368,34 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            开关回路<span class="symbol required"></span>
+                                            电线架设方式
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="switchCircuit"
+                                            <select  name="wireErection"
+                                                    class="form-control search-select select2 wireErection">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            电线材质
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="wireMaterial"
+                                                    class="form-control search-select select2 wireMaterial">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            开关回路
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select name="switchCircuit"
                                                     class="form-control search-select select2 switchCircuit">
                                             </select>
                                         </div>
@@ -371,10 +405,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            灯具<span class="symbol required"></span>
+                                            灯具
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="lampsLanterns"
+                                            <select name="lampsLanterns"
                                                     class="form-control search-select select2 lampsLanterns">
                                             </select>
                                         </div>
@@ -383,10 +417,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            屋内通讯<span class="symbol required"></span>
+                                            屋内通讯
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="internalCommunication"
+                                            <select name="internalCommunication"
                                                     class="form-control search-select select2 internalCommunication">
                                             </select>
                                         </div>
@@ -395,10 +429,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            监控系统<span class="symbol required"></span>
+                                            监控系统
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="monitoringSystem"
+                                            <select name="monitoringSystem"
                                                     class="form-control search-select select2 monitoringSystem">
                                             </select>
                                         </div>
@@ -407,23 +441,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            智能系统<span class="symbol required"></span>
+                                            智能系统
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="intelligentSystem"
+                                            <select name="intelligentSystem"
                                                     class="form-control search-select select2 intelligentSystem">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            电线架设方式<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="wireErection"
-                                                    class="form-control search-select select2 wireErection">
                                             </select>
                                         </div>
                                     </div>

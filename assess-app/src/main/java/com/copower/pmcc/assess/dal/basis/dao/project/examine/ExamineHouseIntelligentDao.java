@@ -23,6 +23,7 @@ public class ExamineHouseIntelligentDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -32,6 +33,7 @@ public class ExamineHouseIntelligentDao {
 
     /**
      * 获取数据列表
+     *
      * @param examineHouseIntelligent
      * @return
      */
@@ -41,8 +43,15 @@ public class ExamineHouseIntelligentDao {
         return examineHouseIntelligentMapper.selectByExample(example);
     }
 
+    public List<ExamineHouseIntelligent> getHouseIntelligentList(Integer planDetailsId) {
+        ExamineHouseIntelligentExample example = new ExamineHouseIntelligentExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return examineHouseIntelligentMapper.selectByExample(example);
+    }
+
     /**
      * 新增
+     *
      * @param examineHouseIntelligent
      * @return
      */
@@ -52,6 +61,7 @@ public class ExamineHouseIntelligentDao {
 
     /**
      * 编辑
+     *
      * @param examineHouseIntelligent
      * @return
      */
@@ -61,10 +71,11 @@ public class ExamineHouseIntelligentDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteHouseIntelligent(Integer id){
+    public boolean deleteHouseIntelligent(Integer id) {
         return examineHouseIntelligentMapper.deleteByPrimaryKey(id) > 0;
     }
 

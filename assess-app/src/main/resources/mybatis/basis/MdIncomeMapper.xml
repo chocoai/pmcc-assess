@@ -8,7 +8,7 @@
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="operation_mode" property="operationMode" jdbcType="INTEGER" />
     <result column="lease_mode" property="leaseMode" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="form_type" property="formType" jdbcType="INTEGER" />
     <result column="restriction_explain" property="restrictionExplain" jdbcType="VARCHAR" />
     <result column="average_profit_rate" property="averageProfitRate" jdbcType="VARCHAR" />
     <result column="average_profit_rate_remark" property="averageProfitRateRemark" jdbcType="VARCHAR" />
@@ -77,9 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, area, price, operation_mode, lease_mode, type, restriction_explain, average_profit_rate, 
-    average_profit_rate_remark, reward_rate, reward_rate_json, creator, gmt_created, 
-    gmt_modified
+    id, name, area, price, operation_mode, lease_mode, form_type, restriction_explain, 
+    average_profit_rate, average_profit_rate_remark, reward_rate, reward_rate_json, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdIncomeExample" >
     select
@@ -116,13 +116,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_income (name, area, price, 
-      operation_mode, lease_mode, type, 
+      operation_mode, lease_mode, form_type, 
       restriction_explain, average_profit_rate, 
       average_profit_rate_remark, reward_rate, reward_rate_json, 
       creator, gmt_created, gmt_modified
       )
     values (#{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-      #{operationMode,jdbcType=INTEGER}, #{leaseMode,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{operationMode,jdbcType=INTEGER}, #{leaseMode,jdbcType=INTEGER}, #{formType,jdbcType=INTEGER}, 
       #{restrictionExplain,jdbcType=VARCHAR}, #{averageProfitRate,jdbcType=VARCHAR}, 
       #{averageProfitRateRemark,jdbcType=VARCHAR}, #{rewardRate,jdbcType=DECIMAL}, #{rewardRateJson,jdbcType=CHAR}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
@@ -149,8 +149,8 @@
       <if test="leaseMode != null" >
         lease_mode,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="formType != null" >
+        form_type,
       </if>
       <if test="restrictionExplain != null" >
         restriction_explain,
@@ -193,8 +193,8 @@
       <if test="leaseMode != null" >
         #{leaseMode,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="formType != null" >
+        #{formType,jdbcType=INTEGER},
       </if>
       <if test="restrictionExplain != null" >
         #{restrictionExplain,jdbcType=VARCHAR},
@@ -249,8 +249,8 @@
       <if test="record.leaseMode != null" >
         lease_mode = #{record.leaseMode,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+      <if test="record.formType != null" >
+        form_type = #{record.formType,jdbcType=INTEGER},
       </if>
       <if test="record.restrictionExplain != null" >
         restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
@@ -289,7 +289,7 @@
       price = #{record.price,jdbcType=DECIMAL},
       operation_mode = #{record.operationMode,jdbcType=INTEGER},
       lease_mode = #{record.leaseMode,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      form_type = #{record.formType,jdbcType=INTEGER},
       restriction_explain = #{record.restrictionExplain,jdbcType=VARCHAR},
       average_profit_rate = #{record.averageProfitRate,jdbcType=VARCHAR},
       average_profit_rate_remark = #{record.averageProfitRateRemark,jdbcType=VARCHAR},
@@ -320,8 +320,8 @@
       <if test="leaseMode != null" >
         lease_mode = #{leaseMode,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="formType != null" >
+        form_type = #{formType,jdbcType=INTEGER},
       </if>
       <if test="restrictionExplain != null" >
         restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
@@ -357,7 +357,7 @@
       price = #{price,jdbcType=DECIMAL},
       operation_mode = #{operationMode,jdbcType=INTEGER},
       lease_mode = #{leaseMode,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      form_type = #{formType,jdbcType=INTEGER},
       restriction_explain = #{restrictionExplain,jdbcType=VARCHAR},
       average_profit_rate = #{averageProfitRate,jdbcType=VARCHAR},
       average_profit_rate_remark = #{averageProfitRateRemark,jdbcType=VARCHAR},

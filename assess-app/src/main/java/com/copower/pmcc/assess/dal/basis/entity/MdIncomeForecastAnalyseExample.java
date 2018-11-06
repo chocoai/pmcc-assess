@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MdIncomeForecastBaseExample {
+public class MdIncomeForecastAnalyseExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public MdIncomeForecastBaseExample() {
+    public MdIncomeForecastAnalyseExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -406,63 +406,123 @@ public class MdIncomeForecastBaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightIsNull() {
-            addCriterion("weight is null");
+        public Criteria andQuantitativeTrendIsNull() {
+            addCriterion("quantitative_trend is null");
             return (Criteria) this;
         }
 
-        public Criteria andWeightIsNotNull() {
-            addCriterion("weight is not null");
+        public Criteria andQuantitativeTrendIsNotNull() {
+            addCriterion("quantitative_trend is not null");
             return (Criteria) this;
         }
 
-        public Criteria andWeightEqualTo(BigDecimal value) {
-            addCriterion("weight =", value, "weight");
+        public Criteria andQuantitativeTrendEqualTo(BigDecimal value) {
+            addCriterion("quantitative_trend =", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotEqualTo(BigDecimal value) {
-            addCriterion("weight <>", value, "weight");
+        public Criteria andQuantitativeTrendNotEqualTo(BigDecimal value) {
+            addCriterion("quantitative_trend <>", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThan(BigDecimal value) {
-            addCriterion("weight >", value, "weight");
+        public Criteria andQuantitativeTrendGreaterThan(BigDecimal value) {
+            addCriterion("quantitative_trend >", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("weight >=", value, "weight");
+        public Criteria andQuantitativeTrendGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("quantitative_trend >=", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThan(BigDecimal value) {
-            addCriterion("weight <", value, "weight");
+        public Criteria andQuantitativeTrendLessThan(BigDecimal value) {
+            addCriterion("quantitative_trend <", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("weight <=", value, "weight");
+        public Criteria andQuantitativeTrendLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("quantitative_trend <=", value, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightIn(List<BigDecimal> values) {
-            addCriterion("weight in", values, "weight");
+        public Criteria andQuantitativeTrendIn(List<BigDecimal> values) {
+            addCriterion("quantitative_trend in", values, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotIn(List<BigDecimal> values) {
-            addCriterion("weight not in", values, "weight");
+        public Criteria andQuantitativeTrendNotIn(List<BigDecimal> values) {
+            addCriterion("quantitative_trend not in", values, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("weight between", value1, value2, "weight");
+        public Criteria andQuantitativeTrendBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quantitative_trend between", value1, value2, "quantitativeTrend");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("weight not between", value1, value2, "weight");
+        public Criteria andQuantitativeTrendNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quantitative_trend not between", value1, value2, "quantitativeTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendIsNull() {
+            addCriterion("univalent_trend is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendIsNotNull() {
+            addCriterion("univalent_trend is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendEqualTo(BigDecimal value) {
+            addCriterion("univalent_trend =", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendNotEqualTo(BigDecimal value) {
+            addCriterion("univalent_trend <>", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendGreaterThan(BigDecimal value) {
+            addCriterion("univalent_trend >", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("univalent_trend >=", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendLessThan(BigDecimal value) {
+            addCriterion("univalent_trend <", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("univalent_trend <=", value, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendIn(List<BigDecimal> values) {
+            addCriterion("univalent_trend in", values, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendNotIn(List<BigDecimal> values) {
+            addCriterion("univalent_trend not in", values, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("univalent_trend between", value1, value2, "univalentTrend");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnivalentTrendNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("univalent_trend not between", value1, value2, "univalentTrend");
             return (Criteria) this;
         }
 

@@ -10,6 +10,8 @@ import com.copower.pmcc.assess.dal.basis.entity.ExamineHouseIntelligent;
 public class ExamineHouseIntelligentVo extends ExamineHouseIntelligent {
     private String wireErectionName;
 
+    private String wireMaterialName;
+
     private String switchCircuitName;
 
     private String lampsLanternsName;
@@ -26,6 +28,14 @@ public class ExamineHouseIntelligentVo extends ExamineHouseIntelligent {
 
     public void setWireErectionName(String wireErectionName) {
         this.wireErectionName = wireErectionName;
+    }
+
+    public String getWireMaterialName() {
+        return wireMaterialName;
+    }
+
+    public void setWireMaterialName(String wireMaterialName) {
+        this.wireMaterialName = wireMaterialName;
     }
 
     public String getSwitchCircuitName() {

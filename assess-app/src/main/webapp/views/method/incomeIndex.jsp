@@ -52,6 +52,25 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group" id="group_FormType" style="display: none;">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        表单类型<span class="symbol required"></span>
+                    </label>
+                    <div class="col-sm-2 col-sm-offset-1">
+                    <span class="radio-inline">
+                        <input type="radio" checked="checked" name="formType" id="formType0"
+                               onchange="incomeIndex.formTypeChange(this);" value="0">
+                        <label for="formType0">默认</label></span>
+                    </div>
+                    <div class="col-sm-2">
+                        <span class="radio-inline">
+                            <input type="radio" name="formType" id="formType1" value="1"
+                                   onchange="incomeIndex.formTypeChange(this);">
+                            <label for="formType1">餐饮、酒店、宾馆</label></span>
+                    </div>
+                </div>
+            </div>
             <div class="form-group" id="group_leaseMode" style="display: none;">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
@@ -307,15 +326,17 @@
         incomeIndex.loadDateSectionList($(_this).val());//加载时间分段
 
         if ($(_this).val() == 0) {
-            $("#self_support_info").show();
+            $("#self_support_info,#group_FormType").show();
             $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();
             selfSupport.loadHistoryList(0);
             selfSupport.loadHistoryList(1);
+            selfSupport.loadForecastAnalyseList(0);
+            selfSupport.loadForecastAnalyseList(1);
             selfSupport.loadForecastIncomeList();
             selfSupport.loadForecastCostList();
             selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
-            $("#self_support_info").hide();
+            $("#self_support_info,#group_FormType").hide();
             $("#group_leaseMode,#lease_info").show();
             lease.loadLeaseList();
             lease.loadLeaseCostList();
@@ -332,6 +353,16 @@
         } else if (value == 1) {
             $("#group_restriction_explain").hide();
         }
+    }
+
+    //表单类型切换
+    incomeIndex.formTypeChange = function (_this) {
+
+    }
+
+    //获取表单类型
+    incomeIndex.getFormType = function () {
+        return $("#frm_income").find('[name=formType]:checked').val();
     }
 
     //表单验证

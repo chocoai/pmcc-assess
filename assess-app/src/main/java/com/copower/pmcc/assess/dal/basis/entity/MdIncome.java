@@ -16,7 +16,7 @@ public class MdIncome {
 
     private Integer leaseMode;
 
-    private Integer type;
+    private Integer formType;
 
     private String restrictionExplain;
 
@@ -82,12 +82,12 @@ public class MdIncome {
         this.leaseMode = leaseMode;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getFormType() {
+        return formType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setFormType(Integer formType) {
+        this.formType = formType;
     }
 
     public String getRestrictionExplain() {
