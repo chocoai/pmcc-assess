@@ -154,25 +154,26 @@
                 }
                 var data = formParams(matchingEducation.prototype.config().frm);
                 data.estateId = '0';
-                <%--$.ajax({--%>
-                    <%--url: "${pageContext.request.contextPath}/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",--%>
-                    <%--type: "post",--%>
-                    <%--dataType: "json",--%>
-                    <%--data: data,--%>
-                    <%--success: function (result) {--%>
-                        <%--if (result.ret) {--%>
-                            <%--toastr.success('保存成功');--%>
-                            <%--$('#' + matchingEducation.prototype.config().box).modal('hide');--%>
-                            <%--matchingEducation.prototype.loadDataDicList();--%>
-                        <%--}--%>
-                        <%--else {--%>
-                            <%--Alert("保存数据失败，失败原因:" + result.errmsg);--%>
-                        <%--}--%>
-                    <%--},--%>
-                    <%--error: function (result) {--%>
-                        <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
-                    <%--}--%>
-                <%--});--%>
+                //出问题
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
+                    type: "post",
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('保存成功');
+                            $('#' + matchingEducation.prototype.config().box).modal('hide');
+                            matchingEducation.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                });
             },
             init: function (item) {
                 $("#" + matchingEducation.prototype.config().frm).clearAll();
