@@ -174,8 +174,8 @@
                             <td>七、机动车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td>数量</td>
+                            <td>面积</td>
                         </tr>
                         <tr class="treegrid-7-1 treegrid-parent-7" data-key="undergroundParkingSpace">
                             <td>（一）地下停车位
@@ -185,22 +185,22 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-1 treegrid-parent-7-1" data-key="residentialParkingSpace">
                             <td>（1）住宅停车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-2 treegrid-parent-7-1" data-key="commercialParkingSpace">
                             <td>（2）商业停车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-3 treegrid-parent-7-1" data-key="parkingFacilitie">
                             <td>（3）配套设施停车位
@@ -210,29 +210,29 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-3-1 treegrid-parent-7-1-3" data-key="propertyRoomParking">
                             <td>物管用房停车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-3-2 treegrid-parent-7-1-3" data-key="publicHousingParking">
                             <td>社区公共服务用房停车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         <tr class="treegrid-7-1-3-3 treegrid-parent-7-1-3" data-key="intelligentCommunityParking">
                             <td>智慧小区用房停车位</td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+                            <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
                         </tr>
                         </tbody>
                     </table>
@@ -305,8 +305,8 @@
         </td>
         <td></td>
         <td></td>
-        <td></td>
-        <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+        <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+        <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
     </tr>
 </script>
 
@@ -320,8 +320,8 @@
         </td>
         <td></td>
         <td></td>
-        <td></td>
-        <td><input type="text" name="content" data-rule-digits="true" style="width: 100px;"> 辆</td>
+        <td><input type="text" name="number" data-rule-digits="true" style="width: 100px;"> 辆</td>
+        <td><input type="text" name="content" data-rule-number="true" style="width: 100px;"> ㎡</td>
     </tr>
 </script>
 
@@ -361,6 +361,9 @@
             var data = {};
             data.customKey = $(this).attr('data-key');
             data.content = $(this).find('[name=content]').val();
+            if ($(this).find('[name=number]').length > 0) {
+                data.number = $(this).find('[name=number]').val();
+            }
             switch (data.customKey) {
                 case "houseBuildingArea":
                 case "nonHouseBuildingArea":
@@ -383,6 +386,9 @@
                                 if ($(item).find('[name=householdCount]').length > 0) {
                                     child.householdCount = $(item).find('[name=householdCount]').val();
                                 }
+                                if ($(item).find('[name=number]').length > 0) {
+                                    child.number = $(item).find('[name=number]').val();
+                                }
                                 child.content = $(item).find('[name=content]').val();
                                 childDataArray.push(child);
                             }
@@ -400,7 +406,8 @@
     }
 
     //填充表单数据
-    economicIndicators.initForm = function (pid) {
+    economicIndicators.initForm = function (pid, callback) {
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/economicIndicators/getEntityListByPid",
             type: 'post',
@@ -409,10 +416,14 @@
             },
             dataType: 'json',
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
                     $.each(result.data, function (i, item) {
                         var tr = $('#declareEconomicIndicatorsFrm').find('tr[data-key=' + item.customKey + ']');
                         tr.find('[name=content]').val(item.content);
+                        if (tr.find('[name=number]').length > 0) {
+                            tr.find('[name=number]').val(item.number);
+                        }
                         if (item.childData) {
                             var template = undefined;
                             switch (item.customKey) {
@@ -449,20 +460,26 @@
                                 }
                                 element.find('[name=name]').val(cdData.name);
                                 element.find('[name=content]').val(cdData.content);
-                                if(cdData.huxing){
+                                if (cdData.huxing) {
                                     element.find('[name=huxing]').val(cdData.huxing);
                                 }
-                                if(cdData.huxingArea){
+                                if (cdData.huxingArea) {
                                     element.find('[name=huxingArea]').val(cdData.huxingArea);
                                 }
-                                if(cdData.householdCount){
+                                if (cdData.householdCount) {
                                     element.find('[name=householdCount]').val(cdData.householdCount);
+                                }
+                                if (cdData.number) {
+                                    element.find('[name=number]').val(cdData.number);
                                 }
                                 economicIndicators.treegirdParse();
                             })
                         }
                     })
 
+                }
+                if (callback) {
+                    callback();
                 }
             }
         })

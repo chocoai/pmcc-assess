@@ -1125,8 +1125,9 @@
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id);
-        $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+        economicIndicators.initForm(id,function () {
+            $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+        });
     };
 
 
@@ -2128,7 +2129,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

@@ -425,73 +425,63 @@ public class DeclareBuildEconomicIndicatorsExample {
             return (Criteria) this;
         }
 
-        public Criteria andHuxingIsNull() {
-            addCriterion("huxing is null");
+        public Criteria andNumberIsNull() {
+            addCriterion("number is null");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingIsNotNull() {
-            addCriterion("huxing is not null");
+        public Criteria andNumberIsNotNull() {
+            addCriterion("number is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingEqualTo(String value) {
-            addCriterion("huxing =", value, "huxing");
+        public Criteria andNumberEqualTo(Integer value) {
+            addCriterion("number =", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingNotEqualTo(String value) {
-            addCriterion("huxing <>", value, "huxing");
+        public Criteria andNumberNotEqualTo(Integer value) {
+            addCriterion("number <>", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingGreaterThan(String value) {
-            addCriterion("huxing >", value, "huxing");
+        public Criteria andNumberGreaterThan(Integer value) {
+            addCriterion("number >", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingGreaterThanOrEqualTo(String value) {
-            addCriterion("huxing >=", value, "huxing");
+        public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("number >=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingLessThan(String value) {
-            addCriterion("huxing <", value, "huxing");
+        public Criteria andNumberLessThan(Integer value) {
+            addCriterion("number <", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingLessThanOrEqualTo(String value) {
-            addCriterion("huxing <=", value, "huxing");
+        public Criteria andNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("number <=", value, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingLike(String value) {
-            addCriterion("huxing like", value, "huxing");
+        public Criteria andNumberIn(List<Integer> values) {
+            addCriterion("number in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingNotLike(String value) {
-            addCriterion("huxing not like", value, "huxing");
+        public Criteria andNumberNotIn(List<Integer> values) {
+            addCriterion("number not in", values, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingIn(List<String> values) {
-            addCriterion("huxing in", values, "huxing");
+        public Criteria andNumberBetween(Integer value1, Integer value2) {
+            addCriterion("number between", value1, value2, "number");
             return (Criteria) this;
         }
 
-        public Criteria andHuxingNotIn(List<String> values) {
-            addCriterion("huxing not in", values, "huxing");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingBetween(String value1, String value2) {
-            addCriterion("huxing between", value1, value2, "huxing");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNotBetween(String value1, String value2) {
-            addCriterion("huxing not between", value1, value2, "huxing");
+        public Criteria andNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("number not between", value1, value2, "number");
             return (Criteria) this;
         }
 

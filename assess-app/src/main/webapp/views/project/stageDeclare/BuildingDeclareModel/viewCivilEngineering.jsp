@@ -1141,8 +1141,9 @@
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id);
-        $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+        economicIndicators.initForm(id,function () {
+            $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+        });
     };
 
     civilEngineering.loadList = function () {
@@ -2018,10 +2019,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label" title="评估面积">建筑面积<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建筑面积(数字)" name="buildArea" class="form-control"
+                                                   placeholder="评估面积(数字)" name="buildArea" class="form-control"
                                                    data-rule-maxlength="100" data-rule-number='true'
                                                    required="required">
                                         </div>

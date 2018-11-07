@@ -13,7 +13,7 @@ public class DeclareBuildEconomicIndicators {
 
     private String name;
 
-    private String huxing;
+    private Integer number;
 
     private String content;
 
@@ -65,12 +65,12 @@ public class DeclareBuildEconomicIndicators {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getHuxing() {
-        return huxing;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setHuxing(String huxing) {
-        this.huxing = huxing == null ? null : huxing.trim();
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public String getContent() {
