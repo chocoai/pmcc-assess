@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -8,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingSellVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -60,6 +62,8 @@ public class CaseHouseService {
     private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseHouseListVos(CaseHouse caseHouse) {
@@ -299,7 +303,23 @@ public class CaseHouseService {
 
     public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse){
         CaseHouseVo vo = new CaseHouseVo();
+        BaseDataDic dataDic = null;
         BeanUtils.copyProperties(caseHouse,vo);
+        if (caseHouse.getUseEnvironment() != null) {
+            dataDic = baseDataDicService.getDataDicById(caseHouse.getUseEnvironment());
+            vo.setUseEnvironmentName(dataDic.getName());
+            dataDic = null;
+        }
+        if (caseHouse.getCertUse() != null) {
+            dataDic = baseDataDicService.getDataDicById(caseHouse.getCertUse());
+            vo.setCertUseName(dataDic.getName());
+            dataDic = null;
+        }
+        if (caseHouse.getPracticalUse() != null) {
+            dataDic = baseDataDicService.getDataDicById(caseHouse.getPracticalUse());
+            vo.setPracticalUseName(dataDic.getName());
+            dataDic = null;
+        }
         return vo;
     }
 }

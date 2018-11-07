@@ -90,6 +90,21 @@ public class BasicApplyController {
         }
     }
 
+    @RequestMapping(value = "/basicApplyEdit", name = "返回修改", method = RequestMethod.GET)
+    public ModelAndView basicApplyEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyEdit", "0", 0, "0", "");
+        //所有省份
+        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
+        //可选的执业部门
+        modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());
+        try {
+            this.setViewParam(processInsId, modelAndView);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
     /**
      * 设置参数
      *

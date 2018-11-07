@@ -1,11 +1,17 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateLandStateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
+import com.copower.pmcc.assess.dto.output.cases.CaseEstateLandStateVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +27,11 @@ public class CaseEstateLandStateService {
     @Autowired
     private CaseEstateLandStateDao caseEstateLandStateDao;
     @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
     private CommonService commonService;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState) {
@@ -73,5 +83,32 @@ public class CaseEstateLandStateService {
     public boolean deleteCaseEstateLandState(Integer id) {
 
         return caseEstateLandStateDao.deleteEstateLandState(id);
+    }
+
+    public CaseEstateLandStateVo getCaseEstateLandStateVo(CaseEstateLandState caseEstateLandState){
+        CaseEstateLandStateVo vo = new CaseEstateLandStateVo();
+        BeanUtils.copyProperties(caseEstateLandState,vo);
+        BaseDataDic dataDic = null;
+        if (caseEstateLandState.getLandUseType() != null){
+            dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseType());
+            if (dataDic != null){
+                vo.setLandUseTypeName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (caseEstateLandState.getLandUseCategory() != null){
+            dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseCategory());
+            if (dataDic != null){
+                vo.setLandUseCategoryName(dataDic.getName());
+                dataDic = null;
+            }
+        }
+        if (caseEstateLandState.getLandLevel() != null){
+            DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(caseEstateLandState.getLandLevel());
+            if (dataLandLevel != null) {
+                vo.setLandLevelName(dataLandLevel.getLeve());
+            }
+        }
+        return vo;
     }
 }

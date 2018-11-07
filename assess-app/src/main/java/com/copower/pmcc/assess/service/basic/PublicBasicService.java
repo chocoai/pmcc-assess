@@ -22,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -123,6 +121,7 @@ public class PublicBasicService {
 
     /**
      * 楼盘回写
+     *
      * @param basicEstate
      * @param basicEstateLandState
      * @return
@@ -316,6 +315,7 @@ public class PublicBasicService {
 
     /**
      * 主楼栋 回写
+     *
      * @param basicBuildingMain
      * @param estateId
      * @return
@@ -356,6 +356,7 @@ public class PublicBasicService {
 
     /**
      * 楼栋 回写
+     *
      * @param basicBuildingMain
      * @param caseBuildingMain
      * @throws Exception
@@ -558,6 +559,7 @@ public class PublicBasicService {
 
     /**
      * 单元 回写
+     *
      * @param basicUnit
      * @param caseBuildingMainId
      * @return
@@ -685,6 +687,7 @@ public class PublicBasicService {
 
     /**
      * 房屋 回写
+     *
      * @param basicHouse
      * @param basicTrading
      * @param unitId
@@ -816,19 +819,19 @@ public class PublicBasicService {
                 CaseHouseRoom caseHouseRoom = null;
                 if (oo.getCaseRoomId() != null) {
                     caseHouseRoom = caseHouseRoomService.getCaseHouseRoomById(oo.getCaseRoomId());
-                    if (caseHouseRoom != null){
-                        BeanUtils.copyProperties(oo,caseHouseRoom);
+                    if (caseHouseRoom != null) {
+                        BeanUtils.copyProperties(oo, caseHouseRoom);
                         caseHouseRoom.setId(oo.getCaseRoomId());
                     }
-                    if (caseHouseRoom == null){
+                    if (caseHouseRoom == null) {
                         caseHouseRoom = new CaseHouseRoom();
-                        BeanUtils.copyProperties(oo,caseHouseRoom);
+                        BeanUtils.copyProperties(oo, caseHouseRoom);
                         caseHouseRoom.setId(null);
                     }
                 }
-                if (oo.getCaseRoomId() == null){
+                if (oo.getCaseRoomId() == null) {
                     caseHouseRoom = new CaseHouseRoom();
-                    BeanUtils.copyProperties(oo,caseHouseRoom);
+                    BeanUtils.copyProperties(oo, caseHouseRoom);
                     caseHouseRoom.setId(null);
                 }
                 caseHouseRoom.setHouseId(caseHouse.getId());
@@ -1378,8 +1381,8 @@ public class PublicBasicService {
      * @param caseEstateId
      * @throws Exception
      */
-    public CaseEstateVo appWriteEstate(Integer caseEstateId) throws Exception {
-        if (caseEstateId == null){
+    public Map<String, Object> appWriteEstate(Integer caseEstateId) throws Exception {
+        if (caseEstateId == null) {
             throw new Exception("null point");
         }
         CaseEstateParking estateParking = new CaseEstateParking();
@@ -1419,17 +1422,33 @@ public class PublicBasicService {
                 basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
             }
         }
-        return caseEstateService.getCaseEstateVo(caseEstateService.getCaseEstateById(caseEstateId));
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        objectMap.put(CaseEstate.class.getSimpleName(), caseEstateService.getCaseEstateVo(caseEstateService.getCaseEstateById(caseEstateId)));
+        CaseEstateLandState query = new CaseEstateLandState();
+        query.setEstateId(caseEstateId);
+        List<CaseEstateLandState> landStateList = caseEstateLandStateService.getCaseEstateLandStateList(query);
+        Ordering<CaseEstateLandState> ordering = Ordering.from(new Comparator<CaseEstateLandState>() {
+            @Override
+            public int compare(CaseEstateLandState o1, CaseEstateLandState o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        if (!ObjectUtils.isEmpty(landStateList)){
+            Collections.sort(landStateList,ordering);
+            objectMap.put(CaseEstateLandState.class.getSimpleName(),caseEstateLandStateService.getCaseEstateLandStateVo(landStateList.get(0))) ;
+        }
+        return objectMap;
     }
 
     /**
      * 将 CaseHouse 下的子类 转移到 BasicHouse下的子类中去 (用做过程数据)
+     *
      * @param caseHouseId
      * @throws Exception
      */
-    public CaseHouseVo appWriteHouse(Integer caseHouseId) throws Exception{
-        if (caseHouseId == null){
-            throw  new Exception("null ponit");
+    public Map<String, Object> appWriteHouse(Integer caseHouseId) throws Exception {
+        if (caseHouseId == null) {
+            throw new Exception("null ponit");
         }
         CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
         caseHouseTradingLease.setHouseId(caseHouseId);
@@ -1441,36 +1460,51 @@ public class PublicBasicService {
         List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
         List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
         List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
-        if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)){
-            for (CaseHouseTradingSellVo oo:caseHouseTradingSellVos){
+        if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
+            for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
                 BasicHouseTradingSell querySell = new BasicHouseTradingSell();
-                BeanUtils.copyProperties(oo,querySell);
+                BeanUtils.copyProperties(oo, querySell);
                 querySell.setCaseTradingSellId(oo.getId());
                 querySell.setId(null);
                 querySell.setHouseId(0);
                 basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(querySell);
             }
         }
-        if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)){
-            for (CaseHouseTradingLeaseVo oo:caseHouseTradingLeaseVos){
+        if (!ObjectUtils.isEmpty(caseHouseTradingLeaseVos)) {
+            for (CaseHouseTradingLeaseVo oo : caseHouseTradingLeaseVos) {
                 BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
-                BeanUtils.copyProperties(oo,queryLease);
+                BeanUtils.copyProperties(oo, queryLease);
                 queryLease.setCaseTradingLeaseId(oo.getId());
                 queryLease.setId(null);
                 queryLease.setHouseId(0);
                 basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(queryLease);
             }
         }
-        if (!ObjectUtils.isEmpty(caseHouseRooms)){
-            for (CaseHouseRoom oo:caseHouseRooms){
+        if (!ObjectUtils.isEmpty(caseHouseRooms)) {
+            for (CaseHouseRoom oo : caseHouseRooms) {
                 BasicHouseRoom queryRoom = new BasicHouseRoom();
-                BeanUtils.copyProperties(oo,queryRoom);
+                BeanUtils.copyProperties(oo, queryRoom);
                 queryRoom.setCaseRoomId(oo.getId());
                 queryRoom.setId(null);
                 queryRoom.setHouseId(0);
                 basicHouseRoomService.saveAndUpdateBasicHouseRoom(queryRoom);
             }
         }
-        return  caseHouseService.getCaseHouseVo(caseHouseService.getCaseHouseById(caseHouseId));
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        objectMap.put(CaseHouse.class.getSimpleName(),caseHouseService.getCaseHouseVo(caseHouseService.getCaseHouseById(caseHouseId)));
+        CaseHouseTrading query = new CaseHouseTrading();
+        query.setHouseId(caseHouseId);
+        List<CaseHouseTrading> caseHouseTradingList = caseHouseTradingService.caseHouseTradingLists(query);
+        Ordering<CaseHouseTrading> ordering = Ordering.from(new Comparator<CaseHouseTrading>() {
+            @Override
+            public int compare(CaseHouseTrading o1, CaseHouseTrading o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        if (!ObjectUtils.isEmpty(caseHouseTradingList)){
+            Collections.sort(caseHouseTradingList,ordering);
+            objectMap.put(CaseHouseTrading.class.getSimpleName(),caseHouseTradingService.getCaseHouseTradingVo(caseHouseTradingList.get(0)));
+        }
+        return objectMap;
     }
 }

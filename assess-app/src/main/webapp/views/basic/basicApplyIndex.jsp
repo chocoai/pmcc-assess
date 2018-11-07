@@ -27,7 +27,7 @@
                                 class="fa fa-chevron-up"></i></a></li>
                     </ul>
                     <h3>
-                        申请信息
+                        查询信息
                     </h3>
                     <div class="clearfix"></div>
                 </div>
@@ -147,7 +147,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
-                        <small>详细信息</small>
+                        <small>信息</small>
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -229,7 +229,7 @@
     objectData.flag = true;
     objectData.config = {
         id: "basicApplyId",
-        option: {},
+        view: {save: "saveView", detail: "detailView"},
         basicEstate: {
             key: "basicEstate",
             name: "楼盘",
@@ -319,8 +319,8 @@
         }
         $("#" + frm).find("label").each(function (i, n) {
             var name = $(n).attr("data-name");
-            if (objectData.isNotBlank(name)){
-                $(n).html(eval("data."+name));
+            if (objectData.isNotBlank(name)) {
+                $(n).html(eval("data." + name));
             }
         });
     };
@@ -554,10 +554,12 @@
     objectData.estateFlag = true;
     //处理 楼盘
     objectData.estate = {
-        show: function (itemA,itemB) {
+        show: function (itemA, itemB) {
             $('#caseTab a:first').tab('show');
-            $("#" + objectData.config.basicEstate.frm).initForm(itemA);
-            $("#" + objectData.config.basicEstate.frmLandState).initForm(itemA);
+            $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.save).show();
+            $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.detail).hide();
+            $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.save).show();
+            $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.detail).hide();
             if (objectData.estateFlag) {
                 objectData.estate.init(itemA);
                 objectData.estate.landStateInit(itemB);
@@ -574,35 +576,33 @@
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
                 toastr.success('未找到查询的数据');
-                $("#" + objectData.config.basicEstate.frm).clearAll();
-                objectData.estate.show({});
             }
             $("#" + objectData.config.basicEstate.frm).clearAll();
+            $("#" + objectData.config.basicEstate.frmLandState).clearAll();
             if (objectData.isNotBlank(estateId)) {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
-                    type: "get",
-                    dataType: "json",
-                    data: {id: estateId},
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
-                                var readonly = $(n).attr("readonly");
-                                if (!objectData.isNotBlank(readonly)) {
-                                    $(n).attr("readonly", "readonly");
-                                }
-                            });
-                            objectData.estate.show(result.data,{});
-                        } else {
-                            Alert("没有查询到与此相关的楼盘信息");
-                            objectData.estate.show({},{});
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
+                objectData.firstRemove.estateFirst();
             }
+            objectData.estate.appWriteEstate(estateId, function (data) {
+                toastr.success('数据转移成功!');
+                var CaseEstate = data.CaseEstate;
+                var CaseEstateLandState = data.CaseEstateLandState;
+                if (!objectData.isNotBlank(CaseEstate)) {
+                    CaseEstate = {};
+                }
+                if (!objectData.isNotBlank(CaseEstateLandState)) {
+                    CaseEstateLandState = {};
+                }
+                objectData.estate.show(CaseEstate, CaseEstateLandState);
+                objectData.initLabelForm(objectData.config.basicEstate.frm, CaseEstate);
+                objectData.initLabelForm(objectData.config.basicEstate.frmLandState, CaseEstateLandState);
+                $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.save).hide();
+                $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.detail).show();
+                $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.save).hide();
+                $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.detail).show();
+            }, function (item) {
+                objectData.estate.show({}, {});
+                Alert("失败!" + item);
+            });
         },
         edit: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
@@ -610,26 +610,25 @@
                 Alert("请查询楼盘!");
                 return false;
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseEstate/getCaseEstateById",
-                type: "get",
-                dataType: "json",
-                data: {id: estateId},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (objectData.isNotBlank(readonly)) {
-                                $(n).removeAttr("readonly");
-                            }
-                        });
-                        $("#" + objectData.config.basicEstate.frm).clearAll();
-                        objectData.estate.show(result.data,{});
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+            $("#" + objectData.config.basicEstate.frm).clearAll();
+            $("#" + objectData.config.basicEstate.frmLandState).clearAll();
+            objectData.firstRemove.estateFirst();
+            objectData.estate.appWriteEstate(estateId, function (data) {
+                toastr.success('数据转移成功!');
+                var CaseEstate = data.CaseEstate;
+                var CaseEstateLandState = data.CaseEstateLandState;
+                if (!objectData.isNotBlank(CaseEstate)) {
+                    CaseEstate = {};
                 }
+                if (!objectData.isNotBlank(CaseEstateLandState)) {
+                    CaseEstateLandState = {};
+                }
+                $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
+                $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
+                objectData.estate.show(CaseEstate, CaseEstateLandState);
+            }, function (item) {
+                objectData.estate.show({}, {});
+                Alert("失败!" + item);
             });
         },
         init: function (item) {
@@ -768,19 +767,24 @@
                 }
             });
         },
-        appWriteEstate:function (id) {
+        appWriteEstate: function (id, callback, callbackError) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicEstate/appWriteEstate",
                 type: "POST",
                 data: {caseEstateId: id},
                 dataType: "json",
                 success: function (result) {
-                    if (result.ret) {
-                        toastr.success('数据转移成功!');
+                    if (result.ret && callback) {
+                        callback(result.data);
+                    }
+                    if (!result.ret && callbackError) {
+                        callbackError("未获取到数据!");
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    if (!result.ret && callbackError) {
+                        callbackError(result.errmsg);
+                    }
                 }
             });
         }
@@ -794,6 +798,12 @@
                 toastr.success('未选择楼盘');
             }
             objectData.building.init(item);
+            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
+                var readonly = $(n).attr("readonly");
+                if (objectData.isNotBlank(readonly)) {
+                    $(n).removeAttr("readonly");
+                }
+            });
         },
         details: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
@@ -1009,9 +1019,12 @@
                 toastr.success('未选择楼栋');
             }
             $('#caseTab a').eq(2).tab('show');
+            $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
+            $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).hide();
             unitDecorate.prototype.loadDataDicList();
             unitHuxing.prototype.loadDataDicList();
             unitElevator.prototype.loadDataDicList();
+
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -1019,29 +1032,13 @@
                 Alert("请查询单元!");
                 return false;
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseUnit/getCaseUnitById",
-                type: "get",
-                data: {id: unitId},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        if (objectData.isNotBlankObjectProperty(result.data)) {
-                            $("#" + objectData.config.basicUnit.frm).initForm(result.data);
-                            $("#" + objectData.config.basicUnit.frm).find("input").each(function (i, n) {
-                                var readonly = $(n).attr("readonly");
-                                if (objectData.isNotBlank(readonly)) {
-                                    $(n).removeAttr("readonly");
-                                }
-                            });
-                            objectData.unit.appWriteUnit(unitId);
-                            objectData.unit.show();
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
+            objectData.firstRemove.unitFirst();
+            objectData.unit.appWriteUnit(unitId, function (data) {
+                toastr.success('数据转移成功!');
+                $("#" + objectData.config.basicUnit.frm).initForm(data);
+                objectData.unit.show();
+            }, function () {
+                objectData.unit.show();
             });
         },
         details: function () {
@@ -1049,43 +1046,36 @@
             if (!objectData.isNotBlank(unitId)) {
                 toastr.success('未找到查询的数据');
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseUnit/getCaseUnitById",
-                type: "get",
-                data: {id: unitId},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        if (objectData.isNotBlankObjectProperty(result.data)) {
-                            $("#" + objectData.config.basicUnit.frm).initForm(result.data);
-                            $("#" + objectData.config.basicUnit.frm).find("input").each(function (i, n) {
-                                var readonly = $(n).attr("readonly");
-                                if (!objectData.isNotBlank(readonly)) {
-                                    $(n).attr("readonly", "readonly");
-                                }
-                            });
-                            objectData.unit.show();
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
+            objectData.firstRemove.unitFirst();
+            objectData.unit.appWriteUnit(unitId, function (data) {
+                toastr.success('数据转移成功!');
+                objectData.unit.show();
+                objectData.initLabelForm(objectData.config.basicUnit.frm, data);
+                $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).hide();
+                $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).show();
+            }, function (item) {
+                Alert("失败!" + item);
+                objectData.unit.show();
             });
         },
-        appWriteUnit:function (id) {
+        appWriteUnit: function (id, callback, callbackError) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicUnit/appWriteUnit",
                 type: "POST",
                 data: {caseUnitId: id},
                 dataType: "json",
                 success: function (result) {
-                    if (result.ret) {
-                        toastr.success('数据转移成功!');
+                    if (result.ret && callback) {
+                        callback(result.data);
+                    }
+                    if (!result.ret && callbackError) {
+                        callbackError("未获取到数据!");
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    if (!result.ret && callbackError) {
+                        callbackError(result.errmsg);
+                    }
                 }
             });
         }
@@ -1094,12 +1084,16 @@
     //处理房屋
     objectData.houseFlag = true;
     objectData.house = {
-        show: function (item) {
+        show: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
             if (!objectData.isNotBlank(unitId)) {
                 toastr.success('未选择单元');
             }
             $('#caseTab a').eq(3).tab('show');
+            $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
+            $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).hide();
+            $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).show();
+            $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.detail).hide();
             if (objectData.houseFlag) {
                 houseModelFun.houseInit({});
                 houseModelFun.tradingInit({});
@@ -1113,41 +1107,23 @@
                 Alert("请先查询房屋");
                 return false;
             }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $('#caseTab a').eq(3).tab('show');
-                        $("#" + objectData.config.basicHouse.frm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (objectData.isNotBlank(readonly)) {
-                                $(n).removeAttr("readonly");
-                            }
-                        });
-                        $("#" + objectData.config.basicHouse.tradingFrm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (objectData.isNotBlank(readonly)) {
-                                $(n).removeAttr("readonly");
-                            }
-                        });
-                        if (objectData.isNotBlank(result.data.CaseHouse)) {
-                            houseModelFun.houseInit(result.data.CaseHouse);
-                        } else {
-                            houseModelFun.houseInit({});
-                        }
-                        if (objectData.isNotBlank(result.data.CaseHouseTrading)) {
-                            houseModelFun.tradingInit(result.data.CaseHouseTrading);
-                        } else {
-                            houseModelFun.tradingInit({});
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+            objectData.firstRemove.houseFirst();
+            objectData.house.appWriteHouse(id, function (data) {
+                var CaseHouseTrading = data.CaseHouseTrading;
+                var CaseHouse = data.CaseHouse;
+                if (!objectData.isNotBlank(CaseHouseTrading)) {
+                    CaseHouseTrading = {};
                 }
+                if (!objectData.isNotBlank(CaseHouse)) {
+                    CaseHouse = {};
+                }
+                objectData.house.show();
+                houseModelFun.houseInit(CaseHouse);
+                houseModelFun.tradingInit(CaseHouseTrading);
+                toastr.success('数据转移成功!');
+            }, function (item) {
+                objectData.house.show();
+                Alert("失败!" + item);
             });
         },
         details: function () {
@@ -1155,40 +1131,49 @@
             if (!objectData.isNotBlank(id)) {
                 toastr.success('请先查询房屋');
             }
+            if (objectData.isNotBlank(id)) {
+                objectData.firstRemove.houseFirst();
+            }
+            objectData.house.appWriteHouse(id, function (data) {
+                var CaseHouseTrading = data.CaseHouseTrading;
+                var CaseHouse = data.CaseHouse;
+                if (!objectData.isNotBlank(CaseHouseTrading)) {
+                    CaseHouseTrading = {};
+                }
+                if (!objectData.isNotBlank(CaseHouse)) {
+                    CaseHouse = {};
+                }
+                objectData.house.show();
+                objectData.initLabelForm(objectData.config.basicHouse.frm,CaseHouse);
+                objectData.initLabelForm(objectData.config.basicHouse.tradingFrm,CaseHouseTrading);
+                $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).hide();
+                $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).show();
+                $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).hide();
+                $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.detail).show();
+                toastr.success('数据转移成功!');
+            }, function (item) {
+                objectData.house.show();
+                Alert("失败!" + item);
+            });
+        },
+        appWriteHouse: function (id, callback, callbackError) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/caseHouse/getCaseHouseByIdAndTrading",
-                type: "get",
+                url: "${pageContext.request.contextPath}/basicHouse/appWriteHouse",
+                type: "POST",
+                data: {caseHouseId: id},
                 dataType: "json",
-                data: {id: id},
                 success: function (result) {
-                    if (result.ret) {
-                        $('#caseTab a').eq(3).tab('show');
-                        $("#" + objectData.config.basicHouse.frm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (!objectData.isNotBlank(readonly)) {
-                                $(n).attr("readonly", "readonly");
-                            }
-                        });
-                        $("#" + objectData.config.basicHouse.tradingFrm).find("input").each(function (i, n) {
-                            var readonly = $(n).attr("readonly");
-                            if (!objectData.isNotBlank(readonly)) {
-                                $(n).attr("readonly", "readonly");
-                            }
-                        });
-                        if (objectData.isNotBlank(result.data.CaseHouse)) {
-                            houseModelFun.houseInit(result.data.CaseHouse);
-                        } else {
-                            houseModelFun.houseInit({});
-                        }
-                        if (objectData.isNotBlank(result.data.CaseHouseTrading)) {
-                            houseModelFun.tradingInit(result.data.CaseHouseTrading);
-                        } else {
-                            houseModelFun.tradingInit({});
-                        }
+                    if (result.ret && callback) {
+                        callback(result.data);
+                    }
+                    if (!result.ret && callbackError) {
+                        callbackError("未获取到数据!");
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    if (!result.ret && callbackError) {
+                        callbackError(result.errmsg);
+                    }
                 }
             });
         }
@@ -1197,7 +1182,7 @@
 
     //删除 楼盘 楼盘 单元 房屋 下 子类的临时数据!
     objectData.firstRemove = {
-        houseFirst:function () {
+        houseFirst: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicHouse/initHouse",
                 type: "post",
@@ -1212,7 +1197,7 @@
                 }
             });
         },
-        estateFirst:function () {
+        estateFirst: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicEstate/initEstate",
                 type: "post",
@@ -1242,7 +1227,7 @@
                 }
             });
         },
-        unitFirst:function () {
+        unitFirst: function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicUnit/initUnit",
                 type: "post",

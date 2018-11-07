@@ -1,10 +1,16 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.data.DataDeveloperService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -64,6 +70,12 @@ public class CaseEstateService {
     private CaseEstateLandStateService caseEstateLandStateService;
     @Autowired
     private CaseBuildingMainService caseBuildingMainService;
+    @Autowired
+    private DataDeveloperService dataDeveloperService;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
+    @Autowired
+    private DataBlockService dataBlockService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate) {
@@ -371,6 +383,24 @@ public class CaseEstateService {
         if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getGreeningRate())) {
             if (NumberUtils.isNumber(caseEstate.getGreeningRate())) {
                 vo.setGreeningRateName(nt.format(Double.parseDouble(caseEstate.getGreeningRate())));
+            }
+        }
+        if (caseEstate.getDeveloperId() != null) {
+            DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(caseEstate.getDeveloperId());
+            if (dataDeveloper != null) {
+                vo.setDeveloperName(dataDeveloper.getName());
+            }
+        }
+        if (caseEstate.getBlockId() != null) {
+            DataBlock dataBlock = dataBlockService.getDataBlockById(caseEstate.getBlockId());
+            if (dataBlock != null) {
+                vo.setBlockName(dataBlock.getName());
+            }
+        }
+        if (caseEstate.getLandLevel() != null) {
+            DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(caseEstate.getLandLevel());
+            if (dataLandLevel != null) {
+                vo.setLandLevelName(dataLandLevel.getLeve());
             }
         }
         return vo;
