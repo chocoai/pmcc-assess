@@ -5,7 +5,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>收益法</h2>
+        <h3>收益法</h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -108,7 +108,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>时间分段</h2>
+        <h3>时间分段</h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -120,7 +120,7 @@
         </table>
     </div>
 </div>
-<jsp:include page="/views/method/module/income/selfSupport.jsp"></jsp:include>
+<jsp:include page="/views/method/module/income/selfSupport/info.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/lease.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/rewardRate.jsp"></jsp:include>
 <div id="modal_data_section" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -218,8 +218,8 @@
                     toastr.success('保存成功');
                     incomeIndex.loadDateSectionList(data.operationMode);
                     if (data.operationMode == 0) {
-                        selfSupport.loadForecastList(0);
-                        selfSupport.loadForecastList(1);
+                        selfSupportForecast.loadForecastList(0);
+                        selfSupportForecast.loadForecastList(1);
                         selfSupport.loadCalculationResult();
                     }
                     if (data.operationMode == 1) {
@@ -328,12 +328,20 @@
         if ($(_this).val() == 0) {
             $("#self_support_info,#group_FormType").show();
             $("#group_leaseMode,#group_restriction_explain,#lease_info").hide();
-            selfSupport.loadHistoryList(0);
-            selfSupport.loadHistoryList(1);
-            selfSupport.loadForecastAnalyseList(0);
-            selfSupport.loadForecastAnalyseList(1);
-            selfSupport.loadForecastIncomeList();
-            selfSupport.loadForecastCostList();
+            switch (incomeIndex.getFormType()){
+                case "0":
+                    selfSupportForecast.loadHistoryList(0);
+                    selfSupportForecast.loadHistoryList(1);
+                    selfSupportForecast.loadForecastAnalyseList(0);
+                    selfSupportForecast.loadForecastAnalyseList(1);
+                    selfSupport.loadForecastIncomeList();
+                    selfSupport.loadForecastCostList();
+                    break;
+                case "1":
+
+                    break;
+            }
+
             selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
             $("#self_support_info,#group_FormType").hide();
@@ -357,12 +365,24 @@
 
     //表单类型切换
     incomeIndex.formTypeChange = function (_this) {
-
+        var value = $(_this).val();
+        if (value == 0) {
+            $("#ref_forecastIncome,#ref_forecastCost").show();
+            $("#ref_forecastRestaurantIncome,#ref_forecastRestaurantCost").hide();
+        } else if (value == 1) {
+            $("#ref_forecastIncome,#ref_forecastCost").hide();
+            $("#ref_forecastRestaurantIncome,#ref_forecastRestaurantCost").show();
+        }
     }
 
     //获取表单类型
     incomeIndex.getFormType = function () {
         return $("#frm_income").find('[name=formType]:checked').val();
+    }
+
+    //获取incomeId
+    incomeIndex.getInComeId = function () {
+        return $("#frm_income").find('[name=id]').val();
     }
 
     //表单验证

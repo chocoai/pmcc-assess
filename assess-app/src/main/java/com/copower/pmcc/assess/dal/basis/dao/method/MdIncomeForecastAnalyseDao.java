@@ -55,6 +55,7 @@ public class MdIncomeForecastAnalyseDao {
     public List<MdIncomeForecastAnalyse> getForecastAnalyseList(MdIncomeForecastAnalyse mdIncomeForecastAnalyse) {
         MdIncomeForecastAnalyseExample example = new MdIncomeForecastAnalyseExample();
         MybatisUtils.convertObj2Example(mdIncomeForecastAnalyse, example);
+        example.setOrderByClause("year");
         return mdIncomeForecastAnalyseMapper.selectByExample(example);
     }
 

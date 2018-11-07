@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
-import com.copower.pmcc.assess.common.enums.MethodIncomeFormTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -23,7 +22,6 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,7 +39,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-7-23.
@@ -85,9 +82,10 @@ public class MdIncomeService {
         if (mdIncomeHistory.getId() != null && mdIncomeHistory.getId() > 0) {
             mdIncomeHistoryDao.updateHistory(mdIncomeHistory);
         } else {
+            mdIncomeHistory.setBisForecast(false);
             mdIncomeHistory.setCreator(commonService.thisUserAccount());
             mdIncomeHistoryDao.addHistory(mdIncomeHistory);
-            generatorForecastAnalyse(mdIncomeHistory.getIncomeId(),mdIncomeHistory.getType(),mdIncomeHistory.getYear());
+            generatorForecastAnalyse(mdIncomeHistory.getIncomeId(), mdIncomeHistory.getType(), mdIncomeHistory.getYear());
         }
     }
 
@@ -97,61 +95,52 @@ public class MdIncomeService {
      * @param ids
      */
     @Transactional
-    public void historyToForecast(List<Integer> ids,Integer forecastAnalyseId) {
+    public void historyToForecast(List<Integer> ids, Integer forecastAnalyseId) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Integer id : ids) {
                 MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
                 history.setBisForecast(true);
                 history.setForecastAnalyseId(forecastAnalyseId);
                 mdIncomeHistoryDao.updateHistory(history);
-                generatorForecastAnalyse(history.getIncomeId(),history.getType(),history.getYear());
+            }
+            //将对应年份设置为参与预测的年份
+            MdIncomeForecastAnalyse forecastAnalyse = mdIncomeForecastAnalyseDao.getForecastAnalyseById(forecastAnalyseId);
+            if (forecastAnalyse != null) {
+                forecastAnalyse.setBisParticipateIn(true);
+                mdIncomeForecastAnalyseDao.updateForecastAnalyse(forecastAnalyse);
             }
         }
     }
 
     /**
-     * 历史数据添加到预测数据
+     * 预测数据还原成历史数据
      *
      * @param ids
      */
     @Transactional
-    public void historyToForecast(List<Integer> ids) {
+    public void forecastToHistory(List<Integer> ids, Integer incomeId, Integer type) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Integer id : ids) {
                 MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
                 history.setBisForecast(false);
                 mdIncomeHistoryDao.updateHistory(history);
             }
-        }
-    }
 
-    /**
-     * 预测数据分析
-     *
-     * @param incomeId
-     * @param type
-     */
-    public void forecastBaseAnalyse(Integer incomeId, Integer type) {
-        //1.从预测基础数据的第一条数据算起，找出该时间推迟一年的时间，作为结束时间
-
-        //如果表单类型为默认，则取最早的预测数据做基准，往后推与下一年的月份数与当月对应时做为一年
-        //计算出当前的合计金额，再依次推算出后几年的 数量趋势与单价趋势
-        MdIncome mdIncome = mdIncomeDao.getIncomeById(incomeId);
-        if (mdIncome == null) return;
-        if (MethodIncomeFormTypeEnum.DEFUALT.equals(mdIncome.getFormType())) {
-            MdIncomeHistory whereHistory = new MdIncomeHistory();
-            whereHistory.setIncomeId(incomeId);
-            whereHistory.setBisForecast(true);
-            List<MdIncomeHistory> historyList = mdIncomeHistoryDao.getHistoryList(whereHistory);
-            if (CollectionUtils.isNotEmpty(historyList)) {
-                MdIncomeHistory baseForecast = historyList.get(0);//基准预测数据
-                Integer baseYear = baseForecast.getYear();
-                Integer baseMonth = baseForecast.getMonth();
-                Integer endMonth = baseForecast.getMonth().equals(1) ? 12 : baseForecast.getMonth() - 1;//结束月份
-                Integer endYear = endMonth.equals(12) ? baseYear : baseYear + 1;
-                //将数据拆分为多个年份数据
-                Map<Integer, List<MdIncomeHistory>> map = Maps.newHashMap();
-
+            //查找预测分析数据中是否还存在对应关联的数据
+            MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
+            whereForecastAnalyse.setIncomeId(incomeId);
+            whereForecastAnalyse.setType(type);
+            whereForecastAnalyse.setBisParticipateIn(true);
+            List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(whereForecastAnalyse);
+            if (CollectionUtils.isNotEmpty(analyseList)) {
+                for (MdIncomeForecastAnalyse analyse : analyseList) {
+                    MdIncomeHistory historyWhere = new MdIncomeHistory();
+                    int count = mdIncomeHistoryDao.getHistoryCount(historyWhere);
+                    if (count <= 0) {
+                        analyse.setBisParticipateIn(false);
+                        mdIncomeForecastAnalyseDao.updateForecastAnalyse(analyse);
+                    }
+                }
             }
         }
     }
@@ -162,8 +151,25 @@ public class MdIncomeService {
      * @param id
      * @return
      */
-    public boolean deleteHistory(Integer id) {
-        return mdIncomeHistoryDao.deleteHistory(id);
+    @Transactional
+    public void deleteHistory(Integer id) {
+        MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
+        mdIncomeHistoryDao.deleteHistory(id);
+        //如果该年份下的预测分析数据没有关联的数据，则将该预测分析数据删除
+        MdIncomeHistory historyWhere = new MdIncomeHistory();
+        historyWhere.setIncomeId(history.getIncomeId());
+        historyWhere.setType(history.getType());
+        historyWhere.setYear(history.getYear());
+        if (mdIncomeHistoryDao.getHistoryCount(historyWhere) <= 0) {
+            MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
+            whereForecastAnalyse.setIncomeId(history.getIncomeId());
+            whereForecastAnalyse.setType(history.getType());
+            whereForecastAnalyse.setYear(history.getYear());
+            List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(whereForecastAnalyse);
+            if (CollectionUtils.isNotEmpty(analyseList)) {
+                analyseList.forEach(o -> mdIncomeForecastAnalyseDao.deleteForecastAnalyse(o.getId()));
+            }
+        }
     }
 
     /**
@@ -191,8 +197,71 @@ public class MdIncomeService {
             mdIncomeForecastAnalyse.setIncomeId(incomeId);
             mdIncomeForecastAnalyse.setType(type);
             mdIncomeForecastAnalyse.setYear(year);
+            mdIncomeForecastAnalyse.setBisParticipateIn(false);
             mdIncomeForecastAnalyse.setCreator(commonService.thisUserAccount());
             mdIncomeForecastAnalyseDao.addForecastAnalyse(mdIncomeForecastAnalyse);
+        }
+    }
+
+    /**
+     * 开始分析
+     *
+     * @param incomeId
+     * @param type
+     */
+    @Transactional
+    public void startAnalyse(Integer incomeId, Integer type) {
+        //1.取出预测数据中的第一年作为基准数据
+        //2.后续每年与第一年数据做比较 分别计算出 合计金额，数量趋势，单价趋势
+        MdIncomeForecastAnalyse analyseWhere = new MdIncomeForecastAnalyse();
+        analyseWhere.setIncomeId(incomeId);
+        analyseWhere.setType(type);
+        analyseWhere.setBisParticipateIn(true);
+        List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(analyseWhere);
+        MdIncomeForecastAnalyse baseAnalyse = analyseList.get(0);//基准数据
+        MdIncomeHistory historyWhere = new MdIncomeHistory();
+        historyWhere.setBisForecast(true);
+        historyWhere.setForecastAnalyseId(baseAnalyse.getId());
+        List<MdIncomeHistory> baseHistoryList = mdIncomeHistoryDao.getHistoryList(historyWhere);//预测基准数据
+        if (CollectionUtils.isEmpty(baseHistoryList)) return;
+        if (CollectionUtils.isNotEmpty(analyseList)) {
+            for (int i = 0; i < analyseList.size(); i++) {
+                historyWhere = new MdIncomeHistory();
+                historyWhere.setForecastAnalyseId(analyseList.get(i).getId());
+                List<MdIncomeHistory> currhistoryList = mdIncomeHistoryDao.getHistoryList(historyWhere);
+                BigDecimal total = new BigDecimal("0");
+                if (CollectionUtils.isNotEmpty(currhistoryList)) {
+                    for (MdIncomeHistory mdIncomeHistory : currhistoryList) {
+                        total = total.add(mdIncomeHistory.getAmountMoney());
+                    }
+                    if (i > 0) {
+                        BigDecimal baseNumberTotal = new BigDecimal("0");
+                        BigDecimal currNumberTotal = new BigDecimal("0");
+                        BigDecimal basePriceTotal = new BigDecimal("0");
+                        BigDecimal currPriceTotal = new BigDecimal("0");
+                        for (MdIncomeHistory baseHistory : baseHistoryList) {
+                            for (MdIncomeHistory currHistory : currhistoryList) {
+                                if (baseHistory.getMonth().equals(currHistory.getMonth()) &&
+                                        baseHistory.getAccountingSubject().equals(currHistory.getAccountingSubject()) &&
+                                        baseHistory.getFirstLevelNumber().equals(currHistory.getFirstLevelNumber()) &&
+                                        baseHistory.getSecondLevelNumber().equals(currHistory.getSecondLevelNumber())) {
+                                    //数量趋势 原则：单价一致(基于基准)，数量不同
+                                    baseNumberTotal = baseNumberTotal.add(baseHistory.getAmountMoney());
+                                    currNumberTotal = currNumberTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
+
+                                    //单价趋势 原则：数量一致(基于当前)，单价不同
+                                    basePriceTotal = basePriceTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
+                                    currPriceTotal = currPriceTotal.add(currHistory.getAmountMoney());
+                                }
+                            }
+                        }
+                        analyseList.get(i).setQuantitativeTrend(currNumberTotal.divide(baseNumberTotal, 4, BigDecimal.ROUND_HALF_UP));
+                        analyseList.get(i).setUnivalentTrend(currPriceTotal.divide(basePriceTotal, 4, BigDecimal.ROUND_HALF_UP));
+                    }
+                }
+                analyseList.get(i).setAmountMoney(total);
+                mdIncomeForecastAnalyseDao.updateForecastAnalyse(analyseList.get(i));
+            }
         }
     }
 
@@ -202,14 +271,16 @@ public class MdIncomeService {
      * @param incomeId
      * @return
      */
-    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type) {
+    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Boolean bisParticipateIn) {
         BootstrapTableVo vo = new BootstrapTableVo();
         MdIncomeForecastAnalyse where = new MdIncomeForecastAnalyse();
         where.setType(type);
         where.setIncomeId(incomeId);
+        if (bisParticipateIn != null)
+            where.setBisParticipateIn(bisParticipateIn);
         List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(where);
         vo.setRows(CollectionUtils.isEmpty(analyseList) ? new ArrayList<MdIncomeForecastAnalyse>() : analyseList);
-        vo.setTotal((long)analyseList.size());
+        vo.setTotal((long) analyseList.size());
         return vo;
     }
 
@@ -257,8 +328,9 @@ public class MdIncomeService {
                 mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
                 mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
                 mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(8))));
+                mdIncomeHistory.setBisForecast(false);
                 mdIncomeHistoryDao.addHistory(mdIncomeHistory);
-                generatorForecastAnalyse(mdIncomeHistory.getIncomeId(),mdIncomeHistory.getType(),mdIncomeHistory.getYear());
+                generatorForecastAnalyse(mdIncomeHistory.getIncomeId(), mdIncomeHistory.getType(), mdIncomeHistory.getYear());
                 successCount++;
             } catch (Exception e) {
                 errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
