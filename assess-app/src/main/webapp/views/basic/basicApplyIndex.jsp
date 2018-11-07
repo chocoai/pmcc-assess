@@ -571,6 +571,7 @@
             estateSupplyPower.prototype.loadDataDicList();
             estateSupplyHeating.prototype.loadDataDicList();
             estateSupplyGas.prototype.loadDataDicList();
+            matchingEducation.prototype.loadDataDicList();
         },
         details: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");

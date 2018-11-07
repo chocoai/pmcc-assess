@@ -77,11 +77,13 @@ AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//使
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 
+AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型
 AssessDicKey.estate_line_water_supply_pipe_grade = "estate.line.water.supply.pipe.grade";//线路供水管等级
 AssessDicKey.estate_supplier_grade = "estate.supplier.grade";//供应商等级
-
-
+AssessDicKey.estate_school_nature = "estate.school.nature";//学校性质
+AssessDicKey.estate_school_gradation = "estate.school.gradation";//学校级次
+AssessDicKey.estate_school_level = "estate.school.level";//学校等级
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)

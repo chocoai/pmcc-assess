@@ -78,7 +78,121 @@
     </div>
 </div>
 
+<div class="x_content">
+    <h3>教育条件信息
+        <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
+                data-toggle="modal" href="#divBox"> 新增
+        </button>
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingEducationList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript">
+
+    var matchingEducation;
+    (function () {
+        matchingEducation = function () {
+
+        };
+        matchingEducation.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingEducationList";
+                data.box = "divBoxMatchingEducation";
+                data.frm = "frmMatchingEducation";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'schoolName', title: '学校名称'});
+                cols.push({field: 'schoolNatureName', title: '学校性质'});
+                cols.push({field: 'schoolGradationName', title: '学校级次'});
+                cols.push({field: 'schoolLevelName', title: '学校等级'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="matchingEducation.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="matchingEducation.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+                $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEducation/getBootstrapTableVo", cols, {
+                    estateId: "0"
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+            showModel: function () {
+                matchingEducation.prototype.init({});
+                $('#' + matchingEducation.prototype.config().box).modal("show");
+            },
+            removeData: function (id) {
+
+            },
+            saveData:function () {
+                if (!$("#" + matchingEducation.prototype.config().frm).valid()) {
+                    return false;
+                }
+                var data = formParams(matchingEducation.prototype.config().frm);
+                data.estateId = '0';
+                <%--$.ajax({--%>
+                    <%--url: "${pageContext.request.contextPath}/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",--%>
+                    <%--type: "post",--%>
+                    <%--dataType: "json",--%>
+                    <%--data: data,--%>
+                    <%--success: function (result) {--%>
+                        <%--if (result.ret) {--%>
+                            <%--toastr.success('保存成功');--%>
+                            <%--$('#' + matchingEducation.prototype.config().box).modal('hide');--%>
+                            <%--matchingEducation.prototype.loadDataDicList();--%>
+                        <%--}--%>
+                        <%--else {--%>
+                            <%--Alert("保存数据失败，失败原因:" + result.errmsg);--%>
+                        <%--}--%>
+                    <%--},--%>
+                    <%--error: function (result) {--%>
+                        <%--Alert("调用服务端方法失败，失败原因:" + result);--%>
+                    <%--}--%>
+                <%--});--%>
+            },
+            init: function (item) {
+                $("#" + matchingEducation.prototype.config().frm).clearAll();
+                $("#" + matchingEducation.prototype.config().frm).initForm(item);
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_school_nature, item.schoolNature, function (html, data) {
+                    $("#" + matchingEducation.prototype.config().frm).find("select.schoolNature").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_school_gradation, item.schoolGradation, function (html, data) {
+                    $("#" + matchingEducation.prototype.config().frm).find("select.schoolGradation").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_school_level, item.schoolLevel, function (html, data) {
+                    $("#" + matchingEducation.prototype.config().frm).find("select.schoolLevel").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
+                    $("#" + matchingEducation.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
+                });
+            }
+        }
+    })();
+
     var estateNetwork;
     (function () {
         estateNetwork = function () {
@@ -153,7 +267,7 @@
                     return false;
                 }
                 var data = formParams(estateNetwork.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
                     type: "post",
@@ -273,7 +387,7 @@
                     return false;
                 }
                 var data = formParams(estateParking.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateParking/saveAndUpdateBasicEstateParking",
                     type: "post",
@@ -408,7 +522,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyWater.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -543,7 +657,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyPower.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -676,7 +790,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyHeating.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -809,7 +923,7 @@
                     return false;
                 }
                 var data = formParams(estateSupplyGas.prototype.config().frm);
-                data.estateId = "0" ;
+                data.estateId = "0";
                 $.ajax({
                     url: "${pageContext.request.contextPath}/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                     type: "post",
@@ -1364,6 +1478,100 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="estateNetwork.prototype.saveData()">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="divBoxMatchingEducation" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">教育条件</h3>
+            </div>
+            <form id="frmMatchingEducation" class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="type" class="type">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            学校名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="schoolName"
+                                                   placeholder="学校名称" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            学校等级<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="schoolLevel"
+                                                    class="form-control search-select select2 schoolLevel">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            学校级次<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="schoolGradation"
+                                                    class="form-control search-select select2 schoolGradation">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            学校性质<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="schoolNature"
+                                                    class="form-control search-select select2 schoolNature">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="matchingEducation.prototype.saveData()">
                         保存
                     </button>
                 </div>
