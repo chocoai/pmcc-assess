@@ -62,6 +62,20 @@ public class PublicBasicService {
     @Autowired
     private BasicEstateSupplyService basicEstateSupplyService;
     @Autowired
+    private BasicMatchingEducationService basicMatchingEducationService;
+    @Autowired
+    private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
+    @Autowired
+    private BasicMatchingFinanceService basicMatchingFinanceService;
+    @Autowired
+    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
+    @Autowired
+    private BasicMatchingMaterialService basicMatchingMaterialService;
+    @Autowired
+    private BasicMatchingMedicalService basicMatchingMedicalService;
+    @Autowired
+    private BasicMatchingTrafficService basicMatchingTrafficService;
+    @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicBuildingMainService basicBuildingMainService;
@@ -115,6 +129,20 @@ public class PublicBasicService {
     private CaseEstateParkingService caseEstateParkingService;
     @Autowired
     private CaseEstateSupplyService caseEstateSupplyService;
+    @Autowired
+    private CaseMatchingTrafficService caseMatchingTrafficService;
+    @Autowired
+    private CaseMatchingMedicalService caseMatchingMedicalService;
+    @Autowired
+    private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
+    @Autowired
+    private CaseMatchingMaterialService caseMatchingMaterialService;
+    @Autowired
+    private CaseMatchingFinanceService caseMatchingFinanceService;
+    @Autowired
+    private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
+    @Autowired
+    private CaseMatchingEducationService caseMatchingEducationService;
     @Autowired
     private CaseBuildingService caseBuildingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -204,23 +232,248 @@ public class PublicBasicService {
         BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
         BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
+        BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
+        BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
+        BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
+        BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
+        BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
+        BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
+        BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
 
         queryBasicEstateNetwork.setEstateId(basicEstate.getId());
         queryBasicEstateParking.setEstateId(basicEstate.getId());
         queryBasicEstateSupply.setEstateId(basicEstate.getId());
+        queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
+        queryBasicMatchingMedical.setEstateId(basicEstate.getId());
+        queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
+        queryBasicMatchingLeisurePlace.setEstateId(basicEstate.getId());
+        queryBasicMatchingFinance.setEstateId(basicEstate.getId());
+        queryBasicMatchingEnvironment.setEstateId(basicEstate.getId());
+        queryBasicMatchingEducation.setEstateId(basicEstate.getId());
 
         List<BasicEstateNetwork> basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         List<BasicEstateParking> basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         List<BasicEstateSupply> basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+        List<BasicMatchingEducation> basicMatchingEducationList = null;
+        List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
+        List<BasicMatchingFinance> basicMatchingFinanceList = null;
+        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = null;
+        List<BasicMatchingMaterial> basicMatchingMaterialList = null;
+        List<BasicMatchingMedical> basicMatchingMedicalList = null;
+        List<BasicMatchingTraffic> basicMatchingTrafficList = null;
+        basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
+        basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
+        basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
+        basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(queryBasicMatchingLeisurePlace);
+        basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterial);
+        basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
+        basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
         if (caseEstate != null) {
             this.flowWriteCaseNetwork(basicEstateNetworkList, caseEstate);
             this.flowWriteCaseParking(basicEstateParkingList, caseEstate);
             this.flowWriteCaseSupply(basicEstateSupplyList, caseEstate);
+            this.flowWriteCaseTraffic(basicMatchingTrafficList, caseEstate);
+            this.flowWriteCaseMedical(basicMatchingMedicalList, caseEstate);
+            this.flowWriteCaseMaterial(basicMatchingMaterialList, caseEstate);
+            this.flowWriteCaseLeisurePlace(basicMatchingLeisurePlaceList, caseEstate);
+            this.flowWriteCaseFinance(basicMatchingFinanceList, caseEstate);
+            this.flowWriteCaseEnvironment(basicMatchingEnvironmentList, caseEstate);
+            this.flowWriteCaseEducation(basicMatchingEducationList, caseEstate);
         }
         return caseEstate;
+    }
+
+    private void flowWriteCaseTraffic(List<BasicMatchingTraffic> basicMatchingTrafficList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
+            for (BasicMatchingTraffic oo : basicMatchingTrafficList) {
+                CaseMatchingTraffic caseMatchingTraffic = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingTraffic = caseMatchingTrafficService.getMatchingTrafficById(oo.getCaseId());
+                    if (caseMatchingTraffic != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingTraffic);
+                        caseMatchingTraffic.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingTraffic == null) {
+                        caseMatchingTraffic = new CaseMatchingTraffic();
+                        BeanUtils.copyProperties(oo, caseMatchingTraffic);
+                        caseMatchingTraffic.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingTraffic = new CaseMatchingTraffic();
+                    BeanUtils.copyProperties(oo, caseMatchingTraffic);
+                    caseMatchingTraffic.setId(null);
+                }
+                caseMatchingTraffic.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseMedical(List<BasicMatchingMedical> basicMatchingMedicalList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
+            for (BasicMatchingMedical oo : basicMatchingMedicalList) {
+                CaseMatchingMedical caseMatchingMedical = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingMedical = caseMatchingMedicalService.getCaseMatchingMedicalById(oo.getCaseId());
+                    if (caseMatchingMedical != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingMedical);
+                        caseMatchingMedical.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingMedical == null) {
+                        caseMatchingMedical = new CaseMatchingMedical();
+                        BeanUtils.copyProperties(oo, caseMatchingMedical);
+                        caseMatchingMedical.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingMedical = new CaseMatchingMedical();
+                    BeanUtils.copyProperties(oo, caseMatchingMedical);
+                    caseMatchingMedical.setId(null);
+                }
+                caseMatchingMedical.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseMaterial(List<BasicMatchingMaterial> basicMatchingMaterialList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
+            for (BasicMatchingMaterial oo : basicMatchingMaterialList) {
+                CaseMatchingMaterial caseMatchingMaterial = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingMaterial = caseMatchingMaterialService.getCaseMatchingMaterialById(oo.getCaseId());
+                    if (caseMatchingMaterial != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingMaterial);
+                        caseMatchingMaterial.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingMaterial == null) {
+                        caseMatchingMaterial = new CaseMatchingMaterial();
+                        BeanUtils.copyProperties(oo, caseMatchingMaterial);
+                        caseMatchingMaterial.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingMaterial = new CaseMatchingMaterial();
+                    BeanUtils.copyProperties(oo, caseMatchingMaterial);
+                    caseMatchingMaterial.setId(null);
+                }
+                caseMatchingMaterial.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseLeisurePlace(List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
+            for (BasicMatchingLeisurePlace oo : basicMatchingLeisurePlaceList) {
+                CaseMatchingLeisurePlace caseMatchingLeisurePlace = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingLeisurePlace = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceById(oo.getCaseId());
+                    if (caseMatchingLeisurePlace != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
+                        caseMatchingLeisurePlace.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingLeisurePlace == null) {
+                        caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
+                        BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
+                        caseMatchingLeisurePlace.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
+                    BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
+                    caseMatchingLeisurePlace.setId(null);
+                }
+                caseMatchingLeisurePlace.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseFinance(List<BasicMatchingFinance> basicMatchingFinanceList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
+            for (BasicMatchingFinance oo : basicMatchingFinanceList) {
+                CaseMatchingFinance caseMatchingFinance = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingFinance = caseMatchingFinanceService.getCaseMatchingFinanceById(oo.getCaseId());
+                    if (caseMatchingFinance != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingFinance);
+                        caseMatchingFinance.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingFinance == null) {
+                        caseMatchingFinance = new CaseMatchingFinance();
+                        BeanUtils.copyProperties(oo, caseMatchingFinance);
+                        caseMatchingFinance.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingFinance = new CaseMatchingFinance();
+                    BeanUtils.copyProperties(oo, caseMatchingFinance);
+                    caseMatchingFinance.setId(null);
+                }
+                caseMatchingFinance.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseEnvironment(List<BasicMatchingEnvironment> basicMatchingEnvironmentList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
+            for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
+                CaseMatchingEnvironment caseMatchingEnvironment = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingEnvironment = caseMatchingEnvironmentService.getCaseMatchingEnvironmentById(oo.getCaseId());
+                    if (caseMatchingEnvironment != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingEnvironment);
+                        caseMatchingEnvironment.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingEnvironment == null) {
+                        caseMatchingEnvironment = new CaseMatchingEnvironment();
+                        BeanUtils.copyProperties(oo, caseMatchingEnvironment);
+                        caseMatchingEnvironment.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingEnvironment = new CaseMatchingEnvironment();
+                    BeanUtils.copyProperties(oo, caseMatchingEnvironment);
+                    caseMatchingEnvironment.setId(null);
+                }
+                caseMatchingEnvironment.setEstateId(caseEstate.getId());
+                //
+            }
+        }
+    }
+
+    private void flowWriteCaseEducation(List<BasicMatchingEducation> basicMatchingEducationList, CaseEstate caseEstate) throws Exception {
+        if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
+            for (BasicMatchingEducation oo : basicMatchingEducationList) {
+                CaseMatchingEducation caseMatchingEducation = null;
+                if (oo.getCaseId() != null) {
+                    caseMatchingEducation = caseMatchingEducationService.getCaseMatchingEducationById(oo.getCaseId());
+                    if (caseMatchingEducation != null) {
+                        BeanUtils.copyProperties(oo, caseMatchingEducation);
+                        caseMatchingEducation.setId(oo.getCaseId());
+                    }
+                    if (caseMatchingEducation == null) {
+                        caseMatchingEducation = new CaseMatchingEducation();
+                        BeanUtils.copyProperties(oo, caseMatchingEducation);
+                        caseMatchingEducation.setId(null);
+                    }
+                }
+                if (oo.getCaseId() == null) {
+                    caseMatchingEducation = new CaseMatchingEducation();
+                    BeanUtils.copyProperties(oo, caseMatchingEducation);
+                    caseMatchingEducation.setId(null);
+                }
+                caseMatchingEducation.setEstateId(caseEstate.getId());
+                //
+            }
+        }
     }
 
     private void flowWriteCaseNetwork(List<BasicEstateNetwork> basicEstateNetworkList, CaseEstate caseEstate) throws Exception {
@@ -1391,6 +1644,28 @@ public class PublicBasicService {
         caseEstateNetwork.setEstateId(caseEstateId);
         CaseEstateSupply caseEstateSupply = new CaseEstateSupply();
         caseEstateSupply.setEstateId(caseEstateId);
+        CaseMatchingTraffic caseMatchingTraffic = new CaseMatchingTraffic();
+        caseMatchingTraffic.setEstateId(caseEstateId);
+        CaseMatchingMedical caseMatchingMedical = new CaseMatchingMedical();
+        caseMatchingMedical.setEstateId(caseEstateId);
+        CaseMatchingMaterial caseMatchingMaterial = new CaseMatchingMaterial();
+        caseMatchingMaterial.setEstateId(caseEstateId);
+        CaseMatchingLeisurePlace caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
+        caseMatchingLeisurePlace.setEstateId(caseEstateId);
+        CaseMatchingFinance caseMatchingFinance = new CaseMatchingFinance();
+        caseMatchingFinance.setEstateId(caseEstateId);
+        CaseMatchingEnvironment caseMatchingEnvironment = new CaseMatchingEnvironment();
+        caseMatchingEnvironment.setEstateId(caseEstateId);
+        CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation();
+        caseMatchingEducation.setEstateId(caseEstateId);
+
+        List<CaseMatchingTraffic> caseMatchingTraffics = caseMatchingTrafficService.getMatchingTrafficList(caseMatchingTraffic);
+        List<CaseMatchingMedical> caseMatchingMedicals = caseMatchingMedicalService.getCaseMatchingMedicalList(caseMatchingMedical);
+        List<CaseMatchingMaterial> caseMatchingMaterials = caseMatchingMaterialService.getCaseMatchingMaterialList(caseMatchingMaterial);
+        List<CaseMatchingLeisurePlace> caseMatchingLeisurePlaces = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceList(caseMatchingLeisurePlace);
+        List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
+        List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
+        List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
         List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
         List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
         List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
@@ -1401,6 +1676,7 @@ public class PublicBasicService {
                 BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateParking, queryBasicEstateParking);
                 queryBasicEstateParking.setEstateId(0);
                 queryBasicEstateParking.setCaseId(caseEstateParking.getId());
+                queryBasicEstateParking.setId(null);
                 basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
             }
         }
@@ -1410,6 +1686,7 @@ public class PublicBasicService {
                 BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork1, queryBasicEstateNetwork);
                 queryBasicEstateNetwork.setEstateId(0);
                 queryBasicEstateNetwork.setCaseId(caseEstateNetwork1.getId());
+                queryBasicEstateNetwork.setId(null);
                 basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(queryBasicEstateNetwork);
             }
         }
@@ -1419,7 +1696,78 @@ public class PublicBasicService {
                 BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateSupply1, queryBasicEstateSupply);
                 queryBasicEstateSupply.setCaseId(caseEstateSupply1.getId());
                 queryBasicEstateSupply.setEstateId(0);
+                queryBasicEstateSupply.setId(null);
                 basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
+            for (CaseMatchingTraffic oo : caseMatchingTraffics) {
+                BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
+                BeanUtils.copyProperties(oo, queryBasicMatchingTraffic);
+                queryBasicMatchingTraffic.setEstateId(0);
+                queryBasicMatchingTraffic.setCaseId(oo.getId());
+                queryBasicMatchingTraffic.setId(null);
+                basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(queryBasicMatchingTraffic);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
+            for (CaseMatchingMedical oo : caseMatchingMedicals) {
+                BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
+                BeanUtils.copyProperties(oo, queryBasicMatchingMedical);
+                queryBasicMatchingMedical.setEstateId(0);
+                queryBasicMatchingMedical.setCaseId(oo.getId());
+                queryBasicMatchingMedical.setId(null);
+                basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(queryBasicMatchingMedical);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
+            for (CaseMatchingMaterial oo : caseMatchingMaterials) {
+                BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
+                BeanUtils.copyProperties(oo, queryBasicMatchingMaterial);
+                queryBasicMatchingMaterial.setEstateId(0);
+                queryBasicMatchingMaterial.setCaseId(oo.getId());
+                queryBasicMatchingMaterial.setId(null);
+                basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(queryBasicMatchingMaterial);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
+            for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
+                BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
+                BeanUtils.copyProperties(oo, queryBasicMatchingLeisurePlace);
+                queryBasicMatchingLeisurePlace.setEstateId(0);
+                queryBasicMatchingLeisurePlace.setCaseId(oo.getId());
+                queryBasicMatchingLeisurePlace.setId(null);
+                basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(queryBasicMatchingLeisurePlace);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
+            for (CaseMatchingFinance oo : caseMatchingFinances) {
+                BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
+                BeanUtils.copyProperties(oo, queryBasicMatchingFinance);
+                queryBasicMatchingFinance.setEstateId(0);
+                queryBasicMatchingFinance.setCaseId(oo.getId());
+                queryBasicMatchingFinance.setId(null);
+                basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(queryBasicMatchingFinance);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
+            for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
+                BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
+                BeanUtils.copyProperties(oo, queryBasicMatchingEnvironment);
+                queryBasicMatchingEnvironment.setEstateId(0);
+                queryBasicMatchingEnvironment.setCaseId(oo.getId());
+                queryBasicMatchingEnvironment.setId(null);
+                basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(queryBasicMatchingEnvironment);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
+            for (CaseMatchingEducation oo : caseMatchingEducations) {
+                BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
+                BeanUtils.copyProperties(oo, queryBasicMatchingEducation);
+                queryBasicMatchingEducation.setEstateId(0);
+                queryBasicMatchingEducation.setCaseId(oo.getId());
+                queryBasicMatchingEducation.setId(null);
+                basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(queryBasicMatchingEducation);
             }
         }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
@@ -1433,9 +1781,9 @@ public class PublicBasicService {
                 return o1.getId().compareTo(o2.getId());
             }
         }).reverse();
-        if (!ObjectUtils.isEmpty(landStateList)){
-            Collections.sort(landStateList,ordering);
-            objectMap.put(CaseEstateLandState.class.getSimpleName(),caseEstateLandStateService.getCaseEstateLandStateVo(landStateList.get(0))) ;
+        if (!ObjectUtils.isEmpty(landStateList)) {
+            Collections.sort(landStateList, ordering);
+            objectMap.put(CaseEstateLandState.class.getSimpleName(), caseEstateLandStateService.getCaseEstateLandStateVo(landStateList.get(0)));
         }
         return objectMap;
     }
@@ -1491,7 +1839,7 @@ public class PublicBasicService {
             }
         }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
-        objectMap.put(CaseHouse.class.getSimpleName(),caseHouseService.getCaseHouseVo(caseHouseService.getCaseHouseById(caseHouseId)));
+        objectMap.put(CaseHouse.class.getSimpleName(), caseHouseService.getCaseHouseVo(caseHouseService.getCaseHouseById(caseHouseId)));
         CaseHouseTrading query = new CaseHouseTrading();
         query.setHouseId(caseHouseId);
         List<CaseHouseTrading> caseHouseTradingList = caseHouseTradingService.caseHouseTradingLists(query);
@@ -1501,9 +1849,9 @@ public class PublicBasicService {
                 return o1.getId().compareTo(o2.getId());
             }
         }).reverse();
-        if (!ObjectUtils.isEmpty(caseHouseTradingList)){
-            Collections.sort(caseHouseTradingList,ordering);
-            objectMap.put(CaseHouseTrading.class.getSimpleName(),caseHouseTradingService.getCaseHouseTradingVo(caseHouseTradingList.get(0)));
+        if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
+            Collections.sort(caseHouseTradingList, ordering);
+            objectMap.put(CaseHouseTrading.class.getSimpleName(), caseHouseTradingService.getCaseHouseTradingVo(caseHouseTradingList.get(0)));
         }
         return objectMap;
     }

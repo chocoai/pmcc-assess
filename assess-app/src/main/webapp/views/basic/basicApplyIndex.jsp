@@ -572,6 +572,18 @@
             estateSupplyHeating.prototype.loadDataDicList();
             estateSupplyGas.prototype.loadDataDicList();
             matchingEducation.prototype.loadDataDicList();
+            matchingEnvironment.prototype.loadDataDicList();
+            matchingFinance.prototype.loadDataDicList();
+            matchingRecreation.prototype.loadDataDicList();
+            matchingRestaurant.prototype.loadDataDicList();
+            matchingMarket.prototype.loadDataDicList();
+            matchingMaterial.prototype.loadDataDicList();
+            matchingMedical.prototype.loadDataDicList();
+            matchingTransit.prototype.loadDataDicList();
+            matchingTrafficHub.prototype.loadDataDicList();
+            matchingMetro.prototype.loadDataDicList();
+            matchingMainRoad.prototype.loadDataDicList();
+            matchingMainConversion.prototype.loadDataDicList();
         },
         details: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");

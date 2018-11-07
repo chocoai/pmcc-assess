@@ -84,6 +84,25 @@ AssessDicKey.estate_supplier_grade = "estate.supplier.grade";//供应商等级
 AssessDicKey.estate_school_nature = "estate.school.nature";//学校性质
 AssessDicKey.estate_school_gradation = "estate.school.gradation";//学校级次
 AssessDicKey.estate_school_level = "estate.school.level";//学校等级
+AssessDicKey.estate_environment_category = "estate.environment.category";//环境类别
+AssessDicKey.estate_environment_type = "estate.environment.type";//环境类型
+AssessDicKey.estate_environment_influence_degree = "estate.environment.Influence.degree";//影响程度
+AssessDicKey.estate_finance_service_content = "estate.finance.service.content";//金融服务内容
+AssessDicKey.estate_finance_nature = "estate.finance.nature";//金融机构性质
+AssessDicKey.estate_finance_category = "estate.finance.category";//金融类别
+AssessDicKey.estate_entertainment_category = "estate.entertainment.category";//休闲娱乐场所类别
+AssessDicKey.estate_shop_or_entertainment_or_dining_distance = "estate.shop_or_entertainment_or_dining.distance";//购物场所,餐饮场所,休闲娱乐距离
+AssessDicKey.estate_dining_category = "estate.dining.category";//餐饮场所类别
+AssessDicKey.estate_dining_grade = "estate.dining.grade";//餐饮场所档次
+AssessDicKey.estate_shop_category = "estate.shop.category";//购物场所类别
+AssessDicKey.estate_shop_grade = "estate.shop.grade";//购物商场档次
+AssessDicKey.estate_supply_new_distance = "estate.supply.new.distance";//购物场所距离
+AssessDicKey.estate_supply_new_scale = "estate.supply.new.scale";//购物场所规模
+AssessDicKey.estate_supply_new_type = "estate.supply.new.type";//购物场所类别
+AssessDicKey.estate_examinematchingmedical_level = "estate.examineMatchingMedical.level";//医养条件等级
+AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养条件距离
+
+
 
 AssessDicKey.examineBlockRegionalNature = "examine.block.regionalNature";
 AssessDicKey.estateTotalBuildingType = "estate.total_building_type";//总栋数 (0一栋 1多栋)

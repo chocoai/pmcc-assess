@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateParking;
-import com.copower.pmcc.assess.dal.basic.entity.BasicEstateSupply;
+import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
@@ -64,13 +61,41 @@ public class BasicEstateService {
     private BasicEstateParkingService basicEstateParkingService;
     @Autowired
     private BasicEstateSupplyService basicEstateSupplyService;
+    @Autowired
+    private BasicMatchingEducationService basicMatchingEducationService;
+    @Autowired
+    private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
+    @Autowired
+    private BasicMatchingFinanceService basicMatchingFinanceService;
+    @Autowired
+    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
+    @Autowired
+    private BasicMatchingMaterialService basicMatchingMaterialService;
+    @Autowired
+    private BasicMatchingMedicalService basicMatchingMedicalService;
+    @Autowired
+    private BasicMatchingTrafficService basicMatchingTrafficService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
         BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
         BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
         BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
+        BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
+        BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
+        BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
+        BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
+        BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
+        BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
+        BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
 
+        queryBasicMatchingTraffic.setEstateId(oldId);
+        queryBasicMatchingMedical.setEstateId(oldId);
+        queryBasicMatchingMaterial.setEstateId(oldId);
+        queryBasicMatchingLeisurePlace.setEstateId(oldId);
+        queryBasicMatchingFinance.setEstateId(oldId);
+        queryBasicMatchingEnvironment.setEstateId(oldId);
+        queryBasicMatchingEducation.setEstateId(oldId);
         queryBasicEstateNetwork.setEstateId(oldId);
         queryBasicEstateParking.setEstateId(oldId);
         queryBasicEstateSupply.setEstateId(oldId);
@@ -78,9 +103,23 @@ public class BasicEstateService {
         List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
         List<BasicEstateSupply> basicEstateSupplyList = null;
+        List<BasicMatchingEducation> basicMatchingEducationList = null;
+        List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
+        List<BasicMatchingFinance> basicMatchingFinanceList = null;
+        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = null;
+        List<BasicMatchingMaterial> basicMatchingMaterialList = null;
+        List<BasicMatchingMedical> basicMatchingMedicalList = null;
+        List<BasicMatchingTraffic> basicMatchingTrafficList = null;
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+        basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
+        basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
+        basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
+        basicMatchingLeisurePlaceList = basicMatchingLeisurePlaceService.basicMatchingLeisurePlaceList(queryBasicMatchingLeisurePlace);
+        basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterial);
+        basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
+        basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
         if (newId == null) {
             if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
                 for (BasicEstateNetwork oo : basicEstateNetworkList) {
@@ -95,6 +134,41 @@ public class BasicEstateService {
             if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
                 for (BasicEstateSupply oo : basicEstateSupplyList) {
                     basicEstateSupplyService.deleteBasicEstateSupply(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
+                for (BasicMatchingEducation oo : basicMatchingEducationList) {
+                    basicMatchingEducationService.deleteBasicMatchingEducation(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
+                for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
+                    basicMatchingEnvironmentService.deleteBasicMatchingEnvironment(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
+                for (BasicMatchingFinance oo : basicMatchingFinanceList) {
+                    basicMatchingFinanceService.deleteBasicMatchingFinance(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
+                for (BasicMatchingLeisurePlace oo:basicMatchingLeisurePlaceList){
+                    basicMatchingLeisurePlaceService.deleteBasicMatchingLeisurePlace(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
+                for (BasicMatchingMaterial oo:basicMatchingMaterialList){
+                    basicMatchingMaterialService.deleteBasicMatchingMaterial(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
+                for (BasicMatchingMedical oo:basicMatchingMedicalList){
+                    basicMatchingMedicalService.deleteBasicMatchingMedical(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
+                for (BasicMatchingTraffic oo:basicMatchingTrafficList){
+                    basicMatchingTrafficService.deleteBasicMatchingTraffic(oo.getId());
                 }
             }
         }
@@ -116,6 +190,48 @@ public class BasicEstateService {
                 for (BasicEstateSupply oo : basicEstateSupplyList) {
                     oo.setEstateId(newId);
                     basicEstateSupplyService.saveAndUpdateBasicEstateSupply(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
+                for (BasicMatchingEducation oo : basicMatchingEducationList) {
+                    oo.setEstateId(newId);
+                    basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
+                for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
+                    oo.setEstateId(newId);
+                    basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
+                for (BasicMatchingFinance oo : basicMatchingFinanceList) {
+                    oo.setEstateId(newId);
+                    basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
+                for (BasicMatchingLeisurePlace oo:basicMatchingLeisurePlaceList){
+                    oo.setEstateId(newId);
+                    basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
+                for (BasicMatchingMaterial oo:basicMatchingMaterialList){
+                    oo.setEstateId(newId);
+                    basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
+                for (BasicMatchingMedical oo:basicMatchingMedicalList){
+                    oo.setEstateId(newId);
+                    basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(oo);
+                }
+            }
+            if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
+                for (BasicMatchingTraffic oo:basicMatchingTrafficList){
+                    oo.setEstateId(newId);
+                    basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(oo);
                 }
             }
         }
@@ -156,7 +272,7 @@ public class BasicEstateService {
             basicEstate.setCreator(commonService.thisUserAccount());
         }
         Integer id = basicEstateDao.saveBasicEstate(basicEstate);
-        this.initUpdateSon(0,id);
+        this.initUpdateSon(0, id);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
         return id;
     }
@@ -171,7 +287,7 @@ public class BasicEstateService {
             Integer id = basicEstateDao.saveBasicEstate(basicEstate);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
             basicEstate.setId(id);
-            this.initUpdateSon(0,id);
+            this.initUpdateSon(0, id);
             return id;
             //有id情况下 save
         } else {
