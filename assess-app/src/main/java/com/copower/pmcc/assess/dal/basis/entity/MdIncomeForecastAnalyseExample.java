@@ -526,6 +526,66 @@ public class MdIncomeForecastAnalyseExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisParticipateInIsNull() {
+            addCriterion("bis_participate_in is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInIsNotNull() {
+            addCriterion("bis_participate_in is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInEqualTo(Boolean value) {
+            addCriterion("bis_participate_in =", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInNotEqualTo(Boolean value) {
+            addCriterion("bis_participate_in <>", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInGreaterThan(Boolean value) {
+            addCriterion("bis_participate_in >", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_participate_in >=", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInLessThan(Boolean value) {
+            addCriterion("bis_participate_in <", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_participate_in <=", value, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInIn(List<Boolean> values) {
+            addCriterion("bis_participate_in in", values, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInNotIn(List<Boolean> values) {
+            addCriterion("bis_participate_in not in", values, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_participate_in between", value1, value2, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisParticipateInNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_participate_in not between", value1, value2, "bisParticipateIn");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

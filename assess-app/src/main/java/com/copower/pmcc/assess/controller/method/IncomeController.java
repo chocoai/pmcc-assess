@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * 评估原则
@@ -98,10 +99,37 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/historyToForecast", method = {RequestMethod.POST}, name = "历史数据添加到预测数据")
-    public HttpResult historyToForecast(String ids,Integer forecastAnalyseId) {
+    public HttpResult historyToForecast(String ids, Integer forecastAnalyseId) {
         try {
             if (StringUtils.isNotBlank(ids))
-                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)),forecastAnalyseId);
+                mdIncomeService.historyToForecast(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), forecastAnalyseId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/forecastToHistory", method = {RequestMethod.POST}, name = "预测数据还原为历史数据")
+    public HttpResult forecastToHistory(String ids, Integer incomeId, Integer type) {
+        try {
+            if (StringUtils.isNotBlank(ids)) {
+                List<Integer> idList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+                mdIncomeService.forecastToHistory(idList, incomeId, type);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/startAnalyse", method = {RequestMethod.POST}, name = "开始分析")
+    public HttpResult startAnalyse(Integer incomeId, Integer type) {
+        try {
+            mdIncomeService.startAnalyse(incomeId,type);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -142,8 +170,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getForecastAnalyseList", name = "显示预测分析数据列表", method = RequestMethod.GET)
-    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type) {
-        return mdIncomeService.getForecastAnalyseList(incomeId, type);
+    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Boolean bisParticipateIn) {
+        return mdIncomeService.getForecastAnalyseList(incomeId, type, bisParticipateIn);
     }
 
     @ResponseBody

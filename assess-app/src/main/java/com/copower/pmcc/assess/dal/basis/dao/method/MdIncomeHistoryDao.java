@@ -86,6 +86,12 @@ public class MdIncomeHistoryDao {
         return mdIncomeHistoryMapper.updateByExampleSelective(mdIncomeHistory, example) > 0;
     }
 
+    public int getHistoryCount(MdIncomeHistory mdIncomeHistory){
+        MdIncomeHistoryExample example = new MdIncomeHistoryExample();
+        MybatisUtils.convertObj2Example(mdIncomeHistory, example);
+        return mdIncomeHistoryMapper.countByExample(example);
+    }
+
     /**
      * 删除
      *

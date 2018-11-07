@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
@@ -64,8 +65,25 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         schemeSupportInfoService.initSupportInfo(projectPlanDetails, projectInfo, AssessDataDicKeyConstant.MD_INCOME);
         setViewParam(projectPlanDetails, modelAndView);
-
-
+        SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        if (info == null) {
+            MdIncome mdIncome = new MdIncome();
+            mdIncome.setOperationMode(MethodIncomeOperationModeEnum.PROPRIETARY.getId());
+            mdIncome.setCreator(processControllerComponent.getThisUser());
+            mdIncomeService.saveIncome(mdIncome);
+            modelAndView.addObject("mdIncome", mdIncome);
+            SchemeInfo schemeInfo = new SchemeInfo();
+            schemeInfo.setProjectId(projectPlanDetails.getProjectId());
+            schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+            schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
+            schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
+            schemeInfo.setMethodDataId(mdIncome.getId());
+            try {
+                schemeInfoService.saveSchemeInfo(schemeInfo);
+            } catch (BusinessException e) {
+                logger.error("saveSchemeInfo error ", e);
+            }
+        }
         return modelAndView;
     }
 
@@ -160,14 +178,8 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
             }
         }
         MdIncome mdIncome = mdIncomeService.saveResult(schemeIncomeApplyDto.getIncomeInfo());
-
-        SchemeInfo schemeInfo = new SchemeInfo();
-        schemeInfo.setProjectId(projectPlanDetails.getProjectId());
-        schemeInfo.setPlanDetailsId(projectPlanDetails.getId());
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         schemeInfo.setProcessInsId(processInsId);
-        schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
-        schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME).getId());
-        schemeInfo.setMethodDataId(mdIncome.getId());
         schemeInfoService.saveSchemeInfo(schemeInfo);
     }
 

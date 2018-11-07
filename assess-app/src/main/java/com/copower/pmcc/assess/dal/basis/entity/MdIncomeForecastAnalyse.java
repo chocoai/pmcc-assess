@@ -18,6 +18,8 @@ public class MdIncomeForecastAnalyse {
 
     private BigDecimal univalentTrend;
 
+    private Boolean bisParticipateIn;
+
     private String creator;
 
     private Date gmtCreated;
@@ -78,6 +80,14 @@ public class MdIncomeForecastAnalyse {
 
     public void setUnivalentTrend(BigDecimal univalentTrend) {
         this.univalentTrend = univalentTrend;
+    }
+
+    public Boolean getBisParticipateIn() {
+        return bisParticipateIn;
+    }
+
+    public void setBisParticipateIn(Boolean bisParticipateIn) {
+        this.bisParticipateIn = bisParticipateIn;
     }
 
     public String getCreator() {
