@@ -54,111 +54,110 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>参数</h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <form id="frm_self_support" class="form-horizontal" enctype="multipart/form-data">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label" title="报酬率">
-                        报酬率<span class="symbol required"></span>
-                    </label>
-                    <div class="col-sm-3">
-                        <div class="input-group">
-                            <input type="text" required class="form-control x-percent" name="rewardRate"
-                                   placeholder="报酬率"
-                                   data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
-                            <span class="input-group-btn">
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h3>参数</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <form id="frm_self_support" class="form-horizontal" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label" title="报酬率">
+                            报酬率<span class="symbol required"></span>
+                        </label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" required class="form-control x-percent" name="rewardRate"
+                                       placeholder="报酬率"
+                                       data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
+                                <span class="input-group-btn">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
                                      onclick="selfSupport.getRewardRate(this);"/>
                             </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label" title="行业经营平均利润率">
-                        利润率<span class="symbol required"></span>
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
-                               data-value="${mdIncome.averageProfitRate}" class="form-control x-percent"
-                               onblur="selfSupport.computeOperatingProfit();" required="required">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label" title="行业经营平均利润率">
+                            利润率<span class="symbol required"></span>
+                        </label>
+                        <div class="col-sm-3">
+                            <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
+                                   data-value="${mdIncome.averageProfitRate}" class="form-control x-percent"
+                                   onblur="selfSupport.computeOperatingProfit();" required="required">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label" title="行业经营平均利润率取数说明">
-                        取数说明
-                    </label>
-                    <div class="col-sm-11">
+                <div class="form-group">
+                    <div class="x-valid">
+                        <label class="col-sm-1 control-label" title="行业经营平均利润率取数说明">
+                            取数说明
+                        </label>
+                        <div class="col-sm-11">
                             <textarea name="averageProfitRateRemark" class="form-control"
                                       placeholder="行业经营平均利润率取数说明">${mdIncome.averageProfitRateRemark}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
+            </ul>
+            <h3>测算结果</h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content form-horizontal" id="selfSupportResult">
+            <div class="form-group">
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        估价对象面积
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control" data-name="area">${judgeObject.evaluationArea}</label>
+                    </div>
+                </div>
+                <div class="x-valid">
+                    <label class="col-sm-1 control-label">
+                        估价对象的价格
+                    </label>
+                    <div class="col-sm-3">
+                        <label class="form-control" data-name="price">${mdIncome.price}</label>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-</div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>收益期限(n)</th>
+                    <th>总收入</th>
+                    <th>总成本</th>
+                    <th>经营利润</th>
+                    <th>房地产年净收益</th>
+                    <th>年期修正系数(h)</th>
+                    <th>收益现值系数(k)</th>
+                    <th>房地产收益价格</th>
+                </tr>
+                </thead>
+                <tbody id="selfSupportResultBody">
 
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>测算结果</h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content form-horizontal" id="selfSupportResult">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    估价对象面积
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" data-name="area">${judgeObject.evaluationArea}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    估价对象的价格
-                </label>
-                <div class="col-sm-3">
-                    <label class="form-control" data-name="price">${mdIncome.price}</label>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>开始时间</th>
-                <th>结束时间</th>
-                <th>收益期限(n)</th>
-                <th>总收入</th>
-                <th>总成本</th>
-                <th>经营利润</th>
-                <th>房地产年净收益</th>
-                <th>年期修正系数(h)</th>
-                <th>收益现值系数(k)</th>
-                <th>房地产收益价格</th>
-            </tr>
-            </thead>
-            <tbody id="selfSupportResultBody">
-
-            </tbody>
-        </table>
     </div>
-</div>
 </div>
 
 <%--收入预测数据--%>
@@ -892,6 +891,7 @@
         formData.mdIncome.area = $("#selfSupportResult").find('[data-name=area]').text();
         formData.mdIncome.price = $("#selfSupportResult").find('[data-name=price]').text();
         formData.mdIncome.operationMode = 0;
+        formData.mdIncome.formType =incomeIndex.getFormType();
         formData.mdIncome.averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');
         formData.mdIncome.averageProfitRateRemark = $("#frm_self_support").find('[name=averageProfitRateRemark]').val();
         formData.mdIncome.rewardRate = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');

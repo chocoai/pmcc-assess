@@ -120,7 +120,7 @@
         </table>
     </div>
 </div>
-<jsp:include page="/views/method/module/income/selfSupport/info.jsp"></jsp:include>
+<jsp:include page="/views/method/module/income/selfSupport/apply/info.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/lease.jsp"></jsp:include>
 <jsp:include page="/views/method/module/income/rewardRate.jsp"></jsp:include>
 <div id="modal_data_section" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -334,14 +334,16 @@
                     selfSupportForecast.loadHistoryList(1);
                     selfSupportForecast.loadForecastAnalyseList(0);
                     selfSupportForecast.loadForecastAnalyseList(1);
-                    selfSupport.loadForecastIncomeList();
-                    selfSupport.loadForecastCostList();
                     break;
                 case "1":
-
+                    forecastRestaurant.loadHistoryList(0);
+                    forecastRestaurant.loadHistoryList(1);
+                    forecastRestaurant.loadForecastAnalyseList(0);
+                    forecastRestaurant.loadForecastAnalyseList(1);
                     break;
             }
-
+            selfSupport.loadForecastIncomeList();
+            selfSupport.loadForecastCostList();
             selfSupport.loadCalculationResult();
         } else if ($(_this).val() == 1) {
             $("#self_support_info,#group_FormType").hide();
@@ -369,10 +371,23 @@
         if (value == 0) {
             $("#ref_forecastIncome,#ref_forecastCost").show();
             $("#ref_forecastRestaurantIncome,#ref_forecastRestaurantCost").hide();
+            selfSupportForecast.loadHistoryList(0);
+            selfSupportForecast.loadHistoryList(1);
+            selfSupportForecast.loadForecastAnalyseList(0);
+            selfSupportForecast.loadForecastAnalyseList(1);
         } else if (value == 1) {
             $("#ref_forecastIncome,#ref_forecastCost").hide();
             $("#ref_forecastRestaurantIncome,#ref_forecastRestaurantCost").show();
+            forecastRestaurant.loadHistoryList(0);
+            forecastRestaurant.loadHistoryList(1);
+            forecastRestaurant.loadForecastAnalyseList(0);
+            forecastRestaurant.loadForecastAnalyseList(1);
         }
+    }
+
+    //获取经营方式
+    incomeIndex.getOperationMode = function () {
+        return $("#frm_income").find('[name=operationMode]:checked').val();
     }
 
     //获取表单类型

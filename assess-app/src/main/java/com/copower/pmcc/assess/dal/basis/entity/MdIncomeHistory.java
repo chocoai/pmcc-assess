@@ -12,6 +12,8 @@ public class MdIncomeHistory {
 
     private Integer type;
 
+    private Integer formType;
+
     private Integer year;
 
     private Integer month;
@@ -86,6 +88,14 @@ public class MdIncomeHistory {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getFormType() {
+        return formType;
+    }
+
+    public void setFormType(Integer formType) {
+        this.formType = formType;
     }
 
     public Integer getYear() {

@@ -346,6 +346,66 @@ public class MdIncomeHistoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andFormTypeIsNull() {
+            addCriterion("form_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeIsNotNull() {
+            addCriterion("form_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeEqualTo(Integer value) {
+            addCriterion("form_type =", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotEqualTo(Integer value) {
+            addCriterion("form_type <>", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeGreaterThan(Integer value) {
+            addCriterion("form_type >", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("form_type >=", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeLessThan(Integer value) {
+            addCriterion("form_type <", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("form_type <=", value, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeIn(List<Integer> values) {
+            addCriterion("form_type in", values, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotIn(List<Integer> values) {
+            addCriterion("form_type not in", values, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeBetween(Integer value1, Integer value2) {
+            addCriterion("form_type between", value1, value2, "formType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFormTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("form_type not between", value1, value2, "formType");
+            return (Criteria) this;
+        }
+
         public Criteria andYearIsNull() {
             addCriterion("year is null");
             return (Criteria) this;

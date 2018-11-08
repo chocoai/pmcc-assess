@@ -54,7 +54,7 @@
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu" role="menu" id="ulForecastRestaurantAnalyseCost">
+                    <ul class="dropdown-menu" role="menu" id="ulForecastAnalyseCost">
 
                     </ul>
                 </div>
@@ -74,7 +74,7 @@
 
         </div>
     </div>
-    <table class="table table-bordered" id="tb_history_restaurant_cost_list">
+    <table class="table table-bordered" id="tb_history_cost_list">
     </table>
 </div>
 
@@ -83,6 +83,10 @@
     <div class="clearfix"></div>
 </div>
 <div class="x_content">
-    <table class="table table-bordered" id="tb_forecast_restaurant_cost_analyse_list">
+    <table class="table table-bordered" id="tb_forecast_cost_analyse_list">
     </table>
 </div>
+
+
+
+

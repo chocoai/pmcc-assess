@@ -10,6 +10,8 @@ public class MdIncomeForecastAnalyse {
 
     private Integer type;
 
+    private Integer formType;
+
     private Integer year;
 
     private BigDecimal amountMoney;
@@ -48,6 +50,14 @@ public class MdIncomeForecastAnalyse {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getFormType() {
+        return formType;
+    }
+
+    public void setFormType(Integer formType) {
+        this.formType = formType;
     }
 
     public Integer getYear() {

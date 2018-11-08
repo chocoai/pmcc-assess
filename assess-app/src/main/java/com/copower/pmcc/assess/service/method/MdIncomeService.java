@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.method;
 
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.MethodDataTypeEnum;
+import com.copower.pmcc.assess.common.enums.MethodIncomeFormTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -85,8 +86,8 @@ public class MdIncomeService {
             mdIncomeHistory.setBisForecast(false);
             mdIncomeHistory.setCreator(commonService.thisUserAccount());
             mdIncomeHistoryDao.addHistory(mdIncomeHistory);
-            generatorForecastAnalyse(mdIncomeHistory.getIncomeId(), mdIncomeHistory.getType(), mdIncomeHistory.getYear());
         }
+        generatorForecastAnalyse(mdIncomeHistory);
     }
 
     /**
@@ -118,11 +119,12 @@ public class MdIncomeService {
      * @param ids
      */
     @Transactional
-    public void forecastToHistory(List<Integer> ids, Integer incomeId, Integer type) {
+    public void forecastToHistory(List<Integer> ids, Integer incomeId, Integer type, Integer formType) {
         if (CollectionUtils.isNotEmpty(ids)) {
             for (Integer id : ids) {
                 MdIncomeHistory history = mdIncomeHistoryDao.getHistoryById(id);
                 history.setBisForecast(false);
+                history.setForecastAnalyseId(0);
                 mdIncomeHistoryDao.updateHistory(history);
             }
 
@@ -130,11 +132,13 @@ public class MdIncomeService {
             MdIncomeForecastAnalyse whereForecastAnalyse = new MdIncomeForecastAnalyse();
             whereForecastAnalyse.setIncomeId(incomeId);
             whereForecastAnalyse.setType(type);
+            whereForecastAnalyse.setFormType(formType);
             whereForecastAnalyse.setBisParticipateIn(true);
             List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(whereForecastAnalyse);
             if (CollectionUtils.isNotEmpty(analyseList)) {
                 for (MdIncomeForecastAnalyse analyse : analyseList) {
                     MdIncomeHistory historyWhere = new MdIncomeHistory();
+                    historyWhere.setForecastAnalyseId(analyse.getId());
                     int count = mdIncomeHistoryDao.getHistoryCount(historyWhere);
                     if (count <= 0) {
                         analyse.setBisParticipateIn(false);
@@ -185,17 +189,28 @@ public class MdIncomeService {
     /**
      * 生成预测分析数据
      *
-     * @param incomeId
+     * @param mdIncomeHistory
      */
-    public void generatorForecastAnalyse(Integer incomeId, Integer type, Integer year) {
+    public void generatorForecastAnalyse(MdIncomeHistory mdIncomeHistory) {
         MdIncomeForecastAnalyse where = new MdIncomeForecastAnalyse();
-        where.setIncomeId(incomeId);
-        where.setType(type);
+        where.setIncomeId(mdIncomeHistory.getIncomeId());
+        where.setType(mdIncomeHistory.getType());
+        where.setFormType(mdIncomeHistory.getFormType());
+        Integer year = null;
+        switch (MethodIncomeFormTypeEnum.create(mdIncomeHistory.getFormType())) {
+            case DEFUALT:
+                year = mdIncomeHistory.getYear();
+                break;
+            case RESTAURANT:
+                year = DateUtils.getYear(mdIncomeHistory.getBeginDate());
+                break;
+        }
         where.setYear(year);
         if (mdIncomeForecastAnalyseDao.getForecastAnalyseCount(where) <= 0) {
             MdIncomeForecastAnalyse mdIncomeForecastAnalyse = new MdIncomeForecastAnalyse();
-            mdIncomeForecastAnalyse.setIncomeId(incomeId);
-            mdIncomeForecastAnalyse.setType(type);
+            mdIncomeForecastAnalyse.setIncomeId(mdIncomeHistory.getIncomeId());
+            mdIncomeForecastAnalyse.setType(mdIncomeHistory.getType());
+            mdIncomeForecastAnalyse.setFormType(mdIncomeHistory.getFormType());
             mdIncomeForecastAnalyse.setYear(year);
             mdIncomeForecastAnalyse.setBisParticipateIn(false);
             mdIncomeForecastAnalyse.setCreator(commonService.thisUserAccount());
@@ -210,12 +225,13 @@ public class MdIncomeService {
      * @param type
      */
     @Transactional
-    public void startAnalyse(Integer incomeId, Integer type) {
+    public void startAnalyse(Integer incomeId, Integer type, Integer formType) {
         //1.取出预测数据中的第一年作为基准数据
         //2.后续每年与第一年数据做比较 分别计算出 合计金额，数量趋势，单价趋势
         MdIncomeForecastAnalyse analyseWhere = new MdIncomeForecastAnalyse();
         analyseWhere.setIncomeId(incomeId);
         analyseWhere.setType(type);
+        analyseWhere.setFormType(formType);
         analyseWhere.setBisParticipateIn(true);
         List<MdIncomeForecastAnalyse> analyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(analyseWhere);
         MdIncomeForecastAnalyse baseAnalyse = analyseList.get(0);//基准数据
@@ -241,17 +257,19 @@ public class MdIncomeService {
                         BigDecimal currPriceTotal = new BigDecimal("0");
                         for (MdIncomeHistory baseHistory : baseHistoryList) {
                             for (MdIncomeHistory currHistory : currhistoryList) {
-                                if (baseHistory.getMonth().equals(currHistory.getMonth()) &&
-                                        baseHistory.getAccountingSubject().equals(currHistory.getAccountingSubject()) &&
-                                        baseHistory.getFirstLevelNumber().equals(currHistory.getFirstLevelNumber()) &&
-                                        baseHistory.getSecondLevelNumber().equals(currHistory.getSecondLevelNumber())) {
+                                boolean isSameMonth = true;
+                                if (MethodIncomeFormTypeEnum.DEFUALT.getValue().equals(formType)) {
+                                    isSameMonth = baseHistory.getMonth().equals(currHistory.getMonth());
+                                }
+                                if (isSameMonth && baseHistory.getAccountingSubject().equals(currHistory.getAccountingSubject()) &&
+                                        baseHistory.getFirstLevelNumber().equals(currHistory.getFirstLevelNumber()) && baseHistory.getSecondLevelNumber().equals(currHistory.getSecondLevelNumber())) {
                                     //数量趋势 原则：单价一致(基于基准)，数量不同
-                                    baseNumberTotal = baseNumberTotal.add(baseHistory.getAmountMoney());
+                                    baseNumberTotal = baseNumberTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(baseHistory.getNumber())));
                                     currNumberTotal = currNumberTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
 
                                     //单价趋势 原则：数量一致(基于当前)，单价不同
                                     basePriceTotal = basePriceTotal.add(baseHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
-                                    currPriceTotal = currPriceTotal.add(currHistory.getAmountMoney());
+                                    currPriceTotal = currPriceTotal.add(currHistory.getUnitPrice().multiply(new BigDecimal(currHistory.getNumber())));
                                 }
                             }
                         }
@@ -271,10 +289,11 @@ public class MdIncomeService {
      * @param incomeId
      * @return
      */
-    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Boolean bisParticipateIn) {
+    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Integer formType, Boolean bisParticipateIn) {
         BootstrapTableVo vo = new BootstrapTableVo();
         MdIncomeForecastAnalyse where = new MdIncomeForecastAnalyse();
         where.setType(type);
+        where.setFormType(formType);
         where.setIncomeId(incomeId);
         if (bisParticipateIn != null)
             where.setBisParticipateIn(bisParticipateIn);
@@ -308,34 +327,79 @@ public class MdIncomeService {
         int successCount = 0;//导入成功数据条数
         String key = history.getType().equals(0) ? AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_INCOME : AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_COST;
         List<BaseDataDic> subjectList = baseDataDicService.getCacheDataDicList(key);
-        for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
-            try {
-                Row row = sheet.getRow(i);
-                MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
-                mdIncomeHistory.setIncomeId(history.getIncomeId());
-                mdIncomeHistory.setType(history.getType());
-                mdIncomeHistory.setCreator(commonService.thisUserAccount());
-                mdIncomeHistory.setYear(Integer.valueOf(PoiUtils.getCellValue(row.getCell(1))));
-                BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(2)));
-                if (subjectDic == null) {
-                    errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
-                    continue;
+        switch (MethodIncomeFormTypeEnum.create(history.getFormType())) {
+            case DEFUALT:
+                for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
+                    try {
+                        Row row = sheet.getRow(i);
+                        MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                        mdIncomeHistory.setIncomeId(history.getIncomeId());
+                        mdIncomeHistory.setType(history.getType());
+                        mdIncomeHistory.setFormType(history.getFormType());
+                        mdIncomeHistory.setCreator(commonService.thisUserAccount());
+                        mdIncomeHistory.setYear(Integer.valueOf(PoiUtils.getCellValue(row.getCell(1))));
+                        BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(2)));
+                        if (subjectDic == null) {
+                            errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
+                            continue;
+                        }
+                        mdIncomeHistory.setAccountingSubject(subjectDic.getId());
+                        mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(3)));
+                        mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
+                        mdIncomeHistory.setMonth(Integer.valueOf(PoiUtils.getCellValue(row.getCell(5))));
+                        mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(7))));
+                        mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(8))));
+                        mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(9))));
+                        mdIncomeHistory.setBisForecast(false);
+                        mdIncomeHistoryDao.addHistory(mdIncomeHistory);
+                        generatorForecastAnalyse(mdIncomeHistory);
+                        successCount++;
+                    } catch (Exception e) {
+                        errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+                    }
                 }
-                mdIncomeHistory.setAccountingSubject(subjectDic.getId());
-                mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(3)));
-                mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(4)));
-                mdIncomeHistory.setMonth(Integer.valueOf(PoiUtils.getCellValue(row.getCell(5))));
-                mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(6))));
-                mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
-                mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(8))));
-                mdIncomeHistory.setBisForecast(false);
-                mdIncomeHistoryDao.addHistory(mdIncomeHistory);
-                generatorForecastAnalyse(mdIncomeHistory.getIncomeId(), mdIncomeHistory.getType(), mdIncomeHistory.getYear());
-                successCount++;
-            } catch (Exception e) {
-                errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
-            }
+                break;
+            case RESTAURANT:
+                for (int i = startRowNumber; i <= sheet.getLastRowNum(); i++) {
+                    try {
+                        Row row = sheet.getRow(i);
+                        MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                        mdIncomeHistory.setIncomeId(history.getIncomeId());
+                        mdIncomeHistory.setType(history.getType());
+                        mdIncomeHistory.setFormType(history.getFormType());
+                        mdIncomeHistory.setCreator(commonService.thisUserAccount());
+                        BaseDataDic subjectDic = baseDataDicService.getDataDicByName(subjectList, PoiUtils.getCellValue(row.getCell(1)));
+                        if (subjectDic == null) {
+                            errorMsg.append(String.format("\n第%s行异常：会计科目与系统配置的名称不一致", i + 1));
+                            continue;
+                        }
+                        mdIncomeHistory.setAccountingSubject(subjectDic.getId());
+                        mdIncomeHistory.setFirstLevelNumber(PoiUtils.getCellValue(row.getCell(2)));
+                        mdIncomeHistory.setSecondLevelNumber(PoiUtils.getCellValue(row.getCell(3)));
+                        mdIncomeHistory.setBeginDate(DateUtils.convertDate(PoiUtils.getCellValue(row.getCell(4))));
+                        mdIncomeHistory.setEndDate(DateUtils.convertDate(PoiUtils.getCellValue(row.getCell(5))));
+                        mdIncomeHistory.setUnit(PoiUtils.getCellValue(row.getCell(6)));
+                        mdIncomeHistory.setNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(7))));
+                        mdIncomeHistory.setUtilizationRatio(new BigDecimal(PoiUtils.getCellValue(row.getCell(8))));
+                        mdIncomeHistory.setUtilizationRatioExplain(PoiUtils.getCellValue(row.getCell(9)));
+                        mdIncomeHistory.setMakePrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(10))));
+                        mdIncomeHistory.setMakePriceExplain(PoiUtils.getCellValue(row.getCell(11)));
+                        mdIncomeHistory.setDiscountRate(new BigDecimal(PoiUtils.getCellValue(row.getCell(12))));
+                        mdIncomeHistory.setDiscountRateExplain(PoiUtils.getCellValue(row.getCell(13)));
+                        mdIncomeHistory.setUnitPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(14))));
+                        mdIncomeHistory.setAmountMoney(new BigDecimal(PoiUtils.getCellValue(row.getCell(15))));
+                        mdIncomeHistory.setBisForecast(false);
+                        mdIncomeHistoryDao.addHistory(mdIncomeHistory);
+                        generatorForecastAnalyse(mdIncomeHistory);
+                        successCount++;
+                    } catch (Exception e) {
+                        errorMsg.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+                    }
+                }
+                break;
         }
+
         inputStream.close();
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowCount, successCount, rowCount - successCount, errorMsg.toString());
     }
@@ -346,12 +410,13 @@ public class MdIncomeService {
      * @param incomeId
      * @return
      */
-    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Boolean bisForecast) {
+    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Integer formType, Boolean bisForecast) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         MdIncomeHistory where = new MdIncomeHistory();
         where.setType(type);
+        where.setFormType(formType);
         where.setBisForecast(bisForecast);
         if (incomeId != null && incomeId > 0) {
             where.setIncomeId(incomeId);

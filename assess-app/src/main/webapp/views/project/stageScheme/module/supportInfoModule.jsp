@@ -102,10 +102,10 @@
 <script type="text/html" id="supportInfoPanel">
     <div class="x_panel">
         <div class="x_title collapse-link">
-            <h2>{supportTypeName}</h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             </ul>
+            <h3>{supportTypeName}</h3>
             <div class="clearfix"></div>
         </div>
         <form id="frm_support_type_{supportType}" class="form-horizontal">
