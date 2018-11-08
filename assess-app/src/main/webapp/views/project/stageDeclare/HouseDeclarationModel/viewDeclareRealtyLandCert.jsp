@@ -118,9 +118,7 @@
                 declareRealtyLandCert.showFile(target, tableName, id);
                 if (target == declareRealtyLandCertConfig.fileId) {
                     if (declareRealtyLandCert.isEmpty(result)) {
-                        AssessCommon.downloadFtpFileToLocal(result, function (data) {
-                            declareRealtyLandCert.startPath = data;
-                        });
+
                     }
                 }
                 declareRealtyLandCert.loadList();
@@ -517,27 +515,7 @@
 
     //土地证识别
     declareRealtyLandCert.distinguish = function () {
-        var startPath = declareRealtyLandCert.startPath;
-        if (!declareRealtyLandCert.isEmpty(startPath)) {
-            toastr.success('稍后再试!');
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyLandCert/parseRealtyLandCertOcr",
-            type: "POST",
-            dataType: "json",
-            data: {startPath: startPath},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    $("#" + declareRealtyLandCertConfig.frm).initForm(data);
-                    declareRealtyLandCert.startPath = null;
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+
     };
 
     /**
@@ -804,8 +782,8 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label class="btn btn-default"
-                                               onclick="declareRealtyLandCert.distinguish();">识别</label>
+                                        <%--<label class="btn btn-default"--%>
+                                               <%--onclick="declareRealtyLandCert.distinguish();">识别</label>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">

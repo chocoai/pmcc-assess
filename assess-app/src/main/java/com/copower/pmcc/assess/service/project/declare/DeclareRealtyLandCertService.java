@@ -1,14 +1,12 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
-import com.copower.pmcc.assess.common.ocr.house.AnalysisUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.ocr.RealtyLandCertOcrDto;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -456,24 +454,4 @@ public class DeclareRealtyLandCertService {
         }
     }
 
-    public DeclareRealtyLandCert parseRealtyLandCertOcr(String startPath)throws Exception{
-        RealtyLandCertOcrDto landCertOcrDto = AnalysisUtils.parseRealtyLandCertOcr(startPath);
-        DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
-        if (StringUtils.isNotBlank(landCertOcrDto.getBeLocated())){
-            declareRealtyLandCert.setBeLocated(landCertOcrDto.getBeLocated());
-        }
-        if (StringUtils.isNotBlank(landCertOcrDto.getOwnership())){
-            declareRealtyLandCert.setOwnership(landCertOcrDto.getOwnership());
-        }
-        if (StringUtils.isNotBlank(landCertOcrDto.getNumber())){
-            declareRealtyLandCert.setNumber(landCertOcrDto.getNumber());
-        }
-        if (StringUtils.isNotBlank(landCertOcrDto.getMemo())){
-            declareRealtyLandCert.setMemo(landCertOcrDto.getMemo());
-        }
-        if (landCertOcrDto.getUseRightArea() != null){
-            declareRealtyLandCert.setUseRightArea(landCertOcrDto.getUseRightArea());
-        }
-        return declareRealtyLandCert;
-    }
 }

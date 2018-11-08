@@ -50,6 +50,26 @@ public class CaseMatchingFinanceService {
         return caseMatchingFinanceDao.getMatchingFinanceById(id);
     }
 
+    public void upgradeVersion(CaseMatchingFinance po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.addCaseMatchingFinance(po);
+        }else {
+            CaseMatchingFinance oo = getCaseMatchingFinanceById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanUtils.copyProperties(po,oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.addCaseMatchingFinance(oo);
+        }
+    }
+
     /**
      * 获取数据列表
      *

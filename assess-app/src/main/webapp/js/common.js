@@ -651,6 +651,27 @@ $(function () {
                 fullName += districtName;
             }
             return fullName;
+        },
+        //阿里云图片识别
+        parseRealtyHouseCert:function (id,key,callback) {
+            $.ajax({
+                url: "/aliocr/aliOcr",
+                data: {
+                    fileId: id,
+                    method: key,
+                    appKey: "pmcc-erp",
+                    describe: "返回内容"
+                },
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    }
+                }
+            });
         }
     };
 

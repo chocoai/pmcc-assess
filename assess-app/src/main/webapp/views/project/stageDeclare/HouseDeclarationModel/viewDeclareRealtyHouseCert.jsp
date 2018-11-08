@@ -122,6 +122,7 @@
     declareRealtyHouseCert.sonDeclareRealtyLandCertFlag = true;//子标识符 (土地)
     declareRealtyHouseCert.sonDeclareRealtyRealEstateCert = true;//子标识符 (不动产)
     declareRealtyHouseCert.startPath = null;
+    declareRealtyHouseCert.sysOcrRecordId = null;
     //----------------------end
 
     /**
@@ -145,8 +146,8 @@
                 //房产证识别
                 if (target == declareRealtyHouseCertConfig.fileId) {
                     if (declareRealtyHouseCert.isEmpty(result)) {
-                        AssessCommon.downloadFtpFileToLocal(result, function (data) {
-                            declareRealtyHouseCert.startPath = data;
+                        AssessCommon.parseRealtyHouseCert(result,AssessDBKey.HouseOcrkey,function (data) {
+                            declareRealtyHouseCert.sysOcrRecordId = data.sysOcrRecordId;
                         });
                     }
                 }
@@ -402,8 +403,8 @@
      * @date:2018-09-19
      **/
     declareRealtyHouseCert.distinguish = function () {
-        var startPath = declareRealtyHouseCert.startPath;
-        if (!declareRealtyHouseCert.isEmpty(startPath)) {
+        var sysOcrRecordId = declareRealtyHouseCert.sysOcrRecordId;
+        if (!declareRealtyHouseCert.isEmpty(sysOcrRecordId)) {
             toastr.success('稍后再试!');
             return false;
         }
@@ -411,13 +412,13 @@
             url: "${pageContext.request.contextPath}/declareRealtyHouseCert/parseRealtyHouseCert",
             type: "POST",
             dataType: "json",
-            data: {startPath: startPath},
+            data: {sysOcrRecordId: sysOcrRecordId},
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
                     $("#" + declareRealtyHouseCertConfig.frm).initForm(data);
                     $("#" + declareRealtyHouseCertConfig.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                    declareRealtyHouseCert.startPath = null;
+                    declareRealtyHouseCert.sysOcrRecordId = null;
                 }
             },
             error: function (result) {

@@ -48,6 +48,26 @@ public class CaseMatchingTrafficService {
         return caseMatchingTrafficDao.getMatchingTrafficById(id);
     }
 
+    public void upgradeVersion(CaseMatchingTraffic po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.addMatchingTraffic(po);
+        }else {
+            CaseMatchingTraffic oo = getMatchingTrafficById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanUtils.copyProperties(po,oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.addMatchingTraffic(oo);
+        }
+    }
+
     /**
      * 获取数据列表
      * @param caseMatchingTraffic

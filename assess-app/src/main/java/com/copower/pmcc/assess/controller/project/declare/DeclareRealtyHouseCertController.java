@@ -181,9 +181,9 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/parseRealtyHouseCert", name = "解析上传的图片 房产证", method = RequestMethod.POST)
-    public HttpResult parseRealtyHouseCert(String startPath) {
+    public HttpResult parseRealtyHouseCert(Integer sysOcrRecordId) {
         try {
-            return HttpResult.newCorrectResult(declareRealtyHouseCertService.parseRealtyHouseCert(startPath));
+            return HttpResult.newCorrectResult(declareRealtyHouseCertService.parseRealtyHouseCert(sysOcrRecordId));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }

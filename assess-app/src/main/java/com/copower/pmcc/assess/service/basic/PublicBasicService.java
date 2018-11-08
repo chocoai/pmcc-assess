@@ -309,7 +309,7 @@ public class PublicBasicService {
                     caseMatchingTraffic.setId(null);
                 }
                 caseMatchingTraffic.setEstateId(caseEstate.getId());
-                //
+                caseMatchingTrafficService.upgradeVersion(caseMatchingTraffic);
             }
         }
     }
@@ -336,7 +336,7 @@ public class PublicBasicService {
                     caseMatchingMedical.setId(null);
                 }
                 caseMatchingMedical.setEstateId(caseEstate.getId());
-                //
+                caseMatchingMedicalService.updateCaseMatchingMedical(caseMatchingMedical);
             }
         }
     }
@@ -363,7 +363,7 @@ public class PublicBasicService {
                     caseMatchingMaterial.setId(null);
                 }
                 caseMatchingMaterial.setEstateId(caseEstate.getId());
-                //
+                caseMatchingMaterialService.upgradeVersion(caseMatchingMaterial);
             }
         }
     }
@@ -390,7 +390,7 @@ public class PublicBasicService {
                     caseMatchingLeisurePlace.setId(null);
                 }
                 caseMatchingLeisurePlace.setEstateId(caseEstate.getId());
-                //
+                caseMatchingLeisurePlaceService.upgradeVersion(caseMatchingLeisurePlace);
             }
         }
     }
@@ -417,7 +417,7 @@ public class PublicBasicService {
                     caseMatchingFinance.setId(null);
                 }
                 caseMatchingFinance.setEstateId(caseEstate.getId());
-                //
+                caseMatchingFinanceService.upgradeVersion(caseMatchingFinance);
             }
         }
     }
@@ -444,7 +444,7 @@ public class PublicBasicService {
                     caseMatchingEnvironment.setId(null);
                 }
                 caseMatchingEnvironment.setEstateId(caseEstate.getId());
-                //
+                caseMatchingEnvironmentService.upgradeVersion(caseMatchingEnvironment);
             }
         }
     }
@@ -471,7 +471,7 @@ public class PublicBasicService {
                     caseMatchingEducation.setId(null);
                 }
                 caseMatchingEducation.setEstateId(caseEstate.getId());
-                //
+                caseMatchingEducationService.updateCaseMatchingEducation(caseMatchingEducation);
             }
         }
     }

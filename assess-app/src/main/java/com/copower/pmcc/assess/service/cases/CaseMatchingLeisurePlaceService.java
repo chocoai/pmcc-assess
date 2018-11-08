@@ -52,6 +52,26 @@ public class CaseMatchingLeisurePlaceService {
         return caseMatchingLeisurePlaceDao.getMatchingMedicalById(id);
     }
 
+    public void upgradeVersion(CaseMatchingLeisurePlace po)throws Exception{
+        if (po.getId()==null || po.getId().intValue() == 0){
+            po.setCreator(commonService.thisUserAccount());
+            po.setVersion(0);
+            this.addCaseMatchingLeisurePlace(po);
+        }else {
+            CaseMatchingLeisurePlace oo = getCaseMatchingLeisurePlaceById(po.getId());
+            if (oo.getVersion() == null){
+                oo.setVersion(0);
+            }
+            int version = oo.getVersion() + 1;
+            BeanUtils.copyProperties(po,oo);
+            oo.setVersion(version);
+            oo.setId(null);
+            oo.setGmtCreated(null);
+            oo.setGmtCreated(null);
+            this.addCaseMatchingLeisurePlace(oo);
+        }
+    }
+
     /**
      * 获取数据列表
      *

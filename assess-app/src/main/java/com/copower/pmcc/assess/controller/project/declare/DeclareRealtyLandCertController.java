@@ -179,13 +179,4 @@ public class DeclareRealtyLandCertController {
 
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/parseRealtyLandCertOcr", name = "解析上传的图片 土地证", method = RequestMethod.POST)
-    public HttpResult parseRealtyLandCertOcr(String startPath) {
-        try {
-            return HttpResult.newCorrectResult(declareRealtyLandCertService.parseRealtyLandCertOcr(startPath));
-        } catch (Exception e) {
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
 }

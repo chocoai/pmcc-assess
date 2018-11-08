@@ -1,24 +1,27 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
-import com.copower.pmcc.assess.common.ocr.house.AnalysisUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyHouseCertDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyLandCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.ocr.RealtyHouseCertOcrDto;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.ErpOcrService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.dto.ocr.aliyun.OcrBaseVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -69,6 +72,8 @@ public class DeclareRealtyHouseCertService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ErpOcrService erpOcrService;
 
     /**
      * 功能描述: 导入土地证 并且和房产证关联
@@ -456,37 +461,56 @@ public class DeclareRealtyHouseCertService {
         }
     }
 
-    public DeclareRealtyHouseCert parseRealtyHouseCert(String startPath)throws Exception{
-        RealtyHouseCertOcrDto houseCertOcrDto = AnalysisUtils.parseRealtyHouseCert(startPath);
-        DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
-        if (StringUtils.isNotBlank(houseCertOcrDto.getNumber())){
-            declareRealtyHouseCert.setNumber(houseCertOcrDto.getNumber());
+    /**
+     * 解析从erp 传回的 json 字段 然后组合为DeclareRealtyHouseCert
+     * @param sysOcrRecordId
+     * @return
+     * @throws Exception
+     */
+    public DeclareRealtyHouseCert parseRealtyHouseCert(Integer sysOcrRecordId)throws Exception{
+        OcrBaseVo ocrBaseVo = erpOcrService.getOcrJson(sysOcrRecordId);
+        if (ocrBaseVo != null){
+            JSONObject jsonObject = JSON.parseObject(ocrBaseVo.getDataJson());
+            if (jsonObject != null){
+                DeclareRealtyHouseCert declareRealtyHouseCert = new DeclareRealtyHouseCert();
+                try {
+                    Double area = jsonObject.getDouble("area");
+                    String commonSituation = jsonObject.getString("commonSituation");
+                    String used = jsonObject.getString("used");
+                    String located = jsonObject.getString("located");
+                    Integer number = jsonObject.getInteger("number");
+                    String obligee = jsonObject.getString("obligee");
+                    String registrationstr = jsonObject.getString("registration");
+                    Date registration = DateUtils.parse(registrationstr);
+                    if (area != null){
+                        declareRealtyHouseCert.setFloorArea(area.toString());
+                    }
+                    if (number != null){
+                        declareRealtyHouseCert.setNumber(number.toString());
+                    }
+                    if (StringUtils.isNotEmpty(obligee)){
+                        declareRealtyHouseCert.setOwnership(obligee);
+                    }
+                    if (StringUtils.isNotEmpty(commonSituation)){
+                        declareRealtyHouseCert.setPublicSituation(commonSituation);
+                    }
+                    if (StringUtils.isNotEmpty(located)){
+                        declareRealtyHouseCert.setBeLocated(located);
+                    }
+                    if (registration != null){
+                        declareRealtyHouseCert.setRegistrationDate(registration);
+                    }
+                    if (StringUtils.isNotEmpty(used)){
+                        declareRealtyHouseCert.setPlanningUse(used);
+                    }
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(),e1);
+                }
+                return declareRealtyHouseCert;
+            }
         }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getOwnership())){
-            declareRealtyHouseCert.setOwnership(houseCertOcrDto.getOwnership());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getPublicSituation())){
-            declareRealtyHouseCert.setPublicSituation(houseCertOcrDto.getPublicSituation());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getBeLocated())){
-            declareRealtyHouseCert.setBeLocated(houseCertOcrDto.getBeLocated());
-        }
-        if (houseCertOcrDto.getRegistrationTime() != null){
-            declareRealtyHouseCert.setRegistrationDate(houseCertOcrDto.getRegistrationTime());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getNature())){
-            declareRealtyHouseCert.setNature(houseCertOcrDto.getNature());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getPlanningUse())){
-            declareRealtyHouseCert.setPlanningUse(houseCertOcrDto.getPlanningUse());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getFloorArea())){
-            declareRealtyHouseCert.setFloorArea(houseCertOcrDto.getFloorArea());
-        }
-        if (StringUtils.isNotBlank(houseCertOcrDto.getLandAcquisition())){
-            declareRealtyHouseCert.setLandAcquisition(houseCertOcrDto.getLandAcquisition());
-        }
-        return declareRealtyHouseCert;
+        return null;
     }
+
 
 }

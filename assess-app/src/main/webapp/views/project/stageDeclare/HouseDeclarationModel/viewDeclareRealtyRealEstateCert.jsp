@@ -90,9 +90,7 @@
                 //不动产识别
                 if (target == declareRealtyRealEstateCertConfig.newFileId) {
                     if (declareRealtyRealEstateCert.isEmpty(result)){
-                        AssessCommon.downloadFtpFileToLocal(result,function (data) {
-                            declareRealtyRealEstateCert.startPath = data;
-                        });
+
                     }
                 }
                 declareRealtyRealEstateCert.loadList();
@@ -428,28 +426,7 @@
     };
 
     declareRealtyRealEstateCert.distinguish = function () {
-        var startPath = declareRealtyRealEstateCert.startPath;
-        if (!declareRealtyRealEstateCert.isEmpty(startPath)){
-            toastr.success('稍后再试!');
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/parseRealtyEstateCert",
-            type: "POST",
-            dataType: "json",
-            data: {startPath: startPath},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    $("#" + declareRealtyRealEstateCertConfig.frm).initForm(result.data);
-                    $("#" + declareRealtyRealEstateCertConfig.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                    declareRealtyRealEstateCert.startPath = null;
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+
     };
 
 
@@ -574,8 +551,8 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label class="btn btn-default"
-                                               onclick="declareRealtyRealEstateCert.distinguish();">识别</label>
+                                        <%--<label class="btn btn-default"--%>
+                                               <%--onclick="declareRealtyRealEstateCert.distinguish();">识别</label>--%>
                                     </div>
                                 </div>
                                 <div class="form-group">
