@@ -61,6 +61,136 @@
         </table>
     </div>
 </div>
+
+<div class="x_content">
+    <h3>教育条件信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingEducationList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>环境因素信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingEnvironmentList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>金融服务信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingFinanceList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>休闲娱乐信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingRecreationList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>餐饮信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingRestaurantList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>购物商场信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingMarketList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>原料供应及销售条件信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingMaterialList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>医养条件信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingMedicalList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>公交信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="TransitList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>交通枢纽信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingTrafficHubList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>地铁信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingMetroList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>主干道信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MainRoadList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_content">
+    <h3>主要转换信息
+    </h3>
+    <div>
+        <table class="table table-bordered" id="MatchingMainConversionList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
 <script type="text/javascript">
     var estateNetwork;
     (function () {
@@ -307,6 +437,546 @@
                     }
                 });
             }
+        }
+    })();
+
+    var matchingEducation;
+    (function () {
+        matchingEducation = function () {
+
+        };
+        matchingEducation.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingEducationList";
+                data.box = "divBoxMatchingEducation";
+                data.frm = "frmMatchingEducation";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'schoolName', title: '学校名称'});
+                cols.push({field: 'schoolNatureName', title: '学校性质'});
+                cols.push({field: 'schoolGradationName', title: '学校级次'});
+                cols.push({field: 'schoolLevelName', title: '学校等级'});
+                cols.push({field: 'distanceName', title: '距离'});
+                $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEducation/getBootstrapTableVo", cols, {
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+    })();
+
+    var matchingEnvironment;
+    (function () {
+        matchingEnvironment = function () {
+
+        };
+        matchingEnvironment.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingEnvironmentList";
+                data.box = "divBoxMatchingEnvironment";
+                data.frm = "frmMatchingEnvironment";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'typeName', title: '环境类型'});
+                cols.push({field: 'categoryName', title: '环境类别'});
+                cols.push({field: 'influenceDegreeName', title: '影响程度'});
+                $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEnvironment/getBootstrapTableVo", cols, {
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+    })();
+
+    var matchingFinance;
+    (function () {
+        matchingFinance = function () {
+
+        };
+        matchingFinance.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingFinanceList";
+                data.box = "divBoxMatchingFinance";
+                data.frm = "frmMatchingFinance";
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '金融名称'});
+                cols.push({field: 'categoryName', title: '金融类别'});
+                cols.push({field: 'natureName', title: '金融机构性质'});
+                cols.push({field: 'serviceContentName', title: '金融服务内容'});
+                cols.push({field: 'autoServiceContent', title: '自动服务内容'});
+                $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingFinance/getBootstrapTableVo", cols, {
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMarket;
+    (function () {
+        matchingMarket = function () {
+
+        };
+        matchingMarket.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingMarketList";
+                data.box = "divBoxMatchingMarket";
+                data.frm = "frmMatchingMarket";
+                data.type = "matchingMarket";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '购物商场名称'});
+                cols.push({field: 'categoryName', title: '购物商场类别'});
+                cols.push({field: 'gradeName', title: '购物商场档次'});
+                cols.push({field: 'distanceName', title: '购物商场距离'});
+                $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+                    type: matchingMarket.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+    })();
+
+    var matchingRestaurant;
+    (function () {
+        matchingRestaurant = function () {
+
+        };
+        matchingRestaurant.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingRestaurantList";
+                data.box = "divBoxMatchingRestaurant";
+                data.frm = "frmMatchingRestaurant";
+                data.type = "matchingRestaurant";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '餐饮名称'});
+                cols.push({field: 'categoryName', title: '餐饮类别'});
+                cols.push({field: 'gradeName', title: '餐饮档次'});
+                cols.push({field: 'distanceName', title: '餐饮距离'});
+                $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+                    type: matchingRestaurant.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            }
+        }
+    })();
+
+    var matchingRecreation;
+    (function () {
+        matchingRecreation = function () {
+
+        };
+        matchingRecreation.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingRecreationList";
+                data.box = "divBoxMatchingRecreation";
+                data.frm = "frmMatchingRecreation";
+                data.type = "matchingRecreation";// 根据 ExamineMatchingLeisurePlaceTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '休闲娱乐名称'});
+                cols.push({field: 'categoryName', title: '休闲娱乐类别'});
+                cols.push({field: 'distanceName', title: '休闲娱乐距离'});
+                $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingRecreation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
+                    type: matchingRecreation.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMedical;
+    (function () {
+        matchingMedical = function () {
+
+        };
+        matchingMedical.prototype = {
+            config: function () {
+                var data = {};
+                data.table = "MatchingMedicalList";
+                data.box = "divBoxMatchingMedical";
+                data.frm = "frmMatchingMedical";
+                data.type = "null";//
+                return data;
+            },
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'bedNumber', title: '床位数'});
+                cols.push({field: 'distanceName', title: '医养条件距离'});
+                cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
+                $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMedical/getBootstrapTableVo", cols, {
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMaterial;
+    (function () {
+        matchingMaterial = function () {
+
+        };
+        matchingMaterial.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingMaterialList";
+                data.box = "divBoxMatchingMaterial";
+                data.frm = "frmMatchingMaterial";
+                data.type = "null";//
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'categoryName', title: '类别'});
+                cols.push({field: 'scaleName', title: '规模'});
+                cols.push({field: 'distanceName', title: '距离'});
+                $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMaterial/getBootstrapTableVo", cols, {
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMainConversion;
+    (function () {
+        matchingMainConversion = function () {
+
+        };
+        matchingMainConversion.prototype = {
+            config: function () {
+                var data = {};
+                data.table = "MatchingMainConversionList";
+                data.box = "divBoxMatchingMainConversion";
+                data.frm = "frmMatchingMainConversion";
+                data.type = "mainConversion";//根据ExamineMatchingTrafficTypeEnum 配置
+                return data;
+            },
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({field: 'lineName', title: '线路名称'});
+                cols.push({field: 'theLine', title: '所在线路'});
+                $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMainConversion.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
+                    type: matchingMainConversion.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMainRoad;
+    (function () {
+        matchingMainRoad = function () {
+
+        };
+        matchingMainRoad.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MainRoadList";
+                data.box = "divBoxMainRoad";
+                data.frm = "frmMainRoad";
+                data.type = "mainRoad";//根据ExamineMatchingTrafficTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({field: 'lineName', title: '线路名称'});
+                cols.push({field: 'theLine', title: '所在线路'});
+                $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMainRoad.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
+                    type: matchingMainRoad.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingMetro;
+    (function () {
+        matchingMetro = function () {
+
+        };
+        matchingMetro.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingMetroList";
+                data.box = "divBoxMatchingMetro";
+                data.frm = "frmMatchingMetro";
+                data.type = "metro";//根据 ExamineMatchingTrafficTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({field: 'lineName', title: '线路名称'});
+                cols.push({field: 'theLine', title: '所在线路'});
+                $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingMetro.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
+                    type: matchingMetro.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+    var matchingTrafficHub;
+    (function () {
+        matchingTrafficHub = function () {
+
+        };
+        matchingTrafficHub.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "MatchingTrafficHubList";
+                data.box = "divBoxMatchingTrafficHub";
+                data.frm = "frmMatchingTrafficHub";
+                data.type = "trafficHub";//根据ExamineMatchingTrafficTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({field: 'lineName', title: '线路名称'});
+                cols.push({field: 'theLine', title: '所在线路'});
+                $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
+                    type: matchingTrafficHub.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
+        }
+    })();
+
+
+    var matchingTransit;
+    (function () {
+        matchingTransit = function () {
+
+        };
+        matchingTransit.prototype = {
+            isNotBlank: function (item) {
+                if (item) {
+                    return true;
+                }
+                return false;
+            },
+            config: function () {
+                var data = {};
+                data.table = "TransitList";
+                data.box = "divBoxTransit";
+                data.frm = "frmTransit";
+                data.type = "transit";//根据ExamineMatchingTrafficTypeEnum 配置
+                return data;
+            },
+            loadDataDicList: function () {
+                var cols = [];
+                cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'distanceName', title: '距离'});
+                cols.push({field: 'lineName', title: '线路名称'});
+                cols.push({field: 'theLine', title: '所在线路'});
+                $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
+                TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
+                    type: matchingTransit.prototype.config().type,
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            },
         }
     })();
 </script>

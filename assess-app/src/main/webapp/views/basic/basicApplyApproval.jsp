@@ -1266,6 +1266,19 @@
             estateSupplyPower.prototype.loadDataDicList();
             estateSupplyHeating.prototype.loadDataDicList();
             estateSupplyGas.prototype.loadDataDicList();
+            matchingEducation.prototype.loadDataDicList();
+            matchingEnvironment.prototype.loadDataDicList();
+            matchingFinance.prototype.loadDataDicList();
+            matchingRecreation.prototype.loadDataDicList();
+            matchingRestaurant.prototype.loadDataDicList();
+            matchingMarket.prototype.loadDataDicList();
+            matchingMaterial.prototype.loadDataDicList();
+            matchingMedical.prototype.loadDataDicList();
+            matchingTransit.prototype.loadDataDicList();
+            matchingTrafficHub.prototype.loadDataDicList();
+            matchingMetro.prototype.loadDataDicList();
+            matchingMainRoad.prototype.loadDataDicList();
+            matchingMainConversion.prototype.loadDataDicList();
         }
     };
 
@@ -1414,6 +1427,13 @@
     objectData.house = {
         init: function () {
             houseRoom.prototype.loadDataDicList();
+            houseWater.prototype.loadDataDicList();
+            houseIntelligent.prototype.loadDataDicList();
+            houseFaceStreet.prototype.loadDataDicList();
+            houseCorollaryEquipment.prototype.loadDataDicList();
+            houseNewWind.prototype.loadDataDicList();
+            houseAirConditioner.prototype.loadDataDicList();
+            houseHeating.prototype.loadDataDicList();
             objectData.showFile(objectData.config.basicHouse.houseFileId, AssessDBKey.BasicHouse, '${empty basicHouse.id?0:basicHouse.id}');
             var tradingID = "${basicHouseTrading.tradingType}";
             var tradingType = null;
