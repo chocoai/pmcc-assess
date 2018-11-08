@@ -1295,6 +1295,12 @@
                 basicBuildings.unshift(navButtonBuild.getObjArray(i))
             }
         }
+        if (objectData.isNotBlankObjectProperty(basicEstate)){//楼盘检测到有数据
+            if (!$("#" + objectData.config.basicEstate.frm).valid()) {
+                toastr.success('楼盘有必须的数据未填写!');
+                return false;
+            }
+        }
         //确定收集过楼栋信息
         var num = 1;
         $.each(basicBuildings, function (i, obj) {
@@ -1304,7 +1310,11 @@
         });
         if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下验证通过
             if (objectData.isNotBlank(estateId) || objectData.isNotBlankObjectProperty(basicEstate)) {
-
+                var identifier = $("#identifier").val();
+                if (!objectData.isNotBlank(identifier)){
+                    Alert("楼栋编号 (必要的查询下面楼栋所需)");
+                    return false;
+                }
             } else {
                 Alert("未选择楼盘或者是没添加新的楼盘数据!");
                 return false;
@@ -1312,7 +1322,10 @@
         }
         if (objectData.isNotBlankObjectProperty(basicUnit)) {//单元检测到有数据 ==> 选择了楼栋 或者说是添加了楼栋数据的情况下才进行赋值
             if (objectData.isNotBlank(buildingId) || objectData.isNotBlank(num > 1)) {
-
+                if (!$("#" + objectData.config.basicUnit.frm).valid()) {
+                    toastr.success('单元有必须的数据未填写!');
+                    return false;
+                }
             } else {
                 Alert("未选择楼栋或者是没添加新的楼栋数据!");
                 return false;
@@ -1320,7 +1333,10 @@
         }
         if (objectData.isNotBlankObjectProperty(basicHouse)) {//检测到 房屋有数据 ==> 选择了单元 或者说是单元数据
             if (objectData.isNotBlank(unitId) || objectData.isNotBlankObjectProperty(basicUnit)) {
-
+                if (!$("#" + objectData.config.basicHouse.frm).valid()) {
+                    toastr.success('房屋有必须的数据未填写!');
+                    return false;
+                }
             } else {
                 Alert("未选择单元或者是没添加新的单元数据!");
                 return false;

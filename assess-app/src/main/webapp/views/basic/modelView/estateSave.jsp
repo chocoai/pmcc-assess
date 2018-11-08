@@ -34,8 +34,7 @@
     </div>
 
     <div class="x-valid">
-        <label class="col-sm-1 control-label">县<span
-                class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">县</label>
         <div class="col-sm-3">
             <select name="district" class="form-control search-select select2 district">
             </select>
@@ -51,9 +50,9 @@
         </div>
     </div>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">楼盘方位<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">楼盘方位</label>
         <div class="col-sm-3">
-            <input type="text" data-rule-maxlength="100" placeholder="楼盘方位"
+            <input type="text" placeholder="楼盘方位"
                    name="position" class="form-control">
         </div>
     </div>
@@ -69,14 +68,14 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">编号<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">编号</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="编号(请输入数字)" name="number" class="form-control">
         </div>
     </div>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">土地级别<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">土地级别</label>
         <div class="col-sm-3">
             <select class="form-control search-select select2 landLevel" name="landLevel">
             </select>
@@ -94,7 +93,7 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">占地面积<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">占地面积</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="占地面积(请输入数字)" name="coverAnArea" class="form-control">
@@ -102,7 +101,7 @@
     </div>
 
     <div class="x-valid">
-        <label class="col-sm-1 control-label">容积率<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">容积率</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="容积率(请输入数字)" name="volumetricRate" class="form-control">
@@ -110,7 +109,7 @@
     </div>
 
     <div class="x-valid">
-        <label class="col-sm-1 control-label">绿化率<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">绿化率</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="绿化率(请输入数字)" name="greeningRate" class="form-control">
@@ -121,9 +120,9 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">楼盘概况<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">楼盘概况</label>
         <div class="col-sm-11">
-                        <textarea class="form-control" required="required" name="description"
+                        <textarea class="form-control" name="description"
                                   placeholder="楼盘概况"></textarea>
         </div>
     </div>
@@ -140,14 +139,14 @@
     </div>
 
     <div class="x-valid">
-        <label class="col-sm-1 control-label">开发商<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">开发商</label>
         <div class="col-sm-3">
             <select class="form-control search-select select2 developerId" name="developerId">
             </select>
         </div>
     </div>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">建筑面积</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="建筑面积(请输入数字)" name="floorArea" class="form-control">
@@ -157,7 +156,7 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">均价<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">均价</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="均价(请输入数字)" name="averagePrice" class="form-control">
@@ -165,14 +164,14 @@
     </div>
 
     <div class="x-valid">
-        <label class="col-sm-1 control-label">价格区间<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">价格区间</label>
         <div class="col-sm-3">
             <input type="text" placeholder="价格区间"
                    name="priceRange" class="form-control">
         </div>
     </div>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">附号<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">附号</label>
         <div class="col-sm-3">
             <input type="text" data-rule-maxlength="100" data-rule-number='true'
                    placeholder="附号(请输入数字)"
