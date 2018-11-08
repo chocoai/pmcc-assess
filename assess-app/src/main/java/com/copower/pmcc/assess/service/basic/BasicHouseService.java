@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -15,7 +14,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -48,6 +44,16 @@ public class BasicHouseService {
     @Autowired
     private BasicHouseTradingSellService basicHouseTradingSellService;
     @Autowired
+    private BasicHouseWaterService basicHouseWaterService;
+    @Autowired
+    private BasicHouseIntelligentService basicHouseIntelligentService;
+    @Autowired
+    private BasicHouseFaceStreetService basicHouseFaceStreetService;
+    @Autowired
+    private BasicHouseEquipmentService basicHouseEquipmentService;
+    @Autowired
+    private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
+    @Autowired
     private CommonService commonService;
     @Autowired
     private BasicHouseDao basicHouseDao;
@@ -57,17 +63,38 @@ public class BasicHouseService {
         List<BasicHouseTradingSell> basicHouseTradingSellList = null;
         List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
         List<BasicHouseRoom> basicHouseRoomList = null;
+        List<BasicHouseWater> basicHouseWaterList = null;
+        List<BasicHouseIntelligent> basicHouseIntelligentList = null;
+        List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
+        List<BasicHouseEquipment> basicHouseEquipmentList = null;
+        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
+
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
         BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
         BasicHouseRoom queryRoom = new BasicHouseRoom();
-
+        BasicHouseWater queryBasicHouseWater = new BasicHouseWater();
+        BasicHouseIntelligent queryBasicHouseIntelligent = new BasicHouseIntelligent();
+        BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
+        BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
+        BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
         queryLease.setHouseId(oldId);
         querySell.setHouseId(oldId);
         queryRoom.setHouseId(oldId);
+        queryBasicHouseWater.setHouseId(oldId);
+        queryBasicHouseIntelligent.setHouseId(oldId);
+        queryBasicHouseFaceStreet.setHouseId(oldId);
+        queryBasicHouseEquipment.setHouseId(oldId);
+        queryBasicHouseCorollaryEquipment.setHouseId(oldId);
 
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
         basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
+        basicHouseWaterList = basicHouseWaterService.basicHouseWaterList(queryBasicHouseWater);
+        basicHouseIntelligentList = basicHouseIntelligentService.basicHouseIntelligentList(queryBasicHouseIntelligent);
+        basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
+        basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
+        basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+
         if (newId == null) {
             if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
                 basicHouseTradingSellList.forEach(oo -> {
@@ -96,13 +123,58 @@ public class BasicHouseService {
                     }
                 });
             }
+            if (!ObjectUtils.isEmpty(basicHouseWaterList)){
+                basicHouseWaterList.forEach(oo -> {
+                    try {
+                        basicHouseWaterService.deleteBasicHouseWater(oo.getId());
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseIntelligentList)){
+                basicHouseIntelligentList.forEach(oo -> {
+                    try {
+                        basicHouseIntelligentService.deleteBasicHouseIntelligent(oo.getId());
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)){
+                basicHouseFaceStreetList.forEach(oo -> {
+                    try {
+                        basicHouseFaceStreetService.deleteBasicHouseFaceStreet(oo.getId());
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseEquipmentList)){
+                basicHouseEquipmentList.forEach(oo -> {
+                    try {
+                        basicHouseEquipmentService.deleteBasicHouseEquipment(oo.getId());
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)){
+                basicHouseCorollaryEquipmentList.forEach(oo -> {
+                    try {
+                        basicHouseCorollaryEquipmentService.deleteBasicHouseCorollaryEquipment(oo.getId());
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
         }
 
         if (newId != null) {
             if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
                 basicHouseTradingSellList.forEach(oo -> {
-                    oo.setHouseId(newId);
                     try {
+                        oo.setHouseId(newId);
                         basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(oo);
                     } catch (Exception e1) {
 
@@ -111,8 +183,8 @@ public class BasicHouseService {
             }
             if (!ObjectUtils.isEmpty(basicHouseTradingLeaseList)) {
                 basicHouseTradingLeaseList.forEach(oo -> {
-                    oo.setHouseId(newId);
                     try {
+                        oo.setHouseId(newId);
                         basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(oo);
                     } catch (Exception e1) {
 
@@ -121,11 +193,61 @@ public class BasicHouseService {
             }
             if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
                 basicHouseRoomList.forEach(oo -> {
-                    oo.setHouseId(newId);
                     try {
+                        oo.setHouseId(newId);
                         basicHouseRoomService.saveAndUpdateBasicHouseRoom(oo);
                     } catch (Exception e1) {
 
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseWaterList)){
+                basicHouseWaterList.forEach(oo -> {
+                    try {
+                        oo.setHouseId(newId);
+                        basicHouseWaterService.saveAndUpdateBasicHouseWater(oo);
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseIntelligentList)){
+                basicHouseIntelligentList.forEach(oo -> {
+                    try {
+                        oo.setHouseId(newId);
+                        basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(oo);
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)){
+                basicHouseFaceStreetList.forEach(oo -> {
+                    try {
+                        oo.setHouseId(newId);
+                        basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(oo);
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseEquipmentList)){
+                basicHouseEquipmentList.forEach(oo -> {
+                    try {
+                        oo.setHouseId(newId);
+                        basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(oo);
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
+                    }
+                });
+            }
+            if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)){
+                basicHouseCorollaryEquipmentList.forEach(oo -> {
+                    try {
+                        oo.setHouseId(newId);
+                        basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(oo);
+                    } catch (Exception e1) {
+                        logger.error(e1.getMessage(),e1);
                     }
                 });
             }

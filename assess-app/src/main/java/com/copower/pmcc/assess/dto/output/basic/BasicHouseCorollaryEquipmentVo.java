@@ -8,4 +8,13 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseCorollaryEquipment;
  * @Description:
  */
 public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment {
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 }

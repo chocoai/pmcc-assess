@@ -40,6 +40,16 @@ public class PublicBasicService {
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
+    private BasicHouseWaterService basicHouseWaterService;
+    @Autowired
+    private BasicHouseIntelligentService basicHouseIntelligentService;
+    @Autowired
+    private BasicHouseFaceStreetService basicHouseFaceStreetService;
+    @Autowired
+    private BasicHouseEquipmentService basicHouseEquipmentService;
+    @Autowired
+    private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
+    @Autowired
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
@@ -115,6 +125,16 @@ public class PublicBasicService {
     private CaseHouseTradingLeaseService caseHouseTradingLeaseService;
     @Autowired
     private CaseHouseRoomService caseHouseRoomService;
+    @Autowired
+    private CaseHouseEquipmentService caseHouseEquipmentService;
+    @Autowired
+    private CaseHouseFaceStreetService caseHouseFaceStreetService;
+    @Autowired
+    private CaseHouseIntelligentService caseHouseIntelligentService;
+    @Autowired
+    private CaseHouseWaterService caseHouseWaterService;
+    @Autowired
+    private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
     @Autowired
@@ -1000,21 +1020,205 @@ public class PublicBasicService {
         List<BasicHouseTradingSell> basicHouseTradingSellList = null;
         List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
         List<BasicHouseRoom> basicHouseRoomList = null;
+        List<BasicHouseWater> basicHouseWaterList = null;
+        List<BasicHouseIntelligent> basicHouseIntelligentList = null;
+        List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
+        List<BasicHouseEquipment> basicHouseEquipmentList = null;
+        List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
+
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
         BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
         BasicHouseRoom queryRoom = new BasicHouseRoom();
+        BasicHouseWater queryBasicHouseWater = new BasicHouseWater();
+        BasicHouseIntelligent queryBasicHouseIntelligent = new BasicHouseIntelligent();
+        BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
+        BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
+        BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
 
         queryLease.setHouseId(basicHouse.getId());
         querySell.setHouseId(basicHouse.getId());
         queryRoom.setHouseId(basicHouse.getId());
+        queryBasicHouseWater.setHouseId(basicHouse.getId());
+        queryBasicHouseIntelligent.setHouseId(basicHouse.getId());
+        queryBasicHouseFaceStreet.setHouseId(basicHouse.getId());
+        queryBasicHouseEquipment.setHouseId(basicHouse.getId());
+        queryBasicHouseCorollaryEquipment.setHouseId(basicHouse.getId());
+
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
         basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
+        basicHouseWaterList = basicHouseWaterService.basicHouseWaterList(queryBasicHouseWater);
+        basicHouseIntelligentList = basicHouseIntelligentService.basicHouseIntelligentList(queryBasicHouseIntelligent);
+        basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
+        basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
+        basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+
         this.flowWriteCaseSellAndLease(basicHouseTradingSellList, basicHouseTradingLeaseList, caseHouse);
         this.flowWriteCaseHouseRoom(basicHouseRoomList, caseHouse);
+        this.flowWriteCaseWater(basicHouseWaterList, caseHouse);
+        this.flowWriteCaseIntelligent(basicHouseIntelligentList, caseHouse);
+        this.flowWriteCaseFaceStreet(basicHouseFaceStreetList, caseHouse);
+        this.flowWriteCaseEquipment(basicHouseEquipmentList, caseHouse);
+        this.flowWriteCaseCorollaryEquipment(basicHouseCorollaryEquipmentList, caseHouse);
     }
 
-    public void flowWriteCaseSellAndLease(List<BasicHouseTradingSell> basicHouseTradingSellList, List<BasicHouseTradingLease> basicHouseTradingLeaseList, CaseHouse caseHouse) throws Exception {
+    private void flowWriteCaseCorollaryEquipment(List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)) {
+            basicHouseCorollaryEquipmentList.forEach(oo -> {
+                try {
+                    CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = null;
+                    if (oo.getCaseCorollaryEquipmentId() != null) {
+                        caseHouseCorollaryEquipment = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentById(oo.getCaseCorollaryEquipmentId());
+                        if (caseHouseCorollaryEquipment != null) {
+                            caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+                            BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
+                            caseHouseCorollaryEquipment.setId(oo.getCaseCorollaryEquipmentId());
+                        }
+                        if (caseHouseCorollaryEquipment == null) {
+                            caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+                            BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
+                            caseHouseCorollaryEquipment.setId(null);
+                        }
+                    }
+                    if (oo.getCaseCorollaryEquipmentId() == null) {
+                        caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+                        BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
+                        caseHouseCorollaryEquipment.setId(null);
+                    }
+                    caseHouseCorollaryEquipment.setHouseId(caseHouse.getId());
+                    caseHouseCorollaryEquipmentService.upgradeVersion(caseHouseCorollaryEquipment);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+    }
+
+    private void flowWriteCaseEquipment(List<BasicHouseEquipment> basicHouseEquipmentList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseEquipmentList)) {
+            basicHouseEquipmentList.forEach(oo -> {
+                try {
+                    CaseHouseEquipment caseHouseEquipment = null;
+                    if (oo.getCaseEquipmentId() != null) {
+                        caseHouseEquipment = caseHouseEquipmentService.getCaseHouseEquipmentById(oo.getCaseEquipmentId());
+                        if (caseHouseEquipment != null) {
+                            BeanUtils.copyProperties(oo, caseHouseEquipment);
+                            caseHouseEquipment.setId(oo.getCaseEquipmentId());
+                        }
+                        if (caseHouseEquipment == null) {
+                            caseHouseEquipment = new CaseHouseEquipment();
+                            BeanUtils.copyProperties(oo, caseHouseEquipment);
+                            caseHouseEquipment.setId(null);
+                        }
+                    }
+                    if (oo.getCaseEquipmentId() == null) {
+                        caseHouseEquipment = new CaseHouseEquipment();
+                        BeanUtils.copyProperties(oo, caseHouseEquipment);
+                        caseHouseEquipment.setId(null);
+                    }
+                    caseHouseEquipment.setHouseId(caseHouse.getId());
+                    caseHouseEquipmentService.upgradeVersion(caseHouseEquipment);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+    }
+
+    private void flowWriteCaseFaceStreet(List<BasicHouseFaceStreet> basicHouseFaceStreetList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)) {
+            basicHouseFaceStreetList.forEach(oo -> {
+                try {
+                    CaseHouseFaceStreet caseHouseFaceStreet = null;
+                    if (oo.getCaseFaceStreetId() != null) {
+                        caseHouseFaceStreet = caseHouseFaceStreetService.getCaseHouseFaceStreetById(oo.getCaseFaceStreetId());
+                        if (caseHouseFaceStreet != null){
+                            BeanUtils.copyProperties(oo, caseHouseFaceStreet);
+                            caseHouseFaceStreet.setId(oo.getCaseFaceStreetId());
+                        }
+                        if (caseHouseFaceStreet == null){
+                            caseHouseFaceStreet = new CaseHouseFaceStreet();
+                            BeanUtils.copyProperties(oo, caseHouseFaceStreet);
+                            caseHouseFaceStreet.setId(null);
+                        }
+                    }
+                    if (oo.getCaseFaceStreetId() == null) {
+                        caseHouseFaceStreet = new CaseHouseFaceStreet();
+                        BeanUtils.copyProperties(oo, caseHouseFaceStreet);
+                        caseHouseFaceStreet.setId(null);
+                    }
+                    caseHouseFaceStreet.setHouseId(caseHouse.getId());
+                    caseHouseFaceStreetService.upgradeVersion(caseHouseFaceStreet);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+    }
+
+    private void flowWriteCaseIntelligent(List<BasicHouseIntelligent> basicHouseIntelligentList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseIntelligentList)) {
+            basicHouseIntelligentList.forEach(oo -> {
+                try {
+                    CaseHouseIntelligent caseHouseIntelligent = null;
+                    if (oo.getCaseIntelligentId() != null) {
+                        caseHouseIntelligent = caseHouseIntelligentService.getCaseHouseIntelligentById(oo.getCaseIntelligentId());
+                        if (caseHouseIntelligent != null){
+                            BeanUtils.copyProperties(oo, caseHouseIntelligent);
+                            caseHouseIntelligent.setId(oo.getCaseIntelligentId());
+                        }
+                        if (caseHouseIntelligent == null){
+                            caseHouseIntelligent = new CaseHouseIntelligent();
+                            BeanUtils.copyProperties(oo, caseHouseIntelligent);
+                            caseHouseIntelligent.setId(null);
+                        }
+                    }
+                    if (oo.getCaseIntelligentId() == null) {
+                        caseHouseIntelligent = new CaseHouseIntelligent();
+                        BeanUtils.copyProperties(oo, caseHouseIntelligent);
+                        caseHouseIntelligent.setId(null);
+                    }
+                    caseHouseIntelligent.setHouseId(caseHouse.getId());
+                    caseHouseIntelligentService.upgradeVersion(caseHouseIntelligent);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+    }
+
+    private void flowWriteCaseWater(List<BasicHouseWater> basicHouseWaterList, CaseHouse caseHouse) throws Exception {
+        if (!ObjectUtils.isEmpty(basicHouseWaterList)) {
+            basicHouseWaterList.forEach(oo -> {
+                try {
+                    CaseHouseWater caseHouseWater = null;
+                    if (oo.getCaseHouseWaterId() != null) {
+                        caseHouseWater = caseHouseWaterService.getCaseHouseWaterById(oo.getCaseHouseWaterId());
+                        if (caseHouseWater != null){
+                            BeanUtils.copyProperties(oo, caseHouseWater);
+                            caseHouseWater.setId(oo.getCaseHouseWaterId());
+                        }
+                        if (caseHouseWater == null){
+                            caseHouseWater = new CaseHouseWater();
+                            BeanUtils.copyProperties(oo, caseHouseWater);
+                            caseHouseWater.setId(null);
+                        }
+                    }
+                    if (oo.getCaseHouseWaterId() == null) {
+                        caseHouseWater = new CaseHouseWater();
+                        BeanUtils.copyProperties(oo, caseHouseWater);
+                        caseHouseWater.setId(null);
+                    }
+                    caseHouseWater.setHouseId(caseHouse.getId());
+                    caseHouseWaterService.upgradeVersion(caseHouseWater);
+                } catch (Exception e1) {
+                    logger.error(e1.getMessage(), e1);
+                }
+            });
+        }
+    }
+
+    private void flowWriteCaseSellAndLease(List<BasicHouseTradingSell> basicHouseTradingSellList, List<BasicHouseTradingLease> basicHouseTradingLeaseList, CaseHouse caseHouse) throws Exception {
         if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
             for (BasicHouseTradingSell oo : basicHouseTradingSellList) {
                 CaseHouseTradingSell caseHouseTradingSell = null;
@@ -1066,7 +1270,7 @@ public class PublicBasicService {
         }
     }
 
-    public void flowWriteCaseHouseRoom(List<BasicHouseRoom> basicHouseRoomList, CaseHouse caseHouse) throws Exception {
+    private void flowWriteCaseHouseRoom(List<BasicHouseRoom> basicHouseRoomList, CaseHouse caseHouse) throws Exception {
         if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
             for (BasicHouseRoom oo : basicHouseRoomList) {
                 CaseHouseRoom caseHouseRoom = null;
@@ -1805,9 +2009,25 @@ public class PublicBasicService {
         CaseHouseRoom caseHouseRoom = new CaseHouseRoom();
         caseHouseRoom.setHouseId(caseHouseId);
 
+        CaseHouseEquipment caseHouseEquipment = new CaseHouseEquipment();
+        caseHouseEquipment.setHouseId(caseHouseId);
+        CaseHouseFaceStreet caseHouseFaceStreet = new CaseHouseFaceStreet();
+        caseHouseFaceStreet.setHouseId(caseHouseId);
+        CaseHouseIntelligent caseHouseIntelligent = new CaseHouseIntelligent();
+        caseHouseIntelligent.setHouseId(caseHouseId);
+        CaseHouseWater caseHouseWater = new CaseHouseWater();
+        caseHouseWater.setHouseId(caseHouseId);
+        CaseHouseCorollaryEquipment caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
+        caseHouseCorollaryEquipment.setHouseId(caseHouseId);
+
         List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
         List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
         List<CaseHouseRoom> caseHouseRooms = caseHouseRoomService.getCaseHouseRoomList(caseHouseRoom);
+        List<CaseHouseEquipment> caseHouseEquipments = caseHouseEquipmentService.getCaseHouseEquipmentList(caseHouseEquipment);
+        List<CaseHouseFaceStreet> caseHouseFaceStreets = caseHouseFaceStreetService.getCaseHouseFaceStreetList(caseHouseFaceStreet);
+        List<CaseHouseIntelligent> caseHouseIntelligents = caseHouseIntelligentService.getCaseHouseIntelligentList(caseHouseIntelligent);
+        List<CaseHouseWater> caseHouseWaters = caseHouseWaterService.getCaseHouseWaterList(caseHouseWater);
+        List<CaseHouseCorollaryEquipment> caseHouseCorollaryEquipments = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
         if (!ObjectUtils.isEmpty(caseHouseTradingSellVos)) {
             for (CaseHouseTradingSellVo oo : caseHouseTradingSellVos) {
                 BasicHouseTradingSell querySell = new BasicHouseTradingSell();
@@ -1836,6 +2056,56 @@ public class PublicBasicService {
                 queryRoom.setId(null);
                 queryRoom.setHouseId(0);
                 basicHouseRoomService.saveAndUpdateBasicHouseRoom(queryRoom);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseEquipments)) {
+            for (CaseHouseEquipment oo : caseHouseEquipments) {
+                BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
+                BeanUtils.copyProperties(oo, po);
+                po.setCaseCorollaryEquipmentId(oo.getId());
+                po.setId(null);
+                po.setHouseId(0);
+                basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseFaceStreets)) {
+            for (CaseHouseFaceStreet oo : caseHouseFaceStreets) {
+                BasicHouseFaceStreet po = new BasicHouseFaceStreet();
+                BeanUtils.copyProperties(oo, po);
+                po.setCaseFaceStreetId(oo.getId());
+                po.setId(null);
+                po.setHouseId(0);
+                basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(po);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseIntelligents)) {
+            for (CaseHouseIntelligent oo : caseHouseIntelligents) {
+                BasicHouseIntelligent po = new BasicHouseIntelligent();
+                BeanUtils.copyProperties(oo, po);
+                po.setCaseIntelligentId(oo.getId());
+                po.setId(null);
+                po.setHouseId(0);
+                basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(po);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseWaters)) {
+            for (CaseHouseWater oo : caseHouseWaters) {
+                BasicHouseWater po = new BasicHouseWater();
+                BeanUtils.copyProperties(oo, po);
+                po.setCaseHouseWaterId(oo.getId());
+                po.setId(null);
+                po.setHouseId(0);
+                basicHouseWaterService.saveAndUpdateBasicHouseWater(po);
+            }
+        }
+        if (!ObjectUtils.isEmpty(caseHouseCorollaryEquipments)) {
+            for (CaseHouseCorollaryEquipment oo : caseHouseCorollaryEquipments) {
+                BasicHouseCorollaryEquipment po = new BasicHouseCorollaryEquipment();
+                BeanUtils.copyProperties(oo, po);
+                po.setCaseCorollaryEquipmentId(oo.getId());
+                po.setId(null);
+                po.setHouseId(0);
+                basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
             }
         }
         Map<String, Object> objectMap = new HashMap<String, Object>(2);

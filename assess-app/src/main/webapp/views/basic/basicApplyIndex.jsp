@@ -1113,6 +1113,13 @@
                 objectData.houseFlag = false;
             }
             houseRoom.prototype.loadDataDicList();
+            houseWater.prototype.loadDataDicList();
+            houseIntelligent.prototype.loadDataDicList();
+            houseFaceStreet.prototype.loadDataDicList();
+            houseCorollaryEquipment.prototype.loadDataDicList();
+            houseNewWind.prototype.loadDataDicList();
+            houseAirConditioner.prototype.loadDataDicList();
+            houseHeating.prototype.loadDataDicList();
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");

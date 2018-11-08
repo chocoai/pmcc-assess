@@ -58,7 +58,8 @@ public class CaseHouseCorollaryEquipmentService {
 
     /**
      * 获取数据列表
-     *corollaryequipment
+     * corollaryequipment
+     *
      * @param caseHouseCorollaryEquipment
      * @return
      */
@@ -77,6 +78,27 @@ public class CaseHouseCorollaryEquipmentService {
         return vo;
     }
 
+    public void upgradeVersion(CaseHouseCorollaryEquipment oo) throws Exception {
+        if (oo.getId() == null || oo.getId().intValue() == 0) {
+            oo.setCreator(commonService.thisUserAccount());
+            oo.setVersion(0);
+            this.addCaseHouseCorollaryEquipment(oo);
+        }
+        if (oo.getId().intValue() >= 1) {
+            CaseHouseCorollaryEquipment po = this.getCaseHouseCorollaryEquipmentById(oo.getId());
+            if (po.getVersion() == null){
+                po.setVersion(0);
+            }
+            int version = po.getVersion() +1;
+            BeanUtils.copyProperties(oo,po);
+            po.setVersion(version);
+            po.setCreator(commonService.thisUserAccount());
+            po.setId(null);
+            this.addCaseHouseCorollaryEquipment(po);
+
+        }
+    }
+
     public CaseHouseCorollaryEquipmentVo getCaseHouseCorollaryEquipmentVo(CaseHouseCorollaryEquipment caseHouseCorollaryEquipment) {
         CaseHouseCorollaryEquipmentVo vo = new CaseHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(caseHouseCorollaryEquipment, vo);
@@ -91,10 +113,10 @@ public class CaseHouseCorollaryEquipmentService {
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseHouseCorollaryEquipment.getId(), ExamineFileUpLoadTwoFieldEnum.positionDiagramFileID.getName(), FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
-            if (sysAttachmentDtos.size() >= 1){
-                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtos){
-                    if (sysAttachmentDto != null){
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
                         builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
                         builder.append(" ");
                     }
@@ -107,7 +129,7 @@ public class CaseHouseCorollaryEquipmentService {
 
     private String getValue(String key, Integer v) {
         StringBuilder builder = new StringBuilder(1024);
-        if (!StringUtils.isEmpty(key)){
+        if (!StringUtils.isEmpty(key)) {
             List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
             if (baseDataDic.size() >= 1) {
                 if (v != null) {
@@ -133,10 +155,10 @@ public class CaseHouseCorollaryEquipmentService {
         int id = 0;
         try {
             id = caseHouseCorollaryEquipmentDao.addEstateLandState(caseHouseCorollaryEquipment);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class),id);
-            return  true;
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
+            return true;
         } catch (Exception e1) {
-            logger.error("error:%s",e1.getMessage());
+            logger.error("error:%s", e1.getMessage());
             return false;
         }
     }

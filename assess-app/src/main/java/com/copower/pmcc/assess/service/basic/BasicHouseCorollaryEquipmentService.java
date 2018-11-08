@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCorollaryEquipmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -120,7 +121,19 @@ public class BasicHouseCorollaryEquipmentService {
         BasicHouseCorollaryEquipmentVo vo = new BasicHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(basicHouseCorollaryEquipment,vo);
         BaseDataDic dataDic = null;
-
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
     

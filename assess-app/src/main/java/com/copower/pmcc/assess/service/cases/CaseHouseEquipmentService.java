@@ -159,4 +159,25 @@ public class CaseHouseEquipmentService {
         }
         return null;
     }
+
+    public void upgradeVersion(CaseHouseEquipment oo) throws Exception {
+        if (oo.getId() == null || oo.getId().intValue() == 0) {
+            oo.setCreator(commonService.thisUserAccount());
+            oo.setVersion(0);
+            this.addCaseHouseEquipment(oo);
+        }
+        if (oo.getId().intValue() >= 1) {
+            CaseHouseEquipment po = this.getCaseHouseEquipmentById(oo.getId());
+            if (po.getVersion() == null){
+                po.setVersion(0);
+            }
+            int version = po.getVersion() +1;
+            BeanUtils.copyProperties(oo,po);
+            po.setVersion(version);
+            po.setCreator(commonService.thisUserAccount());
+            po.setId(null);
+            this.addCaseHouseEquipment(po);
+
+        }
+    }
 }
