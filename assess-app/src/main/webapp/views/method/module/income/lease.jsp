@@ -476,7 +476,7 @@
         });
         $("#tb_lease_income_list").bootstrapTable('destroy');
         TableInit("tb_lease_income_list", "${pageContext.request.contextPath}/income/getLeaseList", cols, {
-            incomeId: $("#frm_income").find('[name=id]').val()
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -582,7 +582,7 @@
         });
         $("#tb_lease_cost_list").bootstrapTable('destroy');
         TableInit("tb_lease_cost_list", "${pageContext.request.contextPath}/income/getLeaseCostList", cols, {
-            incomeId: $("#frm_income").find('[name=id]').val()
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -665,8 +665,8 @@
         });
         $("#tb_lease_parameter_list").bootstrapTable('destroy');
         TableInit("tb_lease_parameter_list", "${pageContext.request.contextPath}/income/getDateSectionList", cols, {
-            operationMode: $("#frm_income").find('[name=operationMode]:checked').val(),
-            incomeId: $("#frm_income").find('[name=id]').val()
+            operationMode: incomeIndex.getOperationMode(),
+            incomeId: incomeIndex.getInComeId()
         }, {
             showColumns: false,
             showRefresh: false,

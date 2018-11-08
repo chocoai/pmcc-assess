@@ -81,14 +81,15 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getHistoryList", name = "显示列表", method = RequestMethod.GET)
-    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Boolean bisForecast) {
-        return mdIncomeService.getHistoryList(incomeId, type, bisForecast);
+    public BootstrapTableVo getHistoryList(Integer incomeId, Integer type, Integer formType, Boolean bisForecast) {
+        return mdIncomeService.getHistoryList(incomeId, type, formType, bisForecast);
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveHistory", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult saveHistory(MdIncomeHistory mdIncomeHistory) {
+    public HttpResult saveHistory(String formData) {
         try {
+            MdIncomeHistory mdIncomeHistory = JSON.parseObject(formData, MdIncomeHistory.class);
             mdIncomeService.saveHistory(mdIncomeHistory);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -112,11 +113,11 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/forecastToHistory", method = {RequestMethod.POST}, name = "预测数据还原为历史数据")
-    public HttpResult forecastToHistory(String ids, Integer incomeId, Integer type) {
+    public HttpResult forecastToHistory(String ids, Integer incomeId, Integer type, Integer formType) {
         try {
             if (StringUtils.isNotBlank(ids)) {
                 List<Integer> idList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-                mdIncomeService.forecastToHistory(idList, incomeId, type);
+                mdIncomeService.forecastToHistory(idList, incomeId, type, formType);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -127,9 +128,9 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/startAnalyse", method = {RequestMethod.POST}, name = "开始分析")
-    public HttpResult startAnalyse(Integer incomeId, Integer type) {
+    public HttpResult startAnalyse(Integer incomeId, Integer type, Integer formType) {
         try {
-            mdIncomeService.startAnalyse(incomeId,type);
+            mdIncomeService.startAnalyse(incomeId, type, formType);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -170,8 +171,8 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getForecastAnalyseList", name = "显示预测分析数据列表", method = RequestMethod.GET)
-    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Boolean bisParticipateIn) {
-        return mdIncomeService.getForecastAnalyseList(incomeId, type, bisParticipateIn);
+    public BootstrapTableVo getForecastAnalyseList(Integer incomeId, Integer type, Integer formType, Boolean bisParticipateIn) {
+        return mdIncomeService.getForecastAnalyseList(incomeId, type, formType, bisParticipateIn);
     }
 
     @ResponseBody

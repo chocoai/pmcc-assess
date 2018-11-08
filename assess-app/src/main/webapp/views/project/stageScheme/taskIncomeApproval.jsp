@@ -32,12 +32,6 @@
             readonly: true,
             supportInfo: JSON.parse($("#supportInfosJSON").val())
         });
-
-        //收益法数据显示
-        income.view({
-            incomeInfo: JSON.parse($("#mdIncomeJSON").val()),
-            incomeSelfSupport: JSON.parse($("#incomeSelfSupportJSON").val())
-        })
     })
 </script>
 <script type="application/javascript">
