@@ -176,8 +176,6 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
-                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
@@ -613,7 +611,8 @@
                 objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
-            $("#" + objectData.config.basicEstate.frm).initForm({name:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val()});
+            $("#profile-tab1").attr("data-toggle","tab");
+            // $("#" + objectData.config.basicEstate.frm).initForm({name:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val()});
             estateNetwork.prototype.loadDataDicList();
             estateParking.prototype.loadDataDicList();
             estateSupplyWater.prototype.loadDataDicList();
@@ -817,9 +816,9 @@
         show: function (item) {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
-                // toastr.success('未选择楼盘');
             }
             objectData.building.init(item);
+            $("#profile-tab2").attr("data-toggle","tab");
             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                 var readonly = $(n).attr("readonly");
                 if (objectData.isNotBlank(readonly)) {
@@ -921,6 +920,7 @@
                                                 }
                                             });
                                             var temp = resultA.data[0];
+                                            $("#profile-tab2").attr("data-toggle","tab");
                                             if (objectData.isNotBlankObjectProperty(temp)) {
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
@@ -1039,7 +1039,7 @@
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
             }
-
+            $("#profile-tab3").attr("data-toggle","tab");
             $('#caseTab a').eq(2).tab('show');
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).hide();
@@ -1112,6 +1112,7 @@
             if (!objectData.isNotBlank(unitId)) {
             }
             $('#caseTab a').eq(3).tab('show');
+            $("#profile-tab4").attr("data-toggle","tab");
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).hide();
             $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).show();
