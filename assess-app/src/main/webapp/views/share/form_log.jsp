@@ -13,11 +13,12 @@
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
         <h3> 日志记录
+
+            <small class="radio-inline">
+                <input type="radio" name="formLogType" id="formLogProcess" onclick="formLog.loadLogList(false);">
+                <label for="formLogProcess">流程</label>
+            </small>
             <c:if test="${not empty projectId}">
-                <small class="radio-inline">
-                    <input type="radio" name="formLogType" id="formLogProcess" onclick="formLog.loadLogList(false);">
-                    <label for="formLogProcess">流程</label>
-                </small>
                 <small class="radio-inline">
                     <input type="radio" name="formLogType" id="formLogProject" onclick="formLog.loadLogList(true);">
                     <label for="formLogProject">项目</label>
