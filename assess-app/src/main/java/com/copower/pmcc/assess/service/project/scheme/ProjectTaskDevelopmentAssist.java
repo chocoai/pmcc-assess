@@ -306,7 +306,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         //确定假设开发法具体选择的哪一个方法来测算的
         keyMdDevelopment = jsonObject.getString("mdDevelopment");
         if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
-            if (pid != null) {
+            if (pid != null && pid != 0) {
                 MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
                 if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
                     if (mdDevelopmentArchitectural != null) {
