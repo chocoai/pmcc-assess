@@ -282,12 +282,12 @@
     <jsp:include page="../developmentModule/underConstruction/resultView.jsp"></jsp:include>
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/underDevelopment.jsp"></jsp:include>
-        <div class="modal-footer">
-            <input class="btn btn btn-primary" type="button" value="关闭"
-                   onclick="underConstruction.constructionInstallationEngineeringFeeEvent.close()">
-            <input class="btn btn-success" value="确认" type="button"
-                   onclick="underConstruction.constructionInstallationEngineeringFeeEvent.eventSave()">
-        </div>
+        <%--<div class="modal-footer">--%>
+            <%--<input class="btn btn btn-primary" type="button" value="关闭"--%>
+                   <%--onclick="underConstruction.constructionInstallationEngineeringFeeEvent.close()">--%>
+            <%--<input class="btn btn-success" value="确认" type="button"--%>
+                   <%--onclick="underConstruction.constructionInstallationEngineeringFeeEvent.eventSave()">--%>
+        <%--</div>--%>
     </div>
 </div>
 
@@ -1112,15 +1112,21 @@
      * @date:2018-10-11
      **/
     underConstruction.constructionInstallationEngineeringFeeEvent = {
-        show: function () {
+        show: function (input) {
             layer.open({
                 type: 1,
-                area: ['920px', '1340px'],
+                title: '建筑安装工程费',
+                area: ['920px', '740px'],
                 offset: 't',
-                content: $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionInstallationEngineeringFee.class)
-            });
-            $(function () {
-                underDevelopment.viewInit();
+                btn: ['保存'],
+                yes: function () {
+                    $(input).val(underEngineeringDevelopment.getTotal);
+                    layer.close(layer.index);
+                },
+                content: $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionInstallationEngineeringFee.class),
+                success:function () {
+                    underEngineeringDevelopment.viewInit();
+                }
             });
         },
         eventSave: function () {

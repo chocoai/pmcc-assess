@@ -233,12 +233,12 @@
     <jsp:include page="../costModule/construction/resultView.jsp"></jsp:include>
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/constructionEngineering.jsp"></jsp:include>
-        <div class="modal-footer">
-            <input class="btn btn btn-primary" type="button" value="关闭"
-                   onclick="construction.constructionInstallationEngineeringFeeEvent.close()">
-            <input class="btn btn-success" value="确认" type="button"
-                   onclick="construction.constructionInstallationEngineeringFeeEvent.eventSave()">
-        </div>
+        <%--<div class="modal-footer">--%>
+            <%--<input class="btn btn btn-primary" type="button" value="关闭"--%>
+                   <%--onclick="construction.constructionInstallationEngineeringFeeEvent.close()">--%>
+            <%--<input class="btn btn-success" value="确认" type="button"--%>
+                   <%--onclick="construction.constructionInstallationEngineeringFeeEvent.eventSave()">--%>
+        <%--</div>--%>
     </div>
 </div>
 
@@ -1026,15 +1026,20 @@
      * @date:2018-10-11
      **/
     construction.constructionInstallationEngineeringFeeEvent = {
-        show: function () {
+        show: function (input) {
             layer.open({
                 type: 1,
                 area: ['920px', '840px'],
                 offset: 't',
+                btn: ['保存'],
+                yes: function () {
+                    $(input).val(constructionEngineering.getTotal);
+                    layer.close(layer.index);
+                },
                 content: $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionInstallationEngineeringFee.class),
-            });
-            $(function () {
-                constructEngineeringObjectA.viewInit();
+                success:function () {
+                    constructionEngineering.viewInit();
+                }
             });
         },
         eventSave: function () {

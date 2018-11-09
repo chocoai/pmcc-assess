@@ -81,12 +81,12 @@
 
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
-        <div class="modal-footer">
-            <input class="btn btn btn-primary" type="button" value="关闭"
-                   onclick="build.constructionInstallationEngineeringFeeEvent.close()">
-            <input class="btn btn-success" value="确认" type="button"
-                   onclick="build.constructionInstallationEngineeringFeeEvent.eventSave()">
-        </div>
+        <%--<div class="modal-footer">--%>
+            <%--<input class="btn btn btn-primary" type="button" value="关闭"--%>
+                   <%--onclick="build.constructionInstallationEngineeringFeeEvent.close()">--%>
+            <%--<input class="btn btn-success" value="确认" type="button"--%>
+                   <%--onclick="build.constructionInstallationEngineeringFeeEvent.eventSave()">--%>
+        <%--</div>--%>
     </div>
 
 </div>
@@ -636,15 +636,20 @@
      * @date:2018-10-11
      **/
     build.constructionInstallationEngineeringFeeEvent = {
-        show: function () {
+        show: function (input) {
             layer.open({
                 type: 1,
                 area: ['820px', '640px'],
                 offset: 't',
+                btn: ['保存'],
+                yes: function () {
+                    $(input).val(buildingEngineering.getTotal);
+                    layer.close(layer.index);
+                },
                 content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class),
-                // yes: function (index, layero) {
-                //     build.constructionInstallationEngineeringFeeEvent.eventSave();
-                // }
+                success:function () {
+                    buildingEngineering.viewInit();
+                }
             });
             $(function () {
                 constructEngineeringObject.viewInit();

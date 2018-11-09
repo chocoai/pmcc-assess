@@ -43,7 +43,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="construction.constructionInstallationEngineeringFeeEvent.show();">
+                                onclick="construction.constructionInstallationEngineeringFeeEvent.show($(this).closest('.input-group').find(':text'));">
                                             <i class="fa fa-search"></i>
                                             </button>
                         <button type="button" class="btn btn-default docs-tooltip"
