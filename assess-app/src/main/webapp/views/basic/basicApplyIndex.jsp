@@ -52,16 +52,16 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="basicEstate" placeholder="楼盘名称"
-                                           onkeydown="objectData.autocompleteEstate()">
+                                           onkeydown="objectData.autocompleteEstate(this)">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.estate.details()"
-                                           value="详细信息">
+                                           value="添加">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.estate.edit()"
                                            value="修改">
@@ -76,16 +76,16 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="basicBuilding" placeholder="楼栋编号"
-                                           onkeydown="objectData.autocompleteBuilding()">
+                                           onkeydown="objectData.autocompleteBuilding(this)">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.building.details()"
-                                           value="详细信息">
+                                           value="添加">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.building.edit()"
                                            value="修改">
@@ -100,16 +100,16 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="basicUnit" placeholder="单元编号"
-                                           onkeydown="objectData.autocompleteUnit();">
+                                           onkeydown="objectData.autocompleteUnit(this);">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.unit.details()"
-                                           value="详细信息">
+                                           value="添加">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.unit.edit()"
                                            value="修改">
@@ -124,16 +124,16 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" name="basicHouse" placeholder="房屋编号"
-                                           onkeydown="objectData.autocompleteHouse()">
+                                           onkeydown="objectData.autocompleteHouse(this)">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" value="详细信息"
+                                    <input type="button" class="btn btn-success" value="添加"
                                            onclick="objectData.house.details()">
                                 </div>
                             </div>
-                            <div class="x-valid">
+                            <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="修改"
                                            onclick="objectData.house.edit()">
@@ -355,7 +355,10 @@
     /**
      * 楼盘 信息自动补全
      */
-    objectData.autocompleteEstate = function () {
+    objectData.autocompleteEstate = function (_this) {
+        var childs = $(_this).closest('.form-group').children();
+        childs.eq(1).show();
+        childs.eq(2).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -385,6 +388,8 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
+                    childs.eq(1).hide();
+                    childs.eq(2).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id", ele.item.key);
                 },
                 /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
@@ -397,12 +402,15 @@
     /**
      * 楼栋 信息自动补全
      */
-    objectData.autocompleteBuilding = function () {
+    objectData.autocompleteBuilding = function (_this) {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         if (!objectData.isNotBlank(estateId)) {
             Alert("请先选择楼盘然后在选择楼栋!");
             return false;
         }
+        var childs = $(_this).closest('.form-group').children();
+        childs.eq(1).show();
+        childs.eq(2).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -438,6 +446,8 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
+                    childs.eq(1).hide();
+                    childs.eq(2).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -449,12 +459,15 @@
     /**
      * 单元信息自动补全
      */
-    objectData.autocompleteUnit = function () {
+    objectData.autocompleteUnit = function (_this) {
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
         if (!objectData.isNotBlank(buildingId)) {
             Alert("请先选择楼栋然后在选择单元!");
             return false;
         }
+        var childs = $(_this).closest('.form-group').children();
+        childs.eq(1).show();
+        childs.eq(2).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -490,6 +503,8 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
+                    childs.eq(1).hide();
+                    childs.eq(2).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -501,12 +516,15 @@
     /**
      * 房屋信息自动补全
      */
-    objectData.autocompleteHouse = function () {
+    objectData.autocompleteHouse = function (_this) {
         var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         if (!objectData.isNotBlank(unitId)) {
             Alert("请先选择单元然后在选择房屋!");
             return false;
         }
+        var childs = $(_this).closest('.form-group').children();
+        childs.eq(1).show();
+        childs.eq(2).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -542,6 +560,8 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
+                    childs.eq(1).hide();
+                    childs.eq(2).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {

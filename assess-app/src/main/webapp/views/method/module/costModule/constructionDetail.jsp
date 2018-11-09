@@ -8,7 +8,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>开发信息</h2>
+            <h3>开发信息</h3>
             <div class="clearfix"></div>
         </div>
 
@@ -74,7 +74,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>合计税率</h2>
+            <h3>合计税率</h3>
             <div class="clearfix"></div>
         </div>
 
@@ -177,7 +177,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>建设成本</h2>
+            <h3>建设成本</h3>
             <div class="clearfix"></div>
         </div>
 
@@ -278,7 +278,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>设计费参数比率</h2>
+            <h3>设计费参数比率</h3>
             <div class="clearfix"></div>
         </div>
 
@@ -416,7 +416,7 @@
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
             </ul>
-            <h2>测算结果</h2>
+            <h3>测算结果</h3>
             <div class="clearfix"></div>
         </div>
 

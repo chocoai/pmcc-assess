@@ -11,7 +11,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>开发信息</h2>
+        <h3>开发信息</h3>
         <div class="clearfix"></div>
     </div>
 

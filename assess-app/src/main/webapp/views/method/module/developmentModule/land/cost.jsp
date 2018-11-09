@@ -11,7 +11,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>单位成本或费率</h2>
+        <h3>单位成本或费率</h3>
         <div class="clearfix"></div>
     </div>
 
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    建筑安装工程费
+                    建筑安装工程费<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
@@ -59,7 +59,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    基础设施建设费
+                    基础设施建设费<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
@@ -72,7 +72,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    公共配套设施建设费
+                    公共配套设施建设费<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
@@ -85,7 +85,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    开发期间税费
+                    开发期间税费<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
@@ -98,7 +98,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    其它工程费率
+                    其它工程费率<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
@@ -110,7 +110,7 @@
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">
-                    不可预见费率
+                    不可预见费率<span class="symbol required"></span>
                 </label>
                 <div class="x-valid">
                     <div class="col-sm-11">
