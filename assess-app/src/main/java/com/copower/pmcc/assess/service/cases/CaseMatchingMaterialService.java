@@ -140,6 +140,7 @@ public class CaseMatchingMaterialService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.addCaseMatchingMaterial(oo);
         }
     }

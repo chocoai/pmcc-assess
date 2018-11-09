@@ -72,6 +72,7 @@ public class CaseHouseTradingLeaseService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.saveAndUpdateCaseHouseTradingLease(oo);
         }
     }

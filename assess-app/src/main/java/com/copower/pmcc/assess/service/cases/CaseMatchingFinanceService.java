@@ -66,6 +66,7 @@ public class CaseMatchingFinanceService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.addCaseMatchingFinance(oo);
         }
     }

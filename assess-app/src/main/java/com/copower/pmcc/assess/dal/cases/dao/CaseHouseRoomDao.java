@@ -50,6 +50,11 @@ public class CaseHouseRoomDao {
         return caseHouseRoomMapper.insertSelective(caseHouseRoom) > 0;
     }
 
+    public Integer saveCaseHouseRoom(CaseHouseRoom caseHouseRoom){
+        caseHouseRoomMapper.insertSelective(caseHouseRoom);
+        return caseHouseRoom.getId();
+    }
+
     /**
      * 编辑
      * @param caseHouseRoom

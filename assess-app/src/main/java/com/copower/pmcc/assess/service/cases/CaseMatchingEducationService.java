@@ -66,6 +66,7 @@ public class CaseMatchingEducationService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.addCaseMatchingEducation(oo);
         }
     }

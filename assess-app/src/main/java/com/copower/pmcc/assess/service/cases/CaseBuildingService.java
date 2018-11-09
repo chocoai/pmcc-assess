@@ -174,6 +174,7 @@ public class CaseBuildingService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseBuilding.getId();
             int newId = caseBuildingDao.addBuilding(oo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), newId);

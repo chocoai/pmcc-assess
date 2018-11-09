@@ -40,6 +40,8 @@ public class PublicBasicService {
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
+    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
+    @Autowired
     private BasicHouseWaterService basicHouseWaterService;
     @Autowired
     private BasicHouseIntelligentService basicHouseIntelligentService;
@@ -126,6 +128,8 @@ public class PublicBasicService {
     @Autowired
     private CaseHouseRoomService caseHouseRoomService;
     @Autowired
+    private CaseHouseRoomDecorateService caseHouseRoomDecorateService;
+    @Autowired
     private CaseHouseEquipmentService caseHouseEquipmentService;
     @Autowired
     private CaseHouseFaceStreetService caseHouseFaceStreetService;
@@ -199,6 +203,8 @@ public class PublicBasicService {
                 if (caseEstate != null) {
                     BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
                     caseEstate.setId(basicEstate.getCaseEstateId());
+                    caseEstate.setGmtCreated(null);
+                    caseEstate.setGmtModified(null);
                 }
             }
             //第一次情况
@@ -227,6 +233,8 @@ public class PublicBasicService {
                     if (caseEstateLandState != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
                         caseEstateLandState.setId(basicEstateLandState.getCaseEstateLandStateId());
+                        caseEstateLandState.setGmtCreated(null);
+                        caseEstateLandState.setGmtModified(null);
                     }
                     if (caseEstateLandState == null) {
                         caseEstateLandState = new CaseEstateLandState();
@@ -316,17 +324,23 @@ public class PublicBasicService {
                     if (caseMatchingTraffic != null) {
                         BeanUtils.copyProperties(oo, caseMatchingTraffic);
                         caseMatchingTraffic.setId(oo.getCaseId());
+                        caseMatchingTraffic.setGmtCreated(null);
+                        caseMatchingTraffic.setGmtModified(null);
                     }
                     if (caseMatchingTraffic == null) {
                         caseMatchingTraffic = new CaseMatchingTraffic();
                         BeanUtils.copyProperties(oo, caseMatchingTraffic);
                         caseMatchingTraffic.setId(null);
+                        caseMatchingTraffic.setGmtCreated(null);
+                        caseMatchingTraffic.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingTraffic = new CaseMatchingTraffic();
                     BeanUtils.copyProperties(oo, caseMatchingTraffic);
                     caseMatchingTraffic.setId(null);
+                    caseMatchingTraffic.setGmtCreated(null);
+                    caseMatchingTraffic.setGmtModified(null);
                 }
                 caseMatchingTraffic.setEstateId(caseEstate.getId());
                 caseMatchingTrafficService.upgradeVersion(caseMatchingTraffic);
@@ -343,20 +357,26 @@ public class PublicBasicService {
                     if (caseMatchingMedical != null) {
                         BeanUtils.copyProperties(oo, caseMatchingMedical);
                         caseMatchingMedical.setId(oo.getCaseId());
+                        caseMatchingMedical.setGmtCreated(null);
+                        caseMatchingMedical.setGmtModified(null);
                     }
                     if (caseMatchingMedical == null) {
                         caseMatchingMedical = new CaseMatchingMedical();
                         BeanUtils.copyProperties(oo, caseMatchingMedical);
                         caseMatchingMedical.setId(null);
+                        caseMatchingMedical.setGmtCreated(null);
+                        caseMatchingMedical.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingMedical = new CaseMatchingMedical();
                     BeanUtils.copyProperties(oo, caseMatchingMedical);
                     caseMatchingMedical.setId(null);
+                    caseMatchingMedical.setGmtCreated(null);
+                    caseMatchingMedical.setGmtModified(null);
                 }
                 caseMatchingMedical.setEstateId(caseEstate.getId());
-                caseMatchingMedicalService.updateCaseMatchingMedical(caseMatchingMedical);
+                caseMatchingMedicalService.upgradeVersion(caseMatchingMedical);
             }
         }
     }
@@ -370,17 +390,23 @@ public class PublicBasicService {
                     if (caseMatchingMaterial != null) {
                         BeanUtils.copyProperties(oo, caseMatchingMaterial);
                         caseMatchingMaterial.setId(oo.getCaseId());
+                        caseMatchingMaterial.setGmtCreated(null);
+                        caseMatchingMaterial.setGmtModified(null);
                     }
                     if (caseMatchingMaterial == null) {
                         caseMatchingMaterial = new CaseMatchingMaterial();
                         BeanUtils.copyProperties(oo, caseMatchingMaterial);
                         caseMatchingMaterial.setId(null);
+                        caseMatchingMaterial.setGmtCreated(null);
+                        caseMatchingMaterial.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingMaterial = new CaseMatchingMaterial();
                     BeanUtils.copyProperties(oo, caseMatchingMaterial);
                     caseMatchingMaterial.setId(null);
+                    caseMatchingMaterial.setGmtCreated(null);
+                    caseMatchingMaterial.setGmtModified(null);
                 }
                 caseMatchingMaterial.setEstateId(caseEstate.getId());
                 caseMatchingMaterialService.upgradeVersion(caseMatchingMaterial);
@@ -397,17 +423,23 @@ public class PublicBasicService {
                     if (caseMatchingLeisurePlace != null) {
                         BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
                         caseMatchingLeisurePlace.setId(oo.getCaseId());
+                        caseMatchingLeisurePlace.setGmtCreated(null);
+                        caseMatchingLeisurePlace.setGmtModified(null);
                     }
                     if (caseMatchingLeisurePlace == null) {
                         caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
                         BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
                         caseMatchingLeisurePlace.setId(null);
+                        caseMatchingLeisurePlace.setGmtCreated(null);
+                        caseMatchingLeisurePlace.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingLeisurePlace = new CaseMatchingLeisurePlace();
                     BeanUtils.copyProperties(oo, caseMatchingLeisurePlace);
                     caseMatchingLeisurePlace.setId(null);
+                    caseMatchingLeisurePlace.setGmtCreated(null);
+                    caseMatchingLeisurePlace.setGmtModified(null);
                 }
                 caseMatchingLeisurePlace.setEstateId(caseEstate.getId());
                 caseMatchingLeisurePlaceService.upgradeVersion(caseMatchingLeisurePlace);
@@ -424,17 +456,23 @@ public class PublicBasicService {
                     if (caseMatchingFinance != null) {
                         BeanUtils.copyProperties(oo, caseMatchingFinance);
                         caseMatchingFinance.setId(oo.getCaseId());
+                        caseMatchingFinance.setGmtCreated(null);
+                        caseMatchingFinance.setGmtModified(null);
                     }
                     if (caseMatchingFinance == null) {
                         caseMatchingFinance = new CaseMatchingFinance();
                         BeanUtils.copyProperties(oo, caseMatchingFinance);
                         caseMatchingFinance.setId(null);
+                        caseMatchingFinance.setGmtCreated(null);
+                        caseMatchingFinance.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingFinance = new CaseMatchingFinance();
                     BeanUtils.copyProperties(oo, caseMatchingFinance);
                     caseMatchingFinance.setId(null);
+                    caseMatchingFinance.setGmtCreated(null);
+                    caseMatchingFinance.setGmtModified(null);
                 }
                 caseMatchingFinance.setEstateId(caseEstate.getId());
                 caseMatchingFinanceService.upgradeVersion(caseMatchingFinance);
@@ -451,17 +489,23 @@ public class PublicBasicService {
                     if (caseMatchingEnvironment != null) {
                         BeanUtils.copyProperties(oo, caseMatchingEnvironment);
                         caseMatchingEnvironment.setId(oo.getCaseId());
+                        caseMatchingEnvironment.setGmtCreated(null);
+                        caseMatchingEnvironment.setGmtModified(null);
                     }
                     if (caseMatchingEnvironment == null) {
                         caseMatchingEnvironment = new CaseMatchingEnvironment();
                         BeanUtils.copyProperties(oo, caseMatchingEnvironment);
                         caseMatchingEnvironment.setId(null);
+                        caseMatchingEnvironment.setGmtCreated(null);
+                        caseMatchingEnvironment.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingEnvironment = new CaseMatchingEnvironment();
                     BeanUtils.copyProperties(oo, caseMatchingEnvironment);
                     caseMatchingEnvironment.setId(null);
+                    caseMatchingEnvironment.setGmtCreated(null);
+                    caseMatchingEnvironment.setGmtModified(null);
                 }
                 caseMatchingEnvironment.setEstateId(caseEstate.getId());
                 caseMatchingEnvironmentService.upgradeVersion(caseMatchingEnvironment);
@@ -478,20 +522,26 @@ public class PublicBasicService {
                     if (caseMatchingEducation != null) {
                         BeanUtils.copyProperties(oo, caseMatchingEducation);
                         caseMatchingEducation.setId(oo.getCaseId());
+                        caseMatchingEducation.setGmtCreated(null);
+                        caseMatchingEducation.setGmtModified(null);
                     }
                     if (caseMatchingEducation == null) {
                         caseMatchingEducation = new CaseMatchingEducation();
                         BeanUtils.copyProperties(oo, caseMatchingEducation);
                         caseMatchingEducation.setId(null);
+                        caseMatchingEducation.setGmtCreated(null);
+                        caseMatchingEducation.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseMatchingEducation = new CaseMatchingEducation();
                     BeanUtils.copyProperties(oo, caseMatchingEducation);
                     caseMatchingEducation.setId(null);
+                    caseMatchingEducation.setGmtCreated(null);
+                    caseMatchingEducation.setGmtModified(null);
                 }
                 caseMatchingEducation.setEstateId(caseEstate.getId());
-                caseMatchingEducationService.updateCaseMatchingEducation(caseMatchingEducation);
+                caseMatchingEducationService.upgradeVersion(caseMatchingEducation);
             }
         }
     }
@@ -505,6 +555,8 @@ public class PublicBasicService {
                     if (caseEstateNetwork != null) {
                         BeanUtils.copyProperties(oo, caseEstateNetwork);
                         caseEstateNetwork.setId(oo.getCaseId());
+                        caseEstateNetwork.setGmtCreated(null);
+                        caseEstateNetwork.setGmtModified(null);
                     }
                     if (caseEstateNetwork == null) {
                         caseEstateNetwork = new CaseEstateNetwork();
@@ -536,6 +588,8 @@ public class PublicBasicService {
                     if (estateParking != null) {
                         BeanUtils.copyProperties(oo, estateParking);
                         estateParking.setId(oo.getCaseId());
+                        estateParking.setGmtModified(null);
+                        estateParking.setGmtCreated(null);
                     }
                     if (estateParking == null) {
                         estateParking = new CaseEstateParking();
@@ -568,17 +622,23 @@ public class PublicBasicService {
                         caseEstateSupply = new CaseEstateSupply();
                         BeanUtils.copyProperties(oo, caseEstateSupply);
                         caseEstateSupply.setId(oo.getCaseId());
+                        caseEstateSupply.setGmtCreated(null);
+                        caseEstateSupply.setGmtModified(null);
                     }
                     if (caseEstateSupply == null) {
                         caseEstateSupply = new CaseEstateSupply();
                         BeanUtils.copyProperties(oo, caseEstateSupply);
                         caseEstateSupply.setId(null);
+                        caseEstateSupply.setGmtCreated(null);
+                        caseEstateSupply.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseEstateSupply = new CaseEstateSupply();
                     BeanUtils.copyProperties(oo, caseEstateSupply);
                     caseEstateSupply.setId(null);
+                    caseEstateSupply.setGmtCreated(null);
+                    caseEstateSupply.setGmtModified(null);
                 }
                 caseEstateSupply.setEstateId(caseEstate.getId());
                 caseEstateSupplyService.upgradeVersion(caseEstateSupply);
@@ -602,6 +662,8 @@ public class PublicBasicService {
             if (caseBuildingMain != null) {
                 BeanCopyHelp.copyPropertiesIgnoreNull(basicBuildingMain, caseBuildingMain);
                 caseBuildingMain.setId(basicBuildingMain.getCaseBuildingMain());
+                caseBuildingMain.setGmtCreated(null);
+                caseBuildingMain.setGmtModified(null);
             }
             if (caseBuildingMain == null) {
                 caseBuildingMain = new CaseBuildingMain();
@@ -672,6 +734,8 @@ public class PublicBasicService {
                         BeanCopyHelp.copyPropertiesIgnoreNull(basicBuilding, caseBuilding);
                         caseBuilding.setId(basicBuilding.getCaseBuildingId());
                         caseBuilding.setCaseBuildingMainId(caseBuildingMain.getId());
+                        caseBuilding.setGmtCreated(null);
+                        caseBuilding.setGmtModified(null);
                     }
                     if (caseBuilding == null) {
                         caseBuilding = new CaseBuilding();
@@ -722,6 +786,8 @@ public class PublicBasicService {
                     if (caseBuildingOutfit != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingOutfit);
                         caseBuildingOutfit.setId(oo.getCaseOutfitId());
+                        caseBuildingOutfit.setGmtCreated(null);
+                        caseBuildingOutfit.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseOutfitId() == null) {
@@ -746,6 +812,8 @@ public class PublicBasicService {
                     if (caseBuildingMaintenance != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingMaintenance);
                         caseBuildingMaintenance.setId(oo.getCaseMaintenanceId());
+                        caseBuildingMaintenance.setGmtCreated(null);
+                        caseBuildingMaintenance.setGmtModified(null);
                     }
                     if (caseBuildingMaintenance == null) {
                         caseBuildingMaintenance = new CaseBuildingMaintenance();
@@ -777,6 +845,8 @@ public class PublicBasicService {
                     if (caseBuildingSurface != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingSurface);
                         caseBuildingSurface.setId(oo.getCaseSurfaceId());
+                        caseBuildingSurface.setGmtCreated(null);
+                        caseBuildingSurface.setGmtModified(null);
                     }
                     if (caseBuildingSurface == null) {
                         caseBuildingSurface = new CaseBuildingSurface();
@@ -808,6 +878,8 @@ public class PublicBasicService {
                     if (caseBuildingFunction != null) {
                         BeanCopyHelp.copyPropertiesIgnoreNull(oo, caseBuildingFunction);
                         caseBuildingFunction.setId(oo.getCaseFunctionId());
+                        caseBuildingFunction.setGmtCreated(null);
+                        caseBuildingFunction.setGmtModified(null);
                     }
                     if (caseBuildingFunction == null) {
                         caseBuildingFunction = new CaseBuildingFunction();
@@ -845,6 +917,8 @@ public class PublicBasicService {
             if (caseUnit != null) {
                 BeanCopyHelp.copyPropertiesIgnoreNull(basicUnit, caseUnit);
                 caseUnit.setId(basicUnit.getCaseUnitId());
+                caseUnit.setGmtCreated(null);
+                caseUnit.setGmtModified(null);
             }
             if (caseUnit == null) {
                 BeanCopyHelp.copyPropertiesIgnoreNull(basicUnit, caseUnit);
@@ -887,16 +961,22 @@ public class PublicBasicService {
                         caseUnitDecorate = new CaseUnitDecorate();
                         BeanUtils.copyProperties(oo, caseUnitDecorate);
                         caseUnitDecorate.setId(null);
+                        caseUnitDecorate.setGmtCreated(null);
+                        caseUnitDecorate.setGmtModified(null);
                     }
                     if (caseUnitDecorate != null) {
                         BeanUtils.copyProperties(oo, caseUnitDecorate);
                         caseUnitDecorate.setId(oo.getCaseId());
+                        caseUnitDecorate.setGmtCreated(null);
+                        caseUnitDecorate.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseUnitDecorate = new CaseUnitDecorate();
                     BeanUtils.copyProperties(oo, caseUnitDecorate);
                     caseUnitDecorate.setId(null);
+                    caseUnitDecorate.setGmtCreated(null);
+                    caseUnitDecorate.setGmtModified(null);
                 }
                 caseUnitDecorate.setUnitId(caseUnit.getId());
                 caseUnitDecorateService.upgradeVersion(caseUnitDecorate);
@@ -913,17 +993,23 @@ public class PublicBasicService {
                     if (caseUnitHuxing != null) {
                         BeanUtils.copyProperties(oo, caseUnitHuxing);
                         caseUnitHuxing.setId(oo.getCaseId());
+                        caseUnitHuxing.setGmtCreated(null);
+                        caseUnitHuxing.setGmtModified(null);
                     }
                     if (caseUnitHuxing == null) {
                         caseUnitHuxing = new CaseUnitHuxing();
                         BeanUtils.copyProperties(oo, caseUnitHuxing);
                         caseUnitHuxing.setId(null);
+                        caseUnitHuxing.setGmtCreated(null);
+                        caseUnitHuxing.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseUnitHuxing = new CaseUnitHuxing();
                     BeanUtils.copyProperties(oo, caseUnitHuxing);
                     caseUnitHuxing.setId(null);
+                    caseUnitHuxing.setGmtCreated(null);
+                    caseUnitHuxing.setGmtModified(null);
                 }
                 caseUnitHuxing.setUnitId(caseUnit.getId());
                 caseUnitHuxingService.upgradeVersion(caseUnitHuxing);
@@ -940,17 +1026,23 @@ public class PublicBasicService {
                     if (caseUnitElevator != null) {
                         BeanUtils.copyProperties(oo, caseUnitElevator);
                         caseUnitElevator.setId(oo.getCaseId());
+                        caseUnitElevator.setGmtCreated(null);
+                        caseUnitElevator.setGmtModified(null);
                     }
                     if (caseUnitElevator == null) {
                         caseUnitElevator = new CaseUnitElevator();
                         BeanUtils.copyProperties(oo, caseUnitElevator);
                         caseUnitElevator.setId(null);
+                        caseUnitElevator.setGmtCreated(null);
+                        caseUnitElevator.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseId() == null) {
                     caseUnitElevator = new CaseUnitElevator();
                     BeanUtils.copyProperties(oo, caseUnitElevator);
                     caseUnitElevator.setId(null);
+                    caseUnitElevator.setGmtCreated(null);
+                    caseUnitElevator.setGmtModified(null);
                 }
                 caseUnitElevator.setUnitId(caseUnit.getId());
                 caseUnitElevatorService.upgradeVersion(caseUnitElevator);
@@ -974,6 +1066,8 @@ public class PublicBasicService {
             if (caseHouse != null) {
                 BeanCopyHelp.copyPropertiesIgnoreNull(basicHouse, caseHouse);
                 caseHouse.setId(basicHouse.getCaseHouseId());
+                caseHouse.setGmtCreated(null);
+                caseHouse.setGmtModified(null);
             }
             if (caseHouse == null) {
                 caseHouse = new CaseHouse();
@@ -1073,17 +1167,23 @@ public class PublicBasicService {
                             caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
                             BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
                             caseHouseCorollaryEquipment.setId(oo.getCaseCorollaryEquipmentId());
+                            caseHouseCorollaryEquipment.setGmtCreated(null);
+                            caseHouseCorollaryEquipment.setGmtModified(null);
                         }
                         if (caseHouseCorollaryEquipment == null) {
                             caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
                             BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
                             caseHouseCorollaryEquipment.setId(null);
+                            caseHouseCorollaryEquipment.setGmtCreated(null);
+                            caseHouseCorollaryEquipment.setGmtModified(null);
                         }
                     }
                     if (oo.getCaseCorollaryEquipmentId() == null) {
                         caseHouseCorollaryEquipment = new CaseHouseCorollaryEquipment();
                         BeanUtils.copyProperties(oo, caseHouseCorollaryEquipment);
                         caseHouseCorollaryEquipment.setId(null);
+                        caseHouseCorollaryEquipment.setGmtCreated(null);
+                        caseHouseCorollaryEquipment.setGmtModified(null);
                     }
                     caseHouseCorollaryEquipment.setHouseId(caseHouse.getId());
                     caseHouseCorollaryEquipmentService.upgradeVersion(caseHouseCorollaryEquipment);
@@ -1104,17 +1204,23 @@ public class PublicBasicService {
                         if (caseHouseEquipment != null) {
                             BeanUtils.copyProperties(oo, caseHouseEquipment);
                             caseHouseEquipment.setId(oo.getCaseEquipmentId());
+                            caseHouseEquipment.setGmtCreated(null);
+                            caseHouseEquipment.setGmtModified(null);
                         }
                         if (caseHouseEquipment == null) {
                             caseHouseEquipment = new CaseHouseEquipment();
                             BeanUtils.copyProperties(oo, caseHouseEquipment);
                             caseHouseEquipment.setId(null);
+                            caseHouseEquipment.setGmtCreated(null);
+                            caseHouseEquipment.setGmtModified(null);
                         }
                     }
                     if (oo.getCaseEquipmentId() == null) {
                         caseHouseEquipment = new CaseHouseEquipment();
                         BeanUtils.copyProperties(oo, caseHouseEquipment);
                         caseHouseEquipment.setId(null);
+                        caseHouseEquipment.setGmtCreated(null);
+                        caseHouseEquipment.setGmtModified(null);
                     }
                     caseHouseEquipment.setHouseId(caseHouse.getId());
                     caseHouseEquipmentService.upgradeVersion(caseHouseEquipment);
@@ -1132,20 +1238,26 @@ public class PublicBasicService {
                     CaseHouseFaceStreet caseHouseFaceStreet = null;
                     if (oo.getCaseFaceStreetId() != null) {
                         caseHouseFaceStreet = caseHouseFaceStreetService.getCaseHouseFaceStreetById(oo.getCaseFaceStreetId());
-                        if (caseHouseFaceStreet != null){
+                        if (caseHouseFaceStreet != null) {
                             BeanUtils.copyProperties(oo, caseHouseFaceStreet);
                             caseHouseFaceStreet.setId(oo.getCaseFaceStreetId());
+                            caseHouseFaceStreet.setGmtCreated(null);
+                            caseHouseFaceStreet.setGmtModified(null);
                         }
-                        if (caseHouseFaceStreet == null){
+                        if (caseHouseFaceStreet == null) {
                             caseHouseFaceStreet = new CaseHouseFaceStreet();
                             BeanUtils.copyProperties(oo, caseHouseFaceStreet);
                             caseHouseFaceStreet.setId(null);
+                            caseHouseFaceStreet.setGmtCreated(null);
+                            caseHouseFaceStreet.setGmtModified(null);
                         }
                     }
                     if (oo.getCaseFaceStreetId() == null) {
                         caseHouseFaceStreet = new CaseHouseFaceStreet();
                         BeanUtils.copyProperties(oo, caseHouseFaceStreet);
                         caseHouseFaceStreet.setId(null);
+                        caseHouseFaceStreet.setGmtCreated(null);
+                        caseHouseFaceStreet.setGmtModified(null);
                     }
                     caseHouseFaceStreet.setHouseId(caseHouse.getId());
                     caseHouseFaceStreetService.upgradeVersion(caseHouseFaceStreet);
@@ -1163,20 +1275,26 @@ public class PublicBasicService {
                     CaseHouseIntelligent caseHouseIntelligent = null;
                     if (oo.getCaseIntelligentId() != null) {
                         caseHouseIntelligent = caseHouseIntelligentService.getCaseHouseIntelligentById(oo.getCaseIntelligentId());
-                        if (caseHouseIntelligent != null){
+                        if (caseHouseIntelligent != null) {
                             BeanUtils.copyProperties(oo, caseHouseIntelligent);
                             caseHouseIntelligent.setId(oo.getCaseIntelligentId());
+                            caseHouseIntelligent.setGmtCreated(null);
+                            caseHouseIntelligent.setGmtModified(null);
                         }
-                        if (caseHouseIntelligent == null){
+                        if (caseHouseIntelligent == null) {
                             caseHouseIntelligent = new CaseHouseIntelligent();
                             BeanUtils.copyProperties(oo, caseHouseIntelligent);
                             caseHouseIntelligent.setId(null);
+                            caseHouseIntelligent.setGmtCreated(null);
+                            caseHouseIntelligent.setGmtModified(null);
                         }
                     }
                     if (oo.getCaseIntelligentId() == null) {
                         caseHouseIntelligent = new CaseHouseIntelligent();
                         BeanUtils.copyProperties(oo, caseHouseIntelligent);
                         caseHouseIntelligent.setId(null);
+                        caseHouseIntelligent.setGmtCreated(null);
+                        caseHouseIntelligent.setGmtModified(null);
                     }
                     caseHouseIntelligent.setHouseId(caseHouse.getId());
                     caseHouseIntelligentService.upgradeVersion(caseHouseIntelligent);
@@ -1194,20 +1312,26 @@ public class PublicBasicService {
                     CaseHouseWater caseHouseWater = null;
                     if (oo.getCaseHouseWaterId() != null) {
                         caseHouseWater = caseHouseWaterService.getCaseHouseWaterById(oo.getCaseHouseWaterId());
-                        if (caseHouseWater != null){
+                        if (caseHouseWater != null) {
                             BeanUtils.copyProperties(oo, caseHouseWater);
                             caseHouseWater.setId(oo.getCaseHouseWaterId());
+                            caseHouseWater.setGmtCreated(null);
+                            caseHouseWater.setGmtModified(null);
                         }
-                        if (caseHouseWater == null){
+                        if (caseHouseWater == null) {
                             caseHouseWater = new CaseHouseWater();
                             BeanUtils.copyProperties(oo, caseHouseWater);
                             caseHouseWater.setId(null);
+                            caseHouseWater.setGmtCreated(null);
+                            caseHouseWater.setGmtModified(null);
                         }
                     }
                     if (oo.getCaseHouseWaterId() == null) {
                         caseHouseWater = new CaseHouseWater();
                         BeanUtils.copyProperties(oo, caseHouseWater);
                         caseHouseWater.setId(null);
+                        caseHouseWater.setGmtCreated(null);
+                        caseHouseWater.setGmtModified(null);
                     }
                     caseHouseWater.setHouseId(caseHouse.getId());
                     caseHouseWaterService.upgradeVersion(caseHouseWater);
@@ -1227,17 +1351,23 @@ public class PublicBasicService {
                     if (caseHouseTradingSell != null) {
                         BeanUtils.copyProperties(oo, caseHouseTradingSell);
                         caseHouseTradingSell.setId(oo.getCaseTradingSellId());
+                        caseHouseTradingSell.setGmtCreated(null);
+                        caseHouseTradingSell.setGmtModified(null);
                     }
                     if (caseHouseTradingSell == null) {
                         caseHouseTradingSell = new CaseHouseTradingSell();
                         BeanUtils.copyProperties(oo, caseHouseTradingSell);
                         caseHouseTradingSell.setId(null);
+                        caseHouseTradingSell.setGmtCreated(null);
+                        caseHouseTradingSell.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseTradingSellId() == null) {
                     caseHouseTradingSell = new CaseHouseTradingSell();
                     BeanUtils.copyProperties(oo, caseHouseTradingSell);
                     caseHouseTradingSell.setId(null);
+                    caseHouseTradingSell.setGmtCreated(null);
+                    caseHouseTradingSell.setGmtModified(null);
                 }
                 caseHouseTradingSell.setHouseId(caseHouse.getId());
                 caseHouseTradingSellService.upgradeVersion(caseHouseTradingSell);
@@ -1273,26 +1403,66 @@ public class PublicBasicService {
     private void flowWriteCaseHouseRoom(List<BasicHouseRoom> basicHouseRoomList, CaseHouse caseHouse) throws Exception {
         if (!ObjectUtils.isEmpty(basicHouseRoomList)) {
             for (BasicHouseRoom oo : basicHouseRoomList) {
+                BasicHouseRoomDecorate query = new BasicHouseRoomDecorate();
+                query.setRoomId(oo.getId());
+                List<BasicHouseRoomDecorate> basicHouseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(query);
                 CaseHouseRoom caseHouseRoom = null;
                 if (oo.getCaseRoomId() != null) {
                     caseHouseRoom = caseHouseRoomService.getCaseHouseRoomById(oo.getCaseRoomId());
                     if (caseHouseRoom != null) {
                         BeanUtils.copyProperties(oo, caseHouseRoom);
                         caseHouseRoom.setId(oo.getCaseRoomId());
+                        caseHouseRoom.setGmtCreated(null);
+                        caseHouseRoom.setGmtModified(null);
                     }
                     if (caseHouseRoom == null) {
                         caseHouseRoom = new CaseHouseRoom();
                         BeanUtils.copyProperties(oo, caseHouseRoom);
                         caseHouseRoom.setId(null);
+                        caseHouseRoom.setGmtCreated(null);
+                        caseHouseRoom.setGmtModified(null);
                     }
                 }
                 if (oo.getCaseRoomId() == null) {
                     caseHouseRoom = new CaseHouseRoom();
                     BeanUtils.copyProperties(oo, caseHouseRoom);
                     caseHouseRoom.setId(null);
+                    caseHouseRoom.setGmtCreated(null);
+                    caseHouseRoom.setGmtModified(null);
                 }
                 caseHouseRoom.setHouseId(caseHouse.getId());
                 caseHouseRoomService.upgradeVersion(caseHouseRoom);
+                if (!ObjectUtils.isEmpty(basicHouseRoomDecorateList)) {
+                    for (BasicHouseRoomDecorate po : basicHouseRoomDecorateList) {
+                        CaseHouseRoomDecorate caseHouseRoomDecorate = null;
+                        if (po.getCaseRoomDecorateId() != null) {
+                            caseHouseRoomDecorate = caseHouseRoomDecorateService.getCaseHouseRoomDecorateById(po.getCaseRoomDecorateId());
+                            if (caseHouseRoomDecorate != null) {
+                                BeanUtils.copyProperties(po, caseHouseRoomDecorate);
+                                caseHouseRoomDecorate.setGmtCreated(null);
+                                caseHouseRoomDecorate.setGmtModified(null);
+                                caseHouseRoomDecorate.setId(po.getCaseRoomDecorateId());
+                                caseHouseRoomDecorate.setGmtCreated(null);
+                                caseHouseRoomDecorate.setGmtModified(null);
+                            }else {
+                                caseHouseRoomDecorate = new CaseHouseRoomDecorate();
+                                BeanUtils.copyProperties(po, caseHouseRoomDecorate);
+                                caseHouseRoomDecorate.setGmtCreated(null);
+                                caseHouseRoomDecorate.setGmtModified(null);
+                                caseHouseRoomDecorate.setId(null);
+                            }
+                        }
+                        if (po.getCaseRoomDecorateId() == null) {
+                            caseHouseRoomDecorate = new CaseHouseRoomDecorate();
+                            BeanUtils.copyProperties(po, caseHouseRoomDecorate);
+                            caseHouseRoomDecorate.setGmtCreated(null);
+                            caseHouseRoomDecorate.setGmtModified(null);
+                            caseHouseRoomDecorate.setId(null);
+                        }
+                        caseHouseRoomDecorate.setRoomId(caseHouseRoom.getId());
+                        caseHouseRoomDecorateService.upgradeVersion(caseHouseRoomDecorate);
+                    }
+                }
             }
         }
     }
@@ -2056,6 +2226,16 @@ public class PublicBasicService {
                 queryRoom.setId(null);
                 queryRoom.setHouseId(0);
                 basicHouseRoomService.saveAndUpdateBasicHouseRoom(queryRoom);
+                CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
+                List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
+                if (!ObjectUtils.isEmpty(caseHouseRoomDecorateList)) {
+                    for (CaseHouseRoomDecorate po : caseHouseRoomDecorateList) {
+                        BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
+                        BeanUtils.copyProperties(po, basicHouseRoomDecorate);
+                        basicHouseRoomDecorate.setRoomId(queryRoom.getId());
+                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
+                    }
+                }
             }
         }
         if (!ObjectUtils.isEmpty(caseHouseEquipments)) {

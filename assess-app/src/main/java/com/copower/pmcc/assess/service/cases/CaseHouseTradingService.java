@@ -83,6 +83,7 @@ public class CaseHouseTradingService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
             caseHouseTrading.setId(id);
             return id;

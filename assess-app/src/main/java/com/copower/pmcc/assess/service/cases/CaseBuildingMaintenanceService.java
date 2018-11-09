@@ -127,6 +127,7 @@ public class CaseBuildingMaintenanceService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             caseBuildingMaintenanceDao.addBuildingMaintenance(oo);
             return null;
         }

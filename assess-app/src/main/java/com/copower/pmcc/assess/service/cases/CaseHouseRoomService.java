@@ -53,7 +53,8 @@ public class CaseHouseRoomService {
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
-            this.addCaseHouseRoom(po);
+            Integer id =  this.saveCaseHouseRoom(po);
+            po.setId(id);
         }else {
             CaseHouseRoom oo = getCaseHouseRoomById(po.getId());
             if (oo.getVersion() == null){
@@ -65,7 +66,9 @@ public class CaseHouseRoomService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            this.addCaseHouseRoom(oo);
+            oo.setCreator(commonService.thisUserAccount());
+            Integer id = this.saveCaseHouseRoom(oo);
+            po.setId(id);
         }
     }
 
@@ -124,6 +127,11 @@ public class CaseHouseRoomService {
         caseHouseRoom.setCreator(commonService.thisUserAccount());
         return caseHouseRoomDao.addHouseRoom(caseHouseRoom);
     }
+
+    public Integer saveCaseHouseRoom(CaseHouseRoom caseHouseRoom){
+        return caseHouseRoomDao.saveCaseHouseRoom(caseHouseRoom);
+    }
+
 
     /**
      * 编辑
