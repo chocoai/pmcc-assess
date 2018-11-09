@@ -93,7 +93,10 @@ public class BasicBuildingService {
         queryFunction.setBuildingId(0);
         queryOutfit.setBuildingId(0);
         queryMaintenance.setBuildingId(0);
-
+        querySurface.setCreator(commonService.thisUserAccount());
+        queryFunction.setCreator(commonService.thisUserAccount());
+        queryOutfit.setCreator(commonService.thisUserAccount());
+        queryMaintenance.setCreator(commonService.thisUserAccount());
         if (id == null) {
             SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableId(0);

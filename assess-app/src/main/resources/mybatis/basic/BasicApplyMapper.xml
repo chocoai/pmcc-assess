@@ -4,6 +4,10 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="build_identifier" property="buildIdentifier" jdbcType="VARCHAR" />
+    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -68,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, status, creator, gmt_created, gmt_modified
+    id, process_ins_id, house_number, unit_number, build_identifier, estate_name, status, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample" >
     select
@@ -104,10 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (process_ins_id, status, creator, 
-      gmt_created, gmt_modified)
-    values (#{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_apply (process_ins_id, house_number, unit_number, 
+      build_identifier, estate_name, status, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{processInsId,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, 
+      #{buildIdentifier,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -117,6 +126,18 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="houseNumber != null" >
+        house_number,
+      </if>
+      <if test="unitNumber != null" >
+        unit_number,
+      </if>
+      <if test="buildIdentifier != null" >
+        build_identifier,
+      </if>
+      <if test="estateName != null" >
+        estate_name,
       </if>
       <if test="status != null" >
         status,
@@ -134,6 +155,18 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNumber != null" >
+        #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNumber != null" >
+        #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildIdentifier != null" >
+        #{buildIdentifier,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null" >
+        #{estateName,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -164,6 +197,18 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.houseNumber != null" >
+        house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitNumber != null" >
+        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildIdentifier != null" >
+        build_identifier = #{record.buildIdentifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.estateName != null" >
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -185,6 +230,10 @@
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      build_identifier = #{record.buildIdentifier,jdbcType=VARCHAR},
+      estate_name = #{record.estateName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -198,6 +247,18 @@
     <set >
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNumber != null" >
+        house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitNumber != null" >
+        unit_number = #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildIdentifier != null" >
+        build_identifier = #{buildIdentifier,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null" >
+        estate_name = #{estateName,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -217,6 +278,10 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     update tb_basic_apply
     set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
+      unit_number = #{unitNumber,jdbcType=VARCHAR},
+      build_identifier = #{buildIdentifier,jdbcType=VARCHAR},
+      estate_name = #{estateName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

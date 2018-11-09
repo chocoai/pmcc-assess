@@ -77,6 +77,7 @@ public class BasicHouseService {
         BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
+
         queryLease.setHouseId(oldId);
         querySell.setHouseId(oldId);
         queryRoom.setHouseId(oldId);
@@ -85,6 +86,15 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setHouseId(oldId);
         queryBasicHouseEquipment.setHouseId(oldId);
         queryBasicHouseCorollaryEquipment.setHouseId(oldId);
+
+        queryLease.setCreator(commonService.thisUserAccount());
+        querySell.setCreator(commonService.thisUserAccount());
+        queryRoom.setCreator(commonService.thisUserAccount());
+        queryBasicHouseWater.setCreator(commonService.thisUserAccount());
+        queryBasicHouseIntelligent.setCreator(commonService.thisUserAccount());
+        queryBasicHouseFaceStreet.setCreator(commonService.thisUserAccount());
+        queryBasicHouseEquipment.setCreator(commonService.thisUserAccount());
+        queryBasicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
 
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);

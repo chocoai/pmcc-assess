@@ -52,6 +52,9 @@ public class BasicUnitService {
         queryBasicUnitHuxing.setUnitId(oldId);
         queryBasicUnitElevator.setUnitId(oldId);
         queryBasicUnitDecorate.setUnitId(oldId);
+        queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
+        queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
+        queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
         List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
         List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
         List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);

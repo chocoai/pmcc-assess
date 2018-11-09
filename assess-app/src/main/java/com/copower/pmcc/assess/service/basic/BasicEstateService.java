@@ -93,12 +93,25 @@ public class BasicEstateService {
         queryBasicMatchingMedical.setEstateId(oldId);
         queryBasicMatchingMaterial.setEstateId(oldId);
         queryBasicMatchingLeisurePlace.setEstateId(oldId);
+
         queryBasicMatchingFinance.setEstateId(oldId);
         queryBasicMatchingEnvironment.setEstateId(oldId);
         queryBasicMatchingEducation.setEstateId(oldId);
         queryBasicEstateNetwork.setEstateId(oldId);
         queryBasicEstateParking.setEstateId(oldId);
         queryBasicEstateSupply.setEstateId(oldId);
+
+
+        queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
+        queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
+        queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
+        queryBasicEstateParking.setCreator(commonService.thisUserAccount());
+        queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
 
         List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
@@ -110,6 +123,7 @@ public class BasicEstateService {
         List<BasicMatchingMaterial> basicMatchingMaterialList = null;
         List<BasicMatchingMedical> basicMatchingMedicalList = null;
         List<BasicMatchingTraffic> basicMatchingTrafficList = null;
+
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
         basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
@@ -120,6 +134,7 @@ public class BasicEstateService {
         basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterial);
         basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
         basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
+
         if (newId == null) {
             if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
                 for (BasicEstateNetwork oo : basicEstateNetworkList) {

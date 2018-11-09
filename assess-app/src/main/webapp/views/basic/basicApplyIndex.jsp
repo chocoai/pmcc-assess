@@ -57,7 +57,7 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.estate.details()"
+                                    <input type="button" class="btn btn-success" onclick="objectData.estate.show({},{})"
                                            value="添加">
                                 </div>
                             </div>
@@ -65,6 +65,12 @@
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.estate.edit()"
                                            value="修改">
+                                </div>
+                            </div>
+                            <div class="x-valid" style="display: none;">
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn-success" onclick="objectData.estate.details()"
+                                           value="详情">
                                 </div>
                             </div>
                         </div>
@@ -81,7 +87,7 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()"
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.show({},{})"
                                            value="添加">
                                 </div>
                             </div>
@@ -89,6 +95,12 @@
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.building.edit()"
                                            value="修改">
+                                </div>
+                            </div>
+                            <div class="x-valid" style="display: none;">
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()"
+                                           value="详情">
                                 </div>
                             </div>
                         </div>
@@ -105,7 +117,7 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.unit.details()"
+                                    <input type="button" class="btn btn-success" onclick="objectData.unit.show({},{})"
                                            value="添加">
                                 </div>
                             </div>
@@ -113,6 +125,12 @@
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.unit.edit()"
                                            value="修改">
+                                </div>
+                            </div>
+                            <div class="x-valid" style="display: none;">
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn-success" onclick="objectData.unit.details()"
+                                           value="详情">
                                 </div>
                             </div>
                         </div>
@@ -130,13 +148,19 @@
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="添加"
-                                           onclick="objectData.house.details()">
+                                           onclick="objectData.house.show({},{})">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="修改"
                                            onclick="objectData.house.edit()">
+                                </div>
+                            </div>
+                            <div class="x-valid" style="display: none;">
+                                <div class="col-sm-2">
+                                    <input type="button" class="btn btn-success" value="详情"
+                                           onclick="objectData.house.details()">
                                 </div>
                             </div>
                         </div>
@@ -161,20 +185,16 @@
                     <div role="tabpanel" data-example-id="togglable-tabs">
                         <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
                             <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
-                                                                aria-expanded="true"
-                                                                onclick="objectData.estate.show({},{})">楼盘</a>
+                                                                aria-expanded="true">楼盘</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                                aria-expanded="false"
-                                                                onclick="objectData.building.show({})">楼栋</a>
+                                                                aria-expanded="false">楼栋</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                aria-expanded="false"
-                                                                onclick="objectData.unit.show({})">单元</a>
+                                                                aria-expanded="false">单元</a>
                             </li>
                             <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                aria-expanded="false"
-                                                                onclick="objectData.house.show({})">房屋</a>
+                                                                aria-expanded="false">房屋</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -359,6 +379,7 @@
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
+        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -390,6 +411,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
+                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id", ele.item.key);
                 },
                 /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
@@ -405,12 +427,13 @@
     objectData.autocompleteBuilding = function (_this) {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         if (!objectData.isNotBlank(estateId)) {
-            Alert("请先选择楼盘然后在选择楼栋!");
-            return false;
+            // Alert("请先选择楼盘然后在选择楼栋!");
+            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
+        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -428,7 +451,7 @@
                             if (result.ret) {
                                 if (objectData.isNotBlank(result.data)) {
                                     if (result.data.length == 0) {
-                                        Alert("此楼盘下无楼栋信息!");
+                                        // Alert("此楼盘下无楼栋信息!");
                                     }
                                 }
                                 response($.each(result.data, function (i, item) {
@@ -448,6 +471,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
+                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -462,12 +486,13 @@
     objectData.autocompleteUnit = function (_this) {
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
         if (!objectData.isNotBlank(buildingId)) {
-            Alert("请先选择楼栋然后在选择单元!");
-            return false;
+            // Alert("请先选择楼栋然后在选择单元!");
+            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
+        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -485,7 +510,7 @@
                             if (result.ret) {
                                 if (objectData.isNotBlank(result.data)) {
                                     if (result.data.length == 0) {
-                                        Alert("此楼栋下无单元信息!");
+                                        // Alert("此楼栋下无单元信息!");
                                     }
                                 }
                                 response($.each(result.data, function (i, item) {
@@ -505,6 +530,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
+                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -519,12 +545,13 @@
     objectData.autocompleteHouse = function (_this) {
         var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         if (!objectData.isNotBlank(unitId)) {
-            Alert("请先选择单元然后在选择房屋!");
-            return false;
+            // Alert("请先选择单元然后在选择房屋!");
+            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
+        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -542,7 +569,7 @@
                             if (result.ret) {
                                 if (objectData.isNotBlank(result.data)) {
                                     if (result.data.length == 0) {
-                                        Alert("此单元下无房屋信息!");
+                                        // Alert("此单元下无房屋信息!");
                                     }
                                 }
                                 response($.each(result.data, function (i, item) {
@@ -562,6 +589,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
+                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -609,6 +637,7 @@
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
                 toastr.success('未找到查询的数据');
+                return false;
             }
             $("#" + objectData.config.basicEstate.frm).clearAll();
             $("#" + objectData.config.basicEstate.frmLandState).clearAll();
@@ -722,49 +751,8 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
-                            }
-                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").empty().html(option);
-                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.landLevel, "landLevel");
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").change(function () {
-                var id = $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.landLevel").val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
-                    type: "get",
-                    dataType: "json",
-                    async: false,
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            var data = result.data;
-                            if (objectData.isNotBlank(data)) {
-                                $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("input[name='street']").val(data.street);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            });
+
+
         },
         landStateInit: function (item) {
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
@@ -828,7 +816,7 @@
         show: function (item) {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
-                toastr.success('未选择楼盘');
+                // toastr.success('未选择楼盘');
             }
             objectData.building.init(item);
             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
@@ -842,7 +830,7 @@
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
                 toastr.success("无查询到楼栋数据,请添加!");
-                objectData.building.show({});
+                return false;
             }
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseBuildingMain/getcaseBuildingMainById",
@@ -1049,7 +1037,7 @@
         show: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
-                toastr.success('未选择楼栋');
+                // toastr.success('未选择楼栋');
             }
             $('#caseTab a').eq(2).tab('show');
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
@@ -1078,6 +1066,7 @@
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
             if (!objectData.isNotBlank(unitId)) {
                 toastr.success('未找到查询的数据');
+                return false;
             }
             objectData.firstRemove.unitFirst();
             objectData.unit.appWriteUnit(unitId, function (data) {
@@ -1120,7 +1109,7 @@
         show: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
             if (!objectData.isNotBlank(unitId)) {
-                toastr.success('未选择单元');
+                // toastr.success('未选择单元');
             }
             $('#caseTab a').eq(3).tab('show');
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
@@ -1170,6 +1159,7 @@
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
             if (!objectData.isNotBlank(id)) {
                 toastr.success('请先查询房屋');
+                return false;
             }
             if (objectData.isNotBlank(id)) {
                 objectData.firstRemove.houseFirst();
@@ -1229,7 +1219,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('房屋删除临时数据!');
+                        // toastr.success('房屋删除临时数据!');
                     }
                 },
                 error: function (result) {
@@ -1244,7 +1234,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('楼盘删除临时数据!');
+                        // toastr.success('楼盘删除临时数据!');
                     }
                 },
                 error: function (result) {
@@ -1259,7 +1249,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('楼栋删除临时数据!');
+                        // toastr.success('楼栋删除临时数据!');
                     }
                 },
                 error: function (result) {
@@ -1274,7 +1264,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('单元删除临时数据!');
+                        // toastr.success('单元删除临时数据!');
                     }
                 },
                 error: function (result) {

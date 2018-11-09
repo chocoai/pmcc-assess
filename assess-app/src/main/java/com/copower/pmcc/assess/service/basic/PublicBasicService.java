@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Ordering;
 import org.apache.commons.lang.StringUtils;
@@ -169,6 +170,8 @@ public class PublicBasicService {
     private CaseMatchingEducationService caseMatchingEducationService;
     @Autowired
     private CaseBuildingService caseBuildingService;
+    @Autowired
+    private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -1614,6 +1617,9 @@ public class PublicBasicService {
             basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
             if (basicEstate != null) {
                 basicEstate.setApplyId(basicApply.getId());
+                if (StringUtils.isNotEmpty(basicEstate.getName())){
+                    basicApply.setEstateName(basicEstate.getName());
+                }
                 if (basicEstate.getId() != null) {
                     basicEstate.setCaseEstateId(basicEstate.getId());
                     basicEstate.setId(null);
@@ -1648,6 +1654,9 @@ public class PublicBasicService {
             basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
             if (basicBuildingMain != null) {
                 basicBuildingMain.setApplyId(basicApply.getId());
+                if (StringUtils.isNotEmpty(basicBuildingMain.getIdentifier())){
+                    basicApply.setBuildIdentifier(basicBuildingMain.getIdentifier());
+                }
                 if (basicBuildingMain.getId() != null) {
                     basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
                     basicBuildingMain.setId(null);
@@ -1711,6 +1720,9 @@ public class PublicBasicService {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
             if (basicUnit != null) {
                 basicUnit.setApplyId(basicApply.getId());
+                if (StringUtils.isNotEmpty(basicUnit.getUnitNumber())){
+                    basicApply.setUnitNumber(basicUnit.getUnitNumber());
+                }
                 if (basicUnit.getId() != null) {
                     basicUnit.setCaseUnitId(basicUnit.getId());
                     basicUnit.setId(null);
@@ -1750,6 +1762,9 @@ public class PublicBasicService {
                     basicHouse.setId(null);
                 }
                 basicHouse.setApplyId(basicApply.getId());
+                if (StringUtils.isNotEmpty(basicHouse.getHouseNumber())){
+                    basicApply.setHouseNumber(basicHouse.getHouseNumber());
+                }
                 if (basicUnit == null) {
                     if (basicHouse.getUnitId() != null) {
                         //
@@ -1938,6 +1953,7 @@ public class PublicBasicService {
                 querySurface.setBuildingId(ooA.getId());
                 queryFunction.setBuildingId(ooA.getId());
 
+
                 buildingOutfitList = caseBuildingOutfitService.getCaseBuildingOutfitList(queryOutfit);
                 maintenanceList = caseBuildingMaintenanceService.getCaseBuildingMaintenanceList(queryMaintenance);
                 surfaceList = caseBuildingSurfaceService.getCaseBuildingSurfaceList(querySurface);
@@ -1950,6 +1966,7 @@ public class PublicBasicService {
                         basicBuildingOutfit.setBuildingId(0);
                         basicBuildingOutfit.setId(null);
                         basicBuildingOutfit.setCaseOutfitId(oo.getId());
+                        basicBuildingOutfit.setCreator(commonService.thisUserAccount());
                         basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(basicBuildingOutfit);
                     }
                 }
@@ -1960,6 +1977,7 @@ public class PublicBasicService {
                         basicBuildingMaintenance.setBuildingId(0);
                         basicBuildingMaintenance.setId(null);
                         basicBuildingMaintenance.setCaseMaintenanceId(oo.getId());
+                        basicBuildingMaintenance.setCreator(commonService.thisUserAccount());
                         basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(basicBuildingMaintenance);
                     }
                 }
@@ -1970,6 +1988,7 @@ public class PublicBasicService {
                         basicBuildingSurface.setBuildingId(0);
                         basicBuildingSurface.setId(null);
                         basicBuildingSurface.setCaseSurfaceId(oo.getId());
+                        basicBuildingSurface.setCreator(commonService.thisUserAccount());
                         basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(basicBuildingSurface);
                     }
                 }
@@ -1980,6 +1999,7 @@ public class PublicBasicService {
                         basicBuildingFunction.setBuildingId(0);
                         basicBuildingFunction.setId(null);
                         basicBuildingFunction.setCaseFunctionId(oo.getId());
+                        basicBuildingFunction.setCreator(commonService.thisUserAccount());
                         basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction);
                     }
                 }
@@ -2013,6 +2033,7 @@ public class PublicBasicService {
                 queryBasicUnitDecorate.setId(null);
                 queryBasicUnitDecorate.setUnitId(0);
                 queryBasicUnitDecorate.setCaseId(oo.getId());
+                queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
                 basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(queryBasicUnitDecorate);
             }
         }
@@ -2023,6 +2044,7 @@ public class PublicBasicService {
                 queryBasicUnitElevator.setId(null);
                 queryBasicUnitElevator.setUnitId(0);
                 queryBasicUnitElevator.setCaseId(oo.getId());
+                queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
                 basicUnitElevatorService.saveAndUpdateBasicUnitElevator(queryBasicUnitElevator);
             }
         }
@@ -2033,6 +2055,7 @@ public class PublicBasicService {
                 queryBasicUnitHuxing.setId(null);
                 queryBasicUnitHuxing.setUnitId(0);
                 queryBasicUnitHuxing.setCaseId(oo.getId());
+                queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
                 basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(queryBasicUnitHuxing);
             }
         }
@@ -2088,6 +2111,7 @@ public class PublicBasicService {
                 queryBasicEstateParking.setEstateId(0);
                 queryBasicEstateParking.setCaseId(caseEstateParking.getId());
                 queryBasicEstateParking.setId(null);
+                queryBasicEstateParking.setCreator(commonService.thisUserAccount());
                 basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
             }
         }
@@ -2098,6 +2122,7 @@ public class PublicBasicService {
                 queryBasicEstateNetwork.setEstateId(0);
                 queryBasicEstateNetwork.setCaseId(caseEstateNetwork1.getId());
                 queryBasicEstateNetwork.setId(null);
+                queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
                 basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(queryBasicEstateNetwork);
             }
         }
@@ -2108,6 +2133,7 @@ public class PublicBasicService {
                 queryBasicEstateSupply.setCaseId(caseEstateSupply1.getId());
                 queryBasicEstateSupply.setEstateId(0);
                 queryBasicEstateSupply.setId(null);
+                queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
                 basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
             }
         }
@@ -2118,6 +2144,7 @@ public class PublicBasicService {
                 queryBasicMatchingTraffic.setEstateId(0);
                 queryBasicMatchingTraffic.setCaseId(oo.getId());
                 queryBasicMatchingTraffic.setId(null);
+                queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
                 basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(queryBasicMatchingTraffic);
             }
         }
@@ -2128,6 +2155,7 @@ public class PublicBasicService {
                 queryBasicMatchingMedical.setEstateId(0);
                 queryBasicMatchingMedical.setCaseId(oo.getId());
                 queryBasicMatchingMedical.setId(null);
+                queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
                 basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(queryBasicMatchingMedical);
             }
         }
@@ -2138,6 +2166,7 @@ public class PublicBasicService {
                 queryBasicMatchingMaterial.setEstateId(0);
                 queryBasicMatchingMaterial.setCaseId(oo.getId());
                 queryBasicMatchingMaterial.setId(null);
+                queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
                 basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(queryBasicMatchingMaterial);
             }
         }
@@ -2148,6 +2177,7 @@ public class PublicBasicService {
                 queryBasicMatchingLeisurePlace.setEstateId(0);
                 queryBasicMatchingLeisurePlace.setCaseId(oo.getId());
                 queryBasicMatchingLeisurePlace.setId(null);
+                queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
                 basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(queryBasicMatchingLeisurePlace);
             }
         }
@@ -2158,6 +2188,7 @@ public class PublicBasicService {
                 queryBasicMatchingFinance.setEstateId(0);
                 queryBasicMatchingFinance.setCaseId(oo.getId());
                 queryBasicMatchingFinance.setId(null);
+                queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
                 basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(queryBasicMatchingFinance);
             }
         }
@@ -2168,6 +2199,7 @@ public class PublicBasicService {
                 queryBasicMatchingEnvironment.setEstateId(0);
                 queryBasicMatchingEnvironment.setCaseId(oo.getId());
                 queryBasicMatchingEnvironment.setId(null);
+                queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
                 basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(queryBasicMatchingEnvironment);
             }
         }
@@ -2178,6 +2210,7 @@ public class PublicBasicService {
                 queryBasicMatchingEducation.setEstateId(0);
                 queryBasicMatchingEducation.setCaseId(oo.getId());
                 queryBasicMatchingEducation.setId(null);
+                queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
                 basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(queryBasicMatchingEducation);
             }
         }
@@ -2242,6 +2275,7 @@ public class PublicBasicService {
                 querySell.setCaseTradingSellId(oo.getId());
                 querySell.setId(null);
                 querySell.setHouseId(0);
+                querySell.setCreator(commonService.thisUserAccount());
                 basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(querySell);
             }
         }
@@ -2252,6 +2286,7 @@ public class PublicBasicService {
                 queryLease.setCaseTradingLeaseId(oo.getId());
                 queryLease.setId(null);
                 queryLease.setHouseId(0);
+                queryLease.setCreator(commonService.thisUserAccount());
                 basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(queryLease);
             }
         }
@@ -2262,6 +2297,7 @@ public class PublicBasicService {
                 queryRoom.setCaseRoomId(oo.getId());
                 queryRoom.setId(null);
                 queryRoom.setHouseId(0);
+                queryRoom.setCreator(commonService.thisUserAccount());
                 basicHouseRoomService.saveAndUpdateBasicHouseRoom(queryRoom);
                 CaseHouseRoomDecorate caseHouseRoomDecorate = new CaseHouseRoomDecorate();
                 List<CaseHouseRoomDecorate> caseHouseRoomDecorateList = caseHouseRoomDecorateService.getCaseHouseRoomDecorateList(caseHouseRoomDecorate);
@@ -2282,6 +2318,7 @@ public class PublicBasicService {
                 po.setCaseCorollaryEquipmentId(oo.getId());
                 po.setId(null);
                 po.setHouseId(0);
+                po.setCreator(commonService.thisUserAccount());
                 basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
             }
         }
@@ -2292,6 +2329,7 @@ public class PublicBasicService {
                 po.setCaseFaceStreetId(oo.getId());
                 po.setId(null);
                 po.setHouseId(0);
+                po.setCreator(commonService.thisUserAccount());
                 basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(po);
             }
         }
@@ -2302,6 +2340,7 @@ public class PublicBasicService {
                 po.setCaseIntelligentId(oo.getId());
                 po.setId(null);
                 po.setHouseId(0);
+                po.setCreator(commonService.thisUserAccount());
                 basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(po);
             }
         }
@@ -2312,6 +2351,7 @@ public class PublicBasicService {
                 po.setCaseHouseWaterId(oo.getId());
                 po.setId(null);
                 po.setHouseId(0);
+                po.setCreator(commonService.thisUserAccount());
                 basicHouseWaterService.saveAndUpdateBasicHouseWater(po);
             }
         }
@@ -2322,6 +2362,7 @@ public class PublicBasicService {
                 po.setCaseCorollaryEquipmentId(oo.getId());
                 po.setId(null);
                 po.setHouseId(0);
+                po.setCreator(commonService.thisUserAccount());
                 basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po);
             }
         }

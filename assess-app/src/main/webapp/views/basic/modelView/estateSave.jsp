@@ -74,17 +74,17 @@
                    placeholder="编号(请输入数字)" name="number" class="form-control">
         </div>
     </div>
-    <div class="x-valid">
-        <label class="col-sm-1 control-label">土地级别</label>
-        <div class="col-sm-3">
-            <select class="form-control search-select select2 landLevel" name="landLevel">
-            </select>
-        </div>
-    </div>
+    <%--<div class="x-valid">--%>
+        <%--<label class="col-sm-1 control-label">土地级别</label>--%>
+        <%--<div class="col-sm-3">--%>
+            <%--<select class="form-control search-select select2 landLevel" name="landLevel">--%>
+            <%--</select>--%>
+        <%--</div>--%>
+    <%--</div>--%>
     <div class="x-valid">
         <label class="col-sm-1 control-label">街道</label>
         <div class="col-sm-3">
-            <input type="text" data-rule-maxlength="100" placeholder="街道" readonly="readonly"
+            <input type="text" placeholder="街道"
                    name="street" class="form-control">
         </div>
     </div>

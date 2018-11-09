@@ -118,14 +118,14 @@
                                                            class="form-control" value="${basicEstate.number}">
                                                 </div>
                                             </div>
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">土地级别</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" placeholder="土地级别" name="number"
-                                                           readonly="readonly"
-                                                           class="form-control" value="${basicEstate.landLevelName}">
-                                                </div>
-                                            </div>
+                                            <%--<div class="x-valid">--%>
+                                                <%--<label class="col-sm-1 control-label">土地级别</label>--%>
+                                                <%--<div class="col-sm-3">--%>
+                                                    <%--<input type="text" placeholder="土地级别" name="number"--%>
+                                                           <%--readonly="readonly"--%>
+                                                           <%--class="form-control" value="${basicEstate.landLevelName}">--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">街道</label>
                                                 <div class="col-sm-3">

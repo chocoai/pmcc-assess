@@ -7,6 +7,14 @@ public class BasicApply {
 
     private String processInsId;
 
+    private String houseNumber;
+
+    private String unitNumber;
+
+    private String buildIdentifier;
+
+    private String estateName;
+
     private String status;
 
     private String creator;
@@ -29,6 +37,38 @@ public class BasicApply {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    }
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber == null ? null : unitNumber.trim();
+    }
+
+    public String getBuildIdentifier() {
+        return buildIdentifier;
+    }
+
+    public void setBuildIdentifier(String buildIdentifier) {
+        this.buildIdentifier = buildIdentifier == null ? null : buildIdentifier.trim();
+    }
+
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
     }
 
     public String getStatus() {
