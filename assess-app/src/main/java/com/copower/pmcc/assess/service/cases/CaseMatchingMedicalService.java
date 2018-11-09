@@ -147,6 +147,7 @@ public class CaseMatchingMedicalService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.addCaseMatchingMedical(oo);
         }
     }

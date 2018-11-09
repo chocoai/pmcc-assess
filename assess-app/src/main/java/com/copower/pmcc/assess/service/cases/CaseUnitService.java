@@ -176,6 +176,7 @@ public class CaseUnitService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseUnit.getId();
             int newId = caseUnitDao.addUnit(oo);
             this.initAndUpdateSon(oldId,newId);

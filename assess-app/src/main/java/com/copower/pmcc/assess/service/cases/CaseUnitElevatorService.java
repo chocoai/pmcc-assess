@@ -126,6 +126,7 @@ public class CaseUnitElevatorService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.saveCaseUnitElevator(oo);
         }
     }

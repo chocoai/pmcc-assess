@@ -65,6 +65,7 @@ public class BasicHouseRoomService {
             basicHouseRoom.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseRoomDao.saveBasicHouseRoom(basicHouseRoom);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), id);
+            basicHouseRoom.setId(id);
             return  id ;
         } else {
             BasicHouseRoom oo = basicHouseRoomDao.getBasicHouseRoomById(basicHouseRoom.getId());

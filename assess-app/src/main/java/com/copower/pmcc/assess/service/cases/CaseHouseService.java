@@ -267,6 +267,7 @@ public class CaseHouseService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseHouse.getId();
             int newId = caseHouseDao.addHouse(oo);
             this.initAndUpdateSon(oldId, newId);

@@ -65,6 +65,7 @@ public class CaseEstateLandStateService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             Integer id = caseEstateLandStateDao.saveCaseEstateLandState(oo);
             caseEstateLandState.setId(id);
             return id;

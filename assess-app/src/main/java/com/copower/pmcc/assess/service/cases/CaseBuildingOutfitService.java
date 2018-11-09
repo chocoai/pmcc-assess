@@ -145,6 +145,7 @@ public class CaseBuildingOutfitService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             id = caseBuildingOutfitDao.saveCaseBuildingOutfit(oo);
             caseBuildingOutfit.setId(id);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class), id);

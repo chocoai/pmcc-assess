@@ -114,6 +114,27 @@ public class CaseHouseRoomDecorateService {
         return caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
     }
 
+    public void upgradeVersion(CaseHouseRoomDecorate caseHouseRoomDecorate)throws Exception{
+        if (caseHouseRoomDecorate.getId()==null || caseHouseRoomDecorate.getId().intValue()==0){
+            caseHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+            caseHouseRoomDecorate.setVersion(0);
+            caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
+        }else {
+            CaseHouseRoomDecorate oo = getCaseHouseRoomDecorateById(caseHouseRoomDecorate.getId());
+            if (oo != null){
+                if (oo.getVersion()==null){
+                    oo.setVersion(0);
+                }
+                int version = oo.getVersion() +1;
+                BeanUtils.copyProperties(caseHouseRoomDecorate,oo);
+                oo.setVersion(version);
+                oo.setId(null);
+                oo.setCreator(commonService.thisUserAccount());
+                caseHouseRoomDecorateDao.addHouseRoomDecorate(oo);
+            }
+        }
+    }
+
     /**
      * 编辑
      *

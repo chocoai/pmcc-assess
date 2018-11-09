@@ -324,6 +324,7 @@ public class CaseEstateService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseEstate.getId() ;
             int newId = caseEstateDao.addEstate(oo);
             this.initAndUpdateSon(oldId,newId);

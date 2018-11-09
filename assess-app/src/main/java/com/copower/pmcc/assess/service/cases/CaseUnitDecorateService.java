@@ -76,6 +76,7 @@ public class CaseUnitDecorateService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             this.addCaseUnitDecorate(oo);
         }
     }

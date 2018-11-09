@@ -113,6 +113,7 @@ public class CaseBuildingMainService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
+            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseBuildingMain.getId() ;
             int newId = caseBuildingMainDao.addEstate(oo);
             this.initUpdateSon(oldId, newId);
