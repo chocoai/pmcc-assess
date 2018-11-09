@@ -8,410 +8,111 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="form-group">
-    <div class="col-sm-12">
-        <table id="underDevelopmentID">
+    <form id="underEngineeringDevelopmentForm">
+        <div class="col-sm-12">
+            <table id="underEngineeringDevelopmentID" class="table tree">
+                <thead>
+                <tr>
+                    <th>工程名称</th>
+                    <th>单方造价(元/㎡)</th>
+                    <th>估价时点完工程度</th>
+                    <th>估价时点单价(元/㎡)</th>
+                    <th>续建投入单价(元/㎡)</th>
+                </tr>
+                </thead>
+                <tbody>
 
-        </table>
-    </div>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>合计</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="total"></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </form>
 </div>
-<div class="form-group">
-    <div class="x-valid">
-        <label class="col-sm-6 control-label">
-            建安成本小计
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-6 control-label">
-            续建投入总价（万元）
-        </label>
-    </div>
-
-</div>
-<div class="form-group">
-    <div class="x-valid">
-        <label class="col-sm-6 control-label">
-            数据计算值:
-        </label>
-    </div>
-    <div class="x-valid">
-        <label class="col-sm-6 control-label underDevelopmentTotalClassA">
-            0
-        </label>
-    </div>
-</div>
-
-
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript">
-
-    var underDevelopment = new Object();
-    underDevelopment.isNotNull = function (obj) {
-        if (obj == 0) {
-            return true;
-        }
-        if (obj) {
-            return true;
-        }
-        return false;
-    };
-    underDevelopment.config = function () {
-        return {
-            tableId: "underDevelopmentID",
-            currencyClass: "underDevelopmentIDCurrencyClassA",//建安成本小计 3个label class
-            areaClass: "underDevelopmentAreaClassA",
-            totalCostClass: "underDevelopmentTotalCostClassA",
-            valuationDateTotalClass: "underDevelopmentValuationDateTotalClassA",
-            continuedConstructionInvestmentTotalClass: "underDevelopmentTotalClassA"
-        };
-    };
-
-    var editIndexUnderDevelopment = null; //必须的局部变量
-
-    /**
-     * @author:  zch
-     * 描述:读取树形表单数据
-     * @date: 2018-08-23
-     **/
-    underDevelopment.loadData = function () {
-        var data = $('#' + underDevelopment.config().tableId).treegrid('getData');
-        return data;
-    };
-
-    /**
-     * @author:  zch
-     * 描述:注入修改的数据
-     * @date:2018-08-23
-     **/
-    underDevelopment.setServerData = function (data) {
-        this.data = data;
-    };
-    underDevelopment.setArea = function (data) {
-        $('.' + underDevelopment.config().areaClass).html(data);
-    };
-    underDevelopment.getColumns = function () {
-        var data = null;
-        var precision = 2;//精度
-        data = [[
-            {field: 'number', title: '序号', width: 50},
-            {field: 'name', title: '工程名称', width: 200},
-            {
-                field: 'currency',
-                title: ' 单方造价(元/㎡)',
-                width: 100,
-                editor: {type: "numberbox", options: {precision: precision}},
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            },
-            {
-                field: 'valuationDateDegreeCompletion',
-                title: '估价时点完工程度',
-                width: 110,
-                editor: {type: "text", options: {precision: precision}},
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            },
-            {field: 'valuationDateCurrency', title: '估价时点单价(元/㎡)', width: 110},
-            {
-                field: 'continuedConstructionInvestmentCurrency',
-                title: '续建投入单价(元/㎡)',
-                width: 110,
-                editor: {type: "numberbox", options: {precision: precision}},
-                styler: function (value, row, index) {
-                    return 'background-color:#F0F0F0;color:red;';
-                }
-            }
-        ]];
-        return data;
-    };
-
-    underDevelopment.treeGrIdInit = function (data) {
-        $('#' + underDevelopment.config().tableId).treegrid({
-            iconCls: 'icon-edit',
-            nowrap: false,
-            width: 1000,
-            height: 'auto',
-            collapsible: true,
-            title: "建安工程费用测算表",
-            data: data,
-            idField: 'id',//数据表格要有主键
-            treeField: 'name',//treegrid 树形结构主键 text
-            fitColumns: true,
-            striped: true,//显示斑马线
-            columns: underDevelopment.getColumns(),
-            onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
-                //根据id获取值
-                underDevelopment.updateChildren($('#' + underDevelopment.config().tableId).treegrid('find', row.id), changes);
-            }
-        });
-    };
-
-    /**
-     * @author:  zch
-     * 描述:数据表格初始化数据
-     * @date:2018-08-13
-     **/
-    underDevelopment.init = function () {
-        function isNotNull(obj) {
-            if (obj) {
-                return true;
-            }
-            return false;
-        }
-
-        var data = this.data;
-        var url = "${pageContext.request.contextPath}/marketCost/getBaseDicTree";
-        if (isNotNull(data)) {//引用修改数据继续处理
-            console.log("引用修改数据!");
-            underDevelopment.treeGrIdInit(data);
-        } else {//说明非修改 需要手动从服务器上获取数据
-            console.log("从服务器上获取数据!");
-            //说明 由于 easyui 如果是传入的data并且data中是没有初始化过的数据那么无法开启编辑
-            $('#' + underDevelopment.config().tableId).treegrid({
-                iconCls: 'icon-edit',
-                nowrap: false,
-                // rownumbers: true,
-                width: 700,
-                height: 'auto',
-                collapsible: true,
-                title: "建安工程费用测算表",
-                url: "${pageContext.request.contextPath}/marketCost/getBaseDicTree",
-                method: "get",
-                idField: 'id',//数据表格要有主键
-                treeField: 'name',//treegrid 树形结构主键 text
-                fitColumns: true,
-                striped: true,//显示斑马线
-                columns: underDevelopment.getColumns(),
-                onAfterEdit: function (row, changes) {//在用户完成编辑一行的时候触发
-                    //根据id获取值
-                    underDevelopment.updateChildren($('#' + underDevelopment.config().tableId).treegrid('find', row.id), changes);
-                }
-            });
-        }
-    };
-
-    underDevelopment.specialTreatment = function (obj) {
-        if (underDevelopment.isNotNull(obj)) {
-            var nnn = "" + obj + "";
-            var str = nnn.substring(nnn.length - 1, nnn.length);
-            if (str == '%') {//检测是否为百分比
-                str = AssessCommon.percentToPoint(nnn);
-                str = Number(str);
-                return str;
-            }
-            return obj;
-        }
-        return 0;
-    };
-    underDevelopment.algs = function (data) {
-        var currency = null;
-        var valuationDateDegreeCompletion = null;
-        var valuationDateCurrency = null;
-        currency = Number(data.currency);
-        valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
-        valuationDateDegreeCompletion = underDevelopment.specialTreatment(valuationDateDegreeCompletion);
-        valuationDateCurrency = currency * valuationDateDegreeCompletion;
-        data.valuationDateCurrency = valuationDateCurrency;
-        return data;
-    };
-
-    /**
-     * @author:  zch
-     * 描述:更新子节点数据
-     * @date:2018-08-13
-     **/
-    underDevelopment.updateChildren = function (data, changes) {
-        if (underDevelopment.isNotNull(data)) {
-            var currency = null;
-            var valuationDateDegreeCompletion = null;
-            var continuedConstructionInvestmentCurrency = null;
-            if (changes.currency) {//单方造价
-                currency = changes.currency;
-                if (AssessCommon.isNumber(currency)) {
-                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
-                    valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
-                } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
-            if (changes.continuedConstructionInvestmentCurrency) {
-                continuedConstructionInvestmentCurrency = changes.continuedConstructionInvestmentCurrency;
-                if (AssessCommon.isNumber(continuedConstructionInvestmentCurrency)) {
-                    currency = data.currency;
-                    valuationDateDegreeCompletion = data.valuationDateDegreeCompletion;
-                } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
-            if (changes.valuationDateDegreeCompletion) {
-                valuationDateDegreeCompletion = changes.valuationDateDegreeCompletion;
-                if (underDevelopment.isNotNull(valuationDateDegreeCompletion)) {
-                    currency = data.currency;
-                    continuedConstructionInvestmentCurrency = data.continuedConstructionInvestmentCurrency;
-                } else {
-                    Alert("请输入数字!");
-                    return false;
-                }
-            }
-            //更新节点值
-            $('#' + underDevelopment.config().tableId).treegrid('update', {
-                id: data.id,
-                row: underDevelopment.algs({
-                    currency: currency,
-                    continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency,
-                    valuationDateDegreeCompletion: valuationDateDegreeCompletion
-                })
-            });
-            if (!data.parent) {//说明不是父节点
-                underDevelopment.updateFather(data);
-            } else {
-                underDevelopment.updateDirectFather();
-            }
-        }
-    };
-
-    underDevelopment.updateDirectFather = function () {
-        //更新建安成本小计
-        underDevelopment.totalCalculation();
-    };
-
-    /**
-     * @author:  zch
-     * 描述:更新父节点数据
-     * @date:2018-08-13
-     **/
-    underDevelopment.updateFather = function (data) {
-        var parent = $('#' + underDevelopment.config().tableId).treegrid('getParent', data.id);
-        var childrens = parent.children;
-        var currency = 0;//单方造价
-        var valuationDateDegreeCompletion = 0;
-        var valuationDateCurrency = 0;
-        var continuedConstructionInvestmentCurrency = 0;
-        if (underDevelopment.isNotNull(childrens)) {
-            $.each(childrens, function (i, n) {
-                currency += Number(n.currency);
-                continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
-                valuationDateCurrency += Number(n.valuationDateCurrency);
-                valuationDateDegreeCompletion += Number(underDevelopment.specialTreatment(n.valuationDateDegreeCompletion));
-            });
-        }
-        parent.currency = currency;
-        parent.continuedConstructionInvestmentCurrency = continuedConstructionInvestmentCurrency;
-        parent.valuationDateCurrency = valuationDateCurrency;
-        parent.valuationDateDegreeCompletion = AssessCommon.pointToPercent(valuationDateDegreeCompletion);
-        //更新节点值
-        $('#' + underDevelopment.config().tableId).treegrid('update', {
-            id: parent.id,
-            row: parent
-        });
-        //更新建安成本小计
-        underDevelopment.totalCalculation();
-    };
-
-    /**
-     * @author:  zch
-     * 描述:建安成本小计
-     * @date:2018-08-14
-     **/
-    underDevelopment.totalCalculation = function () {
-        var continuedConstructionInvestmentCurrency = 0;//续建投入总价
-        $.each($('#' + underDevelopment.config().tableId).treegrid('getRoots'), function (i, n) {
-            continuedConstructionInvestmentCurrency += Number(n.continuedConstructionInvestmentCurrency);
-        });
-        underDevelopment.updateHtml({
-            continuedConstructionInvestmentCurrency: continuedConstructionInvestmentCurrency
-        });
-    };
-    /**
-     * @author:  zch
-     * 描述:建安成本小计 写html value
-     * @date:2018-08-14
-     **/
-    underDevelopment.updateHtml = function (data) {
-        $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html(data.continuedConstructionInvestmentCurrency);
-    };
-
-    /**
-     * @author:  zch
-     * 描述:获取建安成本小计
-     * @date:2018-08-14
-     **/
-    underDevelopment.getCalculatedResults = function () {
-        return $('.' + underDevelopment.config().continuedConstructionInvestmentTotalClass).html();
-    };
-
-
-    /**
-     * @author:  zch
-     * 描述:封装临时的方法到$datagrid上 enableCellEditing,editCell
-     * @date:2018-08-13
-     **/
-    underDevelopment.extendOverwrite = function () {
-        $.extend($.fn.datagrid.methods, {
-            editCell: function (jq, param) {
-                return jq.each(function () {
-                    var opts = $(this).datagrid('options');
-                    var fields = $(this).datagrid('getColumnFields', true).concat($(this).datagrid('getColumnFields'));
-                    for (var i = 0; i < fields.length; i++) {
-                        var col = $(this).datagrid('getColumnOption', fields[i]);
-                        col.editor1 = col.editor;
-                        if (fields[i] != param.field) {
-                            col.editor = null;
-                        }
-                    }
-                    $(this).datagrid('beginEdit', param.index);
-                    var ed = $(this).datagrid('getEditor', param);
-                    if (ed) {
-                        if ($(ed.target).hasClass('textbox-f')) {
-                            $(ed.target).textbox('textbox').focus();
+    var underEngineeringDevelopment = {};
+    underEngineeringDevelopment.treeViewHtml = '';
+    underEngineeringDevelopment.viewInit = function () {
+        //1.读取数据 2.将数据初始化成树形结构
+        $.ajax({
+            url: '${pageContext.request.contextPath}/marketCost/getTreeView',
+            type: 'get',
+            success: function (result) {
+                if (result.ret) {
+                    var html = ''
+                    $.each(result.data.nodes, function (i, item) {
+                        underEngineeringDevelopment.treeViewHtml += '<tr class="treegrid-' + item.level + '-' + item.id + '">';
+                        underEngineeringDevelopment.treeViewHtml += '<td>' + item.text + '</td>';
+                        if (item.nodes) {
+                            underEngineeringDevelopment.treeViewHtml += '<td></td><td></td><td></td><td></td>';
                         } else {
-                            $(ed.target).focus();
+                            underEngineeringDevelopment.treeViewHtml += '<td><input type="text" name="currency' + item.id + '" data-rule-number="true" onblur="underEngineeringDevelopment.sumTotal()"></td>';
+                            underEngineeringDevelopment.treeViewHtml += '<td><input type="text" name="valuationDateDegreeCompletion' + item.id + '" class="x-percent" onblur="underEngineeringDevelopment.sumTotal()"></td>';
+                            underEngineeringDevelopment.treeViewHtml += '<td></td><td></td>';
                         }
-                    }
-                    for (var i = 0; i < fields.length; i++) {
-                        var col = $(this).datagrid('getColumnOption', fields[i]);
-                        col.editor = col.editor1;
-                    }
-                });
-            },
-            enableCellEditing: function (jq) {
-                return jq.each(function () {
-                    var dg = $(this);
-                    var opts = dg.datagrid('options');
-                    opts.oldOnClickCell = opts.onClickCell;
-                    opts.onClickCell = function (index, field) {
-                        editIndexUnderDevelopment = index;
-                        if (opts.editIndex != undefined) {
-                            if (dg.datagrid('validateRow', opts.editIndex)) {
-                                dg.datagrid('endEdit', opts.editIndex);
-                                opts.editIndex = undefined;
-                            } else {
-                                return;
-                            }
+                        underEngineeringDevelopment.treeViewHtml += '</tr>';
+                        if (item.nodes) {
+                            underEngineeringDevelopment.recursionTreeView(item.nodes);
                         }
-                        dg.datagrid('selectRow', index).datagrid('editCell', {
-                            index: index,
-                            field: field
-                        });
-                        opts.editIndex = index;
-                        opts.oldOnClickCell.call(this, index, field);
-                    }
-                });
+                    });
+                    $("#underEngineeringDevelopmentID").find('tbody').empty().append(underEngineeringDevelopment.treeViewHtml);
+                    $("#underEngineeringDevelopmentID").treegrid();
+                    $("#underEngineeringDevelopmentForm").validate();
+                }
             }
-        });
-    };
+        })
+    }
 
-    underDevelopment.viewInit = function () {
-        underDevelopment.extendOverwrite();
-        underDevelopment.init();
-        /**
-         * @author:  zch
-         * 描述:开启单元格编辑
-         * @date:2018-08-13
-         **/
-        $('#' + underDevelopment.config().tableId).datagrid().datagrid('enableCellEditing');
-    };
+    //递归设置treeview的html
+    underEngineeringDevelopment.recursionTreeView = function (nodes) {
+        if (nodes && nodes.length > 0) {
+            $.each(nodes, function (i, item) {
+                underEngineeringDevelopment.treeViewHtml += '<tr class="treegrid-' + item.level + '-' + item.id + ' treegrid-parent-' + item.level + '">';
+                underEngineeringDevelopment.treeViewHtml += '<td>' + item.text + '</td>';
+                if (item.nodes) {
+                    underEngineeringDevelopment.treeViewHtml += '<td></td><td></td><td></td><td></td>';
+                } else {
+                    underEngineeringDevelopment.treeViewHtml += '<td><input type="text" name="currency' + item.id + '" data-rule-number="true" onblur="underEngineeringDevelopment.sumTotal()"></td>';
+                    underEngineeringDevelopment.treeViewHtml += '<td><input type="text" name="valuationDateDegreeCompletion' + item.id + '" class="x-percent" onblur="underEngineeringDevelopment.sumTotal()"></td>';
+                    underEngineeringDevelopment.treeViewHtml += '<td></td><td></td>';
+                }
+                underEngineeringDevelopment.treeViewHtml += '</tr>';
+                if (item.nodes) {
+                    underEngineeringDevelopment.recursionTreeView(item.nodes);
+                }
+            })
+        }
+    }
+
+    //获取合计值
+    underEngineeringDevelopment.getTotal = function () {
+        return $("#underEngineeringDevelopmentID").find('.total').text();
+    }
+
+    //计算合计值
+    underEngineeringDevelopment.sumTotal = function () {
+        var total = 0;
+        $("#underEngineeringDevelopmentID").find('tbody tr').each(function () {
+            var currency = $(this).find('td:eq(1)').find(':text').val();
+            var completionDegree = $(this).find('td:eq(2)').find(':text').attr('data-value');
+            if (AssessCommon.isNumber(currency) && AssessCommon.isNumber(completionDegree)) {
+                currency = parseFloat(currency);
+                var price = currency * parseFloat(completionDegree);//估价时点单价
+                $(this).find('td:eq(3)').text(price.toFixed(2));
+                var renewalPrice = currency - price;
+                console.log(renewalPrice);
+                total += renewalPrice;
+                $(this).find('td:eq(4)').text(renewalPrice.toFixed(2));
+            }
+        })
+        $("#underEngineeringDevelopmentID").find('.total').text(total.toFixed(2));
+    }
+
 </script>
