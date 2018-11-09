@@ -37,7 +37,7 @@ var houseHeating;
                 }
             });
             $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseHeating.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseHeating.prototype.config().type,
                 houseId:'0'
             }, {
@@ -51,7 +51,7 @@ var houseHeating;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -81,7 +81,7 @@ var houseHeating;
             data.type = houseHeating.prototype.config().type;
             data.houseId = '0' ;
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -102,7 +102,7 @@ var houseHeating;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -169,7 +169,7 @@ var houseAirConditioner;
                 }
             });
             $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseAirConditioner.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseAirConditioner.prototype.config().type,
                 houseId:'0'
             }, {
@@ -183,7 +183,7 @@ var houseAirConditioner;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -213,7 +213,7 @@ var houseAirConditioner;
             data.type = houseAirConditioner.prototype.config().type;
             data.houseId = '0' ;
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -234,7 +234,7 @@ var houseAirConditioner;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -301,7 +301,7 @@ var houseNewWind;
                 }
             });
             $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseNewWind.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseNewWind.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseNewWind.prototype.config().type,
                 houseId:'0'
             }, {
@@ -315,7 +315,7 @@ var houseNewWind;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -345,7 +345,7 @@ var houseNewWind;
             data.type = houseNewWind.prototype.config().type;
             data.houseId = '0' ;
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -366,7 +366,7 @@ var houseNewWind;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -438,7 +438,7 @@ var houseCorollaryEquipment;
                 }
             });
             $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath()+"/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
                 houseId:'0'
             }, {
                 showColumns: false,
@@ -451,7 +451,7 @@ var houseCorollaryEquipment;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/deleteBasicHouseCorollaryEquipment",
+                url: getContextPath()+"/basicHouseCorollaryEquipment/deleteBasicHouseCorollaryEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -480,7 +480,7 @@ var houseCorollaryEquipment;
             var data = formParams(houseCorollaryEquipment.prototype.config().frm);
             data.houseId = '0' ;
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
+                url: getContextPath()+"/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -501,7 +501,7 @@ var houseCorollaryEquipment;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBasicHouseCorollaryEquipmentById",
+                url: getContextPath()+"/basicHouseCorollaryEquipment/getBasicHouseCorollaryEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -573,7 +573,7 @@ var houseFaceStreet;
                 }
             });
             $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/basicHouseFaceStreet/getBootstrapTableVo", cols, {
+            TableInit(houseFaceStreet.prototype.config().table, getContextPath()+"/basicHouseFaceStreet/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -586,7 +586,7 @@ var houseFaceStreet;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseFaceStreet/deleteBasicHouseFaceStreet",
+                url: getContextPath()+"/basicHouseFaceStreet/deleteBasicHouseFaceStreet",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -625,7 +625,7 @@ var houseFaceStreet;
             var data = formParams(houseFaceStreet.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
+                url: getContextPath()+"/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -646,7 +646,7 @@ var houseFaceStreet;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseFaceStreet/getBasicHouseFaceStreetById",
+                url: getContextPath()+"/basicHouseFaceStreet/getBasicHouseFaceStreetById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -754,7 +754,7 @@ var houseIntelligent;
                 }
             });
             $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/basicHouseIntelligent/getBootstrapTableVo", cols, {
+            TableInit(houseIntelligent.prototype.config().table, getContextPath()+"/basicHouseIntelligent/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -767,7 +767,7 @@ var houseIntelligent;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseIntelligent/deleteBasicHouseIntelligent",
+                url: getContextPath()+"/basicHouseIntelligent/deleteBasicHouseIntelligent",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -796,7 +796,7 @@ var houseIntelligent;
             var data = formParams(houseIntelligent.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
+                url: getContextPath()+"/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -817,7 +817,7 @@ var houseIntelligent;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseIntelligent/getBasicHouseIntelligentById",
+                url: getContextPath()+"/basicHouseIntelligent/getBasicHouseIntelligentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -898,7 +898,7 @@ var houseWater;
                 }
             });
             $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/basicHouseWater/getBootstrapTableVo", cols, {
+            TableInit(houseWater.prototype.config().table, getContextPath()+"/basicHouseWater/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -911,7 +911,7 @@ var houseWater;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseWater/deleteBasicHouseWater",
+                url: getContextPath()+"/basicHouseWater/deleteBasicHouseWater",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -940,7 +940,7 @@ var houseWater;
             var data = formParams(houseWater.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseWater/saveAndUpdateBasicHouseWater",
+                url: getContextPath()+"/basicHouseWater/saveAndUpdateBasicHouseWater",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -961,7 +961,7 @@ var houseWater;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseWater/getBasicHouseWaterById",
+                url: getContextPath()+"/basicHouseWater/getBasicHouseWaterById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1048,7 +1048,7 @@ var houseRoom;
                 }
             });
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/basicHouseRoom/getBootstrapTableVo", cols, {
+            TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {
                 houseId: 0
             }, {
                 showColumns: false,
@@ -1061,7 +1061,7 @@ var houseRoom;
         },
         removeData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseRoom/deleteBasicHouseRoom",
+                url: getContextPath()+"/basicHouseRoom/deleteBasicHouseRoom",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1102,7 +1102,7 @@ var houseRoom;
             }
             var data = formParams(houseRoom.prototype.config().frmSubclass);
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseRoom/saveAndUpdateBasicHouseRoomDecorate",
+                url: getContextPath()+"/basicHouseRoom/saveAndUpdateBasicHouseRoomDecorate",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1126,7 +1126,7 @@ var houseRoom;
         },
         subclassRemoveData: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseRoom/deleteBasicHouseRoomDecorate",
+                url: getContextPath()+"/basicHouseRoom/deleteBasicHouseRoomDecorate",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1175,7 +1175,7 @@ var houseRoom;
                 }
             });
             $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
-            TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
+            TableInit(houseRoom.prototype.config().tableSubclass, getContextPath()+"/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
                 roomId: id,
             }, {
                 showColumns: false,
@@ -1193,7 +1193,7 @@ var houseRoom;
             var data = formParams(houseRoom.prototype.config().frm);
             data.houseId = "0";
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseRoom/saveAndUpdateBasicHouseRoom",
+                url: getContextPath()+"/basicHouseRoom/saveAndUpdateBasicHouseRoom",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1214,7 +1214,7 @@ var houseRoom;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouseRoom/getBasicHouseRoomById",
+                url: getContextPath()+"/basicHouseRoom/getBasicHouseRoomById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},

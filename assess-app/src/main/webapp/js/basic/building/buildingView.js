@@ -44,7 +44,7 @@ var navButtonBuild;
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.BasicBuilding,
                 tableId: objectData.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
+                // creater: "${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -56,7 +56,7 @@ var navButtonBuild;
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.BasicBuilding,
                 tableId: navButtonBuild.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
+                // creater: "${currUserAccount}"
             },
             deleteFlag: true
         })

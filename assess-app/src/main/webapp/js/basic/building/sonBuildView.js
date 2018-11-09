@@ -65,7 +65,7 @@ var buildingModel;
             buildingOutfit: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingOutfit/getBasicBuildingOutfitById",
+                        url: getContextPath()+"/basicBuildingOutfit/getBasicBuildingOutfitById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -93,7 +93,7 @@ var buildingModel;
                     data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModel.prototype.getBuildingId();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
+                        url: getContextPath()+"/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -119,7 +119,7 @@ var buildingModel;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingOutfit/deleteBasicBuildingOutfit",
+                        url: getContextPath()+"/basicBuildingOutfit/deleteBasicBuildingOutfit",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -167,7 +167,7 @@ var buildingModel;
                         }
                     });
                     $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
-                    TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
+                    TableInit(buildingModel.prototype.config().sonTable, getContextPath()+"/basicBuildingOutfit/getBootstrapTableVo", cols, {
                         buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
                         buildingId:buildingModel.prototype.getBuildingId()
                     }, {
@@ -185,7 +185,7 @@ var buildingModel;
             buildingSurface: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingSurface/getBasicBuildingSurfaceById",
+                        url: getContextPath()+"/basicBuildingSurface/getBasicBuildingSurfaceById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -213,7 +213,7 @@ var buildingModel;
                     data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModel.prototype.getBuildingId();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
+                        url: getContextPath()+"/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -239,7 +239,7 @@ var buildingModel;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingSurface/deleteBasicBuildingSurface",
+                        url: getContextPath()+"/basicBuildingSurface/deleteBasicBuildingSurface",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -276,7 +276,7 @@ var buildingModel;
                         }
                     });
                     $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
-                    TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
+                    TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, getContextPath()+"/basicBuildingSurface/getBootstrapTableVo", cols, {
                         buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
                         buildingId:buildingModel.prototype.getBuildingId()
                     }, {
@@ -293,7 +293,7 @@ var buildingModel;
             buildingMaintenance: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingMaintenance/getBasicBuildingMaintenanceById",
+                        url: getContextPath()+"/basicBuildingMaintenance/getBasicBuildingMaintenanceById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -321,7 +321,7 @@ var buildingModel;
                     data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModel.prototype.getBuildingId();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
+                        url: getContextPath()+"/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -347,7 +347,7 @@ var buildingModel;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingMaintenance/deleteBasicBuildingMaintenance",
+                        url: getContextPath()+"/basicBuildingMaintenance/deleteBasicBuildingMaintenance",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -388,7 +388,7 @@ var buildingModel;
                         }
                     });
                     $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
-                    TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
+                    TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, getContextPath()+"/basicBuildingMaintenance/getBootstrapTableVo", cols, {
                         buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
                         buildingId:buildingModel.prototype.getBuildingId()
                     }, {
@@ -405,7 +405,7 @@ var buildingModel;
             buildingFunction: {
                 getAndInit: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingFunction/getBasicBuildingFunctionById",
+                        url: getContextPath()+"/basicBuildingFunction/getBasicBuildingFunctionById",
                         type: "get",
                         dataType: "json",
                         data: {id: id},
@@ -433,7 +433,7 @@ var buildingModel;
                     data.buildingNumber = buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModel.prototype.getBuildingId();
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
+                        url: getContextPath()+"/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
                         type: "post",
                         dataType: "json",
                         data: data,
@@ -459,7 +459,7 @@ var buildingModel;
                 },
                 removeData: function (id) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/basicBuildingFunction/deleteBasicBuildingFunction",
+                        url: getContextPath()+"/basicBuildingFunction/deleteBasicBuildingFunction",
                         type: "post",
                         dataType: "json",
                         data: {id: id},
@@ -510,7 +510,7 @@ var buildingModel;
                         }
                     });
                     $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
-                    TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
+                    TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, getContextPath()+"/basicBuildingFunction/getBootstrapTableVo", cols, {
                         buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
                         buildingId:buildingModel.prototype.getBuildingId()
                     }, {
