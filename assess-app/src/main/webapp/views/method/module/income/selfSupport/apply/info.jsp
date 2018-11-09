@@ -480,7 +480,7 @@
 </div>
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;" data-type="0"
-       onchange="selfSupportForecast.importHistory(this);">
+       onchange="selfSupport.importHistory(this);">
 
 <script type="text/html" id="selfSupportResultHtml">
     <tr data-id="{id}">
@@ -837,6 +837,18 @@
         });
     }
 
+    //历史数据导入
+    selfSupport.importHistory = function (_this) {
+        switch (incomeIndex.getFormType()) {
+            case '0':
+                selfSupportForecast.importHistory(_this);
+                break;
+            case '1':
+                forecastRestaurant.importHistory(_this);
+                break;
+        }
+    }
+
     //获取报酬率
     selfSupport.getRewardRate = function (_this) {
         rewardRateFunc.calculation(function (result) {
@@ -891,7 +903,7 @@
         formData.mdIncome.area = $("#selfSupportResult").find('[data-name=area]').text();
         formData.mdIncome.price = $("#selfSupportResult").find('[data-name=price]').text();
         formData.mdIncome.operationMode = 0;
-        formData.mdIncome.formType =incomeIndex.getFormType();
+        formData.mdIncome.formType = incomeIndex.getFormType();
         formData.mdIncome.averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');
         formData.mdIncome.averageProfitRateRemark = $("#frm_self_support").find('[name=averageProfitRateRemark]').val();
         formData.mdIncome.rewardRate = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');
