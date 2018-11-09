@@ -466,7 +466,7 @@
                         data: {
                             maxRows: 10,
                             unitNumber: itemVal,
-                            buildingId: buildingId
+                            caseBuildingMainId: buildingId
                         },
                         success: function (result) {
                             if (result.ret) {

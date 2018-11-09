@@ -183,77 +183,74 @@ public class PublicBasicService {
         CaseEstate caseEstate = null;
         CaseEstateLandState caseEstateLandState = null;
         List<SysAttachmentDto> sysAttachmentDtoList = null;
-        //-----------------------------------||---------------------------
-        if (basicEstate != null) {
-            SysAttachmentDto query = new SysAttachmentDto();
-            query.setTableId(basicEstate.getId());
-            query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-            if (basicEstate.getCaseEstateId() != null) {
-                caseEstate = caseEstateService.getCaseEstateById(basicEstate.getCaseEstateId());
-                //虽然有 案例id但是无法找到具体数据的情况(一般不会发生)
-                if (caseEstate == null) {
-                    caseEstate = new CaseEstate();
-                    BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
-                    caseEstate.setId(null);
-                    caseEstate.setGmtCreated(null);
-                    caseEstate.setGmtModified(null);
-                }
-                //有案例 id 并且找到
-                if (caseEstate != null) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
-                    caseEstate.setId(basicEstate.getCaseEstateId());
-                    caseEstate.setGmtCreated(null);
-                    caseEstate.setGmtModified(null);
-                }
-            }
-            //第一次情况
-            if (basicEstate.getCaseEstateId() == null) {
+        SysAttachmentDto query = new SysAttachmentDto();
+        query.setTableId(basicEstate.getId());
+        query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+        if (basicEstate.getCaseEstateId() != null) {
+            caseEstate = caseEstateService.getCaseEstateById(basicEstate.getCaseEstateId());
+            //虽然有 案例id但是无法找到具体数据的情况(一般不会发生)
+            if (caseEstate == null) {
                 caseEstate = new CaseEstate();
                 BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
                 caseEstate.setId(null);
                 caseEstate.setGmtCreated(null);
                 caseEstate.setGmtModified(null);
             }
-            //升级版本 以及更改某些数据  或者 新添数据
+            //有案例 id 并且找到
             if (caseEstate != null) {
-                caseEstateService.upgradeVersion(caseEstate);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        sysAttachmentDto.setTableId(caseEstate.getId());
-                        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
-                    }
-                }
+                BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
+                caseEstate.setId(basicEstate.getCaseEstateId());
+                caseEstate.setGmtCreated(null);
+                caseEstate.setGmtModified(null);
             }
         }
+        //第一次情况
+        if (basicEstate.getCaseEstateId() == null) {
+            caseEstate = new CaseEstate();
+            BeanCopyHelp.copyPropertiesIgnoreNull(basicEstate, caseEstate);
+            caseEstate.setId(null);
+            caseEstate.setGmtCreated(null);
+            caseEstate.setGmtModified(null);
+        }
         if (caseEstate != null) {
+            //升级版本 以及更改某些数据  或者 新添数据
+            caseEstateService.upgradeVersion(caseEstate);
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                    sysAttachmentDto.setTableId(caseEstate.getId());
+                    sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+                }
+            }
             if (caseEstate.getId() != null) {
-                if (basicEstateLandState.getCaseEstateLandStateId() != null) {
-                    caseEstateLandState = caseEstateLandStateService.getCaseEstateLandStateById(basicEstateLandState.getCaseEstateLandStateId());
-                    if (caseEstateLandState != null) {
-                        BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
-                        caseEstateLandState.setId(basicEstateLandState.getCaseEstateLandStateId());
-                        caseEstateLandState.setGmtCreated(null);
-                        caseEstateLandState.setGmtModified(null);
+                if (basicEstateLandState != null) {
+                    if (basicEstateLandState.getCaseEstateLandStateId() != null) {
+                        caseEstateLandState = caseEstateLandStateService.getCaseEstateLandStateById(basicEstateLandState.getCaseEstateLandStateId());
+                        if (caseEstateLandState != null) {
+                            BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
+                            caseEstateLandState.setId(basicEstateLandState.getCaseEstateLandStateId());
+                            caseEstateLandState.setGmtCreated(null);
+                            caseEstateLandState.setGmtModified(null);
+                        }
+                        if (caseEstateLandState == null) {
+                            caseEstateLandState = new CaseEstateLandState();
+                            BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
+                            caseEstateLandState.setId(null);
+                            caseEstateLandState.setGmtCreated(null);
+                            caseEstateLandState.setGmtModified(null);
+                        }
                     }
-                    if (caseEstateLandState == null) {
+                    if (basicEstateLandState.getCaseEstateLandStateId() == null) {
                         caseEstateLandState = new CaseEstateLandState();
                         BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
                         caseEstateLandState.setId(null);
                         caseEstateLandState.setGmtCreated(null);
                         caseEstateLandState.setGmtModified(null);
                     }
-                }
-                if (basicEstateLandState.getCaseEstateLandStateId() == null) {
-                    caseEstateLandState = new CaseEstateLandState();
-                    BeanCopyHelp.copyPropertiesIgnoreNull(basicEstateLandState, caseEstateLandState);
-                    caseEstateLandState.setId(null);
-                    caseEstateLandState.setGmtCreated(null);
-                    caseEstateLandState.setGmtModified(null);
-                }
-                if (caseEstateLandState != null) {
-                    caseEstateLandState.setEstateId(caseEstate.getId());
-                    caseEstateLandStateService.upgradeVersion(caseEstateLandState);
+                    if (caseEstateLandState != null) {
+                        caseEstateLandState.setEstateId(caseEstate.getId());
+                        caseEstateLandStateService.upgradeVersion(caseEstateLandState);
+                    }
                 }
             }
         }
@@ -268,24 +265,22 @@ public class PublicBasicService {
         BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
         BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
 
-        queryBasicEstateNetwork.setEstateId(basicEstate.getId());
-        queryBasicEstateParking.setEstateId(basicEstate.getId());
-        queryBasicEstateSupply.setEstateId(basicEstate.getId());
-        queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
-        queryBasicMatchingMedical.setEstateId(basicEstate.getId());
-        queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
-        queryBasicMatchingLeisurePlace.setEstateId(basicEstate.getId());
-        queryBasicMatchingFinance.setEstateId(basicEstate.getId());
-        queryBasicMatchingEnvironment.setEstateId(basicEstate.getId());
-        queryBasicMatchingEducation.setEstateId(basicEstate.getId());
+        if (basicEstate.getId() != null){
+            queryBasicEstateNetwork.setEstateId(basicEstate.getId());
+            queryBasicEstateParking.setEstateId(basicEstate.getId());
+            queryBasicEstateSupply.setEstateId(basicEstate.getId());
+            queryBasicMatchingTraffic.setEstateId(basicEstate.getId());
+            queryBasicMatchingMedical.setEstateId(basicEstate.getId());
+            queryBasicMatchingMaterial.setEstateId(basicEstate.getId());
+            queryBasicMatchingLeisurePlace.setEstateId(basicEstate.getId());
+            queryBasicMatchingFinance.setEstateId(basicEstate.getId());
+            queryBasicMatchingEnvironment.setEstateId(basicEstate.getId());
+            queryBasicMatchingEducation.setEstateId(basicEstate.getId());
+        }
 
-        List<BasicEstateNetwork> basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
-        List<BasicEstateParking> basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
-        List<BasicEstateSupply> basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
-
-        basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
-        basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
-        basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
+        List<BasicEstateNetwork> basicEstateNetworkList = null;
+        List<BasicEstateParking> basicEstateParkingList = null;
+        List<BasicEstateSupply> basicEstateSupplyList = null;
         List<BasicMatchingEducation> basicMatchingEducationList = null;
         List<BasicMatchingEnvironment> basicMatchingEnvironmentList = null;
         List<BasicMatchingFinance> basicMatchingFinanceList = null;
@@ -293,6 +288,10 @@ public class PublicBasicService {
         List<BasicMatchingMaterial> basicMatchingMaterialList = null;
         List<BasicMatchingMedical> basicMatchingMedicalList = null;
         List<BasicMatchingTraffic> basicMatchingTrafficList = null;
+
+        basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
+        basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
+        basicEstateSupplyList = basicEstateSupplyService.basicEstateSupplyList(queryBasicEstateSupply);
         basicMatchingEducationList = basicMatchingEducationService.basicMatchingEducationList(queryBasicMatchingEducation);
         basicMatchingEnvironmentList = basicMatchingEnvironmentService.basicMatchingEnvironmentList(queryBasicMatchingEnvironment);
         basicMatchingFinanceList = basicMatchingFinanceService.basicMatchingFinanceList(queryBasicMatchingFinance);
@@ -301,16 +300,18 @@ public class PublicBasicService {
         basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
         basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
         if (caseEstate != null) {
-            this.flowWriteCaseNetwork(basicEstateNetworkList, caseEstate);
-            this.flowWriteCaseParking(basicEstateParkingList, caseEstate);
-            this.flowWriteCaseSupply(basicEstateSupplyList, caseEstate);
-            this.flowWriteCaseTraffic(basicMatchingTrafficList, caseEstate);
-            this.flowWriteCaseMedical(basicMatchingMedicalList, caseEstate);
-            this.flowWriteCaseMaterial(basicMatchingMaterialList, caseEstate);
-            this.flowWriteCaseLeisurePlace(basicMatchingLeisurePlaceList, caseEstate);
-            this.flowWriteCaseFinance(basicMatchingFinanceList, caseEstate);
-            this.flowWriteCaseEnvironment(basicMatchingEnvironmentList, caseEstate);
-            this.flowWriteCaseEducation(basicMatchingEducationList, caseEstate);
+            if (caseEstate.getId() != null) {
+                this.flowWriteCaseNetwork(basicEstateNetworkList, caseEstate);
+                this.flowWriteCaseParking(basicEstateParkingList, caseEstate);
+                this.flowWriteCaseSupply(basicEstateSupplyList, caseEstate);
+                this.flowWriteCaseTraffic(basicMatchingTrafficList, caseEstate);
+                this.flowWriteCaseMedical(basicMatchingMedicalList, caseEstate);
+                this.flowWriteCaseMaterial(basicMatchingMaterialList, caseEstate);
+                this.flowWriteCaseLeisurePlace(basicMatchingLeisurePlaceList, caseEstate);
+                this.flowWriteCaseFinance(basicMatchingFinanceList, caseEstate);
+                this.flowWriteCaseEnvironment(basicMatchingEnvironmentList, caseEstate);
+                this.flowWriteCaseEducation(basicMatchingEducationList, caseEstate);
+            }
         }
         return caseEstate;
     }
@@ -684,8 +685,8 @@ public class PublicBasicService {
         if (caseBuildingMain != null) {
             caseBuildingMain.setEstateId(estateId);
             caseBuildingMainId = caseBuildingMainService.upgradeVersion(caseBuildingMain);
+            caseBuildingMain.setId(caseBuildingMainId);
         }
-        caseBuildingMain.setId(caseBuildingMainId);
         return caseBuildingMain;
     }
 
@@ -754,18 +755,22 @@ public class PublicBasicService {
                     caseBuilding.setGmtCreated(null);
                     caseBuilding.setGmtModified(null);
                 }
-                caseBuildingService.upgradeVersion(caseBuilding);
-                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-                        sysAttachmentDto.setTableId(caseBuilding.getId());
-                        baseAttachmentService.updateAttachment(sysAttachmentDto);
+                if (caseBuilding != null){
+                    caseBuildingService.upgradeVersion(caseBuilding);
+                    if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                            sysAttachmentDto.setTableId(caseBuilding.getId());
+                            baseAttachmentService.updateAttachment(sysAttachmentDto);
+                        }
+                    }
+                    if (caseBuilding.getId() != null){
+                        this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
+                        this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
+                        this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
+                        this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
                     }
                 }
-                this.flowWriteCaseBuildingOutfit(outfitList, caseBuilding);
-                this.flowWriteCaseBuildingMaintenance(maintenanceList, caseBuilding);
-                this.flowWriteCaseBuildingSurface(surfaceList, caseBuilding);
-                this.flowWriteCaseBuildingFunction(functionList, caseBuilding);
             }
         }
     }
@@ -934,20 +939,30 @@ public class PublicBasicService {
             caseUnit.setGmtCreated(null);
             caseUnit.setGmtModified(null);
         }
-        caseUnit.setCaseBuildingMainId(caseBuildingMainId);
-        caseUnitService.upgradeVersion(caseUnit);
+        if (caseUnit != null) {
+            caseUnit.setCaseBuildingMainId(caseBuildingMainId);
+            caseUnitService.upgradeVersion(caseUnit);
+        }
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
         BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
         BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
-        queryBasicUnitHuxing.setUnitId(basicUnit.getId());
-        queryBasicUnitElevator.setUnitId(basicUnit.getId());
-        queryBasicUnitDecorate.setUnitId(basicUnit.getId());
+        if (basicUnit != null) {
+            if (basicUnit.getId() != null) {
+                queryBasicUnitHuxing.setUnitId(basicUnit.getId());
+                queryBasicUnitElevator.setUnitId(basicUnit.getId());
+                queryBasicUnitDecorate.setUnitId(basicUnit.getId());
+            }
+        }
         List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
         List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
         List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
-        this.flowWriteCaseDecorate(basicUnitDecorateList, caseUnit);
-        this.flowWriteCaseHuxing(basicUnitHuxingList, caseUnit);
-        this.flowWriteCaseElevator(basicUnitElevatorList, caseUnit);
+        if (caseUnit != null) {
+            if (caseUnit.getId() != null) {
+                this.flowWriteCaseDecorate(basicUnitDecorateList, caseUnit);
+                this.flowWriteCaseHuxing(basicUnitHuxingList, caseUnit);
+                this.flowWriteCaseElevator(basicUnitElevatorList, caseUnit);
+            }
+        }
         return caseUnit;
     }
 
@@ -1084,32 +1099,36 @@ public class PublicBasicService {
             caseHouse.setGmtCreated(null);
             caseHouse.setGmtModified(null);
         }
-        caseHouse.setUnitId(unitId);
-        caseHouseService.upgradeVersion(caseHouse);
-        if (caseHouse.getId() != null) {
-            if (basicTrading.getCaseTradingId() != null) {
-                caseHouseTrading = caseHouseTradingService.getCaseHouseTradingById(basicTrading.getCaseTradingId());
-                if (caseHouseTrading != null) {
-                    BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
-                    caseHouseTrading.setId(basicTrading.getCaseTradingId());
-                }
-                if (caseHouseTrading == null) {
-                    caseHouseTrading = new CaseHouseTrading();
-                    BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
-                    caseHouseTrading.setId(null);
-                    caseHouseTrading.setGmtCreated(null);
-                    caseHouseTrading.setGmtModified(null);
+        if (caseHouse != null) {
+            caseHouse.setUnitId(unitId);
+            caseHouseService.upgradeVersion(caseHouse);
+            if (caseHouse.getId() != null) {
+                if (basicTrading != null){
+                    if (basicTrading.getCaseTradingId() != null) {
+                        caseHouseTrading = caseHouseTradingService.getCaseHouseTradingById(basicTrading.getCaseTradingId());
+                        if (caseHouseTrading != null) {
+                            BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                            caseHouseTrading.setId(basicTrading.getCaseTradingId());
+                        }
+                        if (caseHouseTrading == null) {
+                            caseHouseTrading = new CaseHouseTrading();
+                            BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                            caseHouseTrading.setId(null);
+                            caseHouseTrading.setGmtCreated(null);
+                            caseHouseTrading.setGmtModified(null);
+                        }
+                    }
+                    if (basicTrading.getCaseTradingId() == null) {
+                        caseHouseTrading = new CaseHouseTrading();
+                        BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
+                        caseHouseTrading.setId(null);
+                        caseHouseTrading.setGmtCreated(null);
+                        caseHouseTrading.setGmtModified(null);
+                    }
+                    caseHouseTrading.setHouseId(caseHouse.getId());
+                    caseHouseTradingService.upgradeVersion(caseHouseTrading);
                 }
             }
-            if (basicTrading.getCaseTradingId() == null) {
-                caseHouseTrading = new CaseHouseTrading();
-                BeanCopyHelp.copyPropertiesIgnoreNull(basicTrading, caseHouseTrading);
-                caseHouseTrading.setId(null);
-                caseHouseTrading.setGmtCreated(null);
-                caseHouseTrading.setGmtModified(null);
-            }
-            caseHouseTrading.setHouseId(caseHouse.getId());
-            Integer caseTrading = caseHouseTradingService.upgradeVersion(caseHouseTrading);
         }
         List<BasicHouseTradingSell> basicHouseTradingSellList = null;
         List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
@@ -1129,14 +1148,18 @@ public class PublicBasicService {
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
 
-        queryLease.setHouseId(basicHouse.getId());
-        querySell.setHouseId(basicHouse.getId());
-        queryRoom.setHouseId(basicHouse.getId());
-        queryBasicHouseWater.setHouseId(basicHouse.getId());
-        queryBasicHouseIntelligent.setHouseId(basicHouse.getId());
-        queryBasicHouseFaceStreet.setHouseId(basicHouse.getId());
-        queryBasicHouseEquipment.setHouseId(basicHouse.getId());
-        queryBasicHouseCorollaryEquipment.setHouseId(basicHouse.getId());
+        if (basicHouse != null) {
+            if (basicHouse.getId() != null) {
+                queryLease.setHouseId(basicHouse.getId());
+                querySell.setHouseId(basicHouse.getId());
+                queryRoom.setHouseId(basicHouse.getId());
+                queryBasicHouseWater.setHouseId(basicHouse.getId());
+                queryBasicHouseIntelligent.setHouseId(basicHouse.getId());
+                queryBasicHouseFaceStreet.setHouseId(basicHouse.getId());
+                queryBasicHouseEquipment.setHouseId(basicHouse.getId());
+                queryBasicHouseCorollaryEquipment.setHouseId(basicHouse.getId());
+            }
+        }
 
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
@@ -1147,13 +1170,17 @@ public class PublicBasicService {
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
 
-        this.flowWriteCaseSellAndLease(basicHouseTradingSellList, basicHouseTradingLeaseList, caseHouse);
-        this.flowWriteCaseHouseRoom(basicHouseRoomList, caseHouse);
-        this.flowWriteCaseWater(basicHouseWaterList, caseHouse);
-        this.flowWriteCaseIntelligent(basicHouseIntelligentList, caseHouse);
-        this.flowWriteCaseFaceStreet(basicHouseFaceStreetList, caseHouse);
-        this.flowWriteCaseEquipment(basicHouseEquipmentList, caseHouse);
-        this.flowWriteCaseCorollaryEquipment(basicHouseCorollaryEquipmentList, caseHouse);
+        if (caseHouse != null) {
+            if (caseHouse.getId() != null) {
+                this.flowWriteCaseSellAndLease(basicHouseTradingSellList, basicHouseTradingLeaseList, caseHouse);
+                this.flowWriteCaseHouseRoom(basicHouseRoomList, caseHouse);
+                this.flowWriteCaseWater(basicHouseWaterList, caseHouse);
+                this.flowWriteCaseIntelligent(basicHouseIntelligentList, caseHouse);
+                this.flowWriteCaseFaceStreet(basicHouseFaceStreetList, caseHouse);
+                this.flowWriteCaseEquipment(basicHouseEquipmentList, caseHouse);
+                this.flowWriteCaseCorollaryEquipment(basicHouseCorollaryEquipmentList, caseHouse);
+            }
+        }
     }
 
     private void flowWriteCaseCorollaryEquipment(List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList, CaseHouse caseHouse) throws Exception {
@@ -1444,7 +1471,7 @@ public class PublicBasicService {
                                 caseHouseRoomDecorate.setId(po.getCaseRoomDecorateId());
                                 caseHouseRoomDecorate.setGmtCreated(null);
                                 caseHouseRoomDecorate.setGmtModified(null);
-                            }else {
+                            } else {
                                 caseHouseRoomDecorate = new CaseHouseRoomDecorate();
                                 BeanUtils.copyProperties(po, caseHouseRoomDecorate);
                                 caseHouseRoomDecorate.setGmtCreated(null);
@@ -1488,7 +1515,9 @@ public class PublicBasicService {
             CaseUnit caseUnit = null;
 
             //处理楼盘
-            caseEstate = this.flowWriteCaseEstate(basicEstate, basicEstateLandState);
+            if (basicEstate != null) {
+                caseEstate = this.flowWriteCaseEstate(basicEstate, basicEstateLandState);
+            }
 
             if (basicBuildingMain != null) {
                 if (caseEstate == null && basicBuildingMain.getEstateId() == null) {
@@ -1501,9 +1530,13 @@ public class PublicBasicService {
                 if (caseEstate != null) {
                     caseEstateId = caseEstate.getId();
                 }
-                caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstateId);
-                //处理楼栋 关联表
-                this.flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
+                if (caseEstateId != null) {
+                    caseBuildingMain = this.flowWriteCaseBuildingMain(basicBuildingMain, caseEstateId);
+                }
+                if (caseBuildingMain != null) {
+                    //处理楼栋 关联表
+                    this.flowWriteCaseBuilding(basicBuildingMain, caseBuildingMain);
+                }
             }
 
             if (basicUnit != null) {
@@ -1517,8 +1550,10 @@ public class PublicBasicService {
                 if (caseBuildingMain != null) {
                     caseBuildingMainId = caseBuildingMain.getId();
                 }
-                //处理单元
-                caseUnit = this.flowWriteCaseUnit(basicUnit, caseBuildingMainId);
+                if (caseBuildingMainId != null) {
+                    //处理单元
+                    caseUnit = this.flowWriteCaseUnit(basicUnit, caseBuildingMainId);
+                }
             }
             if (basicHouse != null) {
                 if (caseUnit == null && basicHouse.getUnitId() == null) {
@@ -1531,8 +1566,10 @@ public class PublicBasicService {
                 if (caseUnit != null) {
                     unitId = caseUnit.getId();
                 }
-                //处理房屋
-                this.flowWriteCaseHouse(basicHouse, basicTrading, unitId);
+                if (unitId != null) {
+                    //处理房屋
+                    this.flowWriteCaseHouse(basicHouse, basicTrading, unitId);
+                }
             }
         }
     }
