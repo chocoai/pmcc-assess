@@ -12,7 +12,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2>假设开发法</h2>
+        <h3>假设开发法</h3>
         <div class="clearfix"></div>
     </div>
 
