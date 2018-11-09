@@ -107,7 +107,6 @@
                 var price = currency * parseFloat(completionDegree);//估价时点单价
                 $(this).find('td:eq(3)').text(price.toFixed(2));
                 var renewalPrice = currency - price;
-                console.log(renewalPrice);
                 total += renewalPrice;
                 $(this).find('td:eq(4)').text(renewalPrice.toFixed(2));
             }

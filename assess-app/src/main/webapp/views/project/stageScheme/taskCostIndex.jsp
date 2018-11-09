@@ -5,6 +5,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <link href="/pmcc-assess/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/layer/theme/default/layer.css" rel="stylesheet">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
@@ -13,7 +14,6 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -46,6 +46,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js"></script>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="text/javascript">
     $(function () {
         //支撑信息初始化
