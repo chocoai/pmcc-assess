@@ -613,6 +613,7 @@
                 objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
+            $("#" + objectData.config.basicEstate.frm).initForm({name:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val()});
             estateNetwork.prototype.loadDataDicList();
             estateParking.prototype.loadDataDicList();
             estateSupplyWater.prototype.loadDataDicList();
@@ -1037,15 +1038,15 @@
         show: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
-                // toastr.success('未选择楼栋');
             }
+
             $('#caseTab a').eq(2).tab('show');
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).hide();
             unitDecorate.prototype.loadDataDicList();
             unitHuxing.prototype.loadDataDicList();
             unitElevator.prototype.loadDataDicList();
-
+            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicUnit.key+"']").val()});
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -1109,7 +1110,6 @@
         show: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
             if (!objectData.isNotBlank(unitId)) {
-                // toastr.success('未选择单元');
             }
             $('#caseTab a').eq(3).tab('show');
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
@@ -1129,6 +1129,7 @@
             houseNewWind.prototype.loadDataDicList();
             houseAirConditioner.prototype.loadDataDicList();
             houseHeating.prototype.loadDataDicList();
+            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicHouse.key+"']").val()});
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -1306,10 +1307,10 @@
             }
         }
         if (objectData.isNotBlankObjectProperty(basicEstate)){//楼盘检测到有数据
-            if (!$("#" + objectData.config.basicEstate.frm).valid()) {
-                toastr.success('楼盘有必须的数据未填写!');
-                return false;
-            }
+            // if (!$("#" + objectData.config.basicEstate.frm).valid()) {
+            //     toastr.success('楼盘有必须的数据未填写!');
+            //     return false;
+            // }
         }
         //确定收集过楼栋信息
         var num = 1;

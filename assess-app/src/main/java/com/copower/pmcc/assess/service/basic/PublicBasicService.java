@@ -1903,8 +1903,11 @@ public class PublicBasicService {
         }).reverse();
         if (!ObjectUtils.isEmpty(basicHouseList)) {
             Collections.sort(basicHouseList, ordering);
-            BasicHouseVo vo = basicHouseService.getBasicHouseVo(basicHouseList.get(0));
-            return vo;
+            if (basicHouseList.get(0).getApplyId().intValue() == appId.intValue() ){
+                BasicHouseVo vo = basicHouseService.getBasicHouseVo(basicHouseList.get(0));
+                return vo;
+            }
+            return null;
         } else {
             return null;
         }

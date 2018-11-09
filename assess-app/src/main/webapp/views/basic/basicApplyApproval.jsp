@@ -1509,6 +1509,10 @@
             });
         }
     };
+
+    $(function () {
+        $('#caseTab a:first').tab('show');
+    });
 </script>
 <script type="application/javascript">
 
