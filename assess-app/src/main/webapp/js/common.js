@@ -317,44 +317,16 @@ $(function () {
 
         //根据key获取字典信息
         loadDataDicByKey: function (key, value, callback) {
-            if (key) {
-                $.ajax({
-                    url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
-                    type: "get",
-                    dataType: "json",
-                    data: {
-                        fieldName: key
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
-                            $.each(result.data, function (i, item) {
-                                if (item.id == value) {
-                                    retHtml += ' <option value="' + item.id + '" selected="selected">' + item.name + '</option>';
-                                } else {
-                                    retHtml += ' <option value="' + item.id + '">' + item.name + '</option>';
-                                }
-                            });
-                            if (callback) {
-                                callback(retHtml, result.data);
-                            }
-
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            }
+            AssessCommon.loadAsyncDataDicByKey(key,value,callback,true);
         },
-        //根据key获取字典信息 (非异步)
-        loadAsyncDataDicByKey:function (key, value, callback) {
+        //根据key获取字典信息
+        loadAsyncDataDicByKey:function (key, value, callback,async) {
             if (key) {
                 $.ajax({
                     url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
                     type: "get",
                     dataType: "json",
-                    async:false,
+                    async:async,
                     data: {
                         fieldName: key
                     },
@@ -398,39 +370,15 @@ $(function () {
         },
         //根据pid获取区域信息
         loadAreaInfoByPid: function (pid, callback) {
-            if (pid) {
-                $.ajax({
-                    url: getContextPath() + "/area/getAreaList",
-                    type: "get",
-                    dataType: "json",
-                    data: {
-                        pid: pid
-                    },
-                    success: function (result) {
-                        if (result.ret && result.data) {
-                            var retHtml = '<option value="" >-请选择-</option>';
-                            $.each(result.data, function (i, item) {
-                                retHtml += ' <option value="' + item.areaId + '">' + item.name + '</option>';
-                            });
-                            if (callback) {
-                                callback(retHtml, result.data);
-                            }
-                        }
-                    },
-                    error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
-                    }
-                });
-            }
+            AssessCommon.loadAreaAsyncInfoByPid(pid,callback,true);
         },
-        //根据pid获取区域信息 (非异步)
-        loadAreaAsyncInfoByPid: function (pid, callback) {
+        loadAreaAsyncInfoByPid: function (pid, callback,async) {
             if (pid) {
                 $.ajax({
                     url: getContextPath() + "/area/getAreaList",
                     type: "get",
                     dataType: "json",
-                    async:false,
+                    async:async,
                     data: {
                         pid: pid
                     },
@@ -453,117 +401,9 @@ $(function () {
         },
         //初始化区域信息
         initAreaInfo: function (options) {
-            var isProvinceFirstChange = true;
-            var isCityFirstChange = true;
-            var defaults = {
-                useDefaultText: true,
-                provinceTarget: undefined,
-                cityTarget: undefined,
-                districtTarget: undefined,
-                provinceValue: undefined,
-                cityValue: undefined,
-                districtValue: undefined,
-                provinceDefaultText: '四川',
-                cityDefaultText: '成都',
-                districtDefaultText: undefined,
-                success: function () {
-
-                }
-            };
-            defaults = $.extend({}, defaults, options);
-            if ($.type(defaults.provinceTarget) === "string") {
-                defaults.provinceTarget = $("#" + defaults.provinceTarget);
-            } else {
-                defaults.provinceTarget = $(defaults.provinceTarget);
-            }
-
-            if ($.type(defaults.cityTarget) === "string") {
-                defaults.cityTarget = $("#" + defaults.cityTarget);
-            } else {
-                defaults.cityTarget = $(defaults.cityTarget);
-            }
-
-            if ($.type(defaults.districtTarget) === "string") {
-                defaults.districtTarget = $("#" + defaults.districtTarget);
-            } else {
-                defaults.districtTarget = $(defaults.districtTarget);
-            }
-
-            //省切换
-            defaults.provinceTarget.unbind('change').bind('change', function () {
-                isProvinceFirstChange = false;
-                defaults.cityTarget.select2('val', '').empty();
-                if (defaults.districtTarget) {
-                    defaults.districtTarget.select2('val', '').empty();
-                }
-                //加载市
-                AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
-                    defaults.cityTarget.append(html);
-                    //初始化设置默认选中项
-                    if (!defaults.cityValue && isCityFirstChange && defaults.useDefaultText && defaults.cityDefaultText) {
-                        defaults.cityTarget.select2('val', defaults.cityTarget.find("option:contains(" + defaults.cityDefaultText + ")").val()).trigger('change');
-                    } else {
-                        if (defaults.cityValue) {
-                            defaults.cityTarget.select2('val', defaults.cityValue).trigger('change');
-                        }
-                    }
-                });
-            })
-
-
-            //有区域元素才做处理
-            if (defaults.districtTarget) {
-                if ($.type(defaults.districtTarget) === "string") {
-                    defaults.districtTarget = $("#" + defaults.districtTarget);
-                }
-                defaults.districtTarget.select2();
-
-                //市切换
-                defaults.cityTarget.unbind('change').bind('change', function () {
-                    isCityFirstChange = false;
-                    defaults.districtTarget.select2('val', '').empty();
-                    //加载区县
-                    AssessCommon.loadAreaInfoByPid($(this).val(), function (html) {
-                        defaults.districtTarget.append(html);
-                        if (defaults.districtValue) {
-                            defaults.districtTarget.select2('val', defaults.districtValue);
-                        }
-                    });
-                })
-            }
-
-            defaults.provinceTarget.select2('val', '').empty();
-            //获取省数据
-            $.ajax({
-                url: getContextPath() + "/area/getProvinceList",
-                type: "post",
-                dataType: "json",
-                data: {},
-                success: function (result) {
-                    if (result.ret && result.data) {
-                        defaults.provinceTarget.append("<option value=''>-请选择-</option>");
-                        $.each(result.data, function (i, item) {
-                            defaults.provinceTarget.append("<option value='" + item.areaId + "'>" + item.name + "</option>");
-                        });
-
-                        if (defaults.provinceValue) {
-                            defaults.provinceTarget.select2('val', defaults.provinceValue).trigger('change');
-                        } else if (!defaults.provinceValue && isProvinceFirstChange && defaults.useDefaultText && defaults.provinceDefaultText) {
-                            //初始化设置默认选中项
-                            defaults.provinceTarget.select2('val', defaults.provinceTarget.find("option:contains(" + defaults.provinceDefaultText + ")").val()).trigger('change');
-                        }
-
-                        if (defaults.success) {
-                            defaults.success();
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            AssessCommon.initAsyncAreaInfo(options,true);
         },
-        initAsyncAreaInfo: function (options) {
+        initAsyncAreaInfo: function (options,async) {
             var isProvinceFirstChange = true;
             var isCityFirstChange = true;
             var defaults = {
@@ -599,7 +439,6 @@ $(function () {
             } else {
                 defaults.districtTarget = $(defaults.districtTarget);
             }
-
             //省切换
             defaults.provinceTarget.unbind('change').bind('change', function () {
                 isProvinceFirstChange = false;
@@ -618,17 +457,14 @@ $(function () {
                             defaults.cityTarget.select2('val', defaults.cityValue).trigger('change');
                         }
                     }
-                });
-            })
-
-
+                },async);
+            });
             //有区域元素才做处理
             if (defaults.districtTarget) {
                 if ($.type(defaults.districtTarget) === "string") {
                     defaults.districtTarget = $("#" + defaults.districtTarget);
                 }
                 defaults.districtTarget.select2();
-
                 //市切换
                 defaults.cityTarget.unbind('change').bind('change', function () {
                     isCityFirstChange = false;
@@ -639,17 +475,16 @@ $(function () {
                         if (defaults.districtValue) {
                             defaults.districtTarget.select2('val', defaults.districtValue);
                         }
-                    });
+                    },async);
                 })
             }
-
             defaults.provinceTarget.select2('val', '').empty();
             //获取省数据
             $.ajax({
                 url: getContextPath() + "/area/getProvinceList",
                 type: "post",
                 dataType: "json",
-                async:false,
+                async:async,
                 data: {},
                 success: function (result) {
                     if (result.ret && result.data) {
