@@ -24,7 +24,7 @@
             <div class="page-title">
                 <div class="title_left">
                     <h2><i class="fa "></i>
-                        案例基础数据维护
+                        案例查询
                     </h2>
                 </div>
             </div>
@@ -43,8 +43,7 @@
                     <form class="form-horizontal" id="frmCaseEstate">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">省
-                                    <span class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">省</label>
                                 <div class="col-sm-1">
                                     <select name="province" id="province"
                                             class="form-control search-select select2"
@@ -54,8 +53,7 @@
                             </div>
 
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">市<span
-                                        class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">市</label>
                                 <div class="col-sm-1">
                                     <select id="city" name="city" class="form-control search-select select2"
                                             required="required">
@@ -64,8 +62,7 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">县<span
-                                        class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">县</label>
                                 <div class="col-sm-1">
                                     <select id="district" name="district" class="form-control search-select select2"
                                             required="required">
@@ -86,7 +83,7 @@
                                     <label class="btn btn-primary" onclick="baseFun.caseEstate.find()">
                                         查询
                                     </label>
-                                    <label class="btn btn-success" onclick="baseFun.caseEstate.newWindow(this)">
+                                    <label class="btn btn-success" onclick="window.open('${pageContext.request.contextPath}/basicApply/basicApplyIndex')">
                                         新增
                                     </label>
                                 </div>
@@ -115,15 +112,6 @@
                         <input type="hidden" name="estateId">
                         <div class="form-group">
                             <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <label class="btn btn-success" onclick="baseFun.caseBuild.addData();">
-                                        新增
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
                                 <div class="col-sm-12">
                                     <table class="table table-bordered" id="caseBuildTable">
                                     </table>
@@ -150,13 +138,6 @@
                         <input type="hidden" name="buildingId">
                         <div class="form-group">
                             <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <label class="btn btn-success" onclick="baseFun.caseUnit.addData();">新增</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
                                 <div class="col-sm-12">
                                     <table class="table table-bordered" id="caseUnitTable">
                                     </table>
@@ -181,13 +162,6 @@
                 <div class="x_content">
                     <form class="form-horizontal" id="frmCaseHouse">
                         <input type="hidden" name="unitId">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <div class="col-sm-3">
-                                    <label class="btn btn-success" onclick="baseFun.caseHouse.addData()">新增</label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <div class="col-sm-12">
@@ -322,9 +296,11 @@
                 estate = {search: null, city: null, district: null, province: null};
             }
             var cols = [];
-            cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
-                return AssessCommon.getAreaFullName(row.provinceName,row.cityName,row.districtName);
-            }});
+            cols.push({
+                field: 'area', title: '区域', formatter: function (value, row, index) {
+                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
+                }
+            });
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'coverAnArea', title: '占地面积'});
             cols.push({field: 'volumetricRateName', title: '容积率'});
@@ -334,9 +310,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseEstate.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseEstate.removeData(' + row.id + ','+index+')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseEstate.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseEstate.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -357,8 +331,10 @@
                 onClickCell: function (field, value, row, element) {
                     baseFun.caseBuild.loadDataList(row.id);
                     $("#" + baseFun.config.father.caseBuild.frm()).initForm({estateId: row.id});
+                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
+
         },
         find: function () {
             var itemVal = $("#" + baseFun.config.father.caseEstate.frm()).find("[name='search']").val();
@@ -413,7 +389,7 @@
          * 描述:删除数据
          * @date:2018-09-13
          **/
-        removeData: function (item,index) {
+        removeData: function (item, index) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/caseEstate/deleteCaseEstateById",
                 type: "post",
@@ -422,10 +398,13 @@
                 data: {id: item},
                 success: function (result) {
                     if (result.ret) {
-                        $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('remove',{field: 'id', values: [item]});
+                        $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('remove', {
+                            field: 'id',
+                            values: [item]
+                        });
                         toastr.success("删除成功!");
                     }
-                    if (!result.ret){
+                    if (!result.ret) {
                         toastr.success(result.errmsg);
                     }
                 },
@@ -452,7 +431,7 @@
 
     baseFun.caseBuild = {
         //地图显示
-        showMap:function () {
+        showMap: function () {
             toastr.success("地图显示暂未提供!");
         },
         addData: function () {
@@ -476,7 +455,7 @@
         },
         copyData: function (id) {
             var href = "${pageContext.request.contextPath}/caseBuilding/editView";
-            href += "?id=" + id+"&copy=true";
+            href += "?id=" + id + "&copy=true";
             window.open(href, "");
         },
         removeData: function (id) {
@@ -491,7 +470,7 @@
                         baseFun.caseBuild.loadDataList(result.data);
                         toastr.success("删除成功!");
                     }
-                    if (!result.ret){
+                    if (!result.ret) {
                         toastr.success(result.errmsg);
                     }
                 },
@@ -527,9 +506,10 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 },
-                onClickCell:function (field, value, row, element) {
+                onClickCell: function (field, value, row, element) {
                     baseFun.caseUnit.loadDataList(row.id);
                     $("#" + baseFun.config.father.caseUnit.frm()).initForm({buildingId: row.id});
+                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
         }
@@ -558,7 +538,7 @@
         },
         copyData: function (id) {
             var href = "${pageContext.request.contextPath}/caseUnit/editView";
-            href += "?id=" + id+"&copy=true";
+            href += "?id=" + id + "&copy=true";
             window.open(href, "");
         },
         removeData: function (id) {
@@ -573,7 +553,7 @@
                         baseFun.caseUnit.loadDataList(result.data);
                         toastr.success("删除成功!");
                     }
-                    if (!result.ret){
+                    if (!result.ret) {
                         toastr.success(result.errmsg);
                     }
                 },
@@ -608,9 +588,10 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 },
-                onClickCell:function (field, value, row, element) {
+                onClickCell: function (field, value, row, element) {
                     baseFun.caseHouse.loadDataList(row.id);
                     $("#" + baseFun.config.father.caseHouse.frm()).initForm({unitId: row.id});
+                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
         }
@@ -638,7 +619,7 @@
         },
         copyData: function (id) {
             var href = "${pageContext.request.contextPath}/caseHouse/editView";
-            href += "?id=" + id+"&copy=true";
+            href += "?id=" + id + "&copy=true";
             window.open(href, "");
         },
         removeData: function (id) {
@@ -653,7 +634,7 @@
                         baseFun.caseHouse.loadDataList(result.data);
                         toastr.success("删除成功!");
                     }
-                    if (!result.ret){
+                    if (!result.ret) {
                         toastr.success(result.errmsg);
                     }
                 },

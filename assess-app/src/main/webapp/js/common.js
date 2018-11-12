@@ -4,10 +4,12 @@
 $(function () {
     $(".select2").select2();//初始化出select2
 
+    //百分比初始化
     $(".x-percent").each(function () {
         AssessCommon.elementParsePercent($(this));
     })
 
+    //输入时自动添加百分比
     $(document).on('keyup', '.x-percent', function () {
         var val = $(this).val();
         if (val) {
