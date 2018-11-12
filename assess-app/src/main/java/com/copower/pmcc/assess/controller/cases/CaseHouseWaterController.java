@@ -59,6 +59,7 @@ public class CaseHouseWaterController {
             if (!ObjectUtils.isEmpty(houseId)){
                 caseHouseWater.setHouseId(houseId);
             }
+            caseHouseWater.setCreator(commonService.thisUserAccount());
             vo = caseHouseWaterService.getCaseHouseWaterLists(caseHouseWater);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

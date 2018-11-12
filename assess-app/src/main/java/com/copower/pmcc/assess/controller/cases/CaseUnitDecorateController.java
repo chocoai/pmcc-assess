@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseUnitDecorateService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class CaseUnitDecorateController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CaseUnitDecorateService caseUnitDecorateService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitDecorateById",method = {RequestMethod.GET},name = "获取室内公共装修")
@@ -56,6 +59,7 @@ public class CaseUnitDecorateController {
             if (!ObjectUtils.isEmpty(unitId)){
                 caseUnitDecorate.setUnitId(unitId);
             }
+            caseUnitDecorate.setCreator(commonService.thisUserAccount());
             vo = caseUnitDecorateService.getCaseUnitDecorateLists(caseUnitDecorate);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

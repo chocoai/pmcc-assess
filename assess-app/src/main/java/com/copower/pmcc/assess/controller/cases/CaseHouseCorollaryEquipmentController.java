@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseHouseCorollaryEquipmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class CaseHouseCorollaryEquipmentController {
     private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseCorollaryEquipmentById", method = {RequestMethod.GET}, name = "获取配套设备设施")
@@ -56,6 +59,7 @@ public class CaseHouseCorollaryEquipmentController {
             if (!ObjectUtils.isEmpty(houseId)) {
                 caseHouseCorollaryEquipment.setHouseId(houseId);
             }
+            caseHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
             vo = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentLists(caseHouseCorollaryEquipment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

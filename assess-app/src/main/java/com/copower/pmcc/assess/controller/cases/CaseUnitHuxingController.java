@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class CaseUnitHuxingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitHuxingById", method = {RequestMethod.GET}, name = "获取户型")
@@ -75,6 +78,7 @@ public class CaseUnitHuxingController {
             if (!ObjectUtils.isEmpty(unitId)) {
                 caseUnitHuxing.setUnitId(unitId);
             }
+            caseUnitHuxing.setCreator(commonService.thisUserAccount());
             vo = caseUnitHuxingService.getCaseUnitHuxingLists(caseUnitHuxing);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

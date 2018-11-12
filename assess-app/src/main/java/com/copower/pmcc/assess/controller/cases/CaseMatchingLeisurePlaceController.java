@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingLeisurePlace;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseMatchingLeisurePlaceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class CaseMatchingLeisurePlaceController {
     private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseMatchingLeisurePlaceById",method = {RequestMethod.GET},name = "获取休闲场所-包含-购物-娱乐-餐饮")
@@ -61,6 +64,7 @@ public class CaseMatchingLeisurePlaceController {
             if (!StringUtils.isEmpty(type)){
                 caseMatchingLeisurePlace.setType(type);
             }
+            caseMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
             vo = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceLists(caseMatchingLeisurePlace);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

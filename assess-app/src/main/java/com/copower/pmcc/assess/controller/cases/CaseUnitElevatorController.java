@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
 import com.copower.pmcc.assess.service.cases.CaseUnitElevatorService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class CaseUnitElevatorController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CaseUnitElevatorService caseUnitElevatorService;
+    @Autowired
+    private CommonService commonService;
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitElevatorById",method = {RequestMethod.GET},name = "获取配备电梯")
     public HttpResult getById(Integer id) {
@@ -48,6 +51,7 @@ public class CaseUnitElevatorController {
             if (!ObjectUtils.isEmpty(unitId)){
                 caseUnitElevator.setUnitId(unitId);
             }
+            caseUnitElevator.setCreator(commonService.thisUserAccount());
             vo = caseUnitElevatorService.getCaseUnitElevatorList(caseUnitElevator);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

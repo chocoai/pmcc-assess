@@ -62,6 +62,7 @@ public class CaseMatchingEducationController {
             if (estateId != null){
                 caseMatchingEducation.setEstateId(estateId);
             }
+            caseMatchingEducation.setCreator(commonService.thisUserAccount());
             vo = caseMatchingEducationService.getCaseMatchingEducationLists(caseMatchingEducation);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

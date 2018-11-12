@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -250,6 +251,12 @@ public class CaseHouseController {
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
     public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        if (unitId == null){
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
+        if (!StringUtils.isNotBlank(houseNumber)){
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
         try {
             List<CaseHouse> caseHouseList = caseHouseService.autoCompleteCaseHouse(unitId, houseNumber, maxRows);
             for (CaseHouse caseHouse : caseHouseList) {

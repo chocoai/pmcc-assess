@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinance;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseMatchingFinanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class CaseMatchingFinanceController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CaseMatchingFinanceService caseMatchingFinanceService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseMatchingFinanceById",method = {RequestMethod.GET},name = "获取金融服务")
@@ -56,7 +59,7 @@ public class CaseMatchingFinanceController {
             if (!ObjectUtils.isEmpty(estateId)){
                 caseMatchingFinance.setEstateId(estateId);
             }
-
+            caseMatchingFinance.setCreator(commonService.thisUserAccount());
             vo = caseMatchingFinanceService.getCaseMatchingFinanceLists(caseMatchingFinance);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

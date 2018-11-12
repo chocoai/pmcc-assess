@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
 import com.copower.pmcc.assess.service.cases.CaseEstateNetworkService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class CaseEstateNetworkController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CaseEstateNetworkService caseEstateNetworkService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateNetworkById", method = {RequestMethod.GET}, name = "获取通信网络")
@@ -52,6 +55,7 @@ public class CaseEstateNetworkController {
             if (estateId != null) {
                 caseEstateNetwork.setEstateId(estateId);
             }
+            caseEstateNetwork.setCreator(commonService.thisUserAccount());
             vo = caseEstateNetworkService.getCaseEstateNetworkList(caseEstateNetwork);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

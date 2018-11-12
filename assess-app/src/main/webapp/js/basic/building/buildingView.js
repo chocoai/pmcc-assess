@@ -61,40 +61,6 @@ var navButtonBuild;
             deleteFlag: true
         })
     };
-    //生成从minNum到maxNum的随机数 (请尽量设置大一些 以免重复)
-    navButtonBuild.randomNum = function (minNum, maxNum) {
-        switch (arguments.length) {
-            case 1:
-                return parseInt(Math.random() * minNum + 1, 10);
-                break;
-            case 2:
-                return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
-                break;
-            default:
-                return 0;
-                break;
-        }
-    };
-    //编号 规则
-    navButtonBuild.rule = function (identifierNumber) {
-        var date = new Date();
-        //利用了时间轴 和 随机数 的积 来生成 唯一编号
-        var str = Date.now().toString();
-        str = str.substring(str.length - 6, str.length);
-        var identifier = "";
-        identifier = navButtonBuild.randomNum(100, 90000);
-        identifier = parseInt(identifier) * parseInt(str);
-        identifier = identifierNumber + ":" + identifier;
-        return identifier;
-    };
-    //编号 write
-    navButtonBuild.identifierWrite = function () {
-        var identifier = $("#identifier").val();
-        if (navButtonBuild.isNotBlank(identifier)) {
-            identifier = navButtonBuild.rule(identifier);
-            $("#identifier").val(identifier);
-        }
-    };
     var objArray = [{}, {}, {}, {}, {}];
     //获取存储的所有数据
     navButtonBuild.getAllObjArray = function () {
@@ -243,7 +209,6 @@ navButtonBuild.dataButtonWrite = function (target) {
 navButtonBuild.init = function () {
     if (navButtonBuild.flag){
         this.inputBlur();
-        $("#identifier").bind("blur", navButtonBuild.identifierWrite);
         navButtonBuild.flag = false;
     }
 };

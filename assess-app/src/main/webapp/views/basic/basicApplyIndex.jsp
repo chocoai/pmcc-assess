@@ -543,8 +543,6 @@
     objectData.autocompleteHouse = function (_this) {
         var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
         if (!objectData.isNotBlank(unitId)) {
-            // Alert("请先选择单元然后在选择房屋!");
-            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
@@ -853,8 +851,9 @@
                                                     navButtonBuild.setObjArrayElement(n.part, n);
                                                 }
                                             });
-                                            $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
+                                            $("#identifier").removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
+
                                             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                                                 var readonly = $(n).attr("readonly");
                                                 if (!objectData.isNotBlank(readonly)) {
@@ -868,7 +867,6 @@
                                             } else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur", navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },
@@ -911,8 +909,10 @@
                                                     navButtonBuild.setObjArrayElement(n.part, n);
                                                 }
                                             });
-                                            $("#identifier").unbind().removeAttr("readonly").val(result.data.identifier);
+
+                                            $("#identifier").removeAttr("readonly").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
+
                                             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                                                 var readonly = $(n).attr("readonly");
                                                 if (objectData.isNotBlank(readonly)) {
@@ -927,7 +927,6 @@
                                             } else {
                                                 objectData.building.show({});
                                             }
-                                            $("#identifier").bind("blur", navButtonBuild.identifierWrite);
                                         }
                                     }
                                 },

@@ -219,6 +219,9 @@ public class CaseEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        if (!org.apache.commons.lang3.StringUtils.isNotBlank(name)){
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
         try {
             List<CaseEstate> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
             if (!ObjectUtils.isEmpty(caseEstateList)) {

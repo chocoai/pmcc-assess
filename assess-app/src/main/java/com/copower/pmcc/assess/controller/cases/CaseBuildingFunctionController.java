@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunction;
 import com.copower.pmcc.assess.service.cases.CaseBuildingFunctionService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/caseBuildingFunction")
 @Controller
 public class CaseBuildingFunctionController {
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private CaseBuildingFunctionService caseBuildingFunctionService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -52,6 +55,7 @@ public class CaseBuildingFunctionController {
             if (buildingId != null){
                 caseBuildingFunction.setBuildingId(buildingId);
             }
+            caseBuildingFunction.setCreator(commonService.thisUserAccount());
             vo = caseBuildingFunctionService.getCaseBuildingFunctionListVos(caseBuildingFunction);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/basicUnitHuxing")
 @Controller
 public class BasicUnitHuxingController {
-
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -62,6 +64,9 @@ public class BasicUnitHuxingController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicUnitHuxing basicUnitHuxing){
         try {
+            if (basicUnitHuxing != null){
+                basicUnitHuxing.setCreator(commonService.thisUserAccount());
+            }
             return basicUnitHuxingService.getBootstrapTableVo(basicUnitHuxing);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

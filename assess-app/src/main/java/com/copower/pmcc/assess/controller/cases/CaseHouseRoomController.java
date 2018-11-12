@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseHouseRoomDecorateService;
 import com.copower.pmcc.assess.service.cases.CaseHouseRoomService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ public class CaseHouseRoomController {
     private CaseHouseRoomDecorateService caseHouseRoomDecorateService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseRoomById",method = {RequestMethod.GET},name = "获取房间 (父类)")
@@ -60,6 +63,7 @@ public class CaseHouseRoomController {
             if (!ObjectUtils.isEmpty(houseId)){
                 caseHouseRoom.setHouseId(houseId);
             }
+            caseHouseRoom.setCreator(commonService.thisUserAccount());
             vo = caseHouseRoomService.getCaseHouseRoomLists(caseHouseRoom);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

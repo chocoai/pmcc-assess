@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingSurface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingSurfaceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ public class CaseBuildingSurfaceController {
     private CaseBuildingSurfaceService caseBuildingSurfaceService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseBuildingSurfaceById",method = {RequestMethod.GET},name = "获取层面结构")
@@ -54,13 +57,13 @@ public class CaseBuildingSurfaceController {
         BootstrapTableVo vo = null;
         try {
             CaseBuildingSurface caseBuildingSurface = new CaseBuildingSurface();
-
             if (buildingId!=null ){
                 caseBuildingSurface.setBuildingId(buildingId);
             }
             if (!StringUtils.isEmpty(buildNumber)){
                 caseBuildingSurface.setBuildNumber(buildNumber);
             }
+            caseBuildingSurface.setCreator(commonService.thisUserAccount());
             vo = caseBuildingSurfaceService.getCaseBuildingSurfaceLists(caseBuildingSurface);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

@@ -9,6 +9,7 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,6 +145,12 @@ public class CaseUnitController {
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        if (!StringUtils.isNotBlank(unitNumber)){
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
+        if (caseBuildingMainId == null){
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
         try {
             List<CaseUnit> caseUnitList = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
             for (CaseUnit caseUnit : caseUnitList) {

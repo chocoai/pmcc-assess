@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMaterial;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseMatchingMaterialService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ public class CaseMatchingMaterialController {
     private CaseMatchingMaterialService caseMatchingMaterialService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseMatchingMaterialById", method = {RequestMethod.GET}, name = "获取原料供应及销售条件")
@@ -55,6 +58,7 @@ public class CaseMatchingMaterialController {
             if (estateId != null) {
                 caseMatchingMaterial.setEstateId(estateId);
             }
+            caseMatchingMaterial.setCreator(commonService.thisUserAccount());
             vo = caseMatchingMaterialService.getCaseMatchingMaterialLists(caseMatchingMaterial);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

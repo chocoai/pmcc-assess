@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseHouseEquipmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class CaseHouseEquipmentController {
     private CaseHouseEquipmentService caseHouseEquipmentService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseEquipmentById",method = {RequestMethod.GET},name = "获取设备包含（空调、新风、供暖）")
@@ -61,6 +64,7 @@ public class CaseHouseEquipmentController {
             if (!StringUtils.isEmpty(type)){
                 caseHouseEquipment.setType(type);
             }
+            caseHouseEquipment.setCreator(commonService.thisUserAccount());
             vo = caseHouseEquipmentService.getCaseHouseEquipmentLists(caseHouseEquipment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

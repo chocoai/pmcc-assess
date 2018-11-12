@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomDecorateService;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,11 @@ import java.util.List;
 @RequestMapping(value = "/basicHouseRoom")
 @Controller
 public class BasicHouseRoomController {
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
 
@@ -73,6 +75,9 @@ public class BasicHouseRoomController {
         try {
             if (basicHouseRoom==null){
                 basicHouseRoom = new BasicHouseRoom();
+            }
+            if (basicHouseRoom != null){
+                basicHouseRoom.setCreator(commonService.thisUserAccount());
             }
             BootstrapTableVo vo = basicHouseRoomService.getBootstrapTableVo(basicHouseRoom);
             return vo;
@@ -125,6 +130,9 @@ public class BasicHouseRoomController {
     @RequestMapping(value = "/getRoomDecorateBootstrapTableVo", method = {RequestMethod.GET}, name = "房间子类 列表")
     public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate){
         try {
+            if (basicHouseRoomDecorate != null){
+                basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+            }
             BootstrapTableVo vo = basicHouseRoomDecorateService.getBootstrapTableVo(basicHouseRoomDecorate);
             return vo;
         } catch (Exception e) {

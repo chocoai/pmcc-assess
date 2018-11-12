@@ -59,6 +59,7 @@ public class CaseHouseIntelligentController {
             if (!ObjectUtils.isEmpty(houseId)) {
                 caseHouseIntelligent.setHouseId(houseId);
             }
+            caseHouseIntelligent.setCreator(commonService.thisUserAccount());
             vo = caseHouseIntelligentService.getCaseHouseIntelligentLists(caseHouseIntelligent);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.basic.BasicHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingLeaseAndSellDtoService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,8 @@ public class BasicHouseTradingLeaseAndSellController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BasicHouseTradingLeaseAndSellDtoService basicHouseTradingLeaseAndSellDtoService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/removeLeaseAndSell", method = {RequestMethod.POST}, name = "删除案例 房屋 出租或者出售")
@@ -63,6 +66,12 @@ public class BasicHouseTradingLeaseAndSellController {
             basicHouseTradingSell.setHouseId(0);
         }
         try {
+            if (basicHouseTradingSell != null){
+                basicHouseTradingSell.setCreator(commonService.thisUserAccount());
+            }
+            if (basicHouseTradingLease != null){
+                basicHouseTradingLease.setCreator(commonService.thisUserAccount());
+            }
             vo = basicHouseTradingLeaseAndSellDtoService.getVoList(type, basicHouseTradingLease, basicHouseTradingSell);
         } catch (Exception e1) {
             logger.error(e1.getMessage(),e1);

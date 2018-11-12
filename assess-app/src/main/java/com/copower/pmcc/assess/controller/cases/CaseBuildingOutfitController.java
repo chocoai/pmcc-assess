@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingOutfitService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class CaseBuildingOutfitController {
     private CaseBuildingOutfitService caseBuildingOutfitService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -60,6 +63,7 @@ public class CaseBuildingOutfitController {
             if (!StringUtils.isEmpty(buildNumber)){
                 caseBuildingOutfit.setBuildNumber(buildNumber);
             }
+            caseBuildingOutfit.setCreator(commonService.thisUserAccount());
             vo = caseBuildingOutfitService.getCaseBuildingOutfitLists(caseBuildingOutfit);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

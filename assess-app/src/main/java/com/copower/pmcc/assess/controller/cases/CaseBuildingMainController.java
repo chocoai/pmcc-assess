@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,12 @@ public class CaseBuildingMainController {
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String identifier, Integer estateId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        if (!StringUtils.isNotBlank(identifier)) {
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
+        if (estateId == null) {
+            return HttpResult.newCorrectResult(keyValueDtos);
+        }
         try {
             List<CaseBuildingMain> buildingMains = caseBuildingMainService.autoCompleteCaseBuildingMain(identifier, estateId, maxRows);
             for (CaseBuildingMain caseBuilding : buildingMains) {

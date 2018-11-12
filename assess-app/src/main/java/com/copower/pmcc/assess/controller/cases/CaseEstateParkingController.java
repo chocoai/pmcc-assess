@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseEstateParkingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,8 @@ import java.util.List;
 @RequestMapping(value = "/caseEstateParking")
 @Controller
 public class CaseEstateParkingController {
-
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private CaseEstateParkingService caseEstateParkingService;
     @Autowired
@@ -63,6 +65,7 @@ public class CaseEstateParkingController {
             if (estateId != null){
                 caseEstateParking.setEstateId(estateId);
             }
+            caseEstateParking.setCreator(commonService.thisUserAccount());
             vo = caseEstateParkingService.getExamineEstateNetworkList(caseEstateParking);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

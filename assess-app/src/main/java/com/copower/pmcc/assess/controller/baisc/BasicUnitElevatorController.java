@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
 import com.copower.pmcc.assess.service.basic.BasicUnitElevatorService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/basicUnitElevator")
 @Controller
 public class BasicUnitElevatorController {
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private BasicUnitElevatorService basicUnitElevatorService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -61,6 +64,9 @@ public class BasicUnitElevatorController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(BasicUnitElevator basicUnitElevator){
         try {
+            if (basicUnitElevator != null){
+                basicUnitElevator.setCreator(commonService.thisUserAccount());
+            }
             return basicUnitElevatorService.getBootstrapTableVo(basicUnitElevator);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

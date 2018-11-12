@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedical;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseMatchingMedicalService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ public class CaseMatchingMedicalController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseMatchingMedicalById",method = {RequestMethod.GET},name = "获取医养条件")
@@ -55,6 +58,7 @@ public class CaseMatchingMedicalController {
             if (estateId != null){
                 caseMatchingMedical.setEstateId(estateId);
             }
+            caseMatchingMedical.setCreator(commonService.thisUserAccount());
             vo = caseMatchingMedicalService.getCaseMatchingMedicalLists(caseMatchingMedical);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMaintenanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ public class CaseBuildingMaintenanceController {
     private CaseBuildingMaintenanceService caseBuildingMaintenanceService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/getCaseBuildingMaintenanceById", method = {RequestMethod.GET}, name = "获取维护结构")
@@ -60,6 +63,7 @@ public class CaseBuildingMaintenanceController {
             if (!StringUtils.isEmpty(buildNumber)){
                 caseBuildingMaintenance.setBuildNumber(buildNumber);
             }
+            caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
             vo = caseBuildingMaintenanceService.getCaseBuildingMaintenanceLists(caseBuildingMaintenance);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

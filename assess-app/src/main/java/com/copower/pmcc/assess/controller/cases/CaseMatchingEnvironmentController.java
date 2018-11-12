@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEnvironment;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseMatchingEnvironmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,8 @@ public class CaseMatchingEnvironmentController {
     private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
     @Autowired
     private BaseDataDicService baseDataDicService;
-
+    @Autowired
+    private CommonService commonService;
     @ResponseBody
     @RequestMapping(value = "/getCaseMatchingEnvironmentById",method = {RequestMethod.GET},name = "获取环境因素")
     public HttpResult getById(Integer id) {
@@ -55,6 +57,7 @@ public class CaseMatchingEnvironmentController {
             if (estateId != null){
                 caseMatchingEnvironment.setEstateId(estateId);
             }
+            caseMatchingEnvironment.setCreator(commonService.thisUserAccount());
             vo = caseMatchingEnvironmentService.getCaseMatchingEnvironmentLists(caseMatchingEnvironment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

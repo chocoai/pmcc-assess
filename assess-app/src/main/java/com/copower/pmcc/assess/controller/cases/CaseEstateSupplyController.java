@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.CaseEstateSupplyService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,8 @@ public class CaseEstateSupplyController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CaseEstateSupplyService caseEstateSupplyService;
+    @Autowired
+    private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -62,6 +65,7 @@ public class CaseEstateSupplyController {
             if (estateId != null){
                 caseEstateSupply.setEstateId(estateId);
             }
+            caseEstateSupply.setCreator(commonService.thisUserAccount());
             vo = caseEstateSupplyService.getExamineEstateNetworkList(caseEstateSupply);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

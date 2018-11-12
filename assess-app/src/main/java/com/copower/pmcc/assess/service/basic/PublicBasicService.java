@@ -2309,6 +2309,7 @@ public class PublicBasicService {
                         BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
                         BeanUtils.copyProperties(po, basicHouseRoomDecorate);
                         basicHouseRoomDecorate.setRoomId(queryRoom.getId());
+                        basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
                         basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate);
                     }
                 }
