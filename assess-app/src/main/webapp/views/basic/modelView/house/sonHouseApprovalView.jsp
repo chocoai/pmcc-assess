@@ -132,7 +132,8 @@
                 });
                 $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/basicHouseRoom/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -158,6 +159,7 @@
                 $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().tableSubclass, "${pageContext.request.contextPath}/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
                     roomId: id,
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -202,7 +204,8 @@
                 cols.push({field: 'fileViewName', title: '位置图'});
                 $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseCorollaryEquipment.prototype.config().table, "${pageContext.request.contextPath}/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -242,7 +245,8 @@
                 cols.push({field: 'visitorsFlowrateName', title: '人流量'});
                 $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseFaceStreet.prototype.config().table, "${pageContext.request.contextPath}/basicHouseFaceStreet/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -295,7 +299,8 @@
                 });
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/basicHouseIntelligent/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -337,7 +342,8 @@
                 cols.push({field: 'drainageCircuitName', title: '排水回路'});
                 $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseWater.prototype.config().table, "${pageContext.request.contextPath}/basicHouseWater/getBootstrapTableVo", cols, {
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -378,7 +384,8 @@
                 $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseHeating.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseHeating.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -419,7 +426,8 @@
                 $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseAirConditioner.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseAirConditioner.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -460,7 +468,8 @@
                 $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseNewWind.prototype.config().table, "${pageContext.request.contextPath}/basicHouseEquipment/getBootstrapTableVo", cols, {
                     type: houseNewWind.prototype.config().type,
-                    houseId:'${empty basicHouse.id?0:basicHouse.id}'
+                    houseId:'${empty basicHouse.id?0:basicHouse.id}',
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,

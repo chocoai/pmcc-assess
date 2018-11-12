@@ -295,37 +295,16 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            保温
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="保温"
-                                                   name="heatPreservation" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            防水
+                                            类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="防水"
-                                                   name="waterProof" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            隔热
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" placeholder="隔热"
-                                                   name="heatInsulation" class="form-control" required="required">
+                                            <select required="required" name="type"
+                                                    class="form-control search-select select2 type">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

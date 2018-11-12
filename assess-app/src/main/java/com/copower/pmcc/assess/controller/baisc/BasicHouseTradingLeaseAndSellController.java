@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -55,7 +56,7 @@ public class BasicHouseTradingLeaseAndSellController {
 
     @ResponseBody
     @RequestMapping(value = "/getLeaseAndSellVos", method = {RequestMethod.GET}, name = "获取案例 房屋 出租或者出售 列表")
-    public BootstrapTableVo getBootstrapTableVo(String type, BasicHouseTradingLease basicHouseTradingLease, BasicHouseTradingSell basicHouseTradingSell){
+    public BootstrapTableVo getBootstrapTableVo(String type, BasicHouseTradingLease basicHouseTradingLease, BasicHouseTradingSell basicHouseTradingSell, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         BootstrapTableVo vo = null;
         if (basicHouseTradingLease == null){
             basicHouseTradingLease = new BasicHouseTradingLease();
@@ -67,10 +68,14 @@ public class BasicHouseTradingLeaseAndSellController {
         }
         try {
             if (basicHouseTradingSell != null){
-                basicHouseTradingSell.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicHouseTradingSell.setCreator(commonService.thisUserAccount());
+                }
             }
             if (basicHouseTradingLease != null){
-                basicHouseTradingLease.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicHouseTradingLease.setCreator(commonService.thisUserAccount());
+                }
             }
             vo = basicHouseTradingLeaseAndSellDtoService.getVoList(type, basicHouseTradingLease, basicHouseTradingSell);
         } catch (Exception e1) {

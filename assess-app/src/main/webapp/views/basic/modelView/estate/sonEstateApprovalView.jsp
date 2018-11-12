@@ -218,7 +218,8 @@
                 cols.push({field: 'indexParameter', title: '通信网络指标参数'});
                 $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateNetwork.prototype.config().table, "${pageContext.request.contextPath}/basicEstateNetwork/getBootstrapTableVo", cols, {
-                    estateId: ${empty basicEstate.id?0:basicEstate.id}
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -258,7 +259,8 @@
                 cols.push({field: 'fileViewName', title: '上传的附件'});
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/basicEstateParking/getBootstrapTableVo", cols, {
-                    estateId: ${empty basicEstate.id?0:basicEstate.id}
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -302,7 +304,8 @@
                 $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyWater.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyWater.prototype.config().type,
-                    estateId: ${empty basicEstate.id?0:basicEstate.id}
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -345,7 +348,8 @@
                 $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyPower.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyPower.prototype.config().type,
-                    estateId: ${empty basicEstate.id?0:basicEstate.id}
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -386,7 +390,8 @@
                 $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyHeating.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     type: estateSupplyHeating.prototype.config().type,
-                    estateId: ${empty basicEstate.id?0:basicEstate.id}
+                    estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -427,7 +432,8 @@
                 $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateSupplyGas.prototype.config().table, "${pageContext.request.contextPath}/basicEstateSupply/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
-                    type: estateSupplyGas.prototype.config().type
+                    type: estateSupplyGas.prototype.config().type,
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -470,6 +476,7 @@
                 $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEducation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEducation/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -510,6 +517,7 @@
                 $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingEnvironment.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingEnvironment/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -551,6 +559,7 @@
                 $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingFinance.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingFinance/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -593,6 +602,7 @@
                 TableInit(matchingMarket.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingMarket.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -635,6 +645,7 @@
                 TableInit(matchingRestaurant.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingRestaurant.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -676,6 +687,7 @@
                 TableInit(matchingRecreation.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                     type: matchingRecreation.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -716,6 +728,7 @@
                 $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMedical.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMedical/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -757,6 +770,7 @@
                 $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMaterial.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingMaterial/getBootstrapTableVo", cols, {
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -799,6 +813,7 @@
                 TableInit(matchingMainConversion.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainConversion.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -841,6 +856,7 @@
                 TableInit(matchingMainRoad.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainRoad.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -883,6 +899,7 @@
                 TableInit(matchingMetro.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMetro.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -925,6 +942,7 @@
                 TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingTrafficHub.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -968,6 +986,7 @@
                 TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingTransit.prototype.config().type,
                     estateId: ${empty basicEstate.id?0:basicEstate.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,

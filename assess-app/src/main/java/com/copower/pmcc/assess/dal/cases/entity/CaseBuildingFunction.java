@@ -5,6 +5,8 @@ import java.util.Date;
 public class CaseBuildingFunction {
     private Integer id;
 
+    private Integer type;
+
     private String buildingNumber;
 
     private Integer version;
@@ -21,13 +23,7 @@ public class CaseBuildingFunction {
 
     private String creator;
 
-    private String waterProof;
-
-    private String heatPreservation;
-
     private String buildNumber;
-
-    private String heatInsulation;
 
     private Date gmtCreated;
 
@@ -39,6 +35,14 @@ public class CaseBuildingFunction {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getBuildingNumber() {
@@ -105,36 +109,12 @@ public class CaseBuildingFunction {
         this.creator = creator == null ? null : creator.trim();
     }
 
-    public String getWaterProof() {
-        return waterProof;
-    }
-
-    public void setWaterProof(String waterProof) {
-        this.waterProof = waterProof == null ? null : waterProof.trim();
-    }
-
-    public String getHeatPreservation() {
-        return heatPreservation;
-    }
-
-    public void setHeatPreservation(String heatPreservation) {
-        this.heatPreservation = heatPreservation == null ? null : heatPreservation.trim();
-    }
-
     public String getBuildNumber() {
         return buildNumber;
     }
 
     public void setBuildNumber(String buildNumber) {
         this.buildNumber = buildNumber == null ? null : buildNumber.trim();
-    }
-
-    public String getHeatInsulation() {
-        return heatInsulation;
-    }
-
-    public void setHeatInsulation(String heatInsulation) {
-        this.heatInsulation = heatInsulation == null ? null : heatInsulation.trim();
     }
 
     public Date getGmtCreated() {

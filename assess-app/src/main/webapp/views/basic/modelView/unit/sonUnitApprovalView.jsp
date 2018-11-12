@@ -65,7 +65,8 @@
                 cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                 $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitDecorate.prototype.config().table, "${pageContext.request.contextPath}/basicUnitDecorate/getBootstrapTableVo", cols, {
-                    unitId: ${empty basicUnit.id?0:basicUnit.id}
+                    unitId: ${empty basicUnit.id?0:basicUnit.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -110,7 +111,8 @@
                 });
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/basicUnitHuxing/getBootstrapTableVo", cols, {
-                    unitId: ${empty basicUnit.id?0:basicUnit.id}
+                    unitId: ${empty basicUnit.id?0:basicUnit.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,
@@ -230,7 +232,8 @@
                 cols.push({field: 'runningSpeed', title: '运行速度'});
                 $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/basicUnitElevator/getBootstrapTableVo", cols, {
-                    unitId: ${empty basicUnit.id?0:basicUnit.id}
+                    unitId: ${empty basicUnit.id?0:basicUnit.id},
+                    approval:true
                 }, {
                     showColumns: false,
                     showRefresh: false,

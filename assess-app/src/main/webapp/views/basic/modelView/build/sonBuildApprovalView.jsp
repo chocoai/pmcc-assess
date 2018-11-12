@@ -125,7 +125,8 @@
                         $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
                             buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
-                            buildingId: buildingModel.prototype.getBuildingId()
+                            buildingId: buildingModel.prototype.getBuildingId(),
+                            approval:true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -146,7 +147,8 @@
                         $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
                             buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
-                            buildingId: buildingModel.prototype.getBuildingId()
+                            buildingId: buildingModel.prototype.getBuildingId(),
+                            approval:true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -167,7 +169,8 @@
                         $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
                             buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
-                            buildingId: buildingModel.prototype.getBuildingId()
+                            buildingId: buildingModel.prototype.getBuildingId(),
+                            approval:true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -182,9 +185,10 @@
                 buildingFunction: {
                     loadDataDicList: function () {
                         var cols = [];
-                        cols.push({field: 'waterProof', title: '防水'});
-                        cols.push({field: 'heatPreservation', title: '保温'});
-                        cols.push({field: 'heatInsulation', title: '隔热'});
+                        // cols.push({field: 'waterProof', title: '防水'});
+                        // cols.push({field: 'heatPreservation', title: '保温'});
+                        // cols.push({field: 'heatInsulation', title: '隔热'});
+                        cols.push({field: 'type', title: '类型'});
                         cols.push({field: 'decorationPartName', title: '装修部位'});
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                         cols.push({field: 'materialPriceName', title: '材料价格区间'});
@@ -192,7 +196,8 @@
                         $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
                             buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
-                            buildingId: buildingModel.prototype.getBuildingId()
+                            buildingId: buildingModel.prototype.getBuildingId(),
+                            approval:true
                         }, {
                             showColumns: false,
                             showRefresh: false,

@@ -1288,6 +1288,9 @@
         objectData.firstRemove.init();
     });
 
+    /**
+     * 校验
+     **/
     objectData.valid = function () {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
@@ -1424,6 +1427,28 @@
         return item;
     };
 
+    /**
+     * 成功申请后清除数据
+     */
+    objectData.successClear = function () {
+        window.location.reload();
+
+        // $("#" + objectData.config.basicEstate.frmLandState).clearAll();
+        // $("#" + objectData.config.basicEstate.frm).clearAll();
+        // $("#" + objectData.config.basicUnit.frm).clearAll();
+        // $("#" + objectData.config.basicHouse.frm).clearAll();
+        // $("#" + objectData.config.basicHouse.tradingFrm).clearAll();
+        // objectData.firstRemove.buildFirst();
+        // objectData.firstRemove.unitFirst();
+        // objectData.firstRemove.estateFirst();
+        // objectData.firstRemove.houseFirst();
+        // $('#caseTab a').tab('show');
+        // for (var i = 1; i <= 4; i++) {
+        //     navButtonBuild.setObjArrayElement(i,{});
+        //     $("#profile-tab"+i).removeAttr("data-toggle");
+        // }
+    };
+
 </script>
 
 <script>
@@ -1434,7 +1459,6 @@
             return false;
         }
         var data = objectData.formParams();
-        console.log(data);
         var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
@@ -1445,7 +1469,7 @@
             success: function (result) {
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
-                        window.location.reload();
+                        objectData.successClear();
                     });
                 }
             },

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -29,59 +30,61 @@ public class BasicBuildingFunctionController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicBuildingFunctionById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicBuildingFunctionById(Integer id){
+    public HttpResult getBasicBuildingFunctionById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingFunctionService.getBasicBuildingFunctionById(id));
+            return HttpResult.newCorrectResult(200, basicBuildingFunctionService.getBasicBuildingFunctionById(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicBuildingFunction", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction){
+    public HttpResult saveAndUpdateBasicBuildingFunction(BasicBuildingFunction basicBuildingFunction) {
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction));
+            return HttpResult.newCorrectResult(200, basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(basicBuildingFunction));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteBasicBuildingFunction", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicBuildingFunction(Integer id){
+    public HttpResult deleteBasicBuildingFunction(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingFunctionService.deleteBasicBuildingFunction(id));
+            return HttpResult.newCorrectResult(200, basicBuildingFunctionService.deleteBasicBuildingFunction(id));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicBuildingFunction basicBuildingFunction){
+    public BootstrapTableVo getBootstrapTableVo(BasicBuildingFunction basicBuildingFunction, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
-            if (basicBuildingFunction != null){
-                basicBuildingFunction.setCreator(commonService.thisUserAccount());
+            if (basicBuildingFunction != null) {
+                if (!approval) {
+                    basicBuildingFunction.setCreator(commonService.thisUserAccount());
+                }
             }
             return basicBuildingFunctionService.getBootstrapTableVo(basicBuildingFunction);
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/basicBuildingFunctionList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult basicBuildingFunctionList(BasicBuildingFunction basicBuildingFunction){
+    public HttpResult basicBuildingFunctionList(BasicBuildingFunction basicBuildingFunction) {
         try {
-            return HttpResult.newCorrectResult(200,basicBuildingFunctionService.basicBuildingFunctionList(basicBuildingFunction));
+            return HttpResult.newCorrectResult(200, basicBuildingFunctionService.basicBuildingFunctionList(basicBuildingFunction));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 }

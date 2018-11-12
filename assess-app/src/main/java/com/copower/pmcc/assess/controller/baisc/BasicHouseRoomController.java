@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -71,13 +72,15 @@ public class BasicHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房间 列表")
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoom basicHouseRoom){
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoom basicHouseRoom, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
             if (basicHouseRoom==null){
                 basicHouseRoom = new BasicHouseRoom();
             }
             if (basicHouseRoom != null){
-                basicHouseRoom.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicHouseRoom.setCreator(commonService.thisUserAccount());
+                }
             }
             BootstrapTableVo vo = basicHouseRoomService.getBootstrapTableVo(basicHouseRoom);
             return vo;
@@ -128,10 +131,12 @@ public class BasicHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/getRoomDecorateBootstrapTableVo", method = {RequestMethod.GET}, name = "房间子类 列表")
-    public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate){
+    public BootstrapTableVo getRoomDecorateBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
             if (basicHouseRoomDecorate != null){
-                basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
+                }
             }
             BootstrapTableVo vo = basicHouseRoomDecorateService.getBootstrapTableVo(basicHouseRoomDecorate);
             return vo;

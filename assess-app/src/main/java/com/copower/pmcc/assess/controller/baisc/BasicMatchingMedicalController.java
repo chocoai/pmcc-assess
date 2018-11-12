@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -62,10 +63,12 @@ public class BasicMatchingMedicalController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicMatchingMedical basicMatchingMedical){
+    public BootstrapTableVo getBootstrapTableVo(BasicMatchingMedical basicMatchingMedical, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
             if (basicMatchingMedical != null){
-                basicMatchingMedical.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicMatchingMedical.setCreator(commonService.thisUserAccount());
+                }
             }
             return basicMatchingMedicalService.getBootstrapTableVo(basicMatchingMedical);
         } catch (Exception e) {

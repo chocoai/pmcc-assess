@@ -27,20 +27,16 @@
                 <div class="x_content">
                     <div role="tabpanel" data-example-id="togglable-tabs">
                         <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                            <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1"
-                                                                data-toggle="tab" aria-expanded="true"
+                            <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1" aria-expanded="true"
                                                                 onclick="objectData.estate.init()">楼盘</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                                data-toggle="tab" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2" aria-expanded="false"
                                                                 onclick="objectData.build.init(1)">楼栋</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                data-toggle="tab" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false"
                                                                 onclick="objectData.unit.init()">单元</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                data-toggle="tab" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false"
                                                                 onclick="objectData.house.init();">房屋</a>
                             </li>
                         </ul>
@@ -59,27 +55,21 @@
                                                 <label class="col-sm-1 control-label">省
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="省" readonly="readonly"
-                                                           name="provinceName" class="form-control"
-                                                           value="${basicEstate.provinceName}">
+                                                    <label class="form-control">${basicEstate.provinceName}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">市</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="市" readonly="readonly"
-                                                           name="cityName" class="form-control"
-                                                           value="${basicEstate.cityName}">
+                                                    <label class="form-control">${basicEstate.cityName}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">县</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="县" readonly="readonly"
-                                                           name="districtName" class="form-control"
-                                                           value="${basicEstate.districtName}">
+                                                    <label class="form-control">${basicEstate.districtName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,24 +77,19 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="楼盘名称" readonly="readonly"
-                                                           name="name" class="form-control" value="${basicEstate.name}">
+                                                    <label class="form-control">${basicEstate.name}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">楼盘方位</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="楼盘方位" readonly="readonly"
-                                                           name="position" class="form-control"
-                                                           value="${basicEstate.position}">
+                                                    <label class="form-control">${basicEstate.position}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">基础版块</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="楼盘方位" readonly="readonly"
-                                                           name="position" class="form-control"
-                                                           value="${basicEstate.blockName}">
+                                                    <label class="form-control">${basicEstate.blockName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,25 +98,13 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">编号</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="编号(请输入数字)" name="number"
-                                                           readonly="readonly"
-                                                           class="form-control" value="${basicEstate.number}">
+                                                    <label class="form-control">${basicEstate.number}</label>
                                                 </div>
                                             </div>
-                                            <%--<div class="x-valid">--%>
-                                                <%--<label class="col-sm-1 control-label">土地级别</label>--%>
-                                                <%--<div class="col-sm-3">--%>
-                                                    <%--<input type="text" placeholder="土地级别" name="number"--%>
-                                                           <%--readonly="readonly"--%>
-                                                           <%--class="form-control" value="${basicEstate.landLevelName}">--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">街道</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="街道" readonly="readonly"
-                                                           name="street" class="form-control"
-                                                           value="${basicEstate.street}">
+                                                    <label class="form-control">${basicEstate.street}</label>
                                                 </div>
                                             </div>
 
@@ -141,27 +114,21 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">占地面积</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" readonly="readonly"
-                                                           placeholder="占地面积" name="coverAnArea" class="form-control"
-                                                           value="${basicEstate.coverAnArea}">
+                                                    <label class="form-control">${basicEstate.coverAnArea}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">容积率</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" readonly="readonly"
-                                                           placeholder="容积率" value="${basicEstate.volumetricRate}"
-                                                           name="volumetricRate" class="form-control">
+                                                    <label class="form-control">${basicEstate.volumetricRate}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">绿化率</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" readonly="readonly"
-                                                           placeholder="绿化率" value="${basicEstate.greeningRate}"
-                                                           name="greeningRate" class="form-control">
+                                                    <label class="form-control">${basicEstate.greeningRate}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,9 +138,7 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">楼盘概况</label>
                                                 <div class="col-sm-11">
-                                                    <textarea class="form-control" readonly="readonly"
-                                                              name="description"
-                                                              placeholder="楼盘概况">${basicEstate.description}</textarea>
+                                                    <label class="form-control">${basicEstate.description}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -182,26 +147,20 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">楼栋数</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text"
-                                                           placeholder="楼栋数" readonly="readonly" name="buildingNumber"
-                                                           class="form-control" value="${basicEstate.buildingNumber}">
+                                                    <label class="form-control">${basicEstate.buildingNumber}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">开发商</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text"
-                                                           placeholder="开发商" readonly="readonly" name="developerName"
-                                                           class="form-control" value="${basicEstate.developerName}">
+                                                    <label class="form-control">${basicEstate.developerName}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">建筑面积</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text"
-                                                           placeholder="建筑面积" readonly="readonly" name="floorArea"
-                                                           class="form-control" value="${basicEstate.floorArea}">
+                                                    <label class="form-control">${basicEstate.floorArea}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -210,27 +169,20 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">均价</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text"
-                                                           placeholder="均价(请输入数字)" name="averagePrice"
-                                                           readonly="readonly"
-                                                           class="form-control" value="${basicEstate.averagePrice}">
+                                                    <label class="form-control">${basicEstate.averagePrice}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">价格区间</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="价格区间"
-                                                           name="priceRange" readonly="readonly" class="form-control"
-                                                           value="${basicEstate.priceRange}">
+                                                    <label class="form-control">${basicEstate.priceRange}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">附号</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text"
-                                                           placeholder="附号(请输入数字)" value="${basicEstate.attachNumber}"
-                                                           name="attachNumber" readonly="readonly" class="form-control">
+                                                    <label class="form-control">${basicEstate.attachNumber}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -773,22 +725,18 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <form class="form-horizontal">
-                                        <input type="hidden" name="id">
+                                        <input type="hidden" name="id" value="${basicUnit.id}">
                                         <div class="form-group">
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">单元编号</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="单元编号" readonly="readonly"
-                                                           name="unitNumber" class="form-control"
-                                                           value="${basicUnit.unitNumber}">
+                                                    <label class="form-control">${basicUnit.unitNumber}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">户梯比</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="户梯比" readonly="readonly"
-                                                           name="elevatorHouseholdRatio" class="form-control"
-                                                           value="${basicUnit.elevatorHouseholdRatio}">
+                                                    <label class="form-control">${basicUnit.elevatorHouseholdRatio}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -814,29 +762,21 @@
                                                 <label class="col-sm-1 control-label">房号<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.houseNumber}"
-                                                           placeholder="房号"
-                                                           name="houseNumber"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.houseNumber}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">所在楼层<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.floor}" placeholder="所在楼层"
-                                                           name="floor"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.floor}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">使用环境<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.useEnvironmentName}"
-                                                           placeholder="使用环境"
-                                                           name="useEnvironmentName"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.useEnvironmentName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -847,10 +787,7 @@
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <div class="input-group">
-                                                        <input type="text"
-                                                               placeholder="户型"
-                                                               name="huxingName" value=""
-                                                               class="form-control" readonly="readonly">
+                                                        <label class="form-control">${basicHouse.huxingName}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -866,10 +803,7 @@
                                                 <label class="col-sm-1 control-label">朝向<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.orientation}"
-                                                           placeholder="朝向"
-                                                           name="orientation"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.orientation}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -879,10 +813,7 @@
                                                 <label class="col-sm-1 control-label">证载用途<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.certUseName}"
-                                                           placeholder="证载用途"
-                                                           name="certUseName"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.certUseName}</label>
                                                 </div>
                                             </div>
 
@@ -890,10 +821,7 @@
                                                 <label class="col-sm-1 control-label">实际用途<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.practicalUseName}"
-                                                           placeholder="实际用途"
-                                                           name="practicalUseName"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.practicalUseName}</label>
                                                 </div>
                                             </div>
 
@@ -901,10 +829,7 @@
                                                 <label class="col-sm-1 control-label">权益限制<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" value="${basicHouse.rightInterestsRestriction}"
-                                                           placeholder="权益限制"
-                                                           name="rightInterestsRestriction"
-                                                           class="form-control" readonly="readonly">
+                                                    <label class="form-control">${basicHouse.rightInterestsRestriction}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -913,9 +838,7 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">房屋出租占用情况途描述</label>
                                                 <div class="col-sm-11">
-                                                <textarea class="form-control" name="description" readonly="readonly">
-                                                    ${basicHouse.description}
-                                                </textarea>
+                                                    <label class="form-control">${basicHouse.description}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -948,30 +871,21 @@
                                                 <label class="col-sm-1 control-label">财产范围<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="财产范围" readonly="readonly"
-                                                           name="scopeProperty"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.scopeProperty}">
+                                                    <label class="form-control">${basicHouseTrading.scopeProperty}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">融资条件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="融资条件" readonly="readonly"
-                                                           name="financingConditions"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.financingConditions}">
+                                                    <label class="form-control">${basicHouseTrading.financingConditions}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">税费负担<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="税费负担" readonly="readonly"
-                                                           name="taxBurdenName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.taxBurdenName}">
+                                                    <label class="form-control">${basicHouseTrading.taxBurdenName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -981,20 +895,14 @@
                                                 <label class="col-sm-1 control-label">正常交易<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="正常交易" readonly="readonly"
-                                                           name="normalTransactionName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.normalTransactionName}">
+                                                    <label class="form-control">${basicHouseTrading.normalTransactionName}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">说明事项类型<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="说明事项类型" readonly="readonly"
-                                                           name="descriptionTypeName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.descriptionTypeName}">
+                                                    <label class="form-control">${basicHouseTrading.descriptionTypeName}</label>
                                                 </div>
                                             </div>
 
@@ -1002,10 +910,7 @@
                                                 <label class="col-sm-1 control-label">说明事项内容<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="说明事项内容" readonly="readonly"
-                                                           name="descriptionContentName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.descriptionContent}">
+                                                    <label class="form-control">${basicHouseTrading.descriptionContent}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1015,20 +920,14 @@
                                                 <label class="col-sm-1 control-label">交易时间<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="交易时间" readonly="readonly"
-                                                           name="tradingTimeName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.tradingTimeName}">
+                                                    <label class="form-control">${basicHouseTrading.tradingTimeName}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">交易类型</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="交易类型" readonly="readonly"
-                                                           name="tradingTypeName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.tradingTypeName}">
+                                                    <label class="form-control">${basicHouseTrading.tradingTypeName}</label>
                                                 </div>
                                             </div>
 
@@ -1036,10 +935,7 @@
                                                 <label class="col-sm-1 control-label">交易价格<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="交易价格" readonly="readonly"
-                                                           name="tradingPrice"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.tradingPrice}">
+                                                    <label class="form-control">${basicHouseTrading.tradingPrice}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1048,10 +944,7 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="买方支付的额外税费" readonly="readonly"
-                                                           name="buyerExtraTaxFee"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.buyerExtraTaxFee}">
+                                                    <label class="form-control">${basicHouseTrading.buyerExtraTaxFee}</label>
                                                 </div>
                                             </div>
 
@@ -1059,19 +952,14 @@
                                                 <label class="col-sm-1 control-label">付款方式<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="付款方式" readonly="readonly"
-                                                           name="paymentMethodName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.paymentMethodName}">
+                                                    <label class="form-control">${basicHouseTrading.paymentMethodName}</label>
                                                 </div>
                                             </div>
 
                                             <div class="x-valid" style="display: none;">
                                                 <label class="col-sm-1 control-label">出售总额</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="出售总额" readonly="readonly"
-                                                           name="totalSale"
-                                                           class="form-control" value="${basicHouseTrading.totalSale}">
+                                                    <label class="form-control">${basicHouseTrading.totalSale}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1080,18 +968,13 @@
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="承租方支付的额外税费" readonly="readonly"
-                                                           name="rentingExtraTaxFee"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.rentingExtraTaxFee}">
+                                                    <label class="form-control">${basicHouseTrading.rentingExtraTaxFee}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">押金</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="押金" readonly="readonly"
-                                                           name="deposit"
-                                                           class="form-control" value="${basicHouseTrading.deposit}">
+                                                    <label class="form-control">${basicHouseTrading.deposit}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1113,19 +996,13 @@
                                                 <label class="col-sm-1 control-label">信息来源分类<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="信息来源分类" readonly="readonly"
-                                                           name="informationTypeName"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.informationTypeName}">
+                                                    <label class="form-control">${basicHouseTrading.informationTypeName}</label>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
                                                 <label class="col-sm-1 control-label">信息来源</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" placeholder="信息来源" readonly="readonly"
-                                                           name="information"
-                                                           class="form-control"
-                                                           value="${basicHouseTrading.information}">
+                                                    <label class="form-control">${basicHouseTrading.information}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1510,8 +1387,36 @@
         }
     };
 
+
     $(function () {
-        $('#caseTab a:first').tab('show');
+        //选项卡处理
+        var basicUnit = "${basicUnit}" ;
+        if (objectData.isNotBlank(basicUnit)){
+            $("#profile-tab3").attr("data-toggle","tab");
+            $('#caseTab a').eq(2).tab('show');
+        }
+
+        var basicEstate = "${basicEstate}" ;
+        if (objectData.isNotBlank(basicEstate)){
+            $("#profile-tab1").attr("data-toggle","tab");
+            $('#caseTab a').eq(0).tab('show');
+        }
+
+        var basicHouse = "${basicHouse}" ;
+        if (objectData.isNotBlank(basicHouse)){
+            $("#profile-tab4").attr("data-toggle","tab");
+            $('#caseTab a').eq(3).tab('show');
+        }
+
+        var oneBasicBuilding = "${oneBasicBuilding}" ;
+        var twoBasicBuilding = "${twoBasicBuilding}" ;
+        var threeBasicBuilding = "${threeBasicBuilding}" ;
+        var fourBasicBuilding = "${fourBasicBuilding}" ;
+        if (objectData.isNotBlank(oneBasicBuilding) || objectData.isNotBlank(twoBasicBuilding) || objectData.isNotBlank(threeBasicBuilding) || objectData.isNotBlank(fourBasicBuilding)){
+            $("#profile-tab2").attr("data-toggle","tab");
+            $('#caseTab a').eq(1).tab('show');
+            navButtonBuild.one($("#navButtonBuild").find("button").eq(0),1);
+        }
     });
 </script>
 <script type="application/javascript">

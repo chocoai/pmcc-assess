@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -62,10 +63,12 @@ public class BasicHouseEquipmentController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseEquipment basicHouseEquipment){
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseEquipment basicHouseEquipment, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
         try {
             if (basicHouseEquipment != null){
-                basicHouseEquipment.setCreator(commonService.thisUserAccount());
+                if (!approval) {
+                    basicHouseEquipment.setCreator(commonService.thisUserAccount());
+                }
             }
             return basicHouseEquipmentService.getBootstrapTableVo(basicHouseEquipment);
         } catch (Exception e) {
