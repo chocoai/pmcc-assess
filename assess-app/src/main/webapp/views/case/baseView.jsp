@@ -71,8 +71,7 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">楼盘名称<span
-                                        class="symbol required"></span></label>
+                                <label class="col-sm-1 control-label">楼盘名称</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" name="search"
                                            onkeyup="baseFun.caseEstate.searchInput();"/>
@@ -257,10 +256,7 @@
                 useDefaultText: false,
                 provinceTarget: $("#province"),
                 cityTarget: $("#city"),
-                districtTarget: $("#district"),
-                provinceValue: '',
-                cityValue: '',
-                districtValue: ''
+                districtTarget: $("#district")
             });
         },
         monitor: function () {
@@ -489,9 +485,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseBuild.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseBuild.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseBuild.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseBuild.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -571,9 +565,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseUnit.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseUnit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseUnit.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseUnit.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -652,9 +644,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseHouse.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="baseFun.caseHouse.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="复制并新增" onclick="baseFun.caseHouse.copyData(' + row.id + ',\'tb_List\')"><i class="fa fa-copy"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseHouse.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
