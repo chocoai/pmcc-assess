@@ -87,7 +87,8 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.show({},{})"
+                                    <input type="button" class="btn btn-success"
+                                           onclick="objectData.building.show({},{})"
                                            value="添加">
                                 </div>
                             </div>
@@ -596,6 +597,7 @@
 
 
     objectData.estateFlag = true;
+    objectData.versionEstateFlag = false;
     //处理 楼盘
     objectData.estate = {
         show: function (itemA, itemB) {
@@ -609,7 +611,7 @@
                 objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
-            $("#profile-tab1").attr("data-toggle","tab");
+            $("#profile-tab1").attr("data-toggle", "tab");
             // $("#" + objectData.config.basicEstate.frm).initForm({name:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val()});
             estateNetwork.prototype.loadDataDicList();
             estateParking.prototype.loadDataDicList();
@@ -695,18 +697,19 @@
             $.each(objectData.config.basicEstate.files, function (i, n) {
                 objectData.uploadFile(n, AssessDBKey.BasicEstate, objectData.isNotBlank(item.id) ? item.id : 0);
             });
-            AssessCommon.initAreaInfo({
+            AssessCommon.initAsyncAreaInfo({
                 provinceTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.province"),
                 cityTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.city"),
                 districtTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.district"),
                 provinceValue: item.province,
                 cityValue: item.city,
                 districtValue: item.district
-            });
+            }, false);
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataProperty/dataPropertyList",
                 type: "get",
                 dataType: "json",
+                async: false,
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -730,6 +733,7 @@
                 url: "${pageContext.request.contextPath}/dataBlock/dataBlockList",
                 type: "get",
                 dataType: "json",
+                async: false,
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -749,13 +753,19 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-
-
+            objectData.estate.versionInit();
         },
         landStateInit: function (item) {
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
                 $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseType').empty().html(html);
-            });
+                objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseType, "landUseType");
+            }, true);
+            if (objectData.isNotBlank(item.landUseType)) {
+                AssessCommon.loadDataDicByPid(item.landUseType, item.landUseCategory, function (html, data) {
+                    $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseCategory').empty().html(html);
+                    objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseCategory, "landUseCategory");
+                });
+            }
             $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").change(function () {
                 var id = $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").val();
                 AssessCommon.loadDataDicByPid(id, null, function (html, data) {
@@ -767,6 +777,7 @@
                 url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
                 type: "get",
                 dataType: "json",
+                async: false,
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
@@ -806,17 +817,38 @@
                     }
                 }
             });
+        },
+        //input 和 select 被触发 说明已经开发新增或者修改数据了 ==> 版本需要更新
+        versionInit: function () {
+            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
+                $(n).blur(function () {
+                    var str = $(n).val();
+                    if (objectData.isNotBlank(str)) {
+                        objectData.versionEstateFlag = true;
+                    }
+                });
+            });
+            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select").each(function (i, n) {
+                $(n).change(function () {
+                    var str = $(n).val();
+                    if (objectData.isNotBlank(str)) {
+                        objectData.versionEstateFlag = true;
+                    }
+                });
+            });
         }
     };
 
     //处理 楼栋
+    objectData.versionBuildingFlag = false;
+    objectData.buildingFlag = true;
     objectData.building = {
         show: function (item) {
-            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(estateId)) {
+            if (objectData.buildingFlag) {
+                objectData.building.init(item);
+                objectData.buildingFlag = false;
             }
-            objectData.building.init(item);
-            $("#profile-tab2").attr("data-toggle","tab");
+            $("#profile-tab2").attr("data-toggle", "tab");
             $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
                 var readonly = $(n).attr("readonly");
                 if (objectData.isNotBlank(readonly)) {
@@ -920,7 +952,7 @@
                                                 }
                                             });
                                             var temp = resultA.data[0];
-                                            $("#profile-tab2").attr("data-toggle","tab");
+                                            $("#profile-tab2").attr("data-toggle", "tab");
                                             if (objectData.isNotBlankObjectProperty(temp)) {
                                                 objectData.firstRemove.buildFirst();
                                                 objectData.building.appWriteBuilding(temp);
@@ -961,9 +993,7 @@
         },
         init: function (item) {
             $('#caseTab a').eq(1).tab('show');
-            $(function () {
-                navButtonBuild.init();
-            });
+            navButtonBuild.inputBlur();
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, item.buildingCategory, function (html, data) {
                 $("#" + objectData.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');
             });
@@ -1029,23 +1059,27 @@
                 }
             });
             navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
+        },
+        versionInit: function () {
+
         }
     };
 
     //处理单元
+    objectData.versionUnitFlag = false;
     objectData.unit = {
         show: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
             if (!objectData.isNotBlank(buildingId)) {
             }
-            $("#profile-tab3").attr("data-toggle","tab");
+            $("#profile-tab3").attr("data-toggle", "tab");
             $('#caseTab a').eq(2).tab('show');
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
             $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).hide();
             unitDecorate.prototype.loadDataDicList();
             unitHuxing.prototype.loadDataDicList();
             unitElevator.prototype.loadDataDicList();
-            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicUnit.key+"']").val()});
+            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -1105,13 +1139,14 @@
 
     //处理房屋
     objectData.houseFlag = true;
+    objectData.versionHouseFlag = false;
     objectData.house = {
         show: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
             if (!objectData.isNotBlank(unitId)) {
             }
             $('#caseTab a').eq(3).tab('show');
-            $("#profile-tab4").attr("data-toggle","tab");
+            $("#profile-tab4").attr("data-toggle", "tab");
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
             $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).hide();
             $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).show();
@@ -1129,7 +1164,7 @@
             houseNewWind.prototype.loadDataDicList();
             houseAirConditioner.prototype.loadDataDicList();
             houseHeating.prototype.loadDataDicList();
-            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicHouse.key+"']").val()});
+            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -1175,8 +1210,8 @@
                     CaseHouse = {};
                 }
                 objectData.house.show();
-                objectData.initLabelForm(objectData.config.basicHouse.frm,CaseHouse);
-                objectData.initLabelForm(objectData.config.basicHouse.tradingFrm,CaseHouseTrading);
+                objectData.initLabelForm(objectData.config.basicHouse.frm, CaseHouse);
+                objectData.initLabelForm(objectData.config.basicHouse.tradingFrm, CaseHouseTrading);
                 $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).hide();
                 $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).show();
                 $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).hide();
@@ -1309,7 +1344,7 @@
                 basicBuildings.unshift(navButtonBuild.getObjArray(i))
             }
         }
-        if (objectData.isNotBlankObjectProperty(basicEstate)){//楼盘检测到有数据
+        if (objectData.isNotBlankObjectProperty(basicEstate)) {//楼盘检测到有数据
             // if (!$("#" + objectData.config.basicEstate.frm).valid()) {
             //     toastr.success('楼盘有必须的数据未填写!');
             //     return false;
@@ -1325,7 +1360,7 @@
         if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下验证通过
             if (objectData.isNotBlank(estateId) || objectData.isNotBlankObjectProperty(basicEstate)) {
                 var identifier = $("#identifier").val();
-                if (!objectData.isNotBlank(identifier)){
+                if (!objectData.isNotBlank(identifier)) {
                     Alert("楼栋编号 (必要的查询下面楼栋所需)");
                     return false;
                 }
@@ -1459,6 +1494,7 @@
             return false;
         }
         var data = objectData.formParams();
+        console.log(data);
         var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",

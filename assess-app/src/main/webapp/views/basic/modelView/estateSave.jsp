@@ -43,19 +43,21 @@
 </div>
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
+        <label class="col-sm-1 control-label">街道</label>
         <div class="col-sm-3">
-            <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                   name="name" class="form-control">
+            <input type="text" placeholder="街道"
+                   name="street" class="form-control">
         </div>
     </div>
+
     <div class="x-valid">
-        <label class="col-sm-1 control-label">楼盘方位</label>
+        <label class="col-sm-1 control-label">街道号</label>
         <div class="col-sm-3">
-            <input type="text" placeholder="楼盘方位"
-                   name="position" class="form-control">
+            <input type="text"
+                   placeholder="街道号" name="streetNumber" class="form-control">
         </div>
     </div>
+
     <div class="x-valid">
         <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
         <div class="col-sm-3">
@@ -68,24 +70,17 @@
 
 <div class="form-group">
     <div class="x-valid">
-        <label class="col-sm-1 control-label">编号</label>
+        <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
         <div class="col-sm-3">
-            <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                   placeholder="编号(请输入数字)" name="number" class="form-control">
+            <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                   name="name" class="form-control">
         </div>
     </div>
-    <%--<div class="x-valid">--%>
-        <%--<label class="col-sm-1 control-label">土地级别</label>--%>
-        <%--<div class="col-sm-3">--%>
-            <%--<select class="form-control search-select select2 landLevel" name="landLevel">--%>
-            <%--</select>--%>
-        <%--</div>--%>
-    <%--</div>--%>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">街道</label>
+        <label class="col-sm-1 control-label">楼盘方位</label>
         <div class="col-sm-3">
-            <input type="text" placeholder="街道"
-                   name="street" class="form-control">
+            <input type="text" placeholder="楼盘方位"
+                   name="position" class="form-control">
         </div>
     </div>
 

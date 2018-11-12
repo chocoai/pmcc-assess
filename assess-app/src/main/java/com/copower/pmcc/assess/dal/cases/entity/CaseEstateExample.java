@@ -566,6 +566,76 @@ public class CaseEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andStreetNumberIsNull() {
+            addCriterion("street_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberIsNotNull() {
+            addCriterion("street_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberEqualTo(String value) {
+            addCriterion("street_number =", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberNotEqualTo(String value) {
+            addCriterion("street_number <>", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberGreaterThan(String value) {
+            addCriterion("street_number >", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("street_number >=", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberLessThan(String value) {
+            addCriterion("street_number <", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberLessThanOrEqualTo(String value) {
+            addCriterion("street_number <=", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberLike(String value) {
+            addCriterion("street_number like", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberNotLike(String value) {
+            addCriterion("street_number not like", value, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberIn(List<String> values) {
+            addCriterion("street_number in", values, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberNotIn(List<String> values) {
+            addCriterion("street_number not in", values, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberBetween(String value1, String value2) {
+            addCriterion("street_number between", value1, value2, "streetNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNumberNotBetween(String value1, String value2) {
+            addCriterion("street_number not between", value1, value2, "streetNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andStreetIsNull() {
             addCriterion("street is null");
             return (Criteria) this;

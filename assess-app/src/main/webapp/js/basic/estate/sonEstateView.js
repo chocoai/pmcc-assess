@@ -1675,7 +1675,7 @@ var matchingEnvironment;
                 return false;
             }
             var data = formParams(matchingEnvironment.prototype.config().frm);
-            data.estateId = '${empty caseEstate.id?0:caseEstate.id}';
+            data.estateId = '0';
             $.ajax({
                 url: getContextPath()+"/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
                 type: "post",

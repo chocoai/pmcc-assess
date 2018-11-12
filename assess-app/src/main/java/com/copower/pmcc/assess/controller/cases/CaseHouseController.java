@@ -259,7 +259,8 @@ public class CaseHouseController {
         }
         try {
             List<CaseHouse> caseHouseList = caseHouseService.autoCompleteCaseHouse(unitId, houseNumber, maxRows);
-            for (CaseHouse caseHouse : caseHouseList) {
+            if (!ObjectUtils.isEmpty(caseHouseList)){
+                CaseHouse caseHouse = caseHouseList.get(0);
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(caseHouse.getId()));
                 keyValueDto.setValue(caseHouse.getHouseNumber());

@@ -307,7 +307,7 @@ public class CaseEstateService {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(0,id);
+//            this.initAndUpdateSon(0,id);
             caseEstate.setId(id);
             return id;
         } else {
@@ -327,7 +327,7 @@ public class CaseEstateService {
             oo.setCreator(commonService.thisUserAccount());
             int oldId = caseEstate.getId() ;
             int newId = caseEstateDao.addEstate(oo);
-            this.initAndUpdateSon(oldId,newId);
+//            this.initAndUpdateSon(oldId,newId);
             caseEstate.setId(newId);
             return newId;
         }

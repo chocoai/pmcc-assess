@@ -22,6 +22,8 @@ public class BasicEstate {
 
     private String name;
 
+    private String streetNumber;
+
     private String street;
 
     private String number;
@@ -126,6 +128,14 @@ public class BasicEstate {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber == null ? null : streetNumber.trim();
     }
 
     public String getStreet() {

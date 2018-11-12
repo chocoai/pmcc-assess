@@ -75,6 +75,29 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="x-valid">
+                                                <label class="col-sm-1 control-label">街道</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control">${basicEstate.street}</label>
+                                                </div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">街道号</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control">${basicEstate.streetNumber}</label>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="x-valid">
+                                                <label class="col-sm-1 control-label">基础版块</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control">${basicEstate.blockName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="x-valid">
                                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control">${basicEstate.name}</label>
@@ -86,28 +109,6 @@
                                                     <label class="form-control">${basicEstate.position}</label>
                                                 </div>
                                             </div>
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">基础版块</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control">${basicEstate.blockName}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">编号</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control">${basicEstate.number}</label>
-                                                </div>
-                                            </div>
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">街道</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control">${basicEstate.street}</label>
-                                                </div>
-                                            </div>
-
                                         </div>
 
                                         <div class="form-group">
@@ -1394,18 +1395,21 @@
         if (objectData.isNotBlank(basicUnit)){
             $("#profile-tab3").attr("data-toggle","tab");
             $('#caseTab a').eq(2).tab('show');
+            objectData.unit.init();
         }
 
         var basicEstate = "${basicEstate}" ;
         if (objectData.isNotBlank(basicEstate)){
             $("#profile-tab1").attr("data-toggle","tab");
             $('#caseTab a').eq(0).tab('show');
+            objectData.estate.init();
         }
 
         var basicHouse = "${basicHouse}" ;
         if (objectData.isNotBlank(basicHouse)){
             $("#profile-tab4").attr("data-toggle","tab");
             $('#caseTab a').eq(3).tab('show');
+            objectData.house.init();
         }
 
         var oneBasicBuilding = "${oneBasicBuilding}" ;
@@ -1415,7 +1419,7 @@
         if (objectData.isNotBlank(oneBasicBuilding) || objectData.isNotBlank(twoBasicBuilding) || objectData.isNotBlank(threeBasicBuilding) || objectData.isNotBlank(fourBasicBuilding)){
             $("#profile-tab2").attr("data-toggle","tab");
             $('#caseTab a').eq(1).tab('show');
-            navButtonBuild.one($("#navButtonBuild").find("button").eq(0),1);
+            navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0],1);
         }
     });
 </script>

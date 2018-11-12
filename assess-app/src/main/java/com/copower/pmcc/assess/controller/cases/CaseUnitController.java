@@ -9,17 +9,21 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -47,18 +51,18 @@ public class CaseUnitController {
     }
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id,@RequestParam(defaultValue = "false") boolean copy) {
+    public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
         String view = "/case/caseUnit/apply/caseUnitView";
         CaseUnit caseUnit = null;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        caseUnit = caseUnitService.getCaseUnitById(id) ;
-        if (copy){
+        caseUnit = caseUnitService.getCaseUnitById(id);
+        if (copy) {
             //复制数据 需要把id设为null
             caseUnit.setId(null);
             //处理附件,所有附件则把附件复制后保存后的id传入页面显示
             //附件暂且不处理
         }
-        modelAndView.addObject("caseUnit",caseUnit);
+        modelAndView.addObject("caseUnit", caseUnit);
         return modelAndView;
     }
 
@@ -104,7 +108,7 @@ public class CaseUnitController {
             if (id != null) {
                 caseHouse.setUnitId(id);
                 caseHouseList = caseHouseService.getCaseHouseList(caseHouse);
-                if (caseHouseList.size() >= 1){
+                if (caseHouseList.size() >= 1) {
                     return HttpResult.newErrorResult("请删除此单元下的房屋之后在删除此单元! remove fail");
                 }
                 caseUnit = caseUnitService.getCaseUnitById(id);
@@ -134,7 +138,7 @@ public class CaseUnitController {
     @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
     public HttpResult initAndUpdateSon() {
         try {
-            caseUnitService.initAndUpdateSon(0,null);
+            caseUnitService.initAndUpdateSon(0, null);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
@@ -145,15 +149,16 @@ public class CaseUnitController {
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (!StringUtils.isNotBlank(unitNumber)){
+        if (!StringUtils.isNotBlank(unitNumber)) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
-        if (caseBuildingMainId == null){
+        if (caseBuildingMainId == null) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
         try {
             List<CaseUnit> caseUnitList = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
-            for (CaseUnit caseUnit : caseUnitList) {
+            if (!ObjectUtils.isEmpty(caseUnitList)) {
+                CaseUnit caseUnit = caseUnitList.get(0);
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(caseUnit.getId()));
                 keyValueDto.setValue(caseUnit.getUnitNumber());

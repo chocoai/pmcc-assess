@@ -5,7 +5,6 @@
 var navButtonBuild;
 (function () {
     navButtonBuild = new Object();
-    navButtonBuild.flag = true;
     navButtonBuild.groupFileId = "navButtonBuildGroupFileId";
     navButtonBuild.isNotBlank = function (item) {
         if (item) {
@@ -206,10 +205,5 @@ navButtonBuild.dataButtonWrite = function (target) {
     $("."+buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber+"部分");
     $("."+buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber+"部分");
 };
-navButtonBuild.init = function () {
-    if (navButtonBuild.flag){
-        this.inputBlur();
-        navButtonBuild.flag = false;
-    }
-};
+
 

@@ -20,10 +20,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @Auther: zch
@@ -32,6 +36,8 @@ import java.util.*;
  */
 @Service
 public class PublicBasicService {
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
@@ -2075,6 +2081,7 @@ public class PublicBasicService {
         if (caseEstateId == null) {
             throw new Exception("null point");
         }
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
         CaseEstateParking estateParking = new CaseEstateParking();
         estateParking.setEstateId(caseEstateId);
         CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
@@ -2096,129 +2103,247 @@ public class PublicBasicService {
         CaseMatchingEducation caseMatchingEducation = new CaseMatchingEducation();
         caseMatchingEducation.setEstateId(caseEstateId);
 
-        List<CaseMatchingTraffic> caseMatchingTraffics = caseMatchingTrafficService.getMatchingTrafficList(caseMatchingTraffic);
-        List<CaseMatchingMedical> caseMatchingMedicals = caseMatchingMedicalService.getCaseMatchingMedicalList(caseMatchingMedical);
-        List<CaseMatchingMaterial> caseMatchingMaterials = caseMatchingMaterialService.getCaseMatchingMaterialList(caseMatchingMaterial);
-        List<CaseMatchingLeisurePlace> caseMatchingLeisurePlaces = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceList(caseMatchingLeisurePlace);
-        List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
-        List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
-        List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
-        List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
-        List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
-        List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
-
-        if (!ObjectUtils.isEmpty(caseEstateParkings)) {
-            for (CaseEstateParking caseEstateParking : caseEstateParkings) {
-                BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
-                BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateParking, queryBasicEstateParking);
-                queryBasicEstateParking.setEstateId(0);
-                queryBasicEstateParking.setCaseId(caseEstateParking.getId());
-                queryBasicEstateParking.setId(null);
-                queryBasicEstateParking.setCreator(commonService.thisUserAccount());
-                basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingTraffic> caseMatchingTraffics = caseMatchingTrafficService.getMatchingTrafficList(caseMatchingTraffic);
+                    if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
+                        for (CaseMatchingTraffic oo : caseMatchingTraffics) {
+                            BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingTraffic);
+                            queryBasicMatchingTraffic.setEstateId(0);
+                            queryBasicMatchingTraffic.setCaseId(oo.getId());
+                            queryBasicMatchingTraffic.setId(null);
+                            queryBasicMatchingTraffic.setGmtCreated(null);
+                            queryBasicMatchingTraffic.setGmtModified(null);
+                            queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
+                            basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(queryBasicMatchingTraffic);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
-            for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
-                BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
-                BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork1, queryBasicEstateNetwork);
-                queryBasicEstateNetwork.setEstateId(0);
-                queryBasicEstateNetwork.setCaseId(caseEstateNetwork1.getId());
-                queryBasicEstateNetwork.setId(null);
-                queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
-                basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(queryBasicEstateNetwork);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingMedical> caseMatchingMedicals = caseMatchingMedicalService.getCaseMatchingMedicalList(caseMatchingMedical);
+                    if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
+                        for (CaseMatchingMedical oo : caseMatchingMedicals) {
+                            BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingMedical);
+                            queryBasicMatchingMedical.setEstateId(0);
+                            queryBasicMatchingMedical.setCaseId(oo.getId());
+                            queryBasicMatchingMedical.setId(null);
+                            queryBasicMatchingMedical.setGmtCreated(null);
+                            queryBasicMatchingMedical.setGmtModified(null);
+                            queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
+                            basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(queryBasicMatchingMedical);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
-            for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
-                BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
-                BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateSupply1, queryBasicEstateSupply);
-                queryBasicEstateSupply.setCaseId(caseEstateSupply1.getId());
-                queryBasicEstateSupply.setEstateId(0);
-                queryBasicEstateSupply.setId(null);
-                queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
-                basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingMaterial> caseMatchingMaterials = caseMatchingMaterialService.getCaseMatchingMaterialList(caseMatchingMaterial);
+                    if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
+                        for (CaseMatchingMaterial oo : caseMatchingMaterials) {
+                            BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingMaterial);
+                            queryBasicMatchingMaterial.setEstateId(0);
+                            queryBasicMatchingMaterial.setCaseId(oo.getId());
+                            queryBasicMatchingMaterial.setId(null);
+                            queryBasicMatchingMaterial.setGmtCreated(null);
+                            queryBasicMatchingMaterial.setGmtModified(null);
+                            queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
+                            basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(queryBasicMatchingMaterial);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingTraffics)) {
-            for (CaseMatchingTraffic oo : caseMatchingTraffics) {
-                BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
-                BeanUtils.copyProperties(oo, queryBasicMatchingTraffic);
-                queryBasicMatchingTraffic.setEstateId(0);
-                queryBasicMatchingTraffic.setCaseId(oo.getId());
-                queryBasicMatchingTraffic.setId(null);
-                queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
-                basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(queryBasicMatchingTraffic);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingLeisurePlace> caseMatchingLeisurePlaces = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceList(caseMatchingLeisurePlace);
+                    if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
+                        for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
+                            BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingLeisurePlace);
+                            queryBasicMatchingLeisurePlace.setEstateId(0);
+                            queryBasicMatchingLeisurePlace.setCaseId(oo.getId());
+                            queryBasicMatchingLeisurePlace.setId(null);
+                            queryBasicMatchingLeisurePlace.setGmtCreated(null);
+                            queryBasicMatchingLeisurePlace.setGmtModified(null);
+                            queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
+                            basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(queryBasicMatchingLeisurePlace);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingMedicals)) {
-            for (CaseMatchingMedical oo : caseMatchingMedicals) {
-                BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
-                BeanUtils.copyProperties(oo, queryBasicMatchingMedical);
-                queryBasicMatchingMedical.setEstateId(0);
-                queryBasicMatchingMedical.setCaseId(oo.getId());
-                queryBasicMatchingMedical.setId(null);
-                queryBasicMatchingMedical.setCreator(commonService.thisUserAccount());
-                basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(queryBasicMatchingMedical);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingFinance> caseMatchingFinances = caseMatchingFinanceService.getCaseMatchingFinanceList(caseMatchingFinance);
+                    if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
+                        for (CaseMatchingFinance oo : caseMatchingFinances) {
+                            BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingFinance);
+                            queryBasicMatchingFinance.setEstateId(0);
+                            queryBasicMatchingFinance.setCaseId(oo.getId());
+                            queryBasicMatchingFinance.setId(null);
+                            queryBasicMatchingFinance.setGmtCreated(null);
+                            queryBasicMatchingFinance.setGmtModified(null);
+                            queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
+                            basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(queryBasicMatchingFinance);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingMaterials)) {
-            for (CaseMatchingMaterial oo : caseMatchingMaterials) {
-                BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
-                BeanUtils.copyProperties(oo, queryBasicMatchingMaterial);
-                queryBasicMatchingMaterial.setEstateId(0);
-                queryBasicMatchingMaterial.setCaseId(oo.getId());
-                queryBasicMatchingMaterial.setId(null);
-                queryBasicMatchingMaterial.setCreator(commonService.thisUserAccount());
-                basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(queryBasicMatchingMaterial);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingEnvironment> caseMatchingEnvironments = caseMatchingEnvironmentService.getCaseMatchingEnvironmentList(caseMatchingEnvironment);
+                    if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
+                        for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
+                            BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingEnvironment);
+                            queryBasicMatchingEnvironment.setEstateId(0);
+                            queryBasicMatchingEnvironment.setCaseId(oo.getId());
+                            queryBasicMatchingEnvironment.setId(null);
+                            queryBasicMatchingEnvironment.setGmtCreated(null);
+                            queryBasicMatchingEnvironment.setGmtModified(null);
+                            queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
+                            basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(queryBasicMatchingEnvironment);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingLeisurePlaces)) {
-            for (CaseMatchingLeisurePlace oo : caseMatchingLeisurePlaces) {
-                BasicMatchingLeisurePlace queryBasicMatchingLeisurePlace = new BasicMatchingLeisurePlace();
-                BeanUtils.copyProperties(oo, queryBasicMatchingLeisurePlace);
-                queryBasicMatchingLeisurePlace.setEstateId(0);
-                queryBasicMatchingLeisurePlace.setCaseId(oo.getId());
-                queryBasicMatchingLeisurePlace.setId(null);
-                queryBasicMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
-                basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(queryBasicMatchingLeisurePlace);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseMatchingEducation> caseMatchingEducations = caseMatchingEducationService.getCaseMatchingEducationList(caseMatchingEducation);
+                    if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
+                        for (CaseMatchingEducation oo : caseMatchingEducations) {
+                            BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
+                            BeanUtils.copyProperties(oo, queryBasicMatchingEducation);
+                            queryBasicMatchingEducation.setEstateId(0);
+                            queryBasicMatchingEducation.setCaseId(oo.getId());
+                            queryBasicMatchingEducation.setId(null);
+                            queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
+                            queryBasicMatchingEducation.setGmtCreated(null);
+                            queryBasicMatchingEducation.setGmtModified(null);
+                            basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(queryBasicMatchingEducation);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingFinances)) {
-            for (CaseMatchingFinance oo : caseMatchingFinances) {
-                BasicMatchingFinance queryBasicMatchingFinance = new BasicMatchingFinance();
-                BeanUtils.copyProperties(oo, queryBasicMatchingFinance);
-                queryBasicMatchingFinance.setEstateId(0);
-                queryBasicMatchingFinance.setCaseId(oo.getId());
-                queryBasicMatchingFinance.setId(null);
-                queryBasicMatchingFinance.setCreator(commonService.thisUserAccount());
-                basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(queryBasicMatchingFinance);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseEstateParking> caseEstateParkings = caseEstateParkingService.getEstateParkingList(estateParking);
+                    if (!ObjectUtils.isEmpty(caseEstateParkings)) {
+                        for (CaseEstateParking caseEstateParking : caseEstateParkings) {
+                            BasicEstateParking queryBasicEstateParking = new BasicEstateParking();
+                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateParking, queryBasicEstateParking);
+                            queryBasicEstateParking.setEstateId(0);
+                            queryBasicEstateParking.setCaseId(caseEstateParking.getId());
+                            queryBasicEstateParking.setId(null);
+                            queryBasicEstateParking.setGmtCreated(null);
+                            queryBasicEstateParking.setGmtModified(null);
+                            queryBasicEstateParking.setCreator(commonService.thisUserAccount());
+                            basicEstateParkingService.saveAndUpdateBasicEstateParking(queryBasicEstateParking);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingEnvironments)) {
-            for (CaseMatchingEnvironment oo : caseMatchingEnvironments) {
-                BasicMatchingEnvironment queryBasicMatchingEnvironment = new BasicMatchingEnvironment();
-                BeanUtils.copyProperties(oo, queryBasicMatchingEnvironment);
-                queryBasicMatchingEnvironment.setEstateId(0);
-                queryBasicMatchingEnvironment.setCaseId(oo.getId());
-                queryBasicMatchingEnvironment.setId(null);
-                queryBasicMatchingEnvironment.setCreator(commonService.thisUserAccount());
-                basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(queryBasicMatchingEnvironment);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseEstateNetwork> caseEstateNetworks = caseEstateNetworkService.getEstateNetworkLists(caseEstateNetwork);
+                    if (!ObjectUtils.isEmpty(caseEstateNetworks)) {
+                        for (CaseEstateNetwork caseEstateNetwork1 : caseEstateNetworks) {
+                            BasicEstateNetwork queryBasicEstateNetwork = new BasicEstateNetwork();
+                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork1, queryBasicEstateNetwork);
+                            queryBasicEstateNetwork.setEstateId(0);
+                            queryBasicEstateNetwork.setCaseId(caseEstateNetwork1.getId());
+                            queryBasicEstateNetwork.setId(null);
+                            queryBasicEstateNetwork.setGmtCreated(null);
+                            queryBasicEstateNetwork.setGmtModified(null);
+                            queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
+                            basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(queryBasicEstateNetwork);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
-        }
-        if (!ObjectUtils.isEmpty(caseMatchingEducations)) {
-            for (CaseMatchingEducation oo : caseMatchingEducations) {
-                BasicMatchingEducation queryBasicMatchingEducation = new BasicMatchingEducation();
-                BeanUtils.copyProperties(oo, queryBasicMatchingEducation);
-                queryBasicMatchingEducation.setEstateId(0);
-                queryBasicMatchingEducation.setCaseId(oo.getId());
-                queryBasicMatchingEducation.setId(null);
-                queryBasicMatchingEducation.setCreator(commonService.thisUserAccount());
-                basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(queryBasicMatchingEducation);
+        });
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseEstateSupply> caseEstateSupplies = caseEstateSupplyService.getCaseEstateSupplyList(caseEstateSupply);
+                    if (!ObjectUtils.isEmpty(caseEstateSupplies)) {
+                        for (CaseEstateSupply caseEstateSupply1 : caseEstateSupplies) {
+                            BasicEstateSupply queryBasicEstateSupply = new BasicEstateSupply();
+                            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateSupply1, queryBasicEstateSupply);
+                            queryBasicEstateSupply.setCaseId(caseEstateSupply1.getId());
+                            queryBasicEstateSupply.setEstateId(0);
+                            queryBasicEstateSupply.setId(null);
+                            queryBasicEstateSupply.setGmtCreated(null);
+                            queryBasicEstateSupply.setGmtModified(null);
+                            queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
+                            basicEstateSupplyService.saveAndUpdateBasicEstateSupply(queryBasicEstateSupply);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.error("",e1);
+                }
             }
+        });
+        try {
+            Future<CaseEstateVo> caseEstateVoFuture = taskExecutor.submit(new Callable<CaseEstateVo>() {
+                @Override
+                public CaseEstateVo call() throws Exception {
+                    return caseEstateService.getCaseEstateVo(caseEstateService.getCaseEstateById(caseEstateId));
+                }
+            });
+            objectMap.put(CaseEstate.class.getSimpleName(), caseEstateVoFuture.get());
+        } catch (Exception e) {
+           logger.error("",e);
         }
-        Map<String, Object> objectMap = new HashMap<String, Object>(2);
-        objectMap.put(CaseEstate.class.getSimpleName(), caseEstateService.getCaseEstateVo(caseEstateService.getCaseEstateById(caseEstateId)));
         CaseEstateLandState query = new CaseEstateLandState();
         query.setEstateId(caseEstateId);
         List<CaseEstateLandState> landStateList = caseEstateLandStateService.getCaseEstateLandStateList(query);
