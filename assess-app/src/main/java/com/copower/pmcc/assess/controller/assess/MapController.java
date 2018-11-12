@@ -16,4 +16,10 @@ public class MapController {
         ModelAndView modelAndView = new ModelAndView("/base/mapPositionPicker");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/tagging", name = "标注")
+    public ModelAndView tagging() {
+        ModelAndView modelAndView = new ModelAndView("/base/tagging");
+        return modelAndView;
+    }
 }
