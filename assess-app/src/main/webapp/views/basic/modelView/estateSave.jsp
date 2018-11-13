@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <input type="hidden" name="id">
 <div class="form-group">
@@ -84,6 +83,51 @@
         </div>
     </div>
 
+    <div class="x-valid supplyGas">
+        <label class="col-sm-1 control-label">供气信息</label>
+        <div class="col-sm-3">
+            <select name="supplyGas" class="form-control search-select select2"
+                    required="required">
+                <option value="true">有</option>
+                <option value="false">无</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="x-valid supplyPower">
+        <label class="col-sm-1 control-label">供电信息</label>
+        <div class="col-sm-3">
+            <select name="supplyPower" class="form-control search-select select2"
+                    required="required">
+                <option value="true">有</option>
+                <option value="false">无</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="x-valid supplyWater">
+        <label class="col-sm-1 control-label">供排水情况</label>
+        <div class="col-sm-3">
+            <select name="supplyWater" class="form-control search-select select2"
+                    required="required">
+                <option value="true">有</option>
+                <option value="false">无</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="x-valid supplyHeating">
+        <label class="col-sm-1 control-label">供热信息</label>
+        <div class="col-sm-3">
+            <select name="supplyHeating" class="form-control search-select select2"
+                    required="required">
+                <option value="true">有</option>
+                <option value="false">无</option>
+            </select>
+        </div>
+    </div>
 </div>
 
 <div class="form-group">
@@ -136,8 +180,24 @@
     <div class="x-valid">
         <label class="col-sm-1 control-label">开发商</label>
         <div class="col-sm-3">
-            <select class="form-control search-select select2 developerId" name="developerId">
-            </select>
+            <div class="input-group">
+                <input type="hidden" name="developerId">
+                <input type="text" readonly="readonly"
+                       placeholder="开发商" class="form-control">
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="objectData.estate.developerSelect(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                </span>
+            </div>
         </div>
     </div>
     <div class="x-valid">

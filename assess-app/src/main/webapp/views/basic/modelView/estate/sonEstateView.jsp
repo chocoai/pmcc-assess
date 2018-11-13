@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyWater">
     <h3>供排水情况
         <button type="button" class="btn btn-success" onclick="estateSupplyWater.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyPower">
     <h3>供电信息
         <button type="button" class="btn btn-success" onclick="estateSupplyPower.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyHeating">
     <h3>供热信息
         <button type="button" class="btn btn-success" onclick="estateSupplyHeating.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
@@ -65,7 +65,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyGas">
     <h3>供气信息
         <button type="button" class="btn btn-success" onclick="estateSupplyGas.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增

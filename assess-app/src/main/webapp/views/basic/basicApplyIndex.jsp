@@ -5,6 +5,10 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
     <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
+    <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
+    <script src="${pageContext.request.contextPath}/js/developer.select.js"></script>
+    <script src="${pageContext.request.contextPath}/js/builder.select.js"></script>
+    <script src="${pageContext.request.contextPath}/js/property.select.js"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -33,15 +37,15 @@
                 </div>
                 <div class="x_content">
                     <form class="form-horizontal">
-                        <div class="form-group">
+                        <div class="form-group" id="industry">
                             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                                <input type="radio" id="industry_no" name="industry" value="1" checked="checked">
-                                <label for="industry_no">非工业与仓储</label>
+                                <input type="radio" name="industry" value="1" checked="checked">
+                                <label>非工业与仓储</label>
                             </span>
 
                             <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" id="industry" name="industry" value="2">
-                                <label for="industry">工业与仓储</label>
+                                <input type="radio" name="industry" value="2">
+                                <label>工业与仓储</label>
                             </span>
                         </div>
 
@@ -706,30 +710,6 @@
                 districtValue: item.district
             }, false);
             $.ajax({
-                url: "${pageContext.request.contextPath}/dataProperty/dataPropertyList",
-                type: "get",
-                dataType: "json",
-                async: false,
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.developerId").empty().html(option);
-                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.developerId, "developerId");
-                        }
-                    }
-                },
-                error: function (result) {
-                    console.info(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            $.ajax({
                 url: "${pageContext.request.contextPath}/dataBlock/dataBlockList",
                 type: "get",
                 dataType: "json",
@@ -754,6 +734,13 @@
                 }
             });
             objectData.estate.versionInit();
+        },
+        //开发商选择
+        developerSelect:function (this_) {
+            assessDeveloper.select(function (row) {
+                $(this_).parent().prev().val(row.name);
+                $(this_).parent().prev().prev().val(row.id);
+            });
         },
         landStateInit: function (item) {
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
@@ -1015,50 +1002,21 @@
                     });
                 }
             });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataBuilder/dataBuilderList",
-                type: "get",
-                dataType: "json",
-                data: {name: null},
-                success: function (result) {
-                    if (result.ret) {
-                        var item = result.data;
-                        var option = "<option value=''>请选择</option>";
-                        if (item.length > 0) {
-                            for (var i = 0; i < item.length; i++) {
-                                option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
-                            }
-                            $("#" + objectData.config.basicBuilding.frm).find('select.builderId').empty().html(option).trigger('change');
-                            objectData.select2Assignment(objectData.config.basicBuilding.frm, item.builderId, "builderId");
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataProperty/dataPropertyList",
-                type: "get",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        var item = result.data;
-                        var option = "<option value=''>请选择</option>";
-                        if (item.length > 0) {
-                            for (var i = 0; i < item.length; i++) {
-                                option += "<option value='" + item[i].id + "'>" + item[i].name + "</option>";
-                            }
-                            $("#" + objectData.config.basicBuilding.frm).find('select.propertyId').empty().html(option).trigger('change');
-                            objectData.select2Assignment(objectData.config.basicBuilding.frm, item.propertyId, "propertyId");
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
             navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
+        },
+        //物业选择
+        propertySelect:function (this_) {
+            assessProperty.select(function (row) {
+                $(this_).parent().prev().val(row.name);
+                $(this_).parent().prev().prev().val(row.id);
+            });
+        },
+        //建造商选择
+        builderSelect:function (this_) {
+            assessBuilder.select(function (row) {
+                $(this_).parent().prev().val(row.name);
+                $(this_).parent().prev().prev().val(row.id);
+            });
         },
         versionInit: function () {
 

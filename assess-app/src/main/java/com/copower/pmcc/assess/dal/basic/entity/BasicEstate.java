@@ -50,6 +50,14 @@ public class BasicEstate {
 
     private String priceRange;
 
+    private Boolean supplyHeating;
+
+    private Boolean supplyPower;
+
+    private Boolean supplyWater;
+
+    private Boolean supplyGas;
+
     private Integer version;
 
     private String creator;
@@ -240,6 +248,38 @@ public class BasicEstate {
 
     public void setPriceRange(String priceRange) {
         this.priceRange = priceRange == null ? null : priceRange.trim();
+    }
+
+    public Boolean getSupplyHeating() {
+        return supplyHeating;
+    }
+
+    public void setSupplyHeating(Boolean supplyHeating) {
+        this.supplyHeating = supplyHeating;
+    }
+
+    public Boolean getSupplyPower() {
+        return supplyPower;
+    }
+
+    public void setSupplyPower(Boolean supplyPower) {
+        this.supplyPower = supplyPower;
+    }
+
+    public Boolean getSupplyWater() {
+        return supplyWater;
+    }
+
+    public void setSupplyWater(Boolean supplyWater) {
+        this.supplyWater = supplyWater;
+    }
+
+    public Boolean getSupplyGas() {
+        return supplyGas;
+    }
+
+    public void setSupplyGas(Boolean supplyGas) {
+        this.supplyGas = supplyGas;
     }
 
     public Integer getVersion() {
