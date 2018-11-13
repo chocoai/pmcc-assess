@@ -249,7 +249,6 @@ public class CaseHouseService {
             caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
             id = caseHouseDao.addHouse(caseHouse);
-            this.initAndUpdateSon(0, id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
             caseHouse.setId(id);
@@ -270,7 +269,6 @@ public class CaseHouseService {
             oo.setCreator(commonService.thisUserAccount());
             int oldId = caseHouse.getId();
             int newId = caseHouseDao.addHouse(oo);
-            this.initAndUpdateSon(oldId, newId);
             caseHouse.setId(newId);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), newId);
             return newId;
