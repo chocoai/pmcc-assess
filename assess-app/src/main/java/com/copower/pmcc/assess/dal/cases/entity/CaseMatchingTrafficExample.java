@@ -285,6 +285,66 @@ public class CaseMatchingTrafficExample {
             return (Criteria) this;
         }
 
+        public Criteria andNatureIsNull() {
+            addCriterion("nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureIsNotNull() {
+            addCriterion("nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureEqualTo(Integer value) {
+            addCriterion("nature =", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureNotEqualTo(Integer value) {
+            addCriterion("nature <>", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureGreaterThan(Integer value) {
+            addCriterion("nature >", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureGreaterThanOrEqualTo(Integer value) {
+            addCriterion("nature >=", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureLessThan(Integer value) {
+            addCriterion("nature <", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureLessThanOrEqualTo(Integer value) {
+            addCriterion("nature <=", value, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureIn(List<Integer> values) {
+            addCriterion("nature in", values, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureNotIn(List<Integer> values) {
+            addCriterion("nature not in", values, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureBetween(Integer value1, Integer value2) {
+            addCriterion("nature between", value1, value2, "nature");
+            return (Criteria) this;
+        }
+
+        public Criteria andNatureNotBetween(Integer value1, Integer value2) {
+            addCriterion("nature not between", value1, value2, "nature");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;

@@ -121,13 +121,7 @@ public class BasicEstateParkingService {
         BasicEstateParkingVo vo = new BasicEstateParkingVo();
         BeanUtils.copyProperties(basicEstateParking,vo);
         BaseDataDic dataDic = null;
-        if (basicEstateParking.getParkingType() != null){
-            dataDic = baseDataDicService.getDataDicById(basicEstateParking.getParkingType());
-            if (dataDic != null){
-                vo.setParkingTypeName(dataDic.getName());
-                dataDic = null;
-            }
-        }
+
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicEstateParking.getId(), null, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {

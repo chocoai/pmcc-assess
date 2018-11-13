@@ -9,7 +9,9 @@ public class BasicEstateParking {
 
     private Integer estateId;
 
-    private Integer parkingType;
+    private Integer number;
+
+    private String parkingType;
 
     private String location;
 
@@ -43,12 +45,20 @@ public class BasicEstateParking {
         this.estateId = estateId;
     }
 
-    public Integer getParkingType() {
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getParkingType() {
         return parkingType;
     }
 
-    public void setParkingType(Integer parkingType) {
-        this.parkingType = parkingType;
+    public void setParkingType(String parkingType) {
+        this.parkingType = parkingType == null ? null : parkingType.trim();
     }
 
     public String getLocation() {

@@ -466,6 +466,66 @@ public class CaseBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andBeCompletedTimeIsNull() {
+            addCriterion("be_completed_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeIsNotNull() {
+            addCriterion("be_completed_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeEqualTo(Date value) {
+            addCriterion("be_completed_time =", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeNotEqualTo(Date value) {
+            addCriterion("be_completed_time <>", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeGreaterThan(Date value) {
+            addCriterion("be_completed_time >", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("be_completed_time >=", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeLessThan(Date value) {
+            addCriterion("be_completed_time <", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeLessThanOrEqualTo(Date value) {
+            addCriterion("be_completed_time <=", value, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeIn(List<Date> values) {
+            addCriterion("be_completed_time in", values, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeNotIn(List<Date> values) {
+            addCriterion("be_completed_time not in", values, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeBetween(Date value1, Date value2) {
+            addCriterion("be_completed_time between", value1, value2, "beCompletedTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeCompletedTimeNotBetween(Date value1, Date value2) {
+            addCriterion("be_completed_time not between", value1, value2, "beCompletedTime");
+            return (Criteria) this;
+        }
+
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;

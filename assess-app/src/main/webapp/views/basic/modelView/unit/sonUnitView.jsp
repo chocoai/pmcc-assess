@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-    <h3>室内公共装修
+    <h3>楼栋内装情况
         <button type="button" class="btn btn-success" onclick="unitDecorate.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
@@ -106,6 +106,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            所在位置<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input name="location" class="form-control" placeholder="所在位置" required="required">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -148,7 +158,7 @@
                                                    class="form-control" required="required">
                                         </div>
                                     </div>
-                                    <div class="x-valid">
+                                    <div class="x-valid" id="industrySpanLength">
                                         <label class="col-sm-2 control-label">
                                             跨长<span class="symbol required"></span>
                                         </label>
@@ -172,7 +182,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="x-valid">
+                                    <div class="x-valid" id="industrySpanNumber">
                                         <label class="col-sm-2 control-label">
                                             跨数<span class="symbol required"></span>
                                         </label>
@@ -181,7 +191,7 @@
                                                    name="spanNumber" class="form-control" required="required">
                                         </div>
                                     </div>
-                                    <div class="x-valid">
+                                    <div class="x-valid" id="industrySpanWidth">
                                         <label class="col-sm-2 control-label">
                                             跨宽<span class="symbol required"></span>
                                         </label>
@@ -273,8 +283,9 @@
                                             朝向<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="朝向"
-                                                   name="orientation" class="form-control" required="required">
+                                           <select name="orientation" class="form-control search-select select2 orientation">
+
+                                           </select>
                                         </div>
                                     </div>
                                 </div>
@@ -342,8 +353,9 @@
                                             电梯类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="type"
-                                                   placeholder="电梯类型" required="required">
+                                            <select required="required" name="type"
+                                                    class="form-control search-select select2 type">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

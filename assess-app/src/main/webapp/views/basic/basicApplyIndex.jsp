@@ -9,6 +9,7 @@
     <script src="${pageContext.request.contextPath}/js/developer.select.js"></script>
     <script src="${pageContext.request.contextPath}/js/builder.select.js"></script>
     <script src="${pageContext.request.contextPath}/js/property.select.js"></script>
+    <script src="${pageContext.request.contextPath}/js/land.level.select.js"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -742,6 +743,18 @@
                 $(this_).parent().prev().prev().val(row.id);
             });
         },
+        //土地级别选择
+        landLevelSelect:function (this_) {
+            assessLandLevel.select({
+                province: 25,
+                city: 321,
+                district: undefined,
+                success: function (data) {
+                    $(this_).parent().prev().val(data.name);
+                    $(this_).parent().prev().prev().val(data.id);
+                }
+            })
+        },
         landStateInit: function (item) {
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
                 $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseType').empty().html(html);
@@ -759,29 +772,6 @@
                     $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseCategory').empty().html(html);
                     objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseCategory, "landUseCategory");
                 });
-            });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataLandLevel/listDataLandLevel",
-                type: "get",
-                dataType: "json",
-                async: false,
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].leve + "</option>";
-                            }
-                            $("#" + objectData.config.basicEstate.frmLandState).find("select.landLevel").empty().html(option);
-                            objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landLevel, "landLevel");
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
             });
         },
         appWriteEstate: function (id, callback, callbackError) {
@@ -1452,8 +1442,8 @@
             return false;
         }
         var data = objectData.formParams();
-        console.log(data);
         var formData = JSON.stringify(data);
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",

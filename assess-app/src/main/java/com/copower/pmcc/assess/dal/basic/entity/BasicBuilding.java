@@ -14,6 +14,8 @@ public class BasicBuilding {
 
     private Integer builderId;
 
+    private Date beCompletedTime;
+
     private Integer propertyId;
 
     private String buildingNumber;
@@ -110,6 +112,14 @@ public class BasicBuilding {
 
     public void setBuilderId(Integer builderId) {
         this.builderId = builderId;
+    }
+
+    public Date getBeCompletedTime() {
+        return beCompletedTime;
+    }
+
+    public void setBeCompletedTime(Date beCompletedTime) {
+        this.beCompletedTime = beCompletedTime;
     }
 
     public Integer getPropertyId() {

@@ -7,6 +7,7 @@
     <result column="case_building_id" property="caseBuildingId" jdbcType="INTEGER" />
     <result column="basic_building_main_id" property="basicBuildingMainId" jdbcType="INTEGER" />
     <result column="builder_id" property="builderId" jdbcType="INTEGER" />
+    <result column="be_completed_time" property="beCompletedTime" jdbcType="TIMESTAMP" />
     <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
@@ -96,12 +97,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, part, case_building_id, basic_building_main_id, builder_id, property_Id, building_number, 
-    building_name, property_type, floor_count, unit_interval, property_fee, facilities_use_fee, 
-    floor_start, floor_end, building_height, building_area, cover_an_area, building_category, 
-    open_time, room_time, floor_height, diameter_depth, land_use_year, location, net_height, 
-    building_structure, building_structure_lower, json_content, version, creator, name, 
-    gmt_created, gmt_modified
+    id, part, case_building_id, basic_building_main_id, builder_id, be_completed_time, 
+    property_Id, building_number, building_name, property_type, floor_count, unit_interval, 
+    property_fee, facilities_use_fee, floor_start, floor_end, building_height, building_area, 
+    cover_an_area, building_category, open_time, room_time, floor_height, diameter_depth, 
+    land_use_year, location, net_height, building_structure, building_structure_lower, 
+    json_content, version, creator, name, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingExample" >
     select
@@ -138,29 +139,29 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_building (part, case_building_id, basic_building_main_id, 
-      builder_id, property_Id, building_number, 
-      building_name, property_type, floor_count, 
-      unit_interval, property_fee, facilities_use_fee, 
-      floor_start, floor_end, building_height, 
-      building_area, cover_an_area, building_category, 
-      open_time, room_time, floor_height, 
-      diameter_depth, land_use_year, location, 
-      net_height, building_structure, building_structure_lower, 
-      json_content, version, creator, 
-      name, gmt_created, gmt_modified
-      )
+      builder_id, be_completed_time, property_Id, 
+      building_number, building_name, property_type, 
+      floor_count, unit_interval, property_fee, 
+      facilities_use_fee, floor_start, floor_end, 
+      building_height, building_area, cover_an_area, 
+      building_category, open_time, room_time, 
+      floor_height, diameter_depth, land_use_year, 
+      location, net_height, building_structure, 
+      building_structure_lower, json_content, version, 
+      creator, name, gmt_created, 
+      gmt_modified)
     values (#{part,jdbcType=INTEGER}, #{caseBuildingId,jdbcType=INTEGER}, #{basicBuildingMainId,jdbcType=INTEGER}, 
-      #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, #{floorCount,jdbcType=INTEGER}, 
-      #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
-      #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, #{buildingHeight,jdbcType=DECIMAL}, 
-      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{buildingCategory,jdbcType=INTEGER}, 
-      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=DECIMAL}, 
-      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, 
-      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructureLower,jdbcType=INTEGER}, 
-      #{jsonContent,jdbcType=CHAR}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{builderId,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, #{propertyId,jdbcType=INTEGER}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, 
+      #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
+      #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, 
+      #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
+      #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
+      #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, 
+      #{buildingStructureLower,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{version,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -179,6 +180,9 @@
       </if>
       <if test="builderId != null" >
         builder_id,
+      </if>
+      <if test="beCompletedTime != null" >
+        be_completed_time,
       </if>
       <if test="propertyId != null" >
         property_Id,
@@ -280,6 +284,9 @@
       </if>
       <if test="builderId != null" >
         #{builderId,jdbcType=INTEGER},
+      </if>
+      <if test="beCompletedTime != null" >
+        #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="propertyId != null" >
         #{propertyId,jdbcType=INTEGER},
@@ -394,6 +401,9 @@
       <if test="record.builderId != null" >
         builder_id = #{record.builderId,jdbcType=INTEGER},
       </if>
+      <if test="record.beCompletedTime != null" >
+        be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.propertyId != null" >
         property_Id = #{record.propertyId,jdbcType=INTEGER},
       </if>
@@ -493,6 +503,7 @@
       case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
       basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
       builder_id = #{record.builderId,jdbcType=INTEGER},
+      be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
       property_Id = #{record.propertyId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
@@ -540,6 +551,9 @@
       </if>
       <if test="builderId != null" >
         builder_id = #{builderId,jdbcType=INTEGER},
+      </if>
+      <if test="beCompletedTime != null" >
+        be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
       <if test="propertyId != null" >
         property_Id = #{propertyId,jdbcType=INTEGER},
@@ -637,6 +651,7 @@
       case_building_id = #{caseBuildingId,jdbcType=INTEGER},
       basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
       builder_id = #{builderId,jdbcType=INTEGER},
+      be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       property_Id = #{propertyId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_name = #{buildingName,jdbcType=VARCHAR},

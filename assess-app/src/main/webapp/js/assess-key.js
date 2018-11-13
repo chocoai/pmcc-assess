@@ -4,7 +4,7 @@
 var AssessDBKey = {}
 
 //图片识别 key 根据此地址配置 com.copower.pmcc.erp.api.enums.AliOcrMethodEnum
-AssessDBKey.HouseOcrkey = "houseCert" ;//房产证
+AssessDBKey.HouseOcrkey = "houseCert";//房产证
 
 AssessDBKey.ReportTemplate = "tb_report_template";
 AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
@@ -84,6 +84,7 @@ AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
 
 AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型
+AssessDicKey.estate_traffic_nature = "estate.traffic.nature";//交通枢纽性质
 AssessDicKey.estate_line_water_supply_pipe_grade = "estate.line.water.supply.pipe.grade";//线路供水管等级
 AssessDicKey.estate_supplier_grade = "estate.supplier.grade";//供应商等级
 AssessDicKey.estate_school_nature = "estate.school.nature";//学校性质
@@ -132,9 +133,12 @@ AssessDicKey.examine_building_materialquality = "examine.building.maintenance.ma
 AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
-AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//实际用途
+AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//使用环境
 AssessDicKey.examineHouseNewsHuxing = "examine.house.newsHuxing";//最新户型
-AssessDicKey.examineHouseHouse_layout= "unit.house_layout";//房型
+
+AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
+AssessDicKey.examineUnitOrientation = "examine.common.orientation";//朝向
+AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
 
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型

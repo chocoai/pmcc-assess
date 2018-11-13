@@ -156,7 +156,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industryMaterial">
     <h3>原料供应及销售条件信息
         <button type="button" class="btn btn-success" onclick="matchingMaterial.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
@@ -653,9 +653,19 @@
                                             车位类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="parkingType"
-                                                    class="form-control search-select select2 parkingType">
-                                            </select>
+                                            <input type="text" class="form-control" name="parkingType"
+                                                   placeholder="车位类型" required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            车位数量
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="number"
+                                                   placeholder="车位数量" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -1382,6 +1392,17 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="organizationName" class="form-control"
+                                                   required="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             床位数<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -1405,7 +1426,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            医养条件内容<span class="symbol required"></span>
+                                            医养条件等级<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="organizationLevel"
@@ -1450,7 +1471,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
+                                            公交站名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
@@ -1461,7 +1482,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            距离<span class="symbol required"></span>
+                                            距大门距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
@@ -1474,22 +1495,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             所在线路<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="matchingTransit.prototype.appendHTML('theLine',this)"><i
+                                                    class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 8px;" class="theLine">
+                                    <div class="form-group" style=" margin-top: 8px;">
+                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">所在线路</label>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <input class="form-control" name="theLine" required="required" type="text">
+                                            <span class="input-group-btn">
+                                                <input type="button" class="btn btn-warning" value="X" onclick="matchingTransit.prototype.cleanHTMLData(this)">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -1550,26 +1573,15 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
+                                            性质<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            所在线路<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
+                                            <select required="required" name="nature"
+                                                    class="form-control search-select select2 nature">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1609,7 +1621,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
+                                            地铁站名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name"
@@ -1620,7 +1632,7 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            距离<span class="symbol required"></span>
+                                            距大门距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
@@ -1630,25 +1642,28 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             所在线路<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="matchingMetro.prototype.appendHTML('theLine',this)"><i
+                                                    class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 8px;" class="theLine">
+                                    <div class="form-group" style=" margin-top: 8px;">
+                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">所在线路</label>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <input class="form-control" name="theLine" required="required" type="text">
+                                            <span class="input-group-btn">
+                                                <input type="button" class="btn btn-warning" value="X" onclick="matchingMetro.prototype.cleanHTMLData(this)">
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -1708,29 +1723,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            所在线路<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1785,29 +1777,6 @@
                                             <select required="required" name="distance"
                                                     class="form-control search-select select2 distance">
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            线路名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="lineName" class="form-control"
-                                                   placeholder="线路名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            所在线路<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="theLine" class="form-control"
-                                                   placeholder="所在线路" required="required">
                                         </div>
                                     </div>
                                 </div>

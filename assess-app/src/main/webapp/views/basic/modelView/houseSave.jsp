@@ -17,11 +17,20 @@
                    class="form-control">
         </div>
     </div>
-    <div class="x-valid">
+    <div class="x-valid" id="industryUseEnvironment">
         <label class="col-sm-1 control-label">使用环境</label>
         <div class="col-sm-3">
             <select class="form-control search-select select2 useEnvironment"
                     name="useEnvironment">
+            </select>
+        </div>
+    </div>
+
+    <div class="x-valid" id="industryNewsHuxing">
+        <label class="col-sm-1 control-label">最新户型</label>
+        <div class="col-sm-3">
+            <select class="form-control search-select select2 newsHuxing"
+                    name="newsHuxing">
             </select>
         </div>
     </div>

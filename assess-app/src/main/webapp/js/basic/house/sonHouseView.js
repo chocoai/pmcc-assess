@@ -24,7 +24,7 @@ var houseHeating;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({
@@ -37,9 +37,9 @@ var houseHeating;
                 }
             });
             $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHeating.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseHeating.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseHeating.prototype.config().type,
-                houseId:'0'
+                houseId: '0'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -51,7 +51,7 @@ var houseHeating;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -79,9 +79,9 @@ var houseHeating;
             }
             var data = formParams(houseHeating.prototype.config().frm);
             data.type = houseHeating.prototype.config().type;
-            data.houseId = '0' ;
+            data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -102,7 +102,7 @@ var houseHeating;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath() + "/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -156,7 +156,7 @@ var houseAirConditioner;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({
@@ -169,9 +169,9 @@ var houseAirConditioner;
                 }
             });
             $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseAirConditioner.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseAirConditioner.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseAirConditioner.prototype.config().type,
-                houseId:'0'
+                houseId: '0'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -183,7 +183,7 @@ var houseAirConditioner;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -211,9 +211,9 @@ var houseAirConditioner;
             }
             var data = formParams(houseAirConditioner.prototype.config().frm);
             data.type = houseAirConditioner.prototype.config().type;
-            data.houseId = '0' ;
+            data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -234,7 +234,7 @@ var houseAirConditioner;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath() + "/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -288,7 +288,7 @@ var houseNewWind;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({
@@ -301,9 +301,9 @@ var houseNewWind;
                 }
             });
             $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseNewWind.prototype.config().table, getContextPath()+"/basicHouseEquipment/getBootstrapTableVo", cols, {
+            TableInit(houseNewWind.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseNewWind.prototype.config().type,
-                houseId:'0'
+                houseId: '0'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -315,7 +315,7 @@ var houseNewWind;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/deleteBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/deleteBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -343,9 +343,9 @@ var houseNewWind;
             }
             var data = formParams(houseNewWind.prototype.config().frm);
             data.type = houseNewWind.prototype.config().type;
-            data.houseId = '0' ;
+            data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
+                url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -366,7 +366,7 @@ var houseNewWind;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseEquipment/getBasicHouseEquipmentById",
+                url: getContextPath() + "/basicHouseEquipment/getBasicHouseEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -415,7 +415,7 @@ var houseCorollaryEquipment;
             data.table = "HouseCorollaryEquipmentList";
             data.box = "divBoxHouseCorollaryEquipment";
             data.frm = "frmHouseCorollaryEquipment";
-            data.FileID = "positionDiagramFileID" ;// ExamineFileUpLoadTwoFieldEnum
+            data.FileID = "positionDiagramFileID";// ExamineFileUpLoadTwoFieldEnum
             return data;
         },
         loadDataDicList: function () {
@@ -438,8 +438,8 @@ var houseCorollaryEquipment;
                 }
             });
             $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath()+"/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                houseId:'0'
+            TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath() + "/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
+                houseId: '0'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -451,7 +451,7 @@ var houseCorollaryEquipment;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseCorollaryEquipment/deleteBasicHouseCorollaryEquipment",
+                url: getContextPath() + "/basicHouseCorollaryEquipment/deleteBasicHouseCorollaryEquipment",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -478,9 +478,9 @@ var houseCorollaryEquipment;
                 return false;
             }
             var data = formParams(houseCorollaryEquipment.prototype.config().frm);
-            data.houseId = '0' ;
+            data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
+                url: getContextPath() + "/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -501,7 +501,7 @@ var houseCorollaryEquipment;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseCorollaryEquipment/getBasicHouseCorollaryEquipmentById",
+                url: getContextPath() + "/basicHouseCorollaryEquipment/getBasicHouseCorollaryEquipmentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -573,7 +573,7 @@ var houseFaceStreet;
                 }
             });
             $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseFaceStreet.prototype.config().table, getContextPath()+"/basicHouseFaceStreet/getBootstrapTableVo", cols, {
+            TableInit(houseFaceStreet.prototype.config().table, getContextPath() + "/basicHouseFaceStreet/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -586,7 +586,7 @@ var houseFaceStreet;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseFaceStreet/deleteBasicHouseFaceStreet",
+                url: getContextPath() + "/basicHouseFaceStreet/deleteBasicHouseFaceStreet",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -625,7 +625,7 @@ var houseFaceStreet;
             var data = formParams(houseFaceStreet.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
+                url: getContextPath() + "/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -646,7 +646,7 @@ var houseFaceStreet;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseFaceStreet/getBasicHouseFaceStreetById",
+                url: getContextPath() + "/basicHouseFaceStreet/getBasicHouseFaceStreetById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -754,7 +754,7 @@ var houseIntelligent;
                 }
             });
             $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseIntelligent.prototype.config().table, getContextPath()+"/basicHouseIntelligent/getBootstrapTableVo", cols, {
+            TableInit(houseIntelligent.prototype.config().table, getContextPath() + "/basicHouseIntelligent/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -767,7 +767,7 @@ var houseIntelligent;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseIntelligent/deleteBasicHouseIntelligent",
+                url: getContextPath() + "/basicHouseIntelligent/deleteBasicHouseIntelligent",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -796,7 +796,7 @@ var houseIntelligent;
             var data = formParams(houseIntelligent.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
+                url: getContextPath() + "/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -817,7 +817,7 @@ var houseIntelligent;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseIntelligent/getBasicHouseIntelligentById",
+                url: getContextPath() + "/basicHouseIntelligent/getBasicHouseIntelligentById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -898,7 +898,7 @@ var houseWater;
                 }
             });
             $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseWater.prototype.config().table, getContextPath()+"/basicHouseWater/getBootstrapTableVo", cols, {
+            TableInit(houseWater.prototype.config().table, getContextPath() + "/basicHouseWater/getBootstrapTableVo", cols, {
                 houseId: '0'
             }, {
                 showColumns: false,
@@ -911,7 +911,7 @@ var houseWater;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseWater/deleteBasicHouseWater",
+                url: getContextPath() + "/basicHouseWater/deleteBasicHouseWater",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -940,7 +940,7 @@ var houseWater;
             var data = formParams(houseWater.prototype.config().frm);
             data.houseId = '0';
             $.ajax({
-                url: getContextPath()+"/basicHouseWater/saveAndUpdateBasicHouseWater",
+                url: getContextPath() + "/basicHouseWater/saveAndUpdateBasicHouseWater",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -961,7 +961,7 @@ var houseWater;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseWater/getBasicHouseWaterById",
+                url: getContextPath() + "/basicHouseWater/getBasicHouseWaterById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1028,7 +1028,6 @@ var houseRoom;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'name', title: '房间名称'});
             cols.push({field: 'roomTypeName', title: '房间类型'});
             cols.push({field: 'area', title: '面积'});
             cols.push({field: 'sunshine', title: '日照'});
@@ -1048,7 +1047,7 @@ var houseRoom;
                 }
             });
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {
+            TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
                 houseId: 0
             }, {
                 showColumns: false,
@@ -1061,7 +1060,7 @@ var houseRoom;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseRoom/deleteBasicHouseRoom",
+                url: getContextPath() + "/basicHouseRoom/deleteBasicHouseRoom",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1102,7 +1101,7 @@ var houseRoom;
             }
             var data = formParams(houseRoom.prototype.config().frmSubclass);
             $.ajax({
-                url: getContextPath()+"/basicHouseRoom/saveAndUpdateBasicHouseRoomDecorate",
+                url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoomDecorate",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1126,7 +1125,7 @@ var houseRoom;
         },
         subclassRemoveData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseRoom/deleteBasicHouseRoomDecorate",
+                url: getContextPath() + "/basicHouseRoom/deleteBasicHouseRoomDecorate",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1175,7 +1174,7 @@ var houseRoom;
                 }
             });
             $("#" + houseRoom.prototype.config().tableSubclass).bootstrapTable('destroy');
-            TableInit(houseRoom.prototype.config().tableSubclass, getContextPath()+"/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
+            TableInit(houseRoom.prototype.config().tableSubclass, getContextPath() + "/basicHouseRoom/getRoomDecorateBootstrapTableVo", cols, {
                 roomId: id,
             }, {
                 showColumns: false,
@@ -1193,7 +1192,7 @@ var houseRoom;
             var data = formParams(houseRoom.prototype.config().frm);
             data.houseId = "0";
             $.ajax({
-                url: getContextPath()+"/basicHouseRoom/saveAndUpdateBasicHouseRoom",
+                url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1214,7 +1213,7 @@ var houseRoom;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicHouseRoom/getBasicHouseRoomById",
+                url: getContextPath() + "/basicHouseRoom/getBasicHouseRoomById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -1232,9 +1231,14 @@ var houseRoom;
         init: function (item) {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             $("#" + houseRoom.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseType, item.roomType, function (html, data) {
-                $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
-            });
+            var basicHouse = formParams(objectData.config.basicHouse.frm);
+            if (houseRoom.prototype.isEmpty(basicHouse.practicalUse)) {
+                AssessCommon.loadDataDicByPid(basicHouse.practicalUse, item.roomType, function (html, data) {
+                    $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
+                });
+            }else {
+                Alert("请先选择房屋下的实际用途");
+            }
         }
     }
 })();

@@ -97,7 +97,7 @@ houseModelFun.houseInit = function (item) {
         $("#" + houseModelFun.config.house.frm).find("select.useEnvironment").empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, item.newsHuxing, function (html, data) {
-        $("#" + houseModelFun.config.house.frm).find("select.useEnvironment").empty().html(html).trigger('change');
+        $("#" + houseModelFun.config.house.frm).find("select.newsHuxing").empty().html(html).trigger('change');
     });
 };
 

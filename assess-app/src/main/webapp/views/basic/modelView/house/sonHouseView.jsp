@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industryCorollaryEquipment">
     <h3>房屋配套设备设施信息
         <button type="button" class="btn btn-success" onclick="houseCorollaryEquipment.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
@@ -126,11 +126,12 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            房间名称
+                                            房间类型
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="房间名称" name="name" class="form-control"
-                                                   required="required">
+                                            <select required="required" name="roomType"
+                                                    class="form-control search-select select2 roomType">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -214,16 +215,6 @@
                                         <div class="col-sm-4">
                                             <input type="text" placeholder="隔音" name="soundInsulation"
                                                    class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            房间类型
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <select required="required" name="roomType"
-                                                    class="form-control search-select select2 roomType">
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -820,10 +811,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            设备名称<span class="symbol required"></span>
+                                            设备品牌<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="equipment" placeholder="设备名称" class="form-control"
+                                            <input type="text" name="equipment" placeholder="设备品牌" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -888,10 +879,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            设备名称<span class="symbol required"></span>
+                                            设备品牌<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="equipment" placeholder="设备名称" class="form-control"
+                                            <input type="text" name="equipment" placeholder="设备品牌" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -955,10 +946,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            设备名称<span class="symbol required"></span>
+                                            设备品牌<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="equipment" placeholder="设备名称" class="form-control"
+                                            <input type="text" name="equipment" placeholder="设备品牌" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>

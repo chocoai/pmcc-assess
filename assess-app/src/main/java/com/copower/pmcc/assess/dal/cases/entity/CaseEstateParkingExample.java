@@ -225,6 +225,66 @@ public class CaseEstateParkingExample {
             return (Criteria) this;
         }
 
+        public Criteria andNumberIsNull() {
+            addCriterion("number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIsNotNull() {
+            addCriterion("number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberEqualTo(Integer value) {
+            addCriterion("number =", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotEqualTo(Integer value) {
+            addCriterion("number <>", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberGreaterThan(Integer value) {
+            addCriterion("number >", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("number >=", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberLessThan(Integer value) {
+            addCriterion("number <", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("number <=", value, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberIn(List<Integer> values) {
+            addCriterion("number in", values, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotIn(List<Integer> values) {
+            addCriterion("number not in", values, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberBetween(Integer value1, Integer value2) {
+            addCriterion("number between", value1, value2, "number");
+            return (Criteria) this;
+        }
+
+        public Criteria andNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("number not between", value1, value2, "number");
+            return (Criteria) this;
+        }
+
         public Criteria andEstateIdIsNull() {
             addCriterion("estate_id is null");
             return (Criteria) this;
@@ -295,52 +355,62 @@ public class CaseEstateParkingExample {
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeEqualTo(Integer value) {
+        public Criteria andParkingTypeEqualTo(String value) {
             addCriterion("parking_type =", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotEqualTo(Integer value) {
+        public Criteria andParkingTypeNotEqualTo(String value) {
             addCriterion("parking_type <>", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeGreaterThan(Integer value) {
+        public Criteria andParkingTypeGreaterThan(String value) {
             addCriterion("parking_type >", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParkingTypeGreaterThanOrEqualTo(String value) {
             addCriterion("parking_type >=", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeLessThan(Integer value) {
+        public Criteria andParkingTypeLessThan(String value) {
             addCriterion("parking_type <", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeLessThanOrEqualTo(Integer value) {
+        public Criteria andParkingTypeLessThanOrEqualTo(String value) {
             addCriterion("parking_type <=", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeIn(List<Integer> values) {
+        public Criteria andParkingTypeLike(String value) {
+            addCriterion("parking_type like", value, "parkingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingTypeNotLike(String value) {
+            addCriterion("parking_type not like", value, "parkingType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParkingTypeIn(List<String> values) {
             addCriterion("parking_type in", values, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotIn(List<Integer> values) {
+        public Criteria andParkingTypeNotIn(List<String> values) {
             addCriterion("parking_type not in", values, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeBetween(Integer value1, Integer value2) {
+        public Criteria andParkingTypeBetween(String value1, String value2) {
             addCriterion("parking_type between", value1, value2, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotBetween(Integer value1, Integer value2) {
+        public Criteria andParkingTypeNotBetween(String value1, String value2) {
             addCriterion("parking_type not between", value1, value2, "parkingType");
             return (Criteria) this;
         }

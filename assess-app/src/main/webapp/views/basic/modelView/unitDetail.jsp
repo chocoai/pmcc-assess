@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="x-valid">
-        <label class="col-sm-1 control-label">户梯比</label>
+        <label class="col-sm-1 control-label">梯户比</label>
         <div class="col-sm-3">
             <label data-name="elevatorHouseholdRatio" class="form-control">
             </label>
