@@ -16,6 +16,8 @@ public class CaseBuilding {
 
     private Integer propertyId;
 
+    private Date beCompletedTime;
+
     private String buildingNumber;
 
     private String buildingName;
@@ -118,6 +120,14 @@ public class CaseBuilding {
 
     public void setPropertyId(Integer propertyId) {
         this.propertyId = propertyId;
+    }
+
+    public Date getBeCompletedTime() {
+        return beCompletedTime;
+    }
+
+    public void setBeCompletedTime(Date beCompletedTime) {
+        this.beCompletedTime = beCompletedTime;
     }
 
     public String getBuildingNumber() {

@@ -107,14 +107,23 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    公共设施使用费<span class="symbol required"></span>
+                    配套公共设施使用费
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="公共设施使用费(数字)" name="facilitiesUseFee"
-                           data-rule-number='true' class="form-control" required="required">
+                    <input type="text" placeholder="配套公共设施使用费(数字)" name="facilitiesUseFee"
+                           data-rule-number='true' class="form-control">
                 </div>
             </div>
-
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">
+                    竣工时间<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input placeholder="竣工时间"
+                           name="beCompletedTime" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate beCompletedTime" required="required">
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

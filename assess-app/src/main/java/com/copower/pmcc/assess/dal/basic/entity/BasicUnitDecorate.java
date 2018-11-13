@@ -15,6 +15,8 @@ public class BasicUnitDecorate {
 
     private Integer materialPriceRange;
 
+    private String location;
+
     private Integer constructionTechnology;
 
     private String creator;
@@ -69,6 +71,14 @@ public class BasicUnitDecorate {
 
     public void setMaterialPriceRange(Integer materialPriceRange) {
         this.materialPriceRange = materialPriceRange;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public Integer getConstructionTechnology() {

@@ -27,8 +27,6 @@ var matchingMainConversion;
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
-            cols.push({field: 'lineName', title: '线路名称'});
-            cols.push({field: 'theLine', title: '所在线路'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -157,8 +155,6 @@ var matchingMainRoad;
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
-            cols.push({field: 'lineName', title: '线路名称'});
-            cols.push({field: 'theLine', title: '所在线路'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -287,7 +283,6 @@ var matchingMetro;
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
-            cols.push({field: 'lineName', title: '线路名称'});
             cols.push({field: 'theLine', title: '所在线路'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -334,6 +329,16 @@ var matchingMetro;
         showModel: function () {
             matchingMetro.prototype.init({});
             $("#" + matchingMetro.prototype.config().frm + " .type").val(matchingMetro.prototype.config().type);
+            $("#" + matchingMetro.prototype.config().frm + " .theLine").empty();
+            var lableValue = "所在线路";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + 'theLine' + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
             $('#' + matchingMetro.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -383,9 +388,45 @@ var matchingMetro;
                 }
             })
         },
+        appendHTML: function (item, this_) {
+            var lableValue = "所在线路";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
+        },
+        cleanHTMLData: function (item) {
+            var value = "";
+            $(item).parent().prev().parent().parent().empty();
+        },
+        writeHTMLData: function (str) {
+            $("#" + matchingMetro.prototype.config().frm + " .theLine").empty();
+            var strs = str.split(",");
+            var length = strs.length;
+            var lableValue = "所在线路";
+            var item = "theLine";
+            for (var i = 0; i < length; i++) {
+                console.log("i:" + i);
+                var html = "<div class='form-group' style='margin-top:8px;'>";
+                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+                html += "</div>";
+                $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
+            }
+        },
         init: function (item) {
             $("#" + matchingMetro.prototype.config().frm).clearAll();
             $("#" + matchingMetro.prototype.config().frm).initForm(item);
+            if (matchingMetro.prototype.isNotBlank(item.theLine)) {
+                matchingMetro.prototype.writeHTMLData(item.theLine);
+            }
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
                 $("#" + matchingMetro.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
@@ -417,8 +458,7 @@ var matchingTrafficHub;
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
-            cols.push({field: 'lineName', title: '线路名称'});
-            cols.push({field: 'theLine', title: '所在线路'});
+            cols.push({field: 'nature', title: '性质'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -519,6 +559,9 @@ var matchingTrafficHub;
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
                 $("#" + matchingTrafficHub.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_traffic_nature, item.nature, function (html, data) {
+                $("#" + matchingTrafficHub.prototype.config().frm).find("select.nature").empty().html(html).trigger('change');
+            });
         }
     }
 })();
@@ -548,7 +591,6 @@ var matchingTransit;
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'distanceName', title: '距离'});
-            cols.push({field: 'lineName', title: '线路名称'});
             cols.push({field: 'theLine', title: '所在线路'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -595,6 +637,16 @@ var matchingTransit;
         showModel: function () {
             matchingTransit.prototype.init({});
             $("#" + matchingTransit.prototype.config().frm + " .type").val(matchingTransit.prototype.config().type);
+            $("#" + matchingTransit.prototype.config().frm + " .theLine").empty();
+            var lableValue = "所在线路";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + 'theLine' + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
             $('#' + matchingTransit.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -644,9 +696,45 @@ var matchingTransit;
                 }
             })
         },
+        appendHTML: function (item, this_) {
+            var lableValue = "所在线路";
+            var html = "<div class='form-group' style='margin-top:8px;'>";
+            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+            html += "</div>";
+            $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
+        },
+        cleanHTMLData: function (item) {
+            var value = "";
+            $(item).parent().prev().parent().parent().empty();
+        },
+        writeHTMLData: function (str) {
+            $("#" + matchingTransit.prototype.config().frm + " .theLine").empty();
+            var strs = str.split(",");
+            var length = strs.length;
+            var lableValue = "所在线路";
+            var item = "theLine";
+            for (var i = 0; i < length; i++) {
+                console.log("i:" + i);
+                var html = "<div class='form-group' style='margin-top:8px;'>";
+                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+                html += "</div>";
+                $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
+            }
+        },
         init: function (item) {
             $("#" + matchingTransit.prototype.config().frm).clearAll();
             $("#" + matchingTransit.prototype.config().frm).initForm(item);
+            if (matchingTransit.prototype.isNotBlank(item.theLine)) {
+                matchingTransit.prototype.writeHTMLData(item.theLine);
+            }
             AssessCommon.loadDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
                 $("#" + matchingTransit.prototype.config().frm).find("select.distance").empty().html(html).trigger('change');
             });
@@ -678,6 +766,7 @@ var matchingMedical;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'bedNumber', title: '床位数'});
+            cols.push({field: 'organizationName', title: '医养条件名称'});
             cols.push({field: 'distanceName', title: '医养条件距离'});
             cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
             cols.push({
@@ -2012,7 +2101,8 @@ var estateParking;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'parkingTypeName', title: '车位类型'});
+            cols.push({field: 'parkingType', title: '车位类型'});
+            cols.push({field: 'number', title: '车位数量'});
             cols.push({field: 'location', title: '车辆位置'});
             cols.push({field: 'fileViewName', title: '上传的附件'});
             cols.push({
@@ -2112,9 +2202,9 @@ var estateParking;
             $("#" + estateParking.prototype.config().frm).initForm(item);
             objectData.showFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
             objectData.uploadFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
-            AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
-                $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
-            });
+            // AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
+            //     $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
+            // });
         }
     }
 })();

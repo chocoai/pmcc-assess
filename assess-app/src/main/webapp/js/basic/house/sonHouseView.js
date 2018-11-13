@@ -24,7 +24,7 @@ var houseHeating;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({
@@ -156,7 +156,7 @@ var houseAirConditioner;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({
@@ -288,7 +288,7 @@ var houseNewWind;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'equipment', title: '名称'});
+            cols.push({field: 'equipment', title: '设备品牌'});
             cols.push({field: 'categoryName', title: '类别'});
             cols.push({field: 'equipmentPriceName', title: '设备价格区间'});
             cols.push({

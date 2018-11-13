@@ -1452,8 +1452,8 @@
             return false;
         }
         var data = objectData.formParams();
-        console.log(data);
         var formData = JSON.stringify(data);
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",

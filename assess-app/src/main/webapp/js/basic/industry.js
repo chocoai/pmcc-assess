@@ -7,6 +7,7 @@ var industry = new Object();
 * 1:工业与仓储 有 层面结构 和  维护结构
 * 2:非工业与仓储 供排水情况,供电信息,供热信息,供气信息 只填写有无
 * 3:供水平面图,供电平面图,供气平面图,采暖平面图 工业与仓储 才有
+* 4:户型 跨长,跨数,跨宽 工业与仓储 才有
 * */
 
 
@@ -29,6 +30,17 @@ industry.config = {
         power_supply_plan: "industry_power_supply_plan",//供电平面图
         air_supply_plan: "industry_air_supply_plan",//供气平面图
         heating_plan: "industry_heating_plan",//采暖平面图
+        material:"industryMaterial"
+    },
+    unit: {
+        spanWidth: "industrySpanWidth",//跨宽
+        spanNumber: "industrySpanNumber",//跨数
+        spanLength: "industrySpanLength",//跨长
+    },
+    house:{
+        newsHuxing:"industryNewsHuxing",//最新户型
+        useEnvironment:"industryUseEnvironment",//使用环境
+        corollaryEquipment:"industryCorollaryEquipment",//房屋配套设备设施信息
     }
 };
 
@@ -50,6 +62,8 @@ industry.industryOne = {
     init: function () {
         this.build();
         this.estate();
+        this.unit();
+        this.house();
     },
     build: function () {
         $("#" + industry.config.build.maintenance).hide();
@@ -60,6 +74,7 @@ industry.industryOne = {
         $("#" + industry.config.estate.supplyHeating).hide();
         $("#" + industry.config.estate.supplyPower).hide();
         $("#" + industry.config.estate.supplyWater).hide();
+        $("#" + industry.config.estate.material).hide();
         $.each(industry.config.estate.supply.split(","), function (i, n) {
             $("." + n).show();
         });
@@ -67,6 +82,16 @@ industry.industryOne = {
         $("#" + industry.config.estate.power_supply_plan).hide();
         $("#" + industry.config.estate.air_supply_plan).hide();
         $("#" + industry.config.estate.heating_plan).hide();
+    },
+    unit: function () {
+        $("#" + industry.config.unit.spanWidth).hide();
+        $("#" + industry.config.unit.spanNumber).hide();
+        $("#" + industry.config.unit.spanLength).hide();
+    },
+    house:function () {
+        $("#" + industry.config.house.useEnvironment).hide();
+        $("#" + industry.config.house.newsHuxing).show();
+        $("#" + industry.config.house.corollaryEquipment).hide();
     }
 };
 
@@ -78,6 +103,8 @@ industry.industryTwo = {
     init: function () {
         this.build();
         this.estate();
+        this.unit();
+        this.house();
     },
     build: function () {
         $("#" + industry.config.build.maintenance).show();
@@ -88,6 +115,7 @@ industry.industryTwo = {
         $("#" + industry.config.estate.supplyHeating).show();
         $("#" + industry.config.estate.supplyPower).show();
         $("#" + industry.config.estate.supplyWater).show();
+        $("#" + industry.config.estate.material).show();
         $.each(industry.config.estate.supply.split(","), function (i, n) {
             $("." + n).hide();
         });
@@ -95,6 +123,16 @@ industry.industryTwo = {
         $("#" + industry.config.estate.power_supply_plan).show();
         $("#" + industry.config.estate.air_supply_plan).show();
         $("#" + industry.config.estate.heating_plan).show();
+    },
+    unit: function () {
+        $("#" + industry.config.unit.spanWidth).show();
+        $("#" + industry.config.unit.spanNumber).show();
+        $("#" + industry.config.unit.spanLength).show();
+    },
+    house:function () {
+        $("#" + industry.config.house.corollaryEquipment).show();
+        $("#" + industry.config.house.useEnvironment).show();
+        $("#" + industry.config.house.newsHuxing).hide();
     }
 };
 

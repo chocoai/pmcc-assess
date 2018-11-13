@@ -22,6 +22,7 @@ var unitDecorate;
             cols.push({field: 'decorationPartName', title: '装修部位'});
             cols.push({field: 'decoratingMaterialName', title: '装修材料'});
             cols.push({field: 'materialPriceName', title: '材料价格区间'});
+            cols.push({field: 'location', title: '所在位置'});
             cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -349,6 +350,9 @@ var unitHuxing;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseHouse_layout, item.houseLayout, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.houseLayout').empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitOrientation, item.orientation, function (html, data) {
+                $("#" + unitHuxing.prototype.config().frm).find('select.orientation').empty().html(html).trigger('change');
+            });
         }
     }
 })();
@@ -469,6 +473,9 @@ var unitElevator;
         init:function (item) {
             $("#" + unitElevator.prototype.config().frm).clearAll();
             $("#" + unitElevator.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {
+                $("#" + unitElevator.prototype.config().frm).find('select.type').empty().html(html).trigger('change');
+            });
         }
     }
 

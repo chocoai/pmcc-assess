@@ -9,6 +9,8 @@ public class CaseMatchingTraffic {
 
     private Integer estateId;
 
+    private Integer nature;
+
     private String type;
 
     private String name;
@@ -47,6 +49,14 @@ public class CaseMatchingTraffic {
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public Integer getNature() {
+        return nature;
+    }
+
+    public void setNature(Integer nature) {
+        this.nature = nature;
     }
 
     public String getType() {

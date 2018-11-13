@@ -72,9 +72,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_case_unit_decorate" domainObjectName="CaseUnitDecorate">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_case_unit_decorate" domainObjectName="CaseUnitDecorate">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_case_unit_elevator" domainObjectName="CaseUnitElevator">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -128,9 +128,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_case_estate" domainObjectName="CaseEstate">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_case_estate" domainObjectName="CaseEstate">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_case_estate_land_state" domainObjectName="CaseEstateLandState">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
