@@ -153,6 +153,12 @@ houseModelFun.tradingInit = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, item.informationType, function (html, data) {
         $("#" + houseModelFun.config.trading.frm).find("select.informationType").empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, item.financingConditions, function (html, data) {
+        $("#" + houseModelFun.config.trading.frm).find("select.financingConditions").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, item.scopeProperty, function (html, data) {
+        $("#" + houseModelFun.config.trading.frm).find("select.scopeProperty").empty().html(html).trigger('change');
+    });
 };
 
 houseModelFun.tradingSellAndLease = {

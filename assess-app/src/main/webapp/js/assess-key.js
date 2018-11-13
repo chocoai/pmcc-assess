@@ -131,6 +131,8 @@ AssessDicKey.examine_building_maintenance_category = "examine.building.maintenan
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//维护结构材质
 
 AssessDicKey.examineHouseType = "examine.house.type";//房屋类型
+AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
+AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途
 AssessDicKey.examineHousePracticalUse = "examine.house.practical.use";//实际用途
 AssessDicKey.examineHouseEnvironmentUse = "examine.house.environment.use";//使用环境

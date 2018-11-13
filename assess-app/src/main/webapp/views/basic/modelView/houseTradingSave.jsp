@@ -5,15 +5,17 @@
     <div class="x-valid">
         <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>
         <div class="col-sm-3">
-            <input type="text" placeholder="财产范围" required="required"
-                   name="scopeProperty" class="form-control">
+            <select class="form-control search-select select2 scopeProperty" name="scopeProperty"
+                    required="required">
+            </select>
         </div>
     </div>
     <div class="x-valid">
         <label class="col-sm-1 control-label">融资条件<span class="symbol required"></span></label>
         <div class="col-sm-3">
-            <input type="text" placeholder="融资条件" required="required"
-                   name="financingConditions" class="form-control">
+            <select class="form-control search-select select2 financingConditions" name="financingConditions"
+                    required="required">
+            </select>
         </div>
     </div>
     <div class="x-valid">
