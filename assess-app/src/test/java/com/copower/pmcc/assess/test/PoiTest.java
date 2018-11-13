@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,7 +65,7 @@ public class PoiTest {
         while (m.find()) {
             Map<String, String> map = Maps.newHashMap();
             String result = m.group();
-            map.put(result.replaceAll("^\\{|\\}$",""), "");
+            map.put(result.replaceAll("^\\{|\\}$", ""), "");
             maps.add(map);
         }
         return JSON.toJSONString(maps);
@@ -143,9 +144,9 @@ public class PoiTest {
         try {
             String filePath = "D:\\test\\main.doc";
             Map<String, String> map = Maps.newHashMap();
-            map.put("yoyo","D:\\test\\1.docx");
-            map.put("yoyo1","D:\\test\\2.docx");
-            AsposeUtils.insertDocument(filePath,map);
+            map.put("yoyo", "D:\\test\\1.docx");
+            map.put("yoyo1", "D:\\test\\2.docx");
+            AsposeUtils.insertDocument(filePath, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,19 +154,19 @@ public class PoiTest {
 
 
     @Test
-    public void insertSqlTest(){
-        CsrBorrower csrBorrower=new CsrBorrower();
+    public void insertSqlTest() {
+        CsrBorrower csrBorrower = new CsrBorrower();
         csrBorrower.setProjectId(0);
         csrBorrower.setBisImport(true);
         csrBorrower.setBorrowerId(UUID.randomUUID().toString());
-        String s =new CreateInsertHelp().createInsert(csrBorrower);
+        String s = new CreateInsertHelp().createInsert(csrBorrower);
         System.out.print(s);
 
         System.out.println(FormatUtils.camelToUnderline("borrowerId"));
     }
 
     @Test
-    public void exportTest(){
+    public void exportTest() {
         try {
 //            String str = "C:\\Users\\13426\\Documents\\test\\A1.xlsx";
 //            String str = "C:\\Users\\13426\\Documents\\test\\新客户数据.xlsx";
@@ -179,7 +180,6 @@ public class PoiTest {
             e1.printStackTrace();
         }
     }
-
 
 
     private Map<String, Integer> getReportExcelOneKey(String filePath) throws Exception {
@@ -246,41 +246,41 @@ public class PoiTest {
     }
 
     @Test
-    public void  test1(){
+    public void test1() {
         Ordering<Integer> orderingBig = new Ordering<Integer>() {
             @Override
             public int compare(Integer left, Integer right) {
                 return left - right;
             }
         };
-        List<Integer> list= Lists.newArrayList(3,5,2,1,6);
+        List<Integer> list = Lists.newArrayList(3, 5, 2, 1, 6);
         list = orderingBig.sortedCopy(list);
         System.out.println(list);
     }
 
     @Test
-    public void test2(){
-        String formData="{\"supportInfoList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
+    public void test2() {
+        String formData = "{\"supportInfoList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
         SchemeMarketCompareApplyDto compileReportApplyDto = JSON.parseObject(formData, SchemeMarketCompareApplyDto.class);
         System.out.println(compileReportApplyDto.getSupportInfoList());
     }
 
     @Test
-    public void test3(){
-        String formData="{\"compileReportDetailList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
+    public void test3() {
+        String formData = "{\"compileReportDetailList\":[{\"id\":54,\"content\":\"各种影响房地产价格的因素对房地产的价格的asdad也是不尽相同的：有的因素对房地产价格的影响较大（即随着这种因素的变化而引起的房地产价格的升降幅度较大），有的因素则影响较小。但是，随着时期的不同，地区的不同，或者房地产的类型不同，那些影响较大的因素也许会变成影响较小的因素，甚至没有影响；相反，那些影响较小的因素有可能成为主要的影响因素。\\n各种影响房地产价格的因素与房地产价格之间的影响关系是不尽相同的：有的因素对房地产价格的影响是一向性的，即随着这种因素的变化而提高（或降低）房地产的价格；有的因素在某一状况下随着这种因素的变化而提高（或降低）房地产的价格，但在另一状况下却随着这种因素的的变化而降低（或提高）房地产的asdads；有的因素从某一角度看会提高房地产的价格，但从另一角度看却会降低房地产的价格，其对房地产价格的最终影响如何，是由这两方面的合理决定的。\",\"jsonContent\":[{\"key\":\"影响程度\",\"value\":\"asdad\"},{\"key\":\"价格\",\"value\":\"asdads\"}]},{\"id\":55,\"content\":\"物业抵押是指抵押人以其合法的房地产，以不转移占有的方式向抵押权人提供债务履行担保的行为。物业抵押asdasd成立后，asdasd到期不能清偿债务时，asdasd有权依法以抵押的房地产折价、拍卖或者变卖所得的价款优先受偿。在这一概念中，包括以下几层含义：\\n1)抵押人必须是对房地产享有所有权或者土地使用权的人，即抵押人对抵押物必须享有处分权。\\n2)抵押人以其合法的房地产以不转移占有的方式，依然实际控制着房地产，向抵押权人提供担保。\\n3)向抵押权人提供asdasd履行担保。抵押人拿自己合法的房地产向抵押权人设定抵押，目的是向债权人提供履行债务的一种保证。从某种角度上讲，如果没有这种保证，抵押权人对于债务人的信任度可能降低，很可能作为主债务的合同就无法签订。\",\"jsonContent\":[{\"key\":\"法律关系\",\"value\":\"asdasd\"},{\"key\":\"债务人\",\"value\":\"asdasd\"},{\"key\":\"抵押权人\",\"value\":\"asdasd\"},{\"key\":\"债务\",\"value\":\"asdasd\"}]}]}";
         CompileReportApplyDto compileReportApplyDto = JSON.parseObject(formData, CompileReportApplyDto.class);
         System.out.println(compileReportApplyDto.getCompileReportDetailList());
     }
 
     @Test
-    public void replaceTextToFile(){
+    public void replaceTextToFile() {
         try {
-            String filePath="C:\\Users\\kings\\Desktop\\新建 Microsoft Word 文档.docx";
+            String filePath = "C:\\Users\\kings\\Desktop\\新建 Microsoft Word 文档.docx";
             Document doc = new Document(filePath);
             doc.getRange().replace(Pattern.compile("任务安排"), new IReplacingCallback() {
                 @Override
                 public int replacing(ReplacingArgs e) throws Exception {
-                    DocumentBuilder builder = new DocumentBuilder((Document)e.getMatchNode().getDocument());
+                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
                     builder.moveTo(e.getMatchNode());
                     Document document = new Document("C:\\Users\\kings\\Desktop\\评估项目bug记录.docx");
                     builder.insertDocument(document, ImportFormatMode.KEEP_DIFFERENT_STYLES);
@@ -293,4 +293,36 @@ public class PoiTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testFx(){
+        fxInfo fxInfo=new fxInfo("");
+        System.out.print(fxInfo.getData());
+        //fxTest(Lists.newArrayList("张三","李四123") ,o->o.length());
+    }
+
+    private <F, T> void fxTest(List<F> list,Function<F, T> function) {
+        for (F f : list) {
+            T t = function.apply(f);
+            System.out.print(t);
+        }
+
+    }
+
+    public class fxInfo<T extends String>{
+        private T data;
+
+        public fxInfo(T t){
+            this.data=t;
+        }
+
+        public T getData(){
+            return  data;
+        }
+
+    }
+
+
 }
+
+
