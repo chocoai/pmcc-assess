@@ -159,7 +159,6 @@ public class CaseUnitService {
             caseUnit.setCreator(commonService.thisUserAccount());
             caseUnit.setVersion(0);
             id = caseUnitDao.addUnit(caseUnit);
-            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
             return  id;
@@ -179,7 +178,6 @@ public class CaseUnitService {
             oo.setCreator(commonService.thisUserAccount());
             int oldId = caseUnit.getId();
             int newId = caseUnitDao.addUnit(oo);
-            this.initAndUpdateSon(oldId,newId);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), newId);
             caseUnit.setId(newId);

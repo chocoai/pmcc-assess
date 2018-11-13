@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
@@ -1935,6 +1936,7 @@ public class PublicBasicService {
      * @param caseMainBuildId
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void appWriteBuilding(Integer caseMainBuildId) throws Exception {
         if (caseMainBuildId == null) {
             throw new Exception("null point");
@@ -2022,6 +2024,7 @@ public class PublicBasicService {
      * @param caseUnitId
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public CaseUnit appWriteUnit(Integer caseUnitId) throws Exception {
         if (caseUnitId == null) {
             throw new Exception("null point");
@@ -2077,6 +2080,7 @@ public class PublicBasicService {
      * @param caseEstateId
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public Map<String, Object> appWriteEstate(Integer caseEstateId) throws Exception {
         if (caseEstateId == null) {
             throw new Exception("null point");
@@ -2366,6 +2370,7 @@ public class PublicBasicService {
      * @param caseHouseId
      * @throws Exception
      */
+    @Transactional(rollbackFor = {Exception.class})
     public Map<String, Object> appWriteHouse(Integer caseHouseId) throws Exception {
         if (caseHouseId == null) {
             throw new Exception("null ponit");

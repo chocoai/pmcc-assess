@@ -155,7 +155,6 @@ public class CaseBuildingService {
             caseBuilding.setCreator(commonService.thisUserAccount());
             caseBuilding.setVersion(0);
             id = caseBuildingDao.addBuilding(caseBuilding);
-            this.initAndUpdateSon(0,id);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             caseBuilding.setId(id);
@@ -178,7 +177,6 @@ public class CaseBuildingService {
             int oldId = caseBuilding.getId();
             int newId = caseBuildingDao.addBuilding(oo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), newId);
-            this.initAndUpdateSon(oldId,newId);
             caseBuilding.setId(newId);
             return newId;
         }
