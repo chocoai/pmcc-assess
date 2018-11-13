@@ -36,11 +36,13 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary" onclick="dataBuilder.prototype.loadDataDicList()">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="dataBuilder.prototype.loadDataDicList()">
                                     查询
                                 </button>
 
-                                <button type="button" class="btn btn-success" onclick="dataBuilder.prototype.showModel()"
+                                <button type="button" class="btn btn-success"
+                                        onclick="dataBuilder.prototype.showModel()"
                                         data-toggle="modal" href="#divBox"> 新增
                                 </button>
                             </div>
@@ -69,17 +71,16 @@
 
     };
     dataBuilder.prototype = {
-        config:function () {
+        config: function () {
             var data = {};
-            data.table = "tb_FatherList" ;
+            data.table = "tb_FatherList";
             data.box = "divBoxFather";
             data.frm = "frmFather";
             return data;
         },
-        loadDataDicList:function () {
+        loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            // cols.push({field: 'qualificationGrade', title: '资质等级'});
             cols.push({field: 'socialPrestige', title: '社会信誉'});
             cols.push({field: 'companyNature', title: '公司性质'});
             cols.push({
@@ -92,9 +93,9 @@
                     return str;
                 }
             });
-            $("#"+dataBuilder.prototype.config().table).bootstrapTable('destroy');
+            $("#" + dataBuilder.prototype.config().table).bootstrapTable('destroy');
             TableInit(dataBuilder.prototype.config().table, "${pageContext.request.contextPath}/dataBuilder/getDataBuilderList", cols, {
-                name:$("#queryName").val()
+                name: $("#queryName").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -104,12 +105,12 @@
                 }
             });
         },
-        removeData:function (id) {
+        removeData: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataBuilder/deleteDataBuilderById",
+                url: "${pageContext.request.contextPath}/dataBuilder/deleteDataBuilderById",
                 type: "post",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
@@ -124,35 +125,35 @@
                 }
             })
         },
-        showModel:function () {
+        showModel: function () {
             $("#qualificationGrade").val(null).trigger("change");
             $("#qualificationGradeV").val(null).trigger("change");
-            $("#"+dataBuilder.prototype.config().frm).clearAll();
+            $("#" + dataBuilder.prototype.config().frm).clearAll();
 
             // $("#qualificationGradeV").select2();
-            $('#'+dataBuilder.prototype.config().box).modal("show");
+            $('#' + dataBuilder.prototype.config().box).modal("show");
         },
-        saveData:function () {
-            if (!$("#"+dataBuilder.prototype.config().frm).valid()){
+        saveData: function () {
+            if (!$("#" + dataBuilder.prototype.config().frm).valid()) {
                 return false;
             }
             var data = formParams(dataBuilder.prototype.config().frm);
             var size = $("#qualificationGrade option").size();
-            if (size == 0){
+            if (size == 0) {
 
             }
-            if (size >= 1){
+            if (size >= 1) {
                 data.qualificationGrade = $("#qualificationGrade").val();
             }
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataBuilder/saveAndUpdateDataBuilder",
+                url: "${pageContext.request.contextPath}/dataBuilder/saveAndUpdateDataBuilder",
                 type: "post",
                 dataType: "json",
                 data: data,
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('保存成功');
-                        $('#'+dataBuilder.prototype.config().box).modal('hide');
+                        $('#' + dataBuilder.prototype.config().box).modal('hide');
                         dataBuilder.prototype.loadDataDicList();
                     }
                     else {
@@ -164,25 +165,25 @@
                 }
             })
         },
-        getAndInit:function (id) {
+        getAndInit: function (id) {
             $.ajax({
-                url:"${pageContext.request.contextPath}/dataBuilder/getDataBuilderById",
+                url: "${pageContext.request.contextPath}/dataBuilder/getDataBuilderById",
                 type: "get",
                 dataType: "json",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        $("#"+dataBuilder.prototype.config().frm).clearAll();
+                        $("#" + dataBuilder.prototype.config().frm).clearAll();
                         $("#" + dataBuilder.prototype.config().frm).initForm(result.data);
                         $("#qualificationGradeV").select2();
                         var size = $("#qualificationGrade option").size();
-                        if (size == 0){
+                        if (size == 0) {
                             $("#qualificationGradeV").val(result.data.qualificationGrade).trigger("change");
                         }
-                        if (size >= 1){
+                        if (size >= 1) {
                             $("#qualificationGrade").val(result.data.qualificationGrade).trigger("change");
                         }
-                        $('#'+dataBuilder.prototype.config().box).modal("show");
+                        $('#' + dataBuilder.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -190,34 +191,34 @@
                 }
             })
         },
-        init:function () {
+        init: function () {
             $("#qualificationGradeV").change(function () {
                 var id = $("#qualificationGradeV").val();
                 $.ajax({
-                    url:"${pageContext.request.contextPath}/dataBuilder/getBasisList",
+                    url: "${pageContext.request.contextPath}/dataBuilder/getBasisList",
                     dataType: "JSON",
                     data: {'id': id},
                     type: "GET",
-                    success:function (result) {
-                        if (result.ret) {
+                    success: function (result) {
+                        if (result.ret && result.data) {
                             var data = result.data;
                             var gradeNum = data.length;
                             var option = "<option value=''>请选择</option>";
-                            if(gradeNum > 0){
-                                for(var i = 0;i< gradeNum;i++){
-                                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                            if (gradeNum > 0) {
+                                for (var i = 0; i < gradeNum; i++) {
+                                    option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                                 }
                                 $("#qualificationGrade").parent().parent().parent().show();
                                 $("#qualificationGrade").html(option);
                                 // $("#qualificationGrade").select2({ minimumResultsForSearch: -1 });//加载样式
-                            }else {
+                            } else {
                                 $("#qualificationGrade").empty();
                                 $("#qualificationGrade").parent().parent().parent().hide();
                             }
 
                         }
                     },
-                    error:function(e) {
+                    error: function (e) {
                         Alert("调用服务端方法失败，失败原因:" + e);
                     }
                 });
@@ -254,6 +255,22 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
+                                            资质等级
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select id="qualificationGradeV" required="required"
+                                                    name="qualificationGrade"
+                                                    class="form-control search-select select2">
+                                                <c:forEach items="${baseList}" var="item">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
                                             公司性质
                                         </label>
                                         <div class="col-sm-10">
@@ -268,38 +285,14 @@
                                             社会信誉
                                         </label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉" required="required">
+                                            <textarea class="form-control" name="socialPrestige" placeholder="社会信誉"
+                                                      required="required">
 
                                             </textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            资质等级
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select id="qualificationGradeV" required="required" name="qualificationGrade" class="form-control search-select select2">
-                                                <c:forEach items="${baseList}" var="item">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group" style="display: none;">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            资质等级选择
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select id="qualificationGrade" required="required" name="qualificationGrade" class="form-control search-select select2">
 
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

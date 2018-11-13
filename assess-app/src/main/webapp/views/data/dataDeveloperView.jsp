@@ -52,7 +52,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                     <table class="table table-bordered" id="tb_FatherList">
                         <!-- cerare document add ajax data-->
@@ -65,12 +64,14 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
         dataDeveloper.prototype.loadDataDicList();
     });
+
+
+
     var dataDeveloper = function () {
 
     };

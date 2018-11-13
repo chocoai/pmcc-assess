@@ -42,12 +42,6 @@ public class DataPropertyService {
      */
     public boolean addDataProperty(DataProperty dataProperty){
         dataProperty.setCreator(commonService.thisUserAccount());
-        if (dataProperty.getDeclareId()==null){
-            dataProperty.setDeclareId(0);
-        }
-        if (dataProperty.getExamineType()==null){
-            dataProperty.setExamineType(0);
-        }
         return dataPropertyDao.addDataProperty(dataProperty);
     }
 
@@ -62,12 +56,6 @@ public class DataPropertyService {
      */
     public int addDataPropertyReturnId(DataProperty dataProperty){
         dataProperty.setCreator(commonService.thisUserAccount());
-        if (dataProperty.getDeclareId()==null){
-            dataProperty.setDeclareId(0);
-        }
-        if (dataProperty.getExamineType()==null){
-            dataProperty.setExamineType(0);
-        }
         return dataPropertyDao.addDataPropertyReturnId(dataProperty);
     }
 
