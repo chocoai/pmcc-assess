@@ -1,6 +1,6 @@
 /**
  * Created by kings on 2018-4-18.
- * 选择建造商 工具方法
+ * 选择物业 工具方法
  */
 (function ($) {
     var AssessProperty = function () {
@@ -81,7 +81,7 @@
         $('#select_property_modal').modal('show');
     }
 
-    //选择开发商
+    //选择物业
     AssessProperty.prototype.onSelected = function (index) {
         var row = $("#select_property_list").bootstrapTable('getData')[index];
         if (this.callback) {

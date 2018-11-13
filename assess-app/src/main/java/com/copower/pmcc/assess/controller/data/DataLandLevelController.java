@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Auther: zch
@@ -34,94 +38,134 @@ public class DataLandLevelController {
     private DataLandLevelService dataLandLevelService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
-    @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
+    @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/data/dataLandLevelView" ;
+        String view = "/data/dataLandLevelView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataLandLevelById",method = {RequestMethod.GET},name = "获取土地级别维护")
+    @RequestMapping(value = "/getDataLandLevelById", method = {RequestMethod.GET}, name = "获取土地级别维护")
     public HttpResult getById(Integer id) {
         DataLandLevel dataLandLevel = null;
         try {
-            if (id!=null){
+            if (id != null) {
                 dataLandLevel = dataLandLevelService.getDataLandLevelById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataLandLevel);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataLandLevelList",method = {RequestMethod.GET},name = "获取土地级别维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String leve) {
+    @RequestMapping(value = "/getDataLandLevelList", method = {RequestMethod.GET}, name = "获取土地级别维护列表")
+    public BootstrapTableVo getExamineEstateNetworkList(String leve, HttpServletRequest httpServletRequest) {
         DataLandLevel dataLandLevel = new DataLandLevel();
-        if (!StringUtils.isEmpty(leve)){
+        if (!StringUtils.isEmpty(leve)) {
             dataLandLevel.setLeve(leve);
         }
         BootstrapTableVo vo = null;
         try {
             vo = dataLandLevelService.getDataLandLevelListVos(dataLandLevel);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s",e1.getMessage()),e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteDataLandLevelById",method = {RequestMethod.POST},name = "删除土地级别维护")
+    @RequestMapping(value = "/deleteDataLandLevelById", method = {RequestMethod.POST}, name = "删除土地级别维护")
     public HttpResult delete(Integer id) {
         try {
-            if (id!=null){
+            if (id != null) {
                 DataLandLevel dataLandLevel = new DataLandLevel();
                 dataLandLevel.setId(id);
                 dataLandLevelService.removeDataLandLevel(dataLandLevel);
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateDataLandLevel",method = {RequestMethod.POST},name = "更新土地级别维护")
-    public HttpResult saveAndUpdate(DataLandLevel dataLandLevel){
+    @RequestMapping(value = "/saveAndUpdateDataLandLevel", method = {RequestMethod.POST}, name = "更新土地级别维护")
+    public HttpResult saveAndUpdate(DataLandLevel dataLandLevel) {
         try {
-           dataLandLevelService.saveAndUpdateDataLandLevel(dataLandLevel);
+            dataLandLevelService.saveAndUpdateDataLandLevel(dataLandLevel);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listDataLandLevel",method = {RequestMethod.GET},name = "土地级别维护 list")
-    public HttpResult list(String province,String city,String district){
+    @RequestMapping(value = "/listDataLandLevel", method = {RequestMethod.GET}, name = "土地级别维护 list")
+    public HttpResult list(String province, String city, String district) {
         try {
-            DataLandLevel dataLandLevel = new DataLandLevel() ;
-            if (!StringUtils.isEmpty(province)){
+            DataLandLevel dataLandLevel = new DataLandLevel();
+            if (!StringUtils.isEmpty(province)) {
                 dataLandLevel.setProvince(province);
             }
-            if (!StringUtils.isEmpty(city)){
+            if (!StringUtils.isEmpty(city)) {
                 dataLandLevel.setCity(city);
             }
-            if (!StringUtils.isEmpty(district)){
+            if (!StringUtils.isEmpty(district)) {
                 dataLandLevel.setDistrict(district);
             }
             return HttpResult.newCorrectResult(dataLandLevelService.landLevels(dataLandLevel));
         } catch (Exception e) {
-            logger.error(String.format("exception: %s",e.getMessage()),e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataLandLevelDetailList", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
+    public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId) {
+        return dataLandLevelDetailService.getDataLandLevelDetailList(landLevelId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getDataLandLevelDetailListByArea", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
+    public BootstrapTableVo getDataLandLevelDetailListByArea(String province, String city, String district) {
+        return dataLandLevelDetailService.getDataLandLevelDetailListByArea(province, city, district);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveAndUpdateDataLandLevelDetail", method = {RequestMethod.POST}, name = "保存土地级别信息")
+    public HttpResult saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
+        try {
+            dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(dataLandLevelDetail);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/removeDataLandLevelDetail", method = {RequestMethod.POST}, name = "删除土地级别信息")
+    public HttpResult removeDataLandLevelDetail(Integer id) {
+        try {
+            dataLandLevelDetailService.removeDataLandLevelDetail(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("删除异常");
+        }
+    }
+
+
 }
