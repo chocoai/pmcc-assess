@@ -289,9 +289,24 @@
                     建筑公司<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="builderId" required="required"
-                            class="form-control search-select select2 builderId">
-                    </select>
+                    <div class="input-group">
+                        <input type="hidden" name="builderId">
+                        <input type="text" readonly="readonly"
+                               placeholder="建筑公司" class="form-control">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="objectData.building.builderSelect(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="x-valid">
@@ -299,9 +314,24 @@
                     物业公司<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
-                    <select name="propertyId" required="required"
-                            class="form-control search-select select2 propertyId">
-                    </select>
+                    <div class="input-group">
+                        <input type="hidden" name="propertyId">
+                        <input type="text" readonly="readonly"
+                               placeholder="物业公司" class="form-control">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="objectData.building.propertySelect(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

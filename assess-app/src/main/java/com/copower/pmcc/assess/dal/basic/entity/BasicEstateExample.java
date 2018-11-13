@@ -1626,6 +1626,246 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andSupplyHeatingIsNull() {
+            addCriterion("supply_heating is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingIsNotNull() {
+            addCriterion("supply_heating is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingEqualTo(Boolean value) {
+            addCriterion("supply_heating =", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingNotEqualTo(Boolean value) {
+            addCriterion("supply_heating <>", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingGreaterThan(Boolean value) {
+            addCriterion("supply_heating >", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("supply_heating >=", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingLessThan(Boolean value) {
+            addCriterion("supply_heating <", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingLessThanOrEqualTo(Boolean value) {
+            addCriterion("supply_heating <=", value, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingIn(List<Boolean> values) {
+            addCriterion("supply_heating in", values, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingNotIn(List<Boolean> values) {
+            addCriterion("supply_heating not in", values, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_heating between", value1, value2, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyHeatingNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_heating not between", value1, value2, "supplyHeating");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerIsNull() {
+            addCriterion("supply_power is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerIsNotNull() {
+            addCriterion("supply_power is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerEqualTo(Boolean value) {
+            addCriterion("supply_power =", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerNotEqualTo(Boolean value) {
+            addCriterion("supply_power <>", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerGreaterThan(Boolean value) {
+            addCriterion("supply_power >", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("supply_power >=", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerLessThan(Boolean value) {
+            addCriterion("supply_power <", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerLessThanOrEqualTo(Boolean value) {
+            addCriterion("supply_power <=", value, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerIn(List<Boolean> values) {
+            addCriterion("supply_power in", values, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerNotIn(List<Boolean> values) {
+            addCriterion("supply_power not in", values, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_power between", value1, value2, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyPowerNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_power not between", value1, value2, "supplyPower");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterIsNull() {
+            addCriterion("supply_water is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterIsNotNull() {
+            addCriterion("supply_water is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterEqualTo(Boolean value) {
+            addCriterion("supply_water =", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterNotEqualTo(Boolean value) {
+            addCriterion("supply_water <>", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterGreaterThan(Boolean value) {
+            addCriterion("supply_water >", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("supply_water >=", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterLessThan(Boolean value) {
+            addCriterion("supply_water <", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterLessThanOrEqualTo(Boolean value) {
+            addCriterion("supply_water <=", value, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterIn(List<Boolean> values) {
+            addCriterion("supply_water in", values, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterNotIn(List<Boolean> values) {
+            addCriterion("supply_water not in", values, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_water between", value1, value2, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyWaterNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_water not between", value1, value2, "supplyWater");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasIsNull() {
+            addCriterion("supply_gas is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasIsNotNull() {
+            addCriterion("supply_gas is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasEqualTo(Boolean value) {
+            addCriterion("supply_gas =", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasNotEqualTo(Boolean value) {
+            addCriterion("supply_gas <>", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasGreaterThan(Boolean value) {
+            addCriterion("supply_gas >", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("supply_gas >=", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasLessThan(Boolean value) {
+            addCriterion("supply_gas <", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasLessThanOrEqualTo(Boolean value) {
+            addCriterion("supply_gas <=", value, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasIn(List<Boolean> values) {
+            addCriterion("supply_gas in", values, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasNotIn(List<Boolean> values) {
+            addCriterion("supply_gas not in", values, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_gas between", value1, value2, "supplyGas");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplyGasNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("supply_gas not between", value1, value2, "supplyGas");
+            return (Criteria) this;
+        }
+
         public Criteria andVersionIsNull() {
             addCriterion("version is null");
             return (Criteria) this;
