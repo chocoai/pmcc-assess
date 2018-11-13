@@ -62,14 +62,7 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_ATTACHMENT_PHASE_TEMPLATE_WORK = "pmcc:assess:attachment:phase:template:work";
     public static final String PMCC_ASSESS_ATTACHMENT_PHASE_TEMPLATE_PROCESS = "pmcc:assess:attachment:phase:template:process";
 
-    //动态表单
-    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE = "pmcc:assess:dynamic:form:module";
-    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE_ID = "pmcc:assess:dynamic:form:module:id";
-    public static final String PMCC_ASSESS_DYNAMIC_FORM_MODULE_NAME = "pmcc:assess:dynamic:form:module:name";
-    public static final String PMCC_ASSESS_DYNAMIC_FORM_DATASOURCE = "pmcc:assess:dynamic:form:datasource"; //数据源
-    public static final String PMCC_ASSESS_DYNAMIC_FORM_TEXT = "pmcc:assess:dynamic:form:text"; //显示值
-
-    //申报表单
-    public static final String PMCC_ASSESS_DECLARE_FORM = "pmcc:assess:declare:form"; //申报表单
-
+    //土地级别
+    public static final String PMCC_ASSESS_LAND_LEVEL = "pmcc:assess:land:level";
+    public static final String PMCC_ASSESS_LAND_LEVEL_ID = "pmcc:assess:land:level:id";
 }
