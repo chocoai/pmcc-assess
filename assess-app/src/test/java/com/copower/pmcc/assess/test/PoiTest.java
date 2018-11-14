@@ -12,7 +12,6 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApply
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -29,13 +28,13 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Created by kings on 2018-5-31.
@@ -61,7 +60,7 @@ public class PoiTest {
         String regex = "\\{(.*?)\\}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(template);
-        List<Map<String, String>> maps = Lists.newArrayList();
+        List<Map<String, String>> maps = newArrayList();
         while (m.find()) {
             Map<String, String> map = Maps.newHashMap();
             String result = m.group();
@@ -253,7 +252,7 @@ public class PoiTest {
                 return left - right;
             }
         };
-        List<Integer> list = Lists.newArrayList(3, 5, 2, 1, 6);
+        List<Integer> list = newArrayList(3, 5, 2, 1, 6);
         list = orderingBig.sortedCopy(list);
         System.out.println(list);
     }
@@ -294,11 +293,19 @@ public class PoiTest {
         }
     }
 
+    public <F,T> List<T>  cacheList(String key, Class<T> t, Function<String, List<T>> function){
+        List<?> apply = function.apply(key);
+        List<T> ts = (List<T>) apply;
+        return  ts;
+    }
+
     @Test
     public void testFx(){
         fxInfo fxInfo=new fxInfo("");
         System.out.print(fxInfo.getData());
         //fxTest(Lists.newArrayList("张三","李四123") ,o->o.length());
+        HashSet<String> ht=new HashSet<>();
+
     }
 
     private <F, T> void fxTest(List<F> list,Function<F, T> function) {
