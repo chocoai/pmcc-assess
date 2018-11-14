@@ -1,16 +1,12 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dto.input.cases.CaseBuildingDto;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.assess.service.cases.CaseUnitService;
-import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -34,35 +28,11 @@ import java.util.List;
 public class CaseBuildingController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
     private CaseUnitService caseUnitService;
     @Autowired
     private CaseBuildingService caseBuildingService;
 
-    @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
-    public ModelAndView appView(Integer estateId) {
-        String view = "/case/caseBuild/apply/caseBuildingView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("estateId", estateId);
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id,@RequestParam(defaultValue = "false") boolean copy) {
-        String view = "/case/caseBuild/apply/caseBuildingView";
-        CaseBuilding caseBuilding = null;
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        caseBuilding = caseBuildingService.getCaseBuildingById(id) ;
-        if (copy){
-            //复制数据 需要把id设为null
-            caseBuilding.setId(null);
-            //处理附件,所有附件则把附件复制后保存后的id传入页面显示
-            //附件暂且不处理
-        }
-        modelAndView.addObject("caseBuilding",caseBuilding);
-        return modelAndView;
-    }
 
     @ResponseBody
     @RequestMapping(value = "/getCaseBuildingById", method = {RequestMethod.GET}, name = "获取案例 楼栋")

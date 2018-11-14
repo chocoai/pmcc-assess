@@ -64,7 +64,6 @@ public class CaseHouseEquipmentController {
             if (!StringUtils.isEmpty(type)){
                 caseHouseEquipment.setType(type);
             }
-            caseHouseEquipment.setCreator(commonService.thisUserAccount());
             vo = caseHouseEquipmentService.getCaseHouseEquipmentLists(caseHouseEquipment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -104,35 +103,4 @@ public class CaseHouseEquipmentController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/caseHouseEquipment_grade",method = {RequestMethod.GET},name = "设备包含（空调、新风、供暖） 类型")
-    public HttpResult caseHouseEquipment_grade(String type) {
-        try {
-            List<BaseDataDic> baseDataDic = null;
-            if (!StringUtils.isEmpty(type)){
-                ExamineHouseEquipmentTypeEnum typeEnum = ExamineHouseEquipmentTypeEnum.getEnumByName(ExamineHouseEquipmentTypeEnum.getNameByKey(type));
-                baseDataDic = caseHouseEquipmentService.examineCaseHouseEquipment_grade(typeEnum);
-            }
-            if (!ObjectUtils.isEmpty(baseDataDic)){
-                return HttpResult.newCorrectResult(baseDataDic);
-            }else {
-                return HttpResult.newErrorResult("没有获取到数据!");
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_equipment_price_range",method = {RequestMethod.GET},name = "设备包含（空调、新风、供暖） 设备价格区间")
-    public HttpResult examine_house_equipment_price_range() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_EQUIPMENT_PRICE_RANGE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

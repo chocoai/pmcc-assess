@@ -64,7 +64,6 @@ public class CaseMatchingLeisurePlaceController {
             if (!StringUtils.isEmpty(type)){
                 caseMatchingLeisurePlace.setType(type);
             }
-            caseMatchingLeisurePlace.setCreator(commonService.thisUserAccount());
             vo = caseMatchingLeisurePlaceService.getCaseMatchingLeisurePlaceLists(caseMatchingLeisurePlace);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -103,56 +102,6 @@ public class CaseMatchingLeisurePlaceController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/caseMatchingLeisurePlace_category",method = {RequestMethod.GET},name = "休闲场所-包含-购物-娱乐-餐饮类别")
-    public HttpResult caseMatchingLeisurePlace_category(String type) {
-        try {
-            List<BaseDataDic> baseDataDic = null;
-            if (!StringUtils.isEmpty(type)){
-                ExamineMatchingLeisurePlaceTypeEnum typeEnum = ExamineMatchingLeisurePlaceTypeEnum.getEnumByName(ExamineMatchingLeisurePlaceTypeEnum.getNameByKey(type));
-                baseDataDic = caseMatchingLeisurePlaceService.caseMatchingLeisurePlace_category(typeEnum);
-            }
-            if (!ObjectUtils.isEmpty(baseDataDic)){
-                return HttpResult.newCorrectResult(baseDataDic);
-            }else {
-                return HttpResult.newErrorResult("没有获取到数据!");
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/caseMatchingLeisurePlace_grade",method = {RequestMethod.GET},name = "休闲场所-包含-购物-娱乐-餐饮 档次")
-    public HttpResult caseMatchingLeisurePlace_grade(String type) {
-        try {
-            List<BaseDataDic> baseDataDic = null;
-            if (!StringUtils.isEmpty(type)){
-                ExamineMatchingLeisurePlaceTypeEnum typeEnum = ExamineMatchingLeisurePlaceTypeEnum.getEnumByName(ExamineMatchingLeisurePlaceTypeEnum.getNameByKey(type));
-                baseDataDic = caseMatchingLeisurePlaceService.caseMatchingLeisurePlace_grade(typeEnum);
-            }
-            if (!ObjectUtils.isEmpty(baseDataDic)){
-                return HttpResult.newCorrectResult(baseDataDic);
-            }else {
-                return HttpResult.newErrorResult("没有获取到数据!");
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/caseMatchingLeisurePlace_distance",method = {RequestMethod.GET},name = "休闲场所-包含-购物-娱乐-餐饮 距离")
-    public HttpResult caseMatchingLeisurePlace_distance() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
 }

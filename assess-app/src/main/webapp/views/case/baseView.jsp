@@ -82,9 +82,6 @@
                                     <label class="btn btn-primary" onclick="baseFun.caseEstate.find()">
                                         查询
                                     </label>
-                                    <label class="btn btn-success" onclick="window.open('${pageContext.request.contextPath}/basicApply/basicApplyIndex')">
-                                        新增
-                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -258,9 +255,6 @@
                 cityTarget: $("#city"),
                 districtTarget: $("#district")
             });
-        },
-        monitor: function () {
-
         }
     };
     var baseFun = new BaseViewFun();
@@ -269,18 +263,9 @@
         init: function () {
 
         }
-    }
+    };
 
     baseFun.caseEstate = {
-        /**
-         * @author:  zch
-         * 描述:新增数据
-         * @date:2018-09-13
-         **/
-        newWindow: function () {
-            var href = "${pageContext.request.contextPath}/caseEstate/appView";
-            window.open(href, "");
-        },
         /**
          * @author:  zch
          * 描述:加载数据列表
@@ -306,7 +291,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="编辑" onclick="baseFun.caseEstate.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -326,8 +311,6 @@
                 },
                 onClickCell: function (field, value, row, element) {
                     baseFun.caseBuild.loadDataList(row.id);
-                    $("#" + baseFun.config.father.caseBuild.frm()).initForm({estateId: row.id});
-                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
 
@@ -372,126 +355,41 @@
         },
         /**
          * @author:  zch
-         * 描述:编辑数据
+         * 描述:详情数据
          * @date:2018-09-13
          **/
-        editData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseEstate/editView";
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseEstate/detailView";
             href += "?id=" + id;
             window.open(href, "");
-        },
-        /**
-         * @author:  zch
-         * 描述:删除数据
-         * @date:2018-09-13
-         **/
-        removeData: function (item, index) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseEstate/deleteCaseEstateById",
-                type: "post",
-                dataType: "json",
-                async: true,
-                data: {id: item},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('remove', {
-                            field: 'id',
-                            values: [item]
-                        });
-                        toastr.success("删除成功!");
-                    }
-                    if (!result.ret) {
-                        toastr.success(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        /**
-         * @author:  zch
-         * 描述:复制数据并新增的原理是 在编辑处理逻辑里面对id和附件进行特殊处理即可
-         * @date:2018-09-13
-         **/
-        copyData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseEstate/editView";
-            href += "?id=" + id + "&copy=true";
-            window.open(href, "");
-        },
-        init: function () {
         }
     };
 
 
     baseFun.caseBuild = {
-        //地图显示
-        showMap: function () {
-            toastr.success("地图显示暂未提供!");
-        },
-        addData: function () {
-            var build = formParams(baseFun.config.father.caseBuild.frm());
-            if (!baseFun.isEmpty(build)) {
-                toastr.success("请先选择楼盘");
-                return false;
-            }
-            if (!baseFun.isEmpty(build.estateId)) {
-                toastr.success("请先选择楼盘");
-                return false;
-            }
-            var href = "${pageContext.request.contextPath}/caseBuilding/appView";
-            href += "?estateId=" + build.estateId;
-            window.open(href, "");
-        },
-        editData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseBuilding/editView";
+        findData: function (id) {
+            var href = "${pageContext.request.contextPath}/caseBuildingMain/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
-        copyData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseBuilding/editView";
-            href += "?id=" + id + "&copy=true";
-            window.open(href, "");
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseBuilding/deleteCaseBuildingById",
-                type: "post",
-                dataType: "json",
-                async: true,
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        baseFun.caseBuild.loadDataList(result.data);
-                        toastr.success("删除成功!");
-                    }
-                    if (!result.ret) {
-                        toastr.success(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
         loadDataList: function (id) {
+            if (!baseFun.isEmpty(id)){
+                return false;
+            }
             var cols = [];
-            cols.push({field: 'buildingNumber', title: '楼栋编号'});
-            cols.push({field: 'name', title: '楼栋名称'});
+            cols.push({field: 'identifier', title: '楼栋编号'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseBuild.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getCaseBuildingList", cols, {
+            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuildingMain/getBootstrapTableVo", cols, {
                 estateId: id
             }, {
                 showColumns: false,
@@ -502,8 +400,6 @@
                 },
                 onClickCell: function (field, value, row, element) {
                     baseFun.caseUnit.loadDataList(row.id);
-                    $("#" + baseFun.config.father.caseUnit.frm()).initForm({buildingId: row.id});
-                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
         }
@@ -511,51 +407,10 @@
 
 
     baseFun.caseUnit = {
-        addData: function () {
-            var unit = formParams(baseFun.config.father.caseUnit.frm());
-            if (!baseFun.isEmpty(unit)) {
-                toastr.success("请先选择楼栋");
-                return false;
-            }
-            if (!baseFun.isEmpty(unit.buildingId)) {
-                toastr.success("请先选择楼栋");
-                return false;
-            }
-            var href = "${pageContext.request.contextPath}/caseUnit/appView";
-            href += "?buildingId=" + unit.buildingId;
-            window.open(href, "");
-        },
-        editData: function (id) {
+        findData: function (id) {
             var href = "${pageContext.request.contextPath}/caseUnit/editView";
             href += "?id=" + id;
             window.open(href, "");
-        },
-        copyData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseUnit/editView";
-            href += "?id=" + id + "&copy=true";
-            window.open(href, "");
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseUnit/deleteCaseUnitById",
-                type: "post",
-                dataType: "json",
-                async: true,
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        baseFun.caseUnit.loadDataList(result.data);
-                        toastr.success("删除成功!");
-                    }
-                    if (!result.ret) {
-                        toastr.success(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
         },
         loadDataList: function (buildingId) {
             var cols = [];
@@ -565,14 +420,14 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseUnit.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + baseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
             TableInit(baseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                buildingId: buildingId
+                caseBuildingMainId: buildingId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -590,51 +445,10 @@
     };
 
     baseFun.caseHouse = {
-        addData: function () {
-            var house = formParams(baseFun.config.father.caseHouse.frm());
-            if (!baseFun.isEmpty(house)) {
-                toastr.success("请先选择单元");
-                return false;
-            }
-            if (!baseFun.isEmpty(house.unitId)) {
-                toastr.success("请先选择单元");
-                return false;
-            }
-            var href = "${pageContext.request.contextPath}/caseHouse/appView";
-            href += "?unitId=" + house.unitId;
-            window.open(href, "");
-        },
-        editData: function (id) {
+        findData: function (id) {
             var href = "${pageContext.request.contextPath}/caseHouse/editView";
             href += "?id=" + id;
             window.open(href, "");
-        },
-        copyData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseHouse/editView";
-            href += "?id=" + id + "&copy=true";
-            window.open(href, "");
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseHouse/deleteCaseHouseById",
-                type: "post",
-                dataType: "json",
-                async: true,
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        baseFun.caseHouse.loadDataList(result.data);
-                        toastr.success("删除成功!");
-                    }
-                    if (!result.ret) {
-                        toastr.success(result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
         },
         loadDataList: function (unitId) {
             var cols = [];
@@ -644,7 +458,7 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseHouse.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -666,8 +480,6 @@
 
     $(function () {
         baseFun.event.selectInit();
-        baseFun.event.monitor();
-        baseFun.caseEstate.init();
         baseFun.caseEstate.loadDataList(false);
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);

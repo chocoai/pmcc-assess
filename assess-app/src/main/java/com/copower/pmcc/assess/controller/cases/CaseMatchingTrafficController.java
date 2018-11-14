@@ -62,7 +62,6 @@ public class CaseMatchingTrafficController {
             if (estateId != null){
                 caseMatchingTraffic.setEstateId(estateId);
             }
-            caseMatchingTraffic.setCreator(commonService.thisUserAccount());
             vo = caseMatchingTrafficService.getCaseMatchingTrafficList(caseMatchingTraffic);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -101,15 +100,5 @@ public class CaseMatchingTrafficController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_distance",method = {RequestMethod.GET},name = "获取距离")
-    public HttpResult estate_distance(Integer id) {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DISTANCE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
+
 }

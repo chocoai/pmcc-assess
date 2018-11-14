@@ -65,7 +65,6 @@ public class CaseEstateParkingController {
             if (estateId != null){
                 caseEstateParking.setEstateId(estateId);
             }
-            caseEstateParking.setCreator(commonService.thisUserAccount());
             vo = caseEstateParkingService.getExamineEstateNetworkList(caseEstateParking);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -104,15 +103,5 @@ public class CaseEstateParkingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_car_type",method = {RequestMethod.GET},name = "获取车位类型")
-    public HttpResult estate_distance(Integer id) {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_CAR_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
+
 }

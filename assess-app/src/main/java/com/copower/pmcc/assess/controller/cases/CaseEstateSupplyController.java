@@ -65,7 +65,6 @@ public class CaseEstateSupplyController {
             if (estateId != null){
                 caseEstateSupply.setEstateId(estateId);
             }
-            caseEstateSupply.setCreator(commonService.thisUserAccount());
             vo = caseEstateSupplyService.getExamineEstateNetworkList(caseEstateSupply);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -104,28 +103,6 @@ public class CaseEstateSupplyController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/line_water_supply_pipe_grade",method = {RequestMethod.GET},name = "线路供水管等级")
-    public HttpResult estate_distance() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LINE_WATER_SUPPLY_PIPE_GRADE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/supplier_grade",method = {RequestMethod.GET},name = "供应商等级")
-    public HttpResult supplier_grade() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLIER_GRADE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
 }

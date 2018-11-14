@@ -195,6 +195,9 @@ public class CaseHouseTradingService {
                 }
             }
         }
+        vo.setInformationName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getInformation())?Integer.parseInt(caseHouseTrading.getInformation()):null));
+        vo.setScopePropertyName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getScopeProperty())?Integer.parseInt(caseHouseTrading.getScopeProperty()):null));
+        vo.setFinancingConditionsName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(caseHouseTrading.getFinancingConditions())?Integer.parseInt(caseHouseTrading.getFinancingConditions()):null));
         return vo;
     }
 }

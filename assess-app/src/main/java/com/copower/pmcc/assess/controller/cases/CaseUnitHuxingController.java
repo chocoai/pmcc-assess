@@ -78,7 +78,6 @@ public class CaseUnitHuxingController {
             if (!ObjectUtils.isEmpty(unitId)) {
                 caseUnitHuxing.setUnitId(unitId);
             }
-            caseUnitHuxing.setCreator(commonService.thisUserAccount());
             vo = caseUnitHuxingService.getCaseUnitHuxingLists(caseUnitHuxing);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -117,15 +116,5 @@ public class CaseUnitHuxingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_unit_house_layout", method = {RequestMethod.GET}, name = "房型类别")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_LAYOUT);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
+
 }

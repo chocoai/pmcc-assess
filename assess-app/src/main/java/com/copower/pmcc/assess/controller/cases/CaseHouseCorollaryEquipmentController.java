@@ -59,7 +59,6 @@ public class CaseHouseCorollaryEquipmentController {
             if (!ObjectUtils.isEmpty(houseId)) {
                 caseHouseCorollaryEquipment.setHouseId(houseId);
             }
-            caseHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
             vo = caseHouseCorollaryEquipmentService.getCaseHouseCorollaryEquipmentLists(caseHouseCorollaryEquipment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -98,39 +97,4 @@ public class CaseHouseCorollaryEquipmentController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_category", method = {RequestMethod.GET}, name = "配套设备设施 类别")
-    public HttpResult examine_house_corollary_equipment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_type", method = {RequestMethod.GET}, name = "配套设备设施 类型")
-    public HttpResult examine_house_corollary_equipment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_corollary_equipment_price", method = {RequestMethod.GET}, name = "配套设备设施 价格")
-    public HttpResult examine_house_corollary_equipment_price() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 }

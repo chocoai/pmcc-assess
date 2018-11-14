@@ -5,13 +5,20 @@ import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMainDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +36,26 @@ public class CaseBuildingMainService {
     private CaseBuildingMainDao caseBuildingMainDao;
     @Autowired
     private CaseUnitService caseUnitService;
+
+    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.getEstateList(caseBuildingMain);
+        Ordering<CaseBuildingMain> ordering = Ordering.from(new Comparator<CaseBuildingMain>() {
+            @Override
+            public int compare(CaseBuildingMain o1, CaseBuildingMain o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
+        if (!ObjectUtils.isEmpty(caseBuildingMainList)){
+            Collections.sort(caseBuildingMainList,ordering);
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(caseBuildingMainList) ? new ArrayList<CaseBuildingMain>() : caseBuildingMainList);
+        return vo;
+    }
+
 
     public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
         CaseUnit queryUnit = new CaseUnit();

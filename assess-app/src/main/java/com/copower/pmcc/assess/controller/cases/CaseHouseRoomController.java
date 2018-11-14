@@ -63,7 +63,6 @@ public class CaseHouseRoomController {
             if (!ObjectUtils.isEmpty(houseId)){
                 caseHouseRoom.setHouseId(houseId);
             }
-            caseHouseRoom.setCreator(commonService.thisUserAccount());
             vo = caseHouseRoomService.getCaseHouseRoomLists(caseHouseRoom);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -102,17 +101,7 @@ public class CaseHouseRoomController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_unit_house_type",method = {RequestMethod.GET},name = "房间类别 (父类)")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
+
 
     /*----------------------------------------------------------分割一下  子类方法-----------------------------------------------------------*/
 
@@ -163,51 +152,4 @@ public class CaseHouseRoomController {
         return null;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_decoration_part",method = {RequestMethod.GET},name = "装修部位 (子类)")
-    public HttpResult examine_building_decoration_part() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_decorating_material",method = {RequestMethod.GET},name = "装修材料 (子类)")
-    public HttpResult examine_building_decorating_material() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATING_MATERIAL);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_material_price",method = {RequestMethod.GET},name = "材料价格区间 (子类)")
-    public HttpResult examine_building_material_price() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIAL_PRICE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_construction_technology",method = {RequestMethod.GET},name = "施工工艺 (子类)")
-    public HttpResult examine_building_construction_technology() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

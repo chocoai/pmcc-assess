@@ -51,7 +51,6 @@ public class CaseUnitElevatorController {
             if (!ObjectUtils.isEmpty(unitId)){
                 caseUnitElevator.setUnitId(unitId);
             }
-            caseUnitElevator.setCreator(commonService.thisUserAccount());
             vo = caseUnitElevatorService.getCaseUnitElevatorList(caseUnitElevator);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

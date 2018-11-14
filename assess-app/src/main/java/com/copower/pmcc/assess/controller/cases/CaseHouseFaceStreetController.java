@@ -59,7 +59,6 @@ public class CaseHouseFaceStreetController {
             if (houseId != null){
                 caseHouseFaceStreet.setHouseId(houseId);
             }
-            caseHouseFaceStreet.setCreator(commonService.thisUserAccount());
             vo = caseHouseFaceStreetService.getCaseHouseFaceStreetLists(caseHouseFaceStreet);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -98,39 +97,5 @@ public class CaseHouseFaceStreetController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_street_level",method = {RequestMethod.GET},name = "街道级别")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_STREET_LEVEL);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_traffic_flow",method = {RequestMethod.GET},name = "交通流量")
-    public HttpResult environment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_TRAFFIC_FLOW);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/examine_house_visitors_flowrate",method = {RequestMethod.GET},name = "人流量")
-    public HttpResult environment_influence_degree() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_VISITORS_FLOWRATE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

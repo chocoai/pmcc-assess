@@ -16,7 +16,9 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
     private String descriptionContentName;
     private String descriptionTypeName;
     private String taxBurdenName;
-
+    private String informationName;
+    private String financingConditionsName;
+    private String scopePropertyName;
     public String getTradingTimeName() {
         return tradingTimeName;
     }
@@ -79,5 +81,29 @@ public class CaseHouseTradingVo extends CaseHouseTrading {
 
     public void setTaxBurdenName(String taxBurdenName) {
         this.taxBurdenName = taxBurdenName;
+    }
+
+    public String getInformationName() {
+        return informationName;
+    }
+
+    public void setInformationName(String informationName) {
+        this.informationName = informationName;
+    }
+
+    public String getFinancingConditionsName() {
+        return financingConditionsName;
+    }
+
+    public void setFinancingConditionsName(String financingConditionsName) {
+        this.financingConditionsName = financingConditionsName;
+    }
+
+    public String getScopePropertyName() {
+        return scopePropertyName;
+    }
+
+    public void setScopePropertyName(String scopePropertyName) {
+        this.scopePropertyName = scopePropertyName;
     }
 }
