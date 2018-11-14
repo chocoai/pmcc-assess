@@ -62,7 +62,6 @@ public class CaseMatchingEducationController {
             if (estateId != null){
                 caseMatchingEducation.setEstateId(estateId);
             }
-            caseMatchingEducation.setCreator(commonService.thisUserAccount());
             vo = caseMatchingEducationService.getCaseMatchingEducationLists(caseMatchingEducation);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -101,51 +100,5 @@ public class CaseMatchingEducationController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/school_nature",method = {RequestMethod.GET},name = "学校性质")
-    public HttpResult school_nature() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SCHOOL_NATURE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/school_gradation",method = {RequestMethod.GET},name = "学校级次")
-    public HttpResult school_gradation() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SCHOOL_GRADATION);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/school_level",method = {RequestMethod.GET},name = "学校等级")
-    public HttpResult school_level() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SCHOOL_LEVEL);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estate_distance",method = {RequestMethod.GET},name = "获取距离")
-    public HttpResult estate_distance(Integer id) {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DISTANCE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

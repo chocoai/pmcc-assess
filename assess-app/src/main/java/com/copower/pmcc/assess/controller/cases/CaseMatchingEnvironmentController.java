@@ -57,7 +57,6 @@ public class CaseMatchingEnvironmentController {
             if (estateId != null){
                 caseMatchingEnvironment.setEstateId(estateId);
             }
-            caseMatchingEnvironment.setCreator(commonService.thisUserAccount());
             vo = caseMatchingEnvironmentService.getCaseMatchingEnvironmentLists(caseMatchingEnvironment);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -96,39 +95,5 @@ public class CaseMatchingEnvironmentController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/environment_type",method = {RequestMethod.GET},name = "环境类型")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/environment_category",method = {RequestMethod.GET},name = "环境类别")
-    public HttpResult environment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_CATEGORY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/environment_influence_degree",method = {RequestMethod.GET},name = "影响程度")
-    public HttpResult environment_influence_degree() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_INFLUENCE_DEGREE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

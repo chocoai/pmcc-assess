@@ -1,8 +1,13 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
+import com.copower.pmcc.assess.service.cases.CaseBuildingService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -27,7 +34,53 @@ import java.util.List;
 public class CaseBuildingMainController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
     private CaseBuildingMainService caseBuildingMainService;
+    @Autowired
+    private CaseBuildingService caseBuildingService;
+
+    @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
+    public ModelAndView editView(Integer id) {
+        String view = "/case/caseBuild/caseBuildingView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        CaseBuildingMain caseBuildingMain = null;
+        caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(id);
+        if (caseBuildingMain != null) {
+            CaseBuilding query = new CaseBuilding();
+            query.setCaseBuildingMainId(caseBuildingMain.getId());
+            List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(query);
+            if (!ObjectUtils.isEmpty(caseBuildingList)) {
+                int num = 0;
+                if (caseBuildingList.size() > 4) {
+                    num = 4;
+                }
+                if (caseBuildingList.size() <= 4) {
+                    num = caseBuildingList.size();
+                }
+                for (int i = 0; i < num; i++) {
+                    if (i == 0) {
+                        modelAndView.addObject("oneCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(0))));
+                        modelAndView.addObject("oneCaseBuilding", caseBuildingList.get(0));
+                    }
+                    if (i == 1) {
+                        modelAndView.addObject("twoCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(1))));
+                        modelAndView.addObject("twoCaseBuilding", caseBuildingList.get(1));
+                    }
+                    if (i == 2) {
+                        modelAndView.addObject("threeCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(2))));
+                        modelAndView.addObject("threeCaseBuilding", caseBuildingList.get(2));
+                    }
+                    if (i == 3) {
+                        modelAndView.addObject("fourCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(3))));
+                        modelAndView.addObject("fourCaseBuilding", caseBuildingList.get(3));
+                    }
+                }
+                modelAndView.addObject("caseBuildingMain",caseBuildingMain);
+            }
+        }
+        return modelAndView;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getcaseBuildingMainById", method = {RequestMethod.GET}, name = "获取案例 楼栋--")
@@ -42,6 +95,13 @@ public class CaseBuildingMainController {
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(caseBuildingMain);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "楼栋--列表")
+    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain) {
+        BootstrapTableVo vo = caseBuildingMainService.getBootstrapTableVo(caseBuildingMain);
+        return vo;
     }
 
     @ResponseBody
@@ -68,7 +128,7 @@ public class CaseBuildingMainController {
         }
         try {
             List<CaseBuildingMain> buildingMains = caseBuildingMainService.autoCompleteCaseBuildingMain(identifier, estateId, maxRows);
-            if (!ObjectUtils.isEmpty(buildingMains)){
+            if (!ObjectUtils.isEmpty(buildingMains)) {
                 CaseBuildingMain caseBuilding = buildingMains.get(0);
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(caseBuilding.getId()));

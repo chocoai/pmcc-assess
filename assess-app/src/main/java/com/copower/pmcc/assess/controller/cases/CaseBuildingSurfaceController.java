@@ -63,7 +63,6 @@ public class CaseBuildingSurfaceController {
             if (!StringUtils.isEmpty(buildNumber)){
                 caseBuildingSurface.setBuildNumber(buildNumber);
             }
-            caseBuildingSurface.setCreator(commonService.thisUserAccount());
             vo = caseBuildingSurfaceService.getCaseBuildingSurfaceLists(caseBuildingSurface);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -102,16 +101,5 @@ public class CaseBuildingSurfaceController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_structure",method = {RequestMethod.GET},name = "层面结构")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_STRUCTURE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
 }

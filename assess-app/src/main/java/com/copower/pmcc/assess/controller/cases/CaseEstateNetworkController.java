@@ -55,7 +55,6 @@ public class CaseEstateNetworkController {
             if (estateId != null) {
                 caseEstateNetwork.setEstateId(estateId);
             }
-            caseEstateNetwork.setCreator(commonService.thisUserAccount());
             vo = caseEstateNetworkService.getCaseEstateNetworkList(caseEstateNetwork);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

@@ -58,7 +58,6 @@ public class CaseMatchingMedicalController {
             if (estateId != null){
                 caseMatchingMedical.setEstateId(estateId);
             }
-            caseMatchingMedical.setCreator(commonService.thisUserAccount());
             vo = caseMatchingMedicalService.getCaseMatchingMedicalLists(caseMatchingMedical);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -97,28 +96,5 @@ public class CaseMatchingMedicalController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_examinematchingmedical_level",method = {RequestMethod.GET},name = "医养条件等级")
-    public HttpResult estate_examinematchingmedical_level() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_EXAMINEMATCHINGMEDICAL_LEVEL);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estate_examinematchingmedical_distance",method = {RequestMethod.GET},name = "医养条件距离")
-    public HttpResult estate_examinematchingmedical_distance() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_EXAMINEMATCHINGMEDICAL_DISTANCE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
 }

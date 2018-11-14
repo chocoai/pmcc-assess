@@ -63,7 +63,6 @@ public class CaseBuildingMaintenanceController {
             if (!StringUtils.isEmpty(buildNumber)){
                 caseBuildingMaintenance.setBuildNumber(buildNumber);
             }
-            caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
             vo = caseBuildingMaintenanceService.getCaseBuildingMaintenanceLists(caseBuildingMaintenance);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -102,27 +101,5 @@ public class CaseBuildingMaintenanceController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_maintenance_category", method = {RequestMethod.GET}, name = "维护结构分类")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_MAINTENANCE_CATEGORY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/examine_building_materialquality", method = {RequestMethod.GET}, name = "维护结构材质")
-    public HttpResult environment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIALQUALITY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 }

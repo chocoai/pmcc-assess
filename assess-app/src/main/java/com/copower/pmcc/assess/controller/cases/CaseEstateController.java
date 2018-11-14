@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
+import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
@@ -56,18 +57,11 @@ public class CaseEstateController {
     @Autowired
     private ErpAreaService erpAreaService;
 
-    @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
-    public ModelAndView appView() {
-        String view = "/case/caseEstate/apply/caseEstateView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("dataBlocks", dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
-        String view = "/case/caseEstate/apply/caseEstateView";
+
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView editView(Integer id) {
+        String view = "/case/caseEstate/caseEstateView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         if (id != null && id.intValue() != 0) {
             //楼盘 土地实体情况
@@ -75,31 +69,11 @@ public class CaseEstateController {
             caseEstateLandState.setEstateId(id);
             List<CaseEstateLandState> caseEstateLandStateList = caseEstateLandStateService.getCaseEstateLandStateList(caseEstateLandState);
             if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
-                caseEstateLandState = null;
-                caseEstateLandState = caseEstateLandStateList.get(0);
-                if (copy) {
-                    //复制数据 需要把id设为null
-                    if (caseEstateLandState != null) {
-                        caseEstateLandState.setId(null);
-                    }
-                    //处理附件,所有附件则把附件复制后保存后的id传入页面显示
-                    //附件暂且不处理
-                }
-                modelAndView.addObject("caseEstateLandState", caseEstateLandState);
+                modelAndView.addObject("caseEstateLandState", caseEstateLandStateService.getCaseEstateLandStateVo(caseEstateLandStateList.get(0)));
             }
             //楼盘 基本信息
             CaseEstate caseEstate = caseEstateService.getCaseEstateById(id);
-            if (copy) {
-                //复制数据 需要把id设为null
-                if (caseEstate != null) {
-                    caseEstate.setId(null);
-                }
-                //处理附件,所有附件则把附件复制后保存后的id传入页面显示
-                //附件暂且不处理
-            }
-            modelAndView.addObject("caseEstate", caseEstate);
-            modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-            modelAndView.addObject("dataBlocks", dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
+            modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateVo(caseEstate));
         }
         return modelAndView;
     }

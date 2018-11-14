@@ -55,7 +55,6 @@ public class CaseBuildingFunctionController {
             if (buildingId != null){
                 caseBuildingFunction.setBuildingId(buildingId);
             }
-            caseBuildingFunction.setCreator(commonService.thisUserAccount());
             vo = caseBuildingFunctionService.getCaseBuildingFunctionListVos(caseBuildingFunction);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);

@@ -49,13 +49,7 @@ public class CaseHouseController {
     @Autowired
     private CaseHouseTradingLeaseAndSellDtoService caseHouseTradingLeaseAndSellDtoService;
 
-    @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
-    public ModelAndView appView(Integer unitId) {
-        String view = "/case/caseHouse/apply/caseHouseView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("unitId", unitId);
-        return modelAndView;
-    }
+
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
     public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {

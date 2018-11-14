@@ -59,7 +59,6 @@ public class CaseMatchingFinanceController {
             if (!ObjectUtils.isEmpty(estateId)){
                 caseMatchingFinance.setEstateId(estateId);
             }
-            caseMatchingFinance.setCreator(commonService.thisUserAccount());
             vo = caseMatchingFinanceService.getCaseMatchingFinanceLists(caseMatchingFinance);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s",e1.getMessage()),e1);
@@ -98,39 +97,5 @@ public class CaseMatchingFinanceController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_finance_category",method = {RequestMethod.GET},name = "金融类别")
-    public HttpResult environment_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_CATEGORY);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_finance_nature",method = {RequestMethod.GET},name = "金融机构性质")
-    public HttpResult environment_category() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_NATURE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estate_finance_service_content",method = {RequestMethod.GET},name = "金融服务内容")
-    public HttpResult environment_influence_degree() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_FINANCE_SERVICE_CONTENT);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s"+e1.getMessage()),e1);
-            return HttpResult.newErrorResult(String.format("异常! %s",e1.getMessage()));
-        }
-    }
 }

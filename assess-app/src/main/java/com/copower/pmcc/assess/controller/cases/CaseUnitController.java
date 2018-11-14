@@ -42,13 +42,7 @@ public class CaseUnitController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
-    @RequestMapping(value = "/appView", name = "转到新增页面 ", method = RequestMethod.GET)
-    public ModelAndView appView(Integer buildingId) {
-        String view = "/case/caseUnit/apply/caseUnitView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("buildingId", buildingId);
-        return modelAndView;
-    }
+
 
     @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
     public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
@@ -83,12 +77,12 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
-    public BootstrapTableVo getCaseUnitList(Integer buildingId) {
+    public BootstrapTableVo getCaseUnitList(Integer caseBuildingMainId) {
         CaseUnit caseUnit = new CaseUnit();
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
-            if (buildingId != null) {
-                caseUnit.setBuildingId(buildingId);
+            if (caseBuildingMainId != null) {
+                caseUnit.setCaseBuildingMainId(caseBuildingMainId);
                 vo = caseUnitService.getCaseUnitListVos(caseUnit);
             }
         } catch (Exception e1) {

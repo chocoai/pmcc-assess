@@ -84,7 +84,14 @@ public class CaseEstateService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
+        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
+            @Override
+            public int compare(CaseEstate o1, CaseEstate o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).reverse();
         if (!ObjectUtils.isEmpty(caseEstateList)) {
+            Collections.sort(caseEstateList,ordering);
             for (CaseEstate oo : caseEstateList) {
                 vos.add(getCaseEstateVo(oo));
             }

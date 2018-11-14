@@ -58,7 +58,6 @@ public class CaseMatchingMaterialController {
             if (estateId != null) {
                 caseMatchingMaterial.setEstateId(estateId);
             }
-            caseMatchingMaterial.setCreator(commonService.thisUserAccount());
             vo = caseMatchingMaterialService.getCaseMatchingMaterialLists(caseMatchingMaterial);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -97,39 +96,5 @@ public class CaseMatchingMaterialController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_supply_new_type", method = {RequestMethod.GET}, name = "购物场所类别")
-    public HttpResult estate_supply_new_type() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_TYPE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 
-    @ResponseBody
-    @RequestMapping(value = "/estate_supply_new_scale", method = {RequestMethod.GET}, name = "购物场所规模")
-    public HttpResult estate_supply_new_scale() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_SCALE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estate_supply_new_distance", method = {RequestMethod.GET}, name = "购物场所距离")
-    public HttpResult estate_supply_new_distance() {
-        try {
-            List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_DISTANCE);
-            return HttpResult.newCorrectResult(baseDataDic);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
-            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
-        }
-    }
 }
