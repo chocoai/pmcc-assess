@@ -100,9 +100,12 @@ var navButtonBuild;
         objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingCategory, "buildingCategory");
         objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingStructure, "buildingStructure");
         objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyType, "propertyType");
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingStructureLower, "buildingStructureLower");
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.builderId, "builderId");
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyId, "propertyId");
+        AssessCommon.loadDataDicByPid(data.buildingStructure, data.buildingStructureLower, function (html, data) {
+            $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
+        });
+        $("#" +objectData.config.basicBuilding.frm).find("input[name='beCompletedTime']").val(formatDate(data.beCompletedTime));
+        $("#" +objectData.config.basicBuilding.frm).find("input[name='openTime']").val(formatDate(data.openTime));
+        $("#" +objectData.config.basicBuilding.frm).find("input[name='roomTime']").val(formatDate(data.roomTime));
         $.each(objectData.config.basicBuilding.files, function (i, n) {
             navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
             navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, data.id);

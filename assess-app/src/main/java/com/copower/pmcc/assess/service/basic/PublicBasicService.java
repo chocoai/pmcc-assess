@@ -1623,7 +1623,11 @@ public class PublicBasicService {
         //楼盘过程数据
         jsonContent = jsonObject.getString("basicEstate");
         if (StringUtils.isNotBlank(jsonContent)) {
-            basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+            try {
+                basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+            } catch (Exception e1) {
+
+            }
             if (basicEstate != null) {
                 basicEstate.setApplyId(basicApply.getId());
                 if (StringUtils.isNotEmpty(basicEstate.getName())){
@@ -1638,7 +1642,11 @@ public class PublicBasicService {
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
                         if (StringUtils.isNotEmpty(jsonObject.getString("basicEstateLandState"))) {
-                            basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
+                            try {
+                                basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
+                            } catch (Exception e1) {
+
+                            }
                             if (basicEstateLandState != null) {
                                 if (basicEstateLandState.getId() != null) {
                                     basicEstateLandState.setCaseEstateLandStateId(basicEstateLandState.getId());
@@ -1657,7 +1665,11 @@ public class PublicBasicService {
         }
         //楼栋主过程数据
         jsonContent = null;
-        jsonContent = jsonObject.getString("basicBuildingMain");
+        try {
+            jsonContent = jsonObject.getString("basicBuildingMain");
+        } catch (Exception e1) {
+
+        }
         BasicBuildingMain basicBuildingMain = null;
         if (StringUtils.isNotBlank(jsonContent)) {
             basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
@@ -1697,7 +1709,11 @@ public class PublicBasicService {
             }
             //楼栋过程数据
             jsonContent = null;
-            jsonContent = jsonObject.getString("basicBuildings");
+            try {
+                jsonContent = jsonObject.getString("basicBuildings");
+            } catch (Exception e1) {
+
+            }
             List<BasicBuilding> basicBuildingList = null;
             try {
                 basicBuildingList = JSONObject.parseArray(jsonContent, BasicBuilding.class);
@@ -1723,7 +1739,11 @@ public class PublicBasicService {
         }
         //单元过程数据
         jsonContent = null;
-        jsonContent = jsonObject.getString("basicUnit");
+        try {
+            jsonContent = jsonObject.getString("basicUnit");
+        } catch (Exception e1) {
+
+        }
         BasicUnit basicUnit = null;
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
@@ -1761,7 +1781,11 @@ public class PublicBasicService {
         }
         //处理房屋数据
         jsonContent = null;
-        jsonContent = jsonObject.getString("basicHouse");
+        try {
+            jsonContent = jsonObject.getString("basicHouse");
+        } catch (Exception e1) {
+
+        }
         BasicHouse basicHouse = null;
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);

@@ -301,7 +301,7 @@
                     <div class="input-group">
                         <input type="hidden" name="builderId">
                         <input type="text" readonly="readonly"
-                               placeholder="建筑公司" class="form-control">
+                               placeholder="建筑公司" class="form-control" name="dataBuildingName">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
@@ -325,7 +325,7 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="propertyId">
-                        <input type="text" readonly="readonly"
+                        <input type="text" readonly="readonly" name="propertyName"
                                placeholder="物业公司" class="form-control">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"

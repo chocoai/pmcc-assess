@@ -784,16 +784,8 @@
                                                     navButtonBuild.setObjArrayElement(n.part, n);
                                                 }
                                             });
-
-                                            $("#identifier").removeAttr("readonly").val(result.data.identifier);
+                                            $("#identifier").val(result.data.identifier);
                                             $("#caseBuildingMainId").val(result.data.id);
-
-                                            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
-                                                var readonly = $(n).attr("readonly");
-                                                if (objectData.isNotBlank(readonly)) {
-                                                    $(n).removeAttr("readonly");
-                                                }
-                                            });
                                             var temp = resultA.data[0];
                                             $("#profile-tab2").attr("data-toggle", "tab");
                                             if (objectData.isNotBlankObjectProperty(temp)) {
@@ -854,9 +846,12 @@
                 var id = $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").val();
                 if (objectData.isNotBlank(id)) {
                     AssessCommon.loadDataDicByPid(id, item.buildingStructureLower, function (html, data) {
-                        $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").html(html);
+                        $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html);
                     });
                 }
+            });
+            AssessCommon.loadDataDicByPid(item.buildingStructure, item.buildingStructureLower, function (html, data) {
+                $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
             });
             navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
         },
@@ -865,6 +860,7 @@
             assessProperty.select(function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
+                navButtonBuild.tempSaveData();
             });
         },
         //建造商选择
@@ -872,6 +868,7 @@
             assessBuilder.select(function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
+                navButtonBuild.tempSaveData();
             });
         },
         versionInit: function () {

@@ -98,6 +98,7 @@
                 <div class="col-sm-3">
                     <select name="supplyGas" class="form-control search-select select2"
                             required="required">
+                        <option selected="selected" value="">请选择</option>
                         <option value="true">有</option>
                         <option value="false">无</option>
                     </select>
@@ -111,6 +112,7 @@
                 <div class="col-sm-3">
                     <select name="supplyPower" class="form-control search-select select2"
                             required="required">
+                        <option selected="selected" value="">请选择</option>
                         <option value="true">有</option>
                         <option value="false">无</option>
                     </select>
@@ -122,6 +124,7 @@
                 <div class="col-sm-3">
                     <select name="supplyWater" class="form-control search-select select2"
                             required="required">
+                        <option selected="selected" value="">请选择</option>
                         <option value="true">有</option>
                         <option value="false">无</option>
                     </select>
@@ -133,6 +136,7 @@
                 <div class="col-sm-3">
                     <select name="supplyHeating" class="form-control search-select select2"
                             required="required">
+                        <option selected="selected" value="">请选择</option>
                         <option value="true">有</option>
                         <option value="false">无</option>
                     </select>
