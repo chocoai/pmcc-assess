@@ -416,6 +416,126 @@ public class CaseHouseTradingExample {
             return (Criteria) this;
         }
 
+        public Criteria andTradingUnitPriceIsNull() {
+            addCriterion("trading_unit_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceIsNotNull() {
+            addCriterion("trading_unit_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceEqualTo(BigDecimal value) {
+            addCriterion("trading_unit_price =", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceNotEqualTo(BigDecimal value) {
+            addCriterion("trading_unit_price <>", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceGreaterThan(BigDecimal value) {
+            addCriterion("trading_unit_price >", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_unit_price >=", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceLessThan(BigDecimal value) {
+            addCriterion("trading_unit_price <", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_unit_price <=", value, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceIn(List<BigDecimal> values) {
+            addCriterion("trading_unit_price in", values, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceNotIn(List<BigDecimal> values) {
+            addCriterion("trading_unit_price not in", values, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_unit_price between", value1, value2, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_unit_price not between", value1, value2, "tradingUnitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIsNull() {
+            addCriterion("trading_total_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIsNotNull() {
+            addCriterion("trading_total_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price =", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price <>", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceGreaterThan(BigDecimal value) {
+            addCriterion("trading_total_price >", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price >=", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceLessThan(BigDecimal value) {
+            addCriterion("trading_total_price <", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("trading_total_price <=", value, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceIn(List<BigDecimal> values) {
+            addCriterion("trading_total_price in", values, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("trading_total_price not in", values, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_total_price between", value1, value2, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("trading_total_price not between", value1, value2, "tradingTotalPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andTradingPriceIsNull() {
             addCriterion("trading_price is null");
             return (Criteria) this;
@@ -743,6 +863,76 @@ public class CaseHouseTradingExample {
 
         public Criteria andDescriptionContentNotBetween(String value1, String value2) {
             addCriterion("description_content not between", value1, value2, "descriptionContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateIsNull() {
+            addCriterion("installment_interest_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateIsNotNull() {
+            addCriterion("installment_interest_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateEqualTo(String value) {
+            addCriterion("installment_interest_rate =", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateNotEqualTo(String value) {
+            addCriterion("installment_interest_rate <>", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateGreaterThan(String value) {
+            addCriterion("installment_interest_rate >", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateGreaterThanOrEqualTo(String value) {
+            addCriterion("installment_interest_rate >=", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateLessThan(String value) {
+            addCriterion("installment_interest_rate <", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateLessThanOrEqualTo(String value) {
+            addCriterion("installment_interest_rate <=", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateLike(String value) {
+            addCriterion("installment_interest_rate like", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateNotLike(String value) {
+            addCriterion("installment_interest_rate not like", value, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateIn(List<String> values) {
+            addCriterion("installment_interest_rate in", values, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateNotIn(List<String> values) {
+            addCriterion("installment_interest_rate not in", values, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateBetween(String value1, String value2) {
+            addCriterion("installment_interest_rate between", value1, value2, "installmentInterestRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andInstallmentInterestRateNotBetween(String value1, String value2) {
+            addCriterion("installment_interest_rate not between", value1, value2, "installmentInterestRate");
             return (Criteria) this;
         }
 
@@ -1303,6 +1493,146 @@ public class CaseHouseTradingExample {
 
         public Criteria andTotalSaleNotBetween(String value1, String value2) {
             addCriterion("total_sale not between", value1, value2, "totalSale");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneIsNull() {
+            addCriterion("phone is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneIsNotNull() {
+            addCriterion("phone is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneEqualTo(String value) {
+            addCriterion("phone =", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNotEqualTo(String value) {
+            addCriterion("phone <>", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneGreaterThan(String value) {
+            addCriterion("phone >", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneGreaterThanOrEqualTo(String value) {
+            addCriterion("phone >=", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneLessThan(String value) {
+            addCriterion("phone <", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneLessThanOrEqualTo(String value) {
+            addCriterion("phone <=", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneLike(String value) {
+            addCriterion("phone like", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNotLike(String value) {
+            addCriterion("phone not like", value, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneIn(List<String> values) {
+            addCriterion("phone in", values, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNotIn(List<String> values) {
+            addCriterion("phone not in", values, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneBetween(String value1, String value2) {
+            addCriterion("phone between", value1, value2, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNotBetween(String value1, String value2) {
+            addCriterion("phone not between", value1, value2, "phone");
             return (Criteria) this;
         }
 

@@ -9,12 +9,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicUnitFrm">
-        <div class="detailView" style="display: none">
-            <%@include file="/views/basic/modelView/unitDetail.jsp" %>
-        </div>
-        <div class="saveView" style="display: none">
-            <%@include file="/views/basic/modelView/unitSave.jsp" %>
-        </div>
+        <%@include file="/views/basic/modelView/unitSave.jsp" %>
     </form>
 </div>
 

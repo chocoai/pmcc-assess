@@ -9,12 +9,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicEstateFrm">
-        <div class="saveView" style="display: none">
-            <%@include file="/views/basic/modelView/estateSave.jsp" %>
-        </div>
-        <div class="detailView" style="display: none">
-            <%@include file="/views/basic/modelView/estateDetail.jsp" %>
-        </div>
+        <%@include file="/views/basic/modelView/estateSave.jsp" %>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">总平面图</label>
@@ -83,12 +78,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicLandState">
-        <div class="saveView" style="display: none">
-            <%@include file="/views/basic/modelView/estateLandSave.jsp" %>
-        </div>
-        <div class="detailView" style="display: none">
-            <%@include file="/views/basic/modelView/estateLandDetail.jsp" %>
-        </div>
+        <%@include file="/views/basic/modelView/estateLandSave.jsp" %>
     </form>
 </div>
 

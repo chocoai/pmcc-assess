@@ -227,6 +227,7 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'number', title: '电梯数量'});
+                cols.push({field: 'type', title: '电梯类型'});
                 cols.push({field: 'quasiLoadNumber', title: '准载人数'});
                 cols.push({field: 'quasiLoadWeight', title: '准载重量'});
                 cols.push({field: 'runningSpeed', title: '运行速度'});

@@ -13,7 +13,7 @@
         </table>
     </div>
 </div>
-<div class="x_content">
+<div class="x_content" id="industrySurface">
     <div class="x_title">
         <h3>
             层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
@@ -26,7 +26,7 @@
         </table>
     </div>
 </div>
-<div class="x_content">
+<div class="x_content" id="industryMaintenance">
     <div class="x_title">
         <h3>
             维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>

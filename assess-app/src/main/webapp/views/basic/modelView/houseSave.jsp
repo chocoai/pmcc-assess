@@ -59,7 +59,7 @@
     <div class="x-valid">
         <label class="col-sm-1 control-label">朝向</label>
         <div class="col-sm-3">
-            <input type="text" placeholder="朝向" name="orientation"
+            <input type="text" placeholder="朝向" name="orientation" readonly="readonly"
                    class="form-control">
         </div>
     </div>

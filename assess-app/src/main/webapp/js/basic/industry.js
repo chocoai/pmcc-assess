@@ -162,6 +162,15 @@ industry.firstEvent = function () {
     }
 };
 
+industry.keyApp = function (key) {
+    if (key == industry.config.one.key) {
+        industry.industryOne.init();
+    }
+    if (key == industry.config.two.key) {
+        industry.industryTwo.init();
+    }
+};
+
 $(function () {
     industry.changeEvent();
     industry.firstEvent();

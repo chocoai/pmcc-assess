@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyWater">
     <h3>供排水情况
     </h3>
     <div>
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyPower">
     <h3>供电信息
     </h3>
     <div>
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyHeating">
     <h3>供热信息
     </h3>
     <div>
@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industrySupplyGas">
     <h3>供气信息
     </h3>
     <div>
@@ -122,7 +122,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industryMaterial">
     <h3>原料供应及销售条件信息
     </h3>
     <div>
@@ -254,8 +254,9 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'parkingTypeName', title: '车位类型'});
                 cols.push({field: 'location', title: '车辆位置'});
+                cols.push({field: 'parkingType', title: '车位类型'});
+                cols.push({field: 'number', title: '车位数量'});
                 cols.push({field: 'fileViewName', title: '上传的附件'});
                 $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
                 TableInit(estateParking.prototype.config().table, "${pageContext.request.contextPath}/basicEstateParking/getBootstrapTableVo", cols, {

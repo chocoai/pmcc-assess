@@ -282,6 +282,11 @@ houseModelFun.houseEvent = {
                             if (houseModelFun.isNotBlank(result.data.fileViewName)) {
                                 $("#" + houseModelFun.config.house.frm).find(".house_latest_family_plan").html(result.data.fileViewName);
                             }
+                            if (houseModelFun.isNotBlank(result.data.orientation)) {
+                                AssessCommon.getDataDicInfo(result.data.orientation,function (data) {
+                                    $("#" + houseModelFun.config.house.frm).find("input[name='orientation']").val(data.name);
+                                });
+                            }
                         }
                     }
                     else {
@@ -344,10 +349,12 @@ houseModelFun.tradingEvent = {
             AssessCommon.getDataDicInfo(id, function (data) {
                 if (data.name == '一次性') {
                     $("#" + houseModelFun.config.trading.frm).find("input[name='totalSale']").parent().parent().show();
+                    $("#" + houseModelFun.config.trading.frm).find("input[name='installmentInterestRate']").parent().parent().hide();
                     $("#" + houseModelFun.config.trading.frm).find("#" + houseModelFun.config.trading.tableSon + "Div").hide();
                 }
                 if (data.name == '分期付款') {
                     $("#" + houseModelFun.config.trading.frm).find("input[name='totalSale']").parent().parent().hide();
+                    $("#" + houseModelFun.config.trading.frm).find("input[name='installmentInterestRate']").parent().parent().show();
                     $("#" + houseModelFun.config.trading.frm).find("#" + houseModelFun.config.trading.tableSon + "Div").show();
                     houseModelFun.tradingSellAndLease.subLoadList(houseModelFun.config.trading.sellID);
                 }

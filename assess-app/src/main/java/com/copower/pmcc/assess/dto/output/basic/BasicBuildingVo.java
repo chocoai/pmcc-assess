@@ -21,6 +21,7 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertyName;
     private String propertyTypeName;
     private String buildingCategoryName;
+    private String beCompletedTimeName;
 
     public String getOpenTimeName() {
         return openTimeName;
@@ -84,5 +85,13 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setBuildingCategoryName(String buildingCategoryName) {
         this.buildingCategoryName = buildingCategoryName;
+    }
+
+    public String getBeCompletedTimeName() {
+        return beCompletedTimeName;
+    }
+
+    public void setBeCompletedTimeName(String beCompletedTimeName) {
+        this.beCompletedTimeName = beCompletedTimeName;
     }
 }

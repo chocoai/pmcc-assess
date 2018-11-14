@@ -14,6 +14,10 @@ public class CaseHouseTrading {
 
     private String informationType;
 
+    private BigDecimal tradingUnitPrice;
+
+    private BigDecimal tradingTotalPrice;
+
     private BigDecimal tradingPrice;
 
     private String buyerExtraTaxFee;
@@ -23,6 +27,8 @@ public class CaseHouseTrading {
     private Integer descriptionType;
 
     private String descriptionContent;
+
+    private String installmentInterestRate;
 
     private String paymentMethod;
 
@@ -39,6 +45,10 @@ public class CaseHouseTrading {
     private String creator;
 
     private String totalSale;
+
+    private String name;
+
+    private String phone;
 
     private String information;
 
@@ -88,6 +98,22 @@ public class CaseHouseTrading {
         this.informationType = informationType == null ? null : informationType.trim();
     }
 
+    public BigDecimal getTradingUnitPrice() {
+        return tradingUnitPrice;
+    }
+
+    public void setTradingUnitPrice(BigDecimal tradingUnitPrice) {
+        this.tradingUnitPrice = tradingUnitPrice;
+    }
+
+    public BigDecimal getTradingTotalPrice() {
+        return tradingTotalPrice;
+    }
+
+    public void setTradingTotalPrice(BigDecimal tradingTotalPrice) {
+        this.tradingTotalPrice = tradingTotalPrice;
+    }
+
     public BigDecimal getTradingPrice() {
         return tradingPrice;
     }
@@ -126,6 +152,14 @@ public class CaseHouseTrading {
 
     public void setDescriptionContent(String descriptionContent) {
         this.descriptionContent = descriptionContent == null ? null : descriptionContent.trim();
+    }
+
+    public String getInstallmentInterestRate() {
+        return installmentInterestRate;
+    }
+
+    public void setInstallmentInterestRate(String installmentInterestRate) {
+        this.installmentInterestRate = installmentInterestRate == null ? null : installmentInterestRate.trim();
     }
 
     public String getPaymentMethod() {
@@ -190,6 +224,22 @@ public class CaseHouseTrading {
 
     public void setTotalSale(String totalSale) {
         this.totalSale = totalSale == null ? null : totalSale.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public String getInformation() {

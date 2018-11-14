@@ -17,6 +17,8 @@ public class BasicApply {
 
     private String status;
 
+    private String industry;
+
     private String creator;
 
     private Date gmtCreated;
@@ -77,6 +79,14 @@ public class BasicApply {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry == null ? null : industry.trim();
     }
 
     public String getCreator() {

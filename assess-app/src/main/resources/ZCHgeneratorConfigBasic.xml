@@ -41,8 +41,8 @@
 
         <!-- 具体表 -->
 
-        <!--<table tableName="tb_basic_apply" domainObjectName="BasicApply">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
+        <table tableName="tb_basic_apply" domainObjectName="BasicApply">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
 
         <!--<table tableName="tb_basic_estate" domainObjectName="BasicEstate">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
@@ -136,8 +136,8 @@
         <!--<table tableName="tb_basic_matching_traffic" domainObjectName="BasicMatchingTraffic">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
 
-        <table tableName="tb_basic_unit_decorate" domainObjectName="BasicUnitDecorate">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <!--<table tableName="tb_basic_unit_decorate" domainObjectName="BasicUnitDecorate">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->
 
         <!--<table tableName="tb_basic_unit_elevator" domainObjectName="BasicUnitElevator">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/></table>-->

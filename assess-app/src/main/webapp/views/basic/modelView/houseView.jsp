@@ -9,14 +9,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicHouseFrm">
-        <div class="saveView" style="display: none">
-            <%@include file="/views/basic/modelView/houseSave.jsp" %>
-        </div>
-
-        <div class="detailView" style="display: none">
-            <%@include file="/views/basic/modelView/houseDetail.jsp" %>
-        </div>
-
+        <%@include file="/views/basic/modelView/houseSave.jsp" %>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
@@ -40,13 +33,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicTradingFrm">
-        <div class="saveView" style="display: none">
-            <%@include file="/views/basic/modelView/houseTradingSave.jsp" %>
-        </div>
-
-        <div class="detailView" style="display: none">
-            <%@include file="/views/basic/modelView/houseTradingDetail.jsp" %>
-        </div>
+        <%@include file="/views/basic/modelView/houseTradingSave.jsp" %>
     </form>
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>

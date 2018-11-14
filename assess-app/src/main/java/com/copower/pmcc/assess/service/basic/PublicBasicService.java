@@ -1617,7 +1617,9 @@ public class PublicBasicService {
         JSONObject jsonObject = JSON.parseObject(formData);
         String jsonContent = null;
         BasicEstate basicEstate = null;
-
+        if (StringUtils.isNotEmpty(jsonObject.getString("industry"))){
+            basicApply.setIndustry(jsonObject.getString("industry"));
+        }
         //楼盘过程数据
         jsonContent = jsonObject.getString("basicEstate");
         if (StringUtils.isNotBlank(jsonContent)) {

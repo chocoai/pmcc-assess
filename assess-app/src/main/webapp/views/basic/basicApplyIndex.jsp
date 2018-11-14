@@ -72,12 +72,6 @@
                                            value="修改">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.estate.details()"
-                                           value="详情">
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-group">
@@ -101,12 +95,6 @@
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" onclick="objectData.building.edit()"
                                            value="修改">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.details()"
-                                           value="详情">
                                 </div>
                             </div>
                         </div>
@@ -133,12 +121,6 @@
                                            value="修改">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.unit.details()"
-                                           value="详情">
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-group">
@@ -161,12 +143,6 @@
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="修改"
                                            onclick="objectData.house.edit()">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" value="详情"
-                                           onclick="objectData.house.details()">
                                 </div>
                             </div>
                         </div>
@@ -383,7 +359,6 @@
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -415,7 +390,6 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id", ele.item.key);
                 },
                 /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
@@ -431,13 +405,10 @@
     objectData.autocompleteBuilding = function (_this) {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
         if (!objectData.isNotBlank(estateId)) {
-            // Alert("请先选择楼盘然后在选择楼栋!");
-            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -455,7 +426,6 @@
                             if (result.ret) {
                                 if (objectData.isNotBlank(result.data)) {
                                     if (result.data.length == 0) {
-                                        // Alert("此楼盘下无楼栋信息!");
                                     }
                                 }
                                 response($.each(result.data, function (i, item) {
@@ -475,7 +445,6 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -490,13 +459,10 @@
     objectData.autocompleteUnit = function (_this) {
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
         if (!objectData.isNotBlank(buildingId)) {
-            // Alert("请先选择楼栋然后在选择单元!");
-            // return false;
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -534,7 +500,6 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -553,7 +518,6 @@
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        childs.eq(3).hide();
         $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").autocomplete(
             {
                 source: function (request, response) {
@@ -591,7 +555,6 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    childs.eq(3).show();
                     $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id", ele.item.key);
                 },
                 focus: function (event, ui) {
@@ -637,39 +600,6 @@
             matchingMetro.prototype.loadDataDicList();
             matchingMainRoad.prototype.loadDataDicList();
             matchingMainConversion.prototype.loadDataDicList();
-        },
-        details: function () {
-            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(estateId)) {
-                toastr.success('未找到查询的数据');
-                return false;
-            }
-            $("#" + objectData.config.basicEstate.frm).clearAll();
-            $("#" + objectData.config.basicEstate.frmLandState).clearAll();
-            if (objectData.isNotBlank(estateId)) {
-                objectData.firstRemove.estateFirst();
-            }
-            objectData.estate.appWriteEstate(estateId, function (data) {
-                toastr.success('数据转移成功!');
-                var CaseEstate = data.CaseEstate;
-                var CaseEstateLandState = data.CaseEstateLandState;
-                if (!objectData.isNotBlank(CaseEstate)) {
-                    CaseEstate = {};
-                }
-                if (!objectData.isNotBlank(CaseEstateLandState)) {
-                    CaseEstateLandState = {};
-                }
-                objectData.estate.show(CaseEstate, CaseEstateLandState);
-                objectData.initLabelForm(objectData.config.basicEstate.frm, CaseEstate);
-                objectData.initLabelForm(objectData.config.basicEstate.frmLandState, CaseEstateLandState);
-                $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.save).hide();
-                $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.detail).show();
-                $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.save).hide();
-                $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.detail).show();
-            }, function (item) {
-                objectData.estate.show({}, {});
-                Alert("失败!" + item);
-            });
         },
         edit: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
@@ -826,70 +756,6 @@
                 objectData.buildingFlag = false;
             }
             $("#profile-tab2").attr("data-toggle", "tab");
-            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
-                var readonly = $(n).attr("readonly");
-                if (objectData.isNotBlank(readonly)) {
-                    $(n).removeAttr("readonly");
-                }
-            });
-        },
-        details: function () {
-            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(buildingId)) {
-                toastr.success("无查询到楼栋数据,请添加!");
-                return false;
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseBuildingMain/getcaseBuildingMainById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingId},
-                success: function (result) {
-                    if (result.ret) {
-                        if (objectData.isNotBlankObjectProperty(result.data)) {
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/caseBuilding/listCaseBuilding",
-                                type: "get",
-                                dataType: "json",
-                                data: {caseBuildingMainId: result.data.id},
-                                success: function (resultA) {
-                                    if (resultA.ret) {
-                                        if (objectData.isNotBlank(resultA.data)) {
-                                            $.each(resultA.data, function (i, n) {
-                                                if (objectData.isNotBlank(n.part)) {
-                                                    navButtonBuild.setObjArrayElement(n.part, n);
-                                                }
-                                            });
-                                            $("#identifier").removeAttr("readonly").val(result.data.identifier);
-                                            $("#caseBuildingMainId").val(result.data.id);
-
-                                            $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
-                                                var readonly = $(n).attr("readonly");
-                                                if (!objectData.isNotBlank(readonly)) {
-                                                    $(n).attr("readonly", "readonly");
-                                                }
-                                            });
-                                            var temp = resultA.data[0];
-                                            if (objectData.isNotBlankObjectProperty(temp)) {
-                                                objectData.firstRemove.buildFirst();
-                                                objectData.building.appWriteBuilding(temp);
-                                            } else {
-                                                objectData.building.show({});
-                                            }
-                                        }
-                                    }
-                                },
-                                error: function (result) {
-                                    Alert("调用服务端方法失败，失败原因:" + result);
-                                }
-                            });
-                        }
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
         },
         edit: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
@@ -1027,7 +893,7 @@
             unitDecorate.prototype.loadDataDicList();
             unitHuxing.prototype.loadDataDicList();
             unitElevator.prototype.loadDataDicList();
-            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
+            // $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -1041,24 +907,6 @@
                 $("#" + objectData.config.basicUnit.frm).initForm(data);
                 objectData.unit.show();
             }, function () {
-                objectData.unit.show();
-            });
-        },
-        details: function () {
-            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(unitId)) {
-                toastr.success('未找到查询的数据');
-                return false;
-            }
-            objectData.firstRemove.unitFirst();
-            objectData.unit.appWriteUnit(unitId, function (data) {
-                toastr.success('数据转移成功!');
-                objectData.unit.show();
-                objectData.initLabelForm(objectData.config.basicUnit.frm, data);
-                $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).hide();
-                $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).show();
-            }, function (item) {
-                Alert("失败!" + item);
                 objectData.unit.show();
             });
         },
@@ -1112,7 +960,7 @@
             houseNewWind.prototype.loadDataDicList();
             houseAirConditioner.prototype.loadDataDicList();
             houseHeating.prototype.loadDataDicList();
-            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
+            // $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -1133,37 +981,6 @@
                 objectData.house.show();
                 houseModelFun.houseInit(CaseHouse);
                 houseModelFun.tradingInit(CaseHouseTrading);
-                toastr.success('数据转移成功!');
-            }, function (item) {
-                objectData.house.show();
-                Alert("失败!" + item);
-            });
-        },
-        details: function () {
-            var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(id)) {
-                toastr.success('请先查询房屋');
-                return false;
-            }
-            if (objectData.isNotBlank(id)) {
-                objectData.firstRemove.houseFirst();
-            }
-            objectData.house.appWriteHouse(id, function (data) {
-                var CaseHouseTrading = data.CaseHouseTrading;
-                var CaseHouse = data.CaseHouse;
-                if (!objectData.isNotBlank(CaseHouseTrading)) {
-                    CaseHouseTrading = {};
-                }
-                if (!objectData.isNotBlank(CaseHouse)) {
-                    CaseHouse = {};
-                }
-                objectData.house.show();
-                objectData.initLabelForm(objectData.config.basicHouse.frm, CaseHouse);
-                objectData.initLabelForm(objectData.config.basicHouse.tradingFrm, CaseHouseTrading);
-                $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).hide();
-                $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).show();
-                $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).hide();
-                $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.detail).show();
                 toastr.success('数据转移成功!');
             }, function (item) {
                 objectData.house.show();
@@ -1406,7 +1223,7 @@
                 item.basicTrading = objectData.isNotBlankObjectProperty(basicTrading) ? basicTrading : null;
             }
         }
-
+        item.industry = $("#" + industry.config.id).find(":radio:checked").val() ;
         return item;
     };
 
@@ -1414,7 +1231,7 @@
      * 成功申请后清除数据
      */
     objectData.successClear = function () {
-        window.location.reload();
+        // window.location.reload();
 
         // $("#" + objectData.config.basicEstate.frmLandState).clearAll();
         // $("#" + objectData.config.basicEstate.frm).clearAll();
@@ -1443,7 +1260,6 @@
         }
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
-        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
@@ -1452,6 +1268,7 @@
             data: {formData: formData},
             success: function (result) {
                 if (result.ret) {
+                    Loading.progressShow();
                     Alert("提交数据成功!", 1, null, function () {
                         objectData.successClear();
                     });

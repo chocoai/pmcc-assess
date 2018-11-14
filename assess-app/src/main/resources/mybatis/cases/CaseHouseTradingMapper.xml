@@ -7,11 +7,14 @@
     <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
     <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
     <result column="information_type" property="informationType" jdbcType="VARCHAR" />
+    <result column="trading_unit_price" property="tradingUnitPrice" jdbcType="DECIMAL" />
+    <result column="trading_total_price" property="tradingTotalPrice" jdbcType="DECIMAL" />
     <result column="trading_price" property="tradingPrice" jdbcType="DECIMAL" />
     <result column="buyer_extra_tax_fee" property="buyerExtraTaxFee" jdbcType="VARCHAR" />
     <result column="renting_extra_tax_fee" property="rentingExtraTaxFee" jdbcType="VARCHAR" />
     <result column="description_type" property="descriptionType" jdbcType="INTEGER" />
     <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
+    <result column="installment_interest_rate" property="installmentInterestRate" jdbcType="VARCHAR" />
     <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
     <result column="normal_transaction" property="normalTransaction" jdbcType="VARCHAR" />
     <result column="tax_burden" property="taxBurden" jdbcType="VARCHAR" />
@@ -20,6 +23,8 @@
     <result column="deposit" property="deposit" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="total_sale" property="totalSale" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="information" property="information" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -84,10 +89,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, house_id, trading_time, trading_type, information_type, trading_price, buyer_extra_tax_fee, 
-    renting_extra_tax_fee, description_type, description_content, payment_method, normal_transaction, 
-    tax_burden, scope_property, financing_conditions, deposit, creator, total_sale, information, 
-    version, gmt_created, gmt_modified
+    id, house_id, trading_time, trading_type, information_type, trading_unit_price, trading_total_price, 
+    trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, description_type, description_content, 
+    installment_interest_rate, payment_method, normal_transaction, tax_burden, scope_property, 
+    financing_conditions, deposit, creator, total_sale, name, phone, information, version, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingExample" >
     select
@@ -124,21 +130,23 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_case_house_trading (house_id, trading_time, trading_type, 
-      information_type, trading_price, buyer_extra_tax_fee, 
-      renting_extra_tax_fee, description_type, description_content, 
+      information_type, trading_unit_price, trading_total_price, 
+      trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, 
+      description_type, description_content, installment_interest_rate, 
       payment_method, normal_transaction, tax_burden, 
       scope_property, financing_conditions, deposit, 
-      creator, total_sale, information, 
-      version, gmt_created, gmt_modified
-      )
+      creator, total_sale, name, 
+      phone, information, version, 
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, 
-      #{informationType,jdbcType=VARCHAR}, #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, 
-      #{rentingExtraTaxFee,jdbcType=VARCHAR}, #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, 
+      #{informationType,jdbcType=VARCHAR}, #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingTotalPrice,jdbcType=DECIMAL}, 
+      #{tradingPrice,jdbcType=DECIMAL}, #{buyerExtraTaxFee,jdbcType=VARCHAR}, #{rentingExtraTaxFee,jdbcType=VARCHAR}, 
+      #{descriptionType,jdbcType=INTEGER}, #{descriptionContent,jdbcType=VARCHAR}, #{installmentInterestRate,jdbcType=VARCHAR}, 
       #{paymentMethod,jdbcType=VARCHAR}, #{normalTransaction,jdbcType=VARCHAR}, #{taxBurden,jdbcType=VARCHAR}, 
       #{scopeProperty,jdbcType=VARCHAR}, #{financingConditions,jdbcType=VARCHAR}, #{deposit,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{totalSale,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{totalSale,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -158,6 +166,12 @@
       <if test="informationType != null" >
         information_type,
       </if>
+      <if test="tradingUnitPrice != null" >
+        trading_unit_price,
+      </if>
+      <if test="tradingTotalPrice != null" >
+        trading_total_price,
+      </if>
       <if test="tradingPrice != null" >
         trading_price,
       </if>
@@ -172,6 +186,9 @@
       </if>
       <if test="descriptionContent != null" >
         description_content,
+      </if>
+      <if test="installmentInterestRate != null" >
+        installment_interest_rate,
       </if>
       <if test="paymentMethod != null" >
         payment_method,
@@ -196,6 +213,12 @@
       </if>
       <if test="totalSale != null" >
         total_sale,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
       </if>
       <if test="information != null" >
         information,
@@ -223,6 +246,12 @@
       <if test="informationType != null" >
         #{informationType,jdbcType=VARCHAR},
       </if>
+      <if test="tradingUnitPrice != null" >
+        #{tradingUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradingTotalPrice != null" >
+        #{tradingTotalPrice,jdbcType=DECIMAL},
+      </if>
       <if test="tradingPrice != null" >
         #{tradingPrice,jdbcType=DECIMAL},
       </if>
@@ -237,6 +266,9 @@
       </if>
       <if test="descriptionContent != null" >
         #{descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="installmentInterestRate != null" >
+        #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="paymentMethod != null" >
         #{paymentMethod,jdbcType=VARCHAR},
@@ -261,6 +293,12 @@
       </if>
       <if test="totalSale != null" >
         #{totalSale,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
       </if>
       <if test="information != null" >
         #{information,jdbcType=VARCHAR},
@@ -300,6 +338,12 @@
       <if test="record.informationType != null" >
         information_type = #{record.informationType,jdbcType=VARCHAR},
       </if>
+      <if test="record.tradingUnitPrice != null" >
+        trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tradingTotalPrice != null" >
+        trading_total_price = #{record.tradingTotalPrice,jdbcType=DECIMAL},
+      </if>
       <if test="record.tradingPrice != null" >
         trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
       </if>
@@ -314,6 +358,9 @@
       </if>
       <if test="record.descriptionContent != null" >
         description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.installmentInterestRate != null" >
+        installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="record.paymentMethod != null" >
         payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
@@ -339,6 +386,12 @@
       <if test="record.totalSale != null" >
         total_sale = #{record.totalSale,jdbcType=VARCHAR},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
       <if test="record.information != null" >
         information = #{record.information,jdbcType=VARCHAR},
       </if>
@@ -363,11 +416,14 @@
       trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
       trading_type = #{record.tradingType,jdbcType=INTEGER},
       information_type = #{record.informationType,jdbcType=VARCHAR},
+      trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
+      trading_total_price = #{record.tradingTotalPrice,jdbcType=DECIMAL},
       trading_price = #{record.tradingPrice,jdbcType=DECIMAL},
       buyer_extra_tax_fee = #{record.buyerExtraTaxFee,jdbcType=VARCHAR},
       renting_extra_tax_fee = #{record.rentingExtraTaxFee,jdbcType=VARCHAR},
       description_type = #{record.descriptionType,jdbcType=INTEGER},
       description_content = #{record.descriptionContent,jdbcType=VARCHAR},
+      installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
       payment_method = #{record.paymentMethod,jdbcType=VARCHAR},
       normal_transaction = #{record.normalTransaction,jdbcType=VARCHAR},
       tax_burden = #{record.taxBurden,jdbcType=VARCHAR},
@@ -376,6 +432,8 @@
       deposit = #{record.deposit,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       total_sale = #{record.totalSale,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
       information = #{record.information,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -399,6 +457,12 @@
       <if test="informationType != null" >
         information_type = #{informationType,jdbcType=VARCHAR},
       </if>
+      <if test="tradingUnitPrice != null" >
+        trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="tradingTotalPrice != null" >
+        trading_total_price = #{tradingTotalPrice,jdbcType=DECIMAL},
+      </if>
       <if test="tradingPrice != null" >
         trading_price = #{tradingPrice,jdbcType=DECIMAL},
       </if>
@@ -413,6 +477,9 @@
       </if>
       <if test="descriptionContent != null" >
         description_content = #{descriptionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="installmentInterestRate != null" >
+        installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
       <if test="paymentMethod != null" >
         payment_method = #{paymentMethod,jdbcType=VARCHAR},
@@ -438,6 +505,12 @@
       <if test="totalSale != null" >
         total_sale = #{totalSale,jdbcType=VARCHAR},
       </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
       <if test="information != null" >
         information = #{information,jdbcType=VARCHAR},
       </if>
@@ -459,11 +532,14 @@
       trading_time = #{tradingTime,jdbcType=TIMESTAMP},
       trading_type = #{tradingType,jdbcType=INTEGER},
       information_type = #{informationType,jdbcType=VARCHAR},
+      trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
+      trading_total_price = #{tradingTotalPrice,jdbcType=DECIMAL},
       trading_price = #{tradingPrice,jdbcType=DECIMAL},
       buyer_extra_tax_fee = #{buyerExtraTaxFee,jdbcType=VARCHAR},
       renting_extra_tax_fee = #{rentingExtraTaxFee,jdbcType=VARCHAR},
       description_type = #{descriptionType,jdbcType=INTEGER},
       description_content = #{descriptionContent,jdbcType=VARCHAR},
+      installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
       payment_method = #{paymentMethod,jdbcType=VARCHAR},
       normal_transaction = #{normalTransaction,jdbcType=VARCHAR},
       tax_burden = #{taxBurden,jdbcType=VARCHAR},
@@ -472,6 +548,8 @@
       deposit = #{deposit,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       total_sale = #{totalSale,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
       information = #{information,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

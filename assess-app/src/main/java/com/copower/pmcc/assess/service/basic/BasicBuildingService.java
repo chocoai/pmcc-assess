@@ -299,6 +299,9 @@ public class BasicBuildingService {
                 vo.setDataBuildingName(dataBuilder.getName());
             }
         }
+        if (basicBuilding.getBeCompletedTime() != null){
+            vo.setBeCompletedTimeName(DateUtils.format(basicBuilding.getBeCompletedTime()));
+        }
         return vo;
     }
 
