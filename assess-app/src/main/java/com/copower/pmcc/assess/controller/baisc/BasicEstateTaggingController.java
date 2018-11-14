@@ -32,7 +32,7 @@ public class BasicEstateTaggingController {
     @ResponseBody
     @RequestMapping(value = "/index", name = "楼盘相关信息地图标注", method = {RequestMethod.GET})
     public ModelAndView index(Integer estateId, String estateName) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/modelView/estateTagging", "0", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/modelView/estateTaggingView", "0", 0, "0", "");
         modelAndView.addObject("estateId", estateId == null ? 0 : estateId);
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("thisTitle","楼盘信息标注");

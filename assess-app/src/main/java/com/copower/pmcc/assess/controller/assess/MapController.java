@@ -19,7 +19,7 @@ public class MapController {
 
     @RequestMapping(value = "/estateTagging", name = "楼盘标注")
     public ModelAndView estateTagging() {
-        ModelAndView modelAndView = new ModelAndView("/base/estateTagging");
+        ModelAndView modelAndView = new ModelAndView("base/estateTaggingView");
         return modelAndView;
     }
 }

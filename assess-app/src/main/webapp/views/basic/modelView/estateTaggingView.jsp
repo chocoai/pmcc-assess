@@ -25,7 +25,8 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-9">
-                        <iframe name="mapFrame" src="${pageContext.request.contextPath}/map/estateTagging"
+                        <input type="hidden" id="estateName" value="${estateName}">
+                        <iframe id="mapFrame" name="mapFrame" src="${pageContext.request.contextPath}/map/estateTagging"
                                 width="100%"
                                 height="100%" frameborder="0"></iframe>
                     </div>
@@ -134,8 +135,16 @@
         $("#typeOther").click(function () {
             $('#buildingNumberGroup,#unitNumberGroup').hide();
         })
-
-        loadTaggingList();
+        var iframe = document.getElementById("mapFrame");
+        if (iframe.attachEvent) {
+            iframe.attachEvent("onload", function() {
+                loadTaggingList();
+            });
+        } else {
+            iframe.onload = function() {
+                loadTaggingList();
+            };
+        }
     })
 
     //加载数据列表

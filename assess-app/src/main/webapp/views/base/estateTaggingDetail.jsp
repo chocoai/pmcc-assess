@@ -43,6 +43,7 @@
     var auto = new AMap.Autocomplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({});
 
+
     //注册监听，当选中某条记录时会触发
     AMap.event.addListener(auto, "select", function (e) {
         placeSearch.setCity(e.poi.adcode);
@@ -53,14 +54,9 @@
                     map.setCenter([poi.location.lng, poi.location.lat]); //设置地图中心点
                 }
             }
-
         })
     });
 
-    //地图点击事件
-    map.on('click', function (e) {
-        parent.addTagging(e.lnglat.getLng(), e.lnglat.getLat());
-    });
 
     var markerArray = [];//标记数组
     //加载所有标注信息
