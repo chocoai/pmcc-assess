@@ -27,16 +27,20 @@
                 <div class="x_content">
                     <div role="tabpanel" data-example-id="togglable-tabs">
                         <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                            <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1" aria-expanded="true"
+                            <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1"
+                                                                aria-expanded="true"
                                                                 onclick="objectData.estate.init()">楼盘</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
+                                                                aria-expanded="false"
                                                                 onclick="objectData.build.init(1)">楼栋</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
+                                                                aria-expanded="false"
                                                                 onclick="objectData.unit.init()">单元</a>
                             </li>
-                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false"
+                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
+                                                                aria-expanded="false"
                                                                 onclick="objectData.house.init();">房屋</a>
                             </li>
                         </ul>
@@ -51,7 +55,7 @@
                                 <%@include file="/views/basic/modelView/unitDetail.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
-                                <%@include file="/views/basic/modelView/houseTradingDetail.jsp"%>
+                                <%@include file="/views/basic/modelView/houseDetail.jsp" %>
                             </div>
                         </div>
                     </div>
@@ -432,45 +436,86 @@
 
     $(function () {
         //选项卡处理
-        var basicUnit = "${basicUnit}" ;
-        var basicApply = "${basicApply}" ;
+        var basicUnit = "${basicUnit}";
+        var basicApply = "${basicApply}";
+        var basicEstate = "${basicEstate}";
+        var basicHouse = "${basicHouse}";
+        var basicBuildingMain = "${basicBuildingMain}";
 
-        if (objectData.isNotBlank(basicApply)){
-           var industry = "${basicApply.industry}" ;
-            if (objectData.isNotBlank(industry)){
-                industry.keyApp(industry);
+        if (objectData.isNotBlank(basicApply)) {
+            var industryA = "${basicApply.industry}";
+            if (objectData.isNotBlank(industryA)) {
+                industry.keyApp(industryA);
             }
         }
 
-
-        if (objectData.isNotBlank(basicUnit)){
-            $("#profile-tab3").attr("data-toggle","tab");
-            $('#caseTab a').eq(2).tab('show');
+        if (objectData.isNotBlank(basicUnit)) {
+            $("#profile-tab3").attr("data-toggle", "tab");
             objectData.unit.init();
         }
 
-        var basicEstate = "${basicEstate}" ;
-        if (objectData.isNotBlank(basicEstate)){
-            $("#profile-tab1").attr("data-toggle","tab");
-            $('#caseTab a').eq(0).tab('show');
+        if (objectData.isNotBlank(basicEstate)) {
+            $("#profile-tab1").attr("data-toggle", "tab");
             objectData.estate.init();
         }
 
-        var basicHouse = "${basicHouse}" ;
-        if (objectData.isNotBlank(basicHouse)){
-            $("#profile-tab4").attr("data-toggle","tab");
-            $('#caseTab a').eq(3).tab('show');
+        if (objectData.isNotBlank(basicHouse)) {
+            $("#profile-tab4").attr("data-toggle", "tab");
             objectData.house.init();
         }
 
-        var oneBasicBuilding = "${oneBasicBuilding}" ;
-        var twoBasicBuilding = "${twoBasicBuilding}" ;
-        var threeBasicBuilding = "${threeBasicBuilding}" ;
-        var fourBasicBuilding = "${fourBasicBuilding}" ;
-        if (objectData.isNotBlank(oneBasicBuilding) || objectData.isNotBlank(twoBasicBuilding) || objectData.isNotBlank(threeBasicBuilding) || objectData.isNotBlank(fourBasicBuilding)){
-            $("#profile-tab2").attr("data-toggle","tab");
-            $('#caseTab a').eq(1).tab('show');
-            navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0],1);
+        if (objectData.isNotBlank(basicBuildingMain)) {
+            $("#profile-tab2").attr("data-toggle", "tab");
+            navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0], 1);
+        }
+//============================================================||======================================================
+        if (objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && objectData.isNotBlank(basicEstate) && objectData.isNotBlank(basicBuildingMain)) {
+            $('#caseTab a').eq(0).tab('show');
+        }
+        if (objectData.isNotBlank(basicEstate)) {
+            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
+                $('#caseTab a').eq(0).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicEstate)) {
+            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && objectData.isNotBlank(basicBuildingMain)) {
+                $('#caseTab a').eq(0).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicEstate)) {
+            if (!objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
+                $('#caseTab a').eq(0).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicEstate)) {
+            if (objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
+                $('#caseTab a').eq(0).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicBuildingMain)) {
+            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicEstate)) {
+                $('#caseTab a').eq(1).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicBuildingMain)) {
+            if (!objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicEstate)) {
+                $('#caseTab a').eq(1).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicUnit)) {
+            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
+                $('#caseTab a').eq(2).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicUnit)) {
+            if (objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
+                $('#caseTab a').eq(2).tab('show');
+            }
+        }
+        if (objectData.isNotBlank(basicHouse)) {
+            if (!objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
+                $('#caseTab a').eq(3).tab('show');
+            }
         }
     });
 </script>

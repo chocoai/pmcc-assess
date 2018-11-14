@@ -1260,6 +1260,7 @@
         }
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
@@ -1267,8 +1268,8 @@
             async: false,
             data: {formData: formData},
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
-                    Loading.progressShow();
                     Alert("提交数据成功!", 1, null, function () {
                         objectData.successClear();
                     });
