@@ -1228,7 +1228,7 @@
      * 成功申请后清除数据
      */
     objectData.successClear = function () {
-        // window.location.reload();
+        window.location.reload();
 
         // $("#" + objectData.config.basicEstate.frmLandState).clearAll();
         // $("#" + objectData.config.basicEstate.frm).clearAll();
