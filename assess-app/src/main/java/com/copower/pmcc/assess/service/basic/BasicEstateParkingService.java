@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 10:49
- * @Description:
+ * @Description:车位信息
  */
 @Service
 public class BasicEstateParkingService {

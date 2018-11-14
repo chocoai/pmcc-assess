@@ -377,10 +377,12 @@
             AssessCommon.getDataDicInfo("${basicHouseTrading.paymentMethod}", function (data) {
                 if (data.name == '一次性') {
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().show();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().hide();
                     $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
                 }
                 if (data.name == '分期付款') {
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().hide();
+                    $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().show();
                     $("#" + objectData.config.basicHouse.tableSon + "Div").show();
                     objectData.house.subLoadList(objectData.config.basicHouse.sellID);
                 }
@@ -421,7 +423,7 @@
             }
             $("#" + objectData.config.basicHouse.tableSon).bootstrapTable('destroy');
             TableInit(objectData.config.basicHouse.tableSon, "${pageContext.request.contextPath}/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}'
+                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}',approval:true
             }, {
                 showColumns: false,
                 showRefresh: false,

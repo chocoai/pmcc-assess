@@ -163,6 +163,7 @@ AssessDicKey.examine_house_wire_erection_method = "examine.house.wire_erection_m
 AssessDicKey.examine_house_street_level = "examine.house.street_level";//街道级别
 AssessDicKey.examine_house_traffic_flow = "examine.house.traffic_flow";//交通流量
 AssessDicKey.examine_house_visitors_flowrate = "examine.house.visitors_flowrate";//人流量
+AssessDicKey.examine_house_information_sources = "examine.house.information.sources";//信息来源
 
 
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别

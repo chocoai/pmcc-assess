@@ -214,8 +214,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">信息来源<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="信息来源" required="required" name="information"
-                           class="form-control">
+                    <select class="form-control search-select select2 information"
+                            name="information" required="required">
+                    </select>
                 </div>
             </div>
         </div>
@@ -306,6 +307,21 @@
                 <label class="col-sm-1 control-label">交易单价</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="交易单价" class="form-control" name="tradingUnitPrice">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">电话</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="电话" class="form-control" name="phone">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">姓名</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="姓名" class="form-control" name="name">
                 </div>
             </div>
         </div>

@@ -96,8 +96,11 @@ public class CaseHouseRoomService {
     public CaseHouseRoomVo getCaseHouseRoomVo(CaseHouseRoom caseHouseRoom) {
         CaseHouseRoomVo vo = new CaseHouseRoomVo();
         BeanUtils.copyProperties(caseHouseRoom, vo);
-        if (caseHouseRoom.getRoomType() != null) {
-            vo.setRoomTypeName(getValue(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_TYPE, caseHouseRoom.getRoomType()));
+        BaseDataDic dataDic = null;
+        if (caseHouseRoom.getRoomType() != null){
+            dataDic = baseDataDicService.getDataDicById(caseHouseRoom.getRoomType());
+            vo.setRoomTypeName(dataDic.getName());
+            dataDic = null;
         }
         return vo;
     }

@@ -72,24 +72,12 @@ public class CaseHouseIntelligentService {
     public CaseHouseIntelligentVo getCaseHouseIntelligentVo(CaseHouseIntelligent caseHouseIntelligent) {
         CaseHouseIntelligentVo vo = new CaseHouseIntelligentVo();
         BeanUtils.copyProperties(caseHouseIntelligent, vo);
-        if (caseHouseIntelligent.getWireErection() != null){
-            vo.setWireErectionName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WIRE_ERECTION_METHOD,caseHouseIntelligent.getWireErection()));
-        }
-        if (caseHouseIntelligent.getSwitchCircuit() != null){
-            vo.setSwitchCircuitName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_SWITCH_CIRCUIT,caseHouseIntelligent.getSwitchCircuit()));
-        }
-        if (caseHouseIntelligent.getLampsLanterns() != null){
-            vo.setLampsLanternsName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_LAMPS_LANTERNS,caseHouseIntelligent.getLampsLanterns()));
-        }
-        if (caseHouseIntelligent.getInternalCommunication() != null){
-            vo.setInternalCommunicationName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_INTERNAL_COMMUNICATION,caseHouseIntelligent.getInternalCommunication()));
-        }
-        if (caseHouseIntelligent.getMonitoringSystem() != null){
-            vo.setMonitoringSystemName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_MONITORING_SYSTEM,caseHouseIntelligent.getMonitoringSystem()));
-        }
-        if (caseHouseIntelligent.getIntelligentSystem() != null){
-            vo.setIntelligentSystemName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_INTELLIGENT_SYSTEM,caseHouseIntelligent.getIntelligentSystem()));
-        }
+        vo.setIntelligentSystemName(baseDataDicService.getNameById(caseHouseIntelligent.getIntelligentSystem()));
+        vo.setMonitoringSystemName(baseDataDicService.getNameById(caseHouseIntelligent.getMonitoringSystem()));
+        vo.setInternalCommunicationName(baseDataDicService.getNameById(caseHouseIntelligent.getInternalCommunication()));
+        vo.setLampsLanternsName(baseDataDicService.getNameById(caseHouseIntelligent.getLampsLanterns()));
+        vo.setSwitchCircuitName(baseDataDicService.getNameById(caseHouseIntelligent.getSwitchCircuit()));
+        vo.setWireErectionName(baseDataDicService.getNameById(caseHouseIntelligent.getWireErection()));
         return vo;
     }
 

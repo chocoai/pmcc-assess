@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/10/30 11:46
- * @Description:
+ * @Description:楼栋外装情况
  */
 @Service
 public class BasicBuildingOutfitService {

@@ -26,11 +26,18 @@
                     <label class="form-control">${basicHouse.floor}</label>
                 </div>
             </div>
-            <div class="x-valid">
+            <div class="x-valid" id="industryUseEnvironment">
                 <label class="col-sm-1 control-label">使用环境<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.useEnvironmentName}</label>
+                </div>
+            </div>
+
+            <div class="x-valid" id="industryNewsHuxing">
+                <label class="col-sm-1 control-label">最新户型</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.newsHuxingName}</label>
                 </div>
             </div>
         </div>
@@ -41,7 +48,7 @@
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <label class="form-control">${basicHouse.huxingName}</label>
+                        <label class="form-control">${basicHouse.huxingId}</label>
                     </div>
                 </div>
             </div>
@@ -125,14 +132,14 @@
                 <label class="col-sm-1 control-label">财产范围<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.scopeProperty}</label>
+                    <label class="form-control">${basicHouseTrading.scopePropertyName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">融资条件<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.financingConditions}</label>
+                    <label class="form-control">${basicHouseTrading.financingConditionsName}</label>
                 </div>
             </div>
             <div class="x-valid">
@@ -170,13 +177,6 @@
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">交易时间<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.tradingTimeName}</label>
-                </div>
-            </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易类型</label>
@@ -184,14 +184,20 @@
                     <label class="form-control">${basicHouseTrading.tradingTypeName}</label>
                 </div>
             </div>
-
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易价格<span
+                <label class="col-sm-1 control-label">信息来源分类<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.tradingPrice}</label>
+                    <label class="form-control">${basicHouseTrading.informationTypeName}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">信息来源</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.informationName}</label>
+                </div>
+            </div>
+
         </div>
 
         <div class="form-group BasicHouseTradingSell" style="display: none">
@@ -213,7 +219,13 @@
             <div class="x-valid" style="display: none;">
                 <label class="col-sm-1 control-label">出售总额</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.totalSale}</label>
+                    <input type="text" readonly="readonly" class="form-control" name="totalSale" value="${basicHouseTrading.totalSale}">
+                </div>
+            </div>
+            <div class="x-valid" style="display: none;">
+                <label class="col-sm-1 control-label">分期支付利率</label>
+                <div class="col-sm-3">
+                    <input type="text" readonly="readonly" class="form-control" name="installmentInterestRate" value="${basicHouseTrading.installmentInterestRate}">
                 </div>
             </div>
         </div>
@@ -247,20 +259,43 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">信息来源分类<span
+                <label class="col-sm-1 control-label">交易时间<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.informationTypeName}</label>
+                    <label class="form-control">${basicHouseTrading.tradingTimeName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">信息来源</label>
+                <label class="col-sm-1 control-label">交易总价<span
+                        class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.information}</label>
+                    <label class="form-control">${basicHouseTrading.tradingTotalPrice}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">交易单价<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.tradingUnitPrice}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">电话</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.phone}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">姓名</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouseTrading.name}</label>
                 </div>
             </div>
         </div>
     </form>
 </div>
 
-<%@include file="/views/basic/modelView/house/sonHouseApprovalView.jsp" %>
+<%@include file="/views/basic/modelView/house/sonHouseDetail.jsp" %>

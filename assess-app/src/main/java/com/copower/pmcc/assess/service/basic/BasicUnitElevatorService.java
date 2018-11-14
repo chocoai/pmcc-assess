@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/5 16:17
- * @Description:
+ * @Description:配备电梯
  */
 @Service
 public class BasicUnitElevatorService {
@@ -118,8 +119,7 @@ public class BasicUnitElevatorService {
         }
         BasicUnitElevatorVo vo = new BasicUnitElevatorVo();
         BeanUtils.copyProperties(basicUnitElevator,vo);
-        BaseDataDic dataDic = null;
-
+        vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitElevator.getType())?Integer.parseInt(basicUnitElevator.getType()):null));
         return vo;
     }
 }

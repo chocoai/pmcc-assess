@@ -15,6 +15,7 @@ public class BasicBuildingFunctionVo extends BasicBuildingFunction {
     private String materialPriceName;
 
     private String constructionTechnologyName;
+    private String typeName;
 
     public String getDecorationPartName() {
         return decorationPartName;
@@ -46,5 +47,13 @@ public class BasicBuildingFunctionVo extends BasicBuildingFunction {
 
     public void setConstructionTechnologyName(String constructionTechnologyName) {
         this.constructionTechnologyName = constructionTechnologyName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

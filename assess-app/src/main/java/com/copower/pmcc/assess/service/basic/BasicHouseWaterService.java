@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:21
- * @Description:
+ * @Description:供排水情况
  */
 @Service
 public class BasicHouseWaterService {
@@ -119,8 +120,12 @@ public class BasicHouseWaterService {
         }
         BasicHouseWaterVo vo = new BasicHouseWaterVo();
         BeanUtils.copyProperties(basicHouseWater,vo);
-        BaseDataDic dataDic = null;
-
+        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(basicHouseWater.getSupplyErectionMethod()));
+        vo.setPretreatedWaterName(baseDataDicService.getNameById(basicHouseWater.getPretreatedWater()));
+        vo.setDrainageCircuitName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuit()));
+        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(basicHouseWater.getDrainageCircuitCount()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(basicHouseWater.getPurificationEquipmentPrice()):null));
+        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(basicHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(basicHouseWater.getWaterIntakeEquipmentPrice()):null));
         return vo;
     }
     

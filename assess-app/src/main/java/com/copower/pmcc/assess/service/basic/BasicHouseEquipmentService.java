@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseEquipmentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -15,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:31
- * @Description:
+ * @Description:设备 包含（空调、新风、供暖）
  */
 @Service
 public class BasicHouseEquipmentService {
@@ -66,7 +68,7 @@ public class BasicHouseEquipmentService {
             basicHouseEquipment.setCreator(commonService.thisUserAccount());
             Integer id = basicHouseEquipmentDao.saveBasicHouseEquipment(basicHouseEquipment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class), id);
-            return  id ;
+            return id;
         } else {
             BasicHouseEquipment oo = basicHouseEquipmentDao.getBasicHouseEquipmentById(basicHouseEquipment.getId());
             basicHouseEquipmentDao.updateBasicHouseEquipment(basicHouseEquipment);
@@ -97,7 +99,7 @@ public class BasicHouseEquipmentService {
         return basicHouseEquipmentDao.basicHouseEquipmentList(basicHouseEquipment);
     }
 
-    public void removeBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment)throws Exception{
+    public void removeBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment) throws Exception {
         basicHouseEquipmentDao.removeBasicHouseEquipment(basicHouseEquipment);
     }
 
@@ -113,15 +115,29 @@ public class BasicHouseEquipmentService {
         return vo;
     }
 
-    public BasicHouseEquipmentVo getBasicHouseEquipmentVo(BasicHouseEquipment basicHouseEquipment){
-        if (basicHouseEquipment==null){
+    public BasicHouseEquipmentVo getBasicHouseEquipmentVo(BasicHouseEquipment basicHouseEquipment) {
+        if (basicHouseEquipment == null) {
             return null;
         }
         BasicHouseEquipmentVo vo = new BasicHouseEquipmentVo();
-        BeanUtils.copyProperties(basicHouseEquipment,vo);
+        BeanUtils.copyProperties(basicHouseEquipment, vo);
         BaseDataDic dataDic = null;
-
+        vo.setCategoryName(baseDataDicService.getNameById(basicHouseEquipment.getCategory()));
+        vo.setEquipmentPriceName(baseDataDicService.getNameById(basicHouseEquipment.getEquipmentPrice()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            if (sysAttachmentDtos.size() >= 1) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                    if (sysAttachmentDto != null) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                        builder.append(" ");
+                    }
+                }
+            }
+            vo.setFileName(builder.toString());
+        }
         return vo;
     }
-    
+
 }

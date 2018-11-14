@@ -22,4 +22,4 @@
         </div>
     </form>
 </div>
-<%@include file="/views/basic/modelView/unit/sonUnitApprovalView.jsp" %>
+<%@include file="/views/basic/modelView/unit/sonUnitDetail.jsp" %>

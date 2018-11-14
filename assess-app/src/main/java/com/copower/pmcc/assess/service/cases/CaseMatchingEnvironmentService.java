@@ -14,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -94,17 +95,9 @@ public class CaseMatchingEnvironmentService {
     public CaseMatchingEnvironmentVo getCaseMatchingEnvironmentVo(CaseMatchingEnvironment caseMatchingEnvironment) {
         CaseMatchingEnvironmentVo vo = new CaseMatchingEnvironmentVo();
         BeanUtils.copyProperties(caseMatchingEnvironment, vo);
-        if (!StringUtils.isEmpty(caseMatchingEnvironment.getType())) {
-            if (org.apache.commons.lang.StringUtils.isNumeric(caseMatchingEnvironment.getType())) {
-                vo.setTypeName(getValue(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_TYPE, Integer.parseInt(caseMatchingEnvironment.getType())));
-            }
-        }
-        if (caseMatchingEnvironment.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_CATEGORY, caseMatchingEnvironment.getCategory()));
-        }
-        if (caseMatchingEnvironment.getInfluenceDegree() != null) {
-            vo.setInfluenceDegreeName(getValue(AssessExamineTaskConstant.ESTATE_ENVIRONMENT_INFLUENCE_DEGREE, caseMatchingEnvironment.getInfluenceDegree()));
-        }
+        vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(caseMatchingEnvironment.getType()) ? Integer.parseInt(caseMatchingEnvironment.getType()) : null));
+        vo.setCategoryName(baseDataDicService.getNameById(caseMatchingEnvironment.getCategory()));
+        vo.setInfluenceDegreeName(baseDataDicService.getNameById(caseMatchingEnvironment.getInfluenceDegree()));
         return vo;
     }
 

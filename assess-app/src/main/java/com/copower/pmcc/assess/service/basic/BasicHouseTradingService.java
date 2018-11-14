@@ -121,6 +121,9 @@ public class BasicHouseTradingService {
         BasicHouseTradingVo vo = new BasicHouseTradingVo();
         BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicHouseTrading,vo);
+        vo.setInformationName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getInformation())?Integer.parseInt(basicHouseTrading.getInformation()):null));
+        vo.setScopePropertyName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getScopeProperty())?Integer.parseInt(basicHouseTrading.getScopeProperty()):null));
+        vo.setFinancingConditionsName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getFinancingConditions())?Integer.parseInt(basicHouseTrading.getFinancingConditions()):null));
         if (basicHouseTrading.getTradingTime() != null){
             vo.setTradingTimeName(DateUtils.format(basicHouseTrading.getTradingTime()));
         }

@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<div class="x_content">
+<div class="x_content" id="industryCorollaryEquipment">
     <h3>房屋配套设备设施信息
     </h3>
     <div>
@@ -288,15 +288,6 @@
                 cols.push({field: 'internalCommunicationName', title: '屋内通讯'});
                 cols.push({field: 'monitoringSystemName', title: '监控系统'});
                 cols.push({field: 'intelligentSystemName', title: '智能系统'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
                 $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseIntelligent.prototype.config().table, "${pageContext.request.contextPath}/basicHouseIntelligent/getBootstrapTableVo", cols, {
                     houseId:'${empty basicHouse.id?0:basicHouse.id}',

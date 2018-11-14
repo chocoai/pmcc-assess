@@ -14,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -95,20 +96,10 @@ public class CaseMatchingEducationService {
     public CaseMatchingEducationVo getCaseMatchingEducationVo(CaseMatchingEducation caseMatchingEducation) {
         CaseMatchingEducationVo vo = new CaseMatchingEducationVo();
         BeanUtils.copyProperties(caseMatchingEducation, vo);
-        if (caseMatchingEducation.getDistance() != null) {
-            vo.setDistanceName(getValue(AssessExamineTaskConstant.ESTATE_DISTANCE, caseMatchingEducation.getDistance()));
-        }
-        if (!StringUtils.isEmpty(caseMatchingEducation.getSchoolLevel())) {
-            if (org.apache.commons.lang.StringUtils.isNumeric(caseMatchingEducation.getSchoolLevel())) {
-                vo.setSchoolLevelName(getValue(AssessExamineTaskConstant.ESTATE_SCHOOL_LEVEL, Integer.parseInt(caseMatchingEducation.getSchoolLevel())));
-            }
-        }
-        if (caseMatchingEducation.getSchoolNature() != null) {
-            vo.setSchoolNatureName(getValue(AssessExamineTaskConstant.ESTATE_SCHOOL_NATURE, caseMatchingEducation.getSchoolNature()));
-        }
-        if (caseMatchingEducation.getSchoolGradation() != null) {
-            vo.setSchoolGradationName(getValue(AssessExamineTaskConstant.ESTATE_SCHOOL_GRADATION, caseMatchingEducation.getSchoolGradation()));
-        }
+        vo.setDistanceName(baseDataDicService.getNameById(caseMatchingEducation.getDistance()));
+        vo.setSchoolNatureName(baseDataDicService.getNameById(caseMatchingEducation.getSchoolNature()));
+        vo.setSchoolGradationName(baseDataDicService.getNameById(caseMatchingEducation.getSchoolGradation()));
+        vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(caseMatchingEducation.getSchoolLevel())?Integer.parseInt(caseMatchingEducation.getSchoolLevel()):null));
         return vo;
     }
 

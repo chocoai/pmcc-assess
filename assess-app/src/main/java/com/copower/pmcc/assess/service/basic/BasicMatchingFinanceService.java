@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:05
- * @Description:
+ * @Description:金融服务
  */
 @Service
 public class BasicMatchingFinanceService {
@@ -120,7 +121,9 @@ public class BasicMatchingFinanceService {
         BasicMatchingFinanceVo vo = new BasicMatchingFinanceVo();
         BeanUtils.copyProperties(basicMatchingFinance,vo);
         BaseDataDic dataDic = null;
-
+        vo.setNatureName(baseDataDicService.getNameById(basicMatchingFinance.getCategory()));
+        vo.setServiceContentName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingFinance.getServiceContent()) ? Integer.parseInt(basicMatchingFinance.getServiceContent()) : null));
+        vo.setCategoryName(baseDataDicService.getNameById(basicMatchingFinance.getNature()));
         return vo;
     }
     

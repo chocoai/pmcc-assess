@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:08
- * @Description:
+ * @Description:休闲场所 包含-购物、娱乐、餐饮
  */
 @Service
 public class BasicMatchingLeisurePlaceService {
@@ -120,7 +120,9 @@ public class BasicMatchingLeisurePlaceService {
         BasicMatchingLeisurePlaceVo vo = new BasicMatchingLeisurePlaceVo();
         BeanUtils.copyProperties(basicMatchingLeisurePlace,vo);
         BaseDataDic dataDic = null;
-
+        vo.setCategoryName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getCategory()));
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getDistance()));
+        vo.setGradeName(baseDataDicService.getNameById(basicMatchingLeisurePlace.getGrade()));
         return vo;
     }
     

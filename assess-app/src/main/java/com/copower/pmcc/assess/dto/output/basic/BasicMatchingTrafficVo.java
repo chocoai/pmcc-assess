@@ -8,4 +8,22 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic;
  * @Description:
  */
 public class BasicMatchingTrafficVo extends BasicMatchingTraffic {
+    private String distanceName;
+    private String natureName;
+
+    public String getDistanceName() {
+        return distanceName;
+    }
+
+    public void setDistanceName(String distanceName) {
+        this.distanceName = distanceName;
+    }
+
+    public String getNatureName() {
+        return natureName;
+    }
+
+    public void setNatureName(String natureName) {
+        this.natureName = natureName;
+    }
 }

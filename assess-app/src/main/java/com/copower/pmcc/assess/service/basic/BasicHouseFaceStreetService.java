@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:28
- * @Description:
+ * @Description:临街
  */
 @Service
 public class BasicHouseFaceStreetService {
@@ -119,8 +119,9 @@ public class BasicHouseFaceStreetService {
         }
         BasicHouseFaceStreetVo vo = new BasicHouseFaceStreetVo();
         BeanUtils.copyProperties(basicHouseFaceStreet,vo);
-        BaseDataDic dataDic = null;
-
+        vo.setVisitorsFlowrateName(baseDataDicService.getNameById(basicHouseFaceStreet.getVisitorsFlowrate()));
+        vo.setTrafficFlowName(baseDataDicService.getNameById(basicHouseFaceStreet.getTrafficFlow()));
+        vo.setStreetLevelName(baseDataDicService.getNameById(basicHouseFaceStreet.getStreetLevel()));
         return vo;
     }
     

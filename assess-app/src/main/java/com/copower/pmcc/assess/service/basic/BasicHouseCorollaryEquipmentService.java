@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:34
- * @Description:
+ * @Description:配套设备设施
  */
 @Service
 public class BasicHouseCorollaryEquipmentService {
@@ -120,7 +120,6 @@ public class BasicHouseCorollaryEquipmentService {
         }
         BasicHouseCorollaryEquipmentVo vo = new BasicHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(basicHouseCorollaryEquipment,vo);
-        BaseDataDic dataDic = null;
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
@@ -134,6 +133,9 @@ public class BasicHouseCorollaryEquipmentService {
             }
             vo.setFileViewName(builder.toString());
         }
+        vo.setCategoryName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getCategory()));
+        vo.setPriceName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getPrice()));
+        vo.setTypeName(baseDataDicService.getNameById(basicHouseCorollaryEquipment.getType()));
         return vo;
     }
     

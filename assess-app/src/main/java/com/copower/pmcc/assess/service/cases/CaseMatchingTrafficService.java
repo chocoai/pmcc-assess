@@ -90,16 +90,10 @@ public class CaseMatchingTrafficService {
     }
 
     public CaseMatchingTrafficVo getCaseMatchingTrafficVo(CaseMatchingTraffic caseMatchingTraffic){
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_DISTANCE);
         CaseMatchingTrafficVo vo = new CaseMatchingTrafficVo();
-        if (caseMatchingTraffic.getDistance()!=null){
-            for (BaseDataDic base:baseDataDic){
-                if (base.getId().equals(caseMatchingTraffic.getDistance())){
-                    vo.setDistanceName(base.getName());
-                }
-            }
-        }
         BeanUtils.copyProperties(caseMatchingTraffic,vo);
+        vo.setDistanceName(baseDataDicService.getNameById(caseMatchingTraffic.getDistance()));
+        vo.setNatureName(baseDataDicService.getNameById(caseMatchingTraffic.getNature()));
         return vo;
     }
 

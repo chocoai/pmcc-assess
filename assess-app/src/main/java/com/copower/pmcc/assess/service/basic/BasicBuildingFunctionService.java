@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/10/30 11:29
- * @Description:
+ * @Description:楼栋建筑功能
  */
 @Service
 public class BasicBuildingFunctionService {
@@ -147,6 +147,7 @@ public class BasicBuildingFunctionService {
                 dataDic = null;
             }
         }
+        vo.setTypeName(baseDataDicService.getNameById(basicBuildingFunction.getType()));
         return vo;
     }
 }

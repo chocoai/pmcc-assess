@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:25
- * @Description:
+ * @Description:电力通讯网络
  */
 @Service
 public class BasicHouseIntelligentService {
@@ -119,8 +119,12 @@ public class BasicHouseIntelligentService {
         }
         BasicHouseIntelligentVo vo = new BasicHouseIntelligentVo();
         BeanUtils.copyProperties(basicHouseIntelligent,vo);
-        BaseDataDic dataDic = null;
-
+        vo.setIntelligentSystemName(baseDataDicService.getNameById(basicHouseIntelligent.getIntelligentSystem()));
+        vo.setMonitoringSystemName(baseDataDicService.getNameById(basicHouseIntelligent.getMonitoringSystem()));
+        vo.setInternalCommunicationName(baseDataDicService.getNameById(basicHouseIntelligent.getInternalCommunication()));
+        vo.setLampsLanternsName(baseDataDicService.getNameById(basicHouseIntelligent.getLampsLanterns()));
+        vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
+        vo.setWireErectionName(baseDataDicService.getNameById(basicHouseIntelligent.getWireErection()));
         return vo;
     }
     

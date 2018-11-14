@@ -159,6 +159,9 @@ houseModelFun.tradingInit = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, item.scopeProperty, function (html, data) {
         $("#" + houseModelFun.config.trading.frm).find("select.scopeProperty").empty().html(html).trigger('change');
     });
+    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, item.information, function (html, data) {
+        $("#" + houseModelFun.config.trading.frm).find("select.information").empty().html(html).trigger('change');
+    });
 };
 
 houseModelFun.tradingSellAndLease = {

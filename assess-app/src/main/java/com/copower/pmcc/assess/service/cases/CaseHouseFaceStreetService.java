@@ -72,15 +72,9 @@ public class CaseHouseFaceStreetService {
     public CaseHouseFaceStreetVo getCaseHouseFaceStreetVo(CaseHouseFaceStreet caseHouseFaceStreet) {
         CaseHouseFaceStreetVo vo = new CaseHouseFaceStreetVo();
         BeanUtils.copyProperties(caseHouseFaceStreet, vo);
-        if (caseHouseFaceStreet.getStreetLevel() != null) {
-            vo.setStreetLevelName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_STREET_LEVEL, caseHouseFaceStreet.getStreetLevel()));
-        }
-        if (caseHouseFaceStreet.getTrafficFlow() != null) {
-            vo.setTrafficFlowName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_TRAFFIC_FLOW, caseHouseFaceStreet.getTrafficFlow()));
-        }
-        if (caseHouseFaceStreet.getVisitorsFlowrate() != null) {
-            vo.setVisitorsFlowrateName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_VISITORS_FLOWRATE, caseHouseFaceStreet.getVisitorsFlowrate()));
-        }
+        vo.setVisitorsFlowrateName(baseDataDicService.getNameById(caseHouseFaceStreet.getVisitorsFlowrate()));
+        vo.setTrafficFlowName(baseDataDicService.getNameById(caseHouseFaceStreet.getTrafficFlow()));
+        vo.setStreetLevelName(baseDataDicService.getNameById(caseHouseFaceStreet.getStreetLevel()));
         return vo;
     }
 

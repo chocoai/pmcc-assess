@@ -74,15 +74,9 @@ public class CaseMatchingMaterialService {
     public CaseMatchingMaterialVo getCaseMatchingMaterialVo(CaseMatchingMaterial caseMatchingMaterial) {
         CaseMatchingMaterialVo vo = new CaseMatchingMaterialVo();
         BeanUtils.copyProperties(caseMatchingMaterial, vo);
-        if (caseMatchingMaterial.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_TYPE, caseMatchingMaterial.getCategory()));
-        }
-        if (caseMatchingMaterial.getScale() != null) {
-            vo.setScaleName(getValue(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_SCALE, caseMatchingMaterial.getScale()));
-        }
-        if (caseMatchingMaterial.getDistance() != null) {
-            vo.setDistanceName(getValue(AssessExamineTaskConstant.ESTATE_SUPPLY_NEW_DISTANCE, caseMatchingMaterial.getDistance()));
-        }
+        vo.setCategoryName(baseDataDicService.getNameById(caseMatchingMaterial.getCategory()));
+        vo.setScaleName(baseDataDicService.getNameById(caseMatchingMaterial.getScale()));
+        vo.setDistanceName(baseDataDicService.getNameById(caseMatchingMaterial.getDistance()));
         return vo;
     }
 

@@ -9,6 +9,8 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
  */
 public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String fileViewName;
+    private String houseLayoutName;
+    private String orientationName;
 
     public String getFileViewName() {
         return fileViewName;
@@ -16,5 +18,21 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getHouseLayoutName() {
+        return houseLayoutName;
+    }
+
+    public void setHouseLayoutName(String houseLayoutName) {
+        this.houseLayoutName = houseLayoutName;
+    }
+
+    public String getOrientationName() {
+        return orientationName;
+    }
+
+    public void setOrientationName(String orientationName) {
+        this.orientationName = orientationName;
     }
 }

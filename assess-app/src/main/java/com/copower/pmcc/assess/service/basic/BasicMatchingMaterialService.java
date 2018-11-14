@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:11
- * @Description:
+ * @Description:原料供应及销售条件
  */
 @Service
 public class BasicMatchingMaterialService {
@@ -66,7 +66,7 @@ public class BasicMatchingMaterialService {
             basicMatchingMaterial.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingMaterialDao.saveBasicMatchingMaterial(basicMatchingMaterial);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), id);
-            return  id ;
+            return id;
         } else {
             BasicMatchingMaterial oo = basicMatchingMaterialDao.getBasicMatchingMaterialById(basicMatchingMaterial.getId());
             basicMatchingMaterialDao.updateBasicMatchingMaterial(basicMatchingMaterial);
@@ -97,7 +97,7 @@ public class BasicMatchingMaterialService {
         return basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
     }
 
-    public void removeBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial)throws Exception{
+    public void removeBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial) throws Exception {
         basicMatchingMaterialDao.removeBasicMatchingMaterial(basicMatchingMaterial);
     }
 
@@ -113,15 +113,17 @@ public class BasicMatchingMaterialService {
         return vo;
     }
 
-    public BasicMatchingMaterialVo getBasicMatchingMaterialVo(BasicMatchingMaterial basicMatchingMaterial){
-        if (basicMatchingMaterial==null){
+    public BasicMatchingMaterialVo getBasicMatchingMaterialVo(BasicMatchingMaterial basicMatchingMaterial) {
+        if (basicMatchingMaterial == null) {
             return null;
         }
         BasicMatchingMaterialVo vo = new BasicMatchingMaterialVo();
-        BeanUtils.copyProperties(basicMatchingMaterial,vo);
+        BeanUtils.copyProperties(basicMatchingMaterial, vo);
         BaseDataDic dataDic = null;
-
+        vo.setCategoryName(baseDataDicService.getNameById(basicMatchingMaterial.getCategory()));
+        vo.setScaleName(baseDataDicService.getNameById(basicMatchingMaterial.getScale()));
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMaterial.getDistance()));
         return vo;
     }
-    
+
 }

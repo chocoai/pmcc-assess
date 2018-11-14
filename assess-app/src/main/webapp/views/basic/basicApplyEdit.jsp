@@ -420,7 +420,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <%@include file="/views/basic/modelView/estate/sonEstateApprovalView.jsp" %>
+                                <%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
 
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
@@ -762,7 +762,7 @@
 
                                     </form>
                                 </div>
-                                <%@include file="/views/basic/modelView/build/sonBuildApprovalView.jsp" %>
+                                <%@include file="/views/basic/modelView/build/sonBuildDetail.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                                 <div class="x_content">
@@ -792,7 +792,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <%@include file="/views/basic/modelView/unit/sonUnitApprovalView.jsp" %>
+                                <%@include file="/views/basic/modelView/unit/sonUnitDetail.jsp" %>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                                 <div class="x_content">
@@ -1129,7 +1129,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <%@include file="/views/basic/modelView/house/sonHouseApprovalView.jsp" %>
+                                <%@include file="/views/basic/modelView/house/sonHouseDetail.jsp" %>
 
                             </div>
                         </div>

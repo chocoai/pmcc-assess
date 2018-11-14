@@ -12,6 +12,7 @@ public class BasicHouseVo extends BasicHouse {
     private String certUseName;
     private String practicalUseName;
     private String huxingName;
+    private String newsHuxingName;
 
     public String getUseEnvironmentName() {
         return useEnvironmentName;
@@ -43,5 +44,13 @@ public class BasicHouseVo extends BasicHouse {
 
     public void setHuxingName(String huxingName) {
         this.huxingName = huxingName;
+    }
+
+    public String getNewsHuxingName() {
+        return newsHuxingName;
+    }
+
+    public void setNewsHuxingName(String newsHuxingName) {
+        this.newsHuxingName = newsHuxingName;
     }
 }

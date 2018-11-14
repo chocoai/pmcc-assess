@@ -74,23 +74,8 @@ public class CaseHouseEquipmentService {
     public CaseHouseEquipmentVo getCaseHouseEquipmentVo(CaseHouseEquipment caseHouseEquipment) {
         CaseHouseEquipmentVo vo = new CaseHouseEquipmentVo();
         BeanUtils.copyProperties(caseHouseEquipment, vo);
-        String type = caseHouseEquipment.getType();
-        if (!org.springframework.util.StringUtils.isEmpty(type)){
-            ExamineHouseEquipmentTypeEnum typeEnum = ExamineHouseEquipmentTypeEnum.getEnumByName(ExamineHouseEquipmentTypeEnum.getNameByKey(type));
-            String key = typeEnum.getKey();
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
-                vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_AIR_CONDITIONING_MODE,caseHouseEquipment.getCategory()));
-            }
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseNewWind.getKey())) {
-                vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WAY_WIND,caseHouseEquipment.getCategory()));
-            }
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseHeating.getKey())) {
-                vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_HEATING_METHOD,caseHouseEquipment.getCategory()));
-            }
-        }
-        if (caseHouseEquipment.getEquipmentPrice() !=null){
-            vo.setEquipmentPriceName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_EQUIPMENT_PRICE_RANGE,caseHouseEquipment.getEquipmentPrice()));
-        }
+        vo.setCategoryName(baseDataDicService.getNameById(caseHouseEquipment.getCategory()));
+        vo.setEquipmentPriceName(baseDataDicService.getNameById(caseHouseEquipment.getEquipmentPrice()));
         return vo;
     }
 

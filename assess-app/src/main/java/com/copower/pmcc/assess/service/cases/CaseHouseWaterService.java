@@ -14,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -72,24 +73,12 @@ public class CaseHouseWaterService {
     public CaseHouseWaterVo getCaseHouseWaterVo(CaseHouseWater caseHouseWater) {
         CaseHouseWaterVo vo = new CaseHouseWaterVo();
         BeanUtils.copyProperties(caseHouseWater, vo);
-        if (caseHouseWater.getSupplyErectionMethod() != null){
-            vo.setSupplyErectionMethodName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_SUPPLY_ERECTION_METHOD,caseHouseWater.getSupplyErectionMethod()));
-        }
-        if (caseHouseWater.getPretreatedWater() != null){
-            vo.setPretreatedWaterName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_PRETREATED_WATER,caseHouseWater.getPretreatedWater()));
-        }
-        if (caseHouseWater.getDrainageCircuit() != null){
-            vo.setDrainageCircuitName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT,caseHouseWater.getDrainageCircuit()));
-        }
-        if (caseHouseWater.getDrainageCircuitCount() != null){
-            vo.setDrainageCircuitCountName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WATER_DRAINAGE_CIRCUIT_COUNT,caseHouseWater.getDrainageCircuitCount()));
-        }
-        if (org.apache.commons.lang.StringUtils.isNumeric(caseHouseWater.getPurificationEquipmentPrice())){
-            vo.setPurificationEquipmentPriceName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_PURIFICATION_EQUIPMENT_PRICE,Integer.parseInt(caseHouseWater.getPurificationEquipmentPrice())));
-        }
-        if (org.apache.commons.lang.StringUtils.isNumeric(caseHouseWater.getWaterIntakeEquipmentPrice())){
-            vo.setPurificationEquipmentPriceName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_WATER_INTAKE_EQUIPMENT_PRICE,Integer.parseInt(caseHouseWater.getWaterIntakeEquipmentPrice())));
-        }
+        vo.setSupplyErectionMethodName(baseDataDicService.getNameById(caseHouseWater.getSupplyErectionMethod()));
+        vo.setPretreatedWaterName(baseDataDicService.getNameById(caseHouseWater.getPretreatedWater()));
+        vo.setDrainageCircuitName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuit()));
+        vo.setDrainageCircuitCountName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuitCount()));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(caseHouseWater.getPurificationEquipmentPrice()):null));
+        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(caseHouseWater.getWaterIntakeEquipmentPrice()):null));
         return vo;
     }
 

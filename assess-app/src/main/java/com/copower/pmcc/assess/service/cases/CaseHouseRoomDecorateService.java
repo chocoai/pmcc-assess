@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -73,17 +74,38 @@ public class CaseHouseRoomDecorateService {
     public CaseHouseRoomDecorateVo getCaseHouseRoomDecorateVo(CaseHouseRoomDecorate caseHouseRoomDecorate) {
         CaseHouseRoomDecorateVo vo = new CaseHouseRoomDecorateVo();
         BeanUtils.copyProperties(caseHouseRoomDecorate, vo);
-        if (caseHouseRoomDecorate.getPart() != null) {
-            vo.setPartName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART, caseHouseRoomDecorate.getPart()));
+        BaseDataDic dataDic = null;
+        if (StringUtils.isNotEmpty(caseHouseRoomDecorate.getConstructionTechnology())) {
+            if (NumberUtils.isNumber(caseHouseRoomDecorate.getConstructionTechnology())) {
+                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseRoomDecorate.getConstructionTechnology()));
+                if (dataDic != null) {
+                    vo.setConstructionTechnologyName(dataDic.getName());
+                    dataDic = null;
+                }
+            }
         }
-        if (caseHouseRoomDecorate.getMaterial() != null) {
-            vo.setMaterialName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATING_MATERIAL, caseHouseRoomDecorate.getMaterial()));
+        if (StringUtils.isNotEmpty(caseHouseRoomDecorate.getMaterialPrice())) {
+            if (NumberUtils.isNumber(caseHouseRoomDecorate.getMaterialPrice())) {
+                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(caseHouseRoomDecorate.getMaterialPrice()));
+                if (dataDic != null) {
+                    vo.setMaterialPriceName(dataDic.getName());
+                    dataDic = null;
+                }
+            }
         }
-        if (StringUtils.isNumeric(caseHouseRoomDecorate.getMaterialPrice())){
-            vo.setMaterialPriceName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIAL_PRICE,Integer.parseInt(caseHouseRoomDecorate.getMaterialPrice())));
+        if (caseHouseRoomDecorate.getPart() != null){
+            dataDic = baseDataDicService.getDataDicById(caseHouseRoomDecorate.getPart());
+            if (dataDic != null){
+                vo.setPartName(dataDic.getName());
+                dataDic = null;
+            }
         }
-        if (StringUtils.isNumeric(caseHouseRoomDecorate.getConstructionTechnology())) {
-            vo.setConstructionTechnologyName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY,Integer.parseInt(caseHouseRoomDecorate.getConstructionTechnology())));
+        if (caseHouseRoomDecorate.getMaterial() != null){
+            dataDic = baseDataDicService.getDataDicById(caseHouseRoomDecorate.getMaterial());
+            if (dataDic != null){
+                vo.setMaterialName(dataDic.getName());
+                dataDic = null;
+            }
         }
         return vo;
     }

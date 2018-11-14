@@ -102,16 +102,10 @@ public class CaseHouseCorollaryEquipmentService {
     public CaseHouseCorollaryEquipmentVo getCaseHouseCorollaryEquipmentVo(CaseHouseCorollaryEquipment caseHouseCorollaryEquipment) {
         CaseHouseCorollaryEquipmentVo vo = new CaseHouseCorollaryEquipmentVo();
         BeanUtils.copyProperties(caseHouseCorollaryEquipment, vo);
-        if (caseHouseCorollaryEquipment.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_CATEGORY, caseHouseCorollaryEquipment.getCategory()));
-        }
-        if (caseHouseCorollaryEquipment.getType() != null) {
-            vo.setTypeName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_TYPE, caseHouseCorollaryEquipment.getType()));
-        }
-        if (caseHouseCorollaryEquipment.getPrice() != null) {
-            vo.setPriceName(getValue(AssessExamineTaskConstant.EXAMINE_HOUSE_COROLLARY_EQUIPMENT_PRICE, caseHouseCorollaryEquipment.getPrice()));
-        }
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseHouseCorollaryEquipment.getId(), ExamineFileUpLoadTwoFieldEnum.positionDiagramFileID.getName(), FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
+        vo.setCategoryName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getCategory()));
+        vo.setPriceName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getPrice()));
+        vo.setTypeName(baseDataDicService.getNameById(caseHouseCorollaryEquipment.getType()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
             if (sysAttachmentDtos.size() >= 1) {

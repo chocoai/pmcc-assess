@@ -8,4 +8,33 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet;
  * @Description:
  */
 public class BasicHouseFaceStreetVo extends BasicHouseFaceStreet {
+    private String streetLevelName;
+
+    private String trafficFlowName;
+
+    private String visitorsFlowrateName;
+
+    public String getStreetLevelName() {
+        return streetLevelName;
+    }
+
+    public void setStreetLevelName(String streetLevelName) {
+        this.streetLevelName = streetLevelName;
+    }
+
+    public String getTrafficFlowName() {
+        return trafficFlowName;
+    }
+
+    public void setTrafficFlowName(String trafficFlowName) {
+        this.trafficFlowName = trafficFlowName;
+    }
+
+    public String getVisitorsFlowrateName() {
+        return visitorsFlowrateName;
+    }
+
+    public void setVisitorsFlowrateName(String visitorsFlowrateName) {
+        this.visitorsFlowrateName = visitorsFlowrateName;
+    }
 }

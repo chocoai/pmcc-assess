@@ -192,14 +192,14 @@
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
+            <div class="x-valid" id="industry_water_supply_plan">
                 <label class="col-sm-1 control-label">供水平面图</label>
                 <div class="col-sm-5">
                     <div id="_water_supply_plan"></div>
                 </div>
             </div>
 
-            <div class="x-valid">
+            <div class="x-valid" id="industry_power_supply_plan">
                 <label class="col-sm-1 control-label">供电平面图</label>
                 <div class="col-sm-5">
                     <div id="_power_supply_plan"></div>
@@ -208,14 +208,14 @@
         </div>
 
         <div class="form-group">
-            <div class="x-valid">
+            <div class="x-valid" id="industry_air_supply_plan">
                 <label class="col-sm-1 control-label">供气平面图</label>
                 <div class="col-sm-5">
                     <div id="_air_supply_plan"></div>
                 </div>
             </div>
 
-            <div class="x-valid">
+            <div class="x-valid" id="industry_heating_plan">
                 <label class="col-sm-1 control-label">采暖平面图</label>
                 <div class="col-sm-5">
                     <div id="_heating_plan"></div>
@@ -362,5 +362,5 @@
         </div>
     </form>
 </div>
-<%@include file="/views/basic/modelView/estate/sonEstateApprovalView.jsp" %>
+<%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
 

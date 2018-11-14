@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:01
- * @Description:
+ * @Description:环境因素
  */
 @Service
 public class BasicMatchingEnvironmentService {
@@ -66,7 +67,7 @@ public class BasicMatchingEnvironmentService {
             basicMatchingEnvironment.setCreator(commonService.thisUserAccount());
             Integer id = basicMatchingEnvironmentDao.saveBasicMatchingEnvironment(basicMatchingEnvironment);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingEnvironment.class), id);
-            return  id ;
+            return id;
         } else {
             BasicMatchingEnvironment oo = basicMatchingEnvironmentDao.getBasicMatchingEnvironmentById(basicMatchingEnvironment.getId());
             basicMatchingEnvironmentDao.updateBasicMatchingEnvironment(basicMatchingEnvironment);
@@ -97,7 +98,7 @@ public class BasicMatchingEnvironmentService {
         return basicMatchingEnvironmentDao.basicMatchingEnvironmentList(basicMatchingEnvironment);
     }
 
-    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment)throws Exception{
+    public void removeBasicMatchingEnvironment(BasicMatchingEnvironment basicMatchingEnvironment) throws Exception {
         basicMatchingEnvironmentDao.removeBasicMatchingEnvironment(basicMatchingEnvironment);
     }
 
@@ -113,15 +114,17 @@ public class BasicMatchingEnvironmentService {
         return vo;
     }
 
-    public BasicMatchingEnvironmentVo getBasicMatchingEnvironmentVo(BasicMatchingEnvironment basicMatchingEnvironment){
-        if (basicMatchingEnvironment==null){
+    public BasicMatchingEnvironmentVo getBasicMatchingEnvironmentVo(BasicMatchingEnvironment basicMatchingEnvironment) {
+        if (basicMatchingEnvironment == null) {
             return null;
         }
         BasicMatchingEnvironmentVo vo = new BasicMatchingEnvironmentVo();
-        BeanUtils.copyProperties(basicMatchingEnvironment,vo);
+        BeanUtils.copyProperties(basicMatchingEnvironment, vo);
         BaseDataDic dataDic = null;
-
+        vo.setTypeName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEnvironment.getType()) ? Integer.parseInt(basicMatchingEnvironment.getType()) : null));
+        vo.setCategoryName(baseDataDicService.getNameById(basicMatchingEnvironment.getCategory()));
+        vo.setInfluenceDegreeName(baseDataDicService.getNameById(basicMatchingEnvironment.getInfluenceDegree()));
         return vo;
     }
-    
+
 }

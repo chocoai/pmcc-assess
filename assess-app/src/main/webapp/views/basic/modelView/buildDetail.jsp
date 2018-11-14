@@ -347,4 +347,4 @@
 
     </form>
 </div>
-<%@include file="/views/basic/modelView/build/sonBuildApprovalView.jsp" %>
+<%@include file="/views/basic/modelView/build/sonBuildDetail.jsp" %>

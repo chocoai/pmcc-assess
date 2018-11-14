@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 10:43
- * @Description:
+ * @Description:通信网络
  */
 @Service
 public class BasicEstateNetworkService {

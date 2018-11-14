@@ -8,4 +8,22 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMedical;
  * @Description:
  */
 public class BasicMatchingMedicalVo extends BasicMatchingMedical {
+    private String distanceName;
+    private String organizationLevelName;
+
+    public String getDistanceName() {
+        return distanceName;
+    }
+
+    public void setDistanceName(String distanceName) {
+        this.distanceName = distanceName;
+    }
+
+    public String getOrganizationLevelName() {
+        return organizationLevelName;
+    }
+
+    public void setOrganizationLevelName(String organizationLevelName) {
+        this.organizationLevelName = organizationLevelName;
+    }
 }

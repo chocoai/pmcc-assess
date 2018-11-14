@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicHouseCorollaryEquipment;
 public class BasicHouseCorollaryEquipmentVo extends BasicHouseCorollaryEquipment {
     private String fileViewName;
     private String typeName;
+
     private String categoryName;
     private String priceName;
 

@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/2 10:12
- * @Description:
+ * @Description:房间装修
  */
 @Service
 public class BasicHouseRoomDecorateService {

@@ -374,6 +374,7 @@ public class BasicHouseService {
 
             }
         }
+        vo.setNewsHuxingName(baseDataDicService.getNameById(basicHouse.getNewsHuxing()));
         return vo;
     }
 

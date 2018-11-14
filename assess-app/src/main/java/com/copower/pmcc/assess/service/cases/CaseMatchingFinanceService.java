@@ -14,6 +14,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -95,17 +96,9 @@ public class CaseMatchingFinanceService {
     public CaseMatchingFinanceVo getCaseMatchingFinanceVo(CaseMatchingFinance caseMatchingFinance) {
         CaseMatchingFinanceVo vo = new CaseMatchingFinanceVo();
         BeanUtils.copyProperties(caseMatchingFinance, vo);
-        if (!StringUtils.isEmpty(caseMatchingFinance.getServiceContent())) {
-            if (org.apache.commons.lang.StringUtils.isNumeric(caseMatchingFinance.getServiceContent())) {
-                vo.setServiceContentName(getValue(AssessExamineTaskConstant.ESTATE_FINANCE_SERVICE_CONTENT, Integer.parseInt(caseMatchingFinance.getServiceContent())));
-            }
-        }
-        if (caseMatchingFinance.getCategory() != null) {
-            vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_FINANCE_CATEGORY, caseMatchingFinance.getCategory()));
-        }
-        if (caseMatchingFinance.getNature() != null) {
-            vo.setNatureName(getValue(AssessExamineTaskConstant.ESTATE_FINANCE_NATURE, caseMatchingFinance.getNature()));
-        }
+        vo.setNatureName(baseDataDicService.getNameById(caseMatchingFinance.getCategory()));
+        vo.setServiceContentName(baseDataDicService.getNameById(NumberUtils.isNumber(caseMatchingFinance.getServiceContent()) ? Integer.parseInt(caseMatchingFinance.getServiceContent()) : null));
+        vo.setCategoryName(baseDataDicService.getNameById(caseMatchingFinance.getNature()));
         return vo;
     }
 

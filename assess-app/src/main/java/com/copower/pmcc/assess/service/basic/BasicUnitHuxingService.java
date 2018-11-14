@@ -16,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/5 16:13
- * @Description:
+ * @Description:户型
  */
 @Service
 public class BasicUnitHuxingService {
@@ -133,6 +134,8 @@ public class BasicUnitHuxingService {
             }
             vo.setFileViewName(builder.toString());
         }
+        vo.setHouseLayoutName(baseDataDicService.getNameById(basicUnitHuxing.getHouseLayout()));
+        vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation())?Integer.parseInt(basicUnitHuxing.getOrientation()):null));
         return vo;
     }
 }

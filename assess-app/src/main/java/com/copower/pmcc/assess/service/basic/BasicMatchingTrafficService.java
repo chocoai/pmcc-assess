@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:17
- * @Description:
+ * @Description:交通条件
  */
 @Service
 public class BasicMatchingTrafficService {
@@ -120,7 +120,8 @@ public class BasicMatchingTrafficService {
         BasicMatchingTrafficVo vo = new BasicMatchingTrafficVo();
         BeanUtils.copyProperties(basicMatchingTraffic,vo);
         BaseDataDic dataDic = null;
-
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingTraffic.getDistance()));
+        vo.setNatureName(baseDataDicService.getNameById(basicMatchingTraffic.getNature()));
         return vo;
     }
     

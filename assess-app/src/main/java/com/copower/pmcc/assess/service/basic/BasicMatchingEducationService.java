@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 10:58
- * @Description:
+ * @Description:教育条件
  */
 @Service
 public class BasicMatchingEducationService {
@@ -119,8 +120,10 @@ public class BasicMatchingEducationService {
         }
         BasicMatchingEducationVo vo = new BasicMatchingEducationVo();
         BeanUtils.copyProperties(basicMatchingEducation,vo);
-        BaseDataDic dataDic = null;
-
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingEducation.getDistance()));
+        vo.setSchoolNatureName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolNature()));
+        vo.setSchoolGradationName(baseDataDicService.getNameById(basicMatchingEducation.getSchoolGradation()));
+        vo.setSchoolLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingEducation.getSchoolLevel())?Integer.parseInt(basicMatchingEducation.getSchoolLevel()):null));
         return vo;
     }
     

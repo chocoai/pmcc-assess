@@ -15,6 +15,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:14
- * @Description:
+ * @Description:医养条件
  */
 @Service
 public class BasicMatchingMedicalService {
@@ -120,7 +121,8 @@ public class BasicMatchingMedicalService {
         BasicMatchingMedicalVo vo = new BasicMatchingMedicalVo();
         BeanUtils.copyProperties(basicMatchingMedical,vo);
         BaseDataDic dataDic = null;
-
+        vo.setOrganizationLevelName(baseDataDicService.getNameById(NumberUtils.isNumber(basicMatchingMedical.getOrganizationLevel()) ? Integer.parseInt(basicMatchingMedical.getOrganizationLevel()) : null));
+        vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMedical.getDistance()));
         return vo;
     }
     

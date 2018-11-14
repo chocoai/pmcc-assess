@@ -103,9 +103,7 @@ public class CaseUnitHuxingService {
     public CaseUnitHuxingVo getCaseUnitHuxingVo(CaseUnitHuxing caseUnitHuxing) {
         CaseUnitHuxingVo vo = new CaseUnitHuxingVo();
         BeanUtils.copyProperties(caseUnitHuxing, vo);
-        if (caseUnitHuxing.getHouseLayout() != null) {
-            vo.setHouseLayoutName(getValue(AssessExamineTaskConstant.EXAMINE_UNIT_HOUSE_LAYOUT, caseUnitHuxing.getHouseLayout()));
-        }
+        vo.setHouseLayoutName(baseDataDicService.getNameById(caseUnitHuxing.getHouseLayout()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseUnitHuxing.getId(), ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName(), FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {

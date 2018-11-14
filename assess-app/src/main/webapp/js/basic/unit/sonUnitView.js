@@ -152,7 +152,8 @@ var unitHuxing;
             var cols = [];
             cols.push({field: 'description', title: '描述'});
             cols.push({field: 'spanLength', title: '跨长'});
-            cols.push({field: 'orientation', title: '朝向'});
+            cols.push({field: 'orientationName', title: '朝向'});
+            cols.push({field: 'houseLayoutName', title: '房型'});
             cols.push({field: 'spanWidth', title: '跨宽'});
             cols.push({field: 'spanNumber', title: '跨数'});
             cols.push({field: 'fileViewName', title: '户型图'});
@@ -379,7 +380,7 @@ var unitElevator;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'number', title: '电梯数量'});
-            cols.push({field: 'type', title: '电梯类型'});
+            cols.push({field: 'typeName', title: '电梯类型'});
             cols.push({field: 'quasiLoadNumber', title: '准载人数'});
             cols.push({field: 'quasiLoadWeight', title: '准载重量'});
             cols.push({field: 'runningSpeed', title: '运行速度'});

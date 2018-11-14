@@ -97,33 +97,9 @@ public class CaseMatchingLeisurePlaceService {
     public CaseMatchingLeisurePlaceVo getCaseMatchingLeisurePlaceVo(CaseMatchingLeisurePlace caseMatchingLeisurePlace) {
         CaseMatchingLeisurePlaceVo vo = new CaseMatchingLeisurePlaceVo();
         BeanUtils.copyProperties(caseMatchingLeisurePlace, vo);
-        String key = caseMatchingLeisurePlace.getType();
-        if (!StringUtils.isEmpty(key)) {
-            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())) {
-                if (caseMatchingLeisurePlace.getGrade() != null) {
-                    vo.setGradeName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_GRADE, caseMatchingLeisurePlace.getGrade()));
-                }
-                if (caseMatchingLeisurePlace.getCategory() != null) {
-                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_CATEGORY, caseMatchingLeisurePlace.getCategory()));
-                }
-            }
-            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())) {
-                if (caseMatchingLeisurePlace.getCategory() != null) {
-                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_ENTERTAINMENT_CATEGORY, caseMatchingLeisurePlace.getCategory()));
-                }
-            }
-            if (key.equals(ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())) {
-                if (caseMatchingLeisurePlace.getCategory() != null) {
-                    vo.setCategoryName(getValue(AssessExamineTaskConstant.ESTATE_DINING_CATEGORY, caseMatchingLeisurePlace.getCategory()));
-                }
-                if (caseMatchingLeisurePlace.getGrade() != null) {
-                    vo.setGradeName(getValue(AssessExamineTaskConstant.ESTATE_DINING_GRADE, caseMatchingLeisurePlace.getGrade()));
-                }
-            }
-        }
-        if (caseMatchingLeisurePlace.getDistance() != null) {
-            vo.setDistanceName(getValue(AssessExamineTaskConstant.ESTATE_SHOP_OR_ENTERTAINMENT_OR_DINING_DISTANCE, caseMatchingLeisurePlace.getDistance()));
-        }
+        vo.setCategoryName(baseDataDicService.getNameById(caseMatchingLeisurePlace.getCategory()));
+        vo.setDistanceName(baseDataDicService.getNameById(caseMatchingLeisurePlace.getDistance()));
+        vo.setGradeName(baseDataDicService.getNameById(caseMatchingLeisurePlace.getGrade()));
         return vo;
     }
 
