@@ -25,6 +25,22 @@ public class Test {
         BigDecimal thisWorkYear = new BigDecimal(-366).divide(new BigDecimal(365),BigDecimal.ROUND_FLOOR);
         System.out.print(thisWorkYear);
     }
+    @org.junit.Test
+    public void testString(){
+        String name=null;
+        String name1="zhangsan";
+        if(null==name){
+            System.out.print("123");
+        }
+
+        if(name==null){
+            System.out.print("666");
+        }
+
+        if(name.equals(name1)){
+            System.out.print("456");
+        }
+    }
 
     @org.junit.Test
     public void genMybatisRm() {
