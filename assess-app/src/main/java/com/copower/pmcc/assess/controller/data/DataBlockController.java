@@ -59,11 +59,11 @@ public class DataBlockController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataBlockList", method = {RequestMethod.GET}, name = "获取基础版块维护列表")
-    public BootstrapTableVo getDataBlockList(String name) {
+    public BootstrapTableVo getDataBlockList(String province, String city, String district,String name) {
         DataBlock dataBlock = new DataBlock();
         BootstrapTableVo vo = null;
         try {
-            vo = dataBlockService.getDataBlockListVos(name);
+            vo = dataBlockService.getDataBlockListVos(province, city, district,name);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
