@@ -203,7 +203,7 @@ public class DatabaseJdbcDao {
      * @param map
      */
     public void removeInvalidField(String tableName, Map<String, Object> map) {
-        List<KeyValueDto> tableFieldList = getTableFieldList(BaseConstant.CURRENT_DATABASE_NAME, tableName);
+        List<KeyValueDto> tableFieldList = getTableFieldList(BaseConstant.DATABASE_PMCC_ASSESS, tableName);
         if (CollectionUtils.isNotEmpty(tableFieldList)) {
             //去除多余字段
             List<String> list = LangUtils.transform(tableFieldList, p -> p.getKey());
