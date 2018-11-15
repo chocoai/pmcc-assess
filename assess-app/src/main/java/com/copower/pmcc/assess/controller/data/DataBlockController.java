@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,10 +63,7 @@ public class DataBlockController {
         DataBlock dataBlock = new DataBlock();
         BootstrapTableVo vo = null;
         try {
-            if (!StringUtils.isEmpty(name)) {
-                dataBlock.setName(name);
-            }
-            vo = dataBlockService.getDataBlockListVos(dataBlock);
+            vo = dataBlockService.getDataBlockListVos(name);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;

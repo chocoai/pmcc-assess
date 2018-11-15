@@ -60,14 +60,11 @@ public class DataBlockService {
         return dataBlockDao.getDataBlockById(id);
     }
 
-    public BootstrapTableVo getDataBlockListVos(DataBlock dataBlock) {
-        if (dataBlock == null) {
-            logger.error("null point");
-        }
+    public BootstrapTableVo getDataBlockListVos(String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataBlockVo> vos = dataBlockVos(dataBlock);
+        List<DataBlockVo> vos = dataBlockVos(name);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
@@ -75,6 +72,17 @@ public class DataBlockService {
 
     public List<DataBlockVo> dataBlockVos(DataBlock dataBlock) {
         List<DataBlock> dataBlocks = dataBlockDao.getDataBlockList(dataBlock);
+        List<DataBlockVo> vos = Lists.newArrayList();
+        if (!ObjectUtils.isEmpty(dataBlocks)) {
+            for (DataBlock landLevel : dataBlocks) {
+                vos.add(getDataBlockVo(landLevel));
+            }
+        }
+        return vos;
+    }
+
+    public List<DataBlockVo> dataBlockVos(String name) {
+        List<DataBlock> dataBlocks = dataBlockDao.getDataBlockList(name);
         List<DataBlockVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataBlocks)) {
             for (DataBlock landLevel : dataBlocks) {

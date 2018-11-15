@@ -39,6 +39,7 @@ public class BasicApplyDao {
         if (StringUtils.isNotBlank(basicApply.getEstateName())){
             criteria.andEstateNameLike(String.format("%s%s%s","%",basicApply.getEstateName(),"%"));
         }
+        example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
 

@@ -111,15 +111,8 @@ public class BasicApplyService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicApply> basicApplyList = basicApplyDao.getBlockList(basicApply);
-        Ordering<BasicApply> ordering = Ordering.from(new Comparator<BasicApply>() {
-            @Override
-            public int compare(BasicApply o1, BasicApply o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
         List<BasicApplyVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(basicApplyList)) {
-            Collections.sort(basicApplyList, ordering);
             for (BasicApply basicApply1 : basicApplyList) {
                 vos.add(getBasicApplyVo(basicApply1));
             }

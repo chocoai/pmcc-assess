@@ -33,7 +33,7 @@
                         <div class="form-group ">
                             <div>
                                 <label class="col-sm-1 control-label">
-                                    基础版块维护
+                                    名称
                                 </label>
                                 <div class="col-sm-2">
                                     <input type="text" data-rule-maxlength="50"
@@ -71,7 +71,6 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        dataObjFun.event.father.init();
         dataObjFun.loadDataList();
     });
     var DataObjFun = function () {
@@ -103,40 +102,30 @@
             $("#" + frm + " ." + name).val(null).trigger("change");
         }
     }
-    DataObjFun.prototype.event = {
-        father: {
-            select2Load: function () {
-                //使数据校验生效
-                $("#" + dataObjFun.config.father.frm()).validate();
-                AssessCommon.initAreaInfo({
-                    provinceTarget: $("#province"),
-                    cityTarget: $("#city"),
-                    districtTarget: $("#district"),
-                    provinceValue: '',
-                    cityValue: '',
-                    districtValue: ''
-                })
-            },
-            init: function () {
-                DataObjFun.prototype.event.father.select2Load();
-            }
-        }
-    }
 
     var dataObjFun = new DataObjFun();
 
     dataObjFun.loadDataList = function () {
         var cols = [];
+        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
+            var result = '';
+            if (row.provinceName) {
+                result = row.provinceName;
+            }
+            if (row.cityName) {
+                result += row.cityName;
+            }
+            if (row.districtName) {
+                result += row.districtName;
+            }
+            return result;
+        }});
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'remark', title: '描述'});
         cols.push({field: 'regionalNature', title: '性质'});
+        cols.push({field: 'remark', title: '描述'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                 str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editDataById(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteDataById(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
@@ -224,7 +213,6 @@
             return false;
         }
         var data = formParams(dataObjFun.config.father.frm());
-        console.log(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/dataBlock/saveAndUpdateDataBlock",
             type: "post",
@@ -252,6 +240,11 @@
      **/
     dataObjFun.showModel = function () {
         $("#" + dataObjFun.config.father.frm()).clearAll();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#province"),
+            cityTarget: $("#city"),
+            districtTarget: $("#district")
+        })
         $('#' + dataObjFun.config.father.box()).modal("show");
     }
 </script>
@@ -272,79 +265,53 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">省
+                                            <span class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select id="province" name="province" class="form-control search-select select2" required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">市<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-3">
+                                            <select id="city" name="city" class="form-control search-select select2" required="required">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">县</label>
+                                        <div class="col-sm-3">
+                                            <select id="district" name="district" class="form-control search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control" name="name"
                                                    placeholder="名称" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省
-                                            <span class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select id="province" name="province"
-                                                    class="form-control search-select select2"
-                                                    required="required">
-                                                <option value="" name="province">-请选择-</option>
-                                                <c:forEach items="${ProvinceList}" var="item">
-                                                    <c:choose>
-                                                        <c:when test="${item.areaId == projectInfo.province}">
-                                                            <option value="${item.areaId}"
-                                                                    selected="selected">${item.name}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${item.areaId}">${item.name}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select id="city" name="city" class="form-control search-select select2"
-                                                    required="required">
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-10">
-                                            <select id="district" name="district"
-                                                    class="form-control search-select select2">
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             方位<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control" name="position"
                                                    placeholder="方位" required="required">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
+                                        <label class="col-sm-1 control-label">
                                             区域性质<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-3">
                                             <input type="text" class="form-control" name="regionalNature"
                                                    placeholder="区域性质" required="required">
                                         </div>
@@ -352,12 +319,11 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            区域描述<span class="symbol required"></span>
+                                        <label class="col-sm-1 control-label">
+                                            区域描述
                                         </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="remark"
-                                                   placeholder="区域描述" required="required">
+                                        <div class="col-sm-11">
+                                            <textarea name="remark" class="form-control" placeholder="区域描述"></textarea>
                                         </div>
                                     </div>
                                 </div>

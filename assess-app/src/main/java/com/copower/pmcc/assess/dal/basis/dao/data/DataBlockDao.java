@@ -78,4 +78,10 @@ public class DataBlockDao {
         MybatisUtils.convertObj2Example(dataBlock, example);
         return dataBlockMapper.selectByExample(example);
     }
+
+    public List<DataBlock> getDataBlockList(String name) {
+        DataBlockExample example = new DataBlockExample();
+        example.createCriteria().andNameLike(String.format("%%%s%%",name));
+        return dataBlockMapper.selectByExample(example);
+    }
 }
