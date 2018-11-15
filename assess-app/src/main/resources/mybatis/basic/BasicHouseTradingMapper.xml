@@ -27,6 +27,7 @@
     <result column="total_sale" property="totalSale" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="information" property="information" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -95,7 +96,7 @@
     trading_total_price, trading_unit_price, trading_price, buyer_extra_tax_fee, renting_extra_tax_fee, 
     description_type, description_content, installment_interest_rate, payment_method, 
     normal_transaction, tax_burden, scope_property, financing_conditions, deposit, creator, 
-    total_sale, name, phone, information, version, gmt_created, gmt_modified
+    total_sale, name, phone, temporary, information, version, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingExample" >
     select
@@ -139,8 +140,9 @@
       payment_method, normal_transaction, tax_burden, 
       scope_property, financing_conditions, deposit, 
       creator, total_sale, name, 
-      phone, information, version, 
-      gmt_created, gmt_modified)
+      phone, temporary, information, 
+      version, gmt_created, gmt_modified
+      )
     values (#{caseTradingId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
       #{tradingTime,jdbcType=TIMESTAMP}, #{tradingType,jdbcType=INTEGER}, #{informationType,jdbcType=VARCHAR}, 
       #{tradingTotalPrice,jdbcType=DECIMAL}, #{tradingUnitPrice,jdbcType=DECIMAL}, #{tradingPrice,jdbcType=DECIMAL}, 
@@ -149,8 +151,9 @@
       #{paymentMethod,jdbcType=VARCHAR}, #{normalTransaction,jdbcType=VARCHAR}, #{taxBurden,jdbcType=VARCHAR}, 
       #{scopeProperty,jdbcType=VARCHAR}, #{financingConditions,jdbcType=VARCHAR}, #{deposit,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{totalSale,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{information,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{phone,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, #{information,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -229,6 +232,9 @@
       </if>
       <if test="phone != null" >
         phone,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="information != null" >
         information,
@@ -315,6 +321,9 @@
       </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="information != null" >
         #{information,jdbcType=VARCHAR},
@@ -414,6 +423,9 @@
       <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.information != null" >
         information = #{record.information,jdbcType=VARCHAR},
       </if>
@@ -458,6 +470,7 @@
       total_sale = #{record.totalSale,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       information = #{record.information,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -541,6 +554,9 @@
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
+      </if>
       <if test="information != null" >
         information = #{information,jdbcType=VARCHAR},
       </if>
@@ -582,6 +598,7 @@
       total_sale = #{totalSale,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       information = #{information,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

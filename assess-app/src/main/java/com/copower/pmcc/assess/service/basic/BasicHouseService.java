@@ -59,7 +59,7 @@ public class BasicHouseService {
     private BasicHouseDao basicHouseDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void init(Integer oldId, Integer newId) throws Exception {
+    public void init(Integer oldId, Integer newId,BasicHouse basicHouse) throws Exception {
         List<BasicHouseTradingSell> basicHouseTradingSellList = null;
         List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
         List<BasicHouseRoom> basicHouseRoomList = null;
@@ -185,6 +185,7 @@ public class BasicHouseService {
                 basicHouseTradingSellList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(oo);
                     } catch (Exception e1) {
 
@@ -195,6 +196,7 @@ public class BasicHouseService {
                 basicHouseTradingLeaseList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(oo);
                     } catch (Exception e1) {
 
@@ -205,6 +207,7 @@ public class BasicHouseService {
                 basicHouseRoomList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseRoomService.saveAndUpdateBasicHouseRoom(oo);
                     } catch (Exception e1) {
 
@@ -215,6 +218,7 @@ public class BasicHouseService {
                 basicHouseWaterList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseWaterService.saveAndUpdateBasicHouseWater(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -225,6 +229,7 @@ public class BasicHouseService {
                 basicHouseIntelligentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -235,6 +240,7 @@ public class BasicHouseService {
                 basicHouseFaceStreetList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -245,6 +251,7 @@ public class BasicHouseService {
                 basicHouseEquipmentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -255,6 +262,7 @@ public class BasicHouseService {
                 basicHouseCorollaryEquipmentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
+                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -298,7 +306,7 @@ public class BasicHouseService {
             basicHouse.setVersion(0);
             Integer id = basicHouseDao.saveBasicHouse(basicHouse);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class), id);
-            this.init(0, id);
+            this.init(0, id,basicHouse);
             basicHouse.setId(id);
             return id;
         } else {

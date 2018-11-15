@@ -15,6 +15,8 @@ public class BasicMatchingMedical {
 
     private String bedNumber;
 
+    private Boolean temporary;
+
     private Integer distance;
 
     private String creator;
@@ -69,6 +71,14 @@ public class BasicMatchingMedical {
 
     public void setBedNumber(String bedNumber) {
         this.bedNumber = bedNumber == null ? null : bedNumber.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDistance() {

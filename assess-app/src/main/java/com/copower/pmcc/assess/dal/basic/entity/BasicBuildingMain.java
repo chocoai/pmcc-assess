@@ -9,6 +9,8 @@ public class BasicBuildingMain {
 
     private Integer caseBuildingMain;
 
+    private Boolean temporary;
+
     private Integer estateId;
 
     private Integer applyId;
@@ -43,6 +45,14 @@ public class BasicBuildingMain {
 
     public void setCaseBuildingMain(Integer caseBuildingMain) {
         this.caseBuildingMain = caseBuildingMain;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getEstateId() {

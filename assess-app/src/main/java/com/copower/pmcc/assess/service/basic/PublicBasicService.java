@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.common.enums.BasicJsonFieldStrEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -44,6 +45,8 @@ import java.util.concurrent.Future;
  */
 @Service
 public class PublicBasicService {
+    @Autowired
+    private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
     @Autowired
@@ -1628,11 +1631,11 @@ public class PublicBasicService {
         JSONObject jsonObject = JSON.parseObject(formData);
         String jsonContent = null;
         BasicEstate basicEstate = null;
-        if (StringUtils.isNotEmpty(jsonObject.getString("industry"))) {
-            basicApply.setIndustry(jsonObject.getString("industry"));
+        if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()))) {
+            basicApply.setIndustry(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()));
         }
         //楼盘过程数据
-        jsonContent = jsonObject.getString("basicEstate");
+        jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATE.getVar());
         if (StringUtils.isNotBlank(jsonContent)) {
             try {
                 basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
@@ -1641,6 +1644,7 @@ public class PublicBasicService {
             }
             if (basicEstate != null) {
                 basicEstate.setApplyId(basicApply.getId());
+                basicEstate.setTemporary(false);
                 if (StringUtils.isNotEmpty(basicEstate.getName())) {
                     basicApply.setEstateName(basicEstate.getName());
                 }
@@ -1652,9 +1656,9 @@ public class PublicBasicService {
                     basicEstateService.upgradeVersion(basicEstate);
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
-                        if (StringUtils.isNotEmpty(jsonObject.getString("basicEstateLandState"))) {
+                        if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()))) {
                             try {
-                                basicEstateLandState = JSONObject.parseObject(jsonObject.getString("basicEstateLandState"), BasicEstateLandState.class);
+                                basicEstateLandState = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()), BasicEstateLandState.class);
                             } catch (Exception e1) {
 
                             }
@@ -1665,6 +1669,7 @@ public class PublicBasicService {
                                 }
                                 basicEstateLandState.setEstateId(basicEstate.getId());
                                 basicEstateLandState.setApplyId(basicApply.getId());
+                                basicEstateLandState.setTemporary(false);
                                 basicEstateLandStateService.upgradeVersion(basicEstateLandState);
                             }
                         }
@@ -1677,7 +1682,7 @@ public class PublicBasicService {
         //楼栋主过程数据
         jsonContent = null;
         try {
-            jsonContent = jsonObject.getString("basicBuildingMain");
+            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGMAIN.getVar());
         } catch (Exception e1) {
 
         }
@@ -1686,6 +1691,7 @@ public class PublicBasicService {
             basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
             if (basicBuildingMain != null) {
                 basicBuildingMain.setApplyId(basicApply.getId());
+                basicBuildingMain.setTemporary(false);
                 if (StringUtils.isNotEmpty(basicBuildingMain.getIdentifier())) {
                     basicApply.setBuildIdentifier(basicBuildingMain.getIdentifier());
                 }
@@ -1721,7 +1727,7 @@ public class PublicBasicService {
             //楼栋过程数据
             jsonContent = null;
             try {
-                jsonContent = jsonObject.getString("basicBuildings");
+                jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGS.getVar());
             } catch (Exception e1) {
 
             }
@@ -1739,6 +1745,7 @@ public class PublicBasicService {
                     }
                     if (basicBuildingMain.getId() != null) {
                         basicBuilding.setBasicBuildingMainId(basicBuildingMain.getId());
+                        basicBuilding.setTemporary(false);
                         try {
                             basicBuildingService.upgradeVersion(basicBuilding);
                         } catch (Exception e1) {
@@ -1751,7 +1758,7 @@ public class PublicBasicService {
         //单元过程数据
         jsonContent = null;
         try {
-            jsonContent = jsonObject.getString("basicUnit");
+            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICUNIT.getVar());
         } catch (Exception e1) {
 
         }
@@ -1760,6 +1767,7 @@ public class PublicBasicService {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
             if (basicUnit != null) {
                 basicUnit.setApplyId(basicApply.getId());
+                basicUnit.setTemporary(false);
                 if (StringUtils.isNotEmpty(basicUnit.getUnitNumber())) {
                     basicApply.setUnitNumber(basicUnit.getUnitNumber());
                 }
@@ -1793,7 +1801,7 @@ public class PublicBasicService {
         //处理房屋数据
         jsonContent = null;
         try {
-            jsonContent = jsonObject.getString("basicHouse");
+            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICHOUSE.getVar());
         } catch (Exception e1) {
 
         }
@@ -1806,6 +1814,7 @@ public class PublicBasicService {
                     basicHouse.setId(null);
                 }
                 basicHouse.setApplyId(basicApply.getId());
+                basicHouse.setTemporary(false);
                 if (StringUtils.isNotEmpty(basicHouse.getHouseNumber())) {
                     basicApply.setHouseNumber(basicHouse.getHouseNumber());
                 }
@@ -1827,7 +1836,7 @@ public class PublicBasicService {
                 }
                 Integer house = basicHouseService.upgradeVersion(basicHouse);
                 try {
-                    BasicHouseTrading basicTrading = JSONObject.parseObject(jsonObject.getString("basicTrading"), BasicHouseTrading.class);
+                    BasicHouseTrading basicTrading = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICTRADING.getVar()), BasicHouseTrading.class);
                     if (basicTrading != null) {
                         if (basicTrading.getId() != null) {
                             basicTrading.setCaseTradingId(basicTrading.getId());
@@ -1835,6 +1844,7 @@ public class PublicBasicService {
                         }
                         basicTrading.setHouseId(house);
                         basicTrading.setApplyId(basicApply.getId());
+                        basicTrading.setTemporary(false);
                         basicHouseTradingService.upgradeVersion(basicTrading);
                     }
                 } catch (Exception e1) {
@@ -1844,6 +1854,33 @@ public class PublicBasicService {
         }
         //发起流程
         basicApplyService.sumTask(basicApply, FormatUtils.entityNameConvertToTableName(BasicApply.class));
+    }
+
+    /**
+     * 处理地图标注
+     * @param basicEstate
+     * @throws Exception
+     */
+    private void saveBasicBasicEstateTagging(BasicEstate basicEstate )throws Exception{
+        BasicEstateTagging query = new BasicEstateTagging();
+        query.setEstateId(0);
+        query.setCreator(commonService.thisUserAccount());
+        List<BasicEstateTagging> taggingList = basicEstateTaggingService.basicEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(taggingList)){
+            Ordering<BasicEstateTagging> ordering = Ordering.from(new Comparator<BasicEstateTagging>() {
+                @Override
+                public int compare(BasicEstateTagging o1, BasicEstateTagging o2) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+            }).reverse();
+            Collections.sort(taggingList,ordering);
+            BasicEstateTagging basicEstateTagging = taggingList.get(0);
+            basicEstateTagging.setEstateId(basicEstate.getId());
+            int id = basicEstateTagging.getId();
+            basicEstateTagging.setId(null);
+            basicEstateTaggingService.saveBasicEstateTagging(basicEstateTagging);
+            basicEstateTaggingService.deleteBasicEstateTagging(id);
+        }
     }
 
     public BasicEstateVo getByAppIdBasicEstate(Integer appId) throws Exception {

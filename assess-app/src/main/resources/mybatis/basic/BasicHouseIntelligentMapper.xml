@@ -7,6 +7,7 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="wire_erection" property="wireErection" jdbcType="INTEGER" />
     <result column="switch_circuit" property="switchCircuit" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="lamps_lanterns" property="lampsLanterns" jdbcType="INTEGER" />
     <result column="internal_communication" property="internalCommunication" jdbcType="INTEGER" />
     <result column="monitoring_system" property="monitoringSystem" jdbcType="INTEGER" />
@@ -74,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_intelligent_id, house_id, wire_erection, switch_circuit, lamps_lanterns, 
+    id, case_intelligent_id, house_id, wire_erection, switch_circuit, temporary, lamps_lanterns, 
     internal_communication, monitoring_system, intelligent_system, creator, gmt_created, 
     gmt_modified
   </sql>
@@ -113,13 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_intelligent (case_intelligent_id, house_id, wire_erection, 
-      switch_circuit, lamps_lanterns, internal_communication, 
-      monitoring_system, intelligent_system, creator, 
-      gmt_created, gmt_modified)
+      switch_circuit, temporary, lamps_lanterns, 
+      internal_communication, monitoring_system, 
+      intelligent_system, creator, gmt_created, 
+      gmt_modified)
     values (#{caseIntelligentId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{wireErection,jdbcType=INTEGER}, 
-      #{switchCircuit,jdbcType=INTEGER}, #{lampsLanterns,jdbcType=INTEGER}, #{internalCommunication,jdbcType=INTEGER}, 
-      #{monitoringSystem,jdbcType=INTEGER}, #{intelligentSystem,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{switchCircuit,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{lampsLanterns,jdbcType=INTEGER}, 
+      #{internalCommunication,jdbcType=INTEGER}, #{monitoringSystem,jdbcType=INTEGER}, 
+      #{intelligentSystem,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -138,6 +141,9 @@
       </if>
       <if test="switchCircuit != null" >
         switch_circuit,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="lampsLanterns != null" >
         lamps_lanterns,
@@ -173,6 +179,9 @@
       </if>
       <if test="switchCircuit != null" >
         #{switchCircuit,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="lampsLanterns != null" >
         #{lampsLanterns,jdbcType=INTEGER},
@@ -221,6 +230,9 @@
       <if test="record.switchCircuit != null" >
         switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.lampsLanterns != null" >
         lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
       </if>
@@ -254,6 +266,7 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       wire_erection = #{record.wireErection,jdbcType=INTEGER},
       switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
       internal_communication = #{record.internalCommunication,jdbcType=INTEGER},
       monitoring_system = #{record.monitoringSystem,jdbcType=INTEGER},
@@ -279,6 +292,9 @@
       </if>
       <if test="switchCircuit != null" >
         switch_circuit = #{switchCircuit,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="lampsLanterns != null" >
         lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
@@ -310,6 +326,7 @@
       house_id = #{houseId,jdbcType=INTEGER},
       wire_erection = #{wireErection,jdbcType=INTEGER},
       switch_circuit = #{switchCircuit,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
       internal_communication = #{internalCommunication,jdbcType=INTEGER},
       monitoring_system = #{monitoringSystem,jdbcType=INTEGER},

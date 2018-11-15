@@ -13,6 +13,8 @@ public class BasicHouseEquipment {
 
     private Integer category;
 
+    private Boolean temporary;
+
     private String equipment;
 
     private Integer equipmentPrice;
@@ -61,6 +63,14 @@ public class BasicHouseEquipment {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getEquipment() {

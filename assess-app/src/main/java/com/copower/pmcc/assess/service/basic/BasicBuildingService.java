@@ -70,7 +70,7 @@ public class BasicBuildingService {
      * @param buildingNumber
      * @throws Exception
      */
-    public void init(Integer id, String buildingNumber) throws Exception {
+    public void init(Integer id, String buildingNumber,BasicBuilding basicBuilding) throws Exception {
         if (id != null) {
             if (StringUtils.isEmpty(buildingNumber)) {
                 throw new Exception("不符合条件");
@@ -136,18 +136,22 @@ public class BasicBuildingService {
             basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
             for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
                 oo.setBuildingId(id);
+                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(oo);
             }
             for (BasicBuildingFunction oo : basicBuildingFunctionList) {
                 oo.setBuildingId(id);
+                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(oo);
             }
             for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
                 oo.setBuildingId(id);
+                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(oo);
             }
             for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
                 oo.setBuildingId(id);
+                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(oo);
             }
         }
@@ -177,7 +181,7 @@ public class BasicBuildingService {
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
             if (basicBuilding.getPart() != null) {
-                this.init(id, String.valueOf(basicBuilding.getPart()));
+                this.init(id, String.valueOf(basicBuilding.getPart()),basicBuilding);
             }
             return id;
         } else {
@@ -203,10 +207,10 @@ public class BasicBuildingService {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
-            this.init(id, BasicBuildingFieldEnum.BuildFour.getKey());
-            this.init(id, BasicBuildingFieldEnum.BuildThree.getKey());
-            this.init(id, BasicBuildingFieldEnum.BuildTwo.getKey());
-            this.init(id, BasicBuildingFieldEnum.BuildOne.getKey());
+            this.init(id, BasicBuildingFieldEnum.BuildFour.getKey(),basicBuilding);
+            this.init(id, BasicBuildingFieldEnum.BuildThree.getKey(),basicBuilding);
+            this.init(id, BasicBuildingFieldEnum.BuildTwo.getKey(),basicBuilding);
+            this.init(id, BasicBuildingFieldEnum.BuildOne.getKey(),basicBuilding);
             return id;
         } else {
             basicBuildingDao.updateBasicBuilding(basicBuilding);

@@ -11,6 +11,8 @@ public class BasicMatchingFinance {
 
     private String name;
 
+    private Boolean temporary;
+
     private Integer category;
 
     private Integer nature;
@@ -55,6 +57,14 @@ public class BasicMatchingFinance {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getCategory() {

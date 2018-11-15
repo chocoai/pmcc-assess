@@ -14,8 +14,9 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" placeholder="房号" name="houseNumber"
-                           class="form-control" required="required">
+                    <input type="text" data-rule-number='true'
+                           placeholder="房号" name="houseNumber"
+                           class="form-control">
                 </div>
             </div>
             <div class="x-valid">

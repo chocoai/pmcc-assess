@@ -6,6 +6,7 @@
     <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
     <result column="index_parameter" property="indexParameter" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, estate_id, name, service_content, index_parameter, creator, gmt_created, 
-    gmt_modified
+    id, case_id, estate_id, name, temporary, service_content, index_parameter, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetworkExample" >
     select
@@ -109,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_network (case_id, estate_id, name, 
-      service_content, index_parameter, creator, 
-      gmt_created, gmt_modified)
+      temporary, service_content, index_parameter, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{serviceContent,jdbcType=VARCHAR}, #{indexParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{temporary,jdbcType=BIT}, #{serviceContent,jdbcType=VARCHAR}, #{indexParameter,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateNetwork" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,6 +132,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="serviceContent != null" >
         service_content,
@@ -155,6 +161,9 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="serviceContent != null" >
         #{serviceContent,jdbcType=VARCHAR},
@@ -194,6 +203,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.serviceContent != null" >
         service_content = #{record.serviceContent,jdbcType=VARCHAR},
       </if>
@@ -220,6 +232,7 @@
       case_id = #{record.caseId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       service_content = #{record.serviceContent,jdbcType=VARCHAR},
       index_parameter = #{record.indexParameter,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -240,6 +253,9 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="serviceContent != null" >
         service_content = #{serviceContent,jdbcType=VARCHAR},
@@ -264,6 +280,7 @@
     set case_id = #{caseId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       service_content = #{serviceContent,jdbcType=VARCHAR},
       index_parameter = #{indexParameter,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

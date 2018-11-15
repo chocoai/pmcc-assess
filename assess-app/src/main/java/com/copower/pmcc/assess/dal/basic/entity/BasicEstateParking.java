@@ -13,6 +13,8 @@ public class BasicEstateParking {
 
     private String parkingType;
 
+    private Boolean temporary;
+
     private String location;
 
     private String creator;
@@ -59,6 +61,14 @@ public class BasicEstateParking {
 
     public void setParkingType(String parkingType) {
         this.parkingType = parkingType == null ? null : parkingType.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getLocation() {

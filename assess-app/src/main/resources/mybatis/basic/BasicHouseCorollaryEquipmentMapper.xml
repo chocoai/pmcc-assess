@@ -6,6 +6,7 @@
     <result column="case_corollary_equipment_id" property="caseCorollaryEquipmentId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="use_h" property="useH" jdbcType="VARCHAR" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_corollary_equipment_id, house_id, type, category, name, use_h, parameter_index_h, 
-    price, maintenance_status, creator, gmt_created, gmt_modified
+    id, case_corollary_equipment_id, house_id, type, temporary, category, name, use_h, 
+    parameter_index_h, price, maintenance_status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseCorollaryEquipmentExample" >
     select
@@ -113,15 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_corollary_equipment (case_corollary_equipment_id, house_id, 
-      type, category, name, 
-      use_h, parameter_index_h, price, 
-      maintenance_status, creator, gmt_created, 
-      gmt_modified)
+      type, temporary, category, 
+      name, use_h, parameter_index_h, 
+      price, maintenance_status, creator, 
+      gmt_created, gmt_modified)
     values (#{caseCorollaryEquipmentId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{useH,jdbcType=VARCHAR}, #{parameterIndexH,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
-      #{maintenanceStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{type,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{category,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{useH,jdbcType=VARCHAR}, #{parameterIndexH,jdbcType=VARCHAR}, 
+      #{price,jdbcType=INTEGER}, #{maintenanceStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseCorollaryEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +138,9 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="category != null" >
         category,
@@ -175,6 +179,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
@@ -226,6 +233,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
@@ -264,6 +274,7 @@
       case_corollary_equipment_id = #{record.caseCorollaryEquipmentId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       category = #{record.category,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       use_h = #{record.useH,jdbcType=VARCHAR},
@@ -288,6 +299,9 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
@@ -324,6 +338,7 @@
     set case_corollary_equipment_id = #{caseCorollaryEquipmentId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       category = #{category,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       use_h = #{useH,jdbcType=VARCHAR},

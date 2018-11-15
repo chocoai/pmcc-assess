@@ -15,6 +15,8 @@ public class BasicEstateLandState {
 
     private Integer landUseType;
 
+    private Boolean temporary;
+
     private Integer landUseCategory;
 
     private Integer landLevel;
@@ -95,6 +97,14 @@ public class BasicEstateLandState {
 
     public void setLandUseType(Integer landUseType) {
         this.landUseType = landUseType;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getLandUseCategory() {

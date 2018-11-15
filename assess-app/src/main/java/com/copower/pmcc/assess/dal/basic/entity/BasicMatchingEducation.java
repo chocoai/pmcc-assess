@@ -17,6 +17,8 @@ public class BasicMatchingEducation {
 
     private String schoolLevel;
 
+    private Boolean temporary;
+
     private Integer distance;
 
     private String creator;
@@ -79,6 +81,14 @@ public class BasicMatchingEducation {
 
     public void setSchoolLevel(String schoolLevel) {
         this.schoolLevel = schoolLevel == null ? null : schoolLevel.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDistance() {

@@ -11,6 +11,8 @@ public class BasicEstateNetwork {
 
     private String name;
 
+    private Boolean temporary;
+
     private String serviceContent;
 
     private String indexParameter;
@@ -51,6 +53,14 @@ public class BasicEstateNetwork {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getServiceContent() {

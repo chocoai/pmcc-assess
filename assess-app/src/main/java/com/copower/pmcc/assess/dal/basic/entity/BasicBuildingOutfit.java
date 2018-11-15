@@ -11,6 +11,8 @@ public class BasicBuildingOutfit {
 
     private Integer buildingId;
 
+    private Boolean temporary;
+
     private Integer decorationPart;
 
     private Integer decoratingMaterial;
@@ -57,6 +59,14 @@ public class BasicBuildingOutfit {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDecorationPart() {

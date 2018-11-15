@@ -15,6 +15,8 @@ public class BasicMatchingTraffic {
 
     private String name;
 
+    private Boolean temporary;
+
     private Integer distance;
 
     private String lineName;
@@ -73,6 +75,14 @@ public class BasicMatchingTraffic {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDistance() {

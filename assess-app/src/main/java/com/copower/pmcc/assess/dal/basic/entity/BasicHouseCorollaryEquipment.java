@@ -11,6 +11,8 @@ public class BasicHouseCorollaryEquipment {
 
     private Integer type;
 
+    private Boolean temporary;
+
     private Integer category;
 
     private String name;
@@ -59,6 +61,14 @@ public class BasicHouseCorollaryEquipment {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getCategory() {

@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="case_room_id" property="caseRoomId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="room_type" property="roomType" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="DECIMAL" />
@@ -80,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_room_id, house_id, room_type, name, area, orientation, aeration, Illumination, 
-    sound_insulation, creator, sunshine, lighting, opening, depth, layer_height, gmt_created, 
-    gmt_modified
+    id, case_room_id, house_id, temporary, room_type, name, area, orientation, aeration, 
+    Illumination, sound_insulation, creator, sunshine, lighting, opening, depth, layer_height, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomExample" >
     select
@@ -118,18 +119,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_room (case_room_id, house_id, room_type, 
-      name, area, orientation, 
-      aeration, Illumination, sound_insulation, 
-      creator, sunshine, lighting, 
-      opening, depth, layer_height, 
-      gmt_created, gmt_modified)
-    values (#{caseRoomId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, 
-      #{aeration,jdbcType=VARCHAR}, #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, 
-      #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DOUBLE}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_room (case_room_id, house_id, temporary, 
+      room_type, name, area, 
+      orientation, aeration, Illumination, 
+      sound_insulation, creator, sunshine, 
+      lighting, opening, depth, 
+      layer_height, gmt_created, gmt_modified
+      )
+    values (#{caseRoomId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, 
+      #{roomType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
+      #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, #{illumination,jdbcType=VARCHAR}, 
+      #{soundInsulation,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
+      #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
+      #{layerHeight,jdbcType=DOUBLE}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +145,9 @@
       </if>
       <if test="houseId != null" >
         house_id,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="roomType != null" >
         room_type,
@@ -195,6 +201,9 @@
       </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="roomType != null" >
         #{roomType,jdbcType=INTEGER},
@@ -261,6 +270,9 @@
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.roomType != null" >
         room_type = #{record.roomType,jdbcType=INTEGER},
       </if>
@@ -316,6 +328,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       case_room_id = #{record.caseRoomId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       room_type = #{record.roomType,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       area = #{record.area,jdbcType=DECIMAL},
@@ -343,6 +356,9 @@
       </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="roomType != null" >
         room_type = #{roomType,jdbcType=INTEGER},
@@ -396,6 +412,7 @@
     update tb_basic_house_room
     set case_room_id = #{caseRoomId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       room_type = #{roomType,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},

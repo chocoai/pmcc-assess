@@ -6,6 +6,7 @@
     <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="basic_building_main_id" property="basicBuildingMainId" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="elevator_household_ratio" property="elevatorHouseholdRatio" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_unit_id, apply_id, basic_building_main_id, unit_number, elevator_household_ratio, 
+    id, case_unit_id, apply_id, basic_building_main_id, temporary, unit_number, elevator_household_ratio, 
     version, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitExample" >
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_unit (case_unit_id, apply_id, basic_building_main_id, 
-      unit_number, elevator_household_ratio, version, 
-      creator, gmt_created, gmt_modified
-      )
+      temporary, unit_number, elevator_household_ratio, 
+      version, creator, gmt_created, 
+      gmt_modified)
     values (#{caseUnitId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{basicBuildingMainId,jdbcType=INTEGER}, 
-      #{unitNumber,jdbcType=VARCHAR}, #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{temporary,jdbcType=BIT}, #{unitNumber,jdbcType=VARCHAR}, #{elevatorHouseholdRatio,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -132,6 +133,9 @@
       </if>
       <if test="basicBuildingMainId != null" >
         basic_building_main_id,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="unitNumber != null" >
         unit_number,
@@ -161,6 +165,9 @@
       </if>
       <if test="basicBuildingMainId != null" >
         #{basicBuildingMainId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
@@ -203,6 +210,9 @@
       <if test="record.basicBuildingMainId != null" >
         basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       </if>
@@ -232,6 +242,7 @@
       case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
@@ -253,6 +264,9 @@
       </if>
       <if test="basicBuildingMainId != null" >
         basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
@@ -280,6 +294,7 @@
     set case_unit_id = #{caseUnitId,jdbcType=INTEGER},
       apply_id = #{applyId,jdbcType=INTEGER},
       basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},

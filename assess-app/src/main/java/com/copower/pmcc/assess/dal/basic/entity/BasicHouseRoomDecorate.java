@@ -13,6 +13,8 @@ public class BasicHouseRoomDecorate {
 
     private Integer material;
 
+    private Boolean temporary;
+
     private String materialPrice;
 
     private String constructionTechnology;
@@ -61,6 +63,14 @@ public class BasicHouseRoomDecorate {
 
     public void setMaterial(Integer material) {
         this.material = material;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getMaterialPrice() {

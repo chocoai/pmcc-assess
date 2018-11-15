@@ -7,6 +7,7 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="street_name" property="streetName" jdbcType="VARCHAR" />
     <result column="street_level" property="streetLevel" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
     <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_face_street_id, house_id, street_name, street_level, traffic_flow, visitors_flowrate, 
-    creator, gmt_created, gmt_modified
+    id, case_face_street_id, house_id, street_name, street_level, temporary, traffic_flow, 
+    visitors_flowrate, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreetExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_face_street (case_face_street_id, house_id, street_name, 
-      street_level, traffic_flow, visitors_flowrate, 
-      creator, gmt_created, gmt_modified
-      )
+      street_level, temporary, traffic_flow, 
+      visitors_flowrate, creator, gmt_created, 
+      gmt_modified)
     values (#{caseFaceStreetId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{streetName,jdbcType=VARCHAR}, 
-      #{streetLevel,jdbcType=INTEGER}, #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{streetLevel,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{trafficFlow,jdbcType=INTEGER}, 
+      #{visitorsFlowrate,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,6 +136,9 @@
       </if>
       <if test="streetLevel != null" >
         street_level,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="trafficFlow != null" >
         traffic_flow,
@@ -164,6 +168,9 @@
       </if>
       <if test="streetLevel != null" >
         #{streetLevel,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="trafficFlow != null" >
         #{trafficFlow,jdbcType=INTEGER},
@@ -206,6 +213,9 @@
       <if test="record.streetLevel != null" >
         street_level = #{record.streetLevel,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.trafficFlow != null" >
         traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       </if>
@@ -233,6 +243,7 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       street_name = #{record.streetName,jdbcType=VARCHAR},
       street_level = #{record.streetLevel,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
       </if>
       <if test="streetLevel != null" >
         street_level = #{streetLevel,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="trafficFlow != null" >
         traffic_flow = #{trafficFlow,jdbcType=INTEGER},
@@ -281,6 +295,7 @@
       house_id = #{houseId,jdbcType=INTEGER},
       street_name = #{streetName,jdbcType=VARCHAR},
       street_level = #{streetLevel,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

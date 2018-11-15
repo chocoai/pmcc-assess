@@ -7,6 +7,7 @@
     <result column="case_function_id" property="caseFunctionId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
@@ -75,8 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, type, case_function_id, building_number, building_id, decoration_part, decorating_material, 
-    material_price, construction_technology, creator, build_number, gmt_created, gmt_modified
+    id, type, case_function_id, building_number, building_id, temporary, decoration_part, 
+    decorating_material, material_price, construction_technology, creator, build_number, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunctionExample" >
     select
@@ -113,13 +115,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_building_function (type, case_function_id, building_number, 
-      building_id, decoration_part, decorating_material, 
-      material_price, construction_technology, 
+      building_id, temporary, decoration_part, 
+      decorating_material, material_price, construction_technology, 
       creator, build_number, gmt_created, 
       gmt_modified)
     values (#{type,jdbcType=INTEGER}, #{caseFunctionId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
-      #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
+      #{buildingId,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{decorationPart,jdbcType=INTEGER}, 
+      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{buildNumber,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -140,6 +142,9 @@
       </if>
       <if test="buildingId != null" >
         building_id,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="decorationPart != null" >
         decoration_part,
@@ -178,6 +183,9 @@
       </if>
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="decorationPart != null" >
         #{decorationPart,jdbcType=INTEGER},
@@ -229,6 +237,9 @@
       <if test="record.buildingId != null" >
         building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.decorationPart != null" >
         decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       </if>
@@ -265,6 +276,7 @@
       case_function_id = #{record.caseFunctionId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_id = #{record.buildingId,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       material_price = #{record.materialPrice,jdbcType=INTEGER},
@@ -291,6 +303,9 @@
       </if>
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="decorationPart != null" >
         decoration_part = #{decorationPart,jdbcType=INTEGER},
@@ -325,6 +340,7 @@
       case_function_id = #{caseFunctionId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       material_price = #{materialPrice,jdbcType=INTEGER},

@@ -11,6 +11,8 @@ public class BasicUnit {
 
     private Integer basicBuildingMainId;
 
+    private Boolean temporary;
+
     private String unitNumber;
 
     private String elevatorHouseholdRatio;
@@ -53,6 +55,14 @@ public class BasicUnit {
 
     public void setBasicBuildingMainId(Integer basicBuildingMainId) {
         this.basicBuildingMainId = basicBuildingMainId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getUnitNumber() {

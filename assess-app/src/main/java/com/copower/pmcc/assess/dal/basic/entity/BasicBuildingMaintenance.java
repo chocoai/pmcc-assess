@@ -13,6 +13,8 @@ public class BasicBuildingMaintenance {
 
     private String name;
 
+    private Boolean temporary;
+
     private Integer category;
 
     private Integer materialQuality;
@@ -63,6 +65,14 @@ public class BasicBuildingMaintenance {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getCategory() {

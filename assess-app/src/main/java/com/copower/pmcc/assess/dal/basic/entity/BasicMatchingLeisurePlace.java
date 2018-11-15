@@ -11,6 +11,8 @@ public class BasicMatchingLeisurePlace {
 
     private String type;
 
+    private Boolean temporary;
+
     private String name;
 
     private Integer category;
@@ -55,6 +57,14 @@ public class BasicMatchingLeisurePlace {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getName() {

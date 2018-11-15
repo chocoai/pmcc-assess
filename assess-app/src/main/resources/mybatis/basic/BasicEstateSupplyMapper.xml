@@ -7,6 +7,7 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="reputation" property="reputation" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="VARCHAR" />
     <result column="line_grade" property="lineGrade" jdbcType="VARCHAR" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, estate_id, type, name, reputation, grade, line_grade, power, creator, 
-    gmt_created, gmt_modified
+    id, case_id, estate_id, type, name, temporary, reputation, grade, line_grade, power, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateSupplyExample" >
     select
@@ -112,13 +113,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_supply (case_id, estate_id, type, 
-      name, reputation, grade, 
-      line_grade, power, creator, 
-      gmt_created, gmt_modified)
+      name, temporary, reputation, 
+      grade, line_grade, power, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{reputation,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
-      #{lineGrade,jdbcType=VARCHAR}, #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{name,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, #{reputation,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=VARCHAR}, #{lineGrade,jdbcType=VARCHAR}, #{power,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateSupply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +140,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="reputation != null" >
         reputation,
@@ -172,6 +178,9 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="reputation != null" >
         #{reputation,jdbcType=VARCHAR},
@@ -220,6 +229,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.reputation != null" >
         reputation = #{record.reputation,jdbcType=VARCHAR},
       </if>
@@ -253,6 +265,7 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       reputation = #{record.reputation,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=VARCHAR},
       line_grade = #{record.lineGrade,jdbcType=VARCHAR},
@@ -278,6 +291,9 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="reputation != null" >
         reputation = #{reputation,jdbcType=VARCHAR},
@@ -309,6 +325,7 @@
       estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       reputation = #{reputation,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=VARCHAR},
       line_grade = #{lineGrade,jdbcType=VARCHAR},

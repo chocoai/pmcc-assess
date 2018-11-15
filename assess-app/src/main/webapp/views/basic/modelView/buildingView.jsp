@@ -9,13 +9,9 @@
     <form class="form-horizontal">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">
-                    楼栋编号
-                </label>
                 <div class="col-sm-3">
                     <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId">
-                    <input type="text" placeholder="楼栋编号 (必要的查询下面楼栋所需)" name="identifier"
-                           class="form-control" id="identifier">
+                    <input type="hidden" name="identifier" id="identifier">
                 </div>
             </div>
         </div>

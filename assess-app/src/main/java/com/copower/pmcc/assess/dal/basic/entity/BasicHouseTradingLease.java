@@ -13,6 +13,8 @@ public class BasicHouseTradingLease {
 
     private Date rentPaymentTimeEnd;
 
+    private Boolean temporary;
+
     private String rentGrowthRate;
 
     private String creator;
@@ -61,6 +63,14 @@ public class BasicHouseTradingLease {
 
     public void setRentPaymentTimeEnd(Date rentPaymentTimeEnd) {
         this.rentPaymentTimeEnd = rentPaymentTimeEnd;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getRentGrowthRate() {

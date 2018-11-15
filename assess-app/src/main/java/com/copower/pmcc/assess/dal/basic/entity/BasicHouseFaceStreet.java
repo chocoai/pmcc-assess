@@ -13,6 +13,8 @@ public class BasicHouseFaceStreet {
 
     private Integer streetLevel;
 
+    private Boolean temporary;
+
     private Integer trafficFlow;
 
     private Integer visitorsFlowrate;
@@ -61,6 +63,14 @@ public class BasicHouseFaceStreet {
 
     public void setStreetLevel(Integer streetLevel) {
         this.streetLevel = streetLevel;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getTrafficFlow() {

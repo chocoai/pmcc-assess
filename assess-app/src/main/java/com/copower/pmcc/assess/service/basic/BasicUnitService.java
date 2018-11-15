@@ -45,7 +45,7 @@ public class BasicUnitService {
     private BasicUnitDao basicUnitDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
+    public void initUpdateSon(Integer oldId, Integer newId,BasicUnit basicUnit) throws Exception {
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
         BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
         BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
@@ -79,18 +79,21 @@ public class BasicUnitService {
             if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
                 for (BasicUnitHuxing oo : basicUnitHuxingList) {
                     oo.setUnitId(newId);
+                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
                 for (BasicUnitElevator oo : basicUnitElevatorList) {
                     oo.setUnitId(newId);
+                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitElevatorService.saveAndUpdateBasicUnitElevator(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
                 for (BasicUnitDecorate oo : basicUnitDecorateList) {
                     oo.setUnitId(newId);
+                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(oo);
                 }
             }
@@ -119,7 +122,7 @@ public class BasicUnitService {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
-            this.initUpdateSon(0, id);
+            this.initUpdateSon(0, id,basicUnit);
             return id;
         } else {
             basicUnitDao.updateBasicUnit(basicUnit);
@@ -132,7 +135,7 @@ public class BasicUnitService {
             basicUnit.setCreator(commonService.thisUserAccount());
             basicUnit.setVersion(0);
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
-            this.initUpdateSon(0, id);
+            this.initUpdateSon(0, id,basicUnit);
             basicUnit.setId(id);
         } else {
             BasicUnit oo = this.getBasicUnitById(basicUnit.getId());

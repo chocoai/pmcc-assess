@@ -54,6 +54,8 @@ public class BasicHouseTrading {
 
     private String phone;
 
+    private Boolean temporary;
+
     private String information;
 
     private Integer version;
@@ -260,6 +262,14 @@ public class BasicHouseTrading {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getInformation() {

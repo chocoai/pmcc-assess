@@ -11,6 +11,8 @@ public class BasicHouse {
 
     private Integer unitId;
 
+    private Boolean temporary;
+
     private String houseNumber;
 
     private Integer floor;
@@ -71,6 +73,14 @@ public class BasicHouse {
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getHouseNumber() {

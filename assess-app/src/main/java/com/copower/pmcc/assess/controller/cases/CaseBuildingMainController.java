@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -76,7 +78,7 @@ public class CaseBuildingMainController {
                         modelAndView.addObject("fourCaseBuilding", caseBuildingList.get(3));
                     }
                 }
-                modelAndView.addObject("caseBuildingMain",caseBuildingMain);
+                modelAndView.addObject("caseBuildingMain", caseBuildingMain);
             }
         }
         return modelAndView;
@@ -86,15 +88,26 @@ public class CaseBuildingMainController {
     @RequestMapping(value = "/getcaseBuildingMainById", method = {RequestMethod.GET}, name = "获取案例 楼栋--")
     public HttpResult getCaseBuildingById(Integer id) {
         CaseBuildingMain caseBuildingMain = null;
+        List<CaseBuilding> caseBuildingList = null;
         try {
             if (id != null) {
+                CaseBuilding query = new CaseBuilding();
+                query.setCaseBuildingMainId(id);
+                caseBuildingList = caseBuildingService.getCaseBuildingList(query);
                 caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(id);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(caseBuildingMain);
+        Map<String, Object> objectMap = new HashMap<String, Object>(2);
+        if (caseBuildingMain != null) {
+            objectMap.put("caseBuildingMain", caseBuildingMain);
+        }
+        if (!ObjectUtils.isEmpty(caseBuildingList)) {
+            objectMap.put("caseBuildingList", caseBuildingList);
+        }
+        return HttpResult.newCorrectResult(objectMap);
     }
 
     @ResponseBody

@@ -13,6 +13,8 @@ public class BasicHouseIntelligent {
 
     private Integer switchCircuit;
 
+    private Boolean temporary;
+
     private Integer lampsLanterns;
 
     private Integer internalCommunication;
@@ -65,6 +67,14 @@ public class BasicHouseIntelligent {
 
     public void setSwitchCircuit(Integer switchCircuit) {
         this.switchCircuit = switchCircuit;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getLampsLanterns() {

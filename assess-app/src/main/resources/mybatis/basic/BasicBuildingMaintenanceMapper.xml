@@ -7,6 +7,7 @@
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="material_quality" property="materialQuality" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_maintenance_id, building_number, building_id, name, category, material_quality, 
-    creator, gmt_created, gmt_modified, build_number
+    id, case_maintenance_id, building_number, building_id, name, temporary, category, 
+    material_quality, creator, gmt_created, gmt_modified, build_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMaintenanceExample" >
     select
@@ -111,13 +112,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_building_maintenance (case_maintenance_id, building_number, 
-      building_id, name, category, 
-      material_quality, creator, gmt_created, 
-      gmt_modified, build_number)
+      building_id, name, temporary, 
+      category, material_quality, creator, 
+      gmt_created, gmt_modified, build_number
+      )
     values (#{caseMaintenanceId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
-      #{materialQuality,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{buildNumber,jdbcType=VARCHAR})
+      #{buildingId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, 
+      #{category,jdbcType=INTEGER}, #{materialQuality,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{buildNumber,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMaintenance" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -136,6 +139,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="category != null" >
         category,
@@ -168,6 +174,9 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
@@ -213,6 +222,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
       </if>
@@ -243,6 +255,7 @@
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_id = #{record.buildingId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       category = #{record.category,jdbcType=INTEGER},
       material_quality = #{record.materialQuality,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -267,6 +280,9 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
@@ -295,6 +311,7 @@
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       category = #{category,jdbcType=INTEGER},
       material_quality = #{materialQuality,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

@@ -90,7 +90,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/initEstate", name = "初始化", method = {RequestMethod.POST})
     public HttpResult initUpdateSon(){
         try {
-            basicEstateService.initUpdateSon(0,null);
+            basicEstateService.initUpdateSon(0,null,null);
             return HttpResult.newCorrectResult("success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

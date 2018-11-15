@@ -11,6 +11,8 @@ public class BasicHouseWater {
 
     private Integer supplyErectionMethod;
 
+    private Boolean temporary;
+
     private String intakePointNumber;
 
     private Integer pretreatedWater;
@@ -67,6 +69,14 @@ public class BasicHouseWater {
 
     public void setSupplyErectionMethod(Integer supplyErectionMethod) {
         this.supplyErectionMethod = supplyErectionMethod;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getIntakePointNumber() {

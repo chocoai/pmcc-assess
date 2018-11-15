@@ -10,6 +10,8 @@ public class BasicHouseRoom {
 
     private Integer houseId;
 
+    private Boolean temporary;
+
     private Integer roomType;
 
     private String name;
@@ -62,6 +64,14 @@ public class BasicHouseRoom {
 
     public void setHouseId(Integer houseId) {
         this.houseId = houseId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getRoomType() {

@@ -8,6 +8,7 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="land_use_type" property="landUseType" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="land_use_category" property="landUseCategory" jdbcType="INTEGER" />
     <result column="land_level" property="landLevel" jdbcType="INTEGER" />
     <result column="land_area" property="landArea" jdbcType="VARCHAR" />
@@ -85,10 +86,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_estate_land_state_id, apply_id, estate_id, name, land_use_type, land_use_category, 
-    land_level, land_area, east_to, south_to, west_to, north_to, shape_state, planeness, 
-    development_degree, restrictive_condition, soil, topographic_terrain, creator, version, 
-    gmt_created, gmt_modified
+    id, case_estate_land_state_id, apply_id, estate_id, name, land_use_type, temporary, 
+    land_use_category, land_level, land_area, east_to, south_to, west_to, north_to, shape_state, 
+    planeness, development_degree, restrictive_condition, soil, topographic_terrain, 
+    creator, version, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandStateExample" >
     select
@@ -125,21 +126,23 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_land_state (case_estate_land_state_id, apply_id, estate_id, 
-      name, land_use_type, land_use_category, 
-      land_level, land_area, east_to, 
-      south_to, west_to, north_to, 
-      shape_state, planeness, development_degree, 
-      restrictive_condition, soil, topographic_terrain, 
-      creator, version, gmt_created, 
-      gmt_modified)
+      name, land_use_type, temporary, 
+      land_use_category, land_level, land_area, 
+      east_to, south_to, west_to, 
+      north_to, shape_state, planeness, 
+      development_degree, restrictive_condition, 
+      soil, topographic_terrain, creator, 
+      version, gmt_created, gmt_modified
+      )
     values (#{caseEstateLandStateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, #{landUseCategory,jdbcType=INTEGER}, 
-      #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, #{eastTo,jdbcType=VARCHAR}, 
-      #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, #{northTo,jdbcType=VARCHAR}, 
-      #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, #{developmentDegree,jdbcType=VARCHAR}, 
-      #{restrictiveCondition,jdbcType=VARCHAR}, #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, 
+      #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
+      #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
+      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, 
+      #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
+      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -161,6 +164,9 @@
       </if>
       <if test="landUseType != null" >
         land_use_type,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="landUseCategory != null" >
         land_use_category,
@@ -229,6 +235,9 @@
       </if>
       <if test="landUseType != null" >
         #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="landUseCategory != null" >
         #{landUseCategory,jdbcType=INTEGER},
@@ -310,6 +319,9 @@
       <if test="record.landUseType != null" >
         land_use_type = #{record.landUseType,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.landUseCategory != null" >
         land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
       </if>
@@ -374,6 +386,7 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       land_use_type = #{record.landUseType,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       land_use_category = #{record.landUseCategory,jdbcType=INTEGER},
       land_level = #{record.landLevel,jdbcType=INTEGER},
       land_area = #{record.landArea,jdbcType=VARCHAR},
@@ -412,6 +425,9 @@
       </if>
       <if test="landUseType != null" >
         land_use_type = #{landUseType,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="landUseCategory != null" >
         land_use_category = #{landUseCategory,jdbcType=INTEGER},
@@ -474,6 +490,7 @@
       estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       land_use_type = #{landUseType,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       land_use_category = #{landUseCategory,jdbcType=INTEGER},
       land_level = #{landLevel,jdbcType=INTEGER},
       land_area = #{landArea,jdbcType=VARCHAR},

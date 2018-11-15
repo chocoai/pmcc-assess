@@ -15,6 +15,8 @@ public class BasicMatchingMaterial {
 
     private Integer scale;
 
+    private Boolean temporary;
+
     private Integer distance;
 
     private String creator;
@@ -69,6 +71,14 @@ public class BasicMatchingMaterial {
 
     public void setScale(Integer scale) {
         this.scale = scale;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDistance() {

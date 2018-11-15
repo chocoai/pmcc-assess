@@ -204,17 +204,23 @@
             </div>
 
             <div class="x_panel">
+
                 <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
+                    <div class="col-sm-5 col-sm-offset-5">
+                        <button class="btn btn-success" onclick="temporary();">
+                            临时提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
+                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            取消
+                        </button>
                     </div>
+
                 </div>
             </div>
+
 
         </div>
     </div>
@@ -282,8 +288,11 @@
      */
     objectData.isNotBlankObjectProperty = function (obj) {
         for (var key in obj) {
-            if (objectData.isNotBlank(obj[key])) {
-                return true;
+            //跳过下面四个input
+            if (key != 'name' && key != 'houseNumber' && key != 'buildingNumber' && key!= 'unitNumber'){
+                if (objectData.isNotBlank(obj[key])) {
+                    return true;
+                }
             }
         }
         return false
@@ -302,6 +311,8 @@
     objectData.select2Assignment = function (frm, data, name) {
         if (objectData.isNotBlank(data)) {
             $("#" + frm).find("select." + name).val(data).trigger("change");
+            $("#" + frm).find("select[name='" + name+"']").val(data).trigger("change");
+            $("#" + frm).find("select[name='" + name+"']").val(data);
         } else {
             $("#" + frm).find("select." + name).val(null).trigger("change");
         }
@@ -565,22 +576,17 @@
 
 
     objectData.estateFlag = true;
-    objectData.versionEstateFlag = false;
     //处理 楼盘
     objectData.estate = {
         show: function (itemA, itemB) {
             $('#caseTab a:first').tab('show');
-            $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.save).show();
-            $("#" + objectData.config.basicEstate.frm).find("." + objectData.config.view.detail).hide();
-            $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.save).show();
-            $("#" + objectData.config.basicEstate.frmLandState).find("." + objectData.config.view.detail).hide();
             if (objectData.estateFlag) {
                 objectData.estate.init(itemA);
                 objectData.estate.landStateInit(itemB);
                 objectData.estateFlag = false;
             }
             $("#profile-tab1").attr("data-toggle", "tab");
-            // $("#" + objectData.config.basicEstate.frm).initForm({name:$("#"+objectData.config.id).find("input[name='"+objectData.config.basicEstate.key+"']").val()});
+            $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
             estateNetwork.prototype.loadDataDicList();
             estateParking.prototype.loadDataDicList();
             estateSupplyWater.prototype.loadDataDicList();
@@ -610,7 +616,9 @@
             $("#" + objectData.config.basicEstate.frm).clearAll();
             $("#" + objectData.config.basicEstate.frmLandState).clearAll();
             objectData.firstRemove.estateFirst();
-            objectData.estate.appWriteEstate(estateId, function (data) {
+
+            objectData.estate.appWriteEstate(estateId,
+            function (data) {
                 toastr.success('数据转移成功!');
                 var CaseEstate = data.CaseEstate;
                 var CaseEstateLandState = data.CaseEstateLandState;
@@ -623,12 +631,17 @@
                 $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
                 $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
                 objectData.estate.show(CaseEstate, CaseEstateLandState);
-            }, function (item) {
+            },
+            function (item) {
                 objectData.estate.show({}, {});
                 Alert("失败!" + item);
             });
         },
         init: function (item) {
+            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyHeating, "supplyHeating");
+            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyPower, "supplyPower");
+            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyWater, "supplyWater");
+            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyGas, "supplyGas");
             $.each(objectData.config.basicEstate.files, function (i, n) {
                 objectData.uploadFile(n, AssessDBKey.BasicEstate, objectData.isNotBlank(item.id) ? item.id : 0);
             });
@@ -664,7 +677,6 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-            objectData.estate.versionInit();
         },
         //开发商选择
         developerSelect: function (this_) {
@@ -724,30 +736,10 @@
                     }
                 }
             });
-        },
-        //input 和 select 被触发 说明已经开发新增或者修改数据了 ==> 版本需要更新
-        versionInit: function () {
-            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("input").each(function (i, n) {
-                $(n).blur(function () {
-                    var str = $(n).val();
-                    if (objectData.isNotBlank(str)) {
-                        objectData.versionEstateFlag = true;
-                    }
-                });
-            });
-            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select").each(function (i, n) {
-                $(n).change(function () {
-                    var str = $(n).val();
-                    if (objectData.isNotBlank(str)) {
-                        objectData.versionEstateFlag = true;
-                    }
-                });
-            });
         }
     };
 
     //处理 楼栋
-    objectData.versionBuildingFlag = false;
     objectData.buildingFlag = true;
     objectData.building = {
         show: function (item) {
@@ -756,6 +748,8 @@
                 objectData.buildingFlag = false;
             }
             $("#profile-tab2").attr("data-toggle", "tab");
+            $("#identifier").val($("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val());
+            $("#" + objectData.config.basicBuilding.frm).initForm({buildingNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val()});
         },
         edit: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
@@ -770,38 +764,26 @@
                 data: {id: buildingId},
                 success: function (result) {
                     if (result.ret) {
-                        if (objectData.isNotBlankObjectProperty(result.data)) {
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/caseBuilding/listCaseBuilding",
-                                type: "get",
-                                dataType: "json",
-                                data: {caseBuildingMainId: result.data.id},
-                                success: function (resultA) {
-                                    if (resultA.ret) {
-                                        if (objectData.isNotBlank(resultA.data)) {
-                                            $.each(resultA.data, function (i, n) {
-                                                if (objectData.isNotBlank(n.part)) {
-                                                    navButtonBuild.setObjArrayElement(n.part, n);
-                                                }
-                                            });
-                                            $("#identifier").val(result.data.identifier);
-                                            $("#caseBuildingMainId").val(result.data.id);
-                                            var temp = resultA.data[0];
-                                            $("#profile-tab2").attr("data-toggle", "tab");
-                                            if (objectData.isNotBlankObjectProperty(temp)) {
-                                                objectData.firstRemove.buildFirst();
-                                                objectData.building.appWriteBuilding(temp);
-                                            } else {
-                                                objectData.building.show({});
-                                            }
-                                        }
-                                    }
-                                },
-                                error: function (result) {
-                                    Alert("调用服务端方法失败，失败原因:" + result);
+                        objectData.firstRemove.buildFirst();
+                        var caseBuildingMain = result.data.caseBuildingMain;
+                        var caseBuildingList = result.data.caseBuildingList;
+
+                        objectData.building.appWriteBuilding(caseBuildingMain.id,
+                        function () {
+                            toastr.success('数据转移成功!');
+                            $("#identifier").val(caseBuildingMain.identifier);
+                            $("#caseBuildingMainId").val(caseBuildingMain.id);
+                            $.each(caseBuildingList, function (i, n) {
+                                if (objectData.isNotBlank(n.part)) {
+                                    navButtonBuild.setObjArrayElement(n.part, n);
                                 }
                             });
-                        }
+                            $("#profile-tab2").attr("data-toggle", "tab");
+                            objectData.building.init({});
+                        },
+                        function (data) {
+                            Alert("失败!"+data);
+                        });
                     }
                 },
                 error: function (result) {
@@ -809,20 +791,26 @@
                 }
             });
         },
-        appWriteBuilding: function (temp) {
-            var caseMainBuildId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        appWriteBuilding: function (id, callback, callbackError) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicBuilding/appWriteBuilding",
                 type: "post",
-                data: {caseMainBuildId: caseMainBuildId},
+                data: {caseMainBuildId: id},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        objectData.building.show(temp);
+                        if (result.ret && callback) {
+                            callback(result.data);
+                        }
+                        if (!result.ret && callbackError) {
+                            callbackError("未获取到数据!");
+                        }
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    if (!result.ret && callbackError) {
+                        callbackError(result.errmsg);
+                    }
                 }
             });
         },
@@ -870,14 +858,10 @@
                 $(this_).parent().prev().prev().val(row.id);
                 navButtonBuild.tempSaveData();
             });
-        },
-        versionInit: function () {
-
         }
     };
 
     //处理单元
-    objectData.versionUnitFlag = false;
     objectData.unit = {
         show: function () {
             var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
@@ -885,12 +869,10 @@
             }
             $("#profile-tab3").attr("data-toggle", "tab");
             $('#caseTab a').eq(2).tab('show');
-            $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.save).show();
-            $("#" + objectData.config.basicUnit.frm).find("." + objectData.config.view.detail).hide();
             unitDecorate.prototype.loadDataDicList();
             unitHuxing.prototype.loadDataDicList();
             unitElevator.prototype.loadDataDicList();
-            // $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
+            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
         },
         edit: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -899,11 +881,14 @@
                 return false;
             }
             objectData.firstRemove.unitFirst();
-            objectData.unit.appWriteUnit(unitId, function (data) {
+
+            objectData.unit.appWriteUnit(unitId,
+            function (data) {
                 toastr.success('数据转移成功!');
                 $("#" + objectData.config.basicUnit.frm).initForm(data);
                 objectData.unit.show();
-            }, function () {
+            },
+            function () {
                 objectData.unit.show();
             });
         },
@@ -932,7 +917,6 @@
 
     //处理房屋
     objectData.houseFlag = true;
-    objectData.versionHouseFlag = false;
     objectData.house = {
         show: function () {
             var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
@@ -940,10 +924,6 @@
             }
             $('#caseTab a').eq(3).tab('show');
             $("#profile-tab4").attr("data-toggle", "tab");
-            $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.save).show();
-            $("#" + objectData.config.basicHouse.frm).find("." + objectData.config.view.detail).hide();
-            $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.save).show();
-            $("#" + objectData.config.basicHouse.tradingFrm).find("." + objectData.config.view.detail).hide();
             if (objectData.houseFlag) {
                 houseModelFun.houseInit({});
                 houseModelFun.tradingInit({});
@@ -957,7 +937,7 @@
             houseNewWind.prototype.loadDataDicList();
             houseAirConditioner.prototype.loadDataDicList();
             houseHeating.prototype.loadDataDicList();
-            // $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
+            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
         },
         edit: function () {
             var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
@@ -966,7 +946,9 @@
                 return false;
             }
             objectData.firstRemove.houseFirst();
-            objectData.house.appWriteHouse(id, function (data) {
+
+            objectData.house.appWriteHouse(id,
+            function (data) {
                 var CaseHouseTrading = data.CaseHouseTrading;
                 var CaseHouse = data.CaseHouse;
                 if (!objectData.isNotBlank(CaseHouseTrading)) {
@@ -979,7 +961,8 @@
                 houseModelFun.houseInit(CaseHouse);
                 houseModelFun.tradingInit(CaseHouseTrading);
                 toastr.success('数据转移成功!');
-            }, function (item) {
+            },
+            function (item) {
                 objectData.house.show();
                 Alert("失败!" + item);
             });
@@ -1014,6 +997,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicHouse/initHouse",
                 type: "post",
+                async:false,
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -1030,6 +1014,7 @@
                 url: "${pageContext.request.contextPath}/basicEstate/initEstate",
                 type: "post",
                 dataType: "json",
+                async:false,
                 success: function (result) {
                     if (result.ret) {
                         // toastr.success('楼盘删除临时数据!');
@@ -1045,6 +1030,7 @@
                 url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
                 type: "post",
                 dataType: "json",
+                async:false,
                 success: function (result) {
                     if (result.ret) {
                         // toastr.success('楼栋删除临时数据!');
@@ -1262,6 +1248,34 @@
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {formData: formData},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        objectData.successClear();
+                    });
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    //临时保存
+    function temporary() {
+        if (!objectData.valid()) {
+            return false;
+        }
+        var data = objectData.formParams();
+        var formData = JSON.stringify(data);
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApply/temporary",
             type: "post",
             dataType: "json",
             async: false,

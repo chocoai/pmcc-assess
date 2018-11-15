@@ -11,6 +11,8 @@ public class BasicMatchingEnvironment {
 
     private String type;
 
+    private Boolean temporary;
+
     private Integer category;
 
     private Integer influenceDegree;
@@ -51,6 +53,14 @@ public class BasicMatchingEnvironment {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getCategory() {

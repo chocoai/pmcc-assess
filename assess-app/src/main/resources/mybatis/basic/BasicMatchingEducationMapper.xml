@@ -9,6 +9,7 @@
     <result column="school_nature" property="schoolNature" jdbcType="INTEGER" />
     <result column="school_gradation" property="schoolGradation" jdbcType="INTEGER" />
     <result column="school_level" property="schoolLevel" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, case_id, estate_id, school_name, school_nature, school_gradation, school_level, 
-    distance, creator, gmt_created, gmt_modified
+    temporary, distance, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEducationExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_basic_matching_education (case_id, estate_id, school_name, 
       school_nature, school_gradation, school_level, 
-      distance, creator, gmt_created, 
-      gmt_modified)
+      temporary, distance, creator, 
+      gmt_created, gmt_modified)
     values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{schoolName,jdbcType=VARCHAR}, 
       #{schoolNature,jdbcType=INTEGER}, #{schoolGradation,jdbcType=INTEGER}, #{schoolLevel,jdbcType=VARCHAR}, 
-      #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{temporary,jdbcType=BIT}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEducation" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +143,9 @@
       </if>
       <if test="schoolLevel != null" >
         school_level,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="distance != null" >
         distance,
@@ -174,6 +178,9 @@
       </if>
       <if test="schoolLevel != null" >
         #{schoolLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=INTEGER},
@@ -219,6 +226,9 @@
       <if test="record.schoolLevel != null" >
         school_level = #{record.schoolLevel,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=INTEGER},
       </if>
@@ -245,6 +255,7 @@
       school_nature = #{record.schoolNature,jdbcType=INTEGER},
       school_gradation = #{record.schoolGradation,jdbcType=INTEGER},
       school_level = #{record.schoolLevel,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       distance = #{record.distance,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -274,6 +285,9 @@
       <if test="schoolLevel != null" >
         school_level = #{schoolLevel,jdbcType=VARCHAR},
       </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
+      </if>
       <if test="distance != null" >
         distance = #{distance,jdbcType=INTEGER},
       </if>
@@ -297,6 +311,7 @@
       school_nature = #{schoolNature,jdbcType=INTEGER},
       school_gradation = #{schoolGradation,jdbcType=INTEGER},
       school_level = #{schoolLevel,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       distance = #{distance,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

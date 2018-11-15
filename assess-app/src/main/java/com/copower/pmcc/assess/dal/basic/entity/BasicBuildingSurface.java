@@ -11,6 +11,8 @@ public class BasicBuildingSurface {
 
     private Integer buildingId;
 
+    private Boolean temporary;
+
     private Integer structure;
 
     private String description;
@@ -53,6 +55,14 @@ public class BasicBuildingSurface {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getStructure() {

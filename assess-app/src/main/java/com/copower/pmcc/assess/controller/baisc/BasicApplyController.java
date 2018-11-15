@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.basic.TemporaryBasicService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -46,6 +47,8 @@ public class BasicApplyController {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private TemporaryBasicService temporaryBasicService;
 
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
@@ -113,7 +116,7 @@ public class BasicApplyController {
     /**
      * 设置参数
      *
-     * @param processInsId
+     * @param basicApply
      * @param modelAndView
      * @throws Exception
      */
@@ -197,6 +200,18 @@ public class BasicApplyController {
             logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/temporary", name = "临时 提交",method = {RequestMethod.POST})
+    public HttpResult temporary(String formData) {
+        try {
+            temporaryBasicService.saveBasic(formData);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult(e1);
+        }
     }
 
 

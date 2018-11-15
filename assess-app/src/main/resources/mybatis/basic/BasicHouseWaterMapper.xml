@@ -6,6 +6,7 @@
     <result column="case_house_water_id" property="caseHouseWaterId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="supply_erection_method" property="supplyErectionMethod" jdbcType="INTEGER" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="intake_point_number" property="intakePointNumber" jdbcType="VARCHAR" />
     <result column="pretreated_water" property="pretreatedWater" jdbcType="INTEGER" />
     <result column="purification_equipment" property="purificationEquipment" jdbcType="VARCHAR" />
@@ -79,8 +80,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_house_water_id, house_id, supply_erection_method, intake_point_number, pretreated_water, 
-    purification_equipment, purification_equipment_price, natrue_intake_point_number, 
+    id, case_house_water_id, house_id, supply_erection_method, temporary, intake_point_number, 
+    pretreated_water, purification_equipment, purification_equipment_price, natrue_intake_point_number, 
     water_intake_equipment, water_intake_equipment_price, drainage_erection_method, drainage_circuit, 
     drainage_circuit_count, creator, gmt_created, gmt_modified
   </sql>
@@ -119,19 +120,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_water (case_house_water_id, house_id, supply_erection_method, 
-      intake_point_number, pretreated_water, purification_equipment, 
-      purification_equipment_price, natrue_intake_point_number, 
-      water_intake_equipment, water_intake_equipment_price, 
-      drainage_erection_method, drainage_circuit, 
-      drainage_circuit_count, creator, gmt_created, 
-      gmt_modified)
+      temporary, intake_point_number, pretreated_water, 
+      purification_equipment, purification_equipment_price, 
+      natrue_intake_point_number, water_intake_equipment, 
+      water_intake_equipment_price, drainage_erection_method, 
+      drainage_circuit, drainage_circuit_count, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{caseHouseWaterId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{supplyErectionMethod,jdbcType=INTEGER}, 
-      #{intakePointNumber,jdbcType=VARCHAR}, #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
-      #{purificationEquipmentPrice,jdbcType=VARCHAR}, #{natrueIntakePointNumber,jdbcType=VARCHAR}, 
-      #{waterIntakeEquipment,jdbcType=VARCHAR}, #{waterIntakeEquipmentPrice,jdbcType=VARCHAR}, 
-      #{drainageErectionMethod,jdbcType=VARCHAR}, #{drainageCircuit,jdbcType=INTEGER}, 
-      #{drainageCircuitCount,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{temporary,jdbcType=BIT}, #{intakePointNumber,jdbcType=VARCHAR}, #{pretreatedWater,jdbcType=INTEGER}, 
+      #{purificationEquipment,jdbcType=VARCHAR}, #{purificationEquipmentPrice,jdbcType=VARCHAR}, 
+      #{natrueIntakePointNumber,jdbcType=VARCHAR}, #{waterIntakeEquipment,jdbcType=VARCHAR}, 
+      #{waterIntakeEquipmentPrice,jdbcType=VARCHAR}, #{drainageErectionMethod,jdbcType=VARCHAR}, 
+      #{drainageCircuit,jdbcType=INTEGER}, #{drainageCircuitCount,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseWater" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -147,6 +150,9 @@
       </if>
       <if test="supplyErectionMethod != null" >
         supply_erection_method,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="intakePointNumber != null" >
         intake_point_number,
@@ -197,6 +203,9 @@
       </if>
       <if test="supplyErectionMethod != null" >
         #{supplyErectionMethod,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="intakePointNumber != null" >
         #{intakePointNumber,jdbcType=VARCHAR},
@@ -260,6 +269,9 @@
       <if test="record.supplyErectionMethod != null" >
         supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.intakePointNumber != null" >
         intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
       </if>
@@ -310,6 +322,7 @@
       case_house_water_id = #{record.caseHouseWaterId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
+      temporary = #{record.temporary,jdbcType=BIT},
       intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
       pretreated_water = #{record.pretreatedWater,jdbcType=INTEGER},
       purification_equipment = #{record.purificationEquipment,jdbcType=VARCHAR},
@@ -338,6 +351,9 @@
       </if>
       <if test="supplyErectionMethod != null" >
         supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
+      </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="intakePointNumber != null" >
         intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
@@ -386,6 +402,7 @@
     set case_house_water_id = #{caseHouseWaterId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
       supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
+      temporary = #{temporary,jdbcType=BIT},
       intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},
       purification_equipment = #{purificationEquipment,jdbcType=VARCHAR},

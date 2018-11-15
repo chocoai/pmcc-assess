@@ -14,6 +14,8 @@ public class BasicEstate {
 
     private String city;
 
+    private Boolean temporary;
+
     private String district;
 
     private Integer blockId;
@@ -104,6 +106,14 @@ public class BasicEstate {
 
     public void setCity(String city) {
         this.city = city == null ? null : city.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getDistrict() {

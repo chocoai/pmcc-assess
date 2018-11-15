@@ -12,6 +12,8 @@ public class BasicBuilding {
 
     private Integer basicBuildingMainId;
 
+    private Boolean temporary;
+
     private Integer builderId;
 
     private Date beCompletedTime;
@@ -104,6 +106,14 @@ public class BasicBuilding {
 
     public void setBasicBuildingMainId(Integer basicBuildingMainId) {
         this.basicBuildingMainId = basicBuildingMainId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getBuilderId() {

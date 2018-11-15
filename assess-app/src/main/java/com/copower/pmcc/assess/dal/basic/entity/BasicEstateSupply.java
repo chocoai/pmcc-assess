@@ -13,6 +13,8 @@ public class BasicEstateSupply {
 
     private String name;
 
+    private Boolean temporary;
+
     private String reputation;
 
     private String grade;
@@ -65,6 +67,14 @@ public class BasicEstateSupply {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getReputation() {

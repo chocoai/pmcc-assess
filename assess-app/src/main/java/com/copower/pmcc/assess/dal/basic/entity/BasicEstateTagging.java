@@ -15,6 +15,8 @@ public class BasicEstateTagging {
 
     private String lat;
 
+    private Boolean temporary;
+
     private String buildingNumber;
 
     private String unitNumber;
@@ -75,6 +77,14 @@ public class BasicEstateTagging {
 
     public void setLat(String lat) {
         this.lat = lat == null ? null : lat.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getBuildingNumber() {

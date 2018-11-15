@@ -13,6 +13,8 @@ public class BasicBuildingFunction {
 
     private Integer buildingId;
 
+    private Boolean temporary;
+
     private Integer decorationPart;
 
     private Integer decoratingMaterial;
@@ -67,6 +69,14 @@ public class BasicBuildingFunction {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public Integer getDecorationPart() {

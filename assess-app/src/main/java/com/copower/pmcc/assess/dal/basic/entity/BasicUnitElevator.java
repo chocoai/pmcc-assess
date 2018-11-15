@@ -21,6 +21,8 @@ public class BasicUnitElevator {
 
     private String runningSpeed;
 
+    private Boolean temporary;
+
     private String maintenance;
 
     private String creator;
@@ -99,6 +101,14 @@ public class BasicUnitElevator {
 
     public void setRunningSpeed(String runningSpeed) {
         this.runningSpeed = runningSpeed == null ? null : runningSpeed.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getMaintenance() {

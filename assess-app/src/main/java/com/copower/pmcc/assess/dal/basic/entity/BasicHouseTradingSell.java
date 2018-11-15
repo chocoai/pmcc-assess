@@ -13,6 +13,8 @@ public class BasicHouseTradingSell {
 
     private Date instalmentPeriodEnd;
 
+    private Boolean temporary;
+
     private String instalmentInterest;
 
     private Integer version;
@@ -61,6 +63,14 @@ public class BasicHouseTradingSell {
 
     public void setInstalmentPeriodEnd(Date instalmentPeriodEnd) {
         this.instalmentPeriodEnd = instalmentPeriodEnd;
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getInstalmentInterest() {
