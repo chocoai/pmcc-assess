@@ -43,38 +43,10 @@
                     <form class="form-horizontal" id="frmCaseEstate">
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">省</label>
-                                <div class="col-sm-1">
-                                    <select name="province" id="province"
-                                            class="form-control search-select select2"
-                                            required="required">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">市</label>
-                                <div class="col-sm-1">
-                                    <select id="city" name="city" class="form-control search-select select2"
-                                            required="required">
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">县</label>
-                                <div class="col-sm-1">
-                                    <select id="district" name="district" class="form-control search-select select2"
-                                            required="required">
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" name="search"
-                                           onkeyup="baseFun.caseEstate.searchInput();"/>
+                                           onkeydown="baseFun.caseEstate.searchInput();"/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -249,12 +221,7 @@
 
     BaseViewFun.prototype.event = {
         selectInit: function () {
-            AssessCommon.initAreaInfo({
-                useDefaultText: false,
-                provinceTarget: $("#province"),
-                cityTarget: $("#city"),
-                districtTarget: $("#district")
-            });
+
         }
     };
     var baseFun = new BaseViewFun();
@@ -288,7 +255,7 @@
             cols.push({field: 'greeningRateName', title: '绿化率'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
@@ -380,7 +347,7 @@
             cols.push({field: 'identifier', title: '楼栋编号'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
@@ -408,7 +375,7 @@
 
     baseFun.caseUnit = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseUnit/editView";
+            var href = "${pageContext.request.contextPath}/caseUnit/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -417,7 +384,7 @@
             cols.push({field: 'elevatorHouseholdRatio', title: '户梯比'});
             cols.push({field: 'unitNumber', title: '单元编号'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
@@ -446,7 +413,7 @@
 
     baseFun.caseHouse = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseHouse/editView";
+            var href = "${pageContext.request.contextPath}/caseHouse/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -455,7 +422,7 @@
             cols.push({field: 'floor', title: '所在楼层'});
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
@@ -480,7 +447,7 @@
 
     $(function () {
         baseFun.event.selectInit();
-        baseFun.caseEstate.loadDataList(false);
+        baseFun.caseEstate.loadDataList();
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);
         baseFun.caseHouse.loadDataList(null);

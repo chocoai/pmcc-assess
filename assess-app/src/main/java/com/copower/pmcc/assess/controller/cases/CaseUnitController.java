@@ -44,18 +44,12 @@ public class CaseUnitController {
 
 
 
-    @RequestMapping(value = "/editView", name = "转到编辑页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id, @RequestParam(defaultValue = "false") boolean copy) {
-        String view = "/case/caseUnit/apply/caseUnitView";
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) {
+        String view = "/case/caseUnit/caseUnitView";
         CaseUnit caseUnit = null;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         caseUnit = caseUnitService.getCaseUnitById(id);
-        if (copy) {
-            //复制数据 需要把id设为null
-            caseUnit.setId(null);
-            //处理附件,所有附件则把附件复制后保存后的id传入页面显示
-            //附件暂且不处理
-        }
         modelAndView.addObject("caseUnit", caseUnit);
         return modelAndView;
     }

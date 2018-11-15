@@ -83,7 +83,8 @@ public class CaseEstateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
+//        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
+        List<CaseEstate> caseEstateList = caseEstateDao.getEstateList(caseEstate);
         Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
             @Override
             public int compare(CaseEstate o1, CaseEstate o2) {

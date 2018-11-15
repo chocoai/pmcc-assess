@@ -475,7 +475,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-5">
+                        <div class="col-sm-6 col-sm-offset-6">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>

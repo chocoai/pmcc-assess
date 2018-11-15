@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
+import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Ordering;
@@ -71,7 +73,8 @@ public class BasicApplyController {
     public ModelAndView basicApplyDetail(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
         try {
-            this.setViewParam(processInsId, modelAndView);
+            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
+            this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
@@ -98,12 +101,14 @@ public class BasicApplyController {
         //可选的执业部门
         modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());
         try {
-            this.setViewParam(processInsId, modelAndView);
+            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
+            this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
+
 
     /**
      * 设置参数
@@ -112,9 +117,8 @@ public class BasicApplyController {
      * @param modelAndView
      * @throws Exception
      */
-    private void setViewParam(String processInsId, ModelAndView modelAndView) throws Exception {
-        modelAndView.addObject("processInsId", processInsId);
-        BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
+    private void setViewParam(BasicApply basicApply, ModelAndView modelAndView) throws Exception {
+        modelAndView.addObject("processInsId", basicApply.getProcessInsId());
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApply);
             modelAndView.addObject("basicUnit", publicBasicService.getByByAppIdBasicUnit(basicApply.getId()));
@@ -163,6 +167,36 @@ public class BasicApplyController {
                 }
             }
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBootstrapTableVo", name = "过程数据 list",method = {RequestMethod.GET})
+    public BootstrapTableVo getBootstrapTableVo(BasicApply basicApply){
+        if (basicApply==null){
+            basicApply = new BasicApply();
+        }
+        BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(basicApply);
+        return vo;
+    }
+
+    @RequestMapping(value = "/basicAppListView", name = "转到basicAppListView页面 ",method = {RequestMethod.GET})
+    public ModelAndView index() {
+        String view = "/basic/basicAppListView" ;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id){
+        String view = "/basic/basicAppDetail";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        try {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
+            this.setViewParam(basicApply, modelAndView);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
     }
 
 

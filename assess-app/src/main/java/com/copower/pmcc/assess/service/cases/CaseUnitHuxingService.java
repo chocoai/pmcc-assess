@@ -101,6 +101,9 @@ public class CaseUnitHuxingService {
     }
 
     public CaseUnitHuxingVo getCaseUnitHuxingVo(CaseUnitHuxing caseUnitHuxing) {
+        if (caseUnitHuxing==null){
+            return null;
+        }
         CaseUnitHuxingVo vo = new CaseUnitHuxingVo();
         BeanUtils.copyProperties(caseUnitHuxing, vo);
         vo.setHouseLayoutName(baseDataDicService.getNameById(caseUnitHuxing.getHouseLayout()));

@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample;
 import com.copower.pmcc.assess.dal.basic.mapper.BasicApplyMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,12 +29,16 @@ public class BasicApplyDao {
 
     /**
      * 获取数据列表
-     * @param caseBlock
+     * @param basicApply
      * @return
      */
-    public List<BasicApply> getBlockList(BasicApply caseBlock) {
+    public List<BasicApply> getBlockList(BasicApply basicApply) {
         BasicApplyExample example = new BasicApplyExample();
-        MybatisUtils.convertObj2Example(caseBlock, example);
+        BasicApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotBlank(basicApply.getEstateName())){
+            criteria.andEstateNameLike(String.format("%s%s%s","%",basicApply.getEstateName(),"%"));
+        }
         return basicApplyMapper.selectByExample(example);
     }
 

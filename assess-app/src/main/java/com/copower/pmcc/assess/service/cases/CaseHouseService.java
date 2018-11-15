@@ -319,6 +319,7 @@ public class CaseHouseService {
             vo.setPracticalUseName(dataDic.getName());
             dataDic = null;
         }
+        vo.setNewsHuxingName(baseDataDicService.getNameById(caseHouse.getNewsHuxing()));
         return vo;
     }
 }
