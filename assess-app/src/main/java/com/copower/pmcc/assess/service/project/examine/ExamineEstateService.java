@@ -73,12 +73,6 @@ public class ExamineEstateService {
                 logger.error(String.format("没有找到实体 == >%s",e1.getMessage()));
             }
         }
-        if (examineEstate.getLandLevel() != null){
-            dataLandLevel = dataLandLevelService.getDataLandLevelById(examineEstate.getLandLevel());
-            if (dataLandLevel!=null){
-                examineEstateVo.setLandLevelName(dataLandLevel.getLeve());
-            }
-        }
         if (examineEstate.getBlockId() != null){
             DataBlock dataBlock = dataBlockService.getDataBlockById(examineEstate.getBlockId());
             if (dataBlock != null){

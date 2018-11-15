@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -154,12 +153,7 @@ public class BasicEstateLandStateService {
         if (basicEstateLandState.getLandLevel() != null) {
             DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(basicEstateLandState.getLandLevel());
             if (dataLandLevelDetail != null) {
-                DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
-                if (dataLandLevel != null) {
-                    vo.setLandLevelName(String.format("%s%s%s", dataLandLevelDetail.getClassify(), dataLandLevelDetail.getType(),dataLandLevel.getLeve()));
-                } else {
-                    vo.setLandLevelName(String.format("%s%s", dataLandLevelDetail.getClassify(), dataLandLevelDetail.getType()));
-                }
+
             }
         }
         return vo;

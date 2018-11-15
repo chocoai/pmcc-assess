@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.dal.basic.dao.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevel;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -393,12 +392,6 @@ public class BasicEstateService {
             DataBlock dataBlock = dataBlockService.getDataBlockById(basicEstate.getBlockId());
             if (dataBlock != null) {
                 vo.setBlockName(dataBlock.getName());
-            }
-        }
-        if (basicEstate.getLandLevel() != null) {
-            DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(basicEstate.getLandLevel());
-            if (dataLandLevel != null) {
-                vo.setLandLevelName(dataLandLevel.getLeve());
             }
         }
         return vo;

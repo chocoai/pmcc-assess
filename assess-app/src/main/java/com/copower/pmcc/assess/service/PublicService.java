@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
@@ -13,6 +14,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,8 @@ import java.util.regex.Pattern;
 public class PublicService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 获取到说明的视图信息
@@ -101,5 +105,61 @@ public class PublicService {
         approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
         approvalModelDto.setCurrentStep(-1);
         return approvalModelDto;
+    }
+
+    /**
+     * 获取数据同步sql
+     *
+     * @param synchronousDataDto
+     * @return
+     */
+    public String getSynchronousSql(SynchronousDataDto synchronousDataDto) {
+        String sqlTemplate = "select column_name from information_schema.columns where table_schema='%s' and table_name='%s'";
+
+        //获取源数据表的字段
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable()));
+        List<String> sourceFieldList = Lists.newArrayList();
+        for (Map<String, Object> map : mapList) {
+            sourceFieldList.add(String.valueOf(map.get("column_name")));
+        }
+
+        //获取目标数据表的字段
+        mapList = jdbcTemplate.queryForList(String.format(sqlTemplate, synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable()));
+        List<String> targeFieldList = Lists.newArrayList();
+        for (Map<String, Object> map : mapList) {
+            targeFieldList.add(String.valueOf(map.get("column_name")));
+        }
+
+        Map<String, String> resultMap = Maps.newHashMap();//字段对应关系map
+        if (CollectionUtils.isEmpty(targeFieldList)) return null;
+        for (String targetField : targeFieldList) {
+            if (CollectionUtils.isNotEmpty(synchronousDataDto.getIgnoreField()) && synchronousDataDto.getIgnoreField().contains(targetField))
+                continue;
+            if (CollectionUtils.isNotEmpty(sourceFieldList) && sourceFieldList.contains(targetField)) {
+                resultMap.put(targetField, targetField);
+            }
+        }
+
+        if (synchronousDataDto.getFieldMapping() != null) {
+            resultMap.putAll(synchronousDataDto.getFieldMapping());
+        }
+
+        if (synchronousDataDto.getFieldDefaultValue() != null) {
+            for (Map.Entry<String, String> stringEntry : synchronousDataDto.getFieldDefaultValue().entrySet()) {
+                resultMap.put(stringEntry.getKey(),String.format("'%s'",stringEntry.getValue()));
+            }
+        }
+        StringBuilder sourceBuilder = new StringBuilder();
+        StringBuilder targetBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : resultMap.entrySet()) {
+            targetBuilder.append(entry.getKey()).append(",");
+            sourceBuilder.append(entry.getValue()).append(",");
+        }
+
+        return String.format("INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s WHERE %s",
+                synchronousDataDto.getTargeDataBase(), synchronousDataDto.getTargeTable(),
+                targetBuilder.deleteCharAt(targetBuilder.length() - 1).toString(), sourceBuilder.deleteCharAt(sourceBuilder.length() - 1).toString(),
+                synchronousDataDto.getSourceDataBase(), synchronousDataDto.getSourceTable(),
+                org.springframework.util.StringUtils.isEmpty(synchronousDataDto.getWhereSql()) ? "1=1" : synchronousDataDto.getWhereSql());
     }
 }

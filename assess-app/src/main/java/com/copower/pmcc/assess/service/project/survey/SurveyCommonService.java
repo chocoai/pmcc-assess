@@ -370,7 +370,7 @@ public class SurveyCommonService {
      * @return
      */
     public List<String> getTableList() {
-        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String dbName=BaseConstant.DATABASE_PMCC_ASSESS;
         String sql = String.format("select TABLE_NAME from information_schema.`TABLES` where table_schema='%s' and TABLE_NAME LIKE 'tb_examine_%%'",dbName);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         List<String> tableList = Lists.newArrayList();
@@ -389,7 +389,7 @@ public class SurveyCommonService {
      * @return
      */
     public String getSynchronizeSql(String tableName, Integer oldPlanDetailsId, Integer newPlanDetailsId, Integer newDeclareId) {
-        String dbName=BaseConstant.CURRENT_DATABASE_NAME;
+        String dbName=BaseConstant.DATABASE_PMCC_ASSESS;
         String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='%s'", tableName,dbName);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         //1.去除id 评出sql前半截  拼出sql后半截

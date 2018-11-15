@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @Auther: zch
  * @Date: 2018/9/4 18:38
@@ -66,10 +64,16 @@ public class DataLandLevelController {
 
     @ResponseBody
     @RequestMapping(value = "/getDataLandLevelList", method = {RequestMethod.GET}, name = "获取土地级别维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(String leve, HttpServletRequest httpServletRequest) {
+    public BootstrapTableVo getExamineEstateNetworkList(String province, String city, String district) {
         DataLandLevel dataLandLevel = new DataLandLevel();
-        if (!StringUtils.isEmpty(leve)) {
-            dataLandLevel.setLeve(leve);
+        if (!StringUtils.isEmpty(province)) {
+            dataLandLevel.setProvince(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            dataLandLevel.setProvince(city);
+        }
+        if (!StringUtils.isEmpty(district)) {
+            dataLandLevel.setProvince(district);
         }
         BootstrapTableVo vo = null;
         try {

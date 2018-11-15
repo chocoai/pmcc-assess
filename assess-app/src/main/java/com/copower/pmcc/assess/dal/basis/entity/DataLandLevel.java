@@ -11,10 +11,6 @@ public class DataLandLevel {
 
     private String district;
 
-    private String street;
-
-    private String leve;
-
     private String creator;
 
     private Date gmtCreated;
@@ -51,22 +47,6 @@ public class DataLandLevel {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street == null ? null : street.trim();
-    }
-
-    public String getLeve() {
-        return leve;
-    }
-
-    public void setLeve(String leve) {
-        this.leve = leve == null ? null : leve.trim();
     }
 
     public String getCreator() {

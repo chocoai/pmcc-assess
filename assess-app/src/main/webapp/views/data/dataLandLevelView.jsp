@@ -31,20 +31,30 @@
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
                         <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    土地级别维护
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="级别" id="queryName" name="queryName"
-                                           class="form-control">
-                                </div>
+                            <label class="col-sm-1 control-label">
+                                省
+                            </label>
+                            <div class="col-sm-1">
+                                <select class="form-control search-select select2" id="queryProvince">
+                                </select>
                             </div>
-
+                            <label class="col-sm-1 control-label">
+                                市
+                            </label>
+                            <div class="col-sm-1">
+                                <select class="form-control search-select select2" id="queryCity">
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                区/县
+                            </label>
+                            <div class="col-sm-1">
+                                <select class="form-control search-select select2" id="queryDistrict">
+                                </select>
+                            </div>
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-primary"
-                                        onclick="landLevel.loadDataDicList()">
+                                        onclick="landLevel.loadLandLevelList()">
                                     查询
                                 </button>
 
@@ -71,8 +81,15 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
-        landLevel.loadDataDicList();
+        landLevel.loadLandLevelList();
         landLevel.select2Load();
+
+        AssessCommon.initAreaInfo({
+            useDefaultText: false,
+            provinceTarget: $("#queryProvince"),
+            cityTarget: $("#queryCity"),
+            districtTarget: $("#queryDistrict")
+        })
     });
 
     var landLevel = {
@@ -89,7 +106,7 @@
             }
             return false;
         },
-        loadDataDicList: function () {
+        loadLandLevelList: function () {
             var cols = [];
             cols.push({field: 'provinceName', title: '省'});
             cols.push({field: 'cityName', title: '市'});
@@ -106,7 +123,9 @@
             });
             $("#" + landLevel.config().table).bootstrapTable('destroy');
             TableInit(landLevel.config().table, "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelList", cols, {
-                leve: $("#queryName").val()
+                province: $("#queryProvince").val(),
+                city: $("#queryCity").val(),
+                district: $("#queryDistrict").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -125,7 +144,7 @@
                 success: function (result) {
                     if (result.ret) {
                         toastr.success('删除成功');
-                        landLevel.loadDataDicList();
+                        landLevel.loadLandLevelList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);
@@ -162,7 +181,7 @@
                     if (result.ret) {
                         toastr.success('保存成功');
                         $('#' + landLevel.config().box).modal('hide');
-                        landLevel.loadDataDicList();
+                        landLevel.loadLandLevelList();
                     }
                     else {
                         Alert("保存数据失败，失败原因:" + result.errmsg);

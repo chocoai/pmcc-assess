@@ -667,14 +667,14 @@
             objectData.estate.versionInit();
         },
         //开发商选择
-        developerSelect:function (this_) {
+        developerSelect: function (this_) {
             assessDeveloper.select(function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
             });
         },
         //土地级别选择
-        landLevelSelect:function (this_) {
+        landLevelSelect: function (this_) {
             assessLandLevel.select({
                 province: 25,
                 city: 321,
@@ -856,7 +856,7 @@
             navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
         },
         //物业选择
-        propertySelect:function (this_) {
+        propertySelect: function (this_) {
             assessProperty.select(function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
@@ -864,7 +864,7 @@
             });
         },
         //建造商选择
-        builderSelect:function (this_) {
+        builderSelect: function (this_) {
             assessBuilder.select(function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
@@ -1059,6 +1059,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicUnit/initUnit",
                 type: "post",
+                async: false,
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -1220,7 +1221,7 @@
                 item.basicTrading = objectData.isNotBlankObjectProperty(basicTrading) ? basicTrading : null;
             }
         }
-        item.industry = $("#" + industry.config.id).find(":radio:checked").val() ;
+        item.industry = $("#" + industry.config.id).find(":radio:checked").val();
         return item;
     };
 

@@ -56,10 +56,6 @@ public class ExamineEstateLandStateService {
         BeanUtils.copyProperties(examineEstateLandState, examineEstateLandStateVo);
         BaseDataDic sysDataDicTemp = null;
         if (examineEstateLandState.getLandLevel() != null){
-            dataLandLevel = dataLandLevelService.getDataLandLevelById(examineEstateLandState.getLandLevel());
-            if (dataLandLevel!=null){
-                examineEstateLandStateVo.setLandLevelName(dataLandLevel.getLeve());
-            }
 //            sysDataDicTemp = baseDataDicService.getDataDicById(examineEstateLandState.getLandLevel());
 //            if (sysDataDicTemp != null){
 //                examineEstateLandStateVo.setLandLevelName(sysDataDicTemp.getName());
