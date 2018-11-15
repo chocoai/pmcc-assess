@@ -168,19 +168,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            户型描述<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea placeholder="户型描述" name="description"
-                                                      class="form-control" required="required">
 
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <div class="x-valid" id="industrySpanNumber">
                                         <label class="col-sm-2 control-label">
@@ -201,7 +189,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            朝向<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <select name="orientation" class="form-control search-select select2 orientation">
 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -277,19 +276,20 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            朝向<span class="symbol required"></span>
+                                            户型描述<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
-                                           <select name="orientation" class="form-control search-select select2 orientation">
+                                        <div class="col-sm-10">
+                                            <textarea placeholder="户型描述" name="description"
+                                                      class="form-control" required="required">
 
-                                           </select>
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -406,11 +406,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            运行速度<span class="symbol required"></span>
+                                            运行速度
                                         </label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="runningSpeed"
-                                                   placeholder="运行速度" required="required">
+                                                   placeholder="运行速度" >
                                         </div>
                                     </div>
                                 </div>

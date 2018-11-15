@@ -113,7 +113,6 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '房间名称'});
                 cols.push({field: 'roomTypeName', title: '房间类型'});
                 cols.push({field: 'area', title: '面积'});
                 cols.push({field: 'sunshine', title: '日照'});

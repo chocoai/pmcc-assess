@@ -13,22 +13,19 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房号<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">房号</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.houseNumber}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">所在楼层<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">所在楼层</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.floor}</label>
                 </div>
             </div>
             <div class="x-valid" id="industryUseEnvironment">
-                <label class="col-sm-1 control-label">使用环境<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">使用环境</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.useEnvironmentName}</label>
                 </div>
@@ -44,8 +41,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">户型选择<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">户型选择</label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <label class="form-control">${basicHouse.huxingId}</label>
@@ -61,8 +57,7 @@
 
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">朝向<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">朝向</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.orientation}</label>
                 </div>
@@ -71,24 +66,21 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">证载用途<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">证载用途</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.certUseName}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">实际用途<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">实际用途</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.practicalUseName}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">权益限制<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">权益限制</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.rightInterestsRestriction}</label>
                 </div>
@@ -106,8 +98,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋平面图<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">房屋平面图</label>
                 <div class="col-sm-5">
                     <div id="_house_img_plan"></div>
                 </div>
@@ -129,22 +120,19 @@
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">财产范围<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">财产范围</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.scopePropertyName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">融资条件<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">融资条件</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.financingConditionsName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">税费负担<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">税费负担</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.taxBurdenName}</label>
                 </div>
@@ -153,23 +141,20 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">正常交易<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">正常交易</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.normalTransactionName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项类型<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">说明事项类型</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.descriptionTypeName}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">说明事项内容<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">说明事项内容</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.descriptionContent}</label>
                 </div>
@@ -185,8 +170,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">信息来源分类<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">信息来源分类</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.informationTypeName}</label>
                 </div>
@@ -209,8 +193,7 @@
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">付款方式<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">付款方式</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.paymentMethodName}</label>
                 </div>
@@ -259,22 +242,19 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易时间<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易时间</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.tradingTimeName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易总价<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易总价</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.tradingTotalPrice}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">交易单价<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易单价</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.tradingUnitPrice}</label>
                 </div>
