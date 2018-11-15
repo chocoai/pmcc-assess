@@ -183,7 +183,7 @@
 </div>
 
 <div class="x_content">
-    <h3>主要转换信息
+    <h3>主要转换互通桥
     </h3>
     <div>
         <table class="table table-bordered" id="MatchingMainConversionList">
@@ -723,6 +723,7 @@
             },
             loadDataDicList: function () {
                 var cols = [];
+                cols.push({field: 'organizationName', title: '名称'});
                 cols.push({field: 'bedNumber', title: '床位数'});
                 cols.push({field: 'distanceName', title: '医养条件距离'});
                 cols.push({field: 'organizationLevelName', title: '医养条件机构等级'});
@@ -808,8 +809,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'lineName', title: '线路名称'});
-                cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMainConversion.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainConversion.prototype.config().type,
@@ -851,8 +850,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'lineName', title: '线路名称'});
-                cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMainRoad.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingMainRoad.prototype.config().type,
@@ -894,7 +891,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'lineName', title: '线路名称'});
                 cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingMetro.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
@@ -937,8 +933,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'lineName', title: '线路名称'});
-                cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {
                     type: matchingTrafficHub.prototype.config().type,
@@ -981,7 +975,6 @@
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
                 cols.push({field: 'distanceName', title: '距离'});
-                cols.push({field: 'lineName', title: '线路名称'});
                 cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTransit.prototype.config().table, "${pageContext.request.contextPath}/basicMatchingTraffic/getBootstrapTableVo", cols, {

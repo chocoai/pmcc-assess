@@ -162,11 +162,11 @@
                 data-toggle="modal" href="#divBox"> 新增
         </button>
     </h3>
-   <div>
-       <table class="table table-bordered" id="MatchingMaterialList">
-           <!-- cerare document add ajax data-->
-       </table>
-   </div>
+    <div>
+        <table class="table table-bordered" id="MatchingMaterialList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
 </div>
 
 <div class="x_content">
@@ -175,11 +175,11 @@
                 data-toggle="modal" href="#divBox"> 新增
         </button>
     </h3>
-   <div>
-       <table class="table table-bordered" id="MatchingMedicalList">
-           <!-- cerare document add ajax data-->
-       </table>
-   </div>
+    <div>
+        <table class="table table-bordered" id="MatchingMedicalList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
 </div>
 
 <div class="x_content">
@@ -796,24 +796,11 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            学校等级<span class="symbol required"></span>
+                                            学校性质<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="schoolLevel"
-                                                    class="form-control search-select select2 schoolLevel">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
+                                            <select required="required" name="schoolNature"
+                                                    class="form-control search-select select2 schoolNature">
                                             </select>
                                         </div>
                                     </div>
@@ -833,11 +820,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            学校性质<span class="symbol required"></span>
+                                            学校等级<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="schoolNature"
-                                                    class="form-control search-select select2 schoolNature">
+                                            <select required="required" name="schoolLevel"
+                                                    class="form-control search-select select2 schoolLevel">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>
@@ -958,17 +957,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            自动服务内容<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="autoServiceContent" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             金融类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -1000,6 +988,16 @@
                                             <select required="required" name="serviceContent"
                                                     class="form-control search-select select2 serviceContent">
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            自动服务内容
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="autoServiceContent" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -1041,31 +1039,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            休闲娱乐距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            休闲娱乐类别<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             休闲娱乐名称
                                         </label>
                                         <div class="col-sm-10">
@@ -1078,12 +1051,40 @@
 
                                 <div style="margin-bottom: 8px;" class="name">
                                     <div class="form-group" style=" margin-top: 8px;">
-                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">休闲娱乐名称</label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <input class="form-control" name="name" required="required" type="text">
-                                            <span class="input-group-btn"><input type="button" class="btn btn-warning"
-                                                                                 value="X"
-                                                                                 onclick="matchingRecreation.prototype.cleanHTMLData(this)"></span>
+                                        <div class="x-valid">
+                                            <label class="col-md-2 control-label">休闲娱乐名称</label>
+                                            <div class="col-sm-10 ">
+                                                <div class="input-group">
+                                                    <input class="form-control" name="name" required="required" type="text">
+                                                    <span class="input-group-btn">
+                                                         <input type="button" class="btn btn-warning" value="X"
+                                                         onclick="matchingRecreation.prototype.cleanHTMLData(this)"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            休闲娱乐距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            休闲娱乐类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1124,25 +1125,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮距离<span class="symbol required"></span>
+                                            餐饮名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
-                                            </select>
+                                            <button class="btn btn-xs btn-success"
+                                                    onclick="matchingRestaurant.prototype.appendHTML('name',this)"><i
+                                                    class="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            餐饮档次<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="grade"
-                                                    class="form-control search-select select2 grade">
-                                            </select>
+                                <div style="margin-bottom: 8px;" class="name">
+                                    <div class="form-group" style=" margin-top: 8px;">
+                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">餐饮名称</label>
+                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                            <input class="form-control" name="name" required="required" type="text">
+                                            <span class="input-group-btn"><input type="button" class="btn btn-warning"
+                                                                                 value="X"
+                                                                                 onclick="matchingRestaurant.prototype.cleanHTMLData(this)"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1161,24 +1160,24 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            餐饮名称<span class="symbol required"></span>
+                                            餐饮档次<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <button class="btn btn-xs btn-success"
-                                                    onclick="matchingRestaurant.prototype.appendHTML('name',this)"><i
-                                                    class="fa fa-plus"></i></button>
+                                            <select required="required" name="grade"
+                                                    class="form-control search-select select2 grade">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div style="margin-bottom: 8px;" class="name">
-                                    <div class="form-group" style=" margin-top: 8px;">
-                                        <label class="col-md-2 col-sm-2 col-xs-12 control-label">餐饮名称</label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <input class="form-control" name="name" required="required" type="text">
-                                            <span class="input-group-btn"><input type="button" class="btn btn-warning"
-                                                                                 value="X"
-                                                                                 onclick="matchingRestaurant.prototype.cleanHTMLData(this)"></span>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            餐饮距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1218,43 +1217,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            购物商场距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            购物商场档次<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="grade"
-                                                    class="form-control search-select select2 grade">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            购物商场类别<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             购物商场名称
                                         </label>
                                         <div class="col-sm-10">
@@ -1273,6 +1235,42 @@
                                             <span class="input-group-btn"><input type="button" class="btn btn-warning"
                                                                                  value="X"
                                                                                  onclick="matchingMarket.prototype.cleanHTMLData(this)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            购物商场类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            购物商场档次<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="grade"
+                                                    class="form-control search-select select2 grade">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            购物商场距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1511,7 +1509,8 @@
                                         <div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                             <input class="form-control" name="theLine" required="required" type="text">
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-warning" value="X" onclick="matchingTransit.prototype.cleanHTMLData(this)">
+                                                <input type="button" class="btn btn-warning" value="X"
+                                                       onclick="matchingTransit.prototype.cleanHTMLData(this)">
                                             </span>
                                         </div>
                                     </div>
@@ -1564,18 +1563,6 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            距离<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             性质<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
@@ -1585,6 +1572,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            距离<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="distance"
+                                                    class="form-control search-select select2 distance">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -1662,7 +1662,8 @@
                                         <div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                             <input class="form-control" name="theLine" required="required" type="text">
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-warning" value="X" onclick="matchingMetro.prototype.cleanHTMLData(this)">
+                                                <input type="button" class="btn btn-warning" value="X"
+                                                       onclick="matchingMetro.prototype.cleanHTMLData(this)">
                                             </span>
                                         </div>
                                     </div>
@@ -1748,7 +1749,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">主要转换</h3>
+                <h3 class="modal-title">主要转换互通桥</h3>
             </div>
             <form id="frmMatchingMainConversion" class="form-horizontal">
                 <input type="hidden" name="id">

@@ -52,7 +52,7 @@
         html += '<h3 class="modal-title">建造商选择</h3>';
         html += '</div>';
         html += '<div class="modal-body">';
-        html += '<form class="form-horizontal">';
+        html += '<div class="form-horizontal">';
         html += '<div class="form-group ">';
         html += '<div>';
         html += '<label class="col-sm-1 control-label">';
@@ -62,14 +62,14 @@
         html += '<input type="text" name="name" class="form-control">';
         html += '</div>';
         html += '<div class="col-sm-3">';
-        html += '<button type="button" class="btn btn-primary"';
+        html += '<div type="button" class="btn btn-primary"';
         html += 'onclick="assessBuilder.loadBuilderList();">';
         html += '查询';
-        html += '</button>';
         html += '</div>';
         html += '</div>';
         html += '</div>';
-        html += '</form>';
+        html += '</div>';
+        html += '</div>';
         html += '<table id="select_builder_list" class="table table-bordered">';
         html += '</table>';
         html += '</div>';

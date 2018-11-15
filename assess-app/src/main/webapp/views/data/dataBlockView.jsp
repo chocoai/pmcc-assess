@@ -47,7 +47,6 @@
                                         onclick="dataObjFun.loadDataList()">
                                     查询
                                 </button>
-
                                 <button type="button" class="btn btn-success"
                                         onclick="dataObjFun.showModel();"
                                         data-toggle="modal" href="#divBox"> 新增
@@ -62,7 +61,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end: MAIN CONTAINER -->
 </div>
@@ -73,6 +71,7 @@
     $(function () {
         dataObjFun.loadDataList();
     });
+
     var DataObjFun = function () {
 
     };
@@ -107,19 +106,21 @@
 
     dataObjFun.loadDataList = function () {
         var cols = [];
-        cols.push({field: 'area', title: '区域', formatter: function (value, row, index) {
-            var result = '';
-            if (row.provinceName) {
-                result = row.provinceName;
+        cols.push({
+            field: 'area', title: '区域', formatter: function (value, row, index) {
+                var result = '';
+                if (row.provinceName) {
+                    result = row.provinceName;
+                }
+                if (row.cityName) {
+                    result += row.cityName;
+                }
+                if (row.districtName) {
+                    result += row.districtName;
+                }
+                return result;
             }
-            if (row.cityName) {
-                result += row.cityName;
-            }
-            if (row.districtName) {
-                result += row.districtName;
-            }
-            return result;
-        }});
+        });
         cols.push({field: 'name', title: '名称'});
         cols.push({field: 'regionalNature', title: '性质'});
         cols.push({field: 'remark', title: '描述'});
@@ -268,7 +269,8 @@
                                         <label class="col-sm-1 control-label">省
                                             <span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select id="province" name="province" class="form-control search-select select2" required="required">
+                                            <select id="province" name="province"
+                                                    class="form-control search-select select2" required="required">
                                             </select>
                                         </div>
                                     </div>
@@ -276,14 +278,16 @@
                                         <label class="col-sm-1 control-label">市<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select id="city" name="city" class="form-control search-select select2" required="required">
+                                            <select id="city" name="city" class="form-control search-select select2"
+                                                    required="required">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">县</label>
                                         <div class="col-sm-3">
-                                            <select id="district" name="district" class="form-control search-select select2">
+                                            <select id="district" name="district"
+                                                    class="form-control search-select select2">
                                             </select>
                                         </div>
                                     </div>

@@ -43,7 +43,7 @@ public class DataBlockService {
             try {
                 return dataBlockDao.addDataBlock(dataBlock);
             } catch (Exception e1) {
-                logger.error(e1.getMessage(),e1);
+                logger.error(e1.getMessage(), e1);
                 return null;
             }
         } else {
@@ -60,11 +60,11 @@ public class DataBlockService {
         return dataBlockDao.getDataBlockById(id);
     }
 
-    public BootstrapTableVo getDataBlockListVos(String name) {
+    public BootstrapTableVo getDataBlockListVos(String province, String city, String district, String name) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataBlockVo> vos = dataBlockVos(name);
+        List<DataBlockVo> vos = dataBlockVos(province, city, district,name);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
@@ -81,8 +81,8 @@ public class DataBlockService {
         return vos;
     }
 
-    public List<DataBlockVo> dataBlockVos(String name) {
-        List<DataBlock> dataBlocks = dataBlockDao.getDataBlockList(name);
+    public List<DataBlockVo> dataBlockVos(String province, String city, String district, String name) {
+        List<DataBlock> dataBlocks = dataBlockDao.getDataBlockList(province, city, district, name);
         List<DataBlockVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataBlocks)) {
             for (DataBlock landLevel : dataBlocks) {
@@ -113,18 +113,19 @@ public class DataBlockService {
 
     /**
      * 根据区域获取版块信息
+     *
      * @param province
      * @param city
      * @param distric
      * @return
      */
-    public List<DataBlock> getDataBlockListByArea(String province,String city,String distric){
-        if(StringUtils.isBlank(province)|| StringUtils.isBlank(city))
+    public List<DataBlock> getDataBlockListByArea(String province, String city, String distric) {
+        if (StringUtils.isBlank(province) || StringUtils.isBlank(city))
             return null;
-        DataBlock dataBlock = new DataBlock() ;
+        DataBlock dataBlock = new DataBlock();
         dataBlock.setProvince(province);
         dataBlock.setCity(city);
-        if(StringUtils.isNotBlank(distric))
+        if (StringUtils.isNotBlank(distric))
             dataBlock.setDistrict(distric);
         return dataBlockDao.getDataBlockList(dataBlock);
     }

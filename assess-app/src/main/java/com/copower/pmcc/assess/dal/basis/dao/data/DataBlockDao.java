@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.mapper.DataBlockMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -79,9 +80,21 @@ public class DataBlockDao {
         return dataBlockMapper.selectByExample(example);
     }
 
-    public List<DataBlock> getDataBlockList(String name) {
+    public List<DataBlock> getDataBlockList(String province, String city, String district,String name) {
         DataBlockExample example = new DataBlockExample();
-        example.createCriteria().andNameLike(String.format("%%%s%%",name));
+        DataBlockExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
+        }
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike(String.format("%%%s%%",name));
+        }
         return dataBlockMapper.selectByExample(example);
     }
 }
