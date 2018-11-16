@@ -1264,6 +1264,66 @@ public class ProjectPlanExample {
             addCriterion("project_status not between", value1, value2, "projectStatus");
             return (Criteria) this;
         }
+
+        public Criteria andSpecificGravityIsNull() {
+            addCriterion("specific_gravity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityIsNotNull() {
+            addCriterion("specific_gravity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityEqualTo(Integer value) {
+            addCriterion("specific_gravity =", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityNotEqualTo(Integer value) {
+            addCriterion("specific_gravity <>", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityGreaterThan(Integer value) {
+            addCriterion("specific_gravity >", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("specific_gravity >=", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityLessThan(Integer value) {
+            addCriterion("specific_gravity <", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityLessThanOrEqualTo(Integer value) {
+            addCriterion("specific_gravity <=", value, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityIn(List<Integer> values) {
+            addCriterion("specific_gravity in", values, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityNotIn(List<Integer> values) {
+            addCriterion("specific_gravity not in", values, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityBetween(Integer value1, Integer value2) {
+            addCriterion("specific_gravity between", value1, value2, "specificGravity");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificGravityNotBetween(Integer value1, Integer value2) {
+            addCriterion("specific_gravity not between", value1, value2, "specificGravity");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

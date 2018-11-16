@@ -36,13 +36,6 @@
             </a>
         </div>
         <div class="btn-group">
-            <a class="btn btn-primary"
-               href="${pageContext.request.contextPath}/projectCenter/projectProgress?menuid=${menuid}"
-               target="_self">
-                项目进度
-            </a>
-        </div>
-        <div class="btn-group">
             <a class="btn btn-warning" href="${pageContext.request.contextPath}/projectCenter/index?menuid=${menuid}"
                target="_self">
                 项目中心

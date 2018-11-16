@@ -39,6 +39,8 @@ public class ProjectPlan {
 
     private String projectStatus;
 
+    private Integer specificGravity;
+
     public Integer getId() {
         return id;
     }
@@ -181,5 +183,13 @@ public class ProjectPlan {
 
     public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus == null ? null : projectStatus.trim();
+    }
+
+    public Integer getSpecificGravity() {
+        return specificGravity;
+    }
+
+    public void setSpecificGravity(Integer specificGravity) {
+        this.specificGravity = specificGravity;
     }
 }

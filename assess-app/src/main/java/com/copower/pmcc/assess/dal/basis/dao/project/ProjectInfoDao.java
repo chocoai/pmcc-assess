@@ -108,6 +108,26 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-
+    /**
+     * 根据项目id集合和组合条件查询项目信息
+     * @param projectInfo 组合查询条件
+     * @param projectIds 项目id
+     * @return
+     */
+    public List<ProjectInfo> getProjectInfoList(ProjectInfo projectInfo, List<Integer> projectIds) {
+        ProjectInfoExample example = new ProjectInfoExample();
+        ProjectInfoExample.Criteria criteria = example.createCriteria();
+        //角色权限过滤
+        if(CollectionUtils.isNotEmpty(projectIds)){
+            criteria.andIdIn(projectIds);
+        }
+       
+        //项目名称模糊查询
+        if(StringUtils.isNotEmpty(projectInfo.getProjectName())){
+            criteria.andProjectNameLike(String.format("%%%s%%",projectInfo.getProjectName()));
+        }
+        example.setOrderByClause("id desc");
+        return projectInfoMapper.selectByExample(example);
+    }
 
 }

@@ -34,6 +34,7 @@ public class ProjectInfoVo extends ProjectInfo {
     private BaseProjectClassify baseProjectClassify;
     private String departmentName;
     private String valueTypeName;
+    private Integer finishPre;
     private List<ProjectResponsibilityDto> planWorkStages;
     private List<ProjectResponsibilityDto> taskWorkStages;
     private List<ProjectResponsibilityDto> taskAllWorkStages;
@@ -196,5 +197,13 @@ public class ProjectInfoVo extends ProjectInfo {
 
     public void setBaseProjectClassify(BaseProjectClassify baseProjectClassify) {
         this.baseProjectClassify = baseProjectClassify;
+    }
+
+    public Integer getFinishPre() {
+        return finishPre;
+    }
+
+    public void setFinishPre(Integer finishPre) {
+        this.finishPre = finishPre;
     }
 }

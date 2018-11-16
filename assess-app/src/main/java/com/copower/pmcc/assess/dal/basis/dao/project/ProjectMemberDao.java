@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberExample;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberHistoryMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectMemberMapper;
+import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,13 @@ public class ProjectMemberDao {
         return projectMembers;
     }
 
+    public List<ProjectMember> getProjectMemberList(ProjectMember projectMember) {
+        ProjectMemberExample example = new ProjectMemberExample();
+        MybatisUtils.convertObj2Example(projectMember, example);
+        List<ProjectMember> projectMembers = projectMemberMapper.selectByExample(example);
+        return projectMembers;
+    }
+
     public ProjectMember getProjectMemberItem(Integer projectId) {
         ProjectMemberExample example = new ProjectMemberExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true);
@@ -44,7 +52,7 @@ public class ProjectMemberDao {
         return null;
     }
 
-    public ProjectMember get(Integer id){
+    public ProjectMember get(Integer id) {
         ProjectMember projectMember = projectMemberMapper.selectByPrimaryKey(id);
         return projectMember;
     }
@@ -54,7 +62,7 @@ public class ProjectMemberDao {
         return i == 1;
     }
 
-    public int saveProjectMemeberID(ProjectMember projectMember){
+    public int saveProjectMemeberID(ProjectMember projectMember) {
         int i = projectMemberMapper.insertSelective(projectMember);
         return projectMember.getId();
     }
@@ -74,10 +82,9 @@ public class ProjectMemberDao {
         return projectMemberMapper.countByExample(example);
     }
 
-    public Boolean saveProjectMemberHistory(ProjectMemberHistory projectMemberHistory)
-    {
+    public Boolean saveProjectMemberHistory(ProjectMemberHistory projectMemberHistory) {
         int i = projectMemberHistoryMapper.insertSelective(projectMemberHistory);
-        return i==1;
+        return i == 1;
     }
 
 }
