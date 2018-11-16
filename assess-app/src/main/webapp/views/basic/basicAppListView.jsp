@@ -119,7 +119,7 @@
                         return "工业与仓储";
                     }
                 }else {
-                    return "";
+                    return "以前数据";
                 }
             }
         });
@@ -136,7 +136,7 @@
                         return "关闭";
                     }
                 }else {
-                    return "";
+                    return "其它状态:如异常等";
                 }
             }
         });
@@ -149,7 +149,7 @@
                         return "非临时数据";
                     }
                 }else {
-                    return "";
+                    return "非临时数据";
                 }
             }
         });
