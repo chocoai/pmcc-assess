@@ -122,7 +122,6 @@ public class BasicUnitService {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
-            this.initUpdateSon(0, id,basicUnit);
             return id;
         } else {
             basicUnitDao.updateBasicUnit(basicUnit);
