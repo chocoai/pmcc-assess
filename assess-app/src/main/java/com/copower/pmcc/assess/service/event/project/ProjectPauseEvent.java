@@ -41,7 +41,7 @@ public class ProjectPauseEvent extends BaseProcessEvent {
     private ApplicationConstant applicationConstant;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         ProjectSuspend projectSuspend = projectSuspendDao.getProjectSuspendProcessInsId(processExecution.getProcessInstanceId());
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectSuspend.getProjectId());

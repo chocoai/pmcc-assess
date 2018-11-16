@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanTaskAllDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskAllBackDto;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanTaskAllEvent;
 import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -61,7 +61,7 @@ public class ProjectTaskAllService {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
     @Autowired
     private ApplicationConstant applicationConstant;
 

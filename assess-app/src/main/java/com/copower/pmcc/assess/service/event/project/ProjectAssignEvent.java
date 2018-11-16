@@ -24,7 +24,7 @@ public class ProjectAssignEvent extends BaseProcessEvent {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         ProjectInfo projectInfo=new ProjectInfo();
         projectInfo.setAssignProcessInsId(processExecution.getProcessInstanceId());

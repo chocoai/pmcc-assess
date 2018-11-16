@@ -45,7 +45,7 @@ public class SurveyCaseStudyEvent extends ProjectTaskEvent {
     private ProjectInfoService projectInfoService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
         super.processFinishExecute(processExecution);
         SurveyCaseStudy surveyCaseStudy = surveyCaseStudyService.getSurveyCaseStudy(processExecution.getProcessInstanceId());
         String jsonContent = surveyCaseStudy.getJsonContent();

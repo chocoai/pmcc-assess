@@ -29,7 +29,7 @@ public class BasicApplyEvent implements ProcessEventExecutor {
     }
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
         if (processExecution != null){
             try {
                 BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());

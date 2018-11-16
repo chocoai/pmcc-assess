@@ -34,7 +34,7 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     private DeclareRealtyLandCertService declareRealtyLandCertService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         DeclareInfo declareInfo = declareInfoService.getDeclareInfoByProcessInsId(processExecution.getProcessInstanceId());
         if (declareInfo == null) {

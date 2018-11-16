@@ -9,16 +9,21 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:项目成员信息
@@ -41,6 +46,15 @@ public class ProjectMemberService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private PublicService publicService;
+
+    public Map<String, SysUserDto> relationUserMap(List<SysUserDto> sysUserList) {
+        Map<String, SysUserDto> map = Maps.newHashMap();
+        for (SysUserDto dto : sysUserList) {
+            map.put(dto.getUserAccount(), dto);
+        }
+
+        return map;
+    }
 
     public void saveProjectMemeber(ProjectMember projectMember) throws BusinessException {
         if (projectMember == null)

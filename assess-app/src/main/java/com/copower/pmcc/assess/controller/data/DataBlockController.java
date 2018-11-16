@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.data;
 
+import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -7,8 +8,6 @@ import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RequestMapping(value = "/dataBlock")
 @Controller
-public class DataBlockController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+public class DataBlockController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -51,7 +49,7 @@ public class DataBlockController {
                 dataBlock = dataBlockService.getDataBlockById(id);
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            log.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataBlock);
@@ -65,7 +63,7 @@ public class DataBlockController {
         try {
             vo = dataBlockService.getDataBlockListVos(province, city, district,name);
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+            log.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
@@ -82,7 +80,7 @@ public class DataBlockController {
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            log.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
@@ -95,7 +93,7 @@ public class DataBlockController {
             dataBlockService.saveAndUpdateDataBlock(dataBlock);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -106,7 +104,7 @@ public class DataBlockController {
         try {
             return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province, city, district));
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
         }
     }
@@ -127,7 +125,7 @@ public class DataBlockController {
             }
             return HttpResult.newCorrectResult(dataBlockService.dataBlockVos(dataBlock));
         } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
+            log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }

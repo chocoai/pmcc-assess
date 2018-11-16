@@ -8,7 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanHistory;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanHistoryDto;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPlanHistoryEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -58,7 +58,7 @@ public class ProjectPlanHistoryService {
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
 
     public List<ProjectPlanHistory> getProjectPlanHistoryList(String processInsId) {
         return projectPlanHistoryDao.getProjectPlanHistoryByProcessInsId(processInsId);

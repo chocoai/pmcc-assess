@@ -38,7 +38,7 @@ public class ProjectPlanApprovalEvent extends BaseProcessEvent {
     private ProjectWorkStageService projectWorkStageService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
 
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());

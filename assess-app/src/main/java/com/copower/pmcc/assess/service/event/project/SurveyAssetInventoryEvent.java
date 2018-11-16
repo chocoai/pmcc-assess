@@ -36,7 +36,7 @@ public class SurveyAssetInventoryEvent extends ProjectTaskEvent {
     private BaseDataDicService baseDataDicService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws  Exception {
         super.processFinishExecute(processExecution);
         //反写申报记录数据的证载用途与实际用途
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByProcessInsId(processExecution.getProcessInstanceId());

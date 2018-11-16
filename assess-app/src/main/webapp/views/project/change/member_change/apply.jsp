@@ -1,0 +1,463 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: red
+  Date: 2018/01/29
+  Time: 15:50
+  To change this template use File | Settings | File Templates.
+--%>
+<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>项目成员变更</title>
+
+    <%@include file="/views/share/main_css.jsp" %>
+</head>
+<body class="nav-md">
+
+
+<div class="container body">
+    <div class="main_container">
+        <div class="right_col" role="main" style="margin-left: 0px">
+            <!-- 公共模块引用 -->
+            <%@include file="/views/share/form_head.jsp" %>
+            <%@include file="/views/share/project/projectInfo.jsp" %>
+
+            <div style="display: none">
+                <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            </div>
+
+            <!-- 公共模块end -->
+
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2 id="show-title"><i class="fa fa-edit"></i>
+                        项目成员变更<small></small>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <div class="panel-body">
+
+                        <p id="change_tool">
+                            <button type="button" class="btn btn-success" onclick="memberChangeObj.addMember();">新增成员</button>
+                        </p>
+                        <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
+
+                        <hr/>
+                        <form class="form-horizontal" id="member_change_form">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                        变更原因
+                                    </label>
+                                    <div class="col-md-11 col-sm-11 col-xs-12">
+                                        <textarea class="form-control" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 公共尾部模块引用 -->
+            <div class="x_panel" style="margin-bottom: 50px;">
+                <div class="col-md-4 col-sm-4 col-xs-12 col-sm-offset-5">
+                    <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
+                        取消<i style="margin-left: 10px" class="fa fa-times-circle"></i>
+                    </button>
+
+                    <button id="commit_btn" class="btn btn-primary" onclick="memberChangeObj.submit();" onsubmit="return false;">
+                        提交<i style="margin-left: 10px" class="fa fa-check-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <c:if test="${processInsId != 0}">
+                <%@include file="/views/share/form_log.jsp" %>
+
+                <form id="process_variable_form">
+                    <%@include file="/views/share/form_edit.jsp" %>
+                </form>
+            </c:if>
+            <!-- 尾部end -->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<%@include file="/views/share/main_footer.jsp" %>
+</body>
+</html>
+
+<script type="text/javascript">
+    var memberChangeObj = {
+        projectId: "${projectInfo.id}",
+        processInsId: "0",
+        member_change_table: $("#member_change_table"),
+        member_change_form: $("#member_change_form")
+    };
+
+
+    memberChangeObj.getMemberList = function () {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/member.change/memberList",
+            data: {
+                projectId: memberChangeObj.projectId
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    memberChangeObj.renderMemberChangeTable(result.data);
+                } else {
+                    Alert("获取项目成员列表失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+
+    memberChangeObj.renderMemberChangeTable = function (data) {
+        memberChangeObj.member_change_table.bootstrapTable('destroy');
+        var cols = [
+            [{
+                title: '变更前成员',
+                colspan: 2,
+                align: 'center'
+            }, {
+                title: '变更后成员',
+                colspan: 3,
+                align: 'center'
+            }],
+            [{
+                field: 'originalManagerName',
+                title: '项目经理',
+                align: 'center'
+            }, {
+                field: 'originalMemberName',
+                title: '项目成员',
+                align: 'center'
+            }, {
+                field: 'newManagerName',
+                title: '项目经理',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var customStr = String.format("<div><span>{0}<span><button class='btn btn-xs btn-primary' style='margin-left: 5px;' onclick='memberChangeObj.replaceManage(\"{1}\")'><i class='fa fa-edit'></i>变更</button></div>", value, row.newManagerName);
+                    return customStr;
+                }
+            }, {
+                field: 'newMemberName',
+                title: '项目成员',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    if (value) {
+                        return value;
+                    }
+
+                    return "";
+                }
+            }, {
+                field: "op",
+                title: "操作",
+                align: 'center',
+                formatter: function (value, row, index) {
+
+                    if (row.newMemberAccount) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a id="item_edit" class="re btn btn-xs btn-primary" href="javascript:void(0);"><i class="fa fa-edit"></i>变更</a>';
+                        str += '<a id="item_delete" class="re btn btn-xs btn-warning" href="javascript:void(0);"><i class="fa fa-trash"></i>删除</a>';
+                        str += '</div>';
+                        return str;
+                    } else {
+                        return "";
+                    }
+
+                },
+                events: {
+                    'click #item_edit': function (e, value, row, index) {
+                        memberChangeObj.replaceMember(row);
+                    },
+                    'click #item_delete': function (e, value, row, index) {
+                        Alert(String.format("确定要移除成员【{0}】?", row.newMemberName), 2, null, function () {
+                            memberChangeObj.removeMember(row);
+                        });
+                    }
+                }
+            }]
+        ];
+
+
+        TableClient(memberChangeObj.member_change_table, cols, data, {
+            toolbar: "#change_tool",
+            showNumber: false,
+            search: false,
+            showRefresh: false,
+            pageSize: 10,
+        }, false);
+
+        memberChangeObj.member_change_table.bootstrapTable('mergeCells', {
+            index: 0,
+            field: 'originalManagerName',
+            rowspan: data.length
+        });
+
+        memberChangeObj.member_change_table.bootstrapTable('mergeCells', {
+            index: 0,
+            field: 'newManagerName',
+            rowspan: data.length
+        });
+
+    };
+
+    memberChangeObj.addMember = function() {
+        erpEmployee.select({
+            multi:true,
+            currOrgId:'${projectInfo.departmentId}',
+            value: "",
+            onSelected: function (data) {
+                if (data.base) {
+                    var selectUsers = data.account;
+
+                    console.debug(selectUsers);
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/member.change/addMember",
+                        data: {
+                            projectId: memberChangeObj.projectId,
+                            processInsId: memberChangeObj.processInsId,
+                            members: selectUsers
+                        },
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                memberChangeObj.getMemberList();
+                            } else {
+                                Alert("添加成员失败，失败原因:" + result.errmsg, 1, null, null);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                        }
+                    });
+                } else {
+                    Alert("未选择成员!");
+                }
+            }
+        });
+    };
+
+    memberChangeObj.removeMember = function (row) {
+
+        Loading.progressShow("正在移除成员...");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/member.change/removeMember",
+            data: {
+                projectId: memberChangeObj.projectId,
+                processInsId: memberChangeObj.processInsId,
+                member: row.newMemberAccount
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    memberChangeObj.getMemberList();
+                } else {
+                    Alert("移除成员失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    };
+
+
+    memberChangeObj.replaceMember = function (row) {
+        erpEmployee.select({
+            multi:false,
+            currOrgId:'${projectInfo.departmentId}',
+            value: row.newMemberName,
+            onSelected: function (data) {
+                if (data.base) {
+                    var selectUser = data.account;
+
+                    console.debug(selectUser);
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/member.change/replaceMember",
+                        data: {
+                            projectId: memberChangeObj.projectId,
+                            processInsId: memberChangeObj.processInsId,
+                            oldMember: row.newMemberAccount,
+                            newMember: selectUser
+                        },
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                memberChangeObj.getMemberList();
+                            } else {
+                                Alert("替换成员失败，失败原因:" + result.errmsg, 1, null, null);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                        }
+                    });
+                } else {
+                    Alert("未选择成员!");
+                }
+            }
+        });
+    };
+
+
+    memberChangeObj.replaceManage = function (oldManager) {
+        erpEmployee.select({
+            multi:false,
+            currOrgId:'${projectInfo.departmentId}',
+            value: oldManager,
+            onSelected: function (data) {
+                if (data.base) {
+                    var selectUser = data.account;
+
+                    console.debug(selectUser);
+
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/member.change/replaceManage",
+                        data: {
+                            projectId: memberChangeObj.projectId,
+                            processInsId: memberChangeObj.processInsId,
+                            newManage: selectUser
+                        },
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.ret) {
+                                memberChangeObj.getMemberList();
+                            } else {
+                                Alert("替换项目经理失败，失败原因:" + result.errmsg, 1, null, null);
+                            }
+                        },
+                        error: function (result) {
+                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                        }
+                    });
+                } else {
+                    Alert("未选择成员!");
+                }
+            }
+        });
+    };
+
+
+    /**
+     * 提交数据
+     * @returns {*}
+     */
+    memberChangeObj.submit = function () {
+        var changeReason = $("#changeReason").val();
+        if (!changeReason) {
+            toastr.warning("变更原因必须填写!");
+            $("#changeReason").focus();
+            return false;
+        }
+        if ("${processInsId}" == "0") {
+            //申请
+            memberChangeObj.apply();
+        } else {
+            //修改提交
+            memberChangeObj.editCommit();
+        }
+    };
+
+
+    memberChangeObj.apply = function () {
+
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: getContextPath() + "/member.change/applyCommit",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: memberChangeObj.projectId,
+                processInsId: memberChangeObj.processInsId,
+                changeReason: $("#changeReason").val()
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("变更申请提交成功。", 1, null, function () {
+                        window.close();
+                    });
+                } else {
+                    Alert("提交数据失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+
+    memberChangeObj.editCommit = function () {
+        //返回修改要提交的数据
+        var approvalModelDto = formSerializeArray($("#process_variable_form"));
+
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: getContextPath() + "/member.change/editCommit",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: memberChangeObj.projectId,
+                changeReason: $("#changeReason").val(),
+                approvalModelDto: JSON.stringify(approvalModelDto)
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交成功。", 1, null, function () {
+                        window.close();
+                    });
+                } else {
+                    Alert("提交数据失败:" + result.errmsg);
+                }
+            },
+            error: function (e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
+
+    $(function () {
+        //如果流程实例存在
+        var processInsId = "${processInsId}";
+        if (processInsId) {
+            memberChangeObj.processInsId = processInsId;
+        }
+
+        //加载表格
+        memberChangeObj.getMemberList();
+    });
+</script>

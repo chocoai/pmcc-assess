@@ -23,7 +23,7 @@ public class ProjectPalnDetailsEvent extends BaseProcessEvent {
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
         super.processFinishExecute(processExecution);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao
                 .getProjectPlanDetailsItemByProcessInsId(processExecution.getProcessInstanceId());
