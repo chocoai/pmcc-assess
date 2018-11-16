@@ -39,7 +39,7 @@ var matchingMainConversion;
             $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMainConversion.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainConversion.prototype.config().type,
-                estateId: '0'
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -79,7 +79,7 @@ var matchingMainConversion;
                 return false;
             }
             var data = formParams(matchingMainConversion.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -167,7 +167,7 @@ var matchingMainRoad;
             $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMainRoad.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainRoad.prototype.config().type,
-                estateId: '0'
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -207,7 +207,7 @@ var matchingMainRoad;
                 return false;
             }
             var data = formParams(matchingMainRoad.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -296,7 +296,7 @@ var matchingMetro;
             $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMetro.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMetro.prototype.config().type,
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -346,7 +346,7 @@ var matchingMetro;
                 return false;
             }
             var data = formParams(matchingMetro.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -471,7 +471,7 @@ var matchingTrafficHub;
             $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingTrafficHub.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTrafficHub.prototype.config().type,
-                estateId: '0'
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -511,7 +511,7 @@ var matchingTrafficHub;
                 return false;
             }
             var data = formParams(matchingTrafficHub.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -604,7 +604,7 @@ var matchingTransit;
             $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingTransit.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTransit.prototype.config().type,
-                estateId: '0'
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -654,7 +654,7 @@ var matchingTransit;
                 return false;
             }
             var data = formParams(matchingTransit.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -780,7 +780,7 @@ var matchingMedical;
             });
             $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMedical.prototype.config().table, getContextPath()+"/basicMatchingMedical/getBootstrapTableVo", cols, {
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -819,7 +819,7 @@ var matchingMedical;
                 return false;
             }
             var data = formParams(matchingMedical.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
                 type: "post",
@@ -911,7 +911,7 @@ var matchingMaterial;
             });
             $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMaterial.prototype.config().table, getContextPath()+"/basicMatchingMaterial/getBootstrapTableVo", cols, {
-                estateId: '0'
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -950,7 +950,7 @@ var matchingMaterial;
                 return false;
             }
             var data = formParams(matchingMaterial.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingMaterial/saveAndUpdateBasicMatchingMaterial",
                 type: "post",
@@ -1047,7 +1047,7 @@ var matchingMarket;
             $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMarket.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingMarket.prototype.config().type,
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1097,7 +1097,7 @@ var matchingMarket;
                 return false;
             }
             var data = formParams(matchingMarket.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             data.type = matchingMarket.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1230,7 +1230,7 @@ var matchingRestaurant;
             $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingRestaurant.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRestaurant.prototype.config().type,
-                estateId: 0
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1280,7 +1280,7 @@ var matchingRestaurant;
                 return false;
             }
             var data = formParams(matchingRestaurant.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             data.type = matchingRestaurant.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1412,7 +1412,7 @@ var matchingRecreation;
             $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingRecreation.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRecreation.prototype.config().type,
-                estateId: 0
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1462,7 +1462,7 @@ var matchingRecreation;
                 return false;
             }
             var data = formParams(matchingRecreation.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             data.type = matchingRecreation.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1592,7 +1592,7 @@ var matchingFinance;
             });
             $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingFinance.prototype.config().table, getContextPath() + "/basicMatchingFinance/getBootstrapTableVo", cols, {
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1631,7 +1631,7 @@ var matchingFinance;
                 return false;
             }
             var data = formParams(matchingFinance.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
                 type: "post",
@@ -1725,7 +1725,7 @@ var matchingEnvironment;
             });
             $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingEnvironment.prototype.config().table, getContextPath()+"/basicMatchingEnvironment/getBootstrapTableVo", cols, {
-                estateId: 0
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1764,7 +1764,7 @@ var matchingEnvironment;
                 return false;
             }
             var data = formParams(matchingEnvironment.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
                 type: "post",
@@ -1860,7 +1860,7 @@ var matchingEducation;
             });
             $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingEducation.prototype.config().table, getContextPath()+"/basicMatchingEducation/getBootstrapTableVo", cols, {
-                estateId: 0
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1899,7 +1899,7 @@ var matchingEducation;
                 return false;
             }
             var data = formParams(matchingEducation.prototype.config().frm);
-            data.estateId = '0';
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
                 type: "post",
@@ -1995,7 +1995,7 @@ var estateNetwork;
             });
             $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateNetwork.prototype.config().table, getContextPath()+"/basicEstateNetwork/getBootstrapTableVo", cols, {
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -2034,7 +2034,7 @@ var estateNetwork;
                 return false;
             }
             var data = formParams(estateNetwork.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
                 type: "post",
@@ -2116,7 +2116,7 @@ var estateParking;
             });
             $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateParking.prototype.config().table, getContextPath()+"/basicEstateParking/getBootstrapTableVo", cols, {
-                estateId: "0"
+                estateId: basicIndexCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -2155,7 +2155,7 @@ var estateParking;
                 return false;
             }
             var data = formParams(estateParking.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateParking/saveAndUpdateBasicEstateParking",
                 type: "post",
@@ -2200,8 +2200,8 @@ var estateParking;
         init: function (item) {
             $("#" + estateParking.prototype.config().frm).clearAll();
             $("#" + estateParking.prototype.config().frm).initForm(item);
-            objectData.showFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
-            objectData.uploadFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicIndexCommon.showFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicIndexCommon.uploadFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
             // AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
             //     $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
             // });
@@ -2246,7 +2246,7 @@ var estateSupplyWater;
                     return str;
                 }
             });
-            var estateId = "0";
+            var estateId = basicIndexCommon.getEstateId();
             $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyWater.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyWater.prototype.config().type,
@@ -2290,7 +2290,7 @@ var estateSupplyWater;
                 return false;
             }
             var data = formParams(estateSupplyWater.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2381,7 +2381,7 @@ var estateSupplyPower;
                     return str;
                 }
             });
-            var estateId = "0";
+            var estateId = basicIndexCommon.getEstateId();
             $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyPower.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyPower.prototype.config().type,
@@ -2425,7 +2425,7 @@ var estateSupplyPower;
                 return false;
             }
             var data = formParams(estateSupplyPower.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2514,7 +2514,7 @@ var estateSupplyHeating;
                     return str;
                 }
             });
-            var estateId = "0";
+            var estateId = basicIndexCommon.getEstateId();
             $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyHeating.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyHeating.prototype.config().type,
@@ -2558,7 +2558,7 @@ var estateSupplyHeating;
                 return false;
             }
             var data = formParams(estateSupplyHeating.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2647,7 +2647,7 @@ var estateSupplyGas;
                     return str;
                 }
             });
-            var estateId = "0";
+            var estateId = basicIndexCommon.getEstateId();
             $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyGas.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 estateId: estateId,
@@ -2691,7 +2691,7 @@ var estateSupplyGas;
                 return false;
             }
             var data = formParams(estateSupplyGas.prototype.config().frm);
-            data.estateId = "0";
+            data.estateId = basicIndexCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",

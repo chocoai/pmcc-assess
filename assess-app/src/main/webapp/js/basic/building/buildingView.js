@@ -42,7 +42,7 @@ var navButtonBuild;
             formData: {
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.BasicBuilding,
-                tableId: objectData.isNotBlank(id) ? id : "0",
+                tableId: basicIndexCommon.isNotBlank(id) ? id : "0",
                 // creater: "${currUserAccount}"
             },
             deleteFlag: true
@@ -86,7 +86,7 @@ var navButtonBuild;
 
     //收集数据
     navButtonBuild.tempSaveData = function () {
-        var data = formParams(objectData.config.basicBuilding.frm);
+        var data = formParams(basicIndexCommon.config.basicBuilding.frm);
         var switchNumber = navButtonBuild.switchNumber;
         data.part = switchNumber;
         if (navButtonBuild.isNotBlank(switchNumber)) {
@@ -96,26 +96,26 @@ var navButtonBuild;
     //赋值
     navButtonBuild.initData = function (switchNumber) {
         var data = navButtonBuild.getObjArray(switchNumber);
-        $("#" + objectData.config.basicBuilding.frm).initForm(data);
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingCategory, "buildingCategory");
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.buildingStructure, "buildingStructure");
-        objectData.select2Assignment(objectData.config.basicBuilding.frm, data.propertyType, "propertyType");
+        $("#" + basicIndexCommon.config.basicBuilding.frm).initForm(data);
+        basicIndexCommon.select2Assignment(basicIndexCommon.config.basicBuilding.frm, data.buildingCategory, "buildingCategory");
+        basicIndexCommon.select2Assignment(basicIndexCommon.config.basicBuilding.frm, data.buildingStructure, "buildingStructure");
+        basicIndexCommon.select2Assignment(basicIndexCommon.config.basicBuilding.frm, data.propertyType, "propertyType");
         AssessCommon.loadDataDicByPid(data.buildingStructure, data.buildingStructureLower, function (html, data) {
-            $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
+            $("#" + basicIndexCommon.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
         });
-        $("#" +objectData.config.basicBuilding.frm).find("input[name='beCompletedTime']").val(formatDate(data.beCompletedTime));
-        $("#" +objectData.config.basicBuilding.frm).find("input[name='openTime']").val(formatDate(data.openTime));
-        $("#" +objectData.config.basicBuilding.frm).find("input[name='roomTime']").val(formatDate(data.roomTime));
-        $.each(objectData.config.basicBuilding.files, function (i, n) {
+        $("#" +basicIndexCommon.config.basicBuilding.frm).find("input[name='beCompletedTime']").val(formatDate(data.beCompletedTime));
+        $("#" +basicIndexCommon.config.basicBuilding.frm).find("input[name='openTime']").val(formatDate(data.openTime));
+        $("#" +basicIndexCommon.config.basicBuilding.frm).find("input[name='roomTime']").val(formatDate(data.roomTime));
+        $.each(basicIndexCommon.config.basicBuilding.files, function (i, n) {
             navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
             navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, data.id);
         });
     };
     navButtonBuild.clearAll = function () {
-        $("#" + objectData.config.basicBuilding.frm).clearAll();
+        $("#" + basicIndexCommon.config.basicBuilding.frm).clearAll();
     };
     navButtonBuild.inputBlur = function () {
-        $("#" + objectData.config.basicBuilding.frm).find("input").each(function (i, n) {
+        $("#" + basicIndexCommon.config.basicBuilding.frm).find("input").each(function (i, n) {
             $(n).blur(function () {
                 var str = $(n).val();
                 if (navButtonBuild.isNotBlank(str)) {
@@ -123,7 +123,7 @@ var navButtonBuild;
                 }
             });
         });
-        $("#" + objectData.config.basicBuilding.frm).find("select").each(function (i, n) {
+        $("#" + basicIndexCommon.config.basicBuilding.frm).find("select").each(function (i, n) {
             $(n).change(function () {
                 var str = $(n).val();
                 if (navButtonBuild.isNotBlank(str)) {
@@ -138,15 +138,15 @@ var navButtonBuild;
         var labelName = "";
         if (num == 0) {
             labelName = "平面图";
-            fieldsName = objectData.config.basicBuilding.files.building_floor_plan + "" + navButtonBuild.switchNumber;
+            fieldsName = basicIndexCommon.config.basicBuilding.files.building_floor_plan + "" + navButtonBuild.switchNumber;
         }
         if (num == 1) {
             labelName = "外装图";
-            fieldsName = objectData.config.basicBuilding.files.building_figure_outside + "" + navButtonBuild.switchNumber;
+            fieldsName = basicIndexCommon.config.basicBuilding.files.building_figure_outside + "" + navButtonBuild.switchNumber;
         }
         if (num == 2) {
             labelName = "外观图";
-            fieldsName = objectData.config.basicBuilding.files.building_floor_Appearance_figure + "" + navButtonBuild.switchNumber;
+            fieldsName = basicIndexCommon.config.basicBuilding.files.building_floor_Appearance_figure + "" + navButtonBuild.switchNumber;
         }
         var label = "<label class='col-sm-1 control-label'>" + labelName + "</label>";
         var div = "<div class='col-sm-3'>";
@@ -177,6 +177,7 @@ navButtonBuild.switchInit = function (target, number) {
     navButtonBuild.updateFileId();
     navButtonBuild.initData(navButtonBuild.switchNumber);
     navButtonBuild.dataButtonWrite(target);
+    basicIndexCommon.setBuildId(number);
     buildingModel.prototype.viewInit();
 };
 //第一栋

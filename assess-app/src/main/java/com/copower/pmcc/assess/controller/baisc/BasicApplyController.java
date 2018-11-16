@@ -95,7 +95,7 @@ public class BasicApplyController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
         try {
             BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
-            this.setViewParam(basicApply, modelAndView, "详情");
+            this.setViewParam(basicApply, modelAndView, "");
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
@@ -178,8 +178,28 @@ public class BasicApplyController {
                 modelAndView.addObject("basicApply", basicApply);
                 modelAndView.addObject("basicUnit", publicBasicService.getByByAppIdBasicUnit(basicApply.getId()));
                 modelAndView.addObject("basicEstate", publicBasicService.getByAppIdBasicEstate(basicApply.getId()));
+                try {
+                    modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicEstate(basicApply.getId())));
+                } catch (Exception e1) {
+                    logger.error("json解析异常,值可能没有",e1);
+                }
                 modelAndView.addObject("basicEstateLandState", publicBasicService.getByAppIdEstateLandState(basicApply.getId()));
+                try {
+                    modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(publicBasicService.getByAppIdEstateLandState(basicApply.getId())));
+                } catch (Exception e1) {
+                    logger.error("json解析异常,值可能没有",e1);
+                }
                 modelAndView.addObject("basicHouseTrading", publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId()));
+                try {
+                    modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId())));
+                } catch (Exception e1) {
+                    logger.error("json解析异常,值可能没有",e1);
+                }
+                try {
+                    modelAndView.addObject("basicHouse", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseVo(basicApply.getId())));
+                } catch (Exception e1) {
+                    logger.error("json解析异常,值可能没有",e1);
+                }
                 modelAndView.addObject("basicHouse", publicBasicService.getByAppIdBasicHouseVo(basicApply.getId()));
             }
             BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());
@@ -288,7 +308,7 @@ public class BasicApplyController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
-            this.setViewParam(basicApply, modelAndView, "详情");
+            this.setViewParam(basicApply, modelAndView, null);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
         }
@@ -309,11 +329,16 @@ public class BasicApplyController {
 
     @RequestMapping(value = "/basicApplyStart", name = "案例数据恢复 申请", method = RequestMethod.GET)
     public ModelAndView basicApplyStart(Integer applyId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/temporary", "0", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
         try {
             BasicApply basicApply = temporaryBasicService.startApply(applyId);
             if (basicApply != null) {
-                this.setViewParam(basicApply, modelAndView, "详情");
+                try {
+                    this.setViewParam(basicApply, modelAndView, "详情");
+                } catch (Exception e1) {
+                    logger.info("参数处理错误!",e1);
+                }
+                modelAndView.addObject("startApply",ProjectStatusEnum.STARTAPPLY.getKey());
             }
         } catch (Exception e1) {
             logger.error("数据异常!", e1);

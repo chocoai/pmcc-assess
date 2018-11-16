@@ -39,7 +39,7 @@ var houseHeating;
             $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHeating.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseHeating.prototype.config().type,
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -79,7 +79,7 @@ var houseHeating;
             }
             var data = formParams(houseHeating.prototype.config().frm);
             data.type = houseHeating.prototype.config().type;
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -171,7 +171,7 @@ var houseAirConditioner;
             $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseAirConditioner.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseAirConditioner.prototype.config().type,
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -211,7 +211,7 @@ var houseAirConditioner;
             }
             var data = formParams(houseAirConditioner.prototype.config().frm);
             data.type = houseAirConditioner.prototype.config().type;
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -303,7 +303,7 @@ var houseNewWind;
             $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseNewWind.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseNewWind.prototype.config().type,
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -343,7 +343,7 @@ var houseNewWind;
             }
             var data = formParams(houseNewWind.prototype.config().frm);
             data.type = houseNewWind.prototype.config().type;
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -439,7 +439,7 @@ var houseCorollaryEquipment;
             });
             $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath() + "/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -478,7 +478,7 @@ var houseCorollaryEquipment;
                 return false;
             }
             var data = formParams(houseCorollaryEquipment.prototype.config().frm);
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
                 type: "post",
@@ -523,8 +523,8 @@ var houseCorollaryEquipment;
         init: function (item) {
             $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll();
             $("#" + houseCorollaryEquipment.prototype.config().frm).initForm(item);
-            objectData.showFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
-            objectData.uploadFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicIndexCommon.showFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicIndexCommon.uploadFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_price, item.price_select, function (html, data) {
                 $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.price_select").empty().html(html).trigger('change');
             });
@@ -574,7 +574,7 @@ var houseFaceStreet;
             });
             $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseFaceStreet.prototype.config().table, getContextPath() + "/basicHouseFaceStreet/getBootstrapTableVo", cols, {
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -623,7 +623,7 @@ var houseFaceStreet;
                 return false;
             }
             var data = formParams(houseFaceStreet.prototype.config().frm);
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
                 type: "post",
@@ -755,7 +755,7 @@ var houseIntelligent;
             });
             $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseIntelligent.prototype.config().table, getContextPath() + "/basicHouseIntelligent/getBootstrapTableVo", cols, {
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -794,7 +794,7 @@ var houseIntelligent;
                 return false;
             }
             var data = formParams(houseIntelligent.prototype.config().frm);
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
                 type: "post",
@@ -899,7 +899,7 @@ var houseWater;
             });
             $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseWater.prototype.config().table, getContextPath() + "/basicHouseWater/getBootstrapTableVo", cols, {
-                houseId: '0'
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -938,7 +938,7 @@ var houseWater;
                 return false;
             }
             var data = formParams(houseWater.prototype.config().frm);
-            data.houseId = '0';
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseWater/saveAndUpdateBasicHouseWater",
                 type: "post",
@@ -1048,7 +1048,7 @@ var houseRoom;
             });
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                houseId: 0
+                houseId: basicIndexCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1190,7 +1190,7 @@ var houseRoom;
                 return false;
             }
             var data = formParams(houseRoom.prototype.config().frm);
-            data.houseId = "0";
+            data.houseId = basicIndexCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
                 type: "post",
@@ -1231,7 +1231,7 @@ var houseRoom;
         init: function (item) {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             $("#" + houseRoom.prototype.config().frm).initForm(item);
-            var basicHouse = formParams(objectData.config.basicHouse.frm);
+            var basicHouse = formParams(basicIndexCommon.config.basicHouse.frm);
             if (houseRoom.prototype.isEmpty(basicHouse.practicalUse)) {
                 AssessCommon.loadDataDicByPid(basicHouse.practicalUse, item.roomType, function (html, data) {
                     $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');

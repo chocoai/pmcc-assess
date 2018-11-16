@@ -17,6 +17,7 @@ var buildingModel;
             var data = navButtonBuild.getObjArray(navButtonBuild.switchNumber);
             var buildingId = data.id;
             try {
+                return basicIndexCommon.getBuildId();
                 if (buildingModel.prototype.isEmpty(buildingId)){
                     // return buildingId;
                 }

@@ -147,7 +147,7 @@ public class BasicEstateLandStateService {
         if (basicEstateLandState.getLandLevel() != null) {
             DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(basicEstateLandState.getLandLevel());
             if (dataLandLevelDetail != null) {
-
+                vo.setLandLevelName(String.format("%s%s",dataLandLevelDetail.getCategory(),dataLandLevelDetail.getClassify()));
             }
         }
         return vo;

@@ -401,8 +401,9 @@ $(function () {
         },
         //初始化区域信息
         initAreaInfo: function (options) {
-            AssessCommon.initAsyncAreaInfo(options,true);
+            assessCommon.initAsyncAreaInfo(options,true);
         },
+
         initAsyncAreaInfo: function (options,async) {
             var isProvinceFirstChange = true;
             var isCityFirstChange = true;
@@ -433,7 +434,6 @@ $(function () {
             } else {
                 defaults.cityTarget = $(defaults.cityTarget);
             }
-
             if ($.type(defaults.districtTarget) === "string") {
                 defaults.districtTarget = $("#" + defaults.districtTarget);
             } else {
@@ -464,7 +464,6 @@ $(function () {
                 if ($.type(defaults.districtTarget) === "string") {
                     defaults.districtTarget = $("#" + defaults.districtTarget);
                 }
-                defaults.districtTarget.select2();
                 //市切换
                 defaults.cityTarget.unbind('change').bind('change', function () {
                     isCityFirstChange = false;
