@@ -1,12 +1,12 @@
 package com.copower.pmcc.assess.service.base;
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseParameterDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseParameter;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +19,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BaseParameterServcie {
-    private static final Logger logger = LoggerFactory.getLogger(BaseParameterServcie.class);
     @Autowired
-    private BaseParameterDao cmsBaseParameterDao;
+    private BaseParameterDao baseParameterDao;
 
     /**
      * cache获取参数对象
@@ -34,10 +33,10 @@ public class BaseParameterServcie {
         BaseParameter baseParameter;
         try {
             String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_PARAMETER_KEY, key);
-            baseParameter = LangUtils.singleCache(cacheKey, key, BaseParameter.class, input -> cmsBaseParameterDao.getBaseParameter(input));
+            baseParameter = LangUtils.singleCache(cacheKey, key, BaseParameter.class, input -> baseParameterDao.getBaseParameter(input));
 
         } catch (Exception e) {
-            baseParameter = cmsBaseParameterDao.getBaseParameter(key);
+            baseParameter = baseParameterDao.getBaseParameter(key);
         }
         if (baseParameter != null) {
             return baseParameter.getParValues();
@@ -45,5 +44,18 @@ public class BaseParameterServcie {
         return "";
     }
 
+    /**
+     * 统一获取参数
+     * @param baseParameterEnum
+     * @return
+     * @throws BusinessException
+     */
+    public String getBaseParameter(BaseParameterEnum baseParameterEnum) throws BusinessException {
+        BaseParameter baseParameter = baseParameterDao.getBaseParameter(baseParameterEnum.toString());
+        if (baseParameter == null) {
+            throw new BusinessException(String.format("没有配置[%s]参数", baseParameterEnum.getRemarks()));
+        }
 
+        return baseParameter.getParValues();
+    }
 }

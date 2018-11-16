@@ -24,7 +24,7 @@ public class ProjectTaskEvent extends BaseProcessEvent {
 
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         String processInstanceId = processExecution.getProcessInstanceId();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInstanceId);

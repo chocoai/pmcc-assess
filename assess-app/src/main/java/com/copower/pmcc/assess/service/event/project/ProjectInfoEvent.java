@@ -28,7 +28,7 @@ public class ProjectInfoEvent extends BaseProcessEvent {
     private ProjectInfoService projectInfoService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         //
         //更新流程到下一节点

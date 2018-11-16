@@ -28,7 +28,7 @@ public class ProjectPlanHistoryEvent extends BaseProcessEvent {
     private ProjectPlanDao projectPlanDao;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         String processInsId = processExecution.getProcessInstanceId();
         ProjectPlanHistory projectPlanHistory = new ProjectPlanHistory();

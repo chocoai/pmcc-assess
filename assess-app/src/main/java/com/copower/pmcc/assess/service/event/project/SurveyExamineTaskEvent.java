@@ -27,7 +27,7 @@ public class SurveyExamineTaskEvent extends BaseProcessEvent {
     private CommonService commonService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         //更新案例任务状态
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());

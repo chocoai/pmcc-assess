@@ -42,7 +42,7 @@ public class SurveySceneExploreEvent extends ProjectTaskEvent {
     private ProjectInfoService projectInfoService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
         super.processFinishExecute(processExecution);
 
         //批量更新数据到其它证书

@@ -26,7 +26,7 @@ public class ProjectPlanTaskAllEvent extends BaseProcessEvent {
     private ProjectPlanService projectPlanService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
             ProjectPlanTaskAll projectPlanTaskAll = projectTaskAllService.getObjectByProcessInsId(processExecution.getProcessInstanceId());

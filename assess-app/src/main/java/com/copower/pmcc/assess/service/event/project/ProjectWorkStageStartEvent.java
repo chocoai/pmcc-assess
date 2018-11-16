@@ -35,7 +35,7 @@ public class ProjectWorkStageStartEvent extends BaseProcessEvent {
     private ProjectPlanService projectPlanService;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
             //如果审批结束，则启用相应的计划

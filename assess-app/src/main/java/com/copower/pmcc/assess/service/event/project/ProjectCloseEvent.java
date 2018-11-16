@@ -41,7 +41,7 @@ public class ProjectCloseEvent extends BaseProcessEvent {
     private ApplicationConstant applicationConstant;
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
         ProjectClose projectClose = projectCloseService.getProjectClose(processExecution.getProcessInstanceId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectClose.getProjectId());

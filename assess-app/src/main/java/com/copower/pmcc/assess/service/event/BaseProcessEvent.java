@@ -8,6 +8,7 @@ import com.copower.pmcc.bpm.api.executor.ProcessEventExecutor;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessExecutionService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class BaseProcessEvent implements ProcessEventExecutor {
     }
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) {
+    public void processFinishExecute (ProcessExecution processExecution) throws Exception {
         processStatus(processExecution);
     }
 
