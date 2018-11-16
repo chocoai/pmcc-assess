@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project.manage;
+package com.copower.pmcc.assess.controller.project.change;
 
 import com.copower.pmcc.assess.service.project.manage.ProjectFollowService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
