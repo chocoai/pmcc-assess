@@ -26,7 +26,7 @@
                                 重启时间
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <input id="restartTime" name="restartTime" class="form-control" readonly="readonly">
+                                <label data-name="restartTime" class="form-control"></label>
                             </div>
                         </div>
 
@@ -38,7 +38,7 @@
                                 重启原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <label data-name="changeReason" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,6 @@
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
         var projectInfo = JSON.parse(json);
-        projectRestartApplyObj.projectRestartForm.initForm(projectInfo);
-        $("#project_restart_form textarea").attr("readonly",true);
+        projectRestartApplyObj.projectRestartForm.initLabel(projectInfo);
     });
 </script>
