@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
@@ -29,6 +29,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
@@ -108,7 +109,7 @@ public class ProjectPauseService {
             processInfo.setProcessName(boxReInfoByBoxId.getProcessName());
             processInfo.setGroupName(boxReInfoByBoxId.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_suspend");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectSuspend.class));
             processInfo.setTableId(projectSuspend.getId());
             processInfo.setBoxId(boxReInfoByBoxId.getId());
             processInfo.setProjectId(projectId);
@@ -146,7 +147,7 @@ public class ProjectPauseService {
         SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
-        sysAttachment.setTableName("tb_project_suspend");
+        sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(ProjectSuspend.class));
         SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(projectSuspend.getId());
@@ -213,7 +214,7 @@ public class ProjectPauseService {
             return new BootstrapTableVo();
         }
         List<Integer> integers = LangUtils.transform(projectSuspends, projectSuspend -> projectSuspend.getId());
-        List<SysAttachmentDto> sysAttachments = baseAttachmentService.getAttachmentListByTableName("tb_project_suspend", integers);
+        List<SysAttachmentDto> sysAttachments = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(ProjectSuspend.class), integers);
         List<ProjectSuspendVo> projectSuspendVos = LangUtils.transform(projectSuspends, projectSuspend -> {
 
             ProjectSuspendVo projectSuspendVo = new ProjectSuspendVo();

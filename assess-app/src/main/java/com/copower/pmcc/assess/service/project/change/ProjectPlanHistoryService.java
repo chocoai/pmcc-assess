@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
@@ -26,6 +26,7 @@ import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -122,7 +123,7 @@ projectPlanHistories=new ArrayList<>();
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_plan_history");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanHistory.class));
             processInfo.setTableId(0);
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setProcessEventExecutorName(ProjectPlanHistoryEvent.class.getSimpleName());
@@ -169,7 +170,7 @@ projectPlanHistories=new ArrayList<>();
         SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
-        sysAttachment.setTableName("tb_project_plan_history");
+        sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanHistory.class));
         SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(0);

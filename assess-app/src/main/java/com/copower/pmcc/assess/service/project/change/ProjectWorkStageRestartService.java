@@ -1,11 +1,8 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectWorkStageRestartDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageRestart;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectWorkStageStartEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -21,6 +18,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +111,7 @@ public class ProjectWorkStageRestartService {
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_work_stage_restart");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectWorkStageRestart.class));
             processInfo.setTableId(projectWorkStageRestart.getId());
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setProcessEventExecutorName(ProjectWorkStageStartEvent.class.getSimpleName());

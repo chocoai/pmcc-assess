@@ -11,15 +11,14 @@ import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.word.DataReplaceTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessFieldNameConstant;
-import com.copower.pmcc.assess.constant.AssessParameterConstant;
 import com.copower.pmcc.assess.constant.AssessTableNameConstant;
-import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.dao.csr.*;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.DataReplaceDto;
 import com.copower.pmcc.assess.dto.input.base.BaseReportTemplateFilesDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectMemberDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportBorrowerDto;
 import com.copower.pmcc.assess.dto.input.project.csr.CsrImportColumnDto;
-import com.copower.pmcc.assess.dto.input.DataReplaceDto;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoGroupVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.report.BaseReportTemplateVo;
@@ -253,7 +252,7 @@ public class CsrProjectInfoService {
         readImportData(csrProjectInfo);
 
         //发起流程
-        String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.CSR_PROJECT_APPLY_PROCESS_KEY);
+        String boxName = baseParameterServcie.getParameterValues(BaseParameterEnum.CSR_PROJECT_APPLY_PROCESS_KEY.getParameterKey());
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         ProcessInfo processInfo = new ProcessInfo();
@@ -384,7 +383,7 @@ public class CsrProjectInfoService {
                     projectInfo.setRemarks(csrProjectInfo.getRemark());
                     projectInfo.setValuationDate(csrProjectInfo.getValuationDate());
                     projectInfo.setCompleteDateStart(csrProjectInfo.getValuationDate());
-                    int projectId = projectInfoService.saveProjectInfo_returnID(projectInfo);
+                    int projectId = projectInfoService.saveProjectInfo(projectInfo);
 
                     //保存项目成员
                     ProjectMemberDto projectMemberDto = new ProjectMemberDto();

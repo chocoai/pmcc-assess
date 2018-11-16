@@ -8,6 +8,7 @@
 <!-- start: META -->
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="el" uri="assess.pmcc.com/el-common" %>
 <title>${thisTitle}</title>
 <meta charset="utf-8"/>
 <!--[if IE]>

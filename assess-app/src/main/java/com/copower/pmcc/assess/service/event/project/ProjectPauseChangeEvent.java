@@ -30,6 +30,6 @@ public class ProjectPauseChangeEvent extends BaseProcessEvent {
         projectChangeLogDao.modifyProjectChangeLog(data);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
         projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getName());
-        projectInfoService.saveProjectInfo_returnID(projectInfo);
+        projectInfoService.saveProjectInfo(projectInfo);
     }
 }

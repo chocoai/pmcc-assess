@@ -9,10 +9,9 @@ import com.copower.pmcc.assess.dto.input.project.ProjectPlanFinancialClaimFastDt
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.dto.output.project.csr.CsrBorrowerVo;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
-import com.copower.pmcc.assess.service.project.csr.CsrBorrowerService;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.*;
-import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;

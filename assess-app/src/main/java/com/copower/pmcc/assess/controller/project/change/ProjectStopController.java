@@ -51,9 +51,9 @@ public class ProjectStopController extends BaseController {
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_STOP_CHANGE_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/apply", boxReDto.getId());
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(projectId);
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
 
         return modelAndView;
     }
@@ -75,9 +75,9 @@ public class ProjectStopController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/approval", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 
@@ -103,10 +103,9 @@ public class ProjectStopController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/apply", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
-     ;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 

@@ -13,7 +13,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectProgressWorkStageVo;
 import com.copower.pmcc.assess.service.project.csr.CsrProjectInfoService;
-import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysUserDto;

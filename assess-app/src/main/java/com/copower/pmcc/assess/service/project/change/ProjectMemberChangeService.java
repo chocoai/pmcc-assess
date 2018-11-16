@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
@@ -96,6 +96,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 构建项目经理数据
+     *
      * @param oldManager
      * @param newManager
      * @param userMap
@@ -111,7 +112,7 @@ public class ProjectMemberChangeService {
             memberChangeDto.setNewManagerName(buildUserName(userMap.get(newManager).getUserName(), newManager));
         } else {
             memberChangeDto.setNewManagerAccount(oldManager);
-            memberChangeDto.setNewManagerName(buildUserName(userMap.get(oldManager).getUserName(),oldManager));
+            memberChangeDto.setNewManagerName(buildUserName(userMap.get(oldManager).getUserName(), oldManager));
         }
     }
 
@@ -182,7 +183,7 @@ public class ProjectMemberChangeService {
 
 
         if (CollectionUtils.isNotEmpty(unionMembers)) {
-            for (String account: unionMembers) {
+            for (String account : unionMembers) {
                 MemberChangeDto memberChangeDto = new MemberChangeDto();
 
                 buildManager(oldManager, newManager, userMap, memberChangeDto);
@@ -225,6 +226,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 移除项目成员
+     *
      * @param projectId
      * @param processInsId
      * @param member
@@ -268,6 +270,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 添加成员
+     *
      * @param projectId
      * @param processInsId
      * @param addMembers
@@ -291,10 +294,10 @@ public class ProjectMemberChangeService {
         ProjectMember newProjectMember = JSON.parseObject(newRecord, ProjectMember.class);
         String newMemberStr = newProjectMember.getUserAccountMember();
         List<String> members = FormatUtils.transformString2List(newMemberStr);
-
+        members = CollectionUtils.isEmpty(members) ? Lists.newArrayList() : members;
         //判断添加的成员是否在成员中
         List<String> addUsers = FormatUtils.transformString2List(addMembers);
-        for (String user: addUsers) {
+        for (String user : addUsers) {
             if (!members.contains(user)) {
                 members.add(user);
             }
@@ -317,6 +320,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 替换项目成员
+     *
      * @param projectId
      * @param processInsId
      * @param oldMember
@@ -366,6 +370,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 替换项目经理
+     *
      * @param projectId
      * @param processInsId
      * @param newManage
@@ -462,6 +467,7 @@ public class ProjectMemberChangeService {
 
     /**
      * 检查用户任务个数
+     *
      * @throws BusinessException
      */
     public void checkUserTask() throws BusinessException {
