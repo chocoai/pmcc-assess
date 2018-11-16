@@ -9,6 +9,7 @@
     <result column="build_identifier" property="buildIdentifier" jdbcType="VARCHAR" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="industry" property="industry" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, process_ins_id, house_number, unit_number, build_identifier, estate_name, status, 
-    industry, creator, gmt_created, gmt_modified
+    temporary, industry, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into tb_basic_apply (process_ins_id, house_number, unit_number, 
       build_identifier, estate_name, status, 
-      industry, creator, gmt_created, 
-      gmt_modified)
+      temporary, industry, creator, 
+      gmt_created, gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, 
       #{buildIdentifier,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{industry,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{temporary,jdbcType=BIT}, #{industry,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -142,6 +143,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="temporary != null" >
+        temporary,
       </if>
       <if test="industry != null" >
         industry,
@@ -174,6 +178,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="temporary != null" >
+        #{temporary,jdbcType=BIT},
       </if>
       <if test="industry != null" >
         #{industry,jdbcType=VARCHAR},
@@ -219,6 +226,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.temporary != null" >
+        temporary = #{record.temporary,jdbcType=BIT},
+      </if>
       <if test="record.industry != null" >
         industry = #{record.industry,jdbcType=VARCHAR},
       </if>
@@ -245,6 +255,7 @@
       build_identifier = #{record.buildIdentifier,jdbcType=VARCHAR},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
+      temporary = #{record.temporary,jdbcType=BIT},
       industry = #{record.industry,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -274,6 +285,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="temporary != null" >
+        temporary = #{temporary,jdbcType=BIT},
+      </if>
       <if test="industry != null" >
         industry = #{industry,jdbcType=VARCHAR},
       </if>
@@ -297,6 +311,7 @@
       build_identifier = #{buildIdentifier,jdbcType=VARCHAR},
       estate_name = #{estateName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      temporary = #{temporary,jdbcType=BIT},
       industry = #{industry,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

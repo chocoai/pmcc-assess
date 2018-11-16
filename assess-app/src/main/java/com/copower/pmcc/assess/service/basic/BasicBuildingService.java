@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.BasicBuildingFieldEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -30,8 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -66,21 +63,11 @@ public class BasicBuildingService {
     /**
      * 初始化或者更新
      *
-     * @param id
+     * @param newId
      * @param buildingNumber
      * @throws Exception
      */
-    public void init(Integer id, String buildingNumber,BasicBuilding basicBuilding) throws Exception {
-        if (id != null) {
-            if (StringUtils.isEmpty(buildingNumber)) {
-                throw new Exception("不符合条件");
-            }
-        }
-        if (StringUtils.isNotEmpty(buildingNumber)) {
-            if (id == null) {
-                throw new Exception("不符合条件");
-            }
-        }
+    public void init(Integer oldId,Integer newId, String buildingNumber, BasicBuilding basicBuilding) throws Exception {
         List<BasicBuildingFunction> basicBuildingFunctionList = null;
         List<BasicBuildingMaintenance> basicBuildingMaintenanceList = null;
         List<BasicBuildingOutfit> basicBuildingOutfitList = null;
@@ -89,15 +76,15 @@ public class BasicBuildingService {
         BasicBuildingFunction queryFunction = new BasicBuildingFunction();
         BasicBuildingOutfit queryOutfit = new BasicBuildingOutfit();
         BasicBuildingMaintenance queryMaintenance = new BasicBuildingMaintenance();
-        querySurface.setBuildingId(0);
-        queryFunction.setBuildingId(0);
-        queryOutfit.setBuildingId(0);
-        queryMaintenance.setBuildingId(0);
+        querySurface.setBuildingId(oldId);
+        queryFunction.setBuildingId(oldId);
+        queryOutfit.setBuildingId(oldId);
+        queryMaintenance.setBuildingId(oldId);
         querySurface.setCreator(commonService.thisUserAccount());
         queryFunction.setCreator(commonService.thisUserAccount());
         queryOutfit.setCreator(commonService.thisUserAccount());
         queryMaintenance.setCreator(commonService.thisUserAccount());
-        if (id == null) {
+        if (newId == null) {
             SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableId(0);
             sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
@@ -125,7 +112,7 @@ public class BasicBuildingService {
             }
         }
 
-        if (id != null) {
+        if (newId != null) {
             querySurface.setBuildingNumber(buildingNumber);
             queryFunction.setBuildingNumber(buildingNumber);
             queryOutfit.setBuildingNumber(buildingNumber);
@@ -135,22 +122,22 @@ public class BasicBuildingService {
             basicBuildingOutfitList = basicBuildingOutfitService.basicBuildingOutfitList(queryOutfit);
             basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
             for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
-                oo.setBuildingId(id);
+                oo.setBuildingId(newId);
                 oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(oo);
             }
             for (BasicBuildingFunction oo : basicBuildingFunctionList) {
-                oo.setBuildingId(id);
+                oo.setBuildingId(newId);
                 oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(oo);
             }
             for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
-                oo.setBuildingId(id);
+                oo.setBuildingId(newId);
                 oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(oo);
             }
             for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
-                oo.setBuildingId(id);
+                oo.setBuildingId(newId);
                 oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(oo);
             }
@@ -181,7 +168,7 @@ public class BasicBuildingService {
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
             if (basicBuilding.getPart() != null) {
-                this.init(id, String.valueOf(basicBuilding.getPart()),basicBuilding);
+                this.init(0,id, String.valueOf(basicBuilding.getPart()),basicBuilding);
             }
             return id;
         } else {
@@ -207,10 +194,6 @@ public class BasicBuildingService {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
-            this.init(id, BasicBuildingFieldEnum.BuildFour.getKey(),basicBuilding);
-            this.init(id, BasicBuildingFieldEnum.BuildThree.getKey(),basicBuilding);
-            this.init(id, BasicBuildingFieldEnum.BuildTwo.getKey(),basicBuilding);
-            this.init(id, BasicBuildingFieldEnum.BuildOne.getKey(),basicBuilding);
             return id;
         } else {
             basicBuildingDao.updateBasicBuilding(basicBuilding);

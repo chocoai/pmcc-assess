@@ -296,7 +296,6 @@ public class BasicEstateService {
             basicEstate.setCreator(commonService.thisUserAccount());
         }
         Integer id = basicEstateDao.saveBasicEstate(basicEstate);
-        this.initUpdateSon(0, id,basicEstate);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
         return id;
     }
@@ -315,7 +314,6 @@ public class BasicEstateService {
             return id;
             //有id情况下 save
         } else {
-            basicEstate.setCreator(commonService.thisUserAccount());
             //不再使用这种方式
 //            ddlMySqlAssist.insertBasicEstate(basicEstate);
 //            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());

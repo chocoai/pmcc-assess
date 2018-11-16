@@ -75,7 +75,6 @@ public class BasicBuildingMainService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingMain.class), id);
             return  id ;
         } else {
-            BasicBuildingMain oo = basicBuildingMainDao.getBasicBuildingMainById(basicBuildingMain.getId());
             basicBuildingMainDao.updateBasicBuildingMain(basicBuildingMain);
             return null;
         }

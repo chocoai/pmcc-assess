@@ -17,6 +17,8 @@ public class BasicApply {
 
     private String status;
 
+    private Boolean temporary;
+
     private String industry;
 
     private String creator;
@@ -79,6 +81,14 @@ public class BasicApply {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
     public String getIndustry() {

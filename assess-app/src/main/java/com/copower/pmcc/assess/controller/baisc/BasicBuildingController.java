@@ -91,7 +91,7 @@ public class BasicBuildingController {
     @RequestMapping(value = "/initBuilding", name = "初始化", method = {RequestMethod.POST})
     public HttpResult basicBuildingList(){
         try {
-            basicBuildingService.init(null,null,null);
+            basicBuildingService.init(0,null,null,null);
             return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
