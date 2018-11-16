@@ -35,7 +35,7 @@ var unitDecorate;
             });
             $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitDecorate.prototype.config().table, getContextPath()+"/basicUnitDecorate/getBootstrapTableVo", cols, {
-                unitId: 0
+                unitId: basicIndexCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -74,7 +74,7 @@ var unitDecorate;
                 return false;
             }
             var data = formParams(unitDecorate.prototype.config().frm);
-            data.unitId = "0" ;
+            data.unitId = basicIndexCommon.getUnitId() ;
             $.ajax({
                 url: getContextPath()+"/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
                 type: "post",
@@ -177,7 +177,7 @@ var unitHuxing;
             });
             $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitHuxing.prototype.config().table, getContextPath()+"/basicUnitHuxing/getBootstrapTableVo", cols, {
-                unitId: "0"
+                unitId: basicIndexCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -216,7 +216,7 @@ var unitHuxing;
                 return false;
             }
             var data = formParams(unitHuxing.prototype.config().frm);
-            data.unitId = "0" ;
+            data.unitId = basicIndexCommon.getUnitId() ;
             data.houseCategory = unitHuxing.prototype.rule("get",data);
             $.ajax({
                 url: getContextPath()+"/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
@@ -343,8 +343,8 @@ var unitHuxing;
         init: function (item) {
             $("#" + unitHuxing.prototype.config().frm).clearAll();
             $("#" + unitHuxing.prototype.config().frm).initForm(item);
-            objectData.showFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
-            objectData.uploadFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
+            basicIndexCommon.showFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
+            basicIndexCommon.uploadFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
             if (unitHuxing.prototype.isNotNull(item.houseCategory)){
                 unitHuxing.prototype.rule("set",JSON.parse(item.houseCategory));
             }
@@ -395,7 +395,7 @@ var unitElevator;
             });
             $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitElevator.prototype.config().table, getContextPath()+"/basicUnitElevator/getBootstrapTableVo", cols, {
-                unitId: "0"
+                unitId: basicIndexCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -434,7 +434,7 @@ var unitElevator;
                 return false;
             }
             var data = formParams(unitElevator.prototype.config().frm);
-            data.unitId = "0";
+            data.unitId = basicIndexCommon.getUnitId();
             $.ajax({
                 url: getContextPath()+"/basicUnitElevator/saveAndUpdateBasicUnitElevator",
                 type: "post",

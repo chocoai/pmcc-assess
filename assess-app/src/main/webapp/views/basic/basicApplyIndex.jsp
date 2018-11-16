@@ -5,11 +5,6 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
     <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js'></script>
-    <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
-    <script src="${pageContext.request.contextPath}/js/developer.select.js"></script>
-    <script src="${pageContext.request.contextPath}/js/builder.select.js"></script>
-    <script src="${pageContext.request.contextPath}/js/property.select.js"></script>
-    <script src="${pageContext.request.contextPath}/js/land.level.select.js"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -150,58 +145,7 @@
                 </div>
             </div>
 
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>
-                        <small>信息</small>
-                    </h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div role="tabpanel" data-example-id="togglable-tabs">
-                        <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                            <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
-                                                                aria-expanded="true">楼盘</a>
-                            </li>
-                            <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                                aria-expanded="false">楼栋</a>
-                            </li>
-                            <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                                aria-expanded="false">单元</a>
-                            </li>
-                            <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                                aria-expanded="false">房屋</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade" id="caseEstate" aria-labelledby="profile-tab1">
-                                <div>
-                                    <%@include file="/views/basic/modelView/estateView.jsp" %>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
-                                <div>
-                                    <%@include file="/views/basic/modelView/buildingView.jsp" %>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
-                                <div>
-                                    <%@include file="/views/basic/modelView/unitView.jsp" %>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
-                                <div>
-                                    <%@include file="/views/basic/modelView/houseView.jsp" %>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <%@include file="/views/basic/basicIndexCommon.jsp" %>
 
             <div class="x_panel">
 
@@ -271,6 +215,8 @@
             tradingFrm: "basicTradingFrm"
         }
     };
+    //注入id
+    basicIndexCommon.setAppId(objectData.config.id);
 
     /**
      * 判断字符串以及null等
@@ -288,7 +234,7 @@
     objectData.isNotBlankObjectProperty = function (obj) {
         for (var key in obj) {
             //跳过下面四个input
-            if (key != 'name' && key != 'houseNumber' && key != 'buildingNumber' && key!= 'unitNumber'){
+            if (key != 'name' && key != 'houseNumber' && key != 'buildingNumber' && key != 'unitNumber') {
                 if (objectData.isNotBlank(obj[key])) {
                     return true;
                 }
@@ -310,8 +256,8 @@
     objectData.select2Assignment = function (frm, data, name) {
         if (objectData.isNotBlank(data)) {
             $("#" + frm).find("select." + name).val(data).trigger("change");
-            $("#" + frm).find("select[name='" + name+"']").val(data).trigger("change");
-            $("#" + frm).find("select[name='" + name+"']").val(data);
+            $("#" + frm).find("select[name='" + name + "']").val(data).trigger("change");
+            $("#" + frm).find("select[name='" + name + "']").val(data);
         } else {
             $("#" + frm).find("select." + name).val(null).trigger("change");
         }
@@ -577,35 +523,18 @@
     objectData.estateFlag = true;
     //处理 楼盘
     objectData.estate = {
+        //显示 楼盘页面
         show: function (itemA, itemB) {
-            $('#caseTab a:first').tab('show');
+            basicIndexCommon.estateShow();
             if (objectData.estateFlag) {
-                objectData.estate.init(itemA);
-                objectData.estate.landStateInit(itemB);
+                basicIndexCommon.estateInit(itemA);
+                basicIndexCommon.estateLandStateInit(itemB);
                 objectData.estateFlag = false;
             }
-            $("#profile-tab1").attr("data-toggle", "tab");
             $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
-            estateNetwork.prototype.loadDataDicList();
-            estateParking.prototype.loadDataDicList();
-            estateSupplyWater.prototype.loadDataDicList();
-            estateSupplyPower.prototype.loadDataDicList();
-            estateSupplyHeating.prototype.loadDataDicList();
-            estateSupplyGas.prototype.loadDataDicList();
-            matchingEducation.prototype.loadDataDicList();
-            matchingEnvironment.prototype.loadDataDicList();
-            matchingFinance.prototype.loadDataDicList();
-            matchingRecreation.prototype.loadDataDicList();
-            matchingRestaurant.prototype.loadDataDicList();
-            matchingMarket.prototype.loadDataDicList();
-            matchingMaterial.prototype.loadDataDicList();
-            matchingMedical.prototype.loadDataDicList();
-            matchingTransit.prototype.loadDataDicList();
-            matchingTrafficHub.prototype.loadDataDicList();
-            matchingMetro.prototype.loadDataDicList();
-            matchingMainRoad.prototype.loadDataDicList();
-            matchingMainConversion.prototype.loadDataDicList();
+            basicIndexCommon.estateLoadList();
         },
+        //编辑楼盘页面
         edit: function () {
             var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
             if (!objectData.isNotBlank(estateId)) {
@@ -617,104 +546,26 @@
             objectData.firstRemove.estateFirst();
 
             objectData.estate.appWriteEstate(estateId,
-            function (data) {
-                toastr.success('数据转移成功!');
-                var CaseEstate = data.CaseEstate;
-                var CaseEstateLandState = data.CaseEstateLandState;
-                if (!objectData.isNotBlank(CaseEstate)) {
-                    CaseEstate = {};
-                }
-                if (!objectData.isNotBlank(CaseEstateLandState)) {
-                    CaseEstateLandState = {};
-                }
-                $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
-                $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
-                objectData.estate.show(CaseEstate, CaseEstateLandState);
-            },
-            function (item) {
-                objectData.estate.show({}, {});
-                Alert("失败!" + item);
-            });
-        },
-        init: function (item) {
-            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyHeating, "supplyHeating");
-            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyPower, "supplyPower");
-            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyWater, "supplyWater");
-            objectData.select2Assignment(objectData.config.basicEstate.frm, item.supplyGas, "supplyGas");
-            $.each(objectData.config.basicEstate.files, function (i, n) {
-                objectData.uploadFile(n, AssessDBKey.BasicEstate, objectData.isNotBlank(item.id) ? item.id : 0);
-            });
-            AssessCommon.initAsyncAreaInfo({
-                provinceTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.province"),
-                cityTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.city"),
-                districtTarget: $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.district"),
-                provinceValue: item.province,
-                cityValue: item.city,
-                districtValue: item.district
-            }, false);
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataBlock/dataBlockList",
-                type: "get",
-                dataType: "json",
-                async: false,
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        var gradeNum = data.length;
-                        var option = "<option value=''>请选择</option>";
-                        if (gradeNum > 0) {
-                            for (var i = 0; i < gradeNum; i++) {
-                                option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            }
-                            $("#" + objectData.config.id).find("#" + objectData.config.basicEstate.frm).find("select.blockId").empty().html(option);
-                            objectData.select2Assignment(objectData.config.basicEstate.frm, item.blockId, "blockId");
-                        }
+                function (data) {
+                    toastr.success('数据转移成功!');
+                    var CaseEstate = data.CaseEstate;
+                    var CaseEstateLandState = data.CaseEstateLandState;
+                    if (!objectData.isNotBlank(CaseEstate)) {
+                        CaseEstate = {};
                     }
+                    if (!objectData.isNotBlank(CaseEstateLandState)) {
+                        CaseEstateLandState = {};
+                    }
+                    $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
+                    $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
+                    objectData.estate.show(CaseEstate, CaseEstateLandState);
                 },
-                error: function (result) {
-                    console.info(result);
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        //开发商选择
-        developerSelect: function (this_) {
-            assessDeveloper.select(function (row) {
-                $(this_).parent().prev().val(row.name);
-                $(this_).parent().prev().prev().val(row.id);
-            });
-        },
-        //土地级别选择
-        landLevelSelect: function (this_) {
-            assessLandLevel.select({
-                province: 25,
-                city: 321,
-                district: undefined,
-                success: function (data) {
-                    $(this_).parent().prev().val(data.name);
-                    $(this_).parent().prev().prev().val(data.id);
-                }
-            })
-        },
-        landStateInit: function (item) {
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
-                $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseType').empty().html(html);
-                objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseType, "landUseType");
-            }, true);
-            if (objectData.isNotBlank(item.landUseType)) {
-                AssessCommon.loadDataDicByPid(item.landUseType, item.landUseCategory, function (html, data) {
-                    $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseCategory').empty().html(html);
-                    objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseCategory, "landUseCategory");
+                function (item) {
+                    objectData.estate.show({}, {});
+                    Alert("失败!" + item);
                 });
-            }
-            $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").change(function () {
-                var id = $("#" + objectData.config.basicEstate.frmLandState).find("select.landUseType").val();
-                AssessCommon.loadDataDicByPid(id, null, function (html, data) {
-                    $("#" + objectData.config.basicEstate.frmLandState).find('select.landUseCategory').empty().html(html);
-                    objectData.select2Assignment(objectData.config.basicEstate.frmLandState, item.landUseCategory, "landUseCategory");
-                });
-            });
         },
+        //转移数据
         appWriteEstate: function (id, callback, callbackError) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicEstate/appWriteEstate",
@@ -743,11 +594,11 @@
     objectData.building = {
         show: function (item) {
             if (objectData.buildingFlag) {
-                objectData.building.init(item);
+                basicIndexCommon.buildingInit(item);
                 objectData.buildingFlag = false;
             }
-            $("#profile-tab2").attr("data-toggle", "tab");
-            $("#identifier").val($("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val());
+            basicIndexCommon.buildingShow();
+            basicIndexCommon.buildMainWrite({identifier: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val()});
             $("#" + objectData.config.basicBuilding.frm).initForm({buildingNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val()});
         },
         edit: function () {
@@ -768,21 +619,20 @@
                         var caseBuildingList = result.data.caseBuildingList;
 
                         objectData.building.appWriteBuilding(caseBuildingMain.id,
-                        function () {
-                            toastr.success('数据转移成功!');
-                            $("#identifier").val(caseBuildingMain.identifier);
-                            $("#caseBuildingMainId").val(caseBuildingMain.id);
-                            $.each(caseBuildingList, function (i, n) {
-                                if (objectData.isNotBlank(n.part)) {
-                                    navButtonBuild.setObjArrayElement(n.part, n);
-                                }
+                            function () {
+                                toastr.success('数据转移成功!');
+                                basicIndexCommon.buildMainWrite(caseBuildingMain);
+                                $.each(caseBuildingList, function (i, n) {
+                                    if (objectData.isNotBlank(n.part)) {
+                                        navButtonBuild.setObjArrayElement(n.part, n);
+                                    }
+                                });
+                                basicIndexCommon.buildingInit({});
+                                basicIndexCommon.buildingShow();
+                            },
+                            function (data) {
+                                Alert("失败!" + data);
                             });
-                            $("#profile-tab2").attr("data-toggle", "tab");
-                            objectData.building.init({});
-                        },
-                        function (data) {
-                            Alert("失败!"+data);
-                        });
                     }
                 },
                 error: function (result) {
@@ -790,6 +640,7 @@
                 }
             });
         },
+        //数据转移
         appWriteBuilding: function (id, callback, callbackError) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicBuilding/appWriteBuilding",
@@ -812,65 +663,14 @@
                     }
                 }
             });
-        },
-        init: function (item) {
-            $('#caseTab a').eq(1).tab('show');
-            navButtonBuild.inputBlur();
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, item.buildingCategory, function (html, data) {
-                $("#" + objectData.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, item.buildingStructure, function (html, data) {
-                $("#" + objectData.config.basicBuilding.frm).find('select.buildingStructure').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, item.propertyType, function (html, data) {
-                $("#" + objectData.config.basicBuilding.frm).find('select.propertyType').empty().html(html).trigger('change');
-            });
-            $("#" + objectData.config.basicBuilding.frm).find('select.buildingStructure').val(item.buildingStructure).trigger("change");
-            $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").change(function () {
-                /**
-                 * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-                 **/
-                var id = $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructure").val();
-                if (objectData.isNotBlank(id)) {
-                    AssessCommon.loadDataDicByPid(id, item.buildingStructureLower, function (html, data) {
-                        $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html);
-                    });
-                }
-            });
-            AssessCommon.loadDataDicByPid(item.buildingStructure, item.buildingStructureLower, function (html, data) {
-                $("#" + objectData.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
-            });
-            navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1)
-        },
-        //物业选择
-        propertySelect: function (this_) {
-            assessProperty.select(function (row) {
-                $(this_).parent().prev().val(row.name);
-                $(this_).parent().prev().prev().val(row.id);
-                navButtonBuild.tempSaveData();
-            });
-        },
-        //建造商选择
-        builderSelect: function (this_) {
-            assessBuilder.select(function (row) {
-                $(this_).parent().prev().val(row.name);
-                $(this_).parent().prev().prev().val(row.id);
-                navButtonBuild.tempSaveData();
-            });
         }
     };
 
     //处理单元
     objectData.unit = {
         show: function () {
-            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(buildingId)) {
-            }
-            $("#profile-tab3").attr("data-toggle", "tab");
-            $('#caseTab a').eq(2).tab('show');
-            unitDecorate.prototype.loadDataDicList();
-            unitHuxing.prototype.loadDataDicList();
-            unitElevator.prototype.loadDataDicList();
+            basicIndexCommon.unitShow();
+            basicIndexCommon.unitLoadList();
             $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
         },
         edit: function () {
@@ -882,14 +682,14 @@
             objectData.firstRemove.unitFirst();
 
             objectData.unit.appWriteUnit(unitId,
-            function (data) {
-                toastr.success('数据转移成功!');
-                $("#" + objectData.config.basicUnit.frm).initForm(data);
-                objectData.unit.show();
-            },
-            function () {
-                objectData.unit.show();
-            });
+                function (data) {
+                    toastr.success('数据转移成功!');
+                    $("#" + objectData.config.basicUnit.frm).initForm(data);
+                    objectData.unit.show();
+                },
+                function () {
+                    objectData.unit.show();
+                });
         },
         appWriteUnit: function (id, callback, callbackError) {
             $.ajax({
@@ -918,24 +718,12 @@
     objectData.houseFlag = true;
     objectData.house = {
         show: function () {
-            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
-            if (!objectData.isNotBlank(unitId)) {
-            }
-            $('#caseTab a').eq(3).tab('show');
-            $("#profile-tab4").attr("data-toggle", "tab");
+            basicIndexCommon.houseShow();
             if (objectData.houseFlag) {
-                houseModelFun.houseInit({});
-                houseModelFun.tradingInit({});
+                basicIndexCommon.houseInit({}, {});
                 objectData.houseFlag = false;
             }
-            houseRoom.prototype.loadDataDicList();
-            houseWater.prototype.loadDataDicList();
-            houseIntelligent.prototype.loadDataDicList();
-            houseFaceStreet.prototype.loadDataDicList();
-            houseCorollaryEquipment.prototype.loadDataDicList();
-            houseNewWind.prototype.loadDataDicList();
-            houseAirConditioner.prototype.loadDataDicList();
-            houseHeating.prototype.loadDataDicList();
+            basicIndexCommon.houseLoadList();
             $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
         },
         edit: function () {
@@ -947,24 +735,23 @@
             objectData.firstRemove.houseFirst();
 
             objectData.house.appWriteHouse(id,
-            function (data) {
-                var CaseHouseTrading = data.CaseHouseTrading;
-                var CaseHouse = data.CaseHouse;
-                if (!objectData.isNotBlank(CaseHouseTrading)) {
-                    CaseHouseTrading = {};
-                }
-                if (!objectData.isNotBlank(CaseHouse)) {
-                    CaseHouse = {};
-                }
-                objectData.house.show();
-                houseModelFun.houseInit(CaseHouse);
-                houseModelFun.tradingInit(CaseHouseTrading);
-                toastr.success('数据转移成功!');
-            },
-            function (item) {
-                objectData.house.show();
-                Alert("失败!" + item);
-            });
+                function (data) {
+                    var CaseHouseTrading = data.CaseHouseTrading;
+                    var CaseHouse = data.CaseHouse;
+                    if (!objectData.isNotBlank(CaseHouseTrading)) {
+                        CaseHouseTrading = {};
+                    }
+                    if (!objectData.isNotBlank(CaseHouse)) {
+                        CaseHouse = {};
+                    }
+                    objectData.house.show();
+                    basicIndexCommon.houseInit(CaseHouse, CaseHouseTrading);
+                    toastr.success('数据转移成功!');
+                },
+                function (item) {
+                    objectData.house.show();
+                    Alert("失败!" + item);
+                });
         },
         appWriteHouse: function (id, callback, callbackError) {
             $.ajax({
@@ -996,7 +783,7 @@
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicHouse/initHouse",
                 type: "post",
-                async:false,
+                async: false,
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -1013,7 +800,7 @@
                 url: "${pageContext.request.contextPath}/basicEstate/initEstate",
                 type: "post",
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
                     if (result.ret) {
                         // toastr.success('楼盘删除临时数据!');
@@ -1029,7 +816,7 @@
                 url: "${pageContext.request.contextPath}/basicBuilding/initBuilding",
                 type: "post",
                 dataType: "json",
-                async:false,
+                async: false,
                 success: function (result) {
                     if (result.ret) {
                         // toastr.success('楼栋删除临时数据!');
@@ -1057,7 +844,6 @@
             });
         }
     };
-
 
 
     /**
@@ -1221,6 +1007,22 @@
         // }
     };
 
+    //检测是否为 草稿重新申请
+    objectData.startApply = function () {
+        console.log("${startApply}");
+        if (this.isNotBlank("${startApply}")){
+            objectData.estate.show({},{});
+            objectData.building.show({});
+            objectData.house.show({},{});
+            objectData.unit.show({},{});
+
+        }
+    };
+
+
+    $(function () {
+        objectData.startApply();
+    });
 </script>
 
 <script>
@@ -1260,6 +1062,7 @@
             return false;
         }
         var data = objectData.formParams();
+        console.log(data);
         var formData = JSON.stringify(data);
         Loading.progressShow();
         $.ajax({

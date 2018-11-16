@@ -9,14 +9,14 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicHouseFrm">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicHouse.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-number='true'
                            placeholder="房号" name="houseNumber"
-                           class="form-control">
+                           class="form-control" value="${basicHouse.houseNumber}">
                 </div>
             </div>
             <div class="x-valid">
@@ -24,7 +24,7 @@
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
                            placeholder="所在楼层(请输入数字)" name="floor"
-                           class="form-control">
+                           class="form-control" value="${basicHouse.floor}">
                 </div>
             </div>
             <div class="x-valid" id="industryUseEnvironment">
@@ -69,8 +69,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">朝向</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="朝向" name="orientation" readonly="readonly"
-                           class="form-control">
+                    <input type="text" placeholder="朝向" name="orientation"
+                           class="form-control" value="${basicHouse.orientation}">
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" placeholder="权益限制"
                            name="rightInterestsRestriction"
-                           class="form-control">
+                           class="form-control" value="${basicHouse.rightInterestsRestriction}">
                 </div>
             </div>
         </div>
@@ -106,7 +106,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋出租占用情况途描述</label>
                 <div class="col-sm-11">
-                    <textarea class="form-control" name="description"></textarea>
+                    <textarea class="form-control" name="description">${basicHouse.description}</textarea>
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@
                 <div class="col-sm-3">
                     <input type="text" placeholder="说明事项内容" required="required"
                            name="descriptionContent"
-                           class="form-control">
+                           class="form-control" value="${basicHouseTrading.descriptionContent}">
                 </div>
             </div>
         </div>
@@ -227,7 +227,7 @@
                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="买方支付的额外税费"
-                           name="buyerExtraTaxFee" class="form-control">
+                           name="buyerExtraTaxFee" class="form-control" value="${basicHouseTrading.buyerExtraTaxFee}">
                 </div>
             </div>
 
@@ -245,7 +245,7 @@
                 <label class="col-sm-1 control-label">出售总额</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="出售总额"
-                           name="totalSale" class="form-control">
+                           name="totalSale" class="form-control" value="${basicHouseTrading.totalSale}">
                 </div>
             </div>
 
@@ -253,7 +253,7 @@
                 <label class="col-sm-1 control-label">分期支付利率</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="分期支付利率"
-                           name="installmentInterestRate" class="form-control">
+                           name="installmentInterestRate" class="form-control" value="${basicHouseTrading.installmentInterestRate}">
                 </div>
             </div>
         </div>
@@ -262,14 +262,14 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="承租方支付的额外税费" name="rentingExtraTaxFee"
+                    <input type="text" placeholder="承租方支付的额外税费" name="rentingExtraTaxFee" value="${basicHouseTrading.rentingExtraTaxFee}"
                            class="form-control">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">押金</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="押金" class="form-control" name="deposit">
+                    <input type="text" placeholder="押金" class="form-control" name="deposit" value="${basicHouseTrading.deposit}">
                 </div>
             </div>
         </div>
@@ -295,19 +295,19 @@
                 <div class="col-sm-3">
                     <input required="required" placeholder="交易时间"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate tradingTime">
+                           class="form-control date-picker dbdate tradingTime" value="<fmt:formatDate value='${basicHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易总价</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易总价" class="form-control" name="tradingTotalPrice">
+                    <input type="text" placeholder="交易总价" class="form-control" name="tradingTotalPrice" value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易单价</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="交易单价" class="form-control" name="tradingUnitPrice">
+                    <input type="text" placeholder="交易单价" class="form-control" name="tradingUnitPrice" value="${basicHouseTrading.tradingUnitPrice}">
                 </div>
             </div>
         </div>
@@ -316,13 +316,13 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">电话</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="电话" class="form-control" name="phone">
+                    <input type="text" placeholder="电话" class="form-control" name="phone" value="${basicHouseTrading.phone}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">姓名</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="姓名" class="form-control" name="name">
+                    <input type="text" placeholder="姓名" class="form-control" name="name" value="${basicHouseTrading.name}">
                 </div>
             </div>
         </div>

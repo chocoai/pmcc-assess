@@ -10,8 +10,8 @@
         <div class="form-group">
             <div class="x-valid">
                 <div class="col-sm-3">
-                    <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId">
-                    <input type="hidden" name="identifier" id="identifier">
+                    <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId" value="${basicBuildingMain.id}">
+                    <input type="hidden" name="identifier" id="identifier" value="${basicBuildingMain.identifier}">
                 </div>
             </div>
         </div>
@@ -302,7 +302,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objectData.building.builderSelect(this)">
+                                onclick="basicIndexCommon.builderSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -327,7 +327,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objectData.building.propertySelect(this)">
+                                onclick="basicIndexCommon.propertySelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

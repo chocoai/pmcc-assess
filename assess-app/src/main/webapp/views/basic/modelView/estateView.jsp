@@ -9,26 +9,14 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicEstateFrm">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicEstate.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">省
                     <span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="province"
-                            class="form-control search-select select2 province">
-                        <option value="" name="province">-请选择-</option>
-                        <c:forEach items="${ProvinceList}" var="item">
-                            <c:choose>
-                                <c:when test="${item.areaId == projectInfo.province}">
-                                    <option value="${item.areaId}"
-                                            selected="selected">${item.name}</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="${item.areaId}">${item.name}</option>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
+                    <select name="province" id="province"
+                            class="form-control search-select select2">
                     </select>
                 </div>
             </div>
@@ -37,7 +25,7 @@
                 <label class="col-sm-1 control-label">市<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="city" class="form-control search-select select2 city">
+                    <select name="city" id="city" class="form-control search-select select2">
                     </select>
                 </div>
             </div>
@@ -45,7 +33,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">县</label>
                 <div class="col-sm-3">
-                    <select name="district" class="form-control search-select select2 district">
+                    <select name="district" id="district1" class="form-control search-select select2">
                     </select>
                 </div>
             </div>
@@ -55,7 +43,7 @@
                 <label class="col-sm-1 control-label">街道</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="街道"
-                           name="street" class="form-control">
+                           name="street" class="form-control" value="${basicEstate.street}">
                 </div>
             </div>
 
@@ -63,16 +51,31 @@
                 <label class="col-sm-1 control-label">街道号</label>
                 <div class="col-sm-3">
                     <input type="text"
-                           placeholder="街道号" name="streetNumber" class="form-control">
+                           placeholder="街道号" name="streetNumber" class="form-control" value="${basicEstate.streetNumber}">
                 </div>
             </div>
 
             <div class="x-valid">
                 <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select name="blockId" class="form-control search-select select2 blockId"
-                            required="required">
-                    </select>
+                    <div class="input-group">
+                        <input type="hidden" name="blockId" value="${basicEstate.blockId}">
+                        <input type="text" readonly="readonly"
+                               placeholder="基础版块" class="form-control" name="blockName" value="${basicEstate.blockName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="basicIndexCommon.blockSelect(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,14 +85,14 @@
                 <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                           name="name" class="form-control">
+                           name="name" class="form-control" value="${basicEstate.name}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘方位</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼盘方位"
-                           name="position" class="form-control">
+                           name="position" class="form-control" value="${basicEstate.position}">
                 </div>
             </div>
 
@@ -149,7 +152,7 @@
                 <label class="col-sm-1 control-label">占地面积</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="占地面积(请输入数字)" name="coverAnArea" class="form-control">
+                           placeholder="占地面积(请输入数字)" name="coverAnArea" class="form-control" value="${basicEstate.coverAnArea}">
                 </div>
             </div>
 
@@ -157,7 +160,7 @@
                 <label class="col-sm-1 control-label">容积率</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="容积率(请输入数字)" name="volumetricRate" class="form-control">
+                           placeholder="容积率(请输入数字)" name="volumetricRate" class="form-control" value="${basicEstate.volumetricRate}">
                 </div>
             </div>
 
@@ -165,7 +168,7 @@
                 <label class="col-sm-1 control-label">绿化率</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="绿化率(请输入数字)" name="greeningRate" class="form-control">
+                           placeholder="绿化率(请输入数字)" name="greeningRate" class="form-control" value="${basicEstate.greeningRate}">
                 </div>
             </div>
         </div>
@@ -176,7 +179,7 @@
                 <label class="col-sm-1 control-label">楼盘概况</label>
                 <div class="col-sm-11">
                         <textarea class="form-control" name="description"
-                                  placeholder="楼盘概况"></textarea>
+                                  placeholder="楼盘概况">${basicEstate.description}</textarea>
                 </div>
             </div>
         </div>
@@ -187,7 +190,7 @@
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
                            placeholder="楼栋数(请输入数字)" name="buildingNumber"
-                           class="form-control">
+                           class="form-control" value="${basicEstate.buildingNumber}">
                 </div>
             </div>
 
@@ -195,14 +198,14 @@
                 <label class="col-sm-1 control-label">开发商</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="hidden" name="developerId">
+                        <input type="hidden" name="developerId" value="${basicEstate.developerId}">
                         <input type="text" readonly="readonly"
-                               placeholder="开发商" class="form-control">
+                               placeholder="开发商" class="form-control" name="developerName" value="${basicEstate.developerName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objectData.estate.developerSelect(this)">
+                                onclick="basicIndexCommon.developerSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -210,7 +213,7 @@
                                 data-toggle="tooltip" data-original-title="清除">
                         <i class="fa fa-trash-o"></i>
                         </button>
-                </span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -218,7 +221,7 @@
                 <label class="col-sm-1 control-label">建筑面积</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="建筑面积(请输入数字)" name="floorArea" class="form-control">
+                           placeholder="建筑面积(请输入数字)" name="floorArea" class="form-control" value="${basicEstate.floorArea}">
                 </div>
             </div>
         </div>
@@ -228,7 +231,7 @@
                 <label class="col-sm-1 control-label">均价</label>
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="均价(请输入数字)" name="averagePrice" class="form-control">
+                           placeholder="均价(请输入数字)" name="averagePrice" class="form-control" value="${basicEstate.averagePrice}">
                 </div>
             </div>
 
@@ -236,7 +239,7 @@
                 <label class="col-sm-1 control-label">价格区间</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="价格区间"
-                           name="priceRange" class="form-control">
+                           name="priceRange" class="form-control" value="${basicEstate.priceRange}">
                 </div>
             </div>
             <div class="x-valid">
@@ -244,7 +247,7 @@
                 <div class="col-sm-3">
                     <input type="text" data-rule-maxlength="100" data-rule-number='true'
                            placeholder="附号(请输入数字)"
-                           name="attachNumber" class="form-control">
+                           name="attachNumber" class="form-control" value="${basicEstate.attachNumber}">
                 </div>
             </div>
         </div>
@@ -330,7 +333,7 @@
                 <label class="col-sm-1 control-label">土地名称</label>
                 <div class="col-sm-11">
                     <input type="text" class="form-control" name="name"
-                           placeholder="名称">
+                           placeholder="名称" value="${basicEstateLandState.name}">
                 </div>
             </div>
         </div>
@@ -356,14 +359,14 @@
                 <label class="col-sm-1 control-label">土地级别</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="hidden" name="landLevel">
+                        <input type="hidden" name="landLevel" value="${basicEstateLandState.landLevel}">
                         <input type="text" readonly="readonly"
-                               placeholder="土地级别" class="form-control">
+                               placeholder="土地级别" class="form-control" name="landLevelName" value="${basicEstateLandState.landLevelName}">
                         <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="objectData.estate.landLevelSelect(this)">
+                                onclick="basicIndexCommon.landLevelSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -382,21 +385,21 @@
                 <label class="col-sm-1 control-label">东至</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="东至"
-                           name="eastTo">
+                           name="eastTo" value="${basicEstateLandState.eastTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">南至</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="南至"
-                           name="southTo">
+                           name="southTo" value="${basicEstateLandState.southTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">西至</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="西至"
-                           name="westTo">
+                           name="westTo" value="${basicEstateLandState.westTo}">
                 </div>
             </div>
         </div>
@@ -406,21 +409,21 @@
                 <label class="col-sm-1 control-label">北至</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="北至"
-                           name="northTo">
+                           name="northTo" value="${basicEstateLandState.northTo}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状状况</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="土地形状状况"
-                           name="shapeState">
+                           name="shapeState" value="${basicEstateLandState.shapeState}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地平整度</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="土地平整度"
-                           name="planeness">
+                           name="planeness" value="${basicEstateLandState.planeness}">
                 </div>
             </div>
         </div>
@@ -430,7 +433,7 @@
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="土地开发程度"
-                           name="developmentDegree">
+                           name="developmentDegree" value="${basicEstateLandState.developmentDegree}">
                 </div>
             </div>
 
@@ -438,14 +441,14 @@
                 <label class="col-sm-1 control-label">开发限制条件</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="开发限制条件"
-                           name="restrictiveCondition">
+                           name="restrictiveCondition" value="${basicEstateLandState.restrictiveCondition}">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土壤</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" placeholder="土壤"
-                           name="soil">
+                           name="soil" value="${basicEstateLandState.soil}">
                 </div>
             </div>
         </div>
@@ -454,7 +457,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="地形地势" name="topographicTerrain">
+                    <input type="text" class="form-control" placeholder="地形地势" name="topographicTerrain" value="${basicEstateLandState.topographicTerrain}">
                 </div>
             </div>
 
@@ -462,7 +465,7 @@
                 <label class="col-sm-1 control-label">土地面积</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control" data-rule-number='true'
-                           placeholder="土地面积(请输入数字)" name="landArea">
+                           placeholder="土地面积(请输入数字)" name="landArea" value="${basicEstateLandState.landArea}">
                 </div>
             </div>
         </div>

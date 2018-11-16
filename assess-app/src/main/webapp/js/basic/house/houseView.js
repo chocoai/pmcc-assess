@@ -102,7 +102,7 @@ houseModelFun.houseInit = function (item) {
 };
 
 houseModelFun.unitHuxingSelectLoad = function (item) {
-    var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+    var unitId = $("#" + basicIndexCommon.getAppId()).find("input[name='" + basicIndexCommon.config.basicUnit.key + "']").attr("data-id");
     unitId = houseModelFun.isNotBlank(unitId) ? unitId : "0";
     $.ajax({
         url: getContextPath()+"/basicUnitHuxing/basicUnitHuxingList",

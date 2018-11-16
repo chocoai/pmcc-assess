@@ -366,5 +366,6 @@ public class TemporaryBasicService {
                 }
             }
         }
+        basicApplyService.updateBasicApply(basicApply);
     }
 }

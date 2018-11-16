@@ -97,6 +97,12 @@
         window.open(href, "");
     };
 
+    dataObjFun.temporary = function (id) {
+        var href = "${pageContext.request.contextPath}/basicApply/basicApplyStart";
+        href += "?applyId=" + id;
+        window.open(href, "");
+    };
+
     dataObjFun.loadDataList = function () {
         var cols = [];
         cols.push({field: 'estateName', title: '楼盘名称'});
@@ -104,7 +110,7 @@
         cols.push({field: 'unitNumber', title: '单元号'});
         cols.push({field: 'houseNumber', title: '房屋'});
         cols.push({
-            field: 'id', title: '', formatter: function (value, row, index) {
+            field: 'id', title: '工业与仓储与否', formatter: function (value, row, index) {
                 if (dataObjFun.isNotBlank(row.industry)){
                     if (row.industry == '1'){
                         return "非工业与仓储";
@@ -118,10 +124,49 @@
             }
         });
         cols.push({
+            field: 'status', title: '状态', formatter: function (value, row, index) {
+                if (dataObjFun.isNotBlank(row.status)){
+                    if (row.status == 'finish'){
+                        return "完成";
+                    }
+                    if (row.status == 'runing'){
+                        return "正在进行";
+                    }
+                    if (row.status == 'close'){
+                        return "关闭";
+                    }
+                }else {
+                    return "";
+                }
+            }
+        });
+        cols.push({
+            field: 'temporary', title: '临时数据与否', formatter: function (value, row, index) {
+                if (dataObjFun.isNotBlank(row.temporary)){
+                    if (row.temporary){
+                        return "临时数据";
+                    }else {
+                        return "非临时数据";
+                    }
+                }else {
+                    return "";
+                }
+            }
+        });
+        cols.push({
             field: 'id', title: '查询详情', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                 str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="dataObjFun.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '临时数据启用', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="临时数据启用" onclick="dataObjFun.temporary(' + row.id + ',\'tb_List\')"><i class="fa fa-anchor"></i></a>';
                 str += '</div>';
                 return str;
             }
