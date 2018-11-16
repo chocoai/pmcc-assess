@@ -1,6 +1,6 @@
-package com.copower.pmcc.assess.controller.project.manage;
+package com.copower.pmcc.assess.controller.project.change;
 
-import com.copower.pmcc.assess.service.project.manage.ProjectFollowService;
+import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;

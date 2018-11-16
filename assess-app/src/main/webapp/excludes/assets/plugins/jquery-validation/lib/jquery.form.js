@@ -29,7 +29,7 @@
         });
     });
 
-    Use ajaxForm when you want the plugin to manage all the event binding
+    Use ajaxForm when you want the plugin to change all the event binding
     for you.  For example,
 
     $(document).ready(function() {

@@ -62,7 +62,7 @@ public class ProjectCenterController {
     @ResponseBody
     @RequestMapping(value = "/getProjectProgress", name = "取得项目进度", method = RequestMethod.GET)
     public BootstrapTableVo getProjectProgress() {
-       return projectCenterService.getProjectProgressVO();
+       return projectCenterService.getProjectProgressVo();
     }
 
     @ResponseBody

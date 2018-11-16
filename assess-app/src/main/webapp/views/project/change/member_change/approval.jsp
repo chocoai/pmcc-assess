@@ -21,19 +21,14 @@
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
-
-            <div style="display: none">
-                <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            </div>
-
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!-- 公共模块end -->
 
             <div class="x_panel">
                 <div class="x_title">
-                    <h2 id="show-title"><i class="fa fa-edit"></i>
+                    <h3 id="show-title">
                         项目成员变更<small></small>
-                    </h2>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
 
@@ -55,11 +50,8 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
-
             </div>
 
 
@@ -177,15 +169,17 @@
     };
 
 
-
-    //审批提交
-    function approvalCommit(approvalModelDto) {
+    function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        var data = formApproval.getFormData();
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/member.change/approvalCommit",
             type: "post",
             dataType: "json",
-            data: approvalModelDto,
+            data: data,
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -202,7 +196,7 @@
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
-    };
+    }
 
 
     $(function () {

@@ -284,15 +284,15 @@ public class BaseAttachmentService {
         sysAttachmentDto.setFileExtension(multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1, multipartFile.getOriginalFilename().length()));
         sysAttachmentDto.setCreater(commonService.thisUserAccount());
         sysAttachmentDto.setProjectId(0);
-        sysAttachmentDto.setFileSize(String.format("%d%s", multipartFile.getBytes().length / 8, "kb"));
+        sysAttachmentDto.setFileSize(FileUtils.getSize(multipartFile.getBytes().length));
         try {
             String ftpBasePath = String.format("%s/%s/%s/%s",createFTPBasePath(),DateUtils.format(new Date(),"yyyy-MM-dd"),commonService.thisUserAccount(),UUID.randomUUID().toString());
             String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
             sysAttachmentDto.setFilePath(ftpBasePath);
             sysAttachmentDto.setFtpFileName(ftpFileName);
             ftpUtilsExtense.uploadFilesToFTP(ftpBasePath,new FileInputStream(filePath),ftpFileName);
-        } catch (Exception e1) {
-            logger.info(e1.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
         }
         this.addAttachment(sysAttachmentDto);
         return String.format("%d", sysAttachmentDto.getId());

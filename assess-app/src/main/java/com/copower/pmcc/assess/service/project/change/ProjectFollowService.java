@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.manage.ProjectFollowDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFollow;

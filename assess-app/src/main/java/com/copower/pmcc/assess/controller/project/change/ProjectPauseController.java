@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.change;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
@@ -29,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author: huhao
  * @data: 2018-9-3
- *
  */
 @Controller
 @RequestMapping(value = "/projectPause")
@@ -51,9 +50,9 @@ public class ProjectPauseController extends BaseController {
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_PAUSE_CHANGE_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/pause_change/apply", boxReDto.getId());
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(projectId);
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
 
         return modelAndView;
     }
@@ -62,7 +61,7 @@ public class ProjectPauseController extends BaseController {
     @PostMapping(value = "/applyCommit", name = "项目暂停申请提交")
     public HttpResult applyCommit(ProjectChangeLog costsProjectChangeLog) {
         try {
-            stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_PAUSE_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.PAUSE_CHANGE);
+            stateChangeService.applyCommit(costsProjectChangeLog, BaseParameterEnum.PROJECT_PAUSE_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.PAUSE_CHANGE);
         } catch (BusinessException e) {
             log.error("修改项目信息异常", e);
             e.printStackTrace();
@@ -73,10 +72,10 @@ public class ProjectPauseController extends BaseController {
     @RequestMapping(value = "/approvalView", name = "项目暂停审批页")
     public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/pause_change/approval", processInsId, boxId, taskId, agentUserAccount);
-        ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
-        modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
+        ProjectChangeLog projectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
+        modelAndView.addObject("costsProjectChangeLog", projectChangeLog);
+        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(projectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(costsProjectInfo));
         modelAndView.addObject("projectId", costsProjectInfo.getId());
         return modelAndView;
     }
@@ -103,10 +102,9 @@ public class ProjectPauseController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/pause_change/apply", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
-     ;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 
@@ -115,7 +113,7 @@ public class ProjectPauseController extends BaseController {
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
             ProjectChangeLog costsProjectChangeLog = JSON.parseObject(businessDataJson, ProjectChangeLog.class);
-            stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.PAUSE_CHANGE);
+            stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto, ProjectChangeTypeEnum.PAUSE_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error("修改失败", e);
@@ -125,21 +123,22 @@ public class ProjectPauseController extends BaseController {
 
     /**
      * 获取暂停列表
+     *
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/getProjectPauseHistory", name = "取得暂停记录列表", method = RequestMethod.GET)
     public BootstrapTableVo getProjectPauseHistory(Integer projectId) throws Exception {
-        return stateChangeService.getProjectChangeHistory(projectId,ProjectChangeTypeEnum.PAUSE_CHANGE);
+        return stateChangeService.getProjectChangeHistory(projectId, ProjectChangeTypeEnum.PAUSE_CHANGE);
     }
 
     @ResponseBody
-    @PostMapping(value="/isChanging",name="判断是否有变更已在流程中,只允许同时存在一个变更流程")
-    public HttpResult informationChange(Integer projectId){
-        boolean flag = stateChangeService.isChanging(projectId,ProjectChangeTypeEnum.PAUSE_CHANGE);
-        if(flag){
+    @PostMapping(value = "/isChanging", name = "判断是否有变更已在流程中,只允许同时存在一个变更流程")
+    public HttpResult informationChange(Integer projectId) {
+        boolean flag = stateChangeService.isChanging(projectId, ProjectChangeTypeEnum.PAUSE_CHANGE);
+        if (flag) {
             return HttpResult.newCorrectResult();
-        }else{
+        } else {
             return HttpResult.newErrorResult("项目正在暂停变更中");
         }
     }

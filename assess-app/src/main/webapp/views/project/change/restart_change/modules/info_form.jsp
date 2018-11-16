@@ -12,8 +12,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2><i class="fa fa-info-circle"></i> 项目重启变更
-        </h2>
+        <h3>项目重启变更</h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -69,30 +68,26 @@
         json.projectId = "${projectInfo.id}";
         json.oldRecord = oldRecord;
         json.newRecord = JSON.stringify(data);
-        if(checkEndTime(projectInfo)){
-            Loading.progressShow("正在提交数据...");
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectRestart/applyCommit",
-                type: "post",
-                data: json,
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        Alert("提交数据成功!", 1, null, function () {
-                            window.close();
-                        });
-                    }
-                    else {
-                        Alert("提交数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectRestart/applyCommit",
+            type: "post",
+            data: json,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
                 }
-            });
-        }else{
-            Alert("提交失败，失败原因: 重启时间不在服务结束时间内，请修改项目信息后重启");
-        }
+                else {
+                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     };
 
     //返回修改
@@ -106,30 +101,26 @@
         //返回修改要提交的数据
         var approvalModelDto = formSerializeArray($("#process_variable_form"));
         approvalModelDto.businessDataJson = JSON.stringify(json);
-        if(checkEndTime(projectInfo)){
-            Loading.progressShow("正在提交数据...");
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectRestart/editCommit",
-                type: "post",
-                data: approvalModelDto,
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        Alert("提交数据成功!", 1, null, function () {
-                            window.close();
-                        });
-                    }
-                    else {
-                        Alert("提交数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectRestart/editCommit",
+            type: "post",
+            data: approvalModelDto,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
                 }
-            });
-        }else{
-            Alert("提交失败，失败原因: 重启时间不在服务结束时间内，请修改项目信息后重启");
-        }
+                else {
+                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
 
     };
     

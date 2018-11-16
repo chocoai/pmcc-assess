@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.manage;
+package com.copower.pmcc.assess.service.project.change;
 
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -37,6 +37,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
@@ -132,7 +133,7 @@ public class ProjectCloseService {
             processInfo.setProcessName(boxReDto.getProcessName());
             processInfo.setGroupName(boxReDto.getGroupName());
             processInfo.setFolio(folio);//流程描述
-            processInfo.setTableName("tb_project_close");
+            processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectClose.class));
             processInfo.setTableId(projectClose.getId());
             processInfo.setBoxId(boxReDto.getId());
             processInfo.setProjectId(projectId);
@@ -165,7 +166,7 @@ public class ProjectCloseService {
         SysAttachmentDto sysAttachment = new SysAttachmentDto();
         sysAttachment.setProcessInsId("0");
         sysAttachment.setCreater(processControllerComponent.getThisUser());
-        sysAttachment.setTableName("tb_project_close");
+        sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(ProjectClose.class));
         SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
         sysAttachmentNew.setProcessInsId(processInsId);
         sysAttachmentNew.setTableId(projectClose.getId());

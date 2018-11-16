@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.controller.project;
+package com.copower.pmcc.assess.controller.project.change;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
@@ -13,7 +13,6 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,8 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 @Controller
-@RequestMapping(value = "/projectStop")
-public class ProjectStopController extends BaseController {
+@RequestMapping(value = "/projectRestart")
+public class ProjectRestartController  extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -45,24 +44,23 @@ public class ProjectStopController extends BaseController {
     @Autowired
     private ProjectInfoService projectInfoService;
 
-    @RequestMapping(value = "/apply", name = "项目终止申请")
+    @RequestMapping(value = "/apply", name = "项目重启申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
         //获取流程模型
-        String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_STOP_CHANGE_PROCESS_KEY);
+        String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_RESTART_CHANGE_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/apply", boxReDto.getId());
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(projectId);
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
-
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/restart_change/apply", boxReDto.getId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 
     @ResponseBody
-    @PostMapping(value = "/applyCommit", name = "项目终止申请提交")
+    @PostMapping(value = "/applyCommit", name = "项目重启申请提交")
     public HttpResult applyCommit(ProjectChangeLog costsProjectChangeLog) {
         try {
-            stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_STOP_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.STOP_CHANGE);
+            stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_RESTART_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.RESTART_CHANGE);
         } catch (BusinessException e) {
             log.error("修改项目信息异常", e);
             e.printStackTrace();
@@ -70,14 +68,14 @@ public class ProjectStopController extends BaseController {
         return HttpResult.newCorrectResult();
     }
 
-    @RequestMapping(value = "/approvalView", name = "项目终止审批页")
+    @RequestMapping(value = "/approvalView", name = "项目重启审批页")
     public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/approval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/restart_change/approval", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 
@@ -100,13 +98,12 @@ public class ProjectStopController extends BaseController {
 
     @RequestMapping(value = "/editView", name = "返回修改视图", method = RequestMethod.GET)
     public ModelAndView editView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/stop_change/apply", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/change/restart_change/apply", processInsId, boxId, taskId, agentUserAccount);
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("costsProjectChangeLog", costsProjectChangeLog);
-        ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
-        modelAndView.addObject("projectInfo", costsProjectInfo);
-        modelAndView.addObject("projectId", costsProjectInfo.getId());
-     ;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(costsProjectChangeLog.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectId", projectInfo.getId());
         return modelAndView;
     }
 
@@ -115,7 +112,7 @@ public class ProjectStopController extends BaseController {
     public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
         try {
             ProjectChangeLog costsProjectChangeLog = JSON.parseObject(businessDataJson, ProjectChangeLog.class);
-            stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.STOP_CHANGE);
+            stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.RESTART_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             log.error("修改失败", e);
@@ -123,24 +120,14 @@ public class ProjectStopController extends BaseController {
         }
     }
 
-    /**
-     * 获取终止列表
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getProjectStopHistory", name = "取得终止记录列表", method = RequestMethod.GET)
-    public BootstrapTableVo getProjectStopHistory(Integer projectId) throws Exception {
-        return stateChangeService.getProjectChangeHistory(projectId,ProjectChangeTypeEnum.STOP_CHANGE);
-    }
-
     @ResponseBody
     @PostMapping(value="/isChanging",name="判断是否有变更已在流程中,只允许同时存在一个变更流程")
     public HttpResult informationChange(Integer projectId){
-        boolean flag = stateChangeService.isChanging(projectId,ProjectChangeTypeEnum.STOP_CHANGE);
+        boolean flag = stateChangeService.isChanging(projectId,ProjectChangeTypeEnum.RESTART_CHANGE);
         if(flag){
             return HttpResult.newCorrectResult();
         }else{
-            return HttpResult.newErrorResult("项目正在终止变更中");
+            return HttpResult.newErrorResult("项目正在重启中");
         }
     }
 

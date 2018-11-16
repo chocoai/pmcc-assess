@@ -21,19 +21,14 @@
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
-
-            <div style="display: none">
-                <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            </div>
-
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!-- 公共模块end -->
 
             <div class="x_panel">
                 <div class="x_title">
-                    <h2 id="show-title"><i class="fa fa-edit"></i>
+                    <h3 id="show-title">
                         项目成员变更<small></small>
-                    </h2>
+                    </h3>
                     <div class="clearfix"></div>
                 </div>
 
@@ -70,11 +65,10 @@
             <div class="x_panel" style="margin-bottom: 50px;">
                 <div class="col-md-4 col-sm-4 col-xs-12 col-sm-offset-5">
                     <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
-                        取消<i style="margin-left: 10px" class="fa fa-times-circle"></i>
+                        取消
                     </button>
-
-                    <button id="commit_btn" class="btn btn-primary" onclick="memberChangeObj.submit();" onsubmit="return false;">
-                        提交<i style="margin-left: 10px" class="fa fa-check-circle"></i>
+                    <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();" onsubmit="return false;">
+                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                     </button>
                 </div>
             </div>

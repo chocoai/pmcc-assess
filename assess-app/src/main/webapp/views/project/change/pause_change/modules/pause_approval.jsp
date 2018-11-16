@@ -12,8 +12,7 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2><i class="fa fa-info-circle"></i>项目暂停变更
-        </h2>
+        <h3>项目暂停变更</h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -27,7 +26,8 @@
                                 预计恢复时间<span class="symbol required"></span>
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <input id="recoveryTime" name="recoveryTime" class="form-control" readonly="readonly">
+                                <label data-name="recoveryTime" class="form-control"></label>
+                                <%--<input id="recoveryTime" name="recoveryTime" class="form-control" readonly="readonly">--%>
                             </div>
                         </div>
 
@@ -39,7 +39,9 @@
                                 暂停原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <label data-name="changeReason" class="form-control"></label>
+                                <%--<textarea class="form-control" id="changeReason" name="changeReason" rows="4" required--%>
+                                          <%--data-rule-maxlength="255" placeholder=""></textarea>--%>
                             </div>
                         </div>
                     </div>
@@ -49,7 +51,9 @@
                                 可能影响
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="influence" name="influence" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <label data-name="influence" class="form-control"></label>
+                                <%--<textarea class="form-control" id="influence" name="influence" rows="4" required--%>
+                                          <%--data-rule-maxlength="255" placeholder=""></textarea>--%>
                             </div>
                         </div>
                     </div>
@@ -67,7 +71,7 @@
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
         var projectInfo = JSON.parse(json);
-        projectPauseApplyObj.projectPauseForm.initForm(projectInfo);
-        $("#project_pause_form textarea").attr("readonly",true);
+        projectPauseApplyObj.projectPauseForm.initLabel(projectInfo);
     });
+
 </script>

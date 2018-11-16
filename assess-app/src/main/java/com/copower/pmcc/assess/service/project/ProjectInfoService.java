@@ -1,11 +1,11 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessParameterConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
@@ -33,7 +33,7 @@ import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
-import com.copower.pmcc.assess.service.project.manage.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -202,7 +202,7 @@ public class ProjectInfoService {
             if (StringUtils.isBlank(projectMemberDto.getUserAccountManager())) {
                 //发起流程
                 List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectInfo.getProjectTypeId(), true);
-                String boxName = baseParameterServcie.getParameterValues(AssessParameterConstant.PROJECT_APPLY_ASSIGN_PROCESS_KEY);
+                String boxName = baseParameterServcie.getParameterValues(BaseParameterEnum.PROJECT_APPLY_ASSIGN_PROCESS_KEY.getParameterKey());
                 Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
                 BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
                 ProcessInfo processInfo = new ProcessInfo();
@@ -641,12 +641,12 @@ public class ProjectInfoService {
         return vo;
     }
 
-    public BootstrapTableVo crmContacts(Integer customerId,String search) {
+    public BootstrapTableVo crmContacts(Integer customerId, String search) {
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
-            vo = crmCustomerService.getCustomerLinkmanPageList(customerId,search);
+            vo = crmCustomerService.getCustomerLinkmanPageList(customerId, search);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(),e1);
+            logger.error(e1.getMessage(), e1);
         }
         return vo;
     }
@@ -726,8 +726,14 @@ public class ProjectInfoService {
         return crmBaseDataDicDtos;
     }
 
-    public int saveProjectInfo_returnID(ProjectInfo projectInfo) {
-        return projectInfoDao.saveProjectInfo_returnID(projectInfo);
+    public int saveProjectInfo(ProjectInfo projectInfo) {
+        if (projectInfo.getId() == null || projectInfo.getId() == 0) {
+            projectInfo.setCreator(commonService.thisUserAccount());
+            projectInfoDao.saveProjectInfo_returnID(projectInfo);
+        } else {
+            projectInfoDao.updateProjectInfo(projectInfo);
+        }
+        return projectInfo.getId();
     }
 
     /**

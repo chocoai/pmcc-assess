@@ -7,7 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMemberHistory;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.manage.ProjectMemberChangeService;
+import com.copower.pmcc.assess.service.project.change.ProjectMemberChangeService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import org.apache.commons.lang3.StringUtils;

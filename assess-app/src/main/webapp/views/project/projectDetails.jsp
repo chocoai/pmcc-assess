@@ -29,32 +29,23 @@
                 </div>
                 <div class="title_right">
                     <div class="col-md-12 col-sm-12 col-xs-12 pull-right" style="margin: 0px">
-                        <c:choose>
-                            <c:when test="${projectFollowFlog eq '0'}">
-                                <div class="btn-group">
-                                    <a id="btn_followProject" class="btn btn-warning"
-                                       onclick="projectDetails.followProject()">关注</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="btn-group">
-                                    <a id="btn_cancelFollowProject" class="btn btn-warning"
-                                       onclick="projectDetails.cancelFollowProject()">取消关注</a>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-                        <c:if test="${projectStatusEnum=='normal'}">
-                            <div class="btn-group">
-                                <a class="btn btn-primary"
-                                   href="${pageContext.request.contextPath}/projectClose/closeIndex?projectId=${projectInfo.id}"
-                                   target="_blank">终止</a>
-                            </div>
-                            <div class="btn-group">
-                                <a class="btn btn-primary"
-                                   href="${pageContext.request.contextPath}/ProjectSuspend/suspendIndex?projectId=${projectInfo.id}"
-                                   target="_blank">暂停</a>
-                            </div>
-                            <div class="btn-group">
+                        <div class="btn-group" >
+                            <a id="btn_followProject" class="btn btn-warning" style="display: ${projectFollowFlog ne '0'?'none':''}"
+                               href="javascript://" onclick="projectDetails.followProject()"><i class="fa fa-eye">&nbsp;</i>关注</a>
+                            <a id="btn_cancelFollowProject" class="btn btn-warning" style="display: ${projectFollowFlog ne '1'?'none':''}"
+                               href="javascript://" onclick="projectDetails.cancelFollowProject()"><i class="fa fa-eye-slash">&nbsp;</i>取消关注</a>
+
+                            <c:if test="${projectStatusEnum ne 'pause' and projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
+                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.pauseProject()"><i class="fa fa-pause">&nbsp;</i>暂停</a>
+                            </c:if>
+
+                            <c:if test="${projectStatusEnum=='pause'}">
+                                <a class="btn btn-success" href="javascript://" onclick="projectDetails.restartProject()"><i class="fa fa-reply">&nbsp;</i>重启</a>
+                            </c:if>
+                            <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
+                                <a class="btn btn-primary" href="javascript://" onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
+                            </c:if>
+                            <div class="btn-group" >
                                 <button type="button" class="btn btn-danger">
                                     项目变更
                                 </button>
@@ -63,19 +54,12 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/projectWorkStageRestart/restartApply?projectId=${projectInfo.id}"
-                                           target="_blank">阶段重启</a>
-                                        <a href="${pageContext.request.contextPath}/projectPlanHistory/projectPlanHistoryIndex?projectId=${projectInfo.id}"
-                                           target="_blank">总体时间</a>
+                                        <a href="${pageContext.request.contextPath}/member.change/applyView?projectId=${projectInfo.id}"
+                                           target="_blank">成员变更</a>
                                     </li>
                                 </ul>
                             </div>
-                        </c:if>
-                        <c:if test="${projectStatusEnum=='pause'}">
-                            <a class="btn btn-success"
-                               onclick="projectDetails.restartProject()"
-                               target="_blank">重启</a>
-                        </c:if>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,7 +70,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h2>工作成果</h2>
+                    <h3>工作成果</h3>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -322,32 +306,78 @@
             });
         },
 
-        //阶段重启
-        restartProject: function () {
-            Alert("确认重启吗？重启后项目将可以进行上传上应的工作成果!", 2, null, function () {
-                Loading.progressShow();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/ProjectSuspend/startProject",
-                    data: {
-                        projectId: "${projectInfo.id}",
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success("项目重启成功");
-                            location.reload();
-                        }
-                        else {
-                            Alert("项目重启失败，失败原因：" + result.errmsg, 1, null, null);
-                        }
-                    },
-                    error: function (result) {
-                        Loading.progressHide();
-                        Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+        //暂停
+        pauseProject: function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectPause/isChanging",
+                data: {
+                    projectId: "${projectInfo.id}",
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var url = "${pageContext.request.contextPath}/projectPause/apply?projectId=" + ${projectInfo.id};
+                        window.open(url,'_blank');
                     }
-                });
+                    else {
+                        Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        },
+
+        //重启
+        restartProject:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectRestart/isChanging",
+                data: {
+                    projectId: "${projectInfo.id}",
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var url = "${pageContext.request.contextPath}/projectRestart/apply?projectId=" + ${projectInfo.id};
+                        window.open(url,'_blank');
+                    }
+                    else {
+                        Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            });
+        },
+
+        //终止
+        stopProject:function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectStop/isChanging",
+                data: {
+                    projectId: "${projectInfo.id}",
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var url = "${pageContext.request.contextPath}/projectStop/apply?projectId=" + ${projectInfo.id};
+                        window.open(url,'_blank');
+                    }
+                    else {
+                        Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                }
             });
         },
 

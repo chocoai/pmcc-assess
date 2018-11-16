@@ -21,10 +21,7 @@
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
-            <div style="display: none;">
-                <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            </div>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!-- 公共模块end -->
 
             <%@include file="/views/project/change/restart_change/modules/info_form.jsp" %>
@@ -34,11 +31,10 @@
                 <div class="form-group">
                     <div class="col-md-4 col-sm-4 col-xs-12 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消<i style="margin-left: 10px" class="fa fa-times-circle"></i>
+                            取消
                         </button>
-
                         <button id="commit_btn" class="btn btn-primary" onclick="masterObj.commit();">
-                            提交<i style="margin-left: 10px" class="fa fa-check-circle"></i>
+                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </div>

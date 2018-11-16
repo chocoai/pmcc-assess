@@ -20,6 +20,7 @@
     <result column="bis_restart" property="bisRestart" jdbcType="BIT" />
     <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
     <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+    <result column="specific_gravity" property="specificGravity" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -82,7 +83,7 @@
   <sql id="Base_Column_List" >
     id, project_id, process_ins_id, work_stage_id, stage_sort, category_id, plan_name, 
     plan_remarks, project_plan_start, project_plan_end, creator, created, process_ins_id_approval, 
-    status, approval_status, bis_restart, finish_date, project_status
+    status, approval_status, bis_restart, finish_date, project_status, specific_gravity
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlanExample" >
     select
@@ -123,13 +124,15 @@
       plan_remarks, project_plan_start, project_plan_end, 
       creator, created, process_ins_id_approval, 
       status, approval_status, bis_restart, 
-      finish_date, project_status)
+      finish_date, project_status, specific_gravity
+      )
     values (#{projectId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{workStageId,jdbcType=INTEGER}, 
       #{stageSort,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
       #{planRemarks,jdbcType=VARCHAR}, #{projectPlanStart,jdbcType=TIMESTAMP}, #{projectPlanEnd,jdbcType=TIMESTAMP}, 
       #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{processInsIdApproval,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=VARCHAR}, #{bisRestart,jdbcType=BIT}, 
-      #{finishDate,jdbcType=TIMESTAMP}, #{projectStatus,jdbcType=VARCHAR})
+      #{finishDate,jdbcType=TIMESTAMP}, #{projectStatus,jdbcType=VARCHAR}, #{specificGravity,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPlan" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -188,6 +191,9 @@
       <if test="projectStatus != null" >
         project_status,
       </if>
+      <if test="specificGravity != null" >
+        specific_gravity,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
@@ -240,6 +246,9 @@
       </if>
       <if test="projectStatus != null" >
         #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="specificGravity != null" >
+        #{specificGravity,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -306,6 +315,9 @@
       <if test="record.projectStatus != null" >
         project_status = #{record.projectStatus,jdbcType=VARCHAR},
       </if>
+      <if test="record.specificGravity != null" >
+        specific_gravity = #{record.specificGravity,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -330,7 +342,8 @@
       approval_status = #{record.approvalStatus,jdbcType=VARCHAR},
       bis_restart = #{record.bisRestart,jdbcType=BIT},
       finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
-      project_status = #{record.projectStatus,jdbcType=VARCHAR}
+      project_status = #{record.projectStatus,jdbcType=VARCHAR},
+      specific_gravity = #{record.specificGravity,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -389,6 +402,9 @@
       <if test="projectStatus != null" >
         project_status = #{projectStatus,jdbcType=VARCHAR},
       </if>
+      <if test="specificGravity != null" >
+        specific_gravity = #{specificGravity,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -410,7 +426,8 @@
       approval_status = #{approvalStatus,jdbcType=VARCHAR},
       bis_restart = #{bisRestart,jdbcType=BIT},
       finish_date = #{finishDate,jdbcType=TIMESTAMP},
-      project_status = #{projectStatus,jdbcType=VARCHAR}
+      project_status = #{projectStatus,jdbcType=VARCHAR},
+      specific_gravity = #{specificGravity,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

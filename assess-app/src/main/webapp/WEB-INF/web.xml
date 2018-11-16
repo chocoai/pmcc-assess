@@ -229,6 +229,16 @@
   </error-page>
 
   <!-- ========================== -->
+  <!-- 自定义el -->
+  <!-- ========================== -->
+  <jsp-config>
+    <taglib>
+      <taglib-uri>assess.pmcc.com/el-common</taglib-uri>
+      <taglib-location>/extension-el/assess-el-common.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+
+  <!-- ========================== -->
   <!-- 如果欢迎页面是个action，一定要在webapp根路径下放置一个空文件，比如此处在home文件夹下放置了main空文件 -->
   <!-- ========================== -->
   <welcome-file-list>

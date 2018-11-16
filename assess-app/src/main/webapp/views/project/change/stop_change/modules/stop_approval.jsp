@@ -12,8 +12,8 @@
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
         </ul>
-        <h2><i class="fa fa-info-circle"></i>项目终止变更
-        </h2>
+        <h3>项目终止变更
+        </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
@@ -27,19 +27,17 @@
                                 关闭时间<span class="symbol required"></span>
                             </label>
                             <div class="col-md-3 col-sm-3 col-xs-12">
-                                <input id="stopTime" name="stopTime" class="form-control" readonly="readonly">
+                                <label data-name="stopTime" class="form-control"></label>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="form-group">
                         <div class="x-valid">
                             <label class="col-md-1 col-sm-1 col-xs-12 control-label">
                                 关闭原因
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <label data-name="changeReason" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -49,7 +47,7 @@
                                 可能影响
                             </label>
                             <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="influence" name="influence" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                                <label data-name="influence" class="form-control"></label>
                             </div>
                         </div>
                     </div>
@@ -67,7 +65,6 @@
     $(function () {
         var json = '${costsProjectChangeLog.newRecord}';
         var projectInfo = JSON.parse(json);
-        projectStopApplyObj.projectStopForm.initForm(projectInfo);
-        $("#project_stop_form textarea").attr("readonly",true);
+        projectStopApplyObj.projectStopForm.initLabel(projectInfo);
     });
 </script>

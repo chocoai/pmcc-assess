@@ -14,8 +14,11 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +55,6 @@ public class ProjectMemberService {
         for (SysUserDto dto : sysUserList) {
             map.put(dto.getUserAccount(), dto);
         }
-
         return map;
     }
 
@@ -171,4 +173,50 @@ public class ProjectMemberService {
         return projectMember;
     }
 
+
+    /**
+     * 获取项目成员数据
+     *
+     * @param projectId
+     * @return
+     */
+    public ProjectMemberVo getProjectMember(Integer projectId) {
+        ProjectMemberVo vo = new ProjectMemberVo();
+        ProjectMember projectMember = projectMemberDao.getProjectMemberItem(projectId);
+        if (projectMember != null) {
+            BeanUtils.copyProperties(projectMember, vo);
+
+            //获取项目成员及项目经理的账号
+            List<String> userAccounts = Lists.newArrayList();
+            if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
+                userAccounts = FormatUtils.transformString2List(projectMember.getUserAccountMember());
+            }
+            if (StringUtils.isNotBlank(projectMember.getUserAccountManager())) {
+                userAccounts.add(projectMember.getUserAccountManager());
+            }
+
+            //批量获取用户信息
+            List<SysUserDto> sysUserList = erpRpcUserService.getSysUserList(userAccounts);
+
+            //封装用户名,格式:用户姓名_账号
+            if (CollectionUtils.isNotEmpty(sysUserList)) {
+                Map<String, SysUserDto> relationUserMap = relationUserMap(sysUserList);
+
+                List<String> memberNames = Lists.newArrayList();
+
+                vo.setUserAccountManagerName(String.format("%s_%s", relationUserMap.get(projectMember.getUserAccountManager()).getUserName(), projectMember.getUserAccountManager()));
+
+                List<String> members = FormatUtils.transformString2List(projectMember.getUserAccountMember());
+                if (CollectionUtils.isNotEmpty(members)) {
+                    for (String member : members) {
+                        memberNames.add(String.format("%s_%s", relationUserMap.get(member).getUserName(), member));
+                    }
+
+                    vo.setUserAccountMemberName(FormatUtils.transformListString(memberNames));
+                }
+            }
+        }
+
+        return vo;
+    }
 }
