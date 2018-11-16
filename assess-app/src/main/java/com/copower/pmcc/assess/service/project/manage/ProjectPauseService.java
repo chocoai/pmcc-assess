@@ -10,7 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectSuspend;
 import com.copower.pmcc.assess.dto.output.project.ProjectSuspendVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPauseEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -70,7 +70,7 @@ public class ProjectPauseService {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
     @Autowired
     private ApplicationConstant applicationConstant;
 

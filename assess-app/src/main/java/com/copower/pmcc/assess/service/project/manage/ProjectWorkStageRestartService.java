@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageRestart;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectWorkStageStartEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -49,7 +49,7 @@ public class ProjectWorkStageRestartService {
     @Autowired
     private ProjectPlanService projectPlanService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
 
     @Transactional(rollbackFor = Exception.class)
     public void editWorkStageRestart(ApprovalModelDto approvalModelDto, ProjectWorkStageRestart projectWorkStageRestart) throws BusinessException {

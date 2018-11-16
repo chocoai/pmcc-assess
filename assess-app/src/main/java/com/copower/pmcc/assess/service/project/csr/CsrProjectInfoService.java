@@ -100,7 +100,7 @@ public class CsrProjectInfoService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @time: 13:58
  */
 @Service
-public class BaseParameterServcie {
+public class BaseParameterService {
     @Autowired
     private BaseParameterDao baseParameterDao;
 

@@ -9,7 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectMember;
 import com.copower.pmcc.assess.dto.input.project.MemberChangeDto;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectMemberChangeProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
@@ -62,7 +62,7 @@ public class ProjectMemberChangeService {
     @Autowired
     private ErpRpcUserService erpRpcUserService;
     @Autowired
-    private BaseParameterServcie baseParameterService;
+    private BaseParameterService baseParameterService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired

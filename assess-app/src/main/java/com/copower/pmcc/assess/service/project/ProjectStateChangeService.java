@@ -7,7 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectChangeLogDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPauseChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectRestartChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectStopChangeEvent;
@@ -46,7 +46,7 @@ public class ProjectStateChangeService extends BaseService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private BaseParameterServcie baseParameterService;
+    private BaseParameterService baseParameterService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired

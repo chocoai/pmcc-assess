@@ -25,7 +25,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseParameterServcie;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -135,7 +135,7 @@ public class ProjectInfoService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BaseParameterServcie baseParameterServcie;
+    private BaseParameterService baseParameterServcie;
     @Autowired
     private ProjectMemberDao projectMemberDao;
     @Autowired
