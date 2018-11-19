@@ -242,8 +242,10 @@ public class PublicBasicService {
             caseEstateService.upgradeVersion(caseEstate);
             if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
                 for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                    sysAttachmentDto.setTableId(caseEstate.getId());
-                    sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                    attachmentDto.setTableId(caseEstate.getId());
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(),attachmentDto);
                 }
             }
             if (caseEstate.getId() != null) {
@@ -783,9 +785,10 @@ public class PublicBasicService {
                     caseBuildingService.upgradeVersion(caseBuilding);
                     if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
                         for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                            sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-                            sysAttachmentDto.setTableId(caseBuilding.getId());
-                            baseAttachmentService.updateAttachment(sysAttachmentDto);
+                            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                            attachmentDto.setTableId(caseBuilding.getId());
+                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(),attachmentDto);
                         }
                     }
                     if (caseBuilding.getId() != null) {
@@ -1709,7 +1712,8 @@ public class PublicBasicService {
             } else {
                 throw new Exception("null data");
             }
-            processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);//提交流程
+            //提交流程
+            processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw e;
@@ -2138,7 +2142,20 @@ public class PublicBasicService {
             List<CaseBuildingSurface> surfaceList = null;
             List<CaseBuildingFunction> functionList = null;
             for (CaseBuilding ooA : buildingList) {
-
+                List<SysAttachmentDto> sysAttachmentDtoList = null;
+                SysAttachmentDto queryFile = new SysAttachmentDto();
+                queryFile.setTableId(ooA.getId());
+                queryFile.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
+                sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
+                //复制 临时附件
+                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                    for (SysAttachmentDto attachmentDto:sysAttachmentDtoList){
+                        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+                        sysAttachmentDto.setTableId(0);
+                        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                        baseAttachmentService.copyFtpAttachment(attachmentDto.getId(),sysAttachmentDto);
+                    }
+                }
                 queryOutfit.setBuildingId(ooA.getId());
                 queryMaintenance.setBuildingId(ooA.getId());
                 querySurface.setBuildingId(ooA.getId());
@@ -2559,6 +2576,23 @@ public class PublicBasicService {
                 }
             });
             objectMap.put(CaseEstate.class.getSimpleName(), caseEstateVoFuture.get());
+            if (caseEstateVoFuture.get() != null){
+                CaseEstate caseEstate = caseEstateVoFuture.get() ;
+                List<SysAttachmentDto> sysAttachmentDtoList = null;
+                SysAttachmentDto query = new SysAttachmentDto();
+                query.setTableId(caseEstate.getId());
+                query.setTableName(FormatUtils.entityNameConvertToTableName(CaseEstate.class));
+                sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                //复制(临时)附件
+                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                    for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                        attachmentDto.setTableId(0);
+                        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                        baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(),attachmentDto);
+                    }
+                }
+            }
         } catch (Exception e) {
             logger.error("", e);
         }

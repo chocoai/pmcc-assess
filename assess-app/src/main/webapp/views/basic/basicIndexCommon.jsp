@@ -66,6 +66,7 @@
         var unitId = "0";
         var houseId = "0";
         var buildId = "0";
+        var index = null;
         basicIndexCommon = new Object();
 
         /**
@@ -80,7 +81,14 @@
             }
             return false;
         };
-
+        //注入值 说明是index页面 所有的id为0
+        basicIndexCommon.setIndex = function (item) {
+            index = item;
+        };
+        //获取值,为null表示修改页面 如果不为null则表示是index页面(申请页面)
+        basicIndexCommon.getIndex = function () {
+            return index;
+        };
         basicIndexCommon.setAppId = function (item) {
             appId = item;
         };
@@ -116,7 +124,12 @@
             }
         };
         basicIndexCommon.getBuildId = function () {
-            return buildId;
+            if (!this.isNotBlank(this.getIndex())) {
+                return buildId;
+            }
+            if (this.isNotBlank(this.getIndex())) {
+                return "0";
+            }
         };
     }());
 

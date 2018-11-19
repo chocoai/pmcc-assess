@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -87,18 +88,19 @@ public class BasicEstateService {
         BasicMatchingMaterial queryBasicMatchingMaterial = new BasicMatchingMaterial();
         BasicMatchingMedical queryBasicMatchingMedical = new BasicMatchingMedical();
         BasicMatchingTraffic queryBasicMatchingTraffic = new BasicMatchingTraffic();
+        SysAttachmentDto querySysAttachmentDto = new SysAttachmentDto();
 
         queryBasicMatchingTraffic.setEstateId(oldId);
         queryBasicMatchingMedical.setEstateId(oldId);
         queryBasicMatchingMaterial.setEstateId(oldId);
         queryBasicMatchingLeisurePlace.setEstateId(oldId);
-
         queryBasicMatchingFinance.setEstateId(oldId);
         queryBasicMatchingEnvironment.setEstateId(oldId);
         queryBasicMatchingEducation.setEstateId(oldId);
         queryBasicEstateNetwork.setEstateId(oldId);
         queryBasicEstateParking.setEstateId(oldId);
         queryBasicEstateSupply.setEstateId(oldId);
+        querySysAttachmentDto.setTableId(oldId);
 
 
         queryBasicMatchingTraffic.setCreator(commonService.thisUserAccount());
@@ -111,6 +113,7 @@ public class BasicEstateService {
         queryBasicEstateNetwork.setCreator(commonService.thisUserAccount());
         queryBasicEstateParking.setCreator(commonService.thisUserAccount());
         queryBasicEstateSupply.setCreator(commonService.thisUserAccount());
+        querySysAttachmentDto.setCreater(commonService.thisUserAccount());
 
         List<BasicEstateNetwork> basicEstateNetworkList = null;
         List<BasicEstateParking> basicEstateParkingList = null;
@@ -122,6 +125,7 @@ public class BasicEstateService {
         List<BasicMatchingMaterial> basicMatchingMaterialList = null;
         List<BasicMatchingMedical> basicMatchingMedicalList = null;
         List<BasicMatchingTraffic> basicMatchingTrafficList = null;
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
 
         basicEstateNetworkList = basicEstateNetworkService.basicEstateNetworkList(queryBasicEstateNetwork);
         basicEstateParkingList = basicEstateParkingService.basicEstateParkingList(queryBasicEstateParking);
@@ -133,6 +137,7 @@ public class BasicEstateService {
         basicMatchingMaterialList = basicMatchingMaterialService.basicMatchingMaterialList(queryBasicMatchingMaterial);
         basicMatchingMedicalList = basicMatchingMedicalService.basicMatchingMedicalList(queryBasicMatchingMedical);
         basicMatchingTrafficList = basicMatchingTrafficService.basicMatchingTrafficList(queryBasicMatchingTraffic);
+        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(querySysAttachmentDto);
 
         if (newId == null) {
             if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
@@ -183,6 +188,11 @@ public class BasicEstateService {
             if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
                 for (BasicMatchingTraffic oo:basicMatchingTrafficList){
                     basicMatchingTrafficService.deleteBasicMatchingTraffic(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                    baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
                 }
             }
         }

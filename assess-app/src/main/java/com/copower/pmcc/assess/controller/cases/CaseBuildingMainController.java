@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
+import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -88,12 +89,12 @@ public class CaseBuildingMainController {
     @RequestMapping(value = "/getcaseBuildingMainById", method = {RequestMethod.GET}, name = "获取案例 楼栋--")
     public HttpResult getCaseBuildingById(Integer id) {
         CaseBuildingMain caseBuildingMain = null;
-        List<CaseBuilding> caseBuildingList = null;
+        List<CaseBuildingVo>  caseBuildingList = null;
         try {
             if (id != null) {
                 CaseBuilding query = new CaseBuilding();
                 query.setCaseBuildingMainId(id);
-                caseBuildingList = caseBuildingService.getCaseBuildingList(query);
+                caseBuildingList = caseBuildingService.caseBuildingVoList(query);
                 caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(id);
             }
         } catch (Exception e1) {

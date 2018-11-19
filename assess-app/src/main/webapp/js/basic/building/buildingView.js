@@ -105,8 +105,10 @@ var navButtonBuild;
         $("#" +basicIndexCommon.config.basicBuilding.frm).find("input[name='openTime']").val(formatDate(data.openTime));
         $("#" +basicIndexCommon.config.basicBuilding.frm).find("input[name='roomTime']").val(formatDate(data.roomTime));
         $.each(basicIndexCommon.config.basicBuilding.files, function (i, n) {
-            navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
-            navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, data.id);
+            // navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, data.id);
+            navButtonBuild.showFile(n + "" + navButtonBuild.switchNumber, basicIndexCommon.getBuildId());
+            // navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, data.id);
+            navButtonBuild.uploadFile2(n + "" + navButtonBuild.switchNumber, basicIndexCommon.getBuildId());
         });
     };
     navButtonBuild.clearAll = function () {

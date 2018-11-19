@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateLandStateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
@@ -31,6 +33,8 @@ public class CaseEstateLandStateService {
     private CommonService commonService;
     @Autowired
     private DataLandLevelService dataLandLevelService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState) {
@@ -103,7 +107,12 @@ public class CaseEstateLandStateService {
                 dataDic = null;
             }
         }
-
+        if (caseEstateLandState.getLandLevel() != null) {
+            DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(caseEstateLandState.getLandLevel());
+            if (dataLandLevelDetail != null) {
+                vo.setLandLevelName(String.format("%s%s",dataLandLevelDetail.getCategory(),dataLandLevelDetail.getClassify()));
+            }
+        }
         return vo;
     }
 }

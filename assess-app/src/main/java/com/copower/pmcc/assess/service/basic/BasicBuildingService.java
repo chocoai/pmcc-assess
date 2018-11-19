@@ -87,6 +87,7 @@ public class BasicBuildingService {
         if (newId == null) {
             SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableId(0);
+            sysAttachmentDto.setCreater(commonService.thisUserAccount());
             sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
             List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getAttachmentList(sysAttachmentDto);
             if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
@@ -144,6 +145,25 @@ public class BasicBuildingService {
         }
     }
 
+    private void updateSysAttachmentDto(BasicBuilding basicBuilding,Integer id){
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+            if (basicBuilding.getPart() != null){
+                for (SysAttachmentDto dto:sysAttachmentDtoList){
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getFieldsName())){
+                        if (dto.getFieldsName().indexOf(basicBuilding.getPart().toString()) != -1){
+                            dto.setTableId(id);
+                            baseAttachmentService.updateAttachment(dto);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 获取数据
      *
@@ -166,7 +186,7 @@ public class BasicBuildingService {
                 basicBuilding.setVersion(0);
             }
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
+            this.updateSysAttachmentDto(basicBuilding,id);
             if (basicBuilding.getPart() != null) {
                 this.init(0,id, String.valueOf(basicBuilding.getPart()),basicBuilding);
             }
@@ -193,7 +213,7 @@ public class BasicBuildingService {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), id);
+            this.updateSysAttachmentDto(basicBuilding,id);
             return id;
         } else {
             basicBuildingDao.updateBasicBuilding(basicBuilding);
@@ -291,6 +311,7 @@ public class BasicBuildingService {
         }
         return vo;
     }
+
 
 
 }

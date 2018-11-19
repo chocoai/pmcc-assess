@@ -217,6 +217,8 @@
     };
     //注入id
     basicIndexCommon.setAppId(objectData.config.id);
+    //说明是index 页面
+    basicIndexCommon.setIndex(new Date());
 
     /**
      * 判断字符串以及null等
@@ -341,7 +343,7 @@
                         }
                     });
                 },
-                minLength: 1,
+                minLength: 2,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
                     childs.eq(1).hide();

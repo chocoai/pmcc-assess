@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -141,6 +142,17 @@ public class CaseBuildingService {
 
     public List<CaseBuilding> getCaseBuildingList(CaseBuilding caseBuilding) {
         return caseBuildingDao.getBuildingList(caseBuilding);
+    }
+
+    public List<CaseBuildingVo> caseBuildingVoList(CaseBuilding caseBuilding){
+        List<CaseBuilding> caseBuildingList =  caseBuildingDao.getBuildingList(caseBuilding);
+        List<CaseBuildingVo> vos = new ArrayList<CaseBuildingVo>(10);
+        if (!ObjectUtils.isEmpty(caseBuildingList)){
+            for (CaseBuilding building:caseBuildingList){
+                vos.add(getCaseBuildingVo(building));
+            }
+        }
+        return vos;
     }
 
     public CaseBuilding getCaseBuildingById(Integer id) {
