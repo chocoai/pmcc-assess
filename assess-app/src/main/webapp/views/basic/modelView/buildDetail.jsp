@@ -259,19 +259,19 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构上级
+                    建筑类型
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="建筑结构上级" name="buildingStructureName"
+                    <input type="text" placeholder="建筑类型" name="buildingStructureName"
                            class="form-control" readonly="readonly">
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构(下级)
+                    建筑类别
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="建筑结构下级"
+                    <input type="text" placeholder="建筑类别"
                            name="buildingStructureLowerName"
                            class="form-control" readonly="readonly">
                 </div>

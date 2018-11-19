@@ -31,7 +31,7 @@
         var data = formApproval.getFormData();
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApply/projectApprovalSubmit",
+            url: "${pageContext.request.contextPath}/basicApply/basicApprovalSubmit",
             type: "post",
             dataType: "json",
             data: data,

@@ -323,7 +323,7 @@ public class BasicEstateService {
             }
             basicEstate.setVersion(oo.getVersion() + 1);
             basicEstateDao.updateBasicEstate(basicEstate);
-            return null;
+            return basicEstate.getId();
         }
     }
 
@@ -362,6 +362,9 @@ public class BasicEstateService {
     }
 
     public BasicEstateVo getBasicEstateVo(BasicEstate basicEstate) {
+        if (basicEstate == null){
+            return null;
+        }
         //获取格式化对象
         NumberFormat nt = NumberFormat.getPercentInstance();
         //设置百分数精确度2即保留两位小数

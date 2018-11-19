@@ -1613,6 +1613,109 @@ public class PublicBasicService {
         }
     }
 
+    /**
+     * 案例 返回修改 提交
+     *
+     * @param approvalModelDto
+     * @param formData
+     * @throws Exception
+     */
+    public void basicEditSubmit(ApprovalModelDto approvalModelDto, String formData) throws Exception {
+        try {
+            if (StringUtils.isNotEmpty(formData)) {
+                JSONObject jsonObject = JSON.parseObject(formData);
+                BasicEstate basicEstate = null;
+                BasicEstateLandState basicEstateLandState = null;
+                BasicBuildingMain basicBuildingMain = null;
+                List<BasicBuilding> basicBuildingList = null;
+                BasicUnit basicUnit = null;
+                BasicHouse basicHouse = null;
+                BasicHouseTrading basicTrading = null;
+                Integer estateId = null;
+                Integer basicBuildingMainId = null;
+                Integer unitId = null;
+                Integer houseId = null;
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATE.getVar()))) {
+                    basicEstate = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATE.getVar()), BasicEstate.class);
+                }
+                if (basicEstate != null) {
+                    estateId = basicEstateService.upgradeVersion(basicEstate);
+                }
+                if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()))) {
+                    basicEstateLandState = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()), BasicEstateLandState.class);
+                }
+                if (basicEstateLandState != null) {
+                    if (basicEstateLandState.getId() == null) {
+                        if (estateId != null) {
+                            basicEstateLandState.setEstateId(estateId);
+                        }
+                    }
+                    basicEstateLandStateService.upgradeVersion(basicEstateLandState);
+                }
+                //注意:
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGMAIN.getVar()))) {
+                    basicBuildingMain = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGMAIN.getVar()), BasicBuildingMain.class);
+                    if (basicBuildingMain.getId() == null) {
+                        if (estateId != null) {
+                            basicBuildingMain.setEstateId(estateId);
+                        }
+                    }
+                    basicBuildingMainService.upgradeVersion(basicBuildingMain);
+                    basicBuildingMainId = basicBuildingMain.getId();
+                }
+                if (basicBuildingMain != null) {
+                    if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGS.getVar()))) {
+                        basicBuildingList = JSONObject.parseArray(jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGS.getVar()), BasicBuilding.class);
+                        if (!ObjectUtils.isEmpty(basicBuildingList)) {
+                            for (BasicBuilding basicBuilding : basicBuildingList) {
+                                basicBuildingService.upgradeVersion(basicBuilding);
+                            }
+                        }
+                    }
+                }
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICUNIT.getVar()))) {
+                    basicUnit = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICUNIT.getVar()), BasicUnit.class);
+                }
+                if (basicUnit != null) {
+                    if (basicUnit.getId() == null) {
+                        if (basicBuildingMainId != null) {
+                            basicUnit.setBasicBuildingMainId(basicBuildingMainId);
+                        }
+                    }
+                    unitId = basicUnitService.upgradeVersion(basicUnit);
+                }
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICHOUSE.getVar()))) {
+                    basicHouse = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICHOUSE.getVar()), BasicHouse.class);
+                }
+                if (basicHouse != null) {
+                    if (basicHouse.getId() == null) {
+                        if (unitId != null) {
+                            basicHouse.setUnitId(unitId);
+                        }
+                    }
+                    houseId = basicHouseService.upgradeVersion(basicHouse);
+                }
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(jsonObject.getString(BasicJsonFieldStrEnum.BASICTRADING.getVar()))) {
+                    basicTrading = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICTRADING.getVar()), BasicHouseTrading.class);
+                }
+                if (basicTrading != null) {
+                    if (basicTrading.getId() == null) {
+                        if (houseId != null) {
+                            basicTrading.setHouseId(houseId);
+                        }
+                    }
+                    basicHouseTradingService.upgradeVersion(basicTrading);
+                }
+            } else {
+                throw new Exception("null data");
+            }
+            processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);//提交流程
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
 
     /**
      * 保存数据
@@ -1858,22 +1961,23 @@ public class PublicBasicService {
 
     /**
      * 处理地图标注
+     *
      * @param basicEstate
      * @throws Exception
      */
-    private void saveBasicBasicEstateTagging(BasicEstate basicEstate )throws Exception{
+    private void saveBasicBasicEstateTagging(BasicEstate basicEstate) throws Exception {
         BasicEstateTagging query = new BasicEstateTagging();
         query.setEstateId(0);
         query.setCreator(commonService.thisUserAccount());
         List<BasicEstateTagging> taggingList = basicEstateTaggingService.basicEstateTaggingList(query);
-        if (!ObjectUtils.isEmpty(taggingList)){
+        if (!ObjectUtils.isEmpty(taggingList)) {
             Ordering<BasicEstateTagging> ordering = Ordering.from(new Comparator<BasicEstateTagging>() {
                 @Override
                 public int compare(BasicEstateTagging o1, BasicEstateTagging o2) {
                     return o1.getId().compareTo(o2.getId());
                 }
             }).reverse();
-            Collections.sort(taggingList,ordering);
+            Collections.sort(taggingList, ordering);
             BasicEstateTagging basicEstateTagging = taggingList.get(0);
             basicEstateTagging.setEstateId(basicEstate.getId());
             int id = basicEstateTagging.getId();
@@ -1984,7 +2088,7 @@ public class PublicBasicService {
         }).reverse();
         if (!ObjectUtils.isEmpty(basicHouseList)) {
             Collections.sort(basicHouseList, ordering);
-            if (basicHouseList.get(0).getApplyId() != null){
+            if (basicHouseList.get(0).getApplyId() != null) {
                 if (basicHouseList.get(0).getApplyId().intValue() == appId.intValue()) {
                     BasicHouseVo vo = basicHouseService.getBasicHouseVo(basicHouseList.get(0));
                     return vo;
@@ -2154,7 +2258,7 @@ public class PublicBasicService {
 
     //通过sql方式转移数据
     private void appWriteUnitExtend(Integer caseUnitId) {
-        StringBuilder stringBuilder=new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
         synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASESS_CASE);
         synchronousDataDto.setTargeDataBase(BaseConstant.DATABASE_PMCC_ASESS_BASIC);
@@ -2168,18 +2272,18 @@ public class PublicBasicService {
         fieldDefaultValue.put("unit_id", "0");
         fieldDefaultValue.put("creator", commonService.thisUserAccount());
         synchronousDataDto.setFieldDefaultValue(fieldDefaultValue);
-        synchronousDataDto.setWhereSql(String.format("unit_id=%s",caseUnitId));
-        String sql =publicService.getSynchronousSql(synchronousDataDto);
+        synchronousDataDto.setWhereSql(String.format("unit_id=%s", caseUnitId));
+        String sql = publicService.getSynchronousSql(synchronousDataDto);
         stringBuilder.append(sql).append(";");
 
         synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseUnitElevator.class));
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
-        sql =publicService.getSynchronousSql(synchronousDataDto);
+        sql = publicService.getSynchronousSql(synchronousDataDto);
         stringBuilder.append(sql).append(";");
 
         synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
         synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
-        sql =publicService.getSynchronousSql(synchronousDataDto);
+        sql = publicService.getSynchronousSql(synchronousDataDto);
         stringBuilder.append(sql).append(";");
         jdbcTemplate.execute(stringBuilder.toString());
     }

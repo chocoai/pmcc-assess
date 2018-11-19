@@ -83,7 +83,7 @@
          */
         basicIndexCommon.isNotBlank = function (item) {
             if (item) {
-                if (item == 'undefined'){
+                if (item == 'undefined') {
                     return false;
                 }
                 return true;
@@ -101,18 +101,21 @@
             estateId = item;
         };
         basicIndexCommon.getEstateId = function () {
+            console.log("estateId:" + estateId);
             return estateId;
         };
         basicIndexCommon.setUnitId = function (item) {
             unitId = item;
         };
         basicIndexCommon.getUnitId = function () {
+            console.log("unitId:" + unitId);
             return unitId;
         };
         basicIndexCommon.setHouseId = function (item) {
             houseId = item;
         };
         basicIndexCommon.getHouseId = function () {
+            console.log("houseId:" + houseId);
             return houseId;
         };
         basicIndexCommon.setBuildId = function (number) {
@@ -126,6 +129,7 @@
             }
         };
         basicIndexCommon.getBuildId = function () {
+            console.log("buildId:" + buildId);
             return buildId;
         };
     }());
@@ -447,12 +451,49 @@
     };
 
     basicIndexCommon.houseInit = function (itemA, itemB) {
-        houseModelFun.initForm(itemA,itemB);
+        houseModelFun.initForm(itemA, itemB);
     };
 
     basicIndexCommon.houseInitA = function (itemA, itemB) {
         houseModelFun.houseInit(itemA);
         houseModelFun.tradingInit(itemB);
+    };
+
+    basicIndexCommon.formParams = function () {
+        var item = {};
+        var basicEstate = formParams(this.config.basicEstate.frm);
+        var basicEstateLandState = formParams(this.config.basicEstate.frmLandState);
+        var basicUnit = formParams(this.config.basicUnit.frm);
+        var basicHouse = formParams(this.config.basicHouse.frm);
+        var basicTrading = formParams(this.config.basicHouse.tradingFrm);
+        item.basicEstate = this.isNotBlankObjectProperty(basicEstate) ? basicEstate : null;
+        item.basicEstateLandState = this.isNotBlankObjectProperty(basicEstateLandState) ? basicEstateLandState : null;
+        item.basicUnit = this.isNotBlankObjectProperty(basicUnit) ? basicUnit : null;
+        item.basicHouse = this.isNotBlankObjectProperty(basicHouse) ? basicHouse : null;
+        item.basicTrading = this.isNotBlankObjectProperty(basicTrading) ? basicTrading : null;
+        var basicBuildings = new Array();
+        for (var i = 1; i <= 4; i++) {
+            if (this.isNotBlankObjectProperty(navButtonBuild.getObjArray(i))) {
+                basicBuildings.unshift(navButtonBuild.getObjArray(i))
+            }
+        }
+        //确定收集过楼栋信息
+        var num = 1;
+        $.each(basicBuildings, function (i, obj) {
+            if (basicIndexCommon.isNotBlankObjectProperty(obj)) {
+                num++;
+            }
+        });
+        if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下才进行赋值
+            if (this.isNotBlankObjectProperty(basicEstate) || Number(basicIndexCommon.getEstateId()) >= 1) {
+                item.basicBuildingMain = {
+                    id: $("#caseBuildingMainId").val(),
+                    identifier: $("#identifier").val()
+                };
+                item.basicBuildings = basicBuildings;
+            }
+        }
+        return item;
     };
 
 

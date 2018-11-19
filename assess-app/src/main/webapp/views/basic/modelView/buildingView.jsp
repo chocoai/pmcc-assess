@@ -257,7 +257,7 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构上级<span class="symbol required"></span>
+                    建筑类型<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <select name="buildingStructure"
@@ -267,12 +267,12 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    建筑结构(下级)<span class="symbol required"></span>
+                    建筑类别<span class="symbol required"></span>
                 </label>
                 <div class="col-sm-3">
                     <select name="buildingStructureLower"
                             class="form-control search-select select2 buildingStructureLower">
-                        <option>请先选择建筑结构上级</option>
+                        <option>建筑类别</option>
                     </select>
                 </div>
             </div>

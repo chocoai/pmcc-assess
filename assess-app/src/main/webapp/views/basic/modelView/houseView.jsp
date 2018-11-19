@@ -133,7 +133,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicTradingFrm">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicHouseTrading.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">财产范围<span class="symbol required"></span></label>

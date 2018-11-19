@@ -354,6 +354,9 @@ public class BasicHouseService {
     }
 
     public BasicHouseVo getBasicHouseVo(BasicHouse basicHouse) {
+        if (basicHouse == null){
+            return null;
+        }
         BasicHouseVo vo = new BasicHouseVo();
         BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicHouse, vo);

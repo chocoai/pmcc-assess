@@ -26,8 +26,12 @@
 
                 </div>
             </div>
-
-            <%@include file="/views/share/form_approval.jsp" %>
+            <c:if test="${processInsId ne '0'}">
+                <%@include file="/views/share/form_log.jsp" %>
+                <form id="frm_approval">
+                    <%@include file="/views/share/ApprovalVariable.jsp" %>
+                </form>
+            </c:if>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
@@ -115,15 +119,21 @@
 
 </script>
 <script type="application/javascript">
+    console.log("${flog}");
 
     function saveform() {
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formApproval.getFormData();
+        var data = {};
+        data.formData = JSON.stringify(basicIndexCommon.formParams());
+        var approvalData = formParams("frm_approval");
+        data = $.extend({}, approvalData, data);
+        console.log(data);
+        console.log(basicIndexCommon.formParams());
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApply/projectApprovalSubmit",
+            url: "${pageContext.request.contextPath}/basicApply/basicEditSubmit",
             type: "post",
             dataType: "json",
             data: data,
@@ -142,7 +152,7 @@
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
-        })
+        });
     }
 </script>
 </html>

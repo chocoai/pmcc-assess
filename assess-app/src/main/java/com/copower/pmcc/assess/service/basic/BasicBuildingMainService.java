@@ -95,7 +95,7 @@ public class BasicBuildingMainService {
             basicBuildingMain.setVersion(oo.getVersion() + 1);
             basicBuildingMainDao.updateBasicBuildingMain(basicBuildingMain);
             basicBuildingMain.setId(basicBuildingMain.getId());
-            return null;
+            return basicBuildingMain.getId();
         }
     }
 

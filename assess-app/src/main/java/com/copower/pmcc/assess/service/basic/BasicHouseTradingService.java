@@ -118,6 +118,9 @@ public class BasicHouseTradingService {
     }
 
     public BasicHouseTradingVo getBasicHouseTradingVo(BasicHouseTrading basicHouseTrading){
+        if (basicHouseTrading == null){
+            return null;
+        }
         BasicHouseTradingVo vo = new BasicHouseTradingVo();
         BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicHouseTrading,vo);

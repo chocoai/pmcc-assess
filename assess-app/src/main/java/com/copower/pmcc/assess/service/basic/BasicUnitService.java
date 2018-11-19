@@ -129,13 +129,14 @@ public class BasicUnitService {
         }
     }
 
-    public void upgradeVersion(BasicUnit basicUnit) throws Exception {
+    public Integer upgradeVersion(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
             basicUnit.setVersion(0);
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
             this.initUpdateSon(0, id,basicUnit);
             basicUnit.setId(id);
+            return id;
         } else {
             BasicUnit oo = this.getBasicUnitById(basicUnit.getId());
             if (oo.getVersion() == null) {
@@ -143,6 +144,7 @@ public class BasicUnitService {
             }
             basicUnit.setVersion(oo.getVersion() + 1);
             basicUnitDao.updateBasicUnit(basicUnit);
+            return basicUnit.getId();
         }
     }
 

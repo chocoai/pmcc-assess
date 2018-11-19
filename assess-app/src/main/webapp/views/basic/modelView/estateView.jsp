@@ -327,7 +327,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicLandState">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicEstateLandState.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地名称</label>

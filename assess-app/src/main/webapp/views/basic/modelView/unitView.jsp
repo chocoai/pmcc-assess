@@ -9,7 +9,7 @@
         <div class="clearfix"></div>
     </div>
     <form class="form-horizontal" id="basicUnitFrm">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${basicUnit.id}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">单元编号<span class="symbol required"></span></label>
