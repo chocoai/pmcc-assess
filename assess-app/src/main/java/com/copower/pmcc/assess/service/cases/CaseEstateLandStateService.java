@@ -37,8 +37,6 @@ public class CaseEstateLandStateService {
     private DataLandLevelService dataLandLevelService;
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private DataLandLevelDetailService dataLandLevelDetailService;
 
     public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState) {
 
