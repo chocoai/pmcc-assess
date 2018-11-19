@@ -244,15 +244,15 @@
                 estate = {search: null, city: null, district: null, province: null};
             }
             var cols = [];
+            cols.push({field: 'name', title: '名称'});
             cols.push({
                 field: 'area', title: '区域', formatter: function (value, row, index) {
                     return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                 }
             });
-            cols.push({field: 'name', title: '名称'});
+            cols.push({field: 'blockName', title: '版块'});
+            cols.push({field: 'averagePrice', title: '均价'});
             cols.push({field: 'coverAnArea', title: '占地面积'});
-            cols.push({field: 'volumetricRateName', title: '容积率'});
-            cols.push({field: 'greeningRateName', title: '绿化率'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
@@ -278,6 +278,7 @@
                 },
                 onClickCell: function (field, value, row, element) {
                     baseFun.caseBuild.loadDataList(row.id);
+                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
 
@@ -367,6 +368,7 @@
                 },
                 onClickCell: function (field, value, row, element) {
                     baseFun.caseUnit.loadDataList(row.id);
+                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
                 }
             });
         }
@@ -381,8 +383,9 @@
         },
         loadDataList: function (buildingId) {
             var cols = [];
-            cols.push({field: 'elevatorHouseholdRatio', title: '户梯比'});
+            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
             cols.push({field: 'unitNumber', title: '单元编号'});
+            cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -421,6 +424,7 @@
             var cols = [];
             cols.push({field: 'floor', title: '所在楼层'});
             cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

@@ -39,6 +39,7 @@ public class CaseUnitDao {
     public List<CaseUnit> getUnitList(CaseUnit caseUnit) {
         CaseUnitExample example = new CaseUnitExample();
         MybatisUtils.convertObj2Example(caseUnit, example);
+        example.setOrderByClause("unit_number,version");
         return caseUnitMapper.selectByExample(example);
     }
 

@@ -14,9 +14,9 @@
         </div>
 
         <div class="x-valid">
-            <label class="col-sm-1 control-label">户梯比</label>
+            <label class="col-sm-1 control-label">梯户比</label>
             <div class="col-sm-5">
-                <input type="text" name="elevatorHouseholdRatio" readonly="readonly" class="form-control" placeholder="户梯比" value="${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}">
+                <input type="text" name="elevatorHouseholdRatio" readonly="readonly" class="form-control" placeholder="梯户比" value="${surveyExamineDataInfoVo.examineUnitVo.elevatorHouseholdRatio}">
             </div>
         </div>
     </div>

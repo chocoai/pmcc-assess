@@ -1,3 +1,7 @@
 .bg-powderblue{
     background-color: powderblue;
 }
+
+.x-hidden-for{
+    display: none;
+}

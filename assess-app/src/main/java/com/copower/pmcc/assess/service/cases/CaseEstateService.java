@@ -18,8 +18,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -335,31 +330,14 @@ public class CaseEstateService {
     }
 
     public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
-        List<CaseEstate> caseEstates = Lists.newArrayList();
+        PageHelper.startPage(0,maxRows);
         List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name, null, null, null);
-        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
-            @Override
-            public int compare(CaseEstate o1, CaseEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(caseEstateList, ordering);
-        if (!ObjectUtils.isEmpty(caseEstateList)) {
-            for (int i = 0; i < maxRows; i++) {
-                if (i < caseEstateList.size()) {
-                    caseEstates.add(caseEstateList.get(i));
-                }
-            }
-        }
-        return caseEstates;
+        return caseEstateList;
     }
 
     public CaseEstateVo getCaseEstateVo(CaseEstate caseEstate) {
         CaseEstateVo vo = new CaseEstateVo();
         //获取格式化对象
-        NumberFormat nt = NumberFormat.getPercentInstance();
-        //设置百分数精确度2即保留两位小数
-        nt.setMinimumFractionDigits(2);
         BeanUtils.copyProperties(caseEstate, vo);
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getProvince())) {
             //省
@@ -372,16 +350,6 @@ public class CaseEstateService {
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getDistrict())) {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getVolumetricRate())) {
-            if (NumberUtils.isNumber(caseEstate.getVolumetricRate())) {
-                vo.setVolumetricRateName(nt.format(Double.parseDouble(caseEstate.getVolumetricRate())));
-            }
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getGreeningRate())) {
-            if (NumberUtils.isNumber(caseEstate.getGreeningRate())) {
-                vo.setGreeningRateName(nt.format(Double.parseDouble(caseEstate.getGreeningRate())));
-            }
         }
         if (caseEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(caseEstate.getDeveloperId());

@@ -37,9 +37,9 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">户梯比</label>
+                                <label class="col-sm-1 control-label">梯户比</label>
                                 <div class="col-sm-3">
-                                    <input type="text" placeholder="户梯比" readonly="readonly"
+                                    <input type="text" placeholder="梯户比" readonly="readonly"
                                            name="elevatorHouseholdRatio" class="form-control" value="${caseUnit.elevatorHouseholdRatio}">
                                 </div>
                             </div>

@@ -77,37 +77,49 @@
                                     <label class="form-control">${caseEstate.position}</label>
                                 </div>
                             </div>
-                            <div class="x-valid supplyGas">
-                                <label class="col-sm-1 control-label">供气信息</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.supplyGas?'有':'无'}</label>
+                            <c:if test="${not empty caseEstate.supplyPower}">
+                                <div class="x-valid supplyGas">
+                                    <label class="col-sm-1 control-label">供气信息</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${caseEstate.supplyPower?'有':'无'}</label>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
-
-                        <div class="form-group">
-                            <div class="x-valid supplyPower">
-                                <label class="col-sm-1 control-label">供电信息</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.supplyPower?'有':'无'}</label>
-                                </div>
+                        <c:if test="${not empty caseEstate.supplyPower or not empty caseEstate.supplyWater or not empty caseEstate.supplyHeating}">
+                            <div class="form-group">
+                                <c:if test="${not empty caseEstate.supplyPower}">
+                                    <div class="x-valid supplyPower">
+                                        <label class="col-sm-1 control-label">供电信息</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">
+                                                    ${caseEstate.supplyPower?'有':'无'}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${not empty caseEstate.supplyWater}">
+                                    <div class="x-valid supplyWater">
+                                        <label class="col-sm-1 control-label">供排水情况</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">
+                                                    ${caseEstate.supplyWater?'有':'无'}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${not empty caseEstate.supplyHeating}">
+                                    <div class="x-valid supplyHeating">
+                                        <label class="col-sm-1 control-label">供热信息</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">
+                                                    ${caseEstate.supplyHeating?'有':'无'}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </c:if>
                             </div>
-
-                            <div class="x-valid supplyWater">
-                                <label class="col-sm-1 control-label">供排水情况</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.supplyWater?'有':'无'}</label>
-                                </div>
-                            </div>
-
-                            <div class="x-valid supplyHeating">
-                                <label class="col-sm-1 control-label">供热信息</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.supplyHeating?'有':'无'}</label>
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:if>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">占地面积</label>
@@ -130,16 +142,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">楼盘概况</label>
-                                <div class="col-sm-11">
-                                    <label class="form-control">${caseEstate.description}</label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼栋数</label>
@@ -183,7 +185,22 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">楼盘概况</label>
+                                <div class="col-sm-11">
+                                    <label class="form-control">${caseEstate.description}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">地图标注</label>
+                                <div class="col-sm-5">
+                                    <div class="btn btn-success" onclick="window.open('${pageContext.request.contextPath}/caseEstate/detail?estateId=${caseEstate.id}')">地图标注</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">总平面图</label>
@@ -266,7 +283,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">东至</label>

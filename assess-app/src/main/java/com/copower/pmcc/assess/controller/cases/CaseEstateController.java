@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,6 +69,8 @@ public class CaseEstateController {
     private CaseMatchingMedicalService caseMatchingMedicalService;
     @Autowired
     private CaseMatchingTrafficService caseMatchingTrafficService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -108,6 +111,27 @@ public class CaseEstateController {
         modelAndView.addObject("hasMatchingTrafficMainConversion", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.MainConversion.getName()));
         modelAndView.addObject("hasMatchingTrafficTrafficHub", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.TrafficHub.getName()));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/detail", name = "楼盘相关信息地图标注", method = {RequestMethod.GET})
+    public ModelAndView index(Integer estateId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/case/caseEstate/caseTaggingView", "0", 0, "0", "");
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(estateId);
+        modelAndView.addObject("estateId", estateId == null ? 0 : estateId);
+        modelAndView.addObject("estateName", caseEstate.getName());
+        modelAndView.addObject("thisTitle", "楼盘信息标注");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getEstateTaggingList", name = "获取标注信息列表")
+    public BootstrapTableVo getEstateTaggingList(Integer estateId) {
+        try {
+            return caseEstateTaggingService.getEstateTaggingList(estateId);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
     }
 
     @ResponseBody

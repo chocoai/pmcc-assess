@@ -53,6 +53,7 @@ public class CaseHouseDao {
     public List<CaseHouse> getHouseList(CaseHouse caseHouse) {
         CaseHouseExample example = new CaseHouseExample();
         MybatisUtils.convertObj2Example(caseHouse, example);
+        example.setOrderByClause("floor,house_number,version");
         return caseHouseMapper.selectByExample(example);
     }
 

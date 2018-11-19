@@ -29,13 +29,21 @@ public class BasicEstateTaggingController {
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
 
-    @ResponseBody
     @RequestMapping(value = "/index", name = "楼盘相关信息地图标注", method = {RequestMethod.GET})
     public ModelAndView index(Integer estateId, String estateName) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/modelView/estateTaggingView", "0", 0, "0", "");
         modelAndView.addObject("estateId", estateId == null ? 0 : estateId);
         modelAndView.addObject("estateName", estateName);
-        modelAndView.addObject("thisTitle","楼盘信息标注");
+        modelAndView.addObject("thisTitle", "楼盘信息标注");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/detail", name = "楼盘相关信息地图标注详情", method = {RequestMethod.GET})
+    public ModelAndView detail(Integer estateId, String estateName) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/modelView/estateTaggingDetail", "0", 0, "0", "");
+        modelAndView.addObject("estateId", estateId == null ? 0 : estateId);
+        modelAndView.addObject("estateName", estateName);
+        modelAndView.addObject("thisTitle", "楼盘信息标注");
         return modelAndView;
     }
 
