@@ -61,16 +61,6 @@
 <script type="text/javascript">
     var basicIndexCommon;
     (function () {
-        // AssessCommon.initAreaInfo({
-        //     provinceTarget: $("#province"),
-        //     cityTarget: $("#city"),
-        //     districtTarget: $("#district1"),
-        //     provinceValue: 25,
-        //     cityValue: 321,
-        //     districtValue: 3342
-        // });
-
-
         var appId = "";
         var estateId = "0";
         var unitId = "0";
@@ -101,21 +91,18 @@
             estateId = item;
         };
         basicIndexCommon.getEstateId = function () {
-            console.log("estateId:" + estateId);
             return estateId;
         };
         basicIndexCommon.setUnitId = function (item) {
             unitId = item;
         };
         basicIndexCommon.getUnitId = function () {
-            console.log("unitId:" + unitId);
             return unitId;
         };
         basicIndexCommon.setHouseId = function (item) {
             houseId = item;
         };
         basicIndexCommon.getHouseId = function () {
-            console.log("houseId:" + houseId);
             return houseId;
         };
         basicIndexCommon.setBuildId = function (number) {
@@ -129,7 +116,6 @@
             }
         };
         basicIndexCommon.getBuildId = function () {
-            console.log("buildId:" + buildId);
             return buildId;
         };
     }());
@@ -351,7 +337,7 @@
         } else {
             retHtml += "<option value='false'>" + "无" + "</option>";
         }
-        $("#" + basicIndexCommon.config.basicEstate.frm).find("select[name='" + name + "']").empty().html(retHtml);
+        $("#" + this.config.basicEstate.frm).find("select[name='" + name + "']").empty().html(retHtml);
     };
 
     basicIndexCommon.estateLandStateInit = function (item) {
@@ -432,6 +418,7 @@
     basicIndexCommon.houseShow = function () {
         $('#caseTab a').eq(3).tab('show');
         $("#profile-tab4").attr("data-toggle", "tab");
+        houseModelFun.unitHuxingSelectLoad($("#" + this.config.basicHouse.frm).find("select[name='huxingId']").next()[0]);
     };
 
     basicIndexCommon.houseLoadList = function () {

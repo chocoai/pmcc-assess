@@ -152,7 +152,7 @@
                 <div class="x_content">
                     <div class="col-sm-5 col-sm-offset-5">
                         <button class="btn btn-success" onclick="temporary();">
-                            临时提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            保存草稿<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
@@ -360,8 +360,6 @@
      */
     objectData.autocompleteBuilding = function (_this) {
         var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-        if (!objectData.isNotBlank(estateId)) {
-        }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
@@ -380,10 +378,6 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                if (objectData.isNotBlank(result.data)) {
-                                    if (result.data.length == 0) {
-                                    }
-                                }
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
@@ -414,8 +408,6 @@
      */
     objectData.autocompleteUnit = function (_this) {
         var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
-        if (!objectData.isNotBlank(buildingId)) {
-        }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
@@ -434,11 +426,6 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                if (objectData.isNotBlank(result.data)) {
-                                    if (result.data.length == 0) {
-                                        // Alert("此楼栋下无单元信息!");
-                                    }
-                                }
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
@@ -489,11 +476,6 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                if (objectData.isNotBlank(result.data)) {
-                                    if (result.data.length == 0) {
-                                        // Alert("此单元下无房屋信息!");
-                                    }
-                                }
                                 response($.each(result.data, function (i, item) {
                                     return {
                                         label: item.value,
@@ -786,9 +768,6 @@
                 async: false,
                 dataType: "json",
                 success: function (result) {
-                    if (result.ret) {
-                        // toastr.success('房屋删除临时数据!');
-                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -802,9 +781,6 @@
                 dataType: "json",
                 async: false,
                 success: function (result) {
-                    if (result.ret) {
-                        // toastr.success('楼盘删除临时数据!');
-                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -818,9 +794,6 @@
                 dataType: "json",
                 async: false,
                 success: function (result) {
-                    if (result.ret) {
-                        // toastr.success('楼栋删除临时数据!');
-                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -834,9 +807,6 @@
                 async: false,
                 dataType: "json",
                 success: function (result) {
-                    if (result.ret) {
-                        // toastr.success('单元删除临时数据!');
-                    }
                 },
                 error: function (result) {
                     Alert("调用服务端方法失败，失败原因:" + result);
@@ -868,10 +838,7 @@
             }
         }
         if (objectData.isNotBlankObjectProperty(basicEstate)) {//楼盘检测到有数据
-            // if (!$("#" + objectData.config.basicEstate.frm).valid()) {
-            //     toastr.success('楼盘有必须的数据未填写!');
-            //     return false;
-            // }
+
         }
         //确定收集过楼栋信息
         var num = 1;
@@ -990,26 +957,10 @@
      */
     objectData.successClear = function () {
         window.location.reload();
-
-        // $("#" + objectData.config.basicEstate.frmLandState).clearAll();
-        // $("#" + objectData.config.basicEstate.frm).clearAll();
-        // $("#" + objectData.config.basicUnit.frm).clearAll();
-        // $("#" + objectData.config.basicHouse.frm).clearAll();
-        // $("#" + objectData.config.basicHouse.tradingFrm).clearAll();
-        // objectData.firstRemove.buildFirst();
-        // objectData.firstRemove.unitFirst();
-        // objectData.firstRemove.estateFirst();
-        // objectData.firstRemove.houseFirst();
-        // $('#caseTab a').tab('show');
-        // for (var i = 1; i <= 4; i++) {
-        //     navButtonBuild.setObjArrayElement(i,{});
-        //     $("#profile-tab"+i).removeAttr("data-toggle");
-        // }
     };
 
     //检测是否为 草稿重新申请
     objectData.startApply = function () {
-        console.log("${startApply}");
         if (this.isNotBlank("${startApply}")){
             objectData.estate.show({},{});
             objectData.building.show({});
@@ -1033,7 +984,6 @@
             return false;
         }
         var data = objectData.formParams();
-        console.log(data);
         var formData = JSON.stringify(data);
         Loading.progressShow();
         $.ajax({
@@ -1056,13 +1006,12 @@
         });
     }
 
-    //临时保存
+    //保存草稿
     function temporary() {
         if (!objectData.valid()) {
             return false;
         }
         var data = objectData.formParams();
-        console.log(data);
         var formData = JSON.stringify(data);
         Loading.progressShow();
         $.ajax({

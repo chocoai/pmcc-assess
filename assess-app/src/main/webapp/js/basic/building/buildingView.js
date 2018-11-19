@@ -43,7 +43,6 @@ var navButtonBuild;
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.BasicBuilding,
                 tableId: basicIndexCommon.isNotBlank(id) ? id : "0",
-                // creater: "${currUserAccount}"
             },
             deleteFlag: true
         });
@@ -55,7 +54,6 @@ var navButtonBuild;
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.BasicBuilding,
                 tableId: navButtonBuild.isNotBlank(id) ? id : "0",
-                // creater: "${currUserAccount}"
             },
             deleteFlag: true
         })
@@ -179,6 +177,7 @@ navButtonBuild.switchInit = function (target, number) {
     navButtonBuild.dataButtonWrite(target);
     basicIndexCommon.setBuildId(number);
     buildingModel.prototype.viewInit();
+    // console.log(navButtonBuild.getAllObjArray());
 };
 //第一栋
 navButtonBuild.one = function (target, number) {

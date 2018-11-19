@@ -119,8 +119,6 @@
 
 </script>
 <script type="application/javascript">
-    console.log("${flog}");
-
     function saveform() {
         if (!$("#frm_approval").valid()) {
             return false;
@@ -129,8 +127,6 @@
         data.formData = JSON.stringify(basicIndexCommon.formParams());
         var approvalData = formParams("frm_approval");
         data = $.extend({}, approvalData, data);
-        console.log(data);
-        console.log(basicIndexCommon.formParams());
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicEditSubmit",
