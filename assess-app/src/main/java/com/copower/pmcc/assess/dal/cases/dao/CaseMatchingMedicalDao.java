@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMaterialExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedical;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedicalExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingMedicalMapper;
@@ -68,4 +69,14 @@ public class CaseMatchingMedicalDao {
         return caseMatchingMedicalMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param estateId
+     * @return
+     */
+    public int countByEstateId(Integer estateId){
+        CaseMatchingMedicalExample example = new CaseMatchingMedicalExample();
+        example.createCriteria().andEstateIdEqualTo(estateId);
+        return caseMatchingMedicalMapper.countByExample(example);
+    }
 }

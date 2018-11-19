@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseRoomDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoom;
@@ -156,4 +155,12 @@ public class CaseHouseRoomService {
         return caseHouseRoomDao.deleteHouseRoom(id);
     }
 
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseRoomData(Integer houseId){
+        return caseHouseRoomDao.countByHouseId(houseId)>0;
+    }
 }

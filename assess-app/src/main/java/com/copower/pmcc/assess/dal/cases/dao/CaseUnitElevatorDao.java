@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorateExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevatorExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseUnitElevatorMapper;
@@ -68,4 +69,14 @@ public class CaseUnitElevatorDao {
         return caseUnitElevatorMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param unitId
+     * @return
+     */
+    public int countByUnitId(Integer unitId){
+        CaseUnitElevatorExample example = new CaseUnitElevatorExample();
+        example.createCriteria().andUnitIdEqualTo(unitId);
+        return caseUnitElevatorMapper.countByExample(example);
+    }
 }

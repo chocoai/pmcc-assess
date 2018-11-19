@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoomExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseWaterMapper;
@@ -68,4 +69,14 @@ public class CaseHouseWaterDao {
         return caseHouseWaterMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId){
+        CaseHouseWaterExample example = new CaseHouseWaterExample();
+        example.createCriteria().andHouseIdEqualTo(houseId);
+        return caseHouseWaterMapper.countByExample(example);
+    }
 }

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.cases.dao;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunction;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunctionExample;
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetworkExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingFunctionMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,16 @@ public class CaseBuildingFunctionDao {
      */
     public boolean deleteBuildingOutfit(Integer id){
         return caseBuildingFunctionMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 获取数据条数
+     * @param buildingId
+     * @return
+     */
+    public int countByBuildingId(Integer buildingId){
+        CaseBuildingFunctionExample example = new CaseBuildingFunctionExample();
+        example.createCriteria().andBuildingIdEqualTo(buildingId);
+        return caseBuildingFunctionMapper.countByExample(example);
     }
 }

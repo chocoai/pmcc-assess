@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseFaceStreetDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseFaceStreet;
@@ -143,5 +142,14 @@ public class CaseHouseFaceStreetService {
             this.addCaseHouseFaceStreet(po);
 
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseFaceStreetData(Integer houseId){
+        return caseHouseFaceStreetDao.countByHouseId(houseId)>0;
     }
 }

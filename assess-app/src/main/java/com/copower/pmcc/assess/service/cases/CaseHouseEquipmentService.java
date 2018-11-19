@@ -153,16 +153,26 @@ public class CaseHouseEquipmentService {
         }
         if (oo.getId().intValue() >= 1) {
             CaseHouseEquipment po = this.getCaseHouseEquipmentById(oo.getId());
-            if (po.getVersion() == null){
+            if (po.getVersion() == null) {
                 po.setVersion(0);
             }
-            int version = po.getVersion() +1;
-            BeanUtils.copyProperties(oo,po);
+            int version = po.getVersion() + 1;
+            BeanUtils.copyProperties(oo, po);
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
             this.addCaseHouseEquipment(po);
 
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseEquipmentData(Integer houseId, String type) {
+        return caseHouseEquipmentDao.countByHouseId(houseId, type) > 0;
     }
 }

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipmentExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipmentExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseEquipmentMapper;
@@ -68,4 +69,15 @@ public class CaseHouseEquipmentDao {
         return caseHouseEquipmentMapper.deleteByPrimaryKey(id) > 0;
     }
 
+
+    /**
+     * 获取数据条数
+     * @param houseId
+     * @return
+     */
+    public int countByHouseId(Integer houseId,String type){
+        CaseHouseEquipmentExample example = new CaseHouseEquipmentExample();
+        example.createCriteria().andHouseIdEqualTo(houseId).andTypeEqualTo(type);
+        return caseHouseEquipmentMapper.countByExample(example);
+    }
 }

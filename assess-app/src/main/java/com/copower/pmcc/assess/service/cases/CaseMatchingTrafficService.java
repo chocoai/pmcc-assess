@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseMatchingTrafficDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic;
 import com.copower.pmcc.assess.dto.output.cases.CaseMatchingTrafficVo;
@@ -33,7 +31,6 @@ public class CaseMatchingTrafficService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CaseMatchingTrafficDao caseMatchingTrafficDao;
-
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -125,4 +122,12 @@ public class CaseMatchingTrafficService {
         return caseMatchingTrafficDao.deleteMatchingTraffic(id);
     }
 
+    /**
+     * 根据查询条件判断是否有数据
+     * @param esteteId
+     * @return
+     */
+    public boolean hasMatchingTrafficData(Integer esteteId,String type){
+        return caseMatchingTrafficDao.countByEstateId(esteteId,type)>0;
+    }
 }

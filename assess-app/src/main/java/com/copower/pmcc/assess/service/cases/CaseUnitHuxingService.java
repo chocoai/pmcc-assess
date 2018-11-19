@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitHuxingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
@@ -176,4 +175,13 @@ public class CaseUnitHuxingService {
         return caseUnitHuxingDao.deleteUnitHuxing(id);
     }
 
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param unitId
+     * @return
+     */
+    public boolean hasUnitHuxingData(Integer unitId){
+        return caseUnitHuxingDao.countByUnitId(unitId)>0;
+    }
 }

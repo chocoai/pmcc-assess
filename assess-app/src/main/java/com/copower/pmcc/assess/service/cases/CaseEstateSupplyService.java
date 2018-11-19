@@ -40,8 +40,10 @@ public class CaseEstateSupplyService {
     @Autowired
     private CommonService commonService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -49,14 +51,14 @@ public class CaseEstateSupplyService {
         return caseEstateSupplyDao.getEstateNetworkById(id);
     }
 
-    public void upgradeVersion(CaseEstateSupply po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
+    public void upgradeVersion(CaseEstateSupply po) throws Exception {
+        if (po.getId() == null || po.getId().intValue() == 0) {
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
             caseEstateSupplyDao.addEstateNetwork(po);
-        }else {
+        } else {
             CaseEstateSupply oo = getCaseEstateSupplyById(po.getId());
-            if (oo.getVersion() == null){
+            if (oo.getVersion() == null) {
                 oo.setVersion(0);
             }
             int version = oo.getVersion() + 1;
@@ -72,6 +74,7 @@ public class CaseEstateSupplyService {
 
     /**
      * 获取数据列表
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -79,7 +82,7 @@ public class CaseEstateSupplyService {
         return caseEstateSupplyDao.getEstateNetworkList(examineEstateSupply);
     }
 
-    public BootstrapTableVo getExamineEstateNetworkList(CaseEstateSupply oo){
+    public BootstrapTableVo getExamineEstateNetworkList(CaseEstateSupply oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -90,27 +93,27 @@ public class CaseEstateSupplyService {
         return vo;
     }
 
-    private CaseEstateSupplyVo getCaseEstateSupplyVo(CaseEstateSupply oo){
+    private CaseEstateSupplyVo getCaseEstateSupplyVo(CaseEstateSupply oo) {
         CaseEstateSupplyVo vo = new CaseEstateSupplyVo();
-        BeanUtils.copyProperties(oo,vo);
-        if (!StringUtils.isEmpty(oo.getGrade())){
-            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getGrade())){
+        BeanUtils.copyProperties(oo, vo);
+        if (!StringUtils.isEmpty(oo.getGrade())) {
+            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getGrade())) {
                 List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_SUPPLIER_GRADE);
-                if (baseDataDic.size() >= 1){
-                    for (BaseDataDic base:baseDataDic){
-                        if (base.getId().equals(Integer.parseInt(oo.getGrade()))){
+                if (baseDataDic.size() >= 1) {
+                    for (BaseDataDic base : baseDataDic) {
+                        if (base.getId().equals(Integer.parseInt(oo.getGrade()))) {
                             vo.setGradeName(base.getName());
                         }
                     }
                 }
             }
         }
-        if (!StringUtils.isEmpty(oo.getLineGrade())){
-            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getLineGrade())){
+        if (!StringUtils.isEmpty(oo.getLineGrade())) {
+            if (org.apache.commons.lang.StringUtils.isNumeric(oo.getLineGrade())) {
                 List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LINE_WATER_SUPPLY_PIPE_GRADE);
-                if (baseDataDic.size() >= 1){
-                    for (BaseDataDic base:baseDataDic){
-                        if (base.getId().equals(Integer.parseInt(oo.getLineGrade()))){
+                if (baseDataDic.size() >= 1) {
+                    for (BaseDataDic base : baseDataDic) {
+                        if (base.getId().equals(Integer.parseInt(oo.getLineGrade()))) {
                             vo.setLineGradeName(base.getName());
                         }
                     }
@@ -123,6 +126,7 @@ public class CaseEstateSupplyService {
 
     /**
      * 新增
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -133,6 +137,7 @@ public class CaseEstateSupplyService {
 
     /**
      * 编辑
+     *
      * @param examineEstateSupply
      * @return
      */
@@ -142,10 +147,21 @@ public class CaseEstateSupplyService {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteCaseEstateSupply(Integer id){
+    public boolean deleteCaseEstateSupply(Integer id) {
         return caseEstateSupplyDao.deleteEstateNetwork(id);
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param esteteId
+     * @return
+     */
+    public boolean hasEstateSupplyData(Integer esteteId, String type) {
+        return caseEstateSupplyDao.countByEstateId(esteteId, type) > 0;
     }
 }

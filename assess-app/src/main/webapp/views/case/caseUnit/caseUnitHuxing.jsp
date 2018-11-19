@@ -14,8 +14,7 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="x_content">
-
+    <div class="x_content collapse">
         <form id="frm_unitHuxing" class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">

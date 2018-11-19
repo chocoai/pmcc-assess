@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +129,14 @@ public class CaseEstateNetworkService {
      */
     public List<CaseEstateNetwork> getEstateNetworkLists(CaseEstateNetwork examineEstateNetwork) {
         return caseEstateNetworkDao.getEstateNetworkList(examineEstateNetwork);
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param esteteId
+     * @return
+     */
+    public boolean hasEstateNetworkData(Integer esteteId){
+        return caseEstateNetworkDao.countByEstateId(esteteId)>0;
     }
 }

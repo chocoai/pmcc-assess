@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunctionExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenance;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMaintenanceExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMaintenanceMapper;
@@ -68,4 +69,14 @@ public class CaseBuildingMaintenanceDao {
         return caseBuildingMaintenanceMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param buildingId
+     * @return
+     */
+    public int countByBuildingId(Integer buildingId){
+        CaseBuildingMaintenanceExample example = new CaseBuildingMaintenanceExample();
+        example.createCriteria().andBuildingIdEqualTo(buildingId);
+        return caseBuildingMaintenanceMapper.countByExample(example);
+    }
 }

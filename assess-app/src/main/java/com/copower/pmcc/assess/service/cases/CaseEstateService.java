@@ -82,16 +82,8 @@ public class CaseEstateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-//        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
-        List<CaseEstate> caseEstateList = caseEstateDao.getEstateList(caseEstate);
-        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
-            @Override
-            public int compare(CaseEstate o1, CaseEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
+        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
         if (!ObjectUtils.isEmpty(caseEstateList)) {
-            Collections.sort(caseEstateList,ordering);
             for (CaseEstate oo : caseEstateList) {
                 vos.add(getCaseEstateVo(oo));
             }
@@ -119,7 +111,7 @@ public class CaseEstateService {
      * @auther: zch
      * @date: 2018/9/17 15:12
      */
-    public void initAndUpdateSon(Integer oldId, Integer newId)throws Exception {
+    public void initAndUpdateSon(Integer oldId, Integer newId) throws Exception {
         CaseEstateParking estateParking = new CaseEstateParking();
         estateParking.setEstateId(oldId);
         CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
@@ -208,13 +200,13 @@ public class CaseEstateService {
                     caseMatchingEducationService.deleteCaseMatchingEducation(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
-                for (CaseEstateLandState oo:caseEstateLandStateList){
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
+                for (CaseEstateLandState oo : caseEstateLandStateList) {
                     caseEstateLandStateService.deleteCaseEstateLandState(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
-                for (CaseBuildingMain oo:caseBuildingMainList){
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
+                for (CaseBuildingMain oo : caseBuildingMainList) {
                     caseBuildingMainService.deleteCaseBuildingMain(oo.getId());
                 }
             }
@@ -281,14 +273,14 @@ public class CaseEstateService {
                     caseMatchingEducationService.updateCaseMatchingEducation(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
-                for (CaseEstateLandState oo:caseEstateLandStateList){
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
+                for (CaseEstateLandState oo : caseEstateLandStateList) {
                     oo.setEstateId(newId);
                     caseEstateLandStateService.saveAndUpdateCaseEstateLandState(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
-                for (CaseBuildingMain oo:caseBuildingMainList){
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
+                for (CaseBuildingMain oo : caseBuildingMainList) {
                     oo.setEstateId(newId);
                     caseBuildingMainService.saveAndUpdate(oo);
                 }
@@ -297,11 +289,11 @@ public class CaseEstateService {
     }
 
 
-    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate)throws Exception {
+    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(0,id);
+            this.initAndUpdateSon(0, id);
             return id;
         } else {
             caseEstateDao.updateEstate(caseEstate);
@@ -309,7 +301,7 @@ public class CaseEstateService {
         }
     }
 
-    public Integer upgradeVersion(CaseEstate caseEstate)throws Exception {
+    public Integer upgradeVersion(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
@@ -331,7 +323,7 @@ public class CaseEstateService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseEstate.getId() ;
+            int oldId = caseEstate.getId();
             int newId = caseEstateDao.addEstate(oo);
             caseEstate.setId(newId);
             return newId;

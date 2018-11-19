@@ -150,4 +150,13 @@ public class CaseBuildingFunctionService {
         }
         return builder.toString();
     }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param buildingId
+     * @return
+     */
+    public boolean hasBuildingFunctionData(Integer buildingId){
+        return caseBuildingFunctionDao.countByBuildingId(buildingId)>0;
+    }
 }
