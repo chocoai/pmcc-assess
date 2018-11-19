@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.cases;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMainDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -42,15 +41,6 @@ public class CaseBuildingMainService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.getEstateList(caseBuildingMain);
-        Ordering<CaseBuildingMain> ordering = Ordering.from(new Comparator<CaseBuildingMain>() {
-            @Override
-            public int compare(CaseBuildingMain o1, CaseBuildingMain o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        if (!ObjectUtils.isEmpty(caseBuildingMainList)){
-            Collections.sort(caseBuildingMainList,ordering);
-        }
         vo.setTotal(page.getTotal());
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(caseBuildingMainList) ? new ArrayList<CaseBuildingMain>() : caseBuildingMainList);
         return vo;

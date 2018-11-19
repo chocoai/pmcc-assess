@@ -16,10 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,34 +53,29 @@ public class CaseBuildingMainController {
             CaseBuilding query = new CaseBuilding();
             query.setCaseBuildingMainId(caseBuildingMain.getId());
             List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(query);
-            if (!ObjectUtils.isEmpty(caseBuildingList)) {
-                int num = 0;
-                if (caseBuildingList.size() > 4) {
-                    num = 4;
-                }
-                if (caseBuildingList.size() <= 4) {
-                    num = caseBuildingList.size();
-                }
-                for (int i = 0; i < num; i++) {
-                    if (i == 0) {
-                        modelAndView.addObject("oneCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(0))));
-                        modelAndView.addObject("oneCaseBuilding", caseBuildingList.get(0));
-                    }
-                    if (i == 1) {
-                        modelAndView.addObject("twoCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(1))));
-                        modelAndView.addObject("twoCaseBuilding", caseBuildingList.get(1));
-                    }
-                    if (i == 2) {
-                        modelAndView.addObject("threeCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(2))));
-                        modelAndView.addObject("threeCaseBuilding", caseBuildingList.get(2));
-                    }
-                    if (i == 3) {
-                        modelAndView.addObject("fourCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(3))));
-                        modelAndView.addObject("fourCaseBuilding", caseBuildingList.get(3));
+            if(!CollectionUtils.isEmpty(caseBuildingList)){
+                for (int i = 0; i <caseBuildingList.size() ; i++) {
+                    switch (caseBuildingList.get(i).getPart()){
+                        case 1:
+                            modelAndView.addObject("oneCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
+                            modelAndView.addObject("oneCaseBuilding", caseBuildingList.get(i));
+                            break;
+                        case 2:
+                            modelAndView.addObject("twoCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
+                            modelAndView.addObject("twoCaseBuilding", caseBuildingList.get(i));
+                            break;
+                        case 3:
+                            modelAndView.addObject("threeCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
+                            modelAndView.addObject("threeCaseBuilding", caseBuildingList.get(i));
+                            break;
+                        case 4:
+                            modelAndView.addObject("fourCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
+                            modelAndView.addObject("fourCaseBuilding", caseBuildingList.get(i));
+                            break;
                     }
                 }
-                modelAndView.addObject("caseBuildingMain", caseBuildingMain);
             }
+            modelAndView.addObject("caseBuildingMain", caseBuildingMain);
         }
         return modelAndView;
     }

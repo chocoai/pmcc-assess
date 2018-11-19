@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingRestaurantExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTraffic;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingTrafficExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingTrafficMapper;
@@ -68,4 +69,14 @@ public class CaseMatchingTrafficDao {
         return caseMatchingTrafficMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param estateId
+     * @return
+     */
+    public int countByEstateId(Integer estateId,String type){
+        CaseMatchingTrafficExample example = new CaseMatchingTrafficExample();
+        example.createCriteria().andEstateIdEqualTo(estateId).andTypeEqualTo(type);
+        return caseMatchingTrafficMapper.countByExample(example);
+    }
 }

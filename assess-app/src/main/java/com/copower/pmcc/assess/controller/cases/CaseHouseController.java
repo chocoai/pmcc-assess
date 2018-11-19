@@ -2,15 +2,11 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
-import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
+import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
-import com.copower.pmcc.assess.service.cases.CaseHouseService;
-import com.copower.pmcc.assess.service.cases.CaseHouseTradingLeaseAndSellDtoService;
-import com.copower.pmcc.assess.service.cases.CaseHouseTradingService;
+import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -25,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,6 +43,18 @@ public class CaseHouseController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private CaseHouseTradingLeaseAndSellDtoService caseHouseTradingLeaseAndSellDtoService;
+    @Autowired
+    private CaseHouseFaceStreetService caseHouseFaceStreetService;
+    @Autowired
+    private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
+    @Autowired
+    private CaseHouseIntelligentService caseHouseIntelligentService;
+    @Autowired
+    private CaseHouseRoomService caseHouseRoomService;
+    @Autowired
+    private CaseHouseWaterService caseHouseWaterService;
+    @Autowired
+    private CaseHouseEquipmentService caseHouseEquipmentService;
 
 
 
@@ -65,6 +72,14 @@ public class CaseHouseController {
         caseHouse = caseHouseService.getCaseHouseById(id);
         modelAndView.addObject("caseHouse", caseHouseService.getCaseHouseVo(caseHouse));
         modelAndView.addObject("caseHouseTrading", caseHouseTradingService.getCaseHouseTradingVo(caseHouseTrading));
+        modelAndView.addObject("hasHouseFaceStreetData", caseHouseFaceStreetService.hasHouseFaceStreetData(id));
+        modelAndView.addObject("hasHouseCorollaryEquipmentData", caseHouseCorollaryEquipmentService.hasHouseCorollaryEquipmentData(id));
+        modelAndView.addObject("hasHouseIntelligentData", caseHouseIntelligentService.hasHouseIntelligentData(id));
+        modelAndView.addObject("hasHouseRoomData", caseHouseRoomService.hasHouseRoomData(id));
+        modelAndView.addObject("hasHouseWaterData", caseHouseWaterService.hasHouseWaterData(id));
+        modelAndView.addObject("hasHouseEquipmentAirConditioner", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey()));
+        modelAndView.addObject("hasHouseEquipmentHeating", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseHeating.getKey()));
+        modelAndView.addObject("hasHouseEquipmentNewWind", caseHouseEquipmentService.hasHouseEquipmentData(id, ExamineHouseEquipmentTypeEnum.houseNewWind.getKey()));
         return modelAndView;
     }
 

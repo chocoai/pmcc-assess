@@ -18,8 +18,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -82,16 +77,8 @@ public class CaseEstateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-//        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
-        List<CaseEstate> caseEstateList = caseEstateDao.getEstateList(caseEstate);
-        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
-            @Override
-            public int compare(CaseEstate o1, CaseEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
+        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
         if (!ObjectUtils.isEmpty(caseEstateList)) {
-            Collections.sort(caseEstateList,ordering);
             for (CaseEstate oo : caseEstateList) {
                 vos.add(getCaseEstateVo(oo));
             }
@@ -119,7 +106,7 @@ public class CaseEstateService {
      * @auther: zch
      * @date: 2018/9/17 15:12
      */
-    public void initAndUpdateSon(Integer oldId, Integer newId)throws Exception {
+    public void initAndUpdateSon(Integer oldId, Integer newId) throws Exception {
         CaseEstateParking estateParking = new CaseEstateParking();
         estateParking.setEstateId(oldId);
         CaseEstateNetwork caseEstateNetwork = new CaseEstateNetwork();
@@ -208,13 +195,13 @@ public class CaseEstateService {
                     caseMatchingEducationService.deleteCaseMatchingEducation(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
-                for (CaseEstateLandState oo:caseEstateLandStateList){
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
+                for (CaseEstateLandState oo : caseEstateLandStateList) {
                     caseEstateLandStateService.deleteCaseEstateLandState(oo.getId());
                 }
             }
-            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
-                for (CaseBuildingMain oo:caseBuildingMainList){
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
+                for (CaseBuildingMain oo : caseBuildingMainList) {
                     caseBuildingMainService.deleteCaseBuildingMain(oo.getId());
                 }
             }
@@ -281,14 +268,14 @@ public class CaseEstateService {
                     caseMatchingEducationService.updateCaseMatchingEducation(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseEstateLandStateList)){
-                for (CaseEstateLandState oo:caseEstateLandStateList){
+            if (!ObjectUtils.isEmpty(caseEstateLandStateList)) {
+                for (CaseEstateLandState oo : caseEstateLandStateList) {
                     oo.setEstateId(newId);
                     caseEstateLandStateService.saveAndUpdateCaseEstateLandState(oo);
                 }
             }
-            if (!ObjectUtils.isEmpty(caseBuildingMainList)){
-                for (CaseBuildingMain oo:caseBuildingMainList){
+            if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
+                for (CaseBuildingMain oo : caseBuildingMainList) {
                     oo.setEstateId(newId);
                     caseBuildingMainService.saveAndUpdate(oo);
                 }
@@ -297,11 +284,11 @@ public class CaseEstateService {
     }
 
 
-    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate)throws Exception {
+    public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(0,id);
+            this.initAndUpdateSon(0, id);
             return id;
         } else {
             caseEstateDao.updateEstate(caseEstate);
@@ -309,7 +296,7 @@ public class CaseEstateService {
         }
     }
 
-    public Integer upgradeVersion(CaseEstate caseEstate)throws Exception {
+    public Integer upgradeVersion(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
@@ -331,7 +318,7 @@ public class CaseEstateService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseEstate.getId() ;
+            int oldId = caseEstate.getId();
             int newId = caseEstateDao.addEstate(oo);
             caseEstate.setId(newId);
             return newId;
@@ -343,31 +330,14 @@ public class CaseEstateService {
     }
 
     public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
-        List<CaseEstate> caseEstates = Lists.newArrayList();
+        PageHelper.startPage(0,maxRows);
         List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name, null, null, null);
-        Ordering<CaseEstate> ordering = Ordering.from(new Comparator<CaseEstate>() {
-            @Override
-            public int compare(CaseEstate o1, CaseEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(caseEstateList, ordering);
-        if (!ObjectUtils.isEmpty(caseEstateList)) {
-            for (int i = 0; i < maxRows; i++) {
-                if (i < caseEstateList.size()) {
-                    caseEstates.add(caseEstateList.get(i));
-                }
-            }
-        }
-        return caseEstates;
+        return caseEstateList;
     }
 
     public CaseEstateVo getCaseEstateVo(CaseEstate caseEstate) {
         CaseEstateVo vo = new CaseEstateVo();
         //获取格式化对象
-        NumberFormat nt = NumberFormat.getPercentInstance();
-        //设置百分数精确度2即保留两位小数
-        nt.setMinimumFractionDigits(2);
         BeanUtils.copyProperties(caseEstate, vo);
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getProvince())) {
             //省
@@ -380,16 +350,6 @@ public class CaseEstateService {
         if (org.apache.commons.lang.StringUtils.isNotBlank(caseEstate.getDistrict())) {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(caseEstate.getDistrict()));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getVolumetricRate())) {
-            if (NumberUtils.isNumber(caseEstate.getVolumetricRate())) {
-                vo.setVolumetricRateName(nt.format(Double.parseDouble(caseEstate.getVolumetricRate())));
-            }
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(caseEstate.getGreeningRate())) {
-            if (NumberUtils.isNumber(caseEstate.getGreeningRate())) {
-                vo.setGreeningRateName(nt.format(Double.parseDouble(caseEstate.getGreeningRate())));
-            }
         }
         if (caseEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(caseEstate.getDeveloperId());

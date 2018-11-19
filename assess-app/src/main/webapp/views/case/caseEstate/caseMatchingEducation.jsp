@@ -12,7 +12,7 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="x_content">
+    <div class="x_content collapse">
         <div>
         </div>
         <form class="form-horizontal">

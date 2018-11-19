@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfitExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingSurface;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingSurfaceExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingSurfaceMapper;
@@ -68,4 +69,14 @@ public class CaseBuildingSurfaceDao {
         return caseBuildingSurfaceMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param buildingId
+     * @return
+     */
+    public int countByBuildingId(Integer buildingId){
+        CaseBuildingSurfaceExample example = new CaseBuildingSurfaceExample();
+        example.createCriteria().andBuildingIdEqualTo(buildingId);
+        return caseBuildingSurfaceMapper.countByExample(example);
+    }
 }

@@ -28,6 +28,7 @@ $(function () {
             }
         }
     })
+
 });
 
 (function ($) {
@@ -182,13 +183,13 @@ $(function () {
             }
         },
         //获取项目分类详细信息 非异步
-        getProjectClassifyInfoAsync:function (id, callback) {
+        getProjectClassifyInfoAsync: function (id, callback) {
             if (id) {
                 $.ajax({
                     url: getContextPath() + "/baseProjectClassify/getProjectClassifyInfo",
                     type: "get",
                     dataType: "json",
-                    async:false,
+                    async: false,
                     data: {
                         id: id
                     },
@@ -317,16 +318,16 @@ $(function () {
 
         //根据key获取字典信息
         loadDataDicByKey: function (key, value, callback) {
-            AssessCommon.loadAsyncDataDicByKey(key,value,callback,true);
+            AssessCommon.loadAsyncDataDicByKey(key, value, callback, true);
         },
         //根据key获取字典信息
-        loadAsyncDataDicByKey:function (key, value, callback,async) {
+        loadAsyncDataDicByKey: function (key, value, callback, async) {
             if (key) {
                 $.ajax({
                     url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
                     type: "get",
                     dataType: "json",
-                    async:async,
+                    async: async,
                     data: {
                         fieldName: key
                     },
@@ -370,15 +371,15 @@ $(function () {
         },
         //根据pid获取区域信息
         loadAreaInfoByPid: function (pid, callback) {
-            AssessCommon.loadAreaAsyncInfoByPid(pid,callback,true);
+            AssessCommon.loadAreaAsyncInfoByPid(pid, callback, true);
         },
-        loadAreaAsyncInfoByPid: function (pid, callback,async) {
+        loadAreaAsyncInfoByPid: function (pid, callback, async) {
             if (pid) {
                 $.ajax({
                     url: getContextPath() + "/area/getAreaList",
                     type: "get",
                     dataType: "json",
-                    async:async,
+                    async: async,
                     data: {
                         pid: pid
                     },
@@ -401,10 +402,10 @@ $(function () {
         },
         //初始化区域信息
         initAreaInfo: function (options) {
-            assessCommon.initAsyncAreaInfo(options,true);
+            assessCommon.initAsyncAreaInfo(options, true);
         },
 
-        initAsyncAreaInfo: function (options,async) {
+        initAsyncAreaInfo: function (options, async) {
             var isProvinceFirstChange = true;
             var isCityFirstChange = true;
             var defaults = {
@@ -457,7 +458,7 @@ $(function () {
                             defaults.cityTarget.select2('val', defaults.cityValue).trigger('change');
                         }
                     }
-                },async);
+                }, async);
             });
             //有区域元素才做处理
             if (defaults.districtTarget) {
@@ -474,7 +475,7 @@ $(function () {
                         if (defaults.districtValue) {
                             defaults.districtTarget.select2('val', defaults.districtValue);
                         }
-                    },async);
+                    }, async);
                 })
             }
             defaults.provinceTarget.select2('val', '').empty();
@@ -483,7 +484,7 @@ $(function () {
                 url: getContextPath() + "/area/getProvinceList",
                 type: "post",
                 dataType: "json",
-                async:async,
+                async: async,
                 data: {},
                 success: function (result) {
                     if (result.ret && result.data) {
@@ -659,7 +660,7 @@ $(function () {
             return fullName;
         },
         //阿里云图片识别
-        parseRealtyHouseCert:function (id,key,callback) {
+        parseRealtyHouseCert: function (id, key, callback) {
             $.ajax({
                 url: "/aliocr/aliOcr",
                 data: {

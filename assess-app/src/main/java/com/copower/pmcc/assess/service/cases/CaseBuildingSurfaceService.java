@@ -119,16 +119,16 @@ public class CaseBuildingSurfaceService {
         return caseBuildingSurfaceDao.updateBuildingSurface(caseBuildingSurface);
     }
 
-    public void upgradeVersion(CaseBuildingSurface caseBuildingSurface)throws Exception{
-        if (caseBuildingSurface.getId() == null){
+    public void upgradeVersion(CaseBuildingSurface caseBuildingSurface) throws Exception {
+        if (caseBuildingSurface.getId() == null) {
             caseBuildingSurface.setCreator(commonService.thisUserAccount());
             caseBuildingSurface.setVersion(0);
             caseBuildingSurfaceDao.addBuildingSurface(caseBuildingSurface);
             return;
         }
-        if (caseBuildingSurface.getId() != null){
+        if (caseBuildingSurface.getId() != null) {
             CaseBuildingSurface oo = this.getCaseBuildingSurfaceById(caseBuildingSurface.getId());
-            if (oo.getVersion() == null){
+            if (oo.getVersion() == null) {
                 oo.setVersion(0);
             }
             int version = oo.getVersion() + 1;
@@ -153,5 +153,13 @@ public class CaseBuildingSurfaceService {
         return caseBuildingSurfaceDao.deleteBuildingSurface(id);
     }
 
-
+    /**
+     * 根据查询条件判断是否有数据
+     *
+     * @param buildingId
+     * @return
+     */
+    public boolean hasBuildingSurfaceData(Integer buildingId) {
+        return caseBuildingSurfaceDao.countByBuildingId(buildingId) > 0;
+    }
 }

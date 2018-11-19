@@ -20,6 +20,7 @@
 <meta content="" name="description"/>
 <meta content="" name="author"/>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <script src="/assets/js/jquery/2.0.3/jquery.min.js"></script>
 <script src='${pageContext.request.contextPath}/js/assess-key.js'></script>
 <script src='${pageContext.request.contextPath}/js/common.js'></script>

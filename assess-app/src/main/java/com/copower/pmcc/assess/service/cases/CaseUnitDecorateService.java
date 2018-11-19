@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,4 +154,14 @@ public class CaseUnitDecorateService {
     public boolean deleteCaseUnitDecorate(Integer id) {
         return caseUnitDecorateDao.deleteUnitDecorate(id);
     }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param unitId
+     * @return
+     */
+    public boolean hasUnitDecorateData(Integer unitId){
+        return caseUnitDecorateDao.countByUnitId(unitId)>0;
+    }
+
 }

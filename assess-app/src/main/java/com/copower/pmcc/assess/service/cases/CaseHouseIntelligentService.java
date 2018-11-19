@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseIntelligent;
@@ -145,6 +144,15 @@ public class CaseHouseIntelligentService {
             po.setId(null);
             this.addCaseHouseIntelligent(po);
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseIntelligentData(Integer houseId){
+        return caseHouseIntelligentDao.countByHouseId(houseId)>0;
     }
 
 }

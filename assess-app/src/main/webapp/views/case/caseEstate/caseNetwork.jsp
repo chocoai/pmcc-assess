@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<div class="x_panel">
+<div class="x_panel collapse">
     <div class="x_title collapse-link" onclick="estateNetwork.prototype.viewInit()">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -12,9 +12,7 @@
         </h3>
         <div class="clearfix"></div>
     </div>
-
-    <div class="x_content">
-
+    <div class="x_content collapse">
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="x-valid">

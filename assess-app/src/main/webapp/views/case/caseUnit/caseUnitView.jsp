@@ -4,7 +4,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js"></script>
 </head>
 <body class="nav-md footer_fixed">
 <div class="container body">
@@ -38,9 +37,9 @@
                                 </div>
                             </div>
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">户梯比</label>
+                                <label class="col-sm-1 control-label">梯户比</label>
                                 <div class="col-sm-3">
-                                    <input type="text" placeholder="户梯比" readonly="readonly"
+                                    <input type="text" placeholder="梯户比" readonly="readonly"
                                            name="elevatorHouseholdRatio" class="form-control" value="${caseUnit.elevatorHouseholdRatio}">
                                 </div>
                             </div>
@@ -50,17 +49,17 @@
             </div>
 
             <!-- 楼栋内装信息	 -->
-            <div>
+            <div style="display: ${hasUnitDecorateData?'block':'none'};">
                 <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
             </div>
 
             <!-- 电梯信息 -->
-            <div>
+            <div style="display: ${hasUnitElevatorData?'block':'none'};">
                 <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
             </div>
 
             <!-- 户型信息 -->
-            <div>
+            <div style="display: ${hasUnitHuxingData?'block':'none'};">
                 <%@include file="/views/case/caseUnit/caseUnitHuxing.jsp" %>
             </div>
 

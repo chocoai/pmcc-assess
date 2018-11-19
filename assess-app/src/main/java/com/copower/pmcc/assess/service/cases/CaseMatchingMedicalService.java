@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseMatchingMedicalDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedical;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +143,15 @@ public class CaseMatchingMedicalService {
             oo.setCreator(commonService.thisUserAccount());
             this.addCaseMatchingMedical(oo);
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param esteteId
+     * @return
+     */
+    public boolean hasMatchingMedicalData(Integer esteteId){
+        return caseMatchingMedicalDao.countByEstateId(esteteId)>0;
     }
     
 }

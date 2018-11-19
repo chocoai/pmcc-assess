@@ -77,6 +77,7 @@ public class CaseEstateDao {
         if (!StringUtils.isEmpty(district)){
             criteria.andDistrictEqualTo(district);
         }
+        example.setOrderByClause("id desc");
         return caseEstateMapper.selectByExample(example);
     }
 

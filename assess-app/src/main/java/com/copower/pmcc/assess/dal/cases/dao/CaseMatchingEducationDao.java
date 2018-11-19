@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEducation;
 import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingEducationExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingEducationMapper;
@@ -68,4 +69,14 @@ public class CaseMatchingEducationDao {
         return caseMatchingEducationMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param estateId
+     * @return
+     */
+    public int countByEstateId(Integer estateId){
+        CaseMatchingEducationExample example = new CaseMatchingEducationExample();
+        example.createCriteria().andEstateIdEqualTo(estateId);
+        return caseMatchingEducationMapper.countByExample(example);
+    }
 }

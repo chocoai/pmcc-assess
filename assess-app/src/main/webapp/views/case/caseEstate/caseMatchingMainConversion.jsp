@@ -12,7 +12,7 @@
         </h3>
         <div class="clearfix"></div>
     </div>
-    <div class="x_content">
+    <div class="x_content collapse">
         <form class="form-horizontal">
 
             <div class="form-group">

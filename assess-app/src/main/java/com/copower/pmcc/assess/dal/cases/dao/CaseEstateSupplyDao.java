@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseEstateParkingExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseEstateSupplyMapper;
@@ -65,5 +66,16 @@ public class CaseEstateSupplyDao {
      */
     public boolean deleteEstateNetwork(Integer id){
         return caseEstateSupplyMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 获取数据条数
+     * @param estateId
+     * @return
+     */
+    public int countByEstateId(Integer estateId,String type){
+        CaseEstateSupplyExample example = new CaseEstateSupplyExample();
+        example.createCriteria().andEstateIdEqualTo(estateId).andTypeEqualTo(type);
+        return caseEstateSupplyMapper.countByExample(example);
     }
 }

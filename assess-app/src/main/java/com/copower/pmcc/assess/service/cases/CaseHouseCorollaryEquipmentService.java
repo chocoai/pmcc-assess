@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadTwoFieldEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseCorollaryEquipmentDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseCorollaryEquipment;
@@ -175,5 +173,14 @@ public class CaseHouseCorollaryEquipmentService {
      */
     public boolean deleteCaseHouseCorollaryEquipment(Integer id) {
         return caseHouseCorollaryEquipmentDao.deleteEstateLandState(id);
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseCorollaryEquipmentData(Integer houseId){
+        return caseHouseCorollaryEquipmentDao.countByHouseId(houseId)>0;
     }
 }

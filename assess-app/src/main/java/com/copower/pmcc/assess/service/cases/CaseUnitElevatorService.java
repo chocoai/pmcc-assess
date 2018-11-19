@@ -13,7 +13,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,5 +128,14 @@ public class CaseUnitElevatorService {
             oo.setCreator(commonService.thisUserAccount());
             this.saveCaseUnitElevator(oo);
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param unitId
+     * @return
+     */
+    public boolean hasUnitElevatorData(Integer unitId){
+        return caseUnitElevatorDao.countByUnitId(unitId)>0;
     }
 }

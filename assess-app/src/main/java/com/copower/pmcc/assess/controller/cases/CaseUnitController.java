@@ -2,14 +2,12 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.service.cases.CaseHouseService;
-import com.copower.pmcc.assess.service.cases.CaseUnitService;
+import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,6 +36,12 @@ public class CaseUnitController {
     private CaseHouseService caseHouseService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private CaseUnitDecorateService caseUnitDecorateService;
+    @Autowired
+    private CaseUnitElevatorService caseUnitElevatorService;
+    @Autowired
+    private CaseUnitHuxingService caseUnitHuxingService;
 
 
 
@@ -51,6 +52,9 @@ public class CaseUnitController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         caseUnit = caseUnitService.getCaseUnitById(id);
         modelAndView.addObject("caseUnit", caseUnit);
+        modelAndView.addObject("hasUnitDecorateData",caseUnitDecorateService.hasUnitDecorateData(id));
+        modelAndView.addObject("hasUnitElevatorData",caseUnitElevatorService.hasUnitElevatorData(id));
+        modelAndView.addObject("hasUnitHuxingData",caseUnitHuxingService.hasUnitHuxingData(id));
         return modelAndView;
     }
 

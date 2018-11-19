@@ -73,4 +73,15 @@ public class CaseEstateLandStateDao {
         return caseEstateLandStateMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param estateId
+     * @return
+     */
+    public int countByEstateId(Integer estateId){
+        CaseEstateLandStateExample example = new CaseEstateLandStateExample();
+        example.createCriteria().andEstateIdEqualTo(estateId);
+        return caseEstateLandStateMapper.countByExample(example);
+    }
+
 }

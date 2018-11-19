@@ -2,17 +2,14 @@ package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
+import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
-import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.cases.CaseBuildingService;
-import com.copower.pmcc.assess.service.cases.CaseEstateLandStateService;
-import com.copower.pmcc.assess.service.cases.CaseEstateService;
-import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -25,9 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,14 +50,31 @@ public class CaseEstateController {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private DataBlockService dataBlockService;
+    private CaseEstateNetworkService caseEstateNetworkService;
     @Autowired
-    private ErpAreaService erpAreaService;
-
+    private CaseEstateParkingService caseEstateParkingService;
+    @Autowired
+    private CaseEstateSupplyService caseEstateSupplyService;
+    @Autowired
+    private CaseMatchingEducationService caseMatchingEducationService;
+    @Autowired
+    private CaseMatchingEnvironmentService caseMatchingEnvironmentService;
+    @Autowired
+    private CaseMatchingFinanceService caseMatchingFinanceService;
+    @Autowired
+    private CaseMatchingLeisurePlaceService caseMatchingLeisurePlaceService;
+    @Autowired
+    private CaseMatchingMaterialService caseMatchingMaterialService;
+    @Autowired
+    private CaseMatchingMedicalService caseMatchingMedicalService;
+    @Autowired
+    private CaseMatchingTrafficService caseMatchingTrafficService;
+    @Autowired
+    private CaseEstateTaggingService caseEstateTaggingService;
 
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
-    public ModelAndView editView(Integer id) {
+    public ModelAndView detailView(Integer id) {
         String view = "/case/caseEstate/caseEstateView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         if (id != null && id.intValue() != 0) {
@@ -75,7 +89,49 @@ public class CaseEstateController {
             CaseEstate caseEstate = caseEstateService.getCaseEstateById(id);
             modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateVo(caseEstate));
         }
+        modelAndView.addObject("hasEstateNetworkData", caseEstateNetworkService.hasEstateNetworkData(id));
+        modelAndView.addObject("hasEstateParkingData", caseEstateParkingService.hasEstateParkingData(id));
+        modelAndView.addObject("hasEstateSupplyGas", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYGAS.getName()));
+        modelAndView.addObject("hasEstateSupplyHeating", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYHEATING.getName()));
+        modelAndView.addObject("hasEstateSupplyPower", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYPOWER.getName()));
+        modelAndView.addObject("hasEstateSupplyWater", caseEstateSupplyService.hasEstateSupplyData(id, ExamineEstateSupplyEnumType.ESTATESUPPLYWATER.getName()));
+
+        modelAndView.addObject("hasMatchingEducationData", caseMatchingEducationService.hasMatchingEducationData(id));
+        modelAndView.addObject("hasMatchingEnvironmentData", caseMatchingEnvironmentService.hasMatchingEnvironmentData(id));
+        modelAndView.addObject("hasMatchingFinanceData", caseMatchingFinanceService.hasMatchingFinanceData(id));
+        modelAndView.addObject("hasMatchingLeisurePlaceMarket", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey()));
+        modelAndView.addObject("hasMatchingLeisurePlaceRecreation", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey()));
+        modelAndView.addObject("hasMatchingLeisurePlaceRestaurant", caseMatchingLeisurePlaceService.hasMatchingLeisurePlaceData(id, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey()));
+        modelAndView.addObject("hasMatchingMaterialData", caseMatchingMaterialService.hasMatchingMaterialData(id));
+        modelAndView.addObject("hasMatchingMedicalData", caseMatchingMedicalService.hasMatchingMedicalData(id));
+
+        modelAndView.addObject("hasMatchingTrafficTransit", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.TRANSIT.getName()));
+        modelAndView.addObject("hasMatchingTrafficMetro", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.METRO.getName()));
+        modelAndView.addObject("hasMatchingTrafficMainRoad", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.MainRoad.getName()));
+        modelAndView.addObject("hasMatchingTrafficMainConversion", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.MainConversion.getName()));
+        modelAndView.addObject("hasMatchingTrafficTrafficHub", caseMatchingTrafficService.hasMatchingTrafficData(id, ExamineMatchingTrafficTypeEnum.TrafficHub.getName()));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/detail", name = "楼盘相关信息地图标注", method = {RequestMethod.GET})
+    public ModelAndView index(Integer estateId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/case/caseEstate/caseTaggingView", "0", 0, "0", "");
+        CaseEstate caseEstate = caseEstateService.getCaseEstateById(estateId);
+        modelAndView.addObject("estateId", estateId == null ? 0 : estateId);
+        modelAndView.addObject("estateName", caseEstate.getName());
+        modelAndView.addObject("thisTitle", "楼盘信息标注");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getEstateTaggingList", name = "获取标注信息列表")
+    public BootstrapTableVo getEstateTaggingList(Integer estateId) {
+        try {
+            return caseEstateTaggingService.getEstateTaggingList(estateId);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
     }
 
     @ResponseBody
@@ -193,7 +249,7 @@ public class CaseEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (!org.apache.commons.lang3.StringUtils.isNotBlank(name)){
+        if (!org.apache.commons.lang3.StringUtils.isNotBlank(name)) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
         try {
@@ -215,7 +271,7 @@ public class CaseEstateController {
     @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
     public HttpResult initAndUpdateSon() {
         try {
-            caseEstateService.initAndUpdateSon(0,null);
+            caseEstateService.initAndUpdateSon(0, null);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

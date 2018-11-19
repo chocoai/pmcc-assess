@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,5 +160,14 @@ public class CaseBuildingMaintenanceService {
         } catch (Exception e1) {
             return false;
         }
+    }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param buildingId
+     * @return
+     */
+    public boolean hasBuildingMaintenanceData(Integer buildingId){
+        return caseBuildingMaintenanceDao.countByBuildingId(buildingId)>0;
     }
 }

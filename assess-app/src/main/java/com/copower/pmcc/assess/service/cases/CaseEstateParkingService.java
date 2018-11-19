@@ -163,4 +163,13 @@ public class CaseEstateParkingService {
     public boolean deleteEstateParking(Integer id) {
         return caseEstateParkingDao.deleteEstateParking(id);
     }
+
+    /**
+     * 根据查询条件判断是否有数据
+     * @param esteteId
+     * @return
+     */
+    public boolean hasEstateParkingData(Integer esteteId){
+        return caseEstateParkingDao.countByEstateId(esteteId)>0;
+    }
 }

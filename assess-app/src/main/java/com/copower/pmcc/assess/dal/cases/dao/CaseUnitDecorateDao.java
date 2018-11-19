@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseMatchingMedicalExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorateExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseUnitDecorateMapper;
@@ -68,4 +69,14 @@ public class CaseUnitDecorateDao {
         return caseUnitDecorateMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取数据条数
+     * @param unitId
+     * @return
+     */
+    public int countByUnitId(Integer unitId){
+        CaseUnitDecorateExample example = new CaseUnitDecorateExample();
+        example.createCriteria().andUnitIdEqualTo(unitId);
+        return caseUnitDecorateMapper.countByExample(example);
+    }
 }

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.output.cases.CaseEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @Service
 public class CaseEstateLandStateService {
+    private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private CaseEstateLandStateDao caseEstateLandStateDao;
     @Autowired
@@ -36,6 +38,7 @@ public class CaseEstateLandStateService {
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
     private Logger logger = LoggerFactory.getLogger(getClass());
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
     public List<CaseEstateLandState> getCaseEstateLandStateList(CaseEstateLandState caseEstateLandState) {
 
@@ -85,7 +88,6 @@ public class CaseEstateLandStateService {
     }
 
     public boolean deleteCaseEstateLandState(Integer id) {
-
         return caseEstateLandStateDao.deleteEstateLandState(id);
     }
 
@@ -97,14 +99,12 @@ public class CaseEstateLandStateService {
             dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseType());
             if (dataDic != null){
                 vo.setLandUseTypeName(dataDic.getName());
-                dataDic = null;
             }
         }
         if (caseEstateLandState.getLandUseCategory() != null){
             dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseCategory());
             if (dataDic != null){
                 vo.setLandUseCategoryName(dataDic.getName());
-                dataDic = null;
             }
         }
         if (caseEstateLandState.getLandLevel() != null) {
@@ -112,6 +112,10 @@ public class CaseEstateLandStateService {
             if (dataLandLevelDetail != null) {
                 vo.setLandLevelName(String.format("%s%s",dataLandLevelDetail.getCategory(),dataLandLevelDetail.getClassify()));
             }
+        }
+        if (caseEstateLandState.getLandLevel() != null){
+            String s = dataLandLevelDetailService.getCacheNameById(caseEstateLandState.getLandLevel());
+            vo.setLandLevelName(s);
         }
         return vo;
     }

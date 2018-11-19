@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseWaterDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater;
@@ -149,4 +148,12 @@ public class CaseHouseWaterService {
         return caseHouseWaterDao.deleteHouseWater(id);
     }
 
+    /**
+     * 根据查询条件判断是否有数据
+     * @param houseId
+     * @return
+     */
+    public boolean hasHouseWaterData(Integer houseId){
+        return caseHouseWaterDao.countByHouseId(houseId)>0;
+    }
 }
