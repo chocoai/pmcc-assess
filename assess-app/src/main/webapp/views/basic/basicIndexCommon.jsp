@@ -71,7 +71,6 @@
         // });
 
 
-
         var appId = "";
         var estateId = "0";
         var unitId = "0";
@@ -84,6 +83,9 @@
          */
         basicIndexCommon.isNotBlank = function (item) {
             if (item) {
+                if (item == 'undefined'){
+                    return false;
+                }
                 return true;
             }
             return false;
@@ -117,8 +119,8 @@
             if (this.isNotBlank(number)) {
                 var item = navButtonBuild.getObjArray(number);
                 if (this.isNotBlank(item)) {
-                    if (this.isNotBlank(item.id)){
-                        buildId = item.id ;
+                    if (this.isNotBlank(item.id)) {
+                        buildId = item.id;
                     }
                 }
             }
@@ -305,41 +307,47 @@
     };
 
     basicIndexCommon.estateInit = function (item) {
-        this.select2Assignment(this.config.basicEstate.frm, item.supplyHeating, "supplyHeating");
-        this.select2Assignment(this.config.basicEstate.frm, item.supplyPower, "supplyPower");
-        this.select2Assignment(this.config.basicEstate.frm, item.supplyWater, "supplyWater");
-        this.select2Assignment(this.config.basicEstate.frm, item.supplyGas, "supplyGas");
-        basicIndexCommon.estateSupply("supplyHeating",item.supplyHeating);
+        basicIndexCommon.estateSupply("supplyHeating", item.supplyHeating);
+        basicIndexCommon.estateSupply("supplyGas", item.supplyGas);
+        basicIndexCommon.estateSupply("supplyWater", item.supplyWater);
+        basicIndexCommon.estateSupply("supplyPower", item.supplyPower);
         $.each(basicIndexCommon.config.basicEstate.files, function (i, n) {
             basicIndexCommon.uploadFile(n, AssessDBKey.BasicEstate, basicIndexCommon.isNotBlank(item.id) ? item.id : 0);
         });
-        console.log(item);
         try {
             AssessCommon.initAreaInfo({
                 provinceTarget: $("#province"),
                 cityTarget: $("#city"),
-                districtTarget: $("#district1"),
-                provinceValue:25,
-                cityValue:321,
-                districtValue:item.district
+                districtTarget: $("#district"),
+                provinceValue: item.province,
+                cityValue: item.city,
+                districtValue: item.district
             });
         } catch (e) {
+            console.log(e);
         }
     };
 
-    basicIndexCommon.estateSupply = function (name,item) {
-        var retHtml = '<option value="" selected>-请选择-</option>';
-        if (item == 'true'){
-            retHtml += "<option value='true' selected>"+"有"+"</option>" ;
-        }else {
-            retHtml += "<option value='true'>"+"有"+"</option>" ;
+    basicIndexCommon.estateSupply = function (name, item) {
+        var xItem = "" + item + "";
+        if (!this.isNotBlank(name)) {
+            return false;
         }
-        if (item == 'false'){
-            retHtml += "<option value='false' selected>"+"无1"+"</option>" ;
-        }else {
-            retHtml += "<option value='false'>"+"无"+"</option>" ;
+        if (!this.isNotBlank(xItem)) {
+            return false;
         }
-        $("#"+basicIndexCommon.config.basicEstate.frm).find("select[name='"+name+"']").empty().html(retHtml);
+        var retHtml = '<option value="">-请选择-</option>';
+        if (item) {
+            retHtml += "<option value='true' selected>" + "有" + "</option>";
+        } else {
+            retHtml += "<option value='true'>" + "有" + "</option>";
+        }
+        if (!item) {
+            retHtml += "<option value='false' selected>" + "无" + "</option>";
+        } else {
+            retHtml += "<option value='false'>" + "无" + "</option>";
+        }
+        $("#" + basicIndexCommon.config.basicEstate.frm).find("select[name='" + name + "']").empty().html(retHtml);
     };
 
     basicIndexCommon.estateLandStateInit = function (item) {
@@ -439,6 +447,10 @@
     };
 
     basicIndexCommon.houseInit = function (itemA, itemB) {
+        houseModelFun.initForm(itemA,itemB);
+    };
+
+    basicIndexCommon.houseInitA = function (itemA, itemB) {
         houseModelFun.houseInit(itemA);
         houseModelFun.tradingInit(itemB);
     };

@@ -196,7 +196,7 @@ public class BasicApplyController {
                     logger.error("json解析异常,值可能没有",e1);
                 }
                 try {
-                    modelAndView.addObject("basicHouse", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseVo(basicApply.getId())));
+                    modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseVo(basicApply.getId())));
                 } catch (Exception e1) {
                     logger.error("json解析异常,值可能没有",e1);
                 }

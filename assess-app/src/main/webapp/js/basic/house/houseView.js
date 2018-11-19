@@ -83,8 +83,6 @@ houseModelFun.select2Assignment = function (frm, data, name) {
 };
 
 houseModelFun.houseInit = function (item) {
-    $("#" + houseModelFun.config.house.frm).clearAll();
-    $("#" + houseModelFun.config.house.frm).initForm(item);
     this.uploadFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, item.id);
     this.showFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, item.id);
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
@@ -132,9 +130,16 @@ houseModelFun.unitHuxingSelectLoad = function (item) {
     });
 };
 
-houseModelFun.tradingInit = function (item) {
+houseModelFun.initForm = function (itemA,itemB) {
+    $("#" + houseModelFun.config.house.frm).clearAll();
+    $("#" + houseModelFun.config.house.frm).initForm(itemA);
     $("#" + this.config.trading.frm).clearAll();
-    $("#" + this.config.trading.frm).initForm(item);
+    $("#" + this.config.trading.frm).initForm(itemB);
+    this.tradingInit(itemB);
+    this.houseInit(itemA);
+};
+
+houseModelFun.tradingInit = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, item.taxBurden, function (html, data) {
         $("#" + houseModelFun.config.trading.frm).find("select.taxBurden").empty().html(html).trigger('change');
     });

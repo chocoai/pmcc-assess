@@ -33,7 +33,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">县</label>
                 <div class="col-sm-3">
-                    <select name="district" id="district1" class="form-control search-select select2">
+                    <select name="district" id="district" class="form-control search-select select2">
                     </select>
                 </div>
             </div>

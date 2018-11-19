@@ -74,11 +74,12 @@
     } else {
         navButtonBuild.setObjArrayElement(4, {});
     }
+    basicIndexCommon.buildingInit(navButtonBuild.getObjArray(1));
 
     if (basicIndexCommon.isNotBlank(basicEstate)) {
         basicIndexCommon.setEstateId("${basicEstate.id}");
-        basicIndexCommon.estateLandStateInit(JSON.parse('${basicEstateLandStateJson}'));
         try {
+            basicIndexCommon.estateLandStateInit(JSON.parse('${basicEstateLandStateJson}'));
             basicIndexCommon.estateInit(JSON.parse('${basicEstateJson}'));
         } catch (e) {
             console.error(e);
@@ -87,6 +88,19 @@
 
     if (basicIndexCommon.isNotBlank(basicHouse)) {
         basicIndexCommon.setHouseId("${basicHouse.id}");
+        try {
+            var itemA = JSON.parse('${basicHouseJson}');
+            var itemB = JSON.parse('${basicHouseTradingJson}');
+            if (!basicIndexCommon.isNotBlank(itemA)) {
+                itemA = {};
+            }
+            if (!basicIndexCommon.isNotBlank(itemB)) {
+                itemB = {};
+            }
+            basicIndexCommon.houseInitA(itemA, itemB);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     $("#profile-tab3").attr("data-toggle", "tab");
@@ -97,7 +111,7 @@
     basicIndexCommon.estateLoadList();
     basicIndexCommon.unitLoadList();
     basicIndexCommon.houseLoadList();
-    navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0], 1);
+
 
 </script>
 <script type="application/javascript">
