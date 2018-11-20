@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -57,6 +58,8 @@ public class BasicApplyController extends BaseController {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
@@ -154,6 +157,17 @@ public class BasicApplyController extends BaseController {
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/closeBasicApp", name = "流程实例关闭")
+    public HttpResult closeBasicApp(String processInsId){
+        if (StringUtils.isNotBlank(processInsId)){
+            bpmRpcActivitiProcessManageService.closeProcess(processInsId);
+            return HttpResult.newCorrectResult();
+        }else {
+            return HttpResult.newErrorResult("");
         }
     }
 

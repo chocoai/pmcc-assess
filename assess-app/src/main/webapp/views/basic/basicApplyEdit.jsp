@@ -19,8 +19,8 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button id="btn_close" class="btn btn-warning" onclick="saveform();">
-                            关闭<i style="margin-left: 10px" class="fa fa-close"></i>
+                        <button id="btn_close" class="btn btn-warning" onclick="closeBasicApp();">
+                            关闭流程<i style="margin-left: 10px" class="fa fa-close"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-primary" onclick="saveform();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
@@ -136,6 +136,32 @@
             type: "post",
             dataType: "json",
             data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert("提交数据成功!", 1, null, function () {
+                        window.close();
+                    });
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            }
+        });
+    }
+
+    //关闭流程
+    function closeBasicApp() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApply/closeBasicApp",
+            type: "post",
+            dataType: "json",
+            data: {processInsId:"${processInsId}"},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
