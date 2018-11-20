@@ -103,7 +103,7 @@
             }
             basicIndexCommon.houseInitA(itemA, itemB);
         } catch (e) {
-            console.error(e);
+            console.info(e);
         }
     }
 

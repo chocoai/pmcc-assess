@@ -18,6 +18,7 @@ import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -159,73 +160,83 @@ public class BasicApplyController {
             return;
         }
         modelAndView.addObject("processInsId", basicApply.getProcessInsId());
+        BasicUnit basicUnit = publicBasicService.getByByAppIdBasicUnit(basicApply.getId());
+        BasicEstateVo basicEstateVo = publicBasicService.getByAppIdBasicEstate(basicApply.getId());
+        BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getByAppIdEstateLandState(basicApply.getId());
+        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId());
+        BasicHouseVo basicHouseVo = publicBasicService.getByAppIdBasicHouseVo(basicApply.getId());
+        BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());
+        //详情设置参数
         if (StringUtils.isNotBlank(detail)) {
-            basicApply.setId(null);
-            modelAndView.addObject("basicApply", basicApply);
-            BasicUnit basicUnit = publicBasicService.getByByAppIdBasicUnit(basicApply.getId());
-            if (basicUnit != null) {
-                basicUnit.setId(null);
+            if (basicApply != null) {
+                basicApply.setId(null);
+                modelAndView.addObject("basicApply", basicApply);
             }
-            modelAndView.addObject("basicUnit", basicUnit);
-            BasicEstateVo basicEstateVo = publicBasicService.getByAppIdBasicEstate(basicApply.getId());
             if (basicEstateVo != null) {
                 basicEstateVo.setId(null);
+                modelAndView.addObject("basicEstate", basicEstateVo);
+                modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(basicEstateVo));
             }
-            modelAndView.addObject("basicEstate", basicEstateVo);
-            BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getByAppIdEstateLandState(basicApply.getId());
             if (basicEstateLandStateVo != null) {
                 basicEstateLandStateVo.setId(null);
+                modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
+                modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(basicEstateLandStateVo));
             }
-            modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
-            BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId());
-            if (basicHouseTradingVo != null) {
-                basicHouseTradingVo.setId(null);
-            }
-            modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
-            BasicHouseVo basicHouseVo = publicBasicService.getByAppIdBasicHouseVo(basicApply.getId());
-            if (basicHouseVo != null) {
-                basicHouseVo.setId(null);
-            }
-            modelAndView.addObject("basicHouse", basicHouseVo);
-        }
-        if (StringUtils.isEmpty(detail)) {
-            modelAndView.addObject("basicApply", basicApply);
-            modelAndView.addObject("basicUnit", publicBasicService.getByByAppIdBasicUnit(basicApply.getId()));
-            modelAndView.addObject("basicEstate", publicBasicService.getByAppIdBasicEstate(basicApply.getId()));
-            try {
-                modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicEstate(basicApply.getId())));
-            } catch (Exception e1) {
-                logger.error("json解析异常,值可能没有", e1);
-            }
-            modelAndView.addObject("basicEstateLandState", publicBasicService.getByAppIdEstateLandState(basicApply.getId()));
-            try {
-                modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(publicBasicService.getByAppIdEstateLandState(basicApply.getId())));
-            } catch (Exception e1) {
-                logger.error("json解析异常,值可能没有", e1);
-            }
-            modelAndView.addObject("basicHouseTrading", publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId()));
-            try {
-                modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId())));
-            } catch (Exception e1) {
-                logger.error("json解析异常,值可能没有", e1);
-            }
-            try {
-                modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(publicBasicService.getByAppIdBasicHouseVo(basicApply.getId())));
-            } catch (Exception e1) {
-                logger.error("json解析异常,值可能没有", e1);
-            }
-            modelAndView.addObject("basicHouse", publicBasicService.getByAppIdBasicHouseVo(basicApply.getId()));
-        }
-        BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());
-        List<BasicBuilding> basicBuildingList = null;
-        if (buildingMain != null) {
-            if (StringUtils.isEmpty(detail)) {
-                modelAndView.addObject("basicBuildingMain", buildingMain);
-            }
-            if (StringUtils.isNotBlank(detail)) {
+            if (buildingMain != null) {
                 buildingMain.setId(null);
                 modelAndView.addObject("basicBuildingMain", buildingMain);
             }
+            if (basicUnit != null) {
+                basicUnit.setId(null);
+                modelAndView.addObject("basicUnit", basicUnit);
+            }
+            if (basicHouseVo != null) {
+                basicHouseVo.setId(null);
+                modelAndView.addObject("basicHouse", basicHouseVo);
+                BasicHouseVo houseVo = new BasicHouseVo();
+                BeanUtils.copyProperties(basicHouseVo,houseVo);
+                houseVo.setHuxingName(null);
+                modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(houseVo));
+            }
+            if (basicHouseTradingVo != null) {
+                basicHouseTradingVo.setId(null);
+                modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
+                modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(basicHouseTradingVo));
+            }
+        }
+        //非详情
+        if (StringUtils.isEmpty(detail)) {
+            if (basicApply != null) {
+                modelAndView.addObject("basicApply", basicApply);
+            }
+            if (basicEstateVo != null) {
+                modelAndView.addObject("basicEstate", basicEstateVo);
+                modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(basicEstateVo));
+            }
+            if (basicEstateLandStateVo != null) {
+                modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
+                modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(basicEstateLandStateVo));
+            }
+            if (buildingMain != null) {
+                modelAndView.addObject("basicBuildingMain", buildingMain);
+            }
+            if (basicUnit != null) {
+                modelAndView.addObject("basicUnit", basicUnit);
+            }
+            if (basicHouseVo != null) {
+                modelAndView.addObject("basicHouse", basicHouseVo);
+                BasicHouseVo houseVo = new BasicHouseVo();
+                BeanUtils.copyProperties(basicHouseVo,houseVo);
+                houseVo.setHuxingName(null);
+                modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(houseVo));
+            }
+            if (basicHouseTradingVo != null) {
+                modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
+                modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(basicHouseTradingVo));
+            }
+        }
+        List<BasicBuilding> basicBuildingList = null;
+        if (buildingMain != null) {
             basicBuildingList = publicBasicService.getMainById(buildingMain);
             Ordering<BasicBuilding> ordering = Ordering.from(new Comparator<BasicBuilding>() {
                 @Override
