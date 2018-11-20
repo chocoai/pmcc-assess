@@ -149,9 +149,8 @@ public class CaseHouseEquipmentService {
         if (oo.getId() == null || oo.getId().intValue() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             oo.setVersion(0);
-            this.addCaseHouseEquipment(oo);
-        }
-        if (oo.getId().intValue() >= 1) {
+            caseHouseEquipmentDao.addHouseEquipment(oo);
+        }else {
             CaseHouseEquipment po = this.getCaseHouseEquipmentById(oo.getId());
             if (po.getVersion() == null) {
                 po.setVersion(0);
@@ -161,8 +160,7 @@ public class CaseHouseEquipmentService {
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
-            this.addCaseHouseEquipment(po);
-
+            caseHouseEquipmentDao.addHouseEquipment(po);
         }
     }
 

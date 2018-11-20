@@ -127,9 +127,8 @@ public class CaseHouseFaceStreetService {
         if (oo.getId() == null || oo.getId().intValue() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             oo.setVersion(0);
-            this.addCaseHouseFaceStreet(oo);
-        }
-        if (oo.getId().intValue() >= 1) {
+            caseHouseFaceStreetDao.addHouseFaceStreet(oo);
+        }else {
             CaseHouseFaceStreet po = this.getCaseHouseFaceStreetById(oo.getId());
             if (po.getVersion() == null){
                 po.setVersion(0);
@@ -139,8 +138,7 @@ public class CaseHouseFaceStreetService {
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
-            this.addCaseHouseFaceStreet(po);
-
+            caseHouseFaceStreetDao.addHouseFaceStreet(po);
         }
     }
 

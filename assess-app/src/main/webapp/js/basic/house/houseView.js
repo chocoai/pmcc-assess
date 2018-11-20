@@ -83,8 +83,8 @@ houseModelFun.select2Assignment = function (frm, data, name) {
 };
 
 houseModelFun.houseInit = function (item) {
-    this.uploadFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, item.id);
-    this.showFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, item.id);
+    this.showFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, basicIndexCommon.getHouseId());
+    this.uploadFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, basicIndexCommon.getHouseId());
     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
         $("#" + houseModelFun.config.house.frm).find("select.certUse").empty().html(html).trigger('change');
     });
@@ -132,8 +132,8 @@ houseModelFun.unitHuxingSelectLoad = function (item) {
 
 houseModelFun.initForm = function (itemA,itemB) {
     $("#" + houseModelFun.config.house.frm).clearAll();
-    $("#" + houseModelFun.config.house.frm).initForm(itemA);
     $("#" + this.config.trading.frm).clearAll();
+    $("#" + houseModelFun.config.house.frm).initForm(itemA);
     $("#" + this.config.trading.frm).initForm(itemB);
     this.tradingInit(itemB);
     this.houseInit(itemA);
@@ -243,7 +243,7 @@ houseModelFun.tradingSellAndLease = {
         });
         $("#" + houseModelFun.config.trading.tableSon).bootstrapTable('destroy');
         TableInit(houseModelFun.config.trading.tableSon, getContextPath()+"/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-            type: type_, houseId: 0
+            type: type_, houseId: basicIndexCommon.getHouseId()
         }, {
             showColumns: false,
             showRefresh: false,

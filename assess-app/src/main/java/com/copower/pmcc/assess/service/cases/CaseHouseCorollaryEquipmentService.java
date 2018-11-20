@@ -80,9 +80,10 @@ public class CaseHouseCorollaryEquipmentService {
         if (oo.getId() == null || oo.getId().intValue() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             oo.setVersion(0);
-            this.addCaseHouseCorollaryEquipment(oo);
-        }
-        if (oo.getId().intValue() >= 1) {
+            Integer id = caseHouseCorollaryEquipmentDao.addEstateLandState(oo);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
+            oo.setId(id);
+        }else {
             CaseHouseCorollaryEquipment po = this.getCaseHouseCorollaryEquipmentById(oo.getId());
             if (po.getVersion() == null){
                 po.setVersion(0);
@@ -92,8 +93,8 @@ public class CaseHouseCorollaryEquipmentService {
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
-            this.addCaseHouseCorollaryEquipment(po);
-
+            Integer id = caseHouseCorollaryEquipmentDao.addEstateLandState(po);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
         }
     }
 

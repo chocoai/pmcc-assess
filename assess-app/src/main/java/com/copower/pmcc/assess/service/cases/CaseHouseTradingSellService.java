@@ -61,7 +61,8 @@ public class CaseHouseTradingSellService {
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
-            this.saveAndUpdateCaseHouseTradingSell(po);
+            Integer id = caseHouseTradingSellDao.addCaseHouseTradingSell(po);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
         }else {
             CaseHouseTradingSell oo = getCaseHouseTradingSellById(po.getId());
             if (oo.getVersion() == null){
@@ -74,7 +75,8 @@ public class CaseHouseTradingSellService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            this.saveAndUpdateCaseHouseTradingSell(oo);
+            Integer id = caseHouseTradingSellDao.addCaseHouseTradingSell(oo);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
         }
     }
 

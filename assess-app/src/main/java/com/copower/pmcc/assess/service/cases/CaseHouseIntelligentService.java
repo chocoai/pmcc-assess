@@ -130,9 +130,8 @@ public class CaseHouseIntelligentService {
         if (oo.getId() == null || oo.getId().intValue() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             oo.setVersion(0);
-            this.addCaseHouseIntelligent(oo);
-        }
-        if (oo.getId().intValue() >= 1) {
+            caseHouseIntelligentDao.addHouseIntelligent(oo);
+        }else {
             CaseHouseIntelligent po = this.getCaseHouseIntelligentById(oo.getId());
             if (po.getVersion() == null){
                 po.setVersion(0);
@@ -142,7 +141,7 @@ public class CaseHouseIntelligentService {
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
-            this.addCaseHouseIntelligent(po);
+            caseHouseIntelligentDao.addHouseIntelligent(po);
         }
     }
 

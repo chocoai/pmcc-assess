@@ -76,8 +76,8 @@ public class CaseHouseWaterService {
         vo.setPretreatedWaterName(baseDataDicService.getNameById(caseHouseWater.getPretreatedWater()));
         vo.setDrainageCircuitName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuit()));
         vo.setDrainageCircuitCountName(baseDataDicService.getNameById(caseHouseWater.getDrainageCircuitCount()));
-        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getPurificationEquipmentPrice())?Integer.parseInt(caseHouseWater.getPurificationEquipmentPrice()):null));
-        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getWaterIntakeEquipmentPrice())?Integer.parseInt(caseHouseWater.getWaterIntakeEquipmentPrice()):null));
+        vo.setPurificationEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getPurificationEquipmentPrice()) ? Integer.parseInt(caseHouseWater.getPurificationEquipmentPrice()) : null));
+        vo.setWaterIntakeEquipmentPriceName(baseDataDicService.getNameById(NumberUtils.isNumber(caseHouseWater.getWaterIntakeEquipmentPrice()) ? Integer.parseInt(caseHouseWater.getWaterIntakeEquipmentPrice()) : null));
         return vo;
     }
 
@@ -121,20 +121,18 @@ public class CaseHouseWaterService {
         if (oo.getId() == null || oo.getId().intValue() == 0) {
             oo.setCreator(commonService.thisUserAccount());
             oo.setVersion(0);
-            this.addCaseHouseWater(oo);
-        }
-        if (oo.getId().intValue() >= 1) {
+            caseHouseWaterDao.addHouseWater(oo);
+        }else {
             CaseHouseWater po = this.getCaseHouseWaterById(oo.getId());
-            if (po.getVersion() == null){
+            if (po.getVersion() == null) {
                 po.setVersion(0);
             }
-            int version = po.getVersion() +1;
-            BeanUtils.copyProperties(oo,po);
+            int version = po.getVersion() + 1;
+            BeanUtils.copyProperties(oo, po);
             po.setVersion(version);
             po.setCreator(commonService.thisUserAccount());
             po.setId(null);
-            this.addCaseHouseWater(po);
-
+            caseHouseWaterDao.addHouseWater(po);
         }
     }
 
@@ -150,10 +148,11 @@ public class CaseHouseWaterService {
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param houseId
      * @return
      */
-    public boolean hasHouseWaterData(Integer houseId){
-        return caseHouseWaterDao.countByHouseId(houseId)>0;
+    public boolean hasHouseWaterData(Integer houseId) {
+        return caseHouseWaterDao.countByHouseId(houseId) > 0;
     }
 }

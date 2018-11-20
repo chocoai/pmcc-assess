@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseRoomDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoom;
+import com.copower.pmcc.assess.dal.basic.entity.BasicHouseRoomDecorate;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -40,6 +41,8 @@ public class BasicHouseRoomService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -83,6 +86,15 @@ public class BasicHouseRoomService {
      * @throws Exception
      */
     public boolean deleteBasicHouseRoom(Integer id) throws Exception {
+        List<BasicHouseRoomDecorate> basicHouseRoomDecorateList = null;
+        BasicHouseRoomDecorate query = new BasicHouseRoomDecorate();
+        query.setRoomId(id);
+        basicHouseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(query);
+        if (!ObjectUtils.isEmpty(basicHouseRoomDecorateList)){
+            for (BasicHouseRoomDecorate houseRoomDecorate:basicHouseRoomDecorateList){
+                basicHouseRoomDecorateService.deleteBasicHouseRoomDecorate(houseRoomDecorate.getId());
+            }
+        }
         return basicHouseRoomDao.deleteBasicHouseRoom(id);
     }
 

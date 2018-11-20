@@ -60,7 +60,9 @@ public class CaseHouseTradingLeaseService {
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
-            this.saveAndUpdateCaseHouseTradingLease(po);
+            Integer id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(po);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
         }else {
             CaseHouseTradingLease oo = getCaseHouseTradingLeaseById(po.getId());
             if (oo.getVersion() == null){
@@ -73,7 +75,9 @@ public class CaseHouseTradingLeaseService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            this.saveAndUpdateCaseHouseTradingLease(oo);
+            Integer id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(oo);
+            //更新附件
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
         }
     }
 
