@@ -252,9 +252,9 @@
     //土地级别选择
     basicIndexCommon.landLevelSelect = function (this_) {
         assessLandLevel.select({
-            province: 25,
-            city: 321,
-            district: undefined,
+            province: $('#province').val(),
+            city:  $('#city').val(),
+            district:  $('#district').val(),
             success: function (data) {
                 $(this_).parent().prev().val(data.name);
                 $(this_).parent().prev().prev().val(data.id);
@@ -280,9 +280,9 @@
     //板块选择
     basicIndexCommon.blockSelect = function (this_) {
         assessBlock.select({
-            province: 25,
-            city: 321,
-            district: undefined,
+            province: $('#province').val(),
+            city:  $('#city').val(),
+            district:  $('#district').val(),
             success: function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);
@@ -572,7 +572,7 @@
                 basicIndexCommon.partInFlag.house = false;
                 break;
         }
-        a.closest('[role="tabpanel"]').find('[id=' + href + ']').hide();
+        a.closest('[role="tabpanel"]').find('[id=' + href + ']').removeClass('active');
         a.closest('li').hide();
     }
 </script>
