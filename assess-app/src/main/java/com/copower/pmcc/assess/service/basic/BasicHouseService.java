@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -68,6 +69,7 @@ public class BasicHouseService {
         List<BasicHouseFaceStreet> basicHouseFaceStreetList = null;
         List<BasicHouseEquipment> basicHouseEquipmentList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;
+        List<SysAttachmentDto> sysAttachmentDtoList = null;
 
         BasicHouseTradingSell querySell = new BasicHouseTradingSell();
         BasicHouseTradingLease queryLease = new BasicHouseTradingLease();
@@ -77,6 +79,7 @@ public class BasicHouseService {
         BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
+        SysAttachmentDto queryFile = new SysAttachmentDto();
 
         queryLease.setHouseId(oldId);
         querySell.setHouseId(oldId);
@@ -86,6 +89,7 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setHouseId(oldId);
         queryBasicHouseEquipment.setHouseId(oldId);
         queryBasicHouseCorollaryEquipment.setHouseId(oldId);
+        queryFile.setTableId(oldId);
 
         queryLease.setCreator(commonService.thisUserAccount());
         querySell.setCreator(commonService.thisUserAccount());
@@ -95,6 +99,9 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setCreator(commonService.thisUserAccount());
         queryBasicHouseEquipment.setCreator(commonService.thisUserAccount());
         queryBasicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
+        queryFile.setCreater(commonService.thisUserAccount());
+
+        queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
 
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
@@ -104,8 +111,14 @@ public class BasicHouseService {
         basicHouseFaceStreetList = basicHouseFaceStreetService.basicHouseFaceStreetList(queryBasicHouseFaceStreet);
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
+        sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
 
         if (newId == null) {
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                    baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
+                }
+            }
             if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
                 basicHouseTradingSellList.forEach(oo -> {
                     try {

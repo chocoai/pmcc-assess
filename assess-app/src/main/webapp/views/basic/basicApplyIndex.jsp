@@ -543,6 +543,8 @@
                     $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
                     $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
                     objectData.estate.show(CaseEstate, CaseEstateLandState);
+                    basicIndexCommon.estateInit(CaseEstate);
+                    basicIndexCommon.estateLandStateInit(CaseEstateLandState);
                 },
                 function (item) {
                     objectData.estate.show({}, {});

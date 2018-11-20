@@ -82,7 +82,8 @@ public class CaseEstateParkingService {
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
-            caseEstateParkingDao.addEstateParking(po);
+            int id = caseEstateParkingDao.addEstateParking(po);
+            po.setId(id);
         }else {
             CaseEstateParking oo = getEstateParkingById(po.getId());
             if (oo.getVersion() == null){

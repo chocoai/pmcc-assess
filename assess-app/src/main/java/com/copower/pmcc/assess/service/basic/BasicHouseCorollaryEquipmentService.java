@@ -84,6 +84,13 @@ public class BasicHouseCorollaryEquipmentService {
      * @throws Exception
      */
     public boolean deleteBasicHouseCorollaryEquipment(Integer id) throws Exception {
+        if (id==null){
+            return false;
+        }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(id, null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
+            sysAttachmentDtos.forEach(oo -> baseAttachmentService.deleteAttachment(oo.getId()));
+        }
         return basicHouseCorollaryEquipmentDao.deleteBasicHouseCorollaryEquipment(id);
     }
 
@@ -99,6 +106,10 @@ public class BasicHouseCorollaryEquipmentService {
     }
 
     public void removeBasicHouseCorollaryEquipment(BasicHouseCorollaryEquipment basicHouseCorollaryEquipment)throws Exception{
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseCorollaryEquipment.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseCorollaryEquipment.class));
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)){
+            sysAttachmentDtos.forEach(oo -> baseAttachmentService.deleteAttachment(oo.getId()));
+        }
         basicHouseCorollaryEquipmentDao.removeBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment);
     }
 

@@ -58,7 +58,9 @@ public class CaseUnitHuxingService {
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
             po.setVersion(0);
-            this.addCaseUnitHuxing(po);
+            int id = caseUnitHuxingDao.addUnitHuxing(po);
+            po.setId(id);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class), id);
         }else {
             CaseUnitHuxing oo = getCaseUnitHuxingById(po.getId());
             if (oo.getVersion() == null){
@@ -67,11 +69,10 @@ public class CaseUnitHuxingService {
             int version = oo.getVersion() + 1;
             BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
             oo.setVersion(version);
-            oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            this.addCaseUnitHuxing(oo);
+            this.updateCaseUnitHuxing(oo);
         }
     }
 
@@ -106,7 +107,7 @@ public class CaseUnitHuxingService {
         CaseUnitHuxingVo vo = new CaseUnitHuxingVo();
         BeanUtils.copyProperties(caseUnitHuxing, vo);
         vo.setHouseLayoutName(baseDataDicService.getNameById(caseUnitHuxing.getHouseLayout()));
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseUnitHuxing.getId(), ExamineFileUpLoadFieldEnum.houseLatestFamilyPlanV.getName(), FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseUnitHuxing.getId(), null, FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
             if (sysAttachmentDtos.size() >= 1) {

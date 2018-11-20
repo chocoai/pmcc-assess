@@ -315,7 +315,8 @@
         basicIndexCommon.estateSupply("supplyWater", item.supplyWater);
         basicIndexCommon.estateSupply("supplyPower", item.supplyPower);
         $.each(basicIndexCommon.config.basicEstate.files, function (i, n) {
-            basicIndexCommon.uploadFile(n, AssessDBKey.BasicEstate, basicIndexCommon.isNotBlank(item.id) ? item.id : 0);
+            basicIndexCommon.showFile(n, AssessDBKey.BasicEstate, basicIndexCommon.getEstateId());
+            basicIndexCommon.uploadFile(n, AssessDBKey.BasicEstate, basicIndexCommon.getEstateId());
         });
         try {
             AssessCommon.initAreaInfo({

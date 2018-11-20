@@ -6,10 +6,13 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,7 +35,8 @@ import java.util.List;
  */
 @Service
 public class BasicUnitService {
-
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -45,19 +49,24 @@ public class BasicUnitService {
     private BasicUnitDao basicUnitDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void initUpdateSon(Integer oldId, Integer newId,BasicUnit basicUnit) throws Exception {
+    public void initUpdateSon(Integer oldId, Integer newId, BasicUnit basicUnit) throws Exception {
         BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
         BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
         BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
+        SysAttachmentDto query = new SysAttachmentDto();
         queryBasicUnitHuxing.setUnitId(oldId);
         queryBasicUnitElevator.setUnitId(oldId);
         queryBasicUnitDecorate.setUnitId(oldId);
+        query.setTableId(oldId);
         queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
         queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
         queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
+        query.setCreater(commonService.thisUserAccount());
+        query.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
         List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
         List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
         List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (newId == null) {
             if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
                 for (BasicUnitHuxing oo : basicUnitHuxingList) {
@@ -72,6 +81,11 @@ public class BasicUnitService {
             if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
                 for (BasicUnitDecorate oo : basicUnitDecorateList) {
                     basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
+                }
+            }
+            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
+                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+                    baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
                 }
             }
         }
@@ -134,7 +148,7 @@ public class BasicUnitService {
             basicUnit.setCreator(commonService.thisUserAccount());
             basicUnit.setVersion(0);
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
-            this.initUpdateSon(0, id,basicUnit);
+            this.initUpdateSon(0, id, basicUnit);
             basicUnit.setId(id);
             return id;
         } else {
