@@ -9,9 +9,7 @@
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main" id="basicApplyId">
+        <div class="right_col" role="main" style="margin-left: 0">
             <div class="page-title">
                 <div class="title_left">
                     <h2><i class="fa "></i>
@@ -19,7 +17,6 @@
                     </h2>
                 </div>
             </div>
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -144,28 +141,25 @@
                     </form>
                 </div>
             </div>
-
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
-
             <div class="x_panel">
 
                 <div class="x_content">
                     <div class="col-sm-5 col-sm-offset-5">
-                        <button class="btn btn-success" onclick="temporary();">
-                            保存草稿<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            取消
+                        </button>
+                        <button class="btn btn-warning" onclick="temporary();">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
+
                     </div>
 
                 </div>
             </div>
-
-
         </div>
     </div>
     <!-- end: MAIN CONTAINER -->

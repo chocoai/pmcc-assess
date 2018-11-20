@@ -370,4 +370,19 @@ public class BasicApplyController {
         }
         return modelAndView;
     }
+
+    @RequestMapping(value = "/basicApplyDraft", name = "我的草稿", method = RequestMethod.GET)
+    public ModelAndView basicApplyDraft() {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicAppDraftListView", "0", 0, "0", "");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicAppDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
+    public BootstrapTableVo getBasicAppDraftList() {
+        BasicApply basicApply = new BasicApply();
+        basicApply.setTemporary(true);
+        BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(basicApply);
+        return vo;
+    }
 }

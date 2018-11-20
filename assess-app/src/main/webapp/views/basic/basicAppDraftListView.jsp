@@ -91,12 +91,6 @@
 
     var dataObjFun = new DataObjFun();
 
-    dataObjFun.findData = function (id) {
-        var href = "${pageContext.request.contextPath}/basicApply/detailView";
-        href += "?id=" + id;
-        window.open(href, "");
-    };
-
     dataObjFun.temporary = function (id) {
         var href = "${pageContext.request.contextPath}/basicApply/basicApplyStart";
         href += "?applyId=" + id;
@@ -124,27 +118,9 @@
             }
         });
         cols.push({
-            field: 'status', title: '状态', formatter: function (value, row, index) {
-                if (dataObjFun.isNotBlank(row.status)){
-                    if (row.status == 'finish'){
-                        return "完成";
-                    }
-                    if (row.status == 'runing'){
-                        return "正在进行";
-                    }
-                    if (row.status == 'close'){
-                        return "关闭";
-                    }
-                }else {
-                    return "其它状态:如异常等";
-                }
-            }
-        });
-        cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="dataObjFun.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')"><i class="fa fa-edit"></i>继续申请</a>';
                 str += '</div>';
                 return str;
             }

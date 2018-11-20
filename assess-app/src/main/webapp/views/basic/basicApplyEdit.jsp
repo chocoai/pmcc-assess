@@ -16,11 +16,14 @@
 
                 <div class="x_content">
                     <div class="col-sm-5 col-sm-offset-5">
-                        <button id="btn_submit" class="btn btn-success" onclick="saveform();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
+                        </button>
+                        <button id="btn_close" class="btn btn-warning" onclick="saveform();">
+                            关闭<i style="margin-left: 10px" class="fa fa-close"></i>
+                        </button>
+                        <button id="btn_submit" class="btn btn-primary" onclick="saveform();">
+                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
 

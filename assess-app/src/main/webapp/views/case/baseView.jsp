@@ -28,7 +28,6 @@
                     </h2>
                 </div>
             </div>
-
             <div class="x_panel">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -51,9 +50,10 @@
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <label class="btn btn-primary" onclick="baseFun.caseEstate.find()">
+                                    <label class="btn btn-primary" onclick="baseFun.caseEstate.find();">
                                         查询
                                     </label>
+                                    <a class="btn btn-success" target="_blank" href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                                 </div>
                             </div>
                         </div>
