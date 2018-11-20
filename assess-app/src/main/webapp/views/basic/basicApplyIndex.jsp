@@ -9,11 +9,11 @@
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+        <div class="right_col" id="basicApplyId" role="main" style="margin-left: 0">
             <div class="page-title">
                 <div class="title_left">
                     <h2><i class="fa "></i>
-                        案例基础数据维护
+                        案例申请
                     </h2>
                 </div>
             </div>
@@ -29,16 +29,17 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form class="form-horizontal">
+                    <form id="basicApplyFrm" class="form-horizontal">
+                        <input type="hidden" name="id" value="${basicApply.id}">
                         <div class="form-group" id="industry">
                             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                                <input type="radio" name="industry" value="1" checked="checked">
-                                <label>非工业与仓储</label>
+                                <input type="radio" id="industry1" name="industry" value="1" checked="checked">
+                                <label for="industry1">非工业与仓储</label>
                             </span>
 
                             <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" name="industry" value="2">
-                                <label>工业与仓储</label>
+                                <input type="radio" id="industry2" name="industry" value="2">
+                                <label for="industry2">工业与仓储</label>
                             </span>
                         </div>
 
@@ -48,8 +49,10 @@
                                     楼盘名称
                                 </label>
                                 <div class="col-sm-4">
+                                    <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                                     <input type="text" class="form-control" name="basicEstate" placeholder="楼盘名称"
-                                           onkeydown="objectData.autocompleteEstate(this)">
+                                           value="${basicApply.estateName}"
+                                           onkeydown="objectData.autocompleteEstate(this);">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
@@ -72,7 +75,10 @@
                                     楼栋编号
                                 </label>
                                 <div class="col-sm-4">
+                                    <input type="hidden" name="caseBuildingMainId"
+                                           value="${basicApply.caseBuildingMainId}">
                                     <input type="text" class="form-control" name="basicBuilding" placeholder="楼栋编号"
+                                           value="${basicApply.buildIdentifier}"
                                            onkeydown="objectData.autocompleteBuilding(this)">
                                 </div>
                             </div>
@@ -97,7 +103,9 @@
                                     单元编号
                                 </label>
                                 <div class="col-sm-4">
+                                    <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                                     <input type="text" class="form-control" name="basicUnit" placeholder="单元编号"
+                                           value="${basicApply.unitNumber}"
                                            onkeydown="objectData.autocompleteUnit(this);">
                                 </div>
                             </div>
@@ -121,7 +129,9 @@
                                     房屋编号
                                 </label>
                                 <div class="col-sm-4">
+                                    <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
                                     <input type="text" class="form-control" name="basicHouse" placeholder="房屋编号"
+                                           value="${basicApply.houseNumber}"
                                            onkeydown="objectData.autocompleteHouse(this)">
                                 </div>
                             </div>
@@ -168,11 +178,13 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
 <script type="text/javascript">
-
     var objectData = new Object();
     objectData.config = {
         id: "basicApplyId",
         view: {save: "saveView", detail: "detailView"},
+        basicApply: {
+            frm: "basicApplyFrm"
+        },
         basicEstate: {
             key: "basicEstate",
             name: "楼盘",
@@ -308,13 +320,14 @@
      * 楼盘 信息自动补全
      */
     objectData.autocompleteEstate = function (_this) {
+        var that = _this;
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").autocomplete(
+        $(that).autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").val();
+                    var itemVal = $(that).val();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
                         type: "get",
@@ -342,7 +355,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id", ele.item.key);
+                    $(that).closest('div').find('[name=caseEstateId]').val(ele.item.key);
                 },
                 /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
                 focus: function (event, ui) {
@@ -355,14 +368,15 @@
      * 楼栋 信息自动补全
      */
     objectData.autocompleteBuilding = function (_this) {
-        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+        var that = _this;
+        var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").autocomplete(
+        $(that).autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val();
+                    var itemVal = $(that).val();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/caseBuildingMain/autoCompleteCaseBuilding",
                         type: "get",
@@ -391,7 +405,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id", ele.item.key);
+                    $(that).closest('div').find('[name=caseBuildingMainId]').val(ele.item.key);
                 },
                 focus: function (event, ui) {
                 }
@@ -403,14 +417,15 @@
      * 单元信息自动补全
      */
     objectData.autocompleteUnit = function (_this) {
-        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+        var that = _this;
+        var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").autocomplete(
+        $(that).autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val();
+                    var itemVal = $(that).val();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/caseUnit/autoCompleteCaseUnit",
                         type: "get",
@@ -439,7 +454,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id", ele.item.key);
+                    $(that).closest('div').find('[name=caseUnitId]').val(ele.item.key);
                 },
                 focus: function (event, ui) {
                 }
@@ -451,16 +466,17 @@
      * 房屋信息自动补全
      */
     objectData.autocompleteHouse = function (_this) {
-        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+        var that = _this;
+        var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
         if (!objectData.isNotBlank(unitId)) {
         }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();
-        $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").autocomplete(
+        $(that).autocomplete(
             {
                 source: function (request, response) {
-                    var itemVal = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val();
+                    var itemVal = $(that).val();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/caseHouse/autoCompleteCaseHouse",
                         type: "get",
@@ -489,7 +505,7 @@
                 select: function (event, ele) {
                     childs.eq(1).hide();
                     childs.eq(2).show();
-                    $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id", ele.item.key);
+                    $(that).closest('div').find('[name=caseHouseId]').val(ele.item.key);
                 },
                 focus: function (event, ui) {
                 }
@@ -509,12 +525,13 @@
                 basicIndexCommon.estateLandStateInit(itemB);
                 objectData.estateFlag = false;
             }
-            $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
+            $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
             basicIndexCommon.estateLoadList();
+            basicIndexCommon.showEstateTab();
         },
         //编辑楼盘页面
         edit: function () {
-            var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
+            var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
             if (!objectData.isNotBlank(estateId)) {
                 Alert("请查询楼盘!");
                 return false;
@@ -579,10 +596,14 @@
             }
             basicIndexCommon.buildingShow();
             basicIndexCommon.buildMainWrite({identifier: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val()});
-            $("#" + objectData.config.basicBuilding.frm).initForm({buildingNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val()});
+            $("#" + objectData.config.basicBuilding.frm).initForm({
+                buildingNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val(),
+                buildingName: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").val() + '栋'
+            });
+            basicIndexCommon.showBuildingTab();
         },
         edit: function () {
-            var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
+            var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
             if (!objectData.isNotBlank(buildingId)) {
                 Alert("请查询楼栋!");
                 return false;
@@ -652,9 +673,10 @@
             basicIndexCommon.unitShow();
             basicIndexCommon.unitLoadList();
             $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
+            basicIndexCommon.showUnitTab();
         },
         edit: function () {
-            var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+            var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
             if (!objectData.isNotBlank(unitId)) {
                 Alert("请查询单元!");
                 return false;
@@ -705,9 +727,10 @@
             }
             basicIndexCommon.houseLoadList();
             $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
+            basicIndexCommon.showHouseTab();
         },
         edit: function () {
-            var id = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").attr("data-id");
+            var id = $("#" + objectData.config.basicApply.frm).find("input[name='caseHouseId']").val();
             if (!objectData.isNotBlank(id)) {
                 Alert("请先查询房屋");
                 return false;
@@ -818,9 +841,9 @@
      * 校验
      **/
     objectData.valid = function () {
-        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
-        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+        var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
+        var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
+        var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
         var basicEstate = formParams(objectData.config.basicEstate.frm);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
         var basicHouse = formParams(objectData.config.basicHouse.frm);
@@ -889,9 +912,16 @@
     //收集数据
     objectData.formParams = function () {
         var item = {};
-        var estateId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicEstate.key + "']").attr("data-id");
-        var buildingId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicBuilding.key + "']").attr("data-id");
-        var unitId = $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").attr("data-id");
+        var basicApply = formParams(objectData.config.basicApply.frm);
+        basicApply.estatePartInFlag = basicIndexCommon.partInFlag.estate;
+        basicApply.buildingPartInFlag = basicIndexCommon.partInFlag.building;
+        basicApply.unitPartInFlag = basicIndexCommon.partInFlag.unit;
+        basicApply.housePartInFlag = basicIndexCommon.partInFlag.house;
+        item.basicApply = basicApply;
+
+        var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
+        var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
+        var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
         var basicEstate = formParams(objectData.config.basicEstate.frm);
         var basicEstateLandState = formParams(objectData.config.basicEstate.frmLandState);
         var basicUnit = formParams(objectData.config.basicUnit.frm);
@@ -954,17 +984,74 @@
      * 成功申请后清除数据
      */
     objectData.successClear = function () {
-        window.location.reload();
+        window.close();
     };
 
     //检测是否为 草稿重新申请
     objectData.startApply = function () {
-        if (this.isNotBlank("${startApply}")){
-            objectData.estate.show({},{});
-            objectData.building.show({});
-            objectData.house.show({},{});
-            objectData.unit.show({},{});
+        if ('${basicApply.id}' != '0') {
+            if ('${basicApply.estateName}'.length > 0) {
+                var basicEstate = $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicEstate.key + "']");
+                basicEstate.trigger('onkeydown');
+                var childs = $(basicEstate).closest('.form-group').children();
+                if ('${basicApply.caseEstateId}' != '0') {
+                    childs.eq(2).show();
+                    childs.eq(1).hide();
+                } else {
+                    childs.eq(1).show();
+                    childs.eq(2).hide();
+                }
+                if ('${basicApply.estatePartInFlag}' == 'true') {
+                    objectData.estate.show({}, {});
+                }
+            }
+            if ('${basicApply.buildIdentifier}'.length > 0) {
+                var basicBuilding = $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicBuilding.key + "']");
+                basicBuilding.trigger('onkeydown');
+                var childs = $(basicBuilding).closest('.form-group').children();
+                if ('${basicApply.caseBuildingMainId}' != '0') {
+                    childs.eq(2).show();
+                    childs.eq(1).hide();
+                } else {
+                    childs.eq(1).show();
+                    childs.eq(2).hide();
+                }
+                if ('${basicApply.buildingPartInFlag}' == 'true') {
+                    objectData.building.show({});
+                }
+            }
+            if ('${basicApply.unitNumber}'.length > 0) {
+                var basicUnit = $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicUnit.key + "']");
+                basicUnit.trigger('onkeydown');
+                var childs = $(basicUnit).closest('.form-group').children();
+                if ('${basicApply.caseUnitId}' != '0') {
+                    childs.eq(2).show();
+                    childs.eq(1).hide();
+                } else {
+                    childs.eq(1).show();
+                    childs.eq(2).hide();
+                }
+                if ('${basicApply.unitPartInFlag}' == 'true') {
+                    objectData.house.show({}, {});
+                }
+            }
+            if ('${basicApply.houseNumber}'.length > 0) {
+                var basicHouse = $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicHouse.key + "']");
+                basicHouse.trigger('onkeydown');
+                var childs = $(basicHouse).closest('.form-group').children();
+                if ('${basicApply.caseHouseId}' != '0') {
+                    childs.eq(2).show();
+                    childs.eq(1).hide();
+                } else {
+                    childs.eq(1).show();
+                    childs.eq(2).hide();
+                }
+                if ('${basicApply.housePartInFlag}' == 'true') {
+                    objectData.unit.show({}, {});
+                }
+            }
 
+            $("#" + objectData.config.basicApply.frm).find('[id=industry${basicApply.industry}]').trigger('click');
         }
     };
 
@@ -974,16 +1061,16 @@
     });
 </script>
 
-<script>
+<script type="text/javascript">
 
     //提交
     function submit() {
         if (!objectData.valid()) {
             return false;
         }
+        Loading.progressShow();
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
-        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
@@ -1009,9 +1096,9 @@
         if (!objectData.valid()) {
             return false;
         }
+        Loading.progressShow();
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
-        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/temporary",
             type: "post",
@@ -1021,7 +1108,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    Alert("保存数据成功!", 1, null, function () {
                         objectData.successClear();
                     });
                 }

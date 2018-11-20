@@ -23,33 +23,40 @@ public class BasicApplyDao {
      * @param id
      * @return
      */
-    public BasicApply getBlockById(Integer id) {
+    public BasicApply getBasicApplyById(Integer id) {
         return basicApplyMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 获取数据列表
-     * @param basicApply
+     * @param estateName
      * @return
      */
-    public List<BasicApply> getBlockList(BasicApply basicApply) {
+    public List<BasicApply> getBasicApplyListByName(String estateName,Boolean temporary) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-        if (StringUtils.isNotBlank(basicApply.getEstateName())){
-            criteria.andEstateNameLike(String.format("%s%s%s","%",basicApply.getEstateName(),"%"));
+        if (StringUtils.isNotBlank(estateName)){
+            criteria.andEstateNameLike(String.format("%s%s%s","%",estateName,"%"));
         }
+        criteria.andTemporaryEqualTo(temporary);
+        example.setOrderByClause("id desc");
+        return basicApplyMapper.selectByExample(example);
+    }
+
+    public List<BasicApply> getBasicApplyList(BasicApply basicApply) {
+        BasicApplyExample example = new BasicApplyExample();
+        MybatisUtils.convertObj2Example(basicApply,example);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
 
     /**
      * 新增
-     * @param caseBlock
+     * @param caseBasicApply
      * @return
      */
-    public boolean addBlock(BasicApply caseBlock) {
-        return basicApplyMapper.insertSelective(caseBlock) > 0;
+    public boolean addBasicApply(BasicApply caseBasicApply) {
+        return basicApplyMapper.insertSelective(caseBasicApply) > 0;
     }
 
     public Integer saveBasicApply(BasicApply basicApply){
@@ -59,11 +66,11 @@ public class BasicApplyDao {
 
     /**
      * 编辑
-     * @param caseBlock
+     * @param caseBasicApply
      * @return
      */
-    public boolean updateBlock(BasicApply caseBlock) {
-        return basicApplyMapper.updateByPrimaryKeySelective(caseBlock) > 0;
+    public boolean updateBasicApply(BasicApply caseBasicApply) {
+        return basicApplyMapper.updateByPrimaryKeySelective(caseBasicApply) > 0;
     }
 
     /**
@@ -71,7 +78,7 @@ public class BasicApplyDao {
      * @param id
      * @return
      */
-    public boolean deleteBlock(Integer id){
+    public boolean deleteBasicApply(Integer id){
         return basicApplyMapper.deleteByPrimaryKey(id) > 0;
     }
 }

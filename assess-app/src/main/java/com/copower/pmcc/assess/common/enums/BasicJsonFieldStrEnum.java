@@ -6,6 +6,7 @@ package com.copower.pmcc.assess.common.enums;
  * @Description:
  */
 public enum BasicJsonFieldStrEnum {
+    BASICAPPLY("basicApply","申请信息"),
     INDUSTRY("industry","工业仓储"),
     BASICESTATE("basicEstate","楼盘"),
     BASICESTATELANDSTATE("basicEstateLandState"," 楼盘实体"),

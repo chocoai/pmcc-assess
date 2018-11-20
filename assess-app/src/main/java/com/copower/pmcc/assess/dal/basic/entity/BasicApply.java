@@ -21,6 +21,22 @@ public class BasicApply {
 
     private String industry;
 
+    private Integer caseEstateId;
+
+    private Integer caseBuildingMainId;
+
+    private Integer caseUnitId;
+
+    private Integer caseHouseId;
+
+    private Boolean estatePartInFlag;
+
+    private Boolean buildingPartInFlag;
+
+    private Boolean unitPartInFlag;
+
+    private Boolean housePartInFlag;
+
     private String creator;
 
     private Date gmtCreated;
@@ -97,6 +113,70 @@ public class BasicApply {
 
     public void setIndustry(String industry) {
         this.industry = industry == null ? null : industry.trim();
+    }
+
+    public Integer getCaseEstateId() {
+        return caseEstateId;
+    }
+
+    public void setCaseEstateId(Integer caseEstateId) {
+        this.caseEstateId = caseEstateId;
+    }
+
+    public Integer getCaseBuildingMainId() {
+        return caseBuildingMainId;
+    }
+
+    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
+        this.caseBuildingMainId = caseBuildingMainId;
+    }
+
+    public Integer getCaseUnitId() {
+        return caseUnitId;
+    }
+
+    public void setCaseUnitId(Integer caseUnitId) {
+        this.caseUnitId = caseUnitId;
+    }
+
+    public Integer getCaseHouseId() {
+        return caseHouseId;
+    }
+
+    public void setCaseHouseId(Integer caseHouseId) {
+        this.caseHouseId = caseHouseId;
+    }
+
+    public Boolean getEstatePartInFlag() {
+        return estatePartInFlag;
+    }
+
+    public void setEstatePartInFlag(Boolean estatePartInFlag) {
+        this.estatePartInFlag = estatePartInFlag;
+    }
+
+    public Boolean getBuildingPartInFlag() {
+        return buildingPartInFlag;
+    }
+
+    public void setBuildingPartInFlag(Boolean buildingPartInFlag) {
+        this.buildingPartInFlag = buildingPartInFlag;
+    }
+
+    public Boolean getUnitPartInFlag() {
+        return unitPartInFlag;
+    }
+
+    public void setUnitPartInFlag(Boolean unitPartInFlag) {
+        this.unitPartInFlag = unitPartInFlag;
+    }
+
+    public Boolean getHousePartInFlag() {
+        return housePartInFlag;
+    }
+
+    public void setHousePartInFlag(Boolean housePartInFlag) {
+        this.housePartInFlag = housePartInFlag;
     }
 
     public String getCreator() {

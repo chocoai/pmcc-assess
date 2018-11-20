@@ -45,13 +45,13 @@ public class BasicApplyService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public BasicApply getByBasicApplyId(Integer id){
-        return basicApplyDao.getBlockById(id);
+        return basicApplyDao.getBasicApplyById(id);
     }
 
     public BasicApply getBasicApplyByProcessInsId(String processInsId) {
         BasicApply basicApply = new BasicApply();
         basicApply.setProcessInsId(processInsId);
-        List<BasicApply> basicApplies = basicApplyDao.getBlockList(basicApply);
+        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
         if (!ObjectUtils.isEmpty(basicApplies)) {
             return basicApplies.get(0);
         } else {
@@ -68,7 +68,7 @@ public class BasicApplyService {
     }
 
     public boolean updateBasicApply(BasicApply basicApply) {
-        return basicApplyDao.updateBlock(basicApply);
+        return basicApplyDao.updateBasicApply(basicApply);
     }
 
     /**
@@ -106,11 +106,11 @@ public class BasicApplyService {
         return processUserDto;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicApply basicApply) {
+    public BootstrapTableVo getBootstrapTableVo(String estateName,Boolean temporary) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApply> basicApplyList = basicApplyDao.getBlockList(basicApply);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName,temporary);
         List<BasicApplyVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(basicApplyList)) {
             for (BasicApply basicApply1 : basicApplyList) {

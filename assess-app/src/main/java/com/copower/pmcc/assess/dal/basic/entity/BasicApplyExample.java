@@ -715,6 +715,486 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseEstateIdIsNull() {
+            addCriterion("case_estate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdIsNotNull() {
+            addCriterion("case_estate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdEqualTo(Integer value) {
+            addCriterion("case_estate_id =", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdNotEqualTo(Integer value) {
+            addCriterion("case_estate_id <>", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdGreaterThan(Integer value) {
+            addCriterion("case_estate_id >", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_estate_id >=", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdLessThan(Integer value) {
+            addCriterion("case_estate_id <", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_estate_id <=", value, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdIn(List<Integer> values) {
+            addCriterion("case_estate_id in", values, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdNotIn(List<Integer> values) {
+            addCriterion("case_estate_id not in", values, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_estate_id between", value1, value2, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseEstateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_estate_id not between", value1, value2, "caseEstateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdIsNull() {
+            addCriterion("case_building_main_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdIsNotNull() {
+            addCriterion("case_building_main_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdEqualTo(Integer value) {
+            addCriterion("case_building_main_id =", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdNotEqualTo(Integer value) {
+            addCriterion("case_building_main_id <>", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdGreaterThan(Integer value) {
+            addCriterion("case_building_main_id >", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_building_main_id >=", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdLessThan(Integer value) {
+            addCriterion("case_building_main_id <", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_building_main_id <=", value, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdIn(List<Integer> values) {
+            addCriterion("case_building_main_id in", values, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdNotIn(List<Integer> values) {
+            addCriterion("case_building_main_id not in", values, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_building_main_id between", value1, value2, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseBuildingMainIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_building_main_id not between", value1, value2, "caseBuildingMainId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdIsNull() {
+            addCriterion("case_unit_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdIsNotNull() {
+            addCriterion("case_unit_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdEqualTo(Integer value) {
+            addCriterion("case_unit_id =", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotEqualTo(Integer value) {
+            addCriterion("case_unit_id <>", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdGreaterThan(Integer value) {
+            addCriterion("case_unit_id >", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_unit_id >=", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdLessThan(Integer value) {
+            addCriterion("case_unit_id <", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_unit_id <=", value, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdIn(List<Integer> values) {
+            addCriterion("case_unit_id in", values, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotIn(List<Integer> values) {
+            addCriterion("case_unit_id not in", values, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_unit_id between", value1, value2, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseUnitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_unit_id not between", value1, value2, "caseUnitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdIsNull() {
+            addCriterion("case_house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdIsNotNull() {
+            addCriterion("case_house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdEqualTo(Integer value) {
+            addCriterion("case_house_id =", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdNotEqualTo(Integer value) {
+            addCriterion("case_house_id <>", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdGreaterThan(Integer value) {
+            addCriterion("case_house_id >", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_house_id >=", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdLessThan(Integer value) {
+            addCriterion("case_house_id <", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_house_id <=", value, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdIn(List<Integer> values) {
+            addCriterion("case_house_id in", values, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdNotIn(List<Integer> values) {
+            addCriterion("case_house_id not in", values, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_house_id between", value1, value2, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_house_id not between", value1, value2, "caseHouseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagIsNull() {
+            addCriterion("estate_part_in_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagIsNotNull() {
+            addCriterion("estate_part_in_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagEqualTo(Boolean value) {
+            addCriterion("estate_part_in_flag =", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagNotEqualTo(Boolean value) {
+            addCriterion("estate_part_in_flag <>", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagGreaterThan(Boolean value) {
+            addCriterion("estate_part_in_flag >", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("estate_part_in_flag >=", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagLessThan(Boolean value) {
+            addCriterion("estate_part_in_flag <", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("estate_part_in_flag <=", value, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagIn(List<Boolean> values) {
+            addCriterion("estate_part_in_flag in", values, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagNotIn(List<Boolean> values) {
+            addCriterion("estate_part_in_flag not in", values, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("estate_part_in_flag between", value1, value2, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstatePartInFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("estate_part_in_flag not between", value1, value2, "estatePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagIsNull() {
+            addCriterion("building_part_in_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagIsNotNull() {
+            addCriterion("building_part_in_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagEqualTo(Boolean value) {
+            addCriterion("building_part_in_flag =", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagNotEqualTo(Boolean value) {
+            addCriterion("building_part_in_flag <>", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagGreaterThan(Boolean value) {
+            addCriterion("building_part_in_flag >", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("building_part_in_flag >=", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagLessThan(Boolean value) {
+            addCriterion("building_part_in_flag <", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("building_part_in_flag <=", value, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagIn(List<Boolean> values) {
+            addCriterion("building_part_in_flag in", values, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagNotIn(List<Boolean> values) {
+            addCriterion("building_part_in_flag not in", values, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("building_part_in_flag between", value1, value2, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingPartInFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("building_part_in_flag not between", value1, value2, "buildingPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagIsNull() {
+            addCriterion("unit_part_in_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagIsNotNull() {
+            addCriterion("unit_part_in_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagEqualTo(Boolean value) {
+            addCriterion("unit_part_in_flag =", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagNotEqualTo(Boolean value) {
+            addCriterion("unit_part_in_flag <>", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagGreaterThan(Boolean value) {
+            addCriterion("unit_part_in_flag >", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("unit_part_in_flag >=", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagLessThan(Boolean value) {
+            addCriterion("unit_part_in_flag <", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("unit_part_in_flag <=", value, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagIn(List<Boolean> values) {
+            addCriterion("unit_part_in_flag in", values, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagNotIn(List<Boolean> values) {
+            addCriterion("unit_part_in_flag not in", values, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("unit_part_in_flag between", value1, value2, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPartInFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("unit_part_in_flag not between", value1, value2, "unitPartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagIsNull() {
+            addCriterion("house_part_in_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagIsNotNull() {
+            addCriterion("house_part_in_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagEqualTo(Boolean value) {
+            addCriterion("house_part_in_flag =", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagNotEqualTo(Boolean value) {
+            addCriterion("house_part_in_flag <>", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagGreaterThan(Boolean value) {
+            addCriterion("house_part_in_flag >", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("house_part_in_flag >=", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagLessThan(Boolean value) {
+            addCriterion("house_part_in_flag <", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("house_part_in_flag <=", value, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagIn(List<Boolean> values) {
+            addCriterion("house_part_in_flag in", values, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagNotIn(List<Boolean> values) {
+            addCriterion("house_part_in_flag not in", values, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("house_part_in_flag between", value1, value2, "housePartInFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("house_part_in_flag not between", value1, value2, "housePartInFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -130,7 +130,7 @@
             estateName = null;
         }
         $("#" + dataObjFun.config.father.table()).bootstrapTable('destroy');
-        TableInit(dataObjFun.config.father.table(), "${pageContext.request.contextPath}/basicApply/getBootstrapTableVo", cols, {
+        TableInit(dataObjFun.config.father.table(), "${pageContext.request.contextPath}/basicApply/getBasicAppDraftList", cols, {
             estateName: estateName
         }, {
             showColumns: false,

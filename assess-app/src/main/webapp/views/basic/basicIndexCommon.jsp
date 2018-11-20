@@ -7,29 +7,42 @@
 <script src="${pageContext.request.contextPath}/js/block.select.js"></script>
 <div class="x_panel">
     <div class="x_title">
-        <h2>
-            <small>信息</small>
-        </h2>
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
         </ul>
+        <h3>
+            申请信息
+        </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
-        <div role="tabpanel" data-example-id="togglable-tabs">
+        <div role="tabpanel" id="contentTabPanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                <li role="presentation" class=""><a href="#caseEstate" role="tab" id="profile-tab1"
-                                                    aria-expanded="true">楼盘</a>
+                <li role="presentation" class="">
+                    <a href="#caseEstate" role="tab" id="profile-tab1" aria-expanded="true">
+                        楼盘
+                        <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                           style="margin-left: 20px;cursor: pointer;"></i>
+                    </a>
                 </li>
-                <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                    aria-expanded="false">楼栋</a>
+                <li role="presentation" class="">
+                    <a href="#caseBuilding" role="tab" id="profile-tab2" aria-expanded="false">
+                        楼栋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                             style="margin-left: 20px;"></i>
+                    </a>
                 </li>
-                <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                    aria-expanded="false">单元</a>
+                <li role="presentation" class="">
+                    <a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false">
+                        单元<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                             style="margin-left: 20px;"></i>
+                    </a>
                 </li>
-                <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                    aria-expanded="false">房屋</a>
+                <li role="presentation" class="">
+                    <a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false">
+                        房屋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                             style="margin-left: 20px;"></i>
+                    </a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -38,7 +51,7 @@
                         <%@include file="/views/basic/modelView/estateView.jsp" %>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
+                <div role="tabpanel" class="tab-pane fade" id="caseBuilding" aria-labelledby="profile-tab2">
                     <div>
                         <%@include file="/views/basic/modelView/buildingView.jsp" %>
                     </div>
@@ -497,5 +510,69 @@
         return item;
     };
 
+    //是否参与标志
+    basicIndexCommon.partInFlag = {
+        estate: '${basicApply.estatePartInFlag}',
+        building: '${basicApply.buildingPartInFlag}',
+        unit: '${basicApply.unitPartInFlag}',
+        house: '${basicApply.housePartInFlag}'
+    };
 
+    //显示楼盘tab
+    basicIndexCommon.showEstateTab = function () {
+        $('#contentTabPanel').find('[id=caseEstate]').addClass('active');
+        var a = $('#contentTabPanel').find('[href=#caseEstate]');
+        a.closest('li').show();
+        a.tab('show');
+        basicIndexCommon.partInFlag.estate = true;
+    }
+
+    //显示楼栋tab
+    basicIndexCommon.showBuildingTab = function () {
+        $('#contentTabPanel').find('[id=caseBuilding]').addClass('active');
+        var a = $('#contentTabPanel').find('[href=#caseBuilding]');
+        a.closest('li').show();
+        a.tab('show');
+        basicIndexCommon.partInFlag.building = true;
+    }
+
+    //显示单元tab
+    basicIndexCommon.showUnitTab = function () {
+        $('#contentTabPanel').find('[id=caseUnit]').addClass('active');
+        var a = $('#contentTabPanel').find('[href=#caseUnit]');
+        a.closest('li').show();
+        a.tab('show');
+        basicIndexCommon.partInFlag.unit = true;
+    }
+
+    //显示房屋tab
+    basicIndexCommon.showHouseTab = function () {
+        $('#contentTabPanel').find('[id=caseHouse]').addClass('active');
+        var a = $('#contentTabPanel').find('[href=#caseHouse]');
+        a.closest('li').show();
+        a.tab('show');
+        basicIndexCommon.partInFlag.house = true;
+    }
+
+    //隐藏tab标签
+    basicIndexCommon.hideTab = function (_this) {
+        var a = $(_this).closest('a');
+        var href = a.attr('href').replace('#', '');
+        switch (href) {
+            case "#caseEstate":
+                basicIndexCommon.partInFlag.estate = false;
+                break;
+            case "#caseBuilding":
+                basicIndexCommon.partInFlag.building = false;
+                break;
+            case "#caseUnit":
+                basicIndexCommon.partInFlag.unit = false;
+                break;
+            case "#caseHouse":
+                basicIndexCommon.partInFlag.house = false;
+                break;
+        }
+        a.closest('[role="tabpanel"]').find('[id=' + href + ']').hide();
+        a.closest('li').hide();
+    }
 </script>

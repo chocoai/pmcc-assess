@@ -136,14 +136,15 @@ public class TemporaryBasicService {
         if (StringUtils.isEmpty(formData)) {
             return;
         }
-        BasicApply basicApply = new BasicApply();
+        String jsonContent = null;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICAPPLY.getVar());
+        BasicApply basicApply = JSONObject.parseObject(jsonContent, BasicApply.class);
         basicApply.setStatus(ProjectStatusEnum.PAUSEAPPLY.getKey());
         basicApply.setTemporary(true);
         basicApply.setCreator(commonService.thisUserAccount());
         basicApplyService.saveBasicApply(basicApply);
 
-        JSONObject jsonObject = JSON.parseObject(formData);
-        String jsonContent = null;
         BasicEstate basicEstate = null;
         if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()))) {
             basicApply.setIndustry(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()));

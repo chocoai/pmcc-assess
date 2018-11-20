@@ -2,7 +2,10 @@
  * Created by kings on 2018-5-21.
  */
 $(function () {
-    $(".select2").select2();//初始化出select2
+    try {
+        $(".select2").select2();//初始化出select2
+    } catch (e) {
+    }
 
     //百分比初始化
     $(".x-percent").each(function () {

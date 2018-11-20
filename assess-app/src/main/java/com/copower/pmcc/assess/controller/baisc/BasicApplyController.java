@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
@@ -16,8 +17,6 @@ import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,8 +36,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/basicApply")
-public class BasicApplyController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+public class BasicApplyController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -75,8 +73,21 @@ public class BasicApplyController {
             basicUnitService.initUpdateSon(0, null, null);
             basicHouseService.init(0, null, null);
         } catch (Exception e1) {
-
+            log.error("清除数据异常",e1);
         }
+
+        //设置初始参数
+        BasicApply basicApply = new BasicApply();
+        basicApply.setId(0);
+        basicApply.setCaseEstateId(0);
+        basicApply.setCaseBuildingMainId(0);
+        basicApply.setCaseUnitId(0);
+        basicApply.setCaseHouseId(0);
+        basicApply.setEstatePartInFlag(false);
+        basicApply.setBuildingPartInFlag(false);
+        basicApply.setUnitPartInFlag(false);
+        basicApply.setHousePartInFlag(false);
+        modelAndView.addObject("basicApply", basicApply);
         return modelAndView;
     }
 
@@ -98,7 +109,7 @@ public class BasicApplyController {
             BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
             this.setViewParam(basicApply, modelAndView, "");
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -110,7 +121,7 @@ public class BasicApplyController {
             publicBasicService.approvalAndWrite(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
@@ -129,7 +140,7 @@ public class BasicApplyController {
             }
             this.setViewParam(basicApply, modelAndView, null);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -141,7 +152,7 @@ public class BasicApplyController {
             publicBasicService.basicEditSubmit(approvalModelDto, formData);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
@@ -321,11 +332,8 @@ public class BasicApplyController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", name = "过程数据 list", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicApply basicApply) {
-        if (basicApply == null) {
-            basicApply = new BasicApply();
-        }
-        BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(basicApply);
+    public BootstrapTableVo getBootstrapTableVo(String estateName) {
+        BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(estateName, false);
         return vo;
     }
 
@@ -346,7 +354,7 @@ public class BasicApplyController {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
             this.setViewParam(basicApply, modelAndView, null);
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -358,7 +366,7 @@ public class BasicApplyController {
             temporaryBasicService.saveBasic(formData);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
+            log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
@@ -372,12 +380,12 @@ public class BasicApplyController {
                 try {
                     this.setViewParam(basicApply, modelAndView, "详情");
                 } catch (Exception e1) {
-                    logger.info("参数处理错误!", e1);
+                    log.info("参数处理错误!", e1);
                 }
                 modelAndView.addObject("startApply", ProjectStatusEnum.STARTAPPLY.getKey());
             }
         } catch (Exception e1) {
-            logger.error("数据异常!", e1);
+            log.error("数据异常!", e1);
         }
         return modelAndView;
     }
@@ -390,10 +398,7 @@ public class BasicApplyController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicAppDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
-    public BootstrapTableVo getBasicAppDraftList() {
-        BasicApply basicApply = new BasicApply();
-        basicApply.setTemporary(true);
-        BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(basicApply);
-        return vo;
+    public BootstrapTableVo getBasicAppDraftList(String estateName) {
+        return basicApplyService.getBootstrapTableVo(estateName, true);
     }
 }
