@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectChangeLogDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectPauseChangeEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectRestartChangeEvent;
@@ -49,6 +50,8 @@ public class ProjectStateChangeService extends BaseService {
     private BaseParameterService baseParameterService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private PublicService publicService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
@@ -164,6 +167,7 @@ public class ProjectStateChangeService extends BaseService {
         return costsProjectChangeLog;
     }
 
+    @Deprecated
     @Transactional(rollbackFor = Exception.class)
     public void editCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto, ProjectChangeTypeEnum projectChangeTypeEnum) throws BpmException {
         //1.更新数据
@@ -171,6 +175,16 @@ public class ProjectStateChangeService extends BaseService {
         //2.提交任务
         approvalModelDto.setWorkStage(projectChangeTypeEnum.getName());
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto,ProjectChangeTypeEnum projectChangeTypeEnum)throws Exception{
+        //1.更新数据
+        projectChangeLogMapper.modifyProjectChangeLog(costsProjectChangeLog);
+        //2.提交任务
+        approvalModelDto.setWorkStage(projectChangeTypeEnum.getName());
+        publicService.getEditApprovalModel(approvalModelDto);
+        processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectStateChangeService;
@@ -115,7 +116,7 @@ public class ProjectInfoChangeController {
     @ResponseBody
     public HttpResult editCommit(ProjectChangeLog costsProjectChangeLog, ApprovalModelDto approvalModelDto) {
         try {
-            stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.INFO_CHANGE);
+            stateChangeService.updateCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.INFO_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("修改失败", e);
