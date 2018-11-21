@@ -57,6 +57,10 @@
                                         <a href="${pageContext.request.contextPath}/member.change/applyView?projectId=${projectInfo.id}"
                                            target="_blank">成员变更</a>
                                     </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
+                                           target="_blank">信息变更</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

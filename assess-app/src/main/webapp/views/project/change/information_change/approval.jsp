@@ -21,15 +21,12 @@
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
+            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <!-- 公共模块end -->
             <%@include file="approval/project_info_approval.jsp"%>
             <!-- 公共尾部模块引用 -->
-            <!-- 审批用 -->
             <%@include file="/views/share/form_approval.jsp" %>
-
             <%@include file="/views/share/form_log.jsp" %>
-            <!-- 尾部end -->
         </div>
     </div>
 </div>
@@ -41,14 +38,18 @@
 </html>
 <script type="text/javascript">
 
-    //审批提交
-    function approvalCommit(approvalModelDto) {
+
+    function saveform() {
+        if (!$("#frm_approval").valid()) {
+            return false;
+        }
+        var data = formApproval.getFormData();
         Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/formsProjectInformationChange/approvalCommit",
+            url: "${pageContext.request.contextPath}/project.information.change/approvalCommit",
             type: "post",
             dataType: "json",
-            data: approvalModelDto,
+            data: data,
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -64,10 +65,6 @@
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
-        });
-    };
-
-    $(function () {
-
-    });
+        })
+    }
 </script>
