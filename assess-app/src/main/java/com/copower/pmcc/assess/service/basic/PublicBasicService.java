@@ -2056,14 +2056,7 @@ public class PublicBasicService {
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setApplyId(appId);
         List<BasicEstate> basicEstates = basicEstateService.basicEstateList(basicEstate);
-        Ordering<BasicEstate> ordering = Ordering.from(new Comparator<BasicEstate>() {
-            @Override
-            public int compare(BasicEstate o1, BasicEstate o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
         if (!ObjectUtils.isEmpty(basicEstates)) {
-            Collections.sort(basicEstates, ordering);
             return basicEstateService.getBasicEstateVo(basicEstates.get(0));
         } else {
             return null;
@@ -2074,14 +2067,7 @@ public class PublicBasicService {
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
         basicEstateLandState.setApplyId(appId);
         List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
-        Ordering<BasicEstateLandState> ordering = Ordering.from(new Comparator<BasicEstateLandState>() {
-            @Override
-            public int compare(BasicEstateLandState o1, BasicEstateLandState o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
         if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
-            Collections.sort(basicEstateLandStateList, ordering);
             return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
         } else {
             return null;
@@ -2092,14 +2078,7 @@ public class PublicBasicService {
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
         basicBuildingMain.setApplyId(appId);
         List<BasicBuildingMain> basicBuildingMains = basicBuildingMainService.basicBuildingMainList(basicBuildingMain);
-        Ordering<BasicBuildingMain> ordering = Ordering.from(new Comparator<BasicBuildingMain>() {
-            @Override
-            public int compare(BasicBuildingMain o1, BasicBuildingMain o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
         if (!ObjectUtils.isEmpty(basicBuildingMains)) {
-            Collections.sort(basicBuildingMains, ordering);
             return basicBuildingMains.get(0);
         } else {
             return null;
@@ -2110,14 +2089,7 @@ public class PublicBasicService {
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setApplyId(appId);
         List<BasicUnit> unitList = basicUnitService.basicUnitList(basicUnit);
-        Ordering<BasicUnit> ordering = Ordering.from(new Comparator<BasicUnit>() {
-            @Override
-            public int compare(BasicUnit o1, BasicUnit o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
         if (!ObjectUtils.isEmpty(unitList)) {
-            Collections.sort(unitList, ordering);
             return unitList.get(0);
         } else {
             return null;

@@ -9,6 +9,7 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="multipart_flag" property="multipartFlag" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, case_building_main_id, building_number, temporary, estate_id, apply_id, version, 
-    creator, gmt_created, gmt_modified
+    multipart_flag, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMainExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_basic_building_main (case_building_main_id, building_number, 
       temporary, estate_id, apply_id, 
-      version, creator, gmt_created, 
-      gmt_modified)
+      version, multipart_flag, creator, 
+      gmt_created, gmt_modified)
     values (#{caseBuildingMainId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
       #{temporary,jdbcType=BIT}, #{estateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, 
-      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{version,jdbcType=INTEGER}, #{multipartFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -141,6 +142,9 @@
       </if>
       <if test="version != null" >
         version,
+      </if>
+      <if test="multipartFlag != null" >
+        multipart_flag,
       </if>
       <if test="creator != null" >
         creator,
@@ -170,6 +174,9 @@
       </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
+      </if>
+      <if test="multipartFlag != null" >
+        #{multipartFlag,jdbcType=BIT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -212,6 +219,9 @@
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
+      <if test="record.multipartFlag != null" >
+        multipart_flag = #{record.multipartFlag,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +245,7 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       version = #{record.version,jdbcType=INTEGER},
+      multipart_flag = #{record.multipartFlag,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -263,6 +274,9 @@
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="multipartFlag != null" >
+        multipart_flag = #{multipartFlag,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -283,6 +297,7 @@
       estate_id = #{estateId,jdbcType=INTEGER},
       apply_id = #{applyId,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER},
+      multipart_flag = #{multipartFlag,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

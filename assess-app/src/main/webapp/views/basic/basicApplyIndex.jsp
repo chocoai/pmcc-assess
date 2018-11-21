@@ -33,13 +33,13 @@
                         <input type="hidden" name="id" value="${basicApply.id}">
                         <div class="form-group" id="industry">
                             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                                <input type="radio" id="type1" name="type" value="0" checked="checked">
-                                <label for="type1">非工业与仓储</label>
+                                <input type="radio" id="type0" name="type" value="0">
+                                <label for="type0">非工业与仓储</label>
                             </span>
 
                             <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" id="type2" name="type" value="1">
-                                <label for="type2">工业与仓储</label>
+                                <input type="radio" id="type1" name="type" value="1">
+                                <label for="type1">工业与仓储</label>
                             </span>
                         </div>
 
@@ -869,11 +869,7 @@
         });
         if (num > 1) {//楼栋检测到有数据  ==> 选择了楼盘或者说楼盘添加了楼盘数据的情况下验证通过
             if (objectData.isNotBlank(estateId) || objectData.isNotBlankObjectProperty(basicEstate)) {
-                var identifier = $("#identifier").val();
-                if (!objectData.isNotBlank(identifier)) {
-                    Alert("楼栋编号 (必要的查询下面楼栋所需)");
-                    return false;
-                }
+
             } else {
                 Alert("未选择楼盘或者是没添加新的楼盘数据!");
                 return false;
@@ -1001,7 +997,7 @@
                     childs.eq(2).hide();
                 }
                 if ('${basicApply.estatePartInFlag}' == 'true') {
-                    objectData.estate.show({}, {});
+                    objectData.estate.show(JSON.parse('${el:toJsonString(basicEstate)}'), ${el:toJsonString(basicEstateLandState)});
                 }
             }
             if ('${basicApply.buildingNumber}'.length > 0) {
@@ -1031,7 +1027,7 @@
                     childs.eq(2).hide();
                 }
                 if ('${basicApply.unitPartInFlag}' == 'true') {
-                    objectData.house.show({}, {});
+                    objectData.unit.show({}, {});
                 }
             }
             if ('${basicApply.houseNumber}'.length > 0) {
@@ -1046,11 +1042,13 @@
                     childs.eq(2).hide();
                 }
                 if ('${basicApply.housePartInFlag}' == 'true') {
-                    objectData.unit.show({}, {});
+                    objectData.house.show({}, {});
                 }
             }
 
             $("#" + objectData.config.basicApply.frm).find('[id=type${basicApply.type}]').trigger('click');
+        }else{
+            $("#" + objectData.config.basicApply.frm).find('[name=type]:eq(0)').trigger('click');
         }
     };
 

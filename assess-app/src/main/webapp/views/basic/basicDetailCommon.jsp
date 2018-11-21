@@ -253,15 +253,19 @@
 
     navButtonBuild.switchNumber = 0;
     navButtonBuild.switchInit = function (target, data, number) {
-        if (objectData.isNotBlank(data)) {
-            navButtonBuild.clearAll();
-            navButtonBuild.switchNumber = number;
-            navButtonBuild.updateFileId();
-            navButtonBuild.initData(data);
-            navButtonBuild.dataButtonWrite(target);
-            buildingModel.prototype.viewInit();
-        } else {
-            toastr.success('无数据!');
+        try{
+            if (objectData.isNotBlank(data)) {
+                navButtonBuild.clearAll();
+                navButtonBuild.switchNumber = number;
+                navButtonBuild.updateFileId();
+                navButtonBuild.initData(data);
+                navButtonBuild.dataButtonWrite(target);
+                buildingModel.prototype.viewInit();
+            } else {
+                toastr.success('无数据!');
+            }
+        }catch (e){
+
         }
     };
     //第一栋
@@ -461,53 +465,6 @@
             navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0], 1);
         }
 //============================================================||======================================================
-        if (objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && objectData.isNotBlank(basicEstate) && objectData.isNotBlank(basicBuildingMain)) {
-            $('#caseTab a').eq(0).tab('show');
-        }
-        if (objectData.isNotBlank(basicEstate)) {
-            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
-                $('#caseTab a').eq(0).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicEstate)) {
-            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && objectData.isNotBlank(basicBuildingMain)) {
-                $('#caseTab a').eq(0).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicEstate)) {
-            if (!objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
-                $('#caseTab a').eq(0).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicEstate)) {
-            if (objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain)) {
-                $('#caseTab a').eq(0).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicBuildingMain)) {
-            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicEstate)) {
-                $('#caseTab a').eq(1).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicBuildingMain)) {
-            if (!objectData.isNotBlank(basicHouse) && objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicEstate)) {
-                $('#caseTab a').eq(1).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicUnit)) {
-            if (!objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
-                $('#caseTab a').eq(2).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicUnit)) {
-            if (objectData.isNotBlank(basicHouse) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
-                $('#caseTab a').eq(2).tab('show');
-            }
-        }
-        if (objectData.isNotBlank(basicHouse)) {
-            if (!objectData.isNotBlank(basicUnit) && !objectData.isNotBlank(basicBuildingMain) && !objectData.isNotBlank(basicEstate)) {
-                $('#caseTab a').eq(3).tab('show');
-            }
-        }
+        $('#caseTab a').eq(0).tab('show');
     });
 </script>

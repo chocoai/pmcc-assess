@@ -20,7 +20,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -393,16 +392,6 @@ public class BasicEstateService {
             //县
             vo.setDistrictName(erpAreaService.getSysAreaName(basicEstate.getDistrict()));
         }
-        if (!org.springframework.util.StringUtils.isEmpty(basicEstate.getVolumetricRate())) {
-            if (NumberUtils.isNumber(basicEstate.getVolumetricRate())) {
-                vo.setVolumetricRateName(nt.format(Double.parseDouble(basicEstate.getVolumetricRate())));
-            }
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(basicEstate.getGreeningRate())) {
-            if (NumberUtils.isNumber(basicEstate.getGreeningRate())) {
-                vo.setGreeningRateName(nt.format(Double.parseDouble(basicEstate.getGreeningRate())));
-            }
-        }
         if (basicEstate.getDeveloperId() != null) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(basicEstate.getDeveloperId());
             if (dataDeveloper != null) {
@@ -416,32 +405,6 @@ public class BasicEstateService {
             }
         }
         return vo;
-    }
-
-    public final static String insertSql() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("INSERT INTO ").append(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-        ;
-
-        builder.append(" (").append("id, apply_id, province, city, \n" +
-                "      district, block_id, developer_id, \n" +
-                "      name, street, number, \n" +
-                "      land_level, attach_number, floor_area, \n" +
-                "      cover_an_area, volumetric_rate, greening_rate, \n" +
-                "      building_number, position, description, \n" +
-                "      average_price, price_range, version, \n" +
-                "      creator, gmt_created, gmt_modified").append(") ");
-        builder.append("values (");
-        builder.append("#{id,jdbcType=INTEGER},#{applyId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, \n" +
-                "      #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, \n" +
-                "      #{name,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, \n" +
-                "      #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, \n" +
-                "      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, \n" +
-                "      #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, \n" +
-                "      #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, \n" +
-                "      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}");
-        builder.append(" ) ");
-        return builder.toString();
     }
 
 

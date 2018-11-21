@@ -2,8 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateLandState;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
@@ -128,27 +126,15 @@ public class BasicEstateLandStateService {
             return null;
         }
         BasicEstateLandStateVo vo = new BasicEstateLandStateVo();
-        BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicEstateLandState, vo);
         if (basicEstateLandState.getLandUseType() != null) {
-            dataDic = baseDataDicService.getDataDicById(basicEstateLandState.getLandUseType());
-            if (dataDic != null) {
-                vo.setLandUseTypeName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setLandUseCategoryName(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
         }
         if (basicEstateLandState.getLandUseCategory() != null) {
-            dataDic = baseDataDicService.getDataDicById(basicEstateLandState.getLandUseCategory());
-            if (dataDic != null) {
-                vo.setLandUseCategoryName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setLandUseCategoryName(baseDataDicService.getNameById(basicEstateLandState.getLandUseCategory()));
         }
         if (basicEstateLandState.getLandLevel() != null) {
-            DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(basicEstateLandState.getLandLevel());
-            if (dataLandLevelDetail != null) {
-                vo.setLandLevelName(String.format("%s%s",dataLandLevelDetail.getCategory(),dataLandLevelDetail.getClassify()));
-            }
+            vo.setLandLevelName(dataLandLevelDetailService.getCacheNameById(basicEstateLandState.getLandLevel()));
         }
         return vo;
     }

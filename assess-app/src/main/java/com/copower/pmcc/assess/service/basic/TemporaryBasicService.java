@@ -149,11 +149,7 @@ public class TemporaryBasicService {
         //楼盘过程数据
         jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATE.getVar());
         if (StringUtils.isNotBlank(jsonContent)) {
-            try {
-                basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
-            } catch (Exception e1) {
-
-            }
+            basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
             if (basicEstate != null) {
                 basicEstate.setApplyId(basicApply.getId());
                 basicEstate.setTemporary(true);
@@ -167,11 +163,7 @@ public class TemporaryBasicService {
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
                         if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()))) {
-                            try {
-                                basicEstateLandState = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()), BasicEstateLandState.class);
-                            } catch (Exception e1) {
-
-                            }
+                            basicEstateLandState = JSONObject.parseObject(jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATELANDSTATE.getVar()), BasicEstateLandState.class);
                             if (basicEstateLandState != null) {
                                 if (basicEstateLandState.getId() != null) {
                                     basicEstateLandState.setCaseEstateLandStateId(basicEstateLandState.getId());
@@ -190,12 +182,7 @@ public class TemporaryBasicService {
             }
         }
         //楼栋主过程数据
-        jsonContent = null;
-        try {
-            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGMAIN.getVar());
-        } catch (Exception e1) {
-
-        }
+        jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGMAIN.getVar());
         BasicBuildingMain basicBuildingMain = null;
         if (StringUtils.isNotBlank(jsonContent)) {
             basicBuildingMain = JSONObject.parseObject(jsonContent, BasicBuildingMain.class);
@@ -235,12 +222,7 @@ public class TemporaryBasicService {
                 }
             }
             //楼栋过程数据
-            jsonContent = null;
-            try {
-                jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGS.getVar());
-            } catch (Exception e1) {
-
-            }
+            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICBUILDINGS.getVar());
             List<BasicBuilding> basicBuildingList = null;
             try {
                 basicBuildingList = JSONObject.parseArray(jsonContent, BasicBuilding.class);
@@ -266,12 +248,7 @@ public class TemporaryBasicService {
             }
         }
         //单元过程数据
-        jsonContent = null;
-        try {
-            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICUNIT.getVar());
-        } catch (Exception e1) {
-
-        }
+        jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICUNIT.getVar());
         BasicUnit basicUnit = null;
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
@@ -309,12 +286,7 @@ public class TemporaryBasicService {
             }
         }
         //处理房屋数据
-        jsonContent = null;
-        try {
-            jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICHOUSE.getVar());
-        } catch (Exception e1) {
-
-        }
+        jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICHOUSE.getVar());
         BasicHouse basicHouse = null;
         if (StringUtils.isNotEmpty(jsonContent)) {
             basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);

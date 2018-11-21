@@ -86,8 +86,8 @@
     if (basicIndexCommon.isNotBlank(basicEstate)) {
         basicIndexCommon.setEstateId("${basicEstate.id}");
         try {
-            basicIndexCommon.estateLandStateInit(JSON.parse('${basicEstateLandStateJson}'));
-            basicIndexCommon.estateInit(JSON.parse('${basicEstateJson}'));
+            basicIndexCommon.estateLandStateInit(JSON.parse('${el:toJsonString(basicEstateLandState)}'));
+            basicIndexCommon.estateInit(JSON.parse('${el:toJsonString(basicEstate)}'));
         } catch (e) {
             console.error(e);
         }
@@ -96,8 +96,8 @@
     if (basicIndexCommon.isNotBlank(basicHouse)) {
         basicIndexCommon.setHouseId("${basicHouse.id}");
         try {
-            var itemA = JSON.parse('${basicHouseJson}');
-            var itemB = JSON.parse('${basicHouseTradingJson}');
+            var itemA = JSON.parse('${el:toJsonString(basicHouse)}');
+            var itemB = JSON.parse('${el:toJsonString(basicHouseTrading)}');
             if (!basicIndexCommon.isNotBlank(itemA)) {
                 itemA = {};
             }

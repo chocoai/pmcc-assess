@@ -19,29 +19,29 @@
     <div class="x_content">
         <div role="tabpanel" id="contentTabPanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                <li role="presentation" class="">
+                <li role="presentation" style="display: none;">
                     <a href="#caseEstate" role="tab" id="profile-tab1" aria-expanded="true">
                         楼盘
                         <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
                            style="margin-left: 20px;cursor: pointer;"></i>
                     </a>
                 </li>
-                <li role="presentation" class="">
+                <li role="presentation" style="display: none;">
                     <a href="#caseBuilding" role="tab" id="profile-tab2" aria-expanded="false">
                         楼栋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;"></i>
+                             style="margin-left: 20px;cursor: pointer;"></i>
                     </a>
                 </li>
-                <li role="presentation" class="">
+                <li role="presentation" style="display: none;">
                     <a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false">
                         单元<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;"></i>
+                             style="margin-left: 20px;cursor: pointer;"></i>
                     </a>
                 </li>
-                <li role="presentation" class="">
+                <li role="presentation" style="display: none;">
                     <a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false">
                         房屋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;"></i>
+                             style="margin-left: 20px;cursor: pointer;"></i>
                     </a>
                 </li>
             </ul>
@@ -323,6 +323,7 @@
     };
 
     basicIndexCommon.estateInit = function (item) {
+        console.log(item.supplyHeating);
         basicIndexCommon.estateSupply("supplyHeating", item.supplyHeating);
         basicIndexCommon.estateSupply("supplyGas", item.supplyGas);
         basicIndexCommon.estateSupply("supplyWater", item.supplyWater);

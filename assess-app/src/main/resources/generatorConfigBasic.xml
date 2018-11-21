@@ -39,8 +39,7 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_apply" domainObjectName="BasicApply"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate" domainObjectName="BasicEstate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_building_main" domainObjectName="BasicBuildingMain"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
     </context>
 
 </generatorConfiguration>

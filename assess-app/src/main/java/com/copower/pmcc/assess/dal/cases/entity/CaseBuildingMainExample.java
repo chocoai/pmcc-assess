@@ -355,6 +355,66 @@ public class CaseBuildingMainExample {
             return (Criteria) this;
         }
 
+        public Criteria andMultipartFlagIsNull() {
+            addCriterion("multipart_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagIsNotNull() {
+            addCriterion("multipart_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagEqualTo(Boolean value) {
+            addCriterion("multipart_flag =", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagNotEqualTo(Boolean value) {
+            addCriterion("multipart_flag <>", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagGreaterThan(Boolean value) {
+            addCriterion("multipart_flag >", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("multipart_flag >=", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagLessThan(Boolean value) {
+            addCriterion("multipart_flag <", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("multipart_flag <=", value, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagIn(List<Boolean> values) {
+            addCriterion("multipart_flag in", values, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagNotIn(List<Boolean> values) {
+            addCriterion("multipart_flag not in", values, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("multipart_flag between", value1, value2, "multipartFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipartFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("multipart_flag not between", value1, value2, "multipartFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

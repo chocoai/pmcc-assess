@@ -11,6 +11,8 @@ public class CaseBuildingMain {
 
     private Integer version;
 
+    private Boolean multipartFlag;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class CaseBuildingMain {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Boolean getMultipartFlag() {
+        return multipartFlag;
+    }
+
+    public void setMultipartFlag(Boolean multipartFlag) {
+        this.multipartFlag = multipartFlag;
     }
 
     public String getCreator() {

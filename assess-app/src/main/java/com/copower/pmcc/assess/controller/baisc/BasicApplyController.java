@@ -72,7 +72,7 @@ public class BasicApplyController extends BaseController {
             basicUnitService.initUpdateSon(0, null, null);
             basicHouseService.init(0, null, null);
         } catch (Exception e1) {
-            log.error("清除数据异常",e1);
+            log.error("清除数据异常", e1);
         }
 
         //设置初始参数
@@ -158,11 +158,11 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/closeBasicApp", name = "流程实例关闭")
-    public HttpResult closeBasicApp(String processInsId){
-        if (StringUtils.isNotBlank(processInsId)){
+    public HttpResult closeBasicApp(String processInsId) {
+        if (StringUtils.isNotBlank(processInsId)) {
             bpmRpcActivitiProcessManageService.closeProcess(processInsId);
             return HttpResult.newCorrectResult();
-        }else {
+        } else {
             return HttpResult.newErrorResult("");
         }
     }
@@ -187,75 +187,15 @@ public class BasicApplyController extends BaseController {
         BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId());
         BasicHouseVo basicHouseVo = publicBasicService.getByAppIdBasicHouseVo(basicApply.getId());
         BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());
-        //详情设置参数
-        if (StringUtils.isNotBlank(detail)) {
-            if (basicApply != null) {
-                basicApply.setId(null);
-                modelAndView.addObject("basicApply",basicApplyService.getBasicApplyVo(basicApply) );
-            }
-            if (basicEstateVo != null) {
-                basicEstateVo.setId(null);
-                modelAndView.addObject("basicEstate", basicEstateVo);
-                modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(basicEstateVo));
-            }
-            if (basicEstateLandStateVo != null) {
-                basicEstateLandStateVo.setId(null);
-                modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
-                modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(basicEstateLandStateVo));
-            }
-            if (buildingMain != null) {
-                buildingMain.setId(null);
-                modelAndView.addObject("basicBuildingMain", buildingMain);
-            }
-            if (basicUnit != null) {
-                basicUnit.setId(null);
-                modelAndView.addObject("basicUnit", basicUnit);
-            }
-            if (basicHouseVo != null) {
-                basicHouseVo.setId(null);
-                modelAndView.addObject("basicHouse", basicHouseVo);
-                BasicHouseVo houseVo = new BasicHouseVo();
-                BeanUtils.copyProperties(basicHouseVo,houseVo);
-                houseVo.setHuxingName(null);
-                modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(houseVo));
-            }
-            if (basicHouseTradingVo != null) {
-                basicHouseTradingVo.setId(null);
-                modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
-                modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(basicHouseTradingVo));
-            }
+        if (basicApply != null) {
+            modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }
-        //非详情
-        if (StringUtils.isEmpty(detail)) {
-            if (basicApply != null) {
-                modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
-            }
-            if (basicEstateVo != null) {
-                modelAndView.addObject("basicEstate", basicEstateVo);
-                modelAndView.addObject("basicEstateJson", JSONObject.toJSONString(basicEstateVo));
-            }
-            if (basicEstateLandStateVo != null) {
-                modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
-                modelAndView.addObject("basicEstateLandStateJson", JSONObject.toJSONString(basicEstateLandStateVo));
-            }
-            if (buildingMain != null) {
-                modelAndView.addObject("basicBuildingMain", buildingMain);
-            }
-            if (basicUnit != null) {
-                modelAndView.addObject("basicUnit", basicUnit);
-            }
-            if (basicHouseVo != null) {
-                modelAndView.addObject("basicHouse", basicHouseVo);
-                BasicHouseVo houseVo = new BasicHouseVo();
-                BeanUtils.copyProperties(basicHouseVo,houseVo);
-                houseVo.setHuxingName(null);
-                modelAndView.addObject("basicHouseJson", JSONObject.toJSONString(houseVo));
-            }
-            if (basicHouseTradingVo != null) {
-                modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
-                modelAndView.addObject("basicHouseTradingJson", JSONObject.toJSONString(basicHouseTradingVo));
-            }
-        }
+        modelAndView.addObject("basicEstate", basicEstateVo);
+        modelAndView.addObject("basicEstateLandState", basicEstateLandStateVo);
+        modelAndView.addObject("basicBuildingMain", buildingMain);
+        modelAndView.addObject("basicUnit", basicUnit);
+        modelAndView.addObject("basicHouse", basicHouseVo);
+        modelAndView.addObject("basicHouseTrading", basicHouseTradingVo);
         List<BasicBuilding> basicBuildingList = null;
         if (buildingMain != null) {
             basicBuildingList = publicBasicService.getMainById(buildingMain);
