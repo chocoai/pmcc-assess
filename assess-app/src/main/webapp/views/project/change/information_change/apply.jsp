@@ -48,11 +48,10 @@
                 </div>
             </div>
 
-            <%--返回修改--%>
-            <c:if test="${processInsId != 0}">
+            <c:if test="${processInsId ne '0'}">
                 <%@include file="/views/share/form_log.jsp" %>
-                <form id="process_variable_form">
-                    <%@include file="/views/share/form_edit.jsp" %>
+                <form id="frm_approval">
+                    <%@include file="/views/share/ApprovalVariable.jsp" %>
                 </form>
             </c:if>
             <!-- 尾部end -->
@@ -94,7 +93,8 @@
             oldRecord:JSON.stringify(JSON.parse('${el:toJsonString(projectInfo)}')),
             newRecord:JSON.stringify(formParams(objProject.config.info.frm)),
             changeReason:$("#changeReason").val(),
-            projectId:"${projectInfo.id}"
+            projectId:"${projectInfo.id}",
+            id:"${costsProjectChangeLog.id}"
         };
 
         if ("${processInsId}" == "0") {
@@ -120,6 +120,8 @@
                 }
             });
         } else {
+            var approvalData = formParams("frm_approval");
+            data = $.extend({}, approvalData, data);
             //修改提交
             Loading.progressShow("正在提交数据...");
             $.ajax({
