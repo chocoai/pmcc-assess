@@ -65,10 +65,6 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        //可选的执业部门
-        modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());
         //删除 所有 与 当前用户相关的临时数据
         try {
             basicEstateService.initUpdateSon(0, null, null);
@@ -95,10 +91,10 @@ public class BasicApplyController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/basicApplySubmit", name = "案例基础数据 提交", method = RequestMethod.POST)
-    public HttpResult basicApplySubmit(String formData, Boolean bisNextUser) {
+    @RequestMapping(value = "/basicApplySubmit", name = "案例数据申请 提交", method = RequestMethod.POST)
+    public HttpResult basicApplySubmit(String formData) {
         try {
-            publicBasicService.saveBasic(formData, bisNextUser);
+            publicBasicService.saveBasic(formData);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -195,7 +191,7 @@ public class BasicApplyController extends BaseController {
         if (StringUtils.isNotBlank(detail)) {
             if (basicApply != null) {
                 basicApply.setId(null);
-                modelAndView.addObject("basicApply", basicApply);
+                modelAndView.addObject("basicApply",basicApplyService.getBasicApplyVo(basicApply) );
             }
             if (basicEstateVo != null) {
                 basicEstateVo.setId(null);
@@ -232,7 +228,7 @@ public class BasicApplyController extends BaseController {
         //非详情
         if (StringUtils.isEmpty(detail)) {
             if (basicApply != null) {
-                modelAndView.addObject("basicApply", basicApply);
+                modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
             }
             if (basicEstateVo != null) {
                 modelAndView.addObject("basicEstate", basicEstateVo);
@@ -263,13 +259,6 @@ public class BasicApplyController extends BaseController {
         List<BasicBuilding> basicBuildingList = null;
         if (buildingMain != null) {
             basicBuildingList = publicBasicService.getMainById(buildingMain);
-            Ordering<BasicBuilding> ordering = Ordering.from(new Comparator<BasicBuilding>() {
-                @Override
-                public int compare(BasicBuilding o1, BasicBuilding o2) {
-                    return o1.getId().compareTo(o2.getId());
-                }
-            }).reverse();
-            Collections.sort(basicBuildingList, ordering);
             if (!ObjectUtils.isEmpty(basicBuildingList)) {
                 int num = 0;
                 if (basicBuildingList.size() > 4) {

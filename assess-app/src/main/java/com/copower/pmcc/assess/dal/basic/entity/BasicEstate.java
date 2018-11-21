@@ -10,6 +10,8 @@ public class BasicEstate {
 
     private Integer applyId;
 
+    private Integer type;
+
     private String province;
 
     private String city;
@@ -90,6 +92,14 @@ public class BasicEstate {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getProvince() {

@@ -1,52 +1,65 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel" id="basicApplyId">
     <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
     <div class="x_title">
-        <h2>
-            <small>案例信息</small>
-        </h2>
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
-            <li><a class="close-link"><i class="fa fa-close"></i></a>
-            </li>
         </ul>
+        <h3>
+            ${basicApply.fullName}
+        </h3>
         <div class="clearfix"></div>
     </div>
     <div class="x_content">
         <div role="tabpanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1"
-                                                    aria-expanded="true"
-                                                    onclick="objectData.estate.init()">楼盘</a>
-                </li>
-                <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                    aria-expanded="false"
-                                                    onclick="objectData.build.init(1)">楼栋</a>
-                </li>
-                <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                    aria-expanded="false"
-                                                    onclick="objectData.unit.init()">单元</a>
-                </li>
-                <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                    aria-expanded="false"
-                                                    onclick="objectData.house.init();">房屋</a>
-                </li>
+                <c:if test="${basicApply.estatePartInFlag eq true}">
+                    <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1"
+                                                        aria-expanded="true"
+                                                        onclick="objectData.estate.init()">楼盘</a>
+                    </li>
+                </c:if>
+                <c:if test="${basicApply.buildingPartInFlag eq true}">
+                    <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
+                                                        aria-expanded="false"
+                                                        onclick="objectData.build.init(1)">楼栋</a>
+                    </li>
+                </c:if>
+                <c:if test="${basicApply.unitPartInFlag eq true}">
+                    <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
+                                                        aria-expanded="false"
+                                                        onclick="objectData.unit.init()">单元</a>
+                    </li>
+                </c:if>
+                <c:if test="${basicApply.housePartInFlag eq true}">
+                    <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
+                                                        aria-expanded="false"
+                                                        onclick="objectData.house.init();">房屋</a>
+                    </li>
+                </c:if>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade" id="basicEstate" aria-labelledby="profile-tab1">
-                    <%@include file="/views/basic/modelView/estateDetail.jsp" %>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
-                    <%@include file="/views/basic/modelView/buildDetail.jsp" %>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
-                    <%@include file="/views/basic/modelView/unitDetail.jsp" %>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
-                    <%@include file="/views/basic/modelView/houseDetail.jsp" %>
-                </div>
+                <c:if test="${basicApply.estatePartInFlag eq true}">
+                    <div role="tabpanel" class="tab-pane fade" id="basicEstate" aria-labelledby="profile-tab1">
+                        <%@include file="/views/basic/modelView/estateDetail.jsp" %>
+                    </div>
+                </c:if>
+                <c:if test="${basicApply.buildingPartInFlag eq true}">
+                    <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
+                        <%@include file="/views/basic/modelView/buildDetail.jsp" %>
+                    </div>
+                </c:if>
+                <c:if test="${basicApply.unitPartInFlag eq true}">
+                    <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
+                        <%@include file="/views/basic/modelView/unitDetail.jsp" %>
+                    </div>
+                </c:if>
+                <c:if test="${basicApply.housePartInFlag eq true}">
+                    <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
+                        <%@include file="/views/basic/modelView/houseDetail.jsp" %>
+                    </div>
+                </c:if>
             </div>
         </div>
     </div>
@@ -400,7 +413,7 @@
             }
             $("#" + objectData.config.basicHouse.tableSon).bootstrapTable('destroy');
             TableInit(objectData.config.basicHouse.tableSon, "${pageContext.request.contextPath}/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}',approval:true
+                type: type_, houseId: '${empty basicHouse.id?0:basicHouse.id}', approval: true
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -422,7 +435,7 @@
         var basicBuildingMain = "${basicBuildingMain}";
 
         if (objectData.isNotBlank(basicApply)) {
-            var industryA = "${basicApply.industry}";
+            var industryA = "${basicApply.type}";
             if (objectData.isNotBlank(industryA)) {
                 industry.keyApp(industryA);
             }

@@ -5,9 +5,9 @@ import java.util.Date;
 public class CaseBuildingMain {
     private Integer id;
 
-    private String identifier;
-
     private Integer estateId;
+
+    private String buildingNumber;
 
     private Integer version;
 
@@ -25,20 +25,20 @@ public class CaseBuildingMain {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier == null ? null : identifier.trim();
-    }
-
     public Integer getEstateId() {
         return estateId;
     }
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getVersion() {

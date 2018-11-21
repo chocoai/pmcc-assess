@@ -33,13 +33,13 @@
                         <input type="hidden" name="id" value="${basicApply.id}">
                         <div class="form-group" id="industry">
                             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                                <input type="radio" id="industry1" name="industry" value="1" checked="checked">
-                                <label for="industry1">非工业与仓储</label>
+                                <input type="radio" id="type1" name="type" value="0" checked="checked">
+                                <label for="type1">非工业与仓储</label>
                             </span>
 
                             <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" id="industry2" name="industry" value="2">
-                                <label for="industry2">工业与仓储</label>
+                                <input type="radio" id="type2" name="type" value="1">
+                                <label for="type2">工业与仓储</label>
                             </span>
                         </div>
 
@@ -50,7 +50,7 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
-                                    <input type="text" class="form-control" name="basicEstate" placeholder="楼盘名称"
+                                    <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
                                            value="${basicApply.estateName}"
                                            onkeydown="objectData.autocompleteEstate(this);">
                                 </div>
@@ -77,8 +77,8 @@
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseBuildingMainId"
                                            value="${basicApply.caseBuildingMainId}">
-                                    <input type="text" class="form-control" name="basicBuilding" placeholder="楼栋编号"
-                                           value="${basicApply.buildIdentifier}"
+                                    <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
+                                           value="${basicApply.buildingNumber}"
                                            onkeydown="objectData.autocompleteBuilding(this)">
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
-                                    <input type="text" class="form-control" name="basicUnit" placeholder="单元编号"
+                                    <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
                                            value="${basicApply.unitNumber}"
                                            onkeydown="objectData.autocompleteUnit(this);">
                                 </div>
@@ -130,7 +130,7 @@
                                 </label>
                                 <div class="col-sm-4">
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
-                                    <input type="text" class="form-control" name="basicHouse" placeholder="房屋编号"
+                                    <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
                                            value="${basicApply.houseNumber}"
                                            onkeydown="objectData.autocompleteHouse(this)">
                                 </div>
@@ -153,7 +153,6 @@
             </div>
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
             <div class="x_panel">
-
                 <div class="x_content">
                     <div class="col-sm-5 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -186,7 +185,7 @@
             frm: "basicApplyFrm"
         },
         basicEstate: {
-            key: "basicEstate",
+            key: "estateName",
             name: "楼盘",
             frm: "basicEstateFrm",
             frmLandState: "basicLandState",
@@ -200,7 +199,7 @@
             }
         },
         basicBuilding: {
-            key: "basicBuilding",
+            key: "buildingNumber",
             name: "楼栋",
             frm: "basicBuildFrm",
             files: {
@@ -210,12 +209,12 @@
             }
         },
         basicUnit: {
-            key: "basicUnit",
+            key: "unitNumber",
             name: "单元",
             frm: "basicUnitFrm"
         },
         basicHouse: {
-            key: "basicHouse",
+            key: "houseNumber",
             name: "房屋",
             frm: "basicHouseFrm",
             tradingFrm: "basicTradingFrm"
@@ -1005,7 +1004,7 @@
                     objectData.estate.show({}, {});
                 }
             }
-            if ('${basicApply.buildIdentifier}'.length > 0) {
+            if ('${basicApply.buildingNumber}'.length > 0) {
                 var basicBuilding = $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicBuilding.key + "']");
                 basicBuilding.trigger('onkeydown');
                 var childs = $(basicBuilding).closest('.form-group').children();
@@ -1051,7 +1050,7 @@
                 }
             }
 
-            $("#" + objectData.config.basicApply.frm).find('[id=industry${basicApply.industry}]').trigger('click');
+            $("#" + objectData.config.basicApply.frm).find('[id=type${basicApply.type}]').trigger('click');
         }
     };
 

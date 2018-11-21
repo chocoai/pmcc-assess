@@ -133,7 +133,7 @@ public class BasicBuildingMainService {
 
     public List<BasicBuildingMain> autoComplete(String identifier,Integer estateId)throws Exception{
         BasicBuildingMain main = new BasicBuildingMain();
-        main.setIdentifier(identifier);
+        main.setBuildingNumber(identifier);
         main.setEstateId(estateId);
         return basicBuildingMainDao.autoComplete(main);
     }

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.event.project;
+package com.copower.pmcc.assess.service.event.basic;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by kings on 2018-10-30
- *
  */
 @Component
 public class BasicApplyEvent implements ProcessEventExecutor {
@@ -29,18 +28,14 @@ public class BasicApplyEvent implements ProcessEventExecutor {
     }
 
     @Override
-    public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
-        if (processExecution != null){
-            try {
-                BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());
-                if (basicApply != null){
-                    basicApply.setStatus(ProjectStatusEnum.FINISH.getKey());
-                    basicApplyService.updateBasicApply(basicApply);
-                }
-                publicBasicService.flowWrite(processExecution.getProcessInstanceId());
-            } catch (Exception e1) {
-                logger.error(e1.getMessage(),e1);
+    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
+        if (processExecution != null) {
+            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());
+            if (basicApply != null) {
+                basicApply.setStatus(ProjectStatusEnum.FINISH.getKey());
+                basicApplyService.updateBasicApply(basicApply);
             }
+            publicBasicService.flowWrite(processExecution.getProcessInstanceId());
         }
     }
 

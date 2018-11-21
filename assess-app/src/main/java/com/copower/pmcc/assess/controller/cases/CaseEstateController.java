@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingLeisurePlaceTypeEnum;
 import com.copower.pmcc.assess.common.enums.ExamineMatchingTrafficTypeEnum;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
@@ -253,13 +254,14 @@ public class CaseEstateController {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
         try {
-            List<CaseEstate> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
+            List<CustomCaseEstate> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
             if (!ObjectUtils.isEmpty(caseEstateList)) {
-                CaseEstate caseEstate = caseEstateList.get(0);
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(caseEstate.getId()));
-                keyValueDto.setValue(caseEstate.getName());
-                keyValueDtos.add(keyValueDto);
+                for (CustomCaseEstate caseEstate : caseEstateList) {
+                    KeyValueDto keyValueDto = new KeyValueDto();
+                    keyValueDto.setKey(String.valueOf(caseEstate.getId()));
+                    keyValueDto.setValue(caseEstate.getName());
+                    keyValueDtos.add(keyValueDto);
+                }
             }
             return HttpResult.newCorrectResult(keyValueDtos);
         } catch (Exception e1) {

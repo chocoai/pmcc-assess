@@ -58,8 +58,8 @@ public class BasicBuildingMainDao {
         if (basicBuildingMain.getEstateId() != null){
             criteria.andEstateIdEqualTo(basicBuildingMain.getEstateId());
         }
-        if (StringUtils.isNotBlank(basicBuildingMain.getIdentifier())){
-            criteria.andIdentifierLike(new StringBuilder("%").append(basicBuildingMain.getIdentifier()).append("%").toString());
+        if (StringUtils.isNotBlank(basicBuildingMain.getBuildingNumber())){
+            criteria.andBuildingNumberLike(new StringBuilder("%").append(basicBuildingMain.getBuildingNumber()).append("%").toString());
         }
         return basicBuildingMainMapper.selectByExample(example);
     }

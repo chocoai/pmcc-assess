@@ -11,15 +11,11 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,7 +32,7 @@ public class CaseBuildingMainService {
     @Autowired
     private CaseUnitService caseUnitService;
 
-    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain){
+    public BootstrapTableVo getBootstrapTableVo(CaseBuildingMain caseBuildingMain) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -90,26 +86,12 @@ public class CaseBuildingMainService {
     }
 
     public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String identifier, Integer estateId, Integer maxRows) {
-        List<CaseBuildingMain> caseBuildingMains = Lists.newArrayList();
+        PageHelper.startPage(0, maxRows);
         List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.autoCompleteCaseBuildingMain(identifier, estateId);
-        Ordering<CaseBuildingMain> ordering = Ordering.from(new Comparator<CaseBuildingMain>() {
-            @Override
-            public int compare(CaseBuildingMain o1, CaseBuildingMain o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(caseBuildingMainList, ordering);
-        if (!ObjectUtils.isEmpty(caseBuildingMainList)) {
-            for (int i = 0; i < maxRows; i++) {
-                if (i < caseBuildingMainList.size()) {
-                    caseBuildingMains.add(caseBuildingMainList.get(i));
-                }
-            }
-        }
-        return caseBuildingMains;
+        return caseBuildingMainList;
     }
 
-    public Integer upgradeVersion(CaseBuildingMain caseBuildingMain)throws Exception {
+    public Integer upgradeVersion(CaseBuildingMain caseBuildingMain) throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
             caseBuildingMain.setVersion(0);
@@ -131,7 +113,7 @@ public class CaseBuildingMainService {
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseBuildingMain.getId() ;
+            int oldId = caseBuildingMain.getId();
             int newId = caseBuildingMainDao.addEstate(oo);
             this.initUpdateSon(oldId, newId);
             return newId;

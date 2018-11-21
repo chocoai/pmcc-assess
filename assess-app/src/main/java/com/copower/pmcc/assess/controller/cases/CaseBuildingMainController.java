@@ -129,7 +129,7 @@ public class CaseBuildingMainController {
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String identifier, Integer estateId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (!StringUtils.isNotBlank(identifier)) {
+        if (StringUtils.isBlank(identifier)) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
         if (estateId == null) {
@@ -138,11 +138,12 @@ public class CaseBuildingMainController {
         try {
             List<CaseBuildingMain> buildingMains = caseBuildingMainService.autoCompleteCaseBuildingMain(identifier, estateId, maxRows);
             if (!ObjectUtils.isEmpty(buildingMains)) {
-                CaseBuildingMain caseBuilding = buildingMains.get(0);
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(caseBuilding.getId()));
-                keyValueDto.setValue(caseBuilding.getIdentifier());
-                keyValueDtos.add(keyValueDto);
+                for (CaseBuildingMain caseBuilding : buildingMains) {
+                    KeyValueDto keyValueDto = new KeyValueDto();
+                    keyValueDto.setKey(String.valueOf(caseBuilding.getId()));
+                    keyValueDto.setValue(caseBuilding.getBuildingNumber());
+                    keyValueDtos.add(keyValueDto);
+                }
             }
             return HttpResult.newCorrectResult(keyValueDtos);
         } catch (Exception e1) {

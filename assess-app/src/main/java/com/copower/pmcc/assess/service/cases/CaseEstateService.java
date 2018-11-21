@@ -3,13 +3,13 @@ package com.copower.pmcc.assess.service.cases;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEstate;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
-import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -67,9 +67,8 @@ public class CaseEstateService {
     @Autowired
     private DataDeveloperService dataDeveloperService;
     @Autowired
-    private DataLandLevelService dataLandLevelService;
-    @Autowired
     private DataBlockService dataBlockService;
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public BootstrapTableVo getCaseEstateVos(CaseEstate caseEstate) {
@@ -77,7 +76,7 @@ public class CaseEstateService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
+        List<CaseEstate> caseEstateList = caseEstateDao.getCaseEstateList(caseEstate.getName(), caseEstate.getProvince(), caseEstate.getCity(), caseEstate.getDistrict());
         if (!ObjectUtils.isEmpty(caseEstateList)) {
             for (CaseEstate oo : caseEstateList) {
                 vos.add(getCaseEstateVo(oo));
@@ -329,9 +328,9 @@ public class CaseEstateService {
         return caseEstateDao.deleteEstate(id);
     }
 
-    public List<CaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
-        PageHelper.startPage(0,maxRows);
-        List<CaseEstate> caseEstateList = caseEstateDao.autoCompleteCaseEstate(name, null, null, null);
+    public List<CustomCaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
+        //PageHelper.startPage(0,maxRows);
+        List<CustomCaseEstate> caseEstateList = caseEstateDao.getLatestVersionEstateList(name);
         return caseEstateList;
     }
 

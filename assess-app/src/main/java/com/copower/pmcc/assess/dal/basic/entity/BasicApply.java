@@ -7,19 +7,19 @@ public class BasicApply {
 
     private String processInsId;
 
-    private String houseNumber;
+    private Integer type;
+
+    private String estateName;
+
+    private String buildingNumber;
 
     private String unitNumber;
 
-    private String buildIdentifier;
-
-    private String estateName;
+    private String houseNumber;
 
     private String status;
 
     private Boolean temporary;
-
-    private String industry;
 
     private Integer caseEstateId;
 
@@ -59,12 +59,28 @@ public class BasicApply {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
-    public String getHouseNumber() {
-        return houseNumber;
+    public Integer getType() {
+        return type;
     }
 
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public String getUnitNumber() {
@@ -75,20 +91,12 @@ public class BasicApply {
         this.unitNumber = unitNumber == null ? null : unitNumber.trim();
     }
 
-    public String getBuildIdentifier() {
-        return buildIdentifier;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setBuildIdentifier(String buildIdentifier) {
-        this.buildIdentifier = buildIdentifier == null ? null : buildIdentifier.trim();
-    }
-
-    public String getEstateName() {
-        return estateName;
-    }
-
-    public void setEstateName(String estateName) {
-        this.estateName = estateName == null ? null : estateName.trim();
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber == null ? null : houseNumber.trim();
     }
 
     public String getStatus() {
@@ -105,14 +113,6 @@ public class BasicApply {
 
     public void setTemporary(Boolean temporary) {
         this.temporary = temporary;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry == null ? null : industry.trim();
     }
 
     public Integer getCaseEstateId() {

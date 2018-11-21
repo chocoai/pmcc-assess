@@ -165,133 +165,133 @@ public class BasicBuildingMainExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierIsNull() {
-            addCriterion("identifier is null");
+        public Criteria andCaseBuildingMainIdIsNull() {
+            addCriterion("case_building_main_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierIsNotNull() {
-            addCriterion("identifier is not null");
+        public Criteria andCaseBuildingMainIdIsNotNull() {
+            addCriterion("case_building_main_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierEqualTo(String value) {
-            addCriterion("identifier =", value, "identifier");
+        public Criteria andCaseBuildingMainIdEqualTo(Integer value) {
+            addCriterion("case_building_main_id =", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierNotEqualTo(String value) {
-            addCriterion("identifier <>", value, "identifier");
+        public Criteria andCaseBuildingMainIdNotEqualTo(Integer value) {
+            addCriterion("case_building_main_id <>", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierGreaterThan(String value) {
-            addCriterion("identifier >", value, "identifier");
+        public Criteria andCaseBuildingMainIdGreaterThan(Integer value) {
+            addCriterion("case_building_main_id >", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierGreaterThanOrEqualTo(String value) {
-            addCriterion("identifier >=", value, "identifier");
+        public Criteria andCaseBuildingMainIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_building_main_id >=", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierLessThan(String value) {
-            addCriterion("identifier <", value, "identifier");
+        public Criteria andCaseBuildingMainIdLessThan(Integer value) {
+            addCriterion("case_building_main_id <", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierLessThanOrEqualTo(String value) {
-            addCriterion("identifier <=", value, "identifier");
+        public Criteria andCaseBuildingMainIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_building_main_id <=", value, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierLike(String value) {
-            addCriterion("identifier like", value, "identifier");
+        public Criteria andCaseBuildingMainIdIn(List<Integer> values) {
+            addCriterion("case_building_main_id in", values, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierNotLike(String value) {
-            addCriterion("identifier not like", value, "identifier");
+        public Criteria andCaseBuildingMainIdNotIn(List<Integer> values) {
+            addCriterion("case_building_main_id not in", values, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierIn(List<String> values) {
-            addCriterion("identifier in", values, "identifier");
+        public Criteria andCaseBuildingMainIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_building_main_id between", value1, value2, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierNotIn(List<String> values) {
-            addCriterion("identifier not in", values, "identifier");
+        public Criteria andCaseBuildingMainIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_building_main_id not between", value1, value2, "caseBuildingMainId");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierBetween(String value1, String value2) {
-            addCriterion("identifier between", value1, value2, "identifier");
+        public Criteria andBuildingNumberIsNull() {
+            addCriterion("building_number is null");
             return (Criteria) this;
         }
 
-        public Criteria andIdentifierNotBetween(String value1, String value2) {
-            addCriterion("identifier not between", value1, value2, "identifier");
+        public Criteria andBuildingNumberIsNotNull() {
+            addCriterion("building_number is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainIsNull() {
-            addCriterion("case_building_main is null");
+        public Criteria andBuildingNumberEqualTo(String value) {
+            addCriterion("building_number =", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainIsNotNull() {
-            addCriterion("case_building_main is not null");
+        public Criteria andBuildingNumberNotEqualTo(String value) {
+            addCriterion("building_number <>", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainEqualTo(Integer value) {
-            addCriterion("case_building_main =", value, "caseBuildingMain");
+        public Criteria andBuildingNumberGreaterThan(String value) {
+            addCriterion("building_number >", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainNotEqualTo(Integer value) {
-            addCriterion("case_building_main <>", value, "caseBuildingMain");
+        public Criteria andBuildingNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("building_number >=", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainGreaterThan(Integer value) {
-            addCriterion("case_building_main >", value, "caseBuildingMain");
+        public Criteria andBuildingNumberLessThan(String value) {
+            addCriterion("building_number <", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_building_main >=", value, "caseBuildingMain");
+        public Criteria andBuildingNumberLessThanOrEqualTo(String value) {
+            addCriterion("building_number <=", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainLessThan(Integer value) {
-            addCriterion("case_building_main <", value, "caseBuildingMain");
+        public Criteria andBuildingNumberLike(String value) {
+            addCriterion("building_number like", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainLessThanOrEqualTo(Integer value) {
-            addCriterion("case_building_main <=", value, "caseBuildingMain");
+        public Criteria andBuildingNumberNotLike(String value) {
+            addCriterion("building_number not like", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainIn(List<Integer> values) {
-            addCriterion("case_building_main in", values, "caseBuildingMain");
+        public Criteria andBuildingNumberIn(List<String> values) {
+            addCriterion("building_number in", values, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainNotIn(List<Integer> values) {
-            addCriterion("case_building_main not in", values, "caseBuildingMain");
+        public Criteria andBuildingNumberNotIn(List<String> values) {
+            addCriterion("building_number not in", values, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainBetween(Integer value1, Integer value2) {
-            addCriterion("case_building_main between", value1, value2, "caseBuildingMain");
+        public Criteria andBuildingNumberBetween(String value1, String value2) {
+            addCriterion("building_number between", value1, value2, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andCaseBuildingMainNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_building_main not between", value1, value2, "caseBuildingMain");
+        public Criteria andBuildingNumberNotBetween(String value1, String value2) {
+            addCriterion("building_number not between", value1, value2, "buildingNumber");
             return (Criteria) this;
         }
 

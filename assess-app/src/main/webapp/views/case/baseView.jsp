@@ -345,7 +345,7 @@
                 return false;
             }
             var cols = [];
-            cols.push({field: 'identifier', title: '楼栋编号'});
+            cols.push({field: 'buildingNumber', title: '楼栋编号'});
             cols.push({field: 'version', title: '版本'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {

@@ -229,9 +229,7 @@
 <div class="x_content">
     <div class="x_title">
         <h3>
-            <small>
-                土地交易基本信息
-            </small>
+            土地基本信息
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -239,8 +237,7 @@
         <input type="hidden" name="id">
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地名称<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地名称</label>
                 <div class="col-sm-11">
                     <label class="form-control">${basicEstateLandState.name}</label>
                 </div>
@@ -248,22 +245,19 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地用途类型<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地用途类型</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.landUseTypeName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地用途类别<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地用途类别</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.landUseCategoryName}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地级别<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地级别</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.landLevelName}</label>
                 </div>
@@ -272,22 +266,19 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">东至<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">东至</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.eastTo}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">南至<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">南至</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.southTo}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">西至<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">西至</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.westTo}</label>
                 </div>
@@ -296,22 +287,19 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">北至<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">北至</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.northTo}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地形状状况<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地形状状况</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.shapeState}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地平整度<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地平整度</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.planeness}</label>
                 </div>
@@ -320,23 +308,20 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地开发程度<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.developmentDegree}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">开发限制条件<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">开发限制条件</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.restrictiveCondition}</label>
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土壤<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土壤</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.soil}</label>
                 </div>
@@ -345,16 +330,14 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">地形地势<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">地形地势</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.topographicTerrain}</label>
                 </div>
             </div>
 
             <div class="x-valid">
-                <label class="col-sm-1 control-label">土地面积<span
-                        class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">土地面积</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstateLandState.landArea}</label>
                 </div>

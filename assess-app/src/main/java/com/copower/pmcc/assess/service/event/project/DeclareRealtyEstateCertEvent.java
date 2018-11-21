@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
 import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * Created by kings on 2018-9-29
@@ -46,13 +44,5 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
         declareRealtyRealEstateCertService.eventWriteDeclareInfo(declareInfo);
         declareRealtyLandCertService.eventWriteDeclareInfo(declareInfo);
 
-    }
-
-    private String getValueFormMap(Map map, String key) {
-        Object o = map.get(key);
-        if (o == null) {
-            return "";
-        }
-        return String.valueOf(o);
     }
 }

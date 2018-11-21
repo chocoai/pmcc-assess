@@ -8,4 +8,13 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
  * @Description:
  */
 public class BasicApplyVo extends BasicApply {
+    private String fullName;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }

@@ -70,11 +70,12 @@ public class CaseBuildingMainDao {
         CaseBuildingMainExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         if (!StringUtils.isEmpty(identifier)) {
-            criteria.andIdentifierLike(String.format("%s%s%s", "%", identifier, "%"));
+            criteria.andBuildingNumberLike(String.format("%s%s%s", "%", identifier, "%"));
         }
         if (estateId != null) {
             criteria.andEstateIdEqualTo(estateId);
         }
+        example.setOrderByClause("building_number");
         return caseBuildingMainMapper.selectByExample(example);
     }
 

@@ -4,17 +4,17 @@ var industry = new Object();
 
 //doc
 /*
-* 1:工业与仓储 有 层面结构 和  维护结构
-* 2:非工业与仓储 供排水情况,供电信息,供热信息,供气信息 只填写有无
-* 3:供水平面图,供电平面图,供气平面图,采暖平面图 工业与仓储 才有
-* 4:户型 跨长,跨数,跨宽 工业与仓储 才有
-* */
+ * 1:工业与仓储 有 层面结构 和  维护结构
+ * 2:非工业与仓储 供排水情况,供电信息,供热信息,供气信息 只填写有无
+ * 3:供水平面图,供电平面图,供气平面图,采暖平面图 工业与仓储 才有
+ * 4:户型 跨长,跨数,跨宽 工业与仓储 才有
+ * */
 
 
 industry.config = {
     id: "industry",
-    one: {key: "1", name: "非工业与仓储"},
-    two: {key: "2", name: "工业与仓储"},
+    notIndustry: {key: 0, name: "非工业与仓储"},
+    industry: {key: 1, name: "工业与仓储"},
     defaultKey: "1",
     build: {
         surface: "industrySurface",//层面结构
@@ -30,17 +30,17 @@ industry.config = {
         power_supply_plan: "industry_power_supply_plan",//供电平面图
         air_supply_plan: "industry_air_supply_plan",//供气平面图
         heating_plan: "industry_heating_plan",//采暖平面图
-        material:"industryMaterial"
+        material: "industryMaterial"
     },
     unit: {
         spanWidth: "industrySpanWidth",//跨宽
         spanNumber: "industrySpanNumber",//跨数
         spanLength: "industrySpanLength",//跨长
     },
-    house:{
-        newsHuxing:"industryNewsHuxing",//最新户型
-        useEnvironment:"industryUseEnvironment",//使用环境
-        corollaryEquipment:"industryCorollaryEquipment",//房屋配套设备设施信息
+    house: {
+        newsHuxing: "industryNewsHuxing",//最新户型
+        useEnvironment: "industryUseEnvironment",//使用环境
+        corollaryEquipment: "industryCorollaryEquipment",//房屋配套设备设施信息
     }
 };
 
@@ -88,7 +88,7 @@ industry.industryOne = {
         $("#" + industry.config.unit.spanNumber).hide();
         $("#" + industry.config.unit.spanLength).hide();
     },
-    house:function () {
+    house: function () {
         $("#" + industry.config.house.useEnvironment).hide();
         $("#" + industry.config.house.newsHuxing).show();
         $("#" + industry.config.house.corollaryEquipment).hide();
@@ -129,7 +129,7 @@ industry.industryTwo = {
         $("#" + industry.config.unit.spanNumber).show();
         $("#" + industry.config.unit.spanLength).show();
     },
-    house:function () {
+    house: function () {
         $("#" + industry.config.house.corollaryEquipment).show();
         $("#" + industry.config.house.useEnvironment).show();
         $("#" + industry.config.house.newsHuxing).hide();
@@ -140,10 +140,10 @@ industry.changeEvent = function () {
     $("#" + industry.config.id).find("input[type='radio']").change(function () {
         var item = $("#" + industry.config.id).find(":radio:checked").val();
         if (industry.isNotBlank(item)) {
-            if (item == industry.config.one.key) {
+            if (item == industry.config.notIndustry.key) {
                 industry.industryOne.init();
             }
-            if (item == industry.config.two.key) {
+            if (item == industry.config.industry.key) {
                 industry.industryTwo.init();
             }
         }
@@ -154,19 +154,19 @@ industry.changeEvent = function () {
  * 默认选择
  */
 industry.firstEvent = function () {
-    if (industry.config.defaultKey == industry.config.one.key) {
+    if (industry.config.defaultKey == industry.config.notIndustry.key) {
         industry.industryOne.init();
     }
-    if (industry.config.defaultKey == industry.config.two.key) {
+    if (industry.config.defaultKey == industry.config.industry.key) {
         industry.industryTwo.init();
     }
 };
 
 industry.keyApp = function (key) {
-    if (key == industry.config.one.key) {
+    if (key == industry.config.notIndustry.key) {
         industry.industryOne.init();
     }
-    if (key == industry.config.two.key) {
+    if (key == industry.config.industry.key) {
         industry.industryTwo.init();
     }
 };

@@ -3,8 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicBuildingMainMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
-    <result column="case_building_main" property="caseBuildingMain" jdbcType="INTEGER" />
+    <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
@@ -72,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, identifier, case_building_main, temporary, estate_id, apply_id, version, creator, 
-    gmt_created, gmt_modified
+    id, case_building_main_id, building_number, temporary, estate_id, apply_id, version, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMainExample" >
     select
@@ -109,14 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building_main (identifier, case_building_main, temporary, 
-      estate_id, apply_id, version, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{identifier,jdbcType=VARCHAR}, #{caseBuildingMain,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, 
-      #{estateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_building_main (case_building_main_id, building_number, 
+      temporary, estate_id, apply_id, 
+      version, creator, gmt_created, 
+      gmt_modified)
+    values (#{caseBuildingMainId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{temporary,jdbcType=BIT}, #{estateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, 
+      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -124,11 +124,11 @@
     </selectKey>
     insert into tb_basic_building_main
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="identifier != null" >
-        identifier,
+      <if test="caseBuildingMainId != null" >
+        case_building_main_id,
       </if>
-      <if test="caseBuildingMain != null" >
-        case_building_main,
+      <if test="buildingNumber != null" >
+        building_number,
       </if>
       <if test="temporary != null" >
         temporary,
@@ -153,11 +153,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="identifier != null" >
-        #{identifier,jdbcType=VARCHAR},
+      <if test="caseBuildingMainId != null" >
+        #{caseBuildingMainId,jdbcType=INTEGER},
       </if>
-      <if test="caseBuildingMain != null" >
-        #{caseBuildingMain,jdbcType=INTEGER},
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="temporary != null" >
         #{temporary,jdbcType=BIT},
@@ -194,11 +194,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.identifier != null" >
-        identifier = #{record.identifier,jdbcType=VARCHAR},
+      <if test="record.caseBuildingMainId != null" >
+        case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
       </if>
-      <if test="record.caseBuildingMain != null" >
-        case_building_main = #{record.caseBuildingMain,jdbcType=INTEGER},
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.temporary != null" >
         temporary = #{record.temporary,jdbcType=BIT},
@@ -229,8 +229,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_building_main
     set id = #{record.id,jdbcType=INTEGER},
-      identifier = #{record.identifier,jdbcType=VARCHAR},
-      case_building_main = #{record.caseBuildingMain,jdbcType=INTEGER},
+      case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       temporary = #{record.temporary,jdbcType=BIT},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
@@ -245,11 +245,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     update tb_basic_building_main
     <set >
-      <if test="identifier != null" >
-        identifier = #{identifier,jdbcType=VARCHAR},
+      <if test="caseBuildingMainId != null" >
+        case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
       </if>
-      <if test="caseBuildingMain != null" >
-        case_building_main = #{caseBuildingMain,jdbcType=INTEGER},
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="temporary != null" >
         temporary = #{temporary,jdbcType=BIT},
@@ -277,8 +277,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     update tb_basic_building_main
-    set identifier = #{identifier,jdbcType=VARCHAR},
-      case_building_main = #{caseBuildingMain,jdbcType=INTEGER},
+    set case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
       temporary = #{temporary,jdbcType=BIT},
       estate_id = #{estateId,jdbcType=INTEGER},
       apply_id = #{applyId,jdbcType=INTEGER},

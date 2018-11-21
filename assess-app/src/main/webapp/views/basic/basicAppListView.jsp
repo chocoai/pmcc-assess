@@ -105,10 +105,7 @@
 
     dataObjFun.loadDataList = function () {
         var cols = [];
-        cols.push({field: 'estateName', title: '楼盘名称'});
-        cols.push({field: 'buildIdentifier', title: '楼栋号'});
-        cols.push({field: 'unitNumber', title: '单元号'});
-        cols.push({field: 'houseNumber', title: '房屋'});
+        cols.push({field: 'fullName', title: '名称'});
         cols.push({
             field: 'id', title: '类型', formatter: function (value, row, index) {
                 if (dataObjFun.isNotBlank(row.industry)){

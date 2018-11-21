@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
-import com.copower.pmcc.assess.service.event.project.BasicApplyEvent;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -14,12 +16,11 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -42,9 +43,12 @@ public class BasicApplyService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseParameterService baseParameterService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public BasicApply getByBasicApplyId(Integer id){
+    public BasicApply getByBasicApplyId(Integer id) {
         return basicApplyDao.getBasicApplyById(id);
     }
 
@@ -83,8 +87,9 @@ public class BasicApplyService {
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
-        processInfo.setFolio(String.format("流程描述案例基础数据审批:%s", DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")));
-        final String boxName = "8e4533ae-26c4-4649-9264-4512342d7883";
+
+        processInfo.setFolio(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         processInfo.setTableName(tableName);
         processInfo.setBoxId(boxReDto.getId());
@@ -106,11 +111,11 @@ public class BasicApplyService {
         return processUserDto;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(String estateName,Boolean temporary) {
+    public BootstrapTableVo getBootstrapTableVo(String estateName, Boolean temporary) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName,temporary);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyListByName(estateName, temporary);
         List<BasicApplyVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(basicApplyList)) {
             for (BasicApply basicApply1 : basicApplyList) {
@@ -128,6 +133,29 @@ public class BasicApplyService {
         }
         BasicApplyVo vo = new BasicApplyVo();
         BeanUtils.copyProperties(basicApply, vo);
+        vo.setFullName(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
         return vo;
+    }
+
+    /**
+     * 获取申请完整名称
+     *
+     * @param estateName
+     * @param buildingNumber
+     * @param unitNumber
+     * @param houseNumber
+     * @return
+     */
+    public String getFullName(String estateName, String buildingNumber, String unitNumber, String houseNumber) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isNotBlank(estateName))
+            stringBuilder.append(estateName);
+        if (StringUtils.isNotBlank(buildingNumber))
+            stringBuilder.append(buildingNumber).append("栋");
+        if (StringUtils.isNotBlank(unitNumber))
+            stringBuilder.append(unitNumber).append("单元");
+        if (StringUtils.isNotBlank(houseNumber))
+            stringBuilder.append(houseNumber).append("号");
+        return stringBuilder.toString();
     }
 }

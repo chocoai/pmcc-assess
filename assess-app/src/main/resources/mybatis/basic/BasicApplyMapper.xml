@@ -4,13 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
-    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
-    <result column="build_identifier" property="buildIdentifier" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="temporary" property="temporary" jdbcType="BIT" />
-    <result column="industry" property="industry" jdbcType="VARCHAR" />
     <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
     <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
     <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
@@ -82,8 +82,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, house_number, unit_number, build_identifier, estate_name, status, 
-    temporary, industry, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
+    id, process_ins_id, type, estate_name, building_number, unit_number, house_number, 
+    status, temporary, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
     estate_part_in_flag, building_part_in_flag, unit_part_in_flag, house_part_in_flag, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -121,16 +121,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (process_ins_id, house_number, unit_number, 
-      build_identifier, estate_name, status, 
-      temporary, industry, case_estate_id, 
+    insert into tb_basic_apply (process_ins_id, type, estate_name, 
+      building_number, unit_number, house_number, 
+      status, temporary, case_estate_id, 
       case_building_main_id, case_unit_id, case_house_id, 
       estate_part_in_flag, building_part_in_flag, unit_part_in_flag, 
       house_part_in_flag, creator, gmt_created, 
       gmt_modified)
-    values (#{processInsId,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, 
-      #{buildIdentifier,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{temporary,jdbcType=BIT}, #{industry,jdbcType=VARCHAR}, #{caseEstateId,jdbcType=INTEGER}, 
+    values (#{processInsId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
       #{caseBuildingMainId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, 
       #{estatePartInFlag,jdbcType=BIT}, #{buildingPartInFlag,jdbcType=BIT}, #{unitPartInFlag,jdbcType=BIT}, 
       #{housePartInFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -145,26 +145,26 @@
       <if test="processInsId != null" >
         process_ins_id,
       </if>
-      <if test="houseNumber != null" >
-        house_number,
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="estateName != null" >
+        estate_name,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
       </if>
       <if test="unitNumber != null" >
         unit_number,
       </if>
-      <if test="buildIdentifier != null" >
-        build_identifier,
-      </if>
-      <if test="estateName != null" >
-        estate_name,
+      <if test="houseNumber != null" >
+        house_number,
       </if>
       <if test="status != null" >
         status,
       </if>
       <if test="temporary != null" >
         temporary,
-      </if>
-      <if test="industry != null" >
-        industry,
       </if>
       <if test="caseEstateId != null" >
         case_estate_id,
@@ -204,26 +204,26 @@
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="houseNumber != null" >
-        #{houseNumber,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="estateName != null" >
+        #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildIdentifier != null" >
-        #{buildIdentifier,jdbcType=VARCHAR},
-      </if>
-      <if test="estateName != null" >
-        #{estateName,jdbcType=VARCHAR},
+      <if test="houseNumber != null" >
+        #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
       <if test="temporary != null" >
         #{temporary,jdbcType=BIT},
-      </if>
-      <if test="industry != null" >
-        #{industry,jdbcType=VARCHAR},
       </if>
       <if test="caseEstateId != null" >
         #{caseEstateId,jdbcType=INTEGER},
@@ -275,26 +275,26 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.houseNumber != null" >
-        house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateName != null" >
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildIdentifier != null" >
-        build_identifier = #{record.buildIdentifier,jdbcType=VARCHAR},
-      </if>
-      <if test="record.estateName != null" >
-        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      <if test="record.houseNumber != null" >
+        house_number = #{record.houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.temporary != null" >
         temporary = #{record.temporary,jdbcType=BIT},
-      </if>
-      <if test="record.industry != null" >
-        industry = #{record.industry,jdbcType=VARCHAR},
       </if>
       <if test="record.caseEstateId != null" >
         case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
@@ -338,13 +338,13 @@
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
-      build_identifier = #{record.buildIdentifier,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       temporary = #{record.temporary,jdbcType=BIT},
-      industry = #{record.industry,jdbcType=VARCHAR},
       case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
       case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
@@ -366,26 +366,26 @@
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="houseNumber != null" >
-        house_number = #{houseNumber,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="estateName != null" >
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildIdentifier != null" >
-        build_identifier = #{buildIdentifier,jdbcType=VARCHAR},
-      </if>
-      <if test="estateName != null" >
-        estate_name = #{estateName,jdbcType=VARCHAR},
+      <if test="houseNumber != null" >
+        house_number = #{houseNumber,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="temporary != null" >
         temporary = #{temporary,jdbcType=BIT},
-      </if>
-      <if test="industry != null" >
-        industry = #{industry,jdbcType=VARCHAR},
       </if>
       <if test="caseEstateId != null" >
         case_estate_id = #{caseEstateId,jdbcType=INTEGER},
@@ -426,13 +426,13 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     update tb_basic_apply
     set process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      house_number = #{houseNumber,jdbcType=VARCHAR},
-      unit_number = #{unitNumber,jdbcType=VARCHAR},
-      build_identifier = #{buildIdentifier,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       estate_name = #{estateName,jdbcType=VARCHAR},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      unit_number = #{unitNumber,jdbcType=VARCHAR},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       temporary = #{temporary,jdbcType=BIT},
-      industry = #{industry,jdbcType=VARCHAR},
       case_estate_id = #{caseEstateId,jdbcType=INTEGER},
       case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{caseUnitId,jdbcType=INTEGER},

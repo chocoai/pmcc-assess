@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEstate;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseEstateMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseEstateMapper;
@@ -21,6 +23,8 @@ import java.util.List;
 public class CaseEstateDao {
     @Autowired
     private CaseEstateMapper caseEstateMapper;
+    @Autowired
+    private CustomCaseEstateMapper customCaseEstateMapper;
 
     /**
      * 获取数据信息
@@ -61,7 +65,7 @@ public class CaseEstateDao {
         return caseEstateMapper.updateByPrimaryKeySelective(caseEstate) > 0;
     }
 
-    public List<CaseEstate> autoCompleteCaseEstate(String name, String province, String city, String district){
+    public List<CaseEstate> getCaseEstateList(String name, String province, String city, String district){
         CaseEstateExample example = new CaseEstateExample();
         CaseEstateExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -90,6 +94,20 @@ public class CaseEstateDao {
         return caseEstateMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取版本最新的楼盘信息
+     * @param name
+     * @param province
+     * @param city
+     * @param district
+     * @return
+     */
+    public List<CustomCaseEstate> getLatestVersionEstateList(String name,String province,String city,String district){
+        return customCaseEstateMapper.getCustomCaseEstateList(name, province, city, district);
+    }
 
+    public List<CustomCaseEstate> getLatestVersionEstateList(String name){
+        return getLatestVersionEstateList(name,null,null,null);
+    }
 
 }

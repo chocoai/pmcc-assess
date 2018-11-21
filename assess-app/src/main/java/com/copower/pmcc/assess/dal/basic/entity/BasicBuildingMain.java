@@ -5,9 +5,9 @@ import java.util.Date;
 public class BasicBuildingMain {
     private Integer id;
 
-    private String identifier;
+    private Integer caseBuildingMainId;
 
-    private Integer caseBuildingMain;
+    private String buildingNumber;
 
     private Boolean temporary;
 
@@ -31,20 +31,20 @@ public class BasicBuildingMain {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public Integer getCaseBuildingMainId() {
+        return caseBuildingMainId;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier == null ? null : identifier.trim();
+    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
+        this.caseBuildingMainId = caseBuildingMainId;
     }
 
-    public Integer getCaseBuildingMain() {
-        return caseBuildingMain;
+    public String getBuildingNumber() {
+        return buildingNumber;
     }
 
-    public void setCaseBuildingMain(Integer caseBuildingMain) {
-        this.caseBuildingMain = caseBuildingMain;
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Boolean getTemporary() {

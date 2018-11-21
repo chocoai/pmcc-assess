@@ -146,9 +146,6 @@ public class TemporaryBasicService {
         basicApplyService.saveBasicApply(basicApply);
 
         BasicEstate basicEstate = null;
-        if (StringUtils.isNotEmpty(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()))) {
-            basicApply.setIndustry(jsonObject.getString(BasicJsonFieldStrEnum.INDUSTRY.getVar()));
-        }
         //楼盘过程数据
         jsonContent = jsonObject.getString(BasicJsonFieldStrEnum.BASICESTATE.getVar());
         if (StringUtils.isNotBlank(jsonContent)) {
@@ -160,9 +157,7 @@ public class TemporaryBasicService {
             if (basicEstate != null) {
                 basicEstate.setApplyId(basicApply.getId());
                 basicEstate.setTemporary(true);
-                if (StringUtils.isNotEmpty(basicEstate.getName())) {
-                    basicApply.setEstateName(basicEstate.getName());
-                }
+                basicEstate.setType(basicApply.getType());
                 if (basicEstate.getId() != null) {
                     basicEstate.setCaseEstateId(basicEstate.getId());
                     basicEstate.setId(null);
@@ -207,11 +202,11 @@ public class TemporaryBasicService {
             if (basicBuildingMain != null) {
                 basicBuildingMain.setApplyId(basicApply.getId());
                 basicBuildingMain.setTemporary(true);
-                if (StringUtils.isNotEmpty(basicBuildingMain.getIdentifier())) {
-                    basicApply.setBuildIdentifier(basicBuildingMain.getIdentifier());
+                if (StringUtils.isNotEmpty(basicBuildingMain.getBuildingNumber())) {
+                    basicApply.setBuildingNumber(basicBuildingMain.getBuildingNumber());
                 }
                 if (basicBuildingMain.getId() != null) {
-                    basicBuildingMain.setCaseBuildingMain(basicBuildingMain.getId());
+                    basicBuildingMain.setCaseBuildingMainId(basicBuildingMain.getId());
                     basicBuildingMain.setId(null);
                 }
                 //当楼栋数据未包含楼盘 那么楼盘必须是新增的情况
