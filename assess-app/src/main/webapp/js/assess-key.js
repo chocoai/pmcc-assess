@@ -81,6 +81,8 @@ AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//使
 //基础数据
 AssessDicKey.dataTaxRateAllocation = "data.tax.rate.allocation";//税率配置
 AssessDicKey.dataEntrustmentPurpose = "data.entrustment.purpose";//委托目的
+AssessDicKey.value_type = "value.type";//价值类型
+AssessDicKey.project_initiate_urgency = "project.initiate.urgency";//紧急程度
 
 AssessDicKey.estate_distance = "estate.distance";//交通距离
 AssessDicKey.estate_car_type = "estate.car.type";//车位类型

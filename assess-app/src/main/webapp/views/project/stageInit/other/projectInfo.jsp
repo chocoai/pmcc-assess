@@ -1,0 +1,191 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- 项目基本信息 -->
+<div class="x_content">
+    <form id="frm_project_info" class="form-horizontal" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="${projectInfo.id}">
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目名称<span class="symbol required"></span></label>
+                <div class="col-sm-7">
+                    <input required placeholder="项目名称" name="projectName"
+                           value="${projectInfo.projectName}" class="form-control">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">紧急程度<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="urgency" class="form-control search-select select2 urgency" required="required">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">评估基准日<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input required="required" placeholder="评估基准日"
+                           name="valuationDate" data-date-format="yyyy-mm-dd"
+                           class="form-control date-picker dbdate" readonly="readonly"
+                           value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">委托目的<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="entrustPurpose" class="form-control search-select select2 entrustPurpose"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">委托目的描述</label>
+                <div class="col-sm-3">
+                    <input name="remarkEntrustPurpose"
+                           class="form-control"
+                           placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">价值类型<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="valueType" class="form-control search-select select2 valueType" required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">价值类型备注</label>
+                <div class="col-sm-3">
+                    <input name="remarkValueType" class="form-control"
+                           placeholder="价值类型备注" value="${projectInfo.remarkValueType}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">省<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="province" id="province" class="form-control search-select select2"
+                            required="required">
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">市<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select name="city" id="city" class="form-control search-select select2"
+                            required="required">
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">县</label>
+                <div class="col-sm-3">
+                    <select name="district" id="district" class="form-control search-select select2">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">执业部门<span class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="hidden" name="departmentId"
+                               value="${projectInfo.departmentId}">
+                        <input class='form-control' name="departmentName"
+                               readonly="readonly"
+                               value="${projectInfo.departmentName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="objProject.selectDepartment(this)"
+                                data-toggle="tooltip"
+                                data-original-title="选择">
+                            <i class="fa fa-search"></i>
+                        </button>
+                         <button type="button" class="btn btn-default docs-tooltip"
+                                 onclick="$(this).closest('.input-group').find('input').val('');"
+                                 data-toggle="tooltip" data-original-title="清除">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目经理</label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="hidden" name="userAccountManager"
+                               value="${projectInfo.projectMemberVo.userAccountManager}">
+                        <input type="text" class="form-control" readonly="readonly" name="userAccountManagerName"
+                               value="${projectInfo.projectMemberVo.userAccountManagerName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="objProject.selectUserAccountManager(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目成员</label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="hidden" name="userAccountMember"
+                               value="${projectInfo.projectMemberVo.userAccountMember}">
+                        <input type="text" class="form-control" readonly="readonly" name="userAccountMemberName"
+                               value="${projectInfo.projectMemberVo.userAccountMemberName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="objProject.selectUserAccountMember(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">项目说明</label>
+                <div class="col-sm-11">
+                                    <textarea name="remarks"
+                                              class="form-control" placeholder="项目说明">${projectInfo.remarks}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">附件</label>
+                <div class="col-sm-3">
+                    <input id="attachmentProjectInfoId" name="attachmentProjectInfoId"
+                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <div id="_attachmentProjectInfoId"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
