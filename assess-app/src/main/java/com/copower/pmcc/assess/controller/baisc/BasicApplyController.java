@@ -203,15 +203,8 @@ public class BasicApplyController extends BaseController {
                     switch (port) {
                         case "1": {
                             BasicBuildingVo basicBuildingVo = publicBasicService.getBasicBuildingVo(basicBuildingList.get(i));
-                            if (StringUtils.isEmpty(detail)) {
-                                modelAndView.addObject("oneBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("oneBasicBuilding", basicBuildingVo);
-                            }
-                            if (StringUtils.isNotBlank(detail)) {
-                                basicBuildingVo.setId(null);
-                                modelAndView.addObject("oneBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("oneBasicBuilding", basicBuildingVo);
-                            }
+                            modelAndView.addObject("oneBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
+                            modelAndView.addObject("oneBasicBuilding", basicBuildingVo);
                         }
                         break;
                         case "2": {
