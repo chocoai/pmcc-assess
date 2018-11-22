@@ -16,6 +16,9 @@
                         <button type="button" class="btn btn-success" onclick="civilEngineering.showAddModel();"
                                 data-toggle="modal"> 新增
                         </button>
+                        <button type="button" class="btn btn-primary" onclick="civilEngineering.pasteAll();"
+                                data-toggle="modal"> 粘贴
+                        </button>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="btn-group">
@@ -1105,7 +1108,6 @@
             return false;
         }
         var data = formParams(civilEngineeringConfig.declareBuildingConstructionPermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
@@ -1141,23 +1143,117 @@
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
         $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id,function () {
+        economicIndicators.initForm(id, function () {
             $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
         });
     };
 
+
+    civilEngineering.copyId = undefined;
+    //复制子数据
+    civilEngineering.copyData = function (id, index) {
+        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
+        $("#" + civilEngineeringConfig.table).bootstrapTable('load', item);
+        $.each(item, function (i, data) {
+            $("#civilEngineeringCancel" + data.id).parent().hide();
+            $("#civilEngineeringCopy" + data.id).parent().hide();
+        });
+        $.each(item, function (i, data) {
+            if (data.id != id) {
+                $("#civilEngineeringPaste" + data.id).parent().show();
+            }
+        });
+        $("#civilEngineeringCancel" + id).parent().show();
+        civilEngineering.copyId = id;
+    };
+
+    //粘贴子数据
+    civilEngineering.pasteData = function (id, index) {
+        Alert("确认粘贴", 2,
+            function () {//放弃操作后的函数
+                $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
+                    $("#civilEngineeringCancel" + data.id).parent().hide();
+                    $("#civilEngineeringPaste" + data.id).parent().hide();
+                    $("#civilEngineeringCopy" + data.id).parent().show();
+                });
+                civilEngineering.copyId = undefined;
+            },//具体操作函数
+            function () {
+                var copyId = civilEngineering.copyId;
+                console.log(copyId);
+                var fData = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
+                civilEngineering.loadList();
+                toastr.success('成功');
+                civilEngineering.copyId = undefined;
+            }
+        );
+    };
+
+    //把复制的从表粘贴到所有的列中
+    civilEngineering.pasteAll = function () {
+        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getSelections');
+        if (this.isEmpty(civilEngineering.copyId)) {
+            if (this.isEmpty(item)) {
+                if (item.length >= 1) {
+                    var copyId = civilEngineering.copyId;
+                    console.log(copyId);
+                    console.log(item);
+                    civilEngineering.copyId = undefined;
+                    toastr.success('成功');
+                    civilEngineering.loadList();
+                }else {
+                    Alert("请先勾选需要粘贴的对象!");
+                }
+            }
+        } else {
+            Alert("请先复制对象!");
+        }
+    };
+
+    //放弃复制
+    civilEngineering.cancelData = function (id, index) {
+        $("#civilEngineeringCancel" + id).parent().hide();
+        $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
+            $("#civilEngineeringPaste" + data.id).parent().hide();
+            $("#civilEngineeringCopy" + data.id).parent().show();
+        });
+        civilEngineering.copyId = undefined;
+    };
+
     civilEngineering.loadList = function () {
         var cols = [];
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'bookNetValue', title: '帐面净值'});
-        cols.push({field: 'bookValue', title: '帐面价值'});
+        cols.push({
+            checkbox: true,
+            formatter: {
+                disabled: false,//设置是否可用
+                checked: false//设置选中
+            }
+        });
+        cols.push({
+            field: 'area', title: '区域', formatter: function (value, row, index) {
+                var result = '';
+                if (row.provinceName) {
+                    result = row.provinceName;
+                }
+                if (row.cityName) {
+                    result += row.cityName;
+                }
+                if (row.districtName) {
+                    result += row.districtName;
+                }
+                return result;
+            }
+        });
+        cols.push({field: 'provinceName', title: '省', visible: false});
+        cols.push({field: 'cityName', title: '市', visible: false});
+        cols.push({field: 'districtName', title: '县', visible: false});
+        cols.push({field: 'bookNetValue', title: '帐面净值', visible: false});
+        cols.push({field: 'bookValue', title: '帐面价值', visible: true});
         cols.push({field: 'declarer', title: '申报人'});
         cols.push({field: 'beLocated', title: '坐落'});
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
+            field: 'id', title: '子类以及自身操作', formatter: function (value, row, index) {
                 var str = '<div class="dropdown">';
                 str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
                 str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
@@ -1175,18 +1271,54 @@
                 return str;
             }
         });
+        cols.push({
+            field: 'id', title: '复制', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCopy' + row.id + '" data-placement="top" data-original-title="复制" onclick="civilEngineering.copyData(' + row.id + ',' + index + ')"><i class="fa fa-copy fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '放弃', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin" style="display: none">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCancel' + row.id + '" data-placement="top" data-original-title="放弃" onclick="civilEngineering.cancelData(' + row.id + ',' + index + ')">放弃</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '粘贴', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin" style="display: none">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringPaste' + row.id + '" data-placement="top" data-original-title="粘贴" onclick="civilEngineering.pasteData(' + row.id + ',' + index + ')"><i class="fa fa-paste fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
         $("#" + civilEngineeringConfig.table).bootstrapTable('destroy');
         TableInit(civilEngineeringConfig.table, "${pageContext.request.contextPath}/declareBuildEngineering/getDeclareBuildEngineeringList", cols, {
             planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
         }, {
+            method: "get",
             showColumns: false,
-            showRefresh: false,
+            showRefresh: true,
             search: false,
-            onLoadSuccess: function () {
+            striped: true,
+            rowAttributes: function (row, index) {
+
+            },
+            onLoadSuccess: function (data) {
                 $('.tooltips').tooltip();
+            },
+            onCheckAll: function (rows) {
+                console.info(rows);
+            },
+            onCheck: function (row) {
+                console.info(row);
             }
         });
     };
+
 
     /**
      * @author:  zch
@@ -2019,7 +2151,8 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label" title="评估面积">建筑面积<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label" title="评估面积">建筑面积<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="评估面积(数字)" name="buildArea" class="form-control"
