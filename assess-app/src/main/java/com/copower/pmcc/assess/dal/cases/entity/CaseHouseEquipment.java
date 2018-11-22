@@ -5,8 +5,6 @@ import java.util.Date;
 public class CaseHouseEquipment {
     private Integer id;
 
-    private Integer version;
-
     private Integer houseId;
 
     private String type;
@@ -29,14 +27,6 @@ public class CaseHouseEquipment {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Integer getHouseId() {

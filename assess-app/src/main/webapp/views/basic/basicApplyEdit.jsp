@@ -156,28 +156,11 @@
 
     //关闭流程
     function closeBasicApp() {
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApply/closeBasicApp",
-            type: "post",
-            dataType: "json",
-            data: {processInsId:"${processInsId}"},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
-                        window.close();
-                    });
-                }
-                else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
+        AssessCommon.closeProcess('${basicApply.processInsId}', function () {
+            Alert('流程关闭成功', 1, null, function () {
+                window.close();
+            })
+        })
     }
 </script>
 </html>

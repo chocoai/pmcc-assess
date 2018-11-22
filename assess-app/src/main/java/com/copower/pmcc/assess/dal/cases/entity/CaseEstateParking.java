@@ -5,8 +5,6 @@ import java.util.Date;
 public class CaseEstateParking {
     private Integer id;
 
-    private Integer version;
-
     private Integer number;
 
     private Integer estateId;
@@ -27,14 +25,6 @@ public class CaseEstateParking {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Integer getNumber() {

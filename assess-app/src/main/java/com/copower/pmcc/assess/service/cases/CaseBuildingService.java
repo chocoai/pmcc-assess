@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataBuilder;
 import com.copower.pmcc.assess.dal.basis.entity.DataProperty;
@@ -17,12 +16,9 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,8 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -165,46 +159,10 @@ public class CaseBuildingService {
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
             caseBuilding.setCreator(commonService.thisUserAccount());
             id = caseBuildingDao.addBuilding(caseBuilding);
-            this.initAndUpdateSon(0, id);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
             return id;
         } else {
             caseBuildingDao.updateBuilding(caseBuilding);
             return null;
-        }
-    }
-
-    public Integer upgradeVersion(CaseBuilding caseBuilding) {
-        Integer id = null;
-        if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
-            caseBuilding.setCreator(commonService.thisUserAccount());
-            caseBuilding.setVersion(0);
-            id = caseBuildingDao.addBuilding(caseBuilding);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), id);
-            caseBuilding.setId(id);
-            return id;
-        } else {
-            //更新版本
-            CaseBuilding oo = caseBuildingDao.getBuildingById(caseBuilding.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuilding, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseBuilding.getId();
-            int newId = caseBuildingDao.addBuilding(oo);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class), newId);
-            caseBuilding.setId(newId);
-            return newId;
         }
     }
 

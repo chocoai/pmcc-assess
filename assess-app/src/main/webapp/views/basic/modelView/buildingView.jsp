@@ -11,7 +11,7 @@
             <div class="x-valid">
                 <div class="col-sm-3">
                     <input type="hidden" name="caseBuildingMainId" id="caseBuildingMainId" value="${basicBuildingMain.id}">
-                    <input type="hidden" name="identifier" id="identifier" value="${basicBuildingMain.identifier}">
+                    <input type="hidden" name="buildingNumber" id="buildingNumber" value="${basicBuildingMain.buildingNumber}">
                 </div>
             </div>
         </div>

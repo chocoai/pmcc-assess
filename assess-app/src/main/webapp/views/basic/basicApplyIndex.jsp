@@ -17,7 +17,7 @@
                     </h2>
                 </div>
             </div>
-            <div class="x_panel">
+            <div class="x_panel" style="display: ${basicApply.id eq 0?'block':'none'}">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i
@@ -975,13 +975,6 @@
         return item;
     };
 
-    /**
-     * 成功申请后清除数据
-     */
-    objectData.successClear = function () {
-        window.close();
-    };
-
     //检测是否为 草稿重新申请
     objectData.startApply = function () {
         if ('${basicApply.id}' != '0') {
@@ -1043,11 +1036,12 @@
                 }
                 if ('${basicApply.housePartInFlag}' == 'true') {
                     objectData.house.show({}, {});
+                    basicIndexCommon.houseInit(JSON.parse('${el:toJsonString(basicHouse)}'), JSON.parse('${el:toJsonString(basicHouseTrading)}'));
                 }
             }
-
             $("#" + objectData.config.basicApply.frm).find('[id=type${basicApply.type}]').trigger('click');
-        }else{
+            $("#" + objectData.config.basicApply.frm).find('input').attr('readonly', 'readonly');
+        } else {
             $("#" + objectData.config.basicApply.frm).find('[name=type]:eq(0)').trigger('click');
         }
     };
@@ -1078,7 +1072,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     Alert("提交数据成功!", 1, null, function () {
-                        objectData.successClear();
+                        window.close();
                     });
                 }
             },
@@ -1097,16 +1091,16 @@
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApply/temporary",
+            url: "${pageContext.request.contextPath}/basicApply/saveDraft",
             type: "post",
             dataType: "json",
             async: false,
             data: {formData: formData},
             success: function (result) {
-                Loading.progressHide();
+               Loading.progressHide();
                 if (result.ret) {
                     Alert("保存数据成功!", 1, null, function () {
-                        objectData.successClear();
+                        window.close();
                     });
                 }
             },

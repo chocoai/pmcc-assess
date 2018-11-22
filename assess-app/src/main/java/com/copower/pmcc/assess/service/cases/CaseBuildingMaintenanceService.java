@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMaintenanceDao;
@@ -106,31 +105,6 @@ public class CaseBuildingMaintenanceService {
     public boolean addCaseBuildingMaintenance(CaseBuildingMaintenance caseBuildingMaintenance) {
         caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
         return caseBuildingMaintenanceDao.addBuildingMaintenance(caseBuildingMaintenance);
-    }
-
-    public Integer upgradeVersion(CaseBuildingMaintenance caseBuildingMaintenance) throws Exception {
-        if (caseBuildingMaintenance.getId() == null) {
-            caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
-            caseBuildingMaintenance.setVersion(0);
-            caseBuildingMaintenanceDao.addBuildingMaintenance(caseBuildingMaintenance);
-            return null;
-        }
-        if (caseBuildingMaintenance.getId() != null) {
-            CaseBuildingMaintenance oo = this.getCaseBuildingMaintenanceById(caseBuildingMaintenance.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingMaintenance, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            caseBuildingMaintenanceDao.addBuildingMaintenance(oo);
-            return null;
-        }
-        return null;
     }
 
     /**

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseEquipmentDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseEquipment;
@@ -20,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,45 +121,7 @@ public class CaseHouseEquipmentService {
     public boolean deleteCaseHouseEquipment(Integer id) {
         return caseHouseEquipmentDao.deleteHouseEquipment(id);
     }
-
-    public List<BaseDataDic> examineCaseHouseEquipment_grade(ExamineHouseEquipmentTypeEnum typeEnum) {
-        String key = typeEnum.getKey();
-        if (!org.springframework.util.StringUtils.isEmpty(key)) {
-            List<BaseDataDic> baseDataDic = null;
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseAirConditioner.getKey())) {
-                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_AIR_CONDITIONING_MODE);
-            }
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseNewWind.getKey())) {
-                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_WAY_WIND);
-            }
-            if (key.equals(ExamineHouseEquipmentTypeEnum.houseHeating.getKey())) {
-                baseDataDic = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_HEATING_METHOD);
-            }
-            if (!ObjectUtils.isEmpty(baseDataDic)) {
-                return baseDataDic;
-            }
-        }
-        return null;
-    }
-
-    public void upgradeVersion(CaseHouseEquipment oo) throws Exception {
-        if (oo.getId() == null || oo.getId().intValue() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            oo.setVersion(0);
-            caseHouseEquipmentDao.addHouseEquipment(oo);
-        }else {
-            CaseHouseEquipment po = this.getCaseHouseEquipmentById(oo.getId());
-            if (po.getVersion() == null) {
-                po.setVersion(0);
-            }
-            int version = po.getVersion() + 1;
-            BeanUtils.copyProperties(oo, po);
-            po.setVersion(version);
-            po.setCreator(commonService.thisUserAccount());
-            po.setId(null);
-            caseHouseEquipmentDao.addHouseEquipment(po);
-        }
-    }
+    
 
     /**
      * 根据查询条件判断是否有数据

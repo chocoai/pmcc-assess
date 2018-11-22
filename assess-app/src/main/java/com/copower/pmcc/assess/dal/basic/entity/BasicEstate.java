@@ -6,8 +6,6 @@ import java.util.Date;
 public class BasicEstate {
     private Integer id;
 
-    private Integer caseEstateId;
-
     private Integer applyId;
 
     private Integer type;
@@ -15,8 +13,6 @@ public class BasicEstate {
     private String province;
 
     private String city;
-
-    private Boolean temporary;
 
     private String district;
 
@@ -62,8 +58,6 @@ public class BasicEstate {
 
     private Boolean supplyGas;
 
-    private Integer version;
-
     private String creator;
 
     private Date gmtCreated;
@@ -76,14 +70,6 @@ public class BasicEstate {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseEstateId() {
-        return caseEstateId;
-    }
-
-    public void setCaseEstateId(Integer caseEstateId) {
-        this.caseEstateId = caseEstateId;
     }
 
     public Integer getApplyId() {
@@ -116,14 +102,6 @@ public class BasicEstate {
 
     public void setCity(String city) {
         this.city = city == null ? null : city.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getDistrict() {
@@ -300,14 +278,6 @@ public class BasicEstate {
 
     public void setSupplyGas(Boolean supplyGas) {
         this.supplyGas = supplyGas;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

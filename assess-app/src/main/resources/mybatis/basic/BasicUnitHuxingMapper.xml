@@ -3,7 +3,6 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicUnitHuxingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="house_layout" property="houseLayout" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
@@ -14,7 +13,6 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="orientation" property="orientation" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -78,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, unit_id, house_layout, area, span_length, span_width, span_number, description, 
-    creator, house_category, name, temporary, orientation, gmt_created, gmt_modified
+    id, unit_id, house_layout, area, span_length, span_width, span_number, description, 
+    creator, house_category, name, orientation, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxingExample" >
     select
@@ -115,18 +113,16 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_huxing (case_id, unit_id, house_layout, 
-      area, span_length, span_width, 
-      span_number, description, creator, 
-      house_category, name, temporary, 
-      orientation, gmt_created, gmt_modified
-      )
-    values (#{caseId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseLayout,jdbcType=INTEGER}, 
-      #{area,jdbcType=DECIMAL}, #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, 
-      #{spanNumber,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{houseCategory,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, 
-      #{orientation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_unit_huxing (unit_id, house_layout, area, 
+      span_length, span_width, span_number, 
+      description, creator, house_category, 
+      name, orientation, gmt_created, 
+      gmt_modified)
+    values (#{unitId,jdbcType=INTEGER}, #{houseLayout,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
+      #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -134,9 +130,6 @@
     </selectKey>
     insert into tb_basic_unit_huxing
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="unitId != null" >
         unit_id,
       </if>
@@ -167,9 +160,6 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="temporary != null" >
-        temporary,
-      </if>
       <if test="orientation != null" >
         orientation,
       </if>
@@ -181,9 +171,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
@@ -214,9 +201,6 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
-      </if>
       <if test="orientation != null" >
         #{orientation,jdbcType=VARCHAR},
       </if>
@@ -239,9 +223,6 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
       </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
@@ -273,9 +254,6 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
-      </if>
       <if test="record.orientation != null" >
         orientation = #{record.orientation,jdbcType=VARCHAR},
       </if>
@@ -293,7 +271,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_unit_huxing
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       house_layout = #{record.houseLayout,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
@@ -304,7 +281,6 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       house_category = #{record.houseCategory,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
       orientation = #{record.orientation,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -315,9 +291,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing" >
     update tb_basic_unit_huxing
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
@@ -348,9 +321,6 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
-      </if>
       <if test="orientation != null" >
         orientation = #{orientation,jdbcType=VARCHAR},
       </if>
@@ -365,8 +335,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing" >
     update tb_basic_unit_huxing
-    set case_id = #{caseId,jdbcType=INTEGER},
-      unit_id = #{unitId,jdbcType=INTEGER},
+    set unit_id = #{unitId,jdbcType=INTEGER},
       house_layout = #{houseLayout,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
       span_length = #{spanLength,jdbcType=DECIMAL},
@@ -376,7 +345,6 @@
       creator = #{creator,jdbcType=VARCHAR},
       house_category = #{houseCategory,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
       orientation = #{orientation,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

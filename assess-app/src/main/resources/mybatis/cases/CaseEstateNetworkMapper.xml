@@ -7,7 +7,6 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
     <result column="index_parameter" property="indexParameter" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -71,8 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, name, service_content, index_parameter, version, creator, gmt_created, 
-    gmt_modified
+    id, estate_id, name, service_content, index_parameter, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetworkExample" >
     select
@@ -109,11 +107,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_case_estate_network (estate_id, name, service_content, 
-      index_parameter, version, creator, 
-      gmt_created, gmt_modified)
+      index_parameter, creator, gmt_created, 
+      gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{serviceContent,jdbcType=VARCHAR}, 
-      #{indexParameter,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{indexParameter,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -132,9 +130,6 @@
       </if>
       <if test="indexParameter != null" >
         index_parameter,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
       <if test="creator != null" >
         creator,
@@ -158,9 +153,6 @@
       </if>
       <if test="indexParameter != null" >
         #{indexParameter,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -197,9 +189,6 @@
       <if test="record.indexParameter != null" >
         index_parameter = #{record.indexParameter,jdbcType=VARCHAR},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -221,7 +210,6 @@
       name = #{record.name,jdbcType=VARCHAR},
       service_content = #{record.serviceContent,jdbcType=VARCHAR},
       index_parameter = #{record.indexParameter,jdbcType=VARCHAR},
-      version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -244,9 +232,6 @@
       <if test="indexParameter != null" >
         index_parameter = #{indexParameter,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -265,7 +250,6 @@
       name = #{name,jdbcType=VARCHAR},
       service_content = #{serviceContent,jdbcType=VARCHAR},
       index_parameter = #{indexParameter,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

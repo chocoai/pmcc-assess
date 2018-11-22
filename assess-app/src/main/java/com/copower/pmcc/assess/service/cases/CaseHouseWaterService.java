@@ -117,25 +117,6 @@ public class CaseHouseWaterService {
         return caseHouseWaterDao.updateHouseWater(caseHouseWater);
     }
 
-    public void upgradeVersion(CaseHouseWater oo) throws Exception {
-        if (oo.getId() == null || oo.getId().intValue() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            oo.setVersion(0);
-            caseHouseWaterDao.addHouseWater(oo);
-        }else {
-            CaseHouseWater po = this.getCaseHouseWaterById(oo.getId());
-            if (po.getVersion() == null) {
-                po.setVersion(0);
-            }
-            int version = po.getVersion() + 1;
-            BeanUtils.copyProperties(oo, po);
-            po.setVersion(version);
-            po.setCreator(commonService.thisUserAccount());
-            po.setId(null);
-            caseHouseWaterDao.addHouseWater(po);
-        }
-    }
-
     /**
      * 删除
      *

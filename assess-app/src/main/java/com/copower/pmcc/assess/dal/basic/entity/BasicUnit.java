@@ -5,19 +5,13 @@ import java.util.Date;
 public class BasicUnit {
     private Integer id;
 
-    private Integer caseUnitId;
-
     private Integer applyId;
 
     private Integer basicBuildingMainId;
 
-    private Boolean temporary;
-
     private String unitNumber;
 
     private String elevatorHouseholdRatio;
-
-    private Integer version;
 
     private String creator;
 
@@ -31,14 +25,6 @@ public class BasicUnit {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseUnitId() {
-        return caseUnitId;
-    }
-
-    public void setCaseUnitId(Integer caseUnitId) {
-        this.caseUnitId = caseUnitId;
     }
 
     public Integer getApplyId() {
@@ -57,14 +43,6 @@ public class BasicUnit {
         this.basicBuildingMainId = basicBuildingMainId;
     }
 
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
-    }
-
     public String getUnitNumber() {
         return unitNumber;
     }
@@ -79,14 +57,6 @@ public class BasicUnit {
 
     public void setElevatorHouseholdRatio(String elevatorHouseholdRatio) {
         this.elevatorHouseholdRatio = elevatorHouseholdRatio == null ? null : elevatorHouseholdRatio.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

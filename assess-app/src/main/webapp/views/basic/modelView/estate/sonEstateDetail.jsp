@@ -1,196 +1,307 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="x_content">
-    <h3>通信网络
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>通信网络</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="examineEstateNetworkList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>
-        车位
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>车位</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="estateParkingList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content" id="industrySupplyWater">
-    <h3>供排水情况
-    </h3>
-    <div>
-        <table class="table table-bordered" id="EstateSupplyWaterList">
-            <!-- cerare document add ajax data-->
-        </table>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>环境因素信息</h4>
+        <div class="clearfix"></div>
     </div>
-</div>
-
-<div class="x_content" id="industrySupplyPower">
-    <h3>供电信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="EstateSupplyPowerList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content" id="industrySupplyHeating">
-    <h3>供热信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="EstateSupplyHeatingList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content" id="industrySupplyGas">
-    <h3>供气信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="EstateSupplyGasList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content">
-    <h3>教育条件信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingEducationList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content">
-    <h3>环境因素信息
-    </h3>
-    <div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MatchingEnvironmentList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>金融服务信息
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>金融服务信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MatchingFinanceList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>休闲娱乐信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingRecreationList">
-            <!-- cerare document add ajax data-->
-        </table>
+<div id="industryMatchingInfo" style="display: none;">
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>教育条件信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <table class="table table-bordered" id="MatchingEducationList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>休闲娱乐信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <table class="table table-bordered" id="MatchingRecreationList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>餐饮信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <table class="table table-bordered" id="MatchingRestaurantList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>购物商场信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <table class="table table-bordered" id="MatchingMarketList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>医养条件信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <table class="table table-bordered" id="MatchingMedicalList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>餐饮信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingRestaurantList">
-            <!-- cerare document add ajax data-->
-        </table>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>公交信息</h4>
+        <div class="clearfix"></div>
     </div>
-</div>
-
-<div class="x_content">
-    <h3>购物商场信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingMarketList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content" id="industryMaterial">
-    <h3>原料供应及销售条件信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingMaterialList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content">
-    <h3>医养条件信息
-    </h3>
-    <div>
-        <table class="table table-bordered" id="MatchingMedicalList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_content">
-    <h3>公交信息
-    </h3>
-    <div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="TransitList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>交通枢纽信息
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>交通枢纽信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MatchingTrafficHubList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>地铁信息
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>地铁信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MatchingMetroList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>主干道信息
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>主干道信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MainRoadList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>主要转换互通桥
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>主要转换信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="MatchingMainConversionList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
+
+<div class="x_panel" id="industrySupplyWater">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供排水情况</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="EstateSupplyWaterList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industrySupplyPower">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供电信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="EstateSupplyPowerList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industrySupplyHeating">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供电信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="EstateSupplyHeatingList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industrySupplyGas">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供气信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="EstateSupplyGasList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industryMaterial">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>原料供应及销售条件信息</h4>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="MatchingMaterialList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript">
     var estateNetwork;
     (function () {

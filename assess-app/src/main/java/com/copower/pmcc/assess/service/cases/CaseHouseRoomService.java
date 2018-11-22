@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseRoomDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoom;
@@ -46,29 +45,6 @@ public class CaseHouseRoomService {
      */
     public CaseHouseRoom getCaseHouseRoomById(Integer id) {
         return caseHouseRoomDao.getHouseRoomById(id);
-    }
-
-    public void upgradeVersion(CaseHouseRoom po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            Integer id =  this.saveCaseHouseRoom(po);
-            po.setId(id);
-        }else {
-            CaseHouseRoom oo = getCaseHouseRoomById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            Integer id = this.saveCaseHouseRoom(oo);
-            po.setId(id);
-        }
     }
 
     /**

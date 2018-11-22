@@ -5,15 +5,11 @@ import java.util.Date;
 public class BasicHouseRoomDecorate {
     private Integer id;
 
-    private Integer caseRoomDecorateId;
-
     private Integer roomId;
 
     private Integer part;
 
     private Integer material;
-
-    private Boolean temporary;
 
     private String materialPrice;
 
@@ -31,14 +27,6 @@ public class BasicHouseRoomDecorate {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseRoomDecorateId() {
-        return caseRoomDecorateId;
-    }
-
-    public void setCaseRoomDecorateId(Integer caseRoomDecorateId) {
-        this.caseRoomDecorateId = caseRoomDecorateId;
     }
 
     public Integer getRoomId() {
@@ -63,14 +51,6 @@ public class BasicHouseRoomDecorate {
 
     public void setMaterial(Integer material) {
         this.material = material;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getMaterialPrice() {

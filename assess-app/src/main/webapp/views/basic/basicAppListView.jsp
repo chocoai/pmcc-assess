@@ -107,16 +107,12 @@
         var cols = [];
         cols.push({field: 'fullName', title: '名称'});
         cols.push({
-            field: 'id', title: '类型', formatter: function (value, row, index) {
-                if (dataObjFun.isNotBlank(row.industry)){
-                    if (row.industry == '1'){
-                        return "非工业与仓储";
-                    }
-                    if (row.industry == '2'){
-                        return "工业与仓储";
-                    }
-                }else {
-                    return "以前数据";
+            field: 'type', title: '类型', formatter: function (value, row, index) {
+                if (value == 0) {
+                    return "非工业与仓储";
+                }
+                if (value == 1) {
+                    return "工业与仓储";
                 }
             }
         });

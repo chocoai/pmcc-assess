@@ -5,21 +5,15 @@ import java.util.Date;
 public class BasicHouseTradingLease {
     private Integer id;
 
-    private Integer caseTradingLeaseId;
-
     private Integer houseId;
 
     private Date rentPaymentTimeStart;
 
     private Date rentPaymentTimeEnd;
 
-    private Boolean temporary;
-
     private String rentGrowthRate;
 
     private String creator;
-
-    private Integer version;
 
     private Date gmtCreated;
 
@@ -31,14 +25,6 @@ public class BasicHouseTradingLease {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseTradingLeaseId() {
-        return caseTradingLeaseId;
-    }
-
-    public void setCaseTradingLeaseId(Integer caseTradingLeaseId) {
-        this.caseTradingLeaseId = caseTradingLeaseId;
     }
 
     public Integer getHouseId() {
@@ -65,14 +51,6 @@ public class BasicHouseTradingLease {
         this.rentPaymentTimeEnd = rentPaymentTimeEnd;
     }
 
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
-    }
-
     public String getRentGrowthRate() {
         return rentGrowthRate;
     }
@@ -87,14 +65,6 @@ public class BasicHouseTradingLease {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Date getGmtCreated() {

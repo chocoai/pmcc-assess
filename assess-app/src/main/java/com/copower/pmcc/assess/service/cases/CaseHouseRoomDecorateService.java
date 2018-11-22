@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseRoomDecorate;
@@ -139,17 +138,11 @@ public class CaseHouseRoomDecorateService {
     public void upgradeVersion(CaseHouseRoomDecorate caseHouseRoomDecorate)throws Exception{
         if (caseHouseRoomDecorate.getId()==null || caseHouseRoomDecorate.getId().intValue()==0){
             caseHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-            caseHouseRoomDecorate.setVersion(0);
             caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
         }else {
             CaseHouseRoomDecorate oo = getCaseHouseRoomDecorateById(caseHouseRoomDecorate.getId());
             if (oo != null){
-                if (oo.getVersion()==null){
-                    oo.setVersion(0);
-                }
-                int version = oo.getVersion() +1;
-                BeanUtils.copyProperties(caseHouseRoomDecorate,oo);
-                oo.setVersion(version);
+
                 oo.setId(null);
                 oo.setCreator(commonService.thisUserAccount());
                 caseHouseRoomDecorateDao.addHouseRoomDecorate(oo);

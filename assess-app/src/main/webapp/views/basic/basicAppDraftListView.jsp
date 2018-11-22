@@ -91,39 +91,55 @@
 
     var dataObjFun = new DataObjFun();
 
+    //继续申请
     dataObjFun.temporary = function (id) {
         var href = "${pageContext.request.contextPath}/basicApply/basicApplyStart";
         href += "?applyId=" + id;
         window.open(href, "");
     };
 
+    //删除
+    dataObjFun.delete = function (id) {
+        Alert('确定要删除么？', 2, null, function () {
+            Loading.progressShow();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/basicApply/deleteBasicApply',
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('删除成功！');
+                        dataObjFun.loadDataList();
+                    }
+                }
+            })
+        })
+    }
+
     dataObjFun.loadDataList = function () {
         var cols = [];
         cols.push({field: 'fullName', title: '名称'});
         cols.push({
-            field: 'id', title: '类型', formatter: function (value, row, index) {
-                if (dataObjFun.isNotBlank(row.industry)){
-                    if (row.industry == '1'){
-                        return "非工业与仓储";
-                    }
-                    if (row.industry == '2'){
-                        return "工业与仓储";
-                    }
-                }else {
-                    return "以前数据";
+            field: 'type', title: '类型', formatter: function (value, row, index) {
+                if (value == 0) {
+                    return "非工业与仓储";
+                }
+                if (value == 1) {
+                    return "工业与仓储";
                 }
             }
         });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')"><i class="fa fa-edit"></i>继续申请</a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')">继续申请</a>';
+                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="dataObjFun.delete(' + row.id + ')">删除</a>';
                 str += '</div>';
                 return str;
             }
         });
-        var estateName = $("#queryName").val() ;
-        if (!dataObjFun.isNotBlank(estateName)){
+        var estateName = $("#queryName").val();
+        if (!dataObjFun.isNotBlank(estateName)) {
             estateName = null;
         }
         $("#" + dataObjFun.config.father.table()).bootstrapTable('destroy');

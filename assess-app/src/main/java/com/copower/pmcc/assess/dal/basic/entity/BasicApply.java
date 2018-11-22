@@ -19,7 +19,7 @@ public class BasicApply {
 
     private String status;
 
-    private Boolean temporary;
+    private Boolean draftFlag;
 
     private Integer caseEstateId;
 
@@ -107,12 +107,12 @@ public class BasicApply {
         this.status = status == null ? null : status.trim();
     }
 
-    public Boolean getTemporary() {
-        return temporary;
+    public Boolean getDraftFlag() {
+        return draftFlag;
     }
 
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
+    public void setDraftFlag(Boolean draftFlag) {
+        this.draftFlag = draftFlag;
     }
 
     public Integer getCaseEstateId() {

@@ -48,27 +48,6 @@ public class CaseMatchingEnvironmentService {
         return caseMatchingEnvironmentDao.getMatchingEnvironmentById(id);
     }
 
-    public void upgradeVersion(CaseMatchingEnvironment po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            this.addCaseMatchingEnvironment(po);
-        }else {
-            CaseMatchingEnvironment oo = getCaseMatchingEnvironmentById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanUtils.copyProperties(po,oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            this.addCaseMatchingEnvironment(oo);
-        }
-    }
-
     /**
      * 获取数据列表
      *

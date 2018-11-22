@@ -20,7 +20,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -124,22 +123,18 @@ public class BasicBuildingService {
             basicBuildingMaintenanceList = basicBuildingMaintenanceService.basicBuildingMaintenanceList(queryMaintenance);
             for (BasicBuildingSurface oo : basicBuildingSurfaceList) {
                 oo.setBuildingId(newId);
-                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingSurfaceService.saveAndUpdateBasicBuildingSurface(oo);
             }
             for (BasicBuildingFunction oo : basicBuildingFunctionList) {
                 oo.setBuildingId(newId);
-                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingFunctionService.saveAndUpdateBasicBuildingFunction(oo);
             }
             for (BasicBuildingOutfit oo : basicBuildingOutfitList) {
                 oo.setBuildingId(newId);
-                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingOutfitService.saveAndUpdateBasicBuildingOutfit(oo);
             }
             for (BasicBuildingMaintenance oo : basicBuildingMaintenanceList) {
                 oo.setBuildingId(newId);
-                oo.setTemporary(basicBuilding.getTemporary());
                 basicBuildingMaintenanceService.saveAndUpdateBasicBuildingMaintenance(oo);
             }
         }
@@ -182,24 +177,15 @@ public class BasicBuildingService {
     public Integer upgradeVersion(BasicBuilding basicBuilding) throws Exception {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
-            if (basicBuilding.getVersion() == null) {
-                basicBuilding.setVersion(0);
-            }
             Integer id = basicBuildingDao.saveBasicBuilding(basicBuilding);
             this.updateSysAttachmentDto(basicBuilding,id);
             if (basicBuilding.getPart() != null) {
                 this.init(0,id, String.valueOf(basicBuilding.getPart()),basicBuilding);
             }
-            return id;
         } else {
-            BasicBuilding oo = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicBuilding.setVersion(oo.getVersion() + 1);
             basicBuildingDao.updateBasicBuilding(basicBuilding);
-            return null;
         }
+        return basicBuilding.getId();
     }
 
     /**

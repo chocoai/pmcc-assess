@@ -224,8 +224,14 @@ public class CaseHouseService {
     }
 
     public CaseHouse getCaseHouseById(Integer id) {
-
         return caseHouseDao.getHouseById(id);
+    }
+
+    public Integer getVersion(Integer id){
+        if(id==null) return 0;
+        CaseHouse caseHouse = caseHouseDao.getHouseById(id);
+        if(caseHouse==null) return 0;
+        return caseHouse.getVersion();
     }
 
     public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse) {
@@ -233,9 +239,6 @@ public class CaseHouseService {
         if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
             caseHouse.setCreator(commonService.thisUserAccount());
             id = caseHouseDao.addHouse(caseHouse);
-            //更新附件
-            this.initAndUpdateSon(0, id);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
             return id;
         } else {
             caseHouseDao.updateHouse(caseHouse);

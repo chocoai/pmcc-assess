@@ -13,8 +13,6 @@ public class CaseHouseTradingSell {
 
     private String instalmentInterest;
 
-    private Integer version;
-
     private String creator;
 
     private Date gmtCreated;
@@ -59,14 +57,6 @@ public class CaseHouseTradingSell {
 
     public void setInstalmentInterest(String instalmentInterest) {
         this.instalmentInterest = instalmentInterest == null ? null : instalmentInterest.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

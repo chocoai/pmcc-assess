@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateSupplyDao;
@@ -51,26 +50,6 @@ public class CaseEstateSupplyService {
         return caseEstateSupplyDao.getEstateNetworkById(id);
     }
 
-    public void upgradeVersion(CaseEstateSupply po) throws Exception {
-        if (po.getId() == null || po.getId().intValue() == 0) {
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            caseEstateSupplyDao.addEstateNetwork(po);
-        } else {
-            CaseEstateSupply oo = getCaseEstateSupplyById(po.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            caseEstateSupplyDao.addEstateNetwork(oo);
-        }
-    }
 
     /**
      * 获取数据列表

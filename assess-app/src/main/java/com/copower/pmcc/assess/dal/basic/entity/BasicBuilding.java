@@ -8,11 +8,7 @@ public class BasicBuilding {
 
     private Integer part;
 
-    private Integer caseBuildingId;
-
     private Integer basicBuildingMainId;
-
-    private Boolean temporary;
 
     private Integer builderId;
 
@@ -66,8 +62,6 @@ public class BasicBuilding {
 
     private String jsonContent;
 
-    private Integer version;
-
     private String creator;
 
     private String name;
@@ -92,28 +86,12 @@ public class BasicBuilding {
         this.part = part;
     }
 
-    public Integer getCaseBuildingId() {
-        return caseBuildingId;
-    }
-
-    public void setCaseBuildingId(Integer caseBuildingId) {
-        this.caseBuildingId = caseBuildingId;
-    }
-
     public Integer getBasicBuildingMainId() {
         return basicBuildingMainId;
     }
 
     public void setBasicBuildingMainId(Integer basicBuildingMainId) {
         this.basicBuildingMainId = basicBuildingMainId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getBuilderId() {
@@ -322,14 +300,6 @@ public class BasicBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

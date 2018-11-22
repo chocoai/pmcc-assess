@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicMatchingMedical {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private String organizationName;
@@ -14,8 +12,6 @@ public class BasicMatchingMedical {
     private String organizationLevel;
 
     private String bedNumber;
-
-    private Boolean temporary;
 
     private Integer distance;
 
@@ -31,14 +27,6 @@ public class BasicMatchingMedical {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getEstateId() {
@@ -71,14 +59,6 @@ public class BasicMatchingMedical {
 
     public void setBedNumber(String bedNumber) {
         this.bedNumber = bedNumber == null ? null : bedNumber.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDistance() {

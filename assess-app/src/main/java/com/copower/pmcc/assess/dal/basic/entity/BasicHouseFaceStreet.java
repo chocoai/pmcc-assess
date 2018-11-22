@@ -5,15 +5,11 @@ import java.util.Date;
 public class BasicHouseFaceStreet {
     private Integer id;
 
-    private Integer caseFaceStreetId;
-
     private Integer houseId;
 
     private String streetName;
 
     private Integer streetLevel;
-
-    private Boolean temporary;
 
     private Integer trafficFlow;
 
@@ -31,14 +27,6 @@ public class BasicHouseFaceStreet {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseFaceStreetId() {
-        return caseFaceStreetId;
-    }
-
-    public void setCaseFaceStreetId(Integer caseFaceStreetId) {
-        this.caseFaceStreetId = caseFaceStreetId;
     }
 
     public Integer getHouseId() {
@@ -63,14 +51,6 @@ public class BasicHouseFaceStreet {
 
     public void setStreetLevel(Integer streetLevel) {
         this.streetLevel = streetLevel;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getTrafficFlow() {

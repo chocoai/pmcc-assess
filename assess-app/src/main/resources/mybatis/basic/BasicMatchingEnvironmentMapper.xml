@@ -3,10 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicMatchingEnvironmentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="Influence_degree" property="influenceDegree" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -72,8 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, estate_id, type, temporary, category, Influence_degree, creator, gmt_created, 
-    gmt_modified
+    id, estate_id, type, category, Influence_degree, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironmentExample" >
     select
@@ -109,14 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_matching_environment (case_id, estate_id, type, 
-      temporary, category, Influence_degree, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{temporary,jdbcType=BIT}, #{category,jdbcType=INTEGER}, #{influenceDegree,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_matching_environment (estate_id, type, category, 
+      Influence_degree, creator, gmt_created, 
+      gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{influenceDegree,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -124,17 +119,11 @@
     </selectKey>
     insert into tb_basic_matching_environment
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
       <if test="type != null" >
         type,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="category != null" >
         category,
@@ -153,17 +142,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
@@ -194,17 +177,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
@@ -229,10 +206,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_matching_environment
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
       category = #{record.category,jdbcType=INTEGER},
       Influence_degree = #{record.influenceDegree,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -245,17 +220,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment" >
     update tb_basic_matching_environment
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
@@ -277,10 +246,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingEnvironment" >
     update tb_basic_matching_environment
-    set case_id = #{caseId,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
       category = #{category,jdbcType=INTEGER},
       Influence_degree = #{influenceDegree,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

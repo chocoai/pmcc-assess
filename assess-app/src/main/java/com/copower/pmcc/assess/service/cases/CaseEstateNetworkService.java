@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateNetworkDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateNetwork;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -41,27 +40,6 @@ public class CaseEstateNetworkService {
     public boolean saveCaseEstateNetwork(CaseEstateNetwork examineEstateNetwork) {
         examineEstateNetwork.setCreator(commonService.thisUserAccount());
         return caseEstateNetworkDao.addEstateNetwork(examineEstateNetwork);
-    }
-
-    public void upgradeVersion(CaseEstateNetwork caseEstateNetwork)throws Exception{
-        if (caseEstateNetwork.getId()==null || caseEstateNetwork.getId().intValue() == 0){
-            caseEstateNetwork.setCreator(commonService.thisUserAccount());
-            caseEstateNetwork.setVersion(0);
-            caseEstateNetworkDao.addEstateNetwork(caseEstateNetwork);
-        }else {
-            CaseEstateNetwork oo = getEstateNetworkById(caseEstateNetwork.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstateNetwork, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            caseEstateNetworkDao.addEstateNetwork(oo);
-        }
     }
 
     /**

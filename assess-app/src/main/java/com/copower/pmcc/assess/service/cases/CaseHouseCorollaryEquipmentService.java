@@ -76,27 +76,6 @@ public class CaseHouseCorollaryEquipmentService {
         return vo;
     }
 
-    public void upgradeVersion(CaseHouseCorollaryEquipment oo) throws Exception {
-        if (oo.getId() == null || oo.getId().intValue() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            oo.setVersion(0);
-            Integer id = caseHouseCorollaryEquipmentDao.addEstateLandState(oo);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
-            oo.setId(id);
-        }else {
-            CaseHouseCorollaryEquipment po = this.getCaseHouseCorollaryEquipmentById(oo.getId());
-            if (po.getVersion() == null){
-                po.setVersion(0);
-            }
-            int version = po.getVersion() +1;
-            BeanUtils.copyProperties(oo,po);
-            po.setVersion(version);
-            po.setCreator(commonService.thisUserAccount());
-            po.setId(null);
-            Integer id = caseHouseCorollaryEquipmentDao.addEstateLandState(po);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
-        }
-    }
 
     public CaseHouseCorollaryEquipmentVo getCaseHouseCorollaryEquipmentVo(CaseHouseCorollaryEquipment caseHouseCorollaryEquipment) {
         CaseHouseCorollaryEquipmentVo vo = new CaseHouseCorollaryEquipmentVo();
@@ -148,7 +127,6 @@ public class CaseHouseCorollaryEquipmentService {
         int id = 0;
         try {
             id = caseHouseCorollaryEquipmentDao.addEstateLandState(caseHouseCorollaryEquipment);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseCorollaryEquipment.class), id);
             return true;
         } catch (Exception e1) {
             logger.error("error:%s", e1.getMessage());

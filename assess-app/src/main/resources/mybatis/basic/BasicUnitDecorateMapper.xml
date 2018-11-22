@@ -3,12 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicUnitDecorateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
     <result column="material_price_range" property="materialPriceRange" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -74,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, unit_id, decoration_part, decorating_material, material_price_range, 
-    temporary, location, construction_technology, creator, gmt_created, gmt_modified
+    id, unit_id, decoration_part, decorating_material, material_price_range, location, 
+    construction_technology, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorateExample" >
     select
@@ -111,14 +109,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_decorate (case_id, unit_id, decoration_part, 
-      decorating_material, material_price_range, 
-      temporary, location, construction_technology, 
+    insert into tb_basic_unit_decorate (unit_id, decoration_part, decorating_material, 
+      material_price_range, location, construction_technology, 
       creator, gmt_created, gmt_modified
       )
-    values (#{caseId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
-      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPriceRange,jdbcType=INTEGER}, 
-      #{temporary,jdbcType=BIT}, #{location,jdbcType=VARCHAR}, #{constructionTechnology,jdbcType=INTEGER}, 
+    values (#{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
+      #{materialPriceRange,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -128,9 +124,6 @@
     </selectKey>
     insert into tb_basic_unit_decorate
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="unitId != null" >
         unit_id,
       </if>
@@ -142,9 +135,6 @@
       </if>
       <if test="materialPriceRange != null" >
         material_price_range,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="location != null" >
         location,
@@ -163,9 +153,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
@@ -177,9 +164,6 @@
       </if>
       <if test="materialPriceRange != null" >
         #{materialPriceRange,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
@@ -210,9 +194,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
-      </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
@@ -224,9 +205,6 @@
       </if>
       <if test="record.materialPriceRange != null" >
         material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
@@ -251,12 +229,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_unit_decorate
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       location = #{record.location,jdbcType=VARCHAR},
       construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -269,9 +245,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
     update tb_basic_unit_decorate
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
@@ -283,9 +256,6 @@
       </if>
       <if test="materialPriceRange != null" >
         material_price_range = #{materialPriceRange,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
@@ -307,12 +277,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate" >
     update tb_basic_unit_decorate
-    set case_id = #{caseId,jdbcType=INTEGER},
-      unit_id = #{unitId,jdbcType=INTEGER},
+    set unit_id = #{unitId,jdbcType=INTEGER},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       material_price_range = #{materialPriceRange,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       location = #{location,jdbcType=VARCHAR},
       construction_technology = #{constructionTechnology,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

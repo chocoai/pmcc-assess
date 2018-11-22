@@ -52,8 +52,6 @@ public class CaseHouseTrading {
 
     private String information;
 
-    private Integer version;
-
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -248,14 +246,6 @@ public class CaseHouseTrading {
 
     public void setInformation(String information) {
         this.information = information == null ? null : information.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Date getGmtCreated() {

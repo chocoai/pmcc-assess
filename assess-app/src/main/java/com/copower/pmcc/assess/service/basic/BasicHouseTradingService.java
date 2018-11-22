@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseTradingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTrading;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -70,18 +68,10 @@ public class BasicHouseTradingService {
     public Integer upgradeVersion(BasicHouseTrading basicHouseTrading)throws Exception{
         if (basicHouseTrading.getId()== null || basicHouseTrading.getId().intValue()==0){
             basicHouseTrading.setCreator(commonService.thisUserAccount());
-            if (basicHouseTrading.getVersion() == null){
-                basicHouseTrading.setVersion(0);
-            }
             Integer id = basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
             basicHouseTrading.setId(id);
             return id;
         }else {
-            BasicHouseTrading oo = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicHouseTrading.setVersion(oo.getVersion()+1);
             basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
             return basicHouseTrading.getId();
         }
@@ -122,7 +112,6 @@ public class BasicHouseTradingService {
             return null;
         }
         BasicHouseTradingVo vo = new BasicHouseTradingVo();
-        BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicHouseTrading,vo);
         vo.setInformationName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getInformation())?Integer.parseInt(basicHouseTrading.getInformation()):null));
         vo.setScopePropertyName(baseDataDicService.getNameById(org.apache.commons.lang3.math.NumberUtils.isNumber(basicHouseTrading.getScopeProperty())?Integer.parseInt(basicHouseTrading.getScopeProperty()):null));
@@ -131,62 +120,34 @@ public class BasicHouseTradingService {
             vo.setTradingTimeName(DateUtils.format(basicHouseTrading.getTradingTime()));
         }
         if (basicHouseTrading.getTradingType() != null){
-            dataDic = baseDataDicService.getDataDicById(basicHouseTrading.getTradingType());
-            if (dataDic != null){
-                vo.setTradingTypeName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getTradingType()));
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getInformationType())){
             if (NumberUtils.isNumber(basicHouseTrading.getInformationType())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseTrading.getInformationType()));
-                if (dataDic != null){
-                    vo.setInformationTypeName(dataDic.getName());
-                    dataDic = null;
-                }
+                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getInformationType())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getPaymentMethod())){
             if (NumberUtils.isNumber(basicHouseTrading.getPaymentMethod())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseTrading.getPaymentMethod()));
-                if (dataDic != null){
-                    vo.setPaymentMethodName(dataDic.getName());
-                    dataDic = null;
-                }
+                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getPaymentMethod())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getNormalTransaction())){
             if (NumberUtils.isNumber(basicHouseTrading.getNormalTransaction())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseTrading.getNormalTransaction()));
-                if (dataDic != null){
-                    vo.setNormalTransactionName(dataDic.getName());
-                    dataDic = null;
-                }
+                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getNormalTransaction())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getDescriptionContent())){
             if (NumberUtils.isNumber(basicHouseTrading.getDescriptionContent())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseTrading.getDescriptionContent()));
-                if (dataDic != null){
-                    vo.setDescriptionContentName(dataDic.getName());
-                    dataDic = null;
-                }
+                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getDescriptionContent())));
             }
         }
         if (basicHouseTrading.getDescriptionType() != null){
-            dataDic = baseDataDicService.getDataDicById(basicHouseTrading.getDescriptionType());
-            if (dataDic != null){
-                vo.setDescriptionTypeName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getDescriptionType()));
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getTaxBurden())){
             if (NumberUtils.isNumber(basicHouseTrading.getTaxBurden())){
-                dataDic = baseDataDicService.getDataDicById(Integer.parseInt(basicHouseTrading.getTaxBurden()));
-                if (dataDic != null){
-                    vo.setTaxBurdenName(dataDic.getName());
-                    dataDic = null;
-                }
+                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getTaxBurden())));
             }
         }
         return vo;

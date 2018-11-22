@@ -39,40 +39,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_building" domainObjectName="BasicBuilding"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_building_function" domainObjectName="BasicBuildingFunction"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_building_main" domainObjectName="BasicBuildingMain"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_building_maintenance" domainObjectName="BasicBuildingMaintenance"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_building_outfit" domainObjectName="BasicBuildingOutfit"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_building_surface" domainObjectName="BasicBuildingSurface"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate" domainObjectName="BasicEstate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate_network" domainObjectName="BasicEstateNetwork"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate_parking" domainObjectName="BasicEstateParking"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate_supply" domainObjectName="BasicEstateSupply"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_estate_tagging" domainObjectName="BasicEstateTagging"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house" domainObjectName="BasicHouse"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_corollary_equipment" domainObjectName="BasicHouseCorollaryEquipment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_equipment" domainObjectName="BasicHouseEquipment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_face_street" domainObjectName="BasicHouseFaceStreet"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_intelligent" domainObjectName="BasicHouseIntelligent"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_room" domainObjectName="BasicHouseRoom"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_room_decorate" domainObjectName="BasicHouseRoomDecorate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_trading" domainObjectName="BasicHouseTrading"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_trading_lease" domainObjectName="BasicHouseTradingLease"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_trading_sell" domainObjectName="BasicHouseTradingSell"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_house_water" domainObjectName="BasicHouseWater"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_education" domainObjectName="BasicMatchingEducation"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_environment" domainObjectName="BasicMatchingEnvironment"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_finance" domainObjectName="BasicMatchingFinance"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_leisure_place" domainObjectName="BasicMatchingLeisurePlace"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_material" domainObjectName="BasicMatchingMaterial"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_medical" domainObjectName="BasicMatchingMedical"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_matching_traffic" domainObjectName="BasicMatchingTraffic"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_unit" domainObjectName="BasicUnit"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_unit_decorate" domainObjectName="BasicUnitDecorate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_unit_elevator" domainObjectName="BasicUnitElevator"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_basic_unit_huxing" domainObjectName="BasicUnitHuxing"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_basic_apply" domainObjectName="BasicApply"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
     </context>
 
 </generatorConfiguration>

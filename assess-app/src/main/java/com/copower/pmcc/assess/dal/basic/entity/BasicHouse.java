@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicHouse {
     private Integer id;
 
-    private Integer caseHouseId;
-
     private Integer applyId;
 
     private Integer unitId;
-
-    private Boolean temporary;
 
     private String houseNumber;
 
@@ -37,8 +33,6 @@ public class BasicHouse {
 
     private String creator;
 
-    private Integer version;
-
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -49,14 +43,6 @@ public class BasicHouse {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseHouseId() {
-        return caseHouseId;
-    }
-
-    public void setCaseHouseId(Integer caseHouseId) {
-        this.caseHouseId = caseHouseId;
     }
 
     public Integer getApplyId() {
@@ -73,14 +59,6 @@ public class BasicHouse {
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getHouseNumber() {
@@ -177,14 +155,6 @@ public class BasicHouse {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Date getGmtCreated() {

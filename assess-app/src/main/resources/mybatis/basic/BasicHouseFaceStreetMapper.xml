@@ -3,11 +3,9 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseFaceStreetMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_face_street_id" property="caseFaceStreetId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="street_name" property="streetName" jdbcType="VARCHAR" />
     <result column="street_level" property="streetLevel" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="traffic_flow" property="trafficFlow" jdbcType="INTEGER" />
     <result column="visitors_flowrate" property="visitorsFlowrate" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -73,8 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_face_street_id, house_id, street_name, street_level, temporary, traffic_flow, 
-    visitors_flowrate, creator, gmt_created, gmt_modified
+    id, house_id, street_name, street_level, traffic_flow, visitors_flowrate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreetExample" >
     select
@@ -110,14 +108,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_face_street (case_face_street_id, house_id, street_name, 
-      street_level, temporary, traffic_flow, 
-      visitors_flowrate, creator, gmt_created, 
-      gmt_modified)
-    values (#{caseFaceStreetId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{streetName,jdbcType=VARCHAR}, 
-      #{streetLevel,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{trafficFlow,jdbcType=INTEGER}, 
-      #{visitorsFlowrate,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_face_street (house_id, street_name, street_level, 
+      traffic_flow, visitors_flowrate, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{streetName,jdbcType=VARCHAR}, #{streetLevel,jdbcType=INTEGER}, 
+      #{trafficFlow,jdbcType=INTEGER}, #{visitorsFlowrate,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +121,6 @@
     </selectKey>
     insert into tb_basic_house_face_street
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseFaceStreetId != null" >
-        case_face_street_id,
-      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -136,9 +129,6 @@
       </if>
       <if test="streetLevel != null" >
         street_level,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="trafficFlow != null" >
         traffic_flow,
@@ -157,9 +147,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseFaceStreetId != null" >
-        #{caseFaceStreetId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -168,9 +155,6 @@
       </if>
       <if test="streetLevel != null" >
         #{streetLevel,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="trafficFlow != null" >
         #{trafficFlow,jdbcType=INTEGER},
@@ -201,9 +185,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseFaceStreetId != null" >
-        case_face_street_id = #{record.caseFaceStreetId,jdbcType=INTEGER},
-      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -212,9 +193,6 @@
       </if>
       <if test="record.streetLevel != null" >
         street_level = #{record.streetLevel,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.trafficFlow != null" >
         traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
@@ -239,11 +217,9 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_face_street
     set id = #{record.id,jdbcType=INTEGER},
-      case_face_street_id = #{record.caseFaceStreetId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       street_name = #{record.streetName,jdbcType=VARCHAR},
       street_level = #{record.streetLevel,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       traffic_flow = #{record.trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{record.visitorsFlowrate,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,9 +232,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet" >
     update tb_basic_house_face_street
     <set >
-      <if test="caseFaceStreetId != null" >
-        case_face_street_id = #{caseFaceStreetId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -267,9 +240,6 @@
       </if>
       <if test="streetLevel != null" >
         street_level = #{streetLevel,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="trafficFlow != null" >
         traffic_flow = #{trafficFlow,jdbcType=INTEGER},
@@ -291,11 +261,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseFaceStreet" >
     update tb_basic_house_face_street
-    set case_face_street_id = #{caseFaceStreetId,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
       street_name = #{streetName,jdbcType=VARCHAR},
       street_level = #{streetLevel,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       traffic_flow = #{trafficFlow,jdbcType=INTEGER},
       visitors_flowrate = #{visitorsFlowrate,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

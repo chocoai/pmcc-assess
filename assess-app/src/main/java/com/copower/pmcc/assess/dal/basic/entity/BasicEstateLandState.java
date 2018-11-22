@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicEstateLandState {
     private Integer id;
 
-    private Integer caseEstateLandStateId;
-
     private Integer applyId;
 
     private Integer estateId;
@@ -14,8 +12,6 @@ public class BasicEstateLandState {
     private String name;
 
     private Integer landUseType;
-
-    private Boolean temporary;
 
     private Integer landUseCategory;
 
@@ -45,8 +41,6 @@ public class BasicEstateLandState {
 
     private String creator;
 
-    private Integer version;
-
     private Date gmtCreated;
 
     private Date gmtModified;
@@ -57,14 +51,6 @@ public class BasicEstateLandState {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseEstateLandStateId() {
-        return caseEstateLandStateId;
-    }
-
-    public void setCaseEstateLandStateId(Integer caseEstateLandStateId) {
-        this.caseEstateLandStateId = caseEstateLandStateId;
     }
 
     public Integer getApplyId() {
@@ -97,14 +83,6 @@ public class BasicEstateLandState {
 
     public void setLandUseType(Integer landUseType) {
         this.landUseType = landUseType;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getLandUseCategory() {
@@ -217,14 +195,6 @@ public class BasicEstateLandState {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Date getGmtCreated() {

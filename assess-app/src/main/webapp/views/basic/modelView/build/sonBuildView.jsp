@@ -1,70 +1,77 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<div class="x_content">
-    <div class="x_title">
-        <h3>
-            楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label>
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
-            </button>
-        </h3>
-        <div class="clearfix"></div>
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label></h4>
     </div>
-    <div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" data-toggle="modal"
+                onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
+        </button>
         <table class="table table-bordered" id="ExamineBuildingOutfitList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
-<div class="x_content" id="industrySurface">
-    <div class="x_title">
-        <h3>
-            层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="buildingModel.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
-            </button>
-        </h3>
-        <div class="clearfix"></div>
+
+<div class="x_panel" id="industrySurface">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>层面结构 <label class="control-label ExamineBuildingSurfaceList"></label></h4>
     </div>
-    <div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" data-toggle="modal"
+                onclick="buildingModel.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
+        </button>
         <table class="table table-bordered" id="ExamineBuildingSurfaceList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
-<div class="x_content" id="industryMaintenance">
-    <div class="x_title">
-        <h3>
-            维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
-            </button>
-        </h3>
-        <div class="clearfix"></div>
+
+<div class="x_panel" id="industryMaintenance">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label></h4>
     </div>
-    <div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" data-toggle="modal"
+                onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
+        </button>
         <table class="table table-bordered" id="ExamineBuildingMaintenanceList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <div class="x_title">
-        <h3>
-            建筑功能 <label class="control-label examineBuildingFunctionList"></label>
-            <button type="button" class="btn btn-success" data-toggle="modal"
-                    onclick="buildingModel.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
-            </button>
-        </h3>
-        <div class="clearfix"></div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>维护结构 <label class="control-label examineBuildingFunctionList"></label></h4>
     </div>
-    <div>
+    <div class="x_content collapse">
+        <button type="button" class="btn btn-success" data-toggle="modal"
+                onclick="buildingModel.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
+        </button>
         <table class="table table-bordered" id="examineBuildingFunctionList">
-            <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
+
 <script src="${pageContext.request.contextPath}/js/basic/building/sonBuildView.js"></script>
 
 

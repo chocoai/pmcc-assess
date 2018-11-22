@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicMatchingMaterial {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private String name;
@@ -14,8 +12,6 @@ public class BasicMatchingMaterial {
     private Integer category;
 
     private Integer scale;
-
-    private Boolean temporary;
 
     private Integer distance;
 
@@ -31,14 +27,6 @@ public class BasicMatchingMaterial {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getEstateId() {
@@ -71,14 +59,6 @@ public class BasicMatchingMaterial {
 
     public void setScale(Integer scale) {
         this.scale = scale;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDistance() {

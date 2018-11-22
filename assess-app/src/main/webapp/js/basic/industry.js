@@ -25,7 +25,8 @@ industry.config = {
         supplyHeating: "industrySupplyHeating",//供热信息
         supplyPower: "industrySupplyPower",//供电信息
         supplyWater: "industrySupplyWater", //供排水情况
-        supply: "supplyPower,supplyWater,supplyGas,supplyHeating",//供排水情况,供电信息,供热信息,供气信息 配置在楼盘中的有无  id
+        supply: "industrySupplyInfo",//供排水情况,供电信息,供热信息,供气信息 配置在楼盘中的有无  id
+        matchingInfo:"industryMatchingInfo",//教育、娱乐、参与、购物、医养
         water_supply_plan: "industry_water_supply_plan",//供水平面图
         power_supply_plan: "industry_power_supply_plan",//供电平面图
         air_supply_plan: "industry_air_supply_plan",//供气平面图
@@ -75,9 +76,8 @@ industry.industryOne = {
         $("#" + industry.config.estate.supplyPower).hide();
         $("#" + industry.config.estate.supplyWater).hide();
         $("#" + industry.config.estate.material).hide();
-        $.each(industry.config.estate.supply.split(","), function (i, n) {
-            $("." + n).show();
-        });
+        $("#" + industry.config.estate.supply).show();
+        $("#" + industry.config.estate.matchingInfo).show();
         $("#" + industry.config.estate.water_supply_plan).hide();
         $("#" + industry.config.estate.power_supply_plan).hide();
         $("#" + industry.config.estate.air_supply_plan).hide();
@@ -116,9 +116,8 @@ industry.industryTwo = {
         $("#" + industry.config.estate.supplyPower).show();
         $("#" + industry.config.estate.supplyWater).show();
         $("#" + industry.config.estate.material).show();
-        $.each(industry.config.estate.supply.split(","), function (i, n) {
-            $("." + n).hide();
-        });
+        $("#" + industry.config.estate.supply).hide();
+        $("#" + industry.config.estate.matchingInfo).hide();
         $("#" + industry.config.estate.water_supply_plan).show();
         $("#" + industry.config.estate.power_supply_plan).show();
         $("#" + industry.config.estate.air_supply_plan).show();

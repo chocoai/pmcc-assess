@@ -12,7 +12,7 @@
             </li>
         </ul>
         <h3>
-            申请信息
+            ${basicApply.id eq 0?'申请信息':basicApply.fullName}
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -22,26 +22,37 @@
                 <li role="presentation" style="display: none;">
                     <a href="#caseEstate" role="tab" id="profile-tab1" aria-expanded="true">
                         楼盘
-                        <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                           style="margin-left: 20px;cursor: pointer;"></i>
+                        <c:if test="${basicApply.id eq 0}">
+                            <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                               style="margin-left: 20px;cursor: pointer;"></i>
+                        </c:if>
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
                     <a href="#caseBuilding" role="tab" id="profile-tab2" aria-expanded="false">
-                        楼栋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;cursor: pointer;"></i>
+                        楼栋
+                        <c:if test="${basicApply.id eq 0}">
+                            <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                               style="margin-left: 20px;cursor: pointer;"></i>
+                        </c:if>
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
                     <a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false">
-                        单元<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;cursor: pointer;"></i>
+                        单元
+                        <c:if test="${basicApply.id eq 0}">
+                            <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                               style="margin-left: 20px;cursor: pointer;"></i>
+                        </c:if>
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
                     <a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false">
-                        房屋<i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
-                             style="margin-left: 20px;cursor: pointer;"></i>
+                        房屋
+                        <c:if test="${basicApply.id eq 0}">
+                            <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
+                               style="margin-left: 20px;cursor: pointer;"></i>
+                        </c:if>
                     </a>
                 </li>
             </ul>
@@ -74,11 +85,11 @@
 <script type="text/javascript">
     var basicIndexCommon;
     (function () {
-        var appId = "";
-        var estateId = "0";
-        var unitId = "0";
-        var houseId = "0";
-        var buildId = "0";
+        var appId = "${empty basicApply?0:basicApply.id}";
+        var estateId = "${empty basicEstate?0:basicEstate.id}";
+        var unitId = "${empty basicUnit?0:basicUnit.id}";
+        var buildId = "${empty basicBuildingMain?0:basicBuildingMain.id}";
+        var houseId = "${empty basicHouse?0:basicHouse.id}";
         var index = null;
         basicIndexCommon = new Object();
 
@@ -253,8 +264,8 @@
     basicIndexCommon.landLevelSelect = function (this_) {
         assessLandLevel.select({
             province: $('#province').val(),
-            city:  $('#city').val(),
-            district:  $('#district').val(),
+            city: $('#city').val(),
+            district: $('#district').val(),
             success: function (data) {
                 $(this_).parent().prev().val(data.name);
                 $(this_).parent().prev().prev().val(data.id);
@@ -281,8 +292,8 @@
     basicIndexCommon.blockSelect = function (this_) {
         assessBlock.select({
             province: $('#province').val(),
-            city:  $('#city').val(),
-            district:  $('#district').val(),
+            city: $('#city').val(),
+            district: $('#district').val(),
             success: function (row) {
                 $(this_).parent().prev().val(row.name);
                 $(this_).parent().prev().prev().val(row.id);

@@ -3,14 +3,11 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseTradingLeaseMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_trading_lease_id" property="caseTradingLeaseId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="rent_payment_time_start" property="rentPaymentTimeStart" jdbcType="TIMESTAMP" />
     <result column="rent_payment_time_end" property="rentPaymentTimeEnd" jdbcType="TIMESTAMP" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="rent_growth_rate" property="rentGrowthRate" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -73,8 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_trading_lease_id, house_id, rent_payment_time_start, rent_payment_time_end, 
-    temporary, rent_growth_rate, creator, version, gmt_created, gmt_modified
+    id, house_id, rent_payment_time_start, rent_payment_time_end, rent_growth_rate, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLeaseExample" >
     select
@@ -110,14 +107,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_trading_lease (case_trading_lease_id, house_id, rent_payment_time_start, 
-      rent_payment_time_end, temporary, rent_growth_rate, 
-      creator, version, gmt_created, 
-      gmt_modified)
-    values (#{caseTradingLeaseId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{rentPaymentTimeStart,jdbcType=TIMESTAMP}, 
-      #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{temporary,jdbcType=BIT}, #{rentGrowthRate,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_trading_lease (house_id, rent_payment_time_start, 
+      rent_payment_time_end, rent_growth_rate, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{rentPaymentTimeStart,jdbcType=TIMESTAMP}, 
+      #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{rentGrowthRate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +120,6 @@
     </selectKey>
     insert into tb_basic_house_trading_lease
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseTradingLeaseId != null" >
-        case_trading_lease_id,
-      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -137,17 +129,11 @@
       <if test="rentPaymentTimeEnd != null" >
         rent_payment_time_end,
       </if>
-      <if test="temporary != null" >
-        temporary,
-      </if>
       <if test="rentGrowthRate != null" >
         rent_growth_rate,
       </if>
       <if test="creator != null" >
         creator,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -157,9 +143,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseTradingLeaseId != null" >
-        #{caseTradingLeaseId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -169,17 +152,11 @@
       <if test="rentPaymentTimeEnd != null" >
         #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
-      </if>
       <if test="rentGrowthRate != null" >
         #{rentGrowthRate,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -201,9 +178,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseTradingLeaseId != null" >
-        case_trading_lease_id = #{record.caseTradingLeaseId,jdbcType=INTEGER},
-      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -213,17 +187,11 @@
       <if test="record.rentPaymentTimeEnd != null" >
         rent_payment_time_end = #{record.rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
-      </if>
       <if test="record.rentGrowthRate != null" >
         rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
       </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -239,14 +207,11 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_trading_lease
     set id = #{record.id,jdbcType=INTEGER},
-      case_trading_lease_id = #{record.caseTradingLeaseId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       rent_payment_time_start = #{record.rentPaymentTimeStart,jdbcType=TIMESTAMP},
       rent_payment_time_end = #{record.rentPaymentTimeEnd,jdbcType=TIMESTAMP},
-      temporary = #{record.temporary,jdbcType=BIT},
       rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
-      version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -256,9 +221,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease" >
     update tb_basic_house_trading_lease
     <set >
-      <if test="caseTradingLeaseId != null" >
-        case_trading_lease_id = #{caseTradingLeaseId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -268,17 +230,11 @@
       <if test="rentPaymentTimeEnd != null" >
         rent_payment_time_end = #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
-      </if>
       <if test="rentGrowthRate != null" >
         rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -291,14 +247,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease" >
     update tb_basic_house_trading_lease
-    set case_trading_lease_id = #{caseTradingLeaseId,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
       rent_payment_time_start = #{rentPaymentTimeStart,jdbcType=TIMESTAMP},
       rent_payment_time_end = #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
-      temporary = #{temporary,jdbcType=BIT},
       rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicEstateTagging {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private String type;
@@ -14,8 +12,6 @@ public class BasicEstateTagging {
     private String lng;
 
     private String lat;
-
-    private Boolean temporary;
 
     private String buildingNumber;
 
@@ -37,14 +33,6 @@ public class BasicEstateTagging {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getEstateId() {
@@ -77,14 +65,6 @@ public class BasicEstateTagging {
 
     public void setLat(String lat) {
         this.lat = lat == null ? null : lat.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getBuildingNumber() {

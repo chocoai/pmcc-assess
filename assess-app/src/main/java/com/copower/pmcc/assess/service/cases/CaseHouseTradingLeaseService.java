@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingLeaseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
@@ -44,7 +43,6 @@ public class CaseHouseTradingLeaseService {
 
         if (caseHouseTradingLease.getId() == null || caseHouseTradingLease.getId().intValue() == 0) {
             caseHouseTradingLease.setCreator(commonService.thisUserAccount());
-            caseHouseTradingLease.setVersion(0);
             caseHouseTradingLease.setHouseId(0);
             id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(caseHouseTradingLease);
             //更新附件
@@ -59,18 +57,11 @@ public class CaseHouseTradingLeaseService {
     public void upgradeVersion(CaseHouseTradingLease po)throws Exception{
         if (po.getId()==null || po.getId().intValue() == 0){
             po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
             Integer id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(po);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
         }else {
             CaseHouseTradingLease oo = getCaseHouseTradingLeaseById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);

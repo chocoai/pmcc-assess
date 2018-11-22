@@ -3,12 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicEstateMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicEstate" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="district" property="district" jdbcType="VARCHAR" />
     <result column="block_id" property="blockId" jdbcType="INTEGER" />
     <result column="developer_id" property="developerId" jdbcType="INTEGER" />
@@ -31,7 +29,6 @@
     <result column="supply_power" property="supplyPower" jdbcType="BIT" />
     <result column="supply_water" property="supplyWater" jdbcType="BIT" />
     <result column="supply_gas" property="supplyGas" jdbcType="BIT" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -95,11 +92,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_estate_id, apply_id, type, province, city, temporary, district, block_id, 
-    developer_id, name, street_number, street, number, land_level, attach_number, floor_area, 
-    cover_an_area, volumetric_rate, greening_rate, building_number, position, description, 
-    average_price, price_range, supply_heating, supply_power, supply_water, supply_gas, 
-    version, creator, gmt_created, gmt_modified
+    id, apply_id, type, province, city, district, block_id, developer_id, name, street_number, 
+    street, number, land_level, attach_number, floor_area, cover_an_area, volumetric_rate, 
+    greening_rate, building_number, position, description, average_price, price_range, 
+    supply_heating, supply_power, supply_water, supply_gas, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateExample" >
     select
@@ -135,27 +131,25 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_estate (case_estate_id, apply_id, type, 
-      province, city, temporary, 
-      district, block_id, developer_id, 
-      name, street_number, street, 
-      number, land_level, attach_number, 
-      floor_area, cover_an_area, volumetric_rate, 
-      greening_rate, building_number, position, 
-      description, average_price, price_range, 
-      supply_heating, supply_power, supply_water, 
-      supply_gas, version, creator, 
+    insert into tb_basic_estate (apply_id, type, province, 
+      city, district, block_id, 
+      developer_id, name, street_number, 
+      street, number, land_level, 
+      attach_number, floor_area, cover_an_area, 
+      volumetric_rate, greening_rate, building_number, 
+      position, description, average_price, 
+      price_range, supply_heating, supply_power, 
+      supply_water, supply_gas, creator, 
       gmt_created, gmt_modified)
-    values (#{caseEstateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, 
-      #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{developerId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
-      #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
-      #{supplyHeating,jdbcType=BIT}, #{supplyPower,jdbcType=BIT}, #{supplyWater,jdbcType=BIT}, 
-      #{supplyGas,jdbcType=BIT}, #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+    values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, 
+      #{developerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, 
+      #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, 
+      #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=INTEGER}, 
+      #{position,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, 
+      #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=BIT}, #{supplyPower,jdbcType=BIT}, 
+      #{supplyWater,jdbcType=BIT}, #{supplyGas,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstate" >
@@ -164,9 +158,6 @@
     </selectKey>
     insert into tb_basic_estate
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseEstateId != null" >
-        case_estate_id,
-      </if>
       <if test="applyId != null" >
         apply_id,
       </if>
@@ -178,9 +169,6 @@
       </if>
       <if test="city != null" >
         city,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="district != null" >
         district,
@@ -248,9 +236,6 @@
       <if test="supplyGas != null" >
         supply_gas,
       </if>
-      <if test="version != null" >
-        version,
-      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -262,9 +247,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseEstateId != null" >
-        #{caseEstateId,jdbcType=INTEGER},
-      </if>
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
       </if>
@@ -276,9 +258,6 @@
       </if>
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
@@ -346,9 +325,6 @@
       <if test="supplyGas != null" >
         #{supplyGas,jdbcType=BIT},
       </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -372,9 +348,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseEstateId != null" >
-        case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
@@ -386,9 +359,6 @@
       </if>
       <if test="record.city != null" >
         city = #{record.city,jdbcType=VARCHAR},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
@@ -456,9 +426,6 @@
       <if test="record.supplyGas != null" >
         supply_gas = #{record.supplyGas,jdbcType=BIT},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -476,12 +443,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_estate
     set id = #{record.id,jdbcType=INTEGER},
-      case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
       district = #{record.district,jdbcType=VARCHAR},
       block_id = #{record.blockId,jdbcType=INTEGER},
       developer_id = #{record.developerId,jdbcType=INTEGER},
@@ -504,7 +469,6 @@
       supply_power = #{record.supplyPower,jdbcType=BIT},
       supply_water = #{record.supplyWater,jdbcType=BIT},
       supply_gas = #{record.supplyGas,jdbcType=BIT},
-      version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -515,9 +479,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstate" >
     update tb_basic_estate
     <set >
-      <if test="caseEstateId != null" >
-        case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      </if>
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
@@ -529,9 +490,6 @@
       </if>
       <if test="city != null" >
         city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
@@ -599,9 +557,6 @@
       <if test="supplyGas != null" >
         supply_gas = #{supplyGas,jdbcType=BIT},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -616,12 +571,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstate" >
     update tb_basic_estate
-    set case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      apply_id = #{applyId,jdbcType=INTEGER},
+    set apply_id = #{applyId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
       district = #{district,jdbcType=VARCHAR},
       block_id = #{blockId,jdbcType=INTEGER},
       developer_id = #{developerId,jdbcType=INTEGER},
@@ -644,7 +597,6 @@
       supply_power = #{supplyPower,jdbcType=BIT},
       supply_water = #{supplyWater,jdbcType=BIT},
       supply_gas = #{supplyGas,jdbcType=BIT},
-      version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

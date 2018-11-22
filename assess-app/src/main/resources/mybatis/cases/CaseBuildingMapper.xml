@@ -32,7 +32,6 @@
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
     <result column="building_structure_lower" property="buildingStructureLower" jdbcType="INTEGER" />
     <result column="json_content" property="jsonContent" jdbcType="CHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -102,7 +101,7 @@
     facilities_use_fee, floor_start, floor_end, building_height, building_area, cover_an_area, 
     building_category, open_time, room_time, floor_height, diameter_depth, land_use_year, 
     location, net_height, building_structure, building_structure_lower, json_content, 
-    version, creator, name, gmt_created, gmt_modified
+    creator, name, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -147,9 +146,9 @@
       building_category, open_time, room_time, 
       floor_height, diameter_depth, land_use_year, 
       location, net_height, building_structure, 
-      building_structure_lower, json_content, version, 
-      creator, name, gmt_created, 
-      gmt_modified)
+      building_structure_lower, json_content, creator, 
+      name, gmt_created, gmt_modified
+      )
     values (#{part,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{caseBuildingMainId,jdbcType=INTEGER}, 
       #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, 
@@ -159,9 +158,9 @@
       #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
       #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, 
-      #{buildingStructureLower,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{version,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{buildingStructureLower,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -255,9 +254,6 @@
       </if>
       <if test="jsonContent != null" >
         json_content,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
       <if test="creator != null" >
         creator,
@@ -359,9 +355,6 @@
       </if>
       <if test="jsonContent != null" >
         #{jsonContent,jdbcType=CHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -476,9 +469,6 @@
       <if test="record.jsonContent != null" >
         json_content = #{record.jsonContent,jdbcType=CHAR},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -528,7 +518,6 @@
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       building_structure_lower = #{record.buildingStructureLower,jdbcType=INTEGER},
       json_content = #{record.jsonContent,jdbcType=CHAR},
-      version = #{record.version,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -627,9 +616,6 @@
       <if test="jsonContent != null" >
         json_content = #{jsonContent,jdbcType=CHAR},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -676,7 +662,6 @@
       building_structure = #{buildingStructure,jdbcType=INTEGER},
       building_structure_lower = #{buildingStructureLower,jdbcType=INTEGER},
       json_content = #{jsonContent,jdbcType=CHAR},
-      version = #{version,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -32,13 +32,13 @@ public class BasicApplyDao {
      * @param estateName
      * @return
      */
-    public List<BasicApply> getBasicApplyListByName(String estateName,Boolean temporary) {
+    public List<BasicApply> getBasicApplyListByName(String estateName,Boolean draftFlag) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)){
             criteria.andEstateNameLike(String.format("%s%s%s","%",estateName,"%"));
         }
-        criteria.andTemporaryEqualTo(temporary);
+        criteria.andDraftFlagEqualTo(draftFlag);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }

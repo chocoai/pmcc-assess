@@ -5,15 +5,11 @@ import java.util.Date;
 public class BasicHouseIntelligent {
     private Integer id;
 
-    private Integer caseIntelligentId;
-
     private Integer houseId;
 
     private Integer wireErection;
 
     private Integer switchCircuit;
-
-    private Boolean temporary;
 
     private Integer lampsLanterns;
 
@@ -35,14 +31,6 @@ public class BasicHouseIntelligent {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseIntelligentId() {
-        return caseIntelligentId;
-    }
-
-    public void setCaseIntelligentId(Integer caseIntelligentId) {
-        this.caseIntelligentId = caseIntelligentId;
     }
 
     public Integer getHouseId() {
@@ -67,14 +55,6 @@ public class BasicHouseIntelligent {
 
     public void setSwitchCircuit(Integer switchCircuit) {
         this.switchCircuit = switchCircuit;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getLampsLanterns() {

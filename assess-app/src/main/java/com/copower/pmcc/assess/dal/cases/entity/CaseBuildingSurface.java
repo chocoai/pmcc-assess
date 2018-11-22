@@ -7,8 +7,6 @@ public class CaseBuildingSurface {
 
     private String buildingNumber;
 
-    private Integer version;
-
     private Integer buildingId;
 
     private Integer structure;
@@ -37,14 +35,6 @@ public class CaseBuildingSurface {
 
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Integer getBuildingId() {

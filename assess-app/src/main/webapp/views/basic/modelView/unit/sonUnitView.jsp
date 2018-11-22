@@ -1,38 +1,53 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_content">
-    <h3>楼栋内装情况
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>楼栋内装情况</h4>
+    </div>
+    <div class="x_content collapse">
         <button type="button" class="btn btn-success" onclick="unitDecorate.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
-    </h3>
-    <div>
         <table class="table table-bordered" id="ExamineUnitDecorateList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>
-        户型
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>户型</h4>
+    </div>
+    <div class="x_content collapse">
         <button type="button" class="btn btn-success" onclick="unitHuxing.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
-    </h3>
-    <div>
         <table class="table table-bordered" id="UnitHuxingList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>配备电梯
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>配备电梯</h4>
+    </div>
+    <div class="x_content collapse">
         <button type="button" class="btn btn-success" onclick="unitElevator.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
-    </h3>
-    <div>
         <table class="table table-bordered" id="ExamineUnitElevatorList">
             <!-- cerare document add ajax data-->
         </table>
