@@ -3,11 +3,9 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseIntelligentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_intelligent_id" property="caseIntelligentId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="wire_erection" property="wireErection" jdbcType="INTEGER" />
     <result column="switch_circuit" property="switchCircuit" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="lamps_lanterns" property="lampsLanterns" jdbcType="INTEGER" />
     <result column="internal_communication" property="internalCommunication" jdbcType="INTEGER" />
     <result column="monitoring_system" property="monitoringSystem" jdbcType="INTEGER" />
@@ -75,9 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_intelligent_id, house_id, wire_erection, switch_circuit, temporary, lamps_lanterns, 
-    internal_communication, monitoring_system, intelligent_system, creator, gmt_created, 
-    gmt_modified
+    id, house_id, wire_erection, switch_circuit, lamps_lanterns, internal_communication, 
+    monitoring_system, intelligent_system, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligentExample" >
     select
@@ -113,14 +110,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_intelligent (case_intelligent_id, house_id, wire_erection, 
-      switch_circuit, temporary, lamps_lanterns, 
-      internal_communication, monitoring_system, 
+    insert into tb_basic_house_intelligent (house_id, wire_erection, switch_circuit, 
+      lamps_lanterns, internal_communication, monitoring_system, 
       intelligent_system, creator, gmt_created, 
       gmt_modified)
-    values (#{caseIntelligentId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{wireErection,jdbcType=INTEGER}, 
-      #{switchCircuit,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{lampsLanterns,jdbcType=INTEGER}, 
-      #{internalCommunication,jdbcType=INTEGER}, #{monitoringSystem,jdbcType=INTEGER}, 
+    values (#{houseId,jdbcType=INTEGER}, #{wireErection,jdbcType=INTEGER}, #{switchCircuit,jdbcType=INTEGER}, 
+      #{lampsLanterns,jdbcType=INTEGER}, #{internalCommunication,jdbcType=INTEGER}, #{monitoringSystem,jdbcType=INTEGER}, 
       #{intelligentSystem,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -130,9 +125,6 @@
     </selectKey>
     insert into tb_basic_house_intelligent
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseIntelligentId != null" >
-        case_intelligent_id,
-      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -141,9 +133,6 @@
       </if>
       <if test="switchCircuit != null" >
         switch_circuit,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="lampsLanterns != null" >
         lamps_lanterns,
@@ -168,9 +157,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseIntelligentId != null" >
-        #{caseIntelligentId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -179,9 +165,6 @@
       </if>
       <if test="switchCircuit != null" >
         #{switchCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="lampsLanterns != null" >
         #{lampsLanterns,jdbcType=INTEGER},
@@ -218,9 +201,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseIntelligentId != null" >
-        case_intelligent_id = #{record.caseIntelligentId,jdbcType=INTEGER},
-      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -229,9 +209,6 @@
       </if>
       <if test="record.switchCircuit != null" >
         switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.lampsLanterns != null" >
         lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
@@ -262,11 +239,9 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_intelligent
     set id = #{record.id,jdbcType=INTEGER},
-      case_intelligent_id = #{record.caseIntelligentId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       wire_erection = #{record.wireErection,jdbcType=INTEGER},
       switch_circuit = #{record.switchCircuit,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       lamps_lanterns = #{record.lampsLanterns,jdbcType=INTEGER},
       internal_communication = #{record.internalCommunication,jdbcType=INTEGER},
       monitoring_system = #{record.monitoringSystem,jdbcType=INTEGER},
@@ -281,9 +256,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent" >
     update tb_basic_house_intelligent
     <set >
-      <if test="caseIntelligentId != null" >
-        case_intelligent_id = #{caseIntelligentId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -292,9 +264,6 @@
       </if>
       <if test="switchCircuit != null" >
         switch_circuit = #{switchCircuit,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="lampsLanterns != null" >
         lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
@@ -322,11 +291,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseIntelligent" >
     update tb_basic_house_intelligent
-    set case_intelligent_id = #{caseIntelligentId,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
       wire_erection = #{wireErection,jdbcType=INTEGER},
       switch_circuit = #{switchCircuit,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       lamps_lanterns = #{lampsLanterns,jdbcType=INTEGER},
       internal_communication = #{internalCommunication,jdbcType=INTEGER},
       monitoring_system = #{monitoringSystem,jdbcType=INTEGER},

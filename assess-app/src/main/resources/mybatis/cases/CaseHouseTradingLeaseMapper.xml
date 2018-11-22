@@ -8,7 +8,6 @@
     <result column="rent_payment_time_end" property="rentPaymentTimeEnd" jdbcType="TIMESTAMP" />
     <result column="rent_growth_rate" property="rentGrowthRate" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -72,7 +71,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, rent_payment_time_start, rent_payment_time_end, rent_growth_rate, creator, 
-    version, gmt_created, gmt_modified
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLeaseExample" >
     select
@@ -110,12 +109,10 @@
     </selectKey>
     insert into tb_case_house_trading_lease (house_id, rent_payment_time_start, 
       rent_payment_time_end, rent_growth_rate, creator, 
-      version, gmt_created, gmt_modified
-      )
+      gmt_created, gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{rentPaymentTimeStart,jdbcType=TIMESTAMP}, 
       #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{rentGrowthRate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,9 +134,6 @@
       </if>
       <if test="creator != null" >
         creator,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -163,9 +157,6 @@
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -202,9 +193,6 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -224,7 +212,6 @@
       rent_payment_time_end = #{record.rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
-      version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -249,9 +236,6 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -268,7 +252,6 @@
       rent_payment_time_end = #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

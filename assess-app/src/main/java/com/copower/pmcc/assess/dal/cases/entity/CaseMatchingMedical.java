@@ -5,8 +5,6 @@ import java.util.Date;
 public class CaseMatchingMedical {
     private Integer id;
 
-    private Integer version;
-
     private Integer estateId;
 
     private String organizationName;
@@ -29,14 +27,6 @@ public class CaseMatchingMedical {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Integer getEstateId() {

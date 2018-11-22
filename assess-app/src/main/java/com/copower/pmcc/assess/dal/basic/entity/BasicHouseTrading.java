@@ -6,8 +6,6 @@ import java.util.Date;
 public class BasicHouseTrading {
     private Integer id;
 
-    private Integer caseTradingId;
-
     private Integer applyId;
 
     private Integer houseId;
@@ -54,11 +52,7 @@ public class BasicHouseTrading {
 
     private String phone;
 
-    private Boolean temporary;
-
     private String information;
-
-    private Integer version;
 
     private Date gmtCreated;
 
@@ -70,14 +64,6 @@ public class BasicHouseTrading {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseTradingId() {
-        return caseTradingId;
-    }
-
-    public void setCaseTradingId(Integer caseTradingId) {
-        this.caseTradingId = caseTradingId;
     }
 
     public Integer getApplyId() {
@@ -264,28 +250,12 @@ public class BasicHouseTrading {
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
-    }
-
     public String getInformation() {
         return information;
     }
 
     public void setInformation(String information) {
         this.information = information == null ? null : information.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Date getGmtCreated() {

@@ -10,7 +10,7 @@
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
+    <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
     <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
     <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
     <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
@@ -83,7 +83,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, process_ins_id, type, estate_name, building_number, unit_number, house_number, 
-    status, temporary, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
+    status, draft_flag, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
     estate_part_in_flag, building_part_in_flag, unit_part_in_flag, house_part_in_flag, 
     creator, gmt_created, gmt_modified
   </sql>
@@ -123,14 +123,14 @@
     </selectKey>
     insert into tb_basic_apply (process_ins_id, type, estate_name, 
       building_number, unit_number, house_number, 
-      status, temporary, case_estate_id, 
+      status, draft_flag, case_estate_id, 
       case_building_main_id, case_unit_id, case_house_id, 
       estate_part_in_flag, building_part_in_flag, unit_part_in_flag, 
       house_part_in_flag, creator, gmt_created, 
       gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
       #{caseBuildingMainId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, 
       #{estatePartInFlag,jdbcType=BIT}, #{buildingPartInFlag,jdbcType=BIT}, #{unitPartInFlag,jdbcType=BIT}, 
       #{housePartInFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
@@ -163,8 +163,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="temporary != null" >
-        temporary,
+      <if test="draftFlag != null" >
+        draft_flag,
       </if>
       <if test="caseEstateId != null" >
         case_estate_id,
@@ -222,8 +222,8 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
+      <if test="draftFlag != null" >
+        #{draftFlag,jdbcType=BIT},
       </if>
       <if test="caseEstateId != null" >
         #{caseEstateId,jdbcType=INTEGER},
@@ -293,8 +293,8 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
+      <if test="record.draftFlag != null" >
+        draft_flag = #{record.draftFlag,jdbcType=BIT},
       </if>
       <if test="record.caseEstateId != null" >
         case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
@@ -344,7 +344,7 @@
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
+      draft_flag = #{record.draftFlag,jdbcType=BIT},
       case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
       case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
@@ -384,8 +384,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
+      <if test="draftFlag != null" >
+        draft_flag = #{draftFlag,jdbcType=BIT},
       </if>
       <if test="caseEstateId != null" >
         case_estate_id = #{caseEstateId,jdbcType=INTEGER},
@@ -432,7 +432,7 @@
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       house_number = #{houseNumber,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
+      draft_flag = #{draftFlag,jdbcType=BIT},
       case_estate_id = #{caseEstateId,jdbcType=INTEGER},
       case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{caseUnitId,jdbcType=INTEGER},

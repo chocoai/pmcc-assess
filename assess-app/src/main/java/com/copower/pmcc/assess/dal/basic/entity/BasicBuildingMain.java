@@ -5,17 +5,11 @@ import java.util.Date;
 public class BasicBuildingMain {
     private Integer id;
 
-    private Integer caseBuildingMainId;
-
     private String buildingNumber;
-
-    private Boolean temporary;
 
     private Integer estateId;
 
     private Integer applyId;
-
-    private Integer version;
 
     private Boolean multipartFlag;
 
@@ -33,28 +27,12 @@ public class BasicBuildingMain {
         this.id = id;
     }
 
-    public Integer getCaseBuildingMainId() {
-        return caseBuildingMainId;
-    }
-
-    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
-        this.caseBuildingMainId = caseBuildingMainId;
-    }
-
     public String getBuildingNumber() {
         return buildingNumber;
     }
 
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getEstateId() {
@@ -71,14 +49,6 @@ public class BasicBuildingMain {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public Boolean getMultipartFlag() {

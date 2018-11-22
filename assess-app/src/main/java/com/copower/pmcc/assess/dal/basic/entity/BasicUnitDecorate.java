@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicUnitDecorate {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer unitId;
 
     private Integer decorationPart;
@@ -14,8 +12,6 @@ public class BasicUnitDecorate {
     private Integer decoratingMaterial;
 
     private Integer materialPriceRange;
-
-    private Boolean temporary;
 
     private String location;
 
@@ -33,14 +29,6 @@ public class BasicUnitDecorate {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getUnitId() {
@@ -73,14 +61,6 @@ public class BasicUnitDecorate {
 
     public void setMaterialPriceRange(Integer materialPriceRange) {
         this.materialPriceRange = materialPriceRange;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getLocation() {

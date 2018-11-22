@@ -48,27 +48,6 @@ public class CaseMatchingEducationService {
         return caseMatchingEducationDao.getMatchingEducationById(id);
     }
 
-    public void upgradeVersion(CaseMatchingEducation po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            this.addCaseMatchingEducation(po);
-        }else {
-            CaseMatchingEducation oo = getCaseMatchingEducationById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanUtils.copyProperties(po,oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            this.addCaseMatchingEducation(oo);
-        }
-    }
-
     /**
      * 获取数据列表
      *

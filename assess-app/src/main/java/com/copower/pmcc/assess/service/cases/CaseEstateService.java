@@ -93,8 +93,14 @@ public class CaseEstateService {
     }
 
     public CaseEstate getCaseEstateById(Integer id) {
-
         return caseEstateDao.getEstateById(id);
+    }
+
+    public Integer getVersion(Integer id) {
+        if (id == null) return 0;
+        CaseEstate caseEstate = caseEstateDao.getEstateById(id);
+        if (caseEstate == null) return 0;
+        return caseEstate.getVersion();
     }
 
     /**
@@ -287,7 +293,6 @@ public class CaseEstateService {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
             caseEstate.setCreator(commonService.thisUserAccount());
             int id = caseEstateDao.addEstate(caseEstate);
-            this.initAndUpdateSon(0, id);
             return id;
         } else {
             caseEstateDao.updateEstate(caseEstate);

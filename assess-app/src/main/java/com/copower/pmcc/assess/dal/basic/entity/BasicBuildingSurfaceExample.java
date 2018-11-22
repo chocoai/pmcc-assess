@@ -165,66 +165,6 @@ public class BasicBuildingSurfaceExample {
             return (Criteria) this;
         }
 
-        public Criteria andCaseSurfaceIdIsNull() {
-            addCriterion("case_surface_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdIsNotNull() {
-            addCriterion("case_surface_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdEqualTo(Integer value) {
-            addCriterion("case_surface_id =", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdNotEqualTo(Integer value) {
-            addCriterion("case_surface_id <>", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdGreaterThan(Integer value) {
-            addCriterion("case_surface_id >", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_surface_id >=", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdLessThan(Integer value) {
-            addCriterion("case_surface_id <", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdLessThanOrEqualTo(Integer value) {
-            addCriterion("case_surface_id <=", value, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdIn(List<Integer> values) {
-            addCriterion("case_surface_id in", values, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdNotIn(List<Integer> values) {
-            addCriterion("case_surface_id not in", values, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdBetween(Integer value1, Integer value2) {
-            addCriterion("case_surface_id between", value1, value2, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseSurfaceIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_surface_id not between", value1, value2, "caseSurfaceId");
-            return (Criteria) this;
-        }
-
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;
@@ -352,66 +292,6 @@ public class BasicBuildingSurfaceExample {
 
         public Criteria andBuildingIdNotBetween(Integer value1, Integer value2) {
             addCriterion("building_id not between", value1, value2, "buildingId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIsNull() {
-            addCriterion("temporary is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIsNotNull() {
-            addCriterion("temporary is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryEqualTo(Boolean value) {
-            addCriterion("temporary =", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotEqualTo(Boolean value) {
-            addCriterion("temporary <>", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThan(Boolean value) {
-            addCriterion("temporary >", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("temporary >=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThan(Boolean value) {
-            addCriterion("temporary <", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThanOrEqualTo(Boolean value) {
-            addCriterion("temporary <=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIn(List<Boolean> values) {
-            addCriterion("temporary in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotIn(List<Boolean> values) {
-            addCriterion("temporary not in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary between", value1, value2, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary not between", value1, value2, "temporary");
             return (Criteria) this;
         }
 

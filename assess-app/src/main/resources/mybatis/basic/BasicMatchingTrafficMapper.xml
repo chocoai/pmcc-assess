@@ -3,12 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicMatchingTrafficMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="nature" property="nature" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="line_name" property="lineName" jdbcType="VARCHAR" />
     <result column="the_line" property="theLine" jdbcType="VARCHAR" />
@@ -75,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, nature, estate_id, type, name, temporary, distance, line_name, the_line, 
-    creator, gmt_created, gmt_modified
+    id, nature, estate_id, type, name, distance, line_name, the_line, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTrafficExample" >
     select
@@ -112,16 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_matching_traffic (case_id, nature, estate_id, 
-      type, name, temporary, 
-      distance, line_name, the_line, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{caseId,jdbcType=INTEGER}, #{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{temporary,jdbcType=BIT}, 
-      #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, #{theLine,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_matching_traffic (nature, estate_id, type, 
+      name, distance, line_name, 
+      the_line, creator, gmt_created, 
+      gmt_modified)
+    values (#{nature,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{distance,jdbcType=INTEGER}, #{lineName,jdbcType=VARCHAR}, 
+      #{theLine,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,9 +125,6 @@
     </selectKey>
     insert into tb_basic_matching_traffic
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="nature != null" >
         nature,
       </if>
@@ -143,9 +136,6 @@
       </if>
       <if test="name != null" >
         name,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="distance != null" >
         distance,
@@ -167,9 +157,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="nature != null" >
         #{nature,jdbcType=INTEGER},
       </if>
@@ -181,9 +168,6 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=INTEGER},
@@ -217,9 +201,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
-      </if>
       <if test="record.nature != null" >
         nature = #{record.nature,jdbcType=INTEGER},
       </if>
@@ -231,9 +212,6 @@
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=INTEGER},
@@ -261,12 +239,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_matching_traffic
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       nature = #{record.nature,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
       distance = #{record.distance,jdbcType=INTEGER},
       line_name = #{record.lineName,jdbcType=VARCHAR},
       the_line = #{record.theLine,jdbcType=VARCHAR},
@@ -280,9 +256,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic" >
     update tb_basic_matching_traffic
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="nature != null" >
         nature = #{nature,jdbcType=INTEGER},
       </if>
@@ -294,9 +267,6 @@
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="distance != null" >
         distance = #{distance,jdbcType=INTEGER},
@@ -321,12 +291,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingTraffic" >
     update tb_basic_matching_traffic
-    set case_id = #{caseId,jdbcType=INTEGER},
-      nature = #{nature,jdbcType=INTEGER},
+    set nature = #{nature,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
       distance = #{distance,jdbcType=INTEGER},
       line_name = #{lineName,jdbcType=VARCHAR},
       the_line = #{theLine,jdbcType=VARCHAR},

@@ -1,84 +1,119 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="x_content">
-    <div class="x_title">
-        <h3>
-            房间
-        </h3>
-        <div class="clearfix"></div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>房间</h4>
     </div>
-    <div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseRoomList">
-            <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>供排水情况
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供排水情况</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseWaterList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>电力通讯网络
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>电力通讯网络</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseIntelligentList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>临街（路）状况
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>临街（路）状况</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseFaceStreetList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content" id="industryCorollaryEquipment">
-    <h3>房屋配套设备设施信息
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>房屋配套设备设施信息</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseCorollaryEquipmentList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>新风情况
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>新风情况</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseNewWindList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>空调情况
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>空调情况</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseAirConditionerList">
             <!-- cerare document add ajax data-->
         </table>
     </div>
 </div>
 
-<div class="x_content">
-    <h3>供暖情况
-    </h3>
-    <div>
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供暖情况</h4>
+    </div>
+    <div class="x_content collapse">
         <table class="table table-bordered" id="HouseHeatingList">
             <!-- cerare document add ajax data-->
         </table>

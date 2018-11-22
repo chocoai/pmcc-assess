@@ -165,66 +165,6 @@ public class BasicHouseTradingLeaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andCaseTradingLeaseIdIsNull() {
-            addCriterion("case_trading_lease_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdIsNotNull() {
-            addCriterion("case_trading_lease_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdEqualTo(Integer value) {
-            addCriterion("case_trading_lease_id =", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdNotEqualTo(Integer value) {
-            addCriterion("case_trading_lease_id <>", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdGreaterThan(Integer value) {
-            addCriterion("case_trading_lease_id >", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_trading_lease_id >=", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdLessThan(Integer value) {
-            addCriterion("case_trading_lease_id <", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdLessThanOrEqualTo(Integer value) {
-            addCriterion("case_trading_lease_id <=", value, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdIn(List<Integer> values) {
-            addCriterion("case_trading_lease_id in", values, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdNotIn(List<Integer> values) {
-            addCriterion("case_trading_lease_id not in", values, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdBetween(Integer value1, Integer value2) {
-            addCriterion("case_trading_lease_id between", value1, value2, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTradingLeaseIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_trading_lease_id not between", value1, value2, "caseTradingLeaseId");
-            return (Criteria) this;
-        }
-
         public Criteria andHouseIdIsNull() {
             addCriterion("house_id is null");
             return (Criteria) this;
@@ -405,66 +345,6 @@ public class BasicHouseTradingLeaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryIsNull() {
-            addCriterion("temporary is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIsNotNull() {
-            addCriterion("temporary is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryEqualTo(Boolean value) {
-            addCriterion("temporary =", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotEqualTo(Boolean value) {
-            addCriterion("temporary <>", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThan(Boolean value) {
-            addCriterion("temporary >", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("temporary >=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThan(Boolean value) {
-            addCriterion("temporary <", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThanOrEqualTo(Boolean value) {
-            addCriterion("temporary <=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIn(List<Boolean> values) {
-            addCriterion("temporary in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotIn(List<Boolean> values) {
-            addCriterion("temporary not in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary between", value1, value2, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary not between", value1, value2, "temporary");
-            return (Criteria) this;
-        }
-
         public Criteria andRentGrowthRateIsNull() {
             addCriterion("rent_growth_rate is null");
             return (Criteria) this;
@@ -602,66 +482,6 @@ public class BasicHouseTradingLeaseExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionIsNull() {
-            addCriterion("version is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionIsNotNull() {
-            addCriterion("version is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionEqualTo(Integer value) {
-            addCriterion("version =", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionNotEqualTo(Integer value) {
-            addCriterion("version <>", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionGreaterThan(Integer value) {
-            addCriterion("version >", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionGreaterThanOrEqualTo(Integer value) {
-            addCriterion("version >=", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionLessThan(Integer value) {
-            addCriterion("version <", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionLessThanOrEqualTo(Integer value) {
-            addCriterion("version <=", value, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionIn(List<Integer> values) {
-            addCriterion("version in", values, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionNotIn(List<Integer> values) {
-            addCriterion("version not in", values, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionBetween(Integer value1, Integer value2) {
-            addCriterion("version between", value1, value2, "version");
-            return (Criteria) this;
-        }
-
-        public Criteria andVersionNotBetween(Integer value1, Integer value2) {
-            addCriterion("version not between", value1, value2, "version");
             return (Criteria) this;
         }
 

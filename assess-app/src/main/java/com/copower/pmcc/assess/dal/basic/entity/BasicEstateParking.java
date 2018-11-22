@@ -5,15 +5,11 @@ import java.util.Date;
 public class BasicEstateParking {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private Integer number;
 
     private String parkingType;
-
-    private Boolean temporary;
 
     private String location;
 
@@ -29,14 +25,6 @@ public class BasicEstateParking {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getEstateId() {
@@ -61,14 +49,6 @@ public class BasicEstateParking {
 
     public void setParkingType(String parkingType) {
         this.parkingType = parkingType == null ? null : parkingType.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getLocation() {

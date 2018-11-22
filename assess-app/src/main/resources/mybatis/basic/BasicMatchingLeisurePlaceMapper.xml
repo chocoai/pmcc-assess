@@ -3,10 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicMatchingLeisurePlaceMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
@@ -74,8 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, estate_id, type, temporary, name, category, grade, distance, creator, 
-    gmt_created, gmt_modified
+    id, estate_id, type, name, category, grade, distance, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlaceExample" >
     select
@@ -111,14 +108,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_matching_leisure_place (case_id, estate_id, type, 
-      temporary, name, category, 
-      grade, distance, creator, 
-      gmt_created, gmt_modified)
-    values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{temporary,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
-      #{grade,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_matching_leisure_place (estate_id, type, name, 
+      category, grade, distance, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,17 +123,11 @@
     </selectKey>
     insert into tb_basic_matching_leisure_place
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
       <if test="type != null" >
         type,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="name != null" >
         name,
@@ -161,17 +152,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -208,17 +193,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
@@ -249,10 +228,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_matching_leisure_place
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
-      temporary = #{record.temporary,jdbcType=BIT},
       name = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
       grade = #{record.grade,jdbcType=INTEGER},
@@ -267,17 +244,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace" >
     update tb_basic_matching_leisure_place
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -305,10 +276,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingLeisurePlace" >
     update tb_basic_matching_leisure_place
-    set case_id = #{caseId,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
-      temporary = #{temporary,jdbcType=BIT},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       grade = #{grade,jdbcType=INTEGER},

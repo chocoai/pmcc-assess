@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
@@ -12,7 +11,6 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -50,43 +48,11 @@ public class CaseHouseTradingService {
         if (caseHouseTrading.getId() == null || caseHouseTrading.getId().intValue() == 0) {
             caseHouseTrading.setCreator(commonService.thisUserAccount());
             id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTrading.class), id);
             caseHouseTrading.setId(id);
             return id;
         }else {
             caseHouseTradingDao.updateCaseHouseTrading(caseHouseTrading);
             return null;
-        }
-    }
-
-    public Integer upgradeVersion(CaseHouseTrading caseHouseTrading)throws Exception{
-        Integer id = null;
-        if (caseHouseTrading.getId() == null || caseHouseTrading.getId().intValue() == 0) {
-            caseHouseTrading.setCreator(commonService.thisUserAccount());
-            caseHouseTrading.setVersion(0);
-            id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTrading.class), id);
-            caseHouseTrading.setId(id);
-            return id;
-        }else {
-            CaseHouseTrading oo = caseHouseTradingDao.getCaseHouseTradingById(caseHouseTrading.getId());
-            if (oo != null){
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseHouseTrading, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
-            caseHouseTrading.setId(id);
-            return id;
         }
     }
 

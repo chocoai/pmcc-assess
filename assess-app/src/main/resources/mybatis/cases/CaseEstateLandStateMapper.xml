@@ -20,7 +20,6 @@
     <result column="soil" property="soil" jdbcType="VARCHAR" />
     <result column="topographic_terrain" property="topographicTerrain" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -85,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, estate_id, name, land_use_type, land_use_category, land_level, land_area, east_to, 
     south_to, west_to, north_to, shape_state, planeness, development_degree, restrictive_condition, 
-    soil, topographic_terrain, creator, version, gmt_created, gmt_modified
+    soil, topographic_terrain, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandStateExample" >
     select
@@ -127,16 +126,14 @@
       north_to, shape_state, planeness, 
       development_degree, restrictive_condition, 
       soil, topographic_terrain, creator, 
-      version, gmt_created, gmt_modified
-      )
+      gmt_created, gmt_modified)
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
       #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, 
       #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
       #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -194,9 +191,6 @@
       </if>
       <if test="creator != null" >
         creator,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
       <if test="gmtCreated != null" >
         gmt_created,
@@ -256,9 +250,6 @@
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
       <if test="gmtCreated != null" >
         #{gmtCreated,jdbcType=TIMESTAMP},
@@ -331,9 +322,6 @@
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.gmtCreated != null" >
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -365,7 +353,6 @@
       soil = #{record.soil,jdbcType=VARCHAR},
       topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
-      version = #{record.version,jdbcType=INTEGER},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -426,9 +413,6 @@
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreated != null" >
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
@@ -457,7 +441,6 @@
       soil = #{soil,jdbcType=VARCHAR},
       topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

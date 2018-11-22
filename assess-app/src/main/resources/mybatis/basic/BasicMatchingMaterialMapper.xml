@@ -3,12 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicMatchingMaterialMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterial" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_id" property="caseId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
     <result column="scale" property="scale" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="distance" property="distance" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -73,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_id, estate_id, name, category, scale, temporary, distance, creator, gmt_created, 
-    gmt_modified
+    id, estate_id, name, category, scale, distance, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterialExample" >
     select
@@ -110,14 +107,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_matching_material (case_id, estate_id, name, 
-      category, scale, temporary, 
-      distance, creator, gmt_created, 
-      gmt_modified)
-    values (#{caseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{category,jdbcType=INTEGER}, #{scale,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, 
-      #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_matching_material (estate_id, name, category, 
+      scale, distance, creator, 
+      gmt_created, gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{scale,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterial" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +120,6 @@
     </selectKey>
     insert into tb_basic_matching_material
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        case_id,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -139,9 +131,6 @@
       </if>
       <if test="scale != null" >
         scale,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="distance != null" >
         distance,
@@ -157,9 +146,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseId != null" >
-        #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
@@ -171,9 +157,6 @@
       </if>
       <if test="scale != null" >
         #{scale,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="distance != null" >
         #{distance,jdbcType=INTEGER},
@@ -201,9 +184,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseId != null" >
-        case_id = #{record.caseId,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
@@ -215,9 +195,6 @@
       </if>
       <if test="record.scale != null" >
         scale = #{record.scale,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.distance != null" >
         distance = #{record.distance,jdbcType=INTEGER},
@@ -239,12 +216,10 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_matching_material
     set id = #{record.id,jdbcType=INTEGER},
-      case_id = #{record.caseId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
       scale = #{record.scale,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       distance = #{record.distance,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -256,9 +231,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterial" >
     update tb_basic_matching_material
     <set >
-      <if test="caseId != null" >
-        case_id = #{caseId,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
@@ -270,9 +242,6 @@
       </if>
       <if test="scale != null" >
         scale = #{scale,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="distance != null" >
         distance = #{distance,jdbcType=INTEGER},
@@ -291,12 +260,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicMatchingMaterial" >
     update tb_basic_matching_material
-    set case_id = #{caseId,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       scale = #{scale,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       distance = #{distance,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

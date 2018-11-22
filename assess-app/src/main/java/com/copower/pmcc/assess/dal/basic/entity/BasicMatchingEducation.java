@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicMatchingEducation {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private String schoolName;
@@ -16,8 +14,6 @@ public class BasicMatchingEducation {
     private Integer schoolGradation;
 
     private String schoolLevel;
-
-    private Boolean temporary;
 
     private Integer distance;
 
@@ -33,14 +29,6 @@ public class BasicMatchingEducation {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getEstateId() {
@@ -81,14 +69,6 @@ public class BasicMatchingEducation {
 
     public void setSchoolLevel(String schoolLevel) {
         this.schoolLevel = schoolLevel == null ? null : schoolLevel.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDistance() {

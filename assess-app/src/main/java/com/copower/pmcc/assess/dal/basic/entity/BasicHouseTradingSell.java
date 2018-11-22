@@ -5,19 +5,13 @@ import java.util.Date;
 public class BasicHouseTradingSell {
     private Integer id;
 
-    private Integer caseTradingSellId;
-
     private Integer houseId;
 
     private Date instalmentPeriodStart;
 
     private Date instalmentPeriodEnd;
 
-    private Boolean temporary;
-
     private String instalmentInterest;
-
-    private Integer version;
 
     private String creator;
 
@@ -31,14 +25,6 @@ public class BasicHouseTradingSell {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseTradingSellId() {
-        return caseTradingSellId;
-    }
-
-    public void setCaseTradingSellId(Integer caseTradingSellId) {
-        this.caseTradingSellId = caseTradingSellId;
     }
 
     public Integer getHouseId() {
@@ -65,28 +51,12 @@ public class BasicHouseTradingSell {
         this.instalmentPeriodEnd = instalmentPeriodEnd;
     }
 
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
-    }
-
     public String getInstalmentInterest() {
         return instalmentInterest;
     }
 
     public void setInstalmentInterest(String instalmentInterest) {
         this.instalmentInterest = instalmentInterest == null ? null : instalmentInterest.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

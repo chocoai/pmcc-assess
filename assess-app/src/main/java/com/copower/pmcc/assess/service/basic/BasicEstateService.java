@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
-import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -40,8 +39,6 @@ import java.util.List;
 public class BasicEstateService {
     @Autowired
     private DataDeveloperService dataDeveloperService;
-    @Autowired
-    private DataLandLevelService dataLandLevelService;
     @Autowired
     private DataBlockService dataBlockService;
     @Autowired
@@ -200,70 +197,60 @@ public class BasicEstateService {
             if (!ObjectUtils.isEmpty(basicEstateNetworkList)) {
                 for (BasicEstateNetwork oo : basicEstateNetworkList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicEstateNetworkService.saveAndUpdateBasicEstateNetwork(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicEstateParkingList)) {
                 for (BasicEstateParking oo : basicEstateParkingList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicEstateParkingService.saveAndUpdateBasicEstateParking(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicEstateSupplyList)) {
                 for (BasicEstateSupply oo : basicEstateSupplyList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicEstateSupplyService.saveAndUpdateBasicEstateSupply(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingEducationList)) {
                 for (BasicMatchingEducation oo : basicMatchingEducationList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingEducationService.saveAndUpdateBasicMatchingEducation(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingEnvironmentList)) {
                 for (BasicMatchingEnvironment oo : basicMatchingEnvironmentList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingEnvironmentService.saveAndUpdateBasicMatchingEnvironment(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingFinanceList)) {
                 for (BasicMatchingFinance oo : basicMatchingFinanceList) {
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingFinanceService.saveAndUpdateBasicMatchingFinance(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingLeisurePlaceList)) {
                 for (BasicMatchingLeisurePlace oo:basicMatchingLeisurePlaceList){
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingLeisurePlaceService.saveAndUpdateBasicMatchingLeisurePlace(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingMaterialList)) {
                 for (BasicMatchingMaterial oo:basicMatchingMaterialList){
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingMaterialService.saveAndUpdateBasicMatchingMaterial(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingMedicalList)) {
                 for (BasicMatchingMedical oo:basicMatchingMedicalList){
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingMedicalService.saveAndUpdateBasicMatchingMedical(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicMatchingTrafficList)) {
                 for (BasicMatchingTraffic oo:basicMatchingTrafficList){
                     oo.setEstateId(newId);
-                    oo.setTemporary(basicEstate.getTemporary());
                     basicMatchingTrafficService.saveAndUpdateBasicMatchingTraffic(oo);
                 }
             }
@@ -310,30 +297,15 @@ public class BasicEstateService {
     }
 
     public Integer upgradeVersion(BasicEstate basicEstate) throws Exception {
-        //无 id 情况下save
         if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
             basicEstate.setCreator(commonService.thisUserAccount());
-            if (basicEstate.getVersion() == null) {
-                basicEstate.setVersion(0);
-            }
-            Integer id = basicEstateDao.saveBasicEstate(basicEstate);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), id);
-            basicEstate.setId(id);
-            this.initUpdateSon(0, id,basicEstate);
-            return id;
-            //有id情况下 save
+            basicEstateDao.saveBasicEstate(basicEstate);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
+            this.initUpdateSon(0, basicEstate.getId(),basicEstate);
         } else {
-            //不再使用这种方式
-//            ddlMySqlAssist.insertBasicEstate(basicEstate);
-//            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
-            BasicEstate oo = this.getBasicEstateById(basicEstate.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicEstate.setVersion(oo.getVersion() + 1);
             basicEstateDao.updateBasicEstate(basicEstate);
-            return basicEstate.getId();
         }
+        return basicEstate.getId();
     }
 
 

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.DateHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseTradingSellDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
@@ -10,7 +9,6 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -45,38 +43,11 @@ public class CaseHouseTradingSellService {
 
         if (caseHouseTradingSell.getId() == null || caseHouseTradingSell.getId().intValue() == 0) {
             caseHouseTradingSell.setCreator(commonService.thisUserAccount());
-            caseHouseTradingSell.setVersion(0);
-            caseHouseTradingSell.setHouseId(0);
             id = caseHouseTradingSellDao.addCaseHouseTradingSell(caseHouseTradingSell);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
             return id;
         }else {
             caseHouseTradingSellDao.updateCaseHouseTradingSell(caseHouseTradingSell);
             return null;
-        }
-    }
-
-    public void upgradeVersion(CaseHouseTradingSell po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            Integer id = caseHouseTradingSellDao.addCaseHouseTradingSell(po);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
-        }else {
-            CaseHouseTradingSell oo = getCaseHouseTradingSellById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            Integer id = caseHouseTradingSellDao.addCaseHouseTradingSell(oo);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingSell.class), id);
         }
     }
 

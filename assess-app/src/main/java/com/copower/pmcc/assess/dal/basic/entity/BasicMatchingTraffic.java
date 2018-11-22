@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicMatchingTraffic {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer nature;
 
     private Integer estateId;
@@ -14,8 +12,6 @@ public class BasicMatchingTraffic {
     private String type;
 
     private String name;
-
-    private Boolean temporary;
 
     private Integer distance;
 
@@ -35,14 +31,6 @@ public class BasicMatchingTraffic {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getNature() {
@@ -75,14 +63,6 @@ public class BasicMatchingTraffic {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDistance() {

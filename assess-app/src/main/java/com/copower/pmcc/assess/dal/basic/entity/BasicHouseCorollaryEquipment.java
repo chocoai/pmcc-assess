@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicHouseCorollaryEquipment {
     private Integer id;
 
-    private Integer caseCorollaryEquipmentId;
-
     private Integer houseId;
 
     private Integer type;
-
-    private Boolean temporary;
 
     private Integer category;
 
@@ -39,14 +35,6 @@ public class BasicHouseCorollaryEquipment {
         this.id = id;
     }
 
-    public Integer getCaseCorollaryEquipmentId() {
-        return caseCorollaryEquipmentId;
-    }
-
-    public void setCaseCorollaryEquipmentId(Integer caseCorollaryEquipmentId) {
-        this.caseCorollaryEquipmentId = caseCorollaryEquipmentId;
-    }
-
     public Integer getHouseId() {
         return houseId;
     }
@@ -61,14 +49,6 @@ public class BasicHouseCorollaryEquipment {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getCategory() {

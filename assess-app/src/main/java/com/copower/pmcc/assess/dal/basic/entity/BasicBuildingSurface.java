@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicBuildingSurface {
     private Integer id;
 
-    private Integer caseSurfaceId;
-
     private String buildingNumber;
 
     private Integer buildingId;
-
-    private Boolean temporary;
 
     private Integer structure;
 
@@ -33,14 +29,6 @@ public class BasicBuildingSurface {
         this.id = id;
     }
 
-    public Integer getCaseSurfaceId() {
-        return caseSurfaceId;
-    }
-
-    public void setCaseSurfaceId(Integer caseSurfaceId) {
-        this.caseSurfaceId = caseSurfaceId;
-    }
-
     public String getBuildingNumber() {
         return buildingNumber;
     }
@@ -55,14 +43,6 @@ public class BasicBuildingSurface {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getStructure() {

@@ -3,7 +3,6 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseWaterMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="supply_erection_method" property="supplyErectionMethod" jdbcType="INTEGER" />
     <result column="intake_point_number" property="intakePointNumber" jdbcType="VARCHAR" />
@@ -79,10 +78,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, version, house_id, supply_erection_method, intake_point_number, pretreated_water, 
-    purification_equipment, purification_equipment_price, natrue_intake_point_number, 
-    water_intake_equipment, water_intake_equipment_price, drainage_erection_method, drainage_circuit, 
-    drainage_circuit_count, creator, gmt_created, gmt_modified
+    id, house_id, supply_erection_method, intake_point_number, pretreated_water, purification_equipment, 
+    purification_equipment_price, natrue_intake_point_number, water_intake_equipment, 
+    water_intake_equipment_price, drainage_erection_method, drainage_circuit, drainage_circuit_count, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWaterExample" >
     select
@@ -118,15 +117,15 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_house_water (version, house_id, supply_erection_method, 
-      intake_point_number, pretreated_water, purification_equipment, 
+    insert into tb_case_house_water (house_id, supply_erection_method, intake_point_number, 
+      pretreated_water, purification_equipment, 
       purification_equipment_price, natrue_intake_point_number, 
       water_intake_equipment, water_intake_equipment_price, 
       drainage_erection_method, drainage_circuit, 
       drainage_circuit_count, creator, gmt_created, 
       gmt_modified)
-    values (#{version,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{supplyErectionMethod,jdbcType=INTEGER}, 
-      #{intakePointNumber,jdbcType=VARCHAR}, #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
+    values (#{houseId,jdbcType=INTEGER}, #{supplyErectionMethod,jdbcType=INTEGER}, #{intakePointNumber,jdbcType=VARCHAR}, 
+      #{pretreatedWater,jdbcType=INTEGER}, #{purificationEquipment,jdbcType=VARCHAR}, 
       #{purificationEquipmentPrice,jdbcType=VARCHAR}, #{natrueIntakePointNumber,jdbcType=VARCHAR}, 
       #{waterIntakeEquipment,jdbcType=VARCHAR}, #{waterIntakeEquipmentPrice,jdbcType=VARCHAR}, 
       #{drainageErectionMethod,jdbcType=VARCHAR}, #{drainageCircuit,jdbcType=INTEGER}, 
@@ -139,9 +138,6 @@
     </selectKey>
     insert into tb_case_house_water
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        version,
-      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -189,9 +185,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -251,9 +244,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -307,7 +297,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_house_water
     set id = #{record.id,jdbcType=INTEGER},
-      version = #{record.version,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       supply_erection_method = #{record.supplyErectionMethod,jdbcType=INTEGER},
       intake_point_number = #{record.intakePointNumber,jdbcType=VARCHAR},
@@ -330,9 +319,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
     update tb_case_house_water
     <set >
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -383,8 +369,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseHouseWater" >
     update tb_case_house_water
-    set version = #{version,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
       supply_erection_method = #{supplyErectionMethod,jdbcType=INTEGER},
       intake_point_number = #{intakePointNumber,jdbcType=VARCHAR},
       pretreated_water = #{pretreatedWater,jdbcType=INTEGER},

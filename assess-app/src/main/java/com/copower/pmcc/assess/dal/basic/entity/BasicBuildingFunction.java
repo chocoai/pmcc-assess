@@ -7,13 +7,9 @@ public class BasicBuildingFunction {
 
     private Integer type;
 
-    private Integer caseFunctionId;
-
     private String buildingNumber;
 
     private Integer buildingId;
-
-    private Boolean temporary;
 
     private Integer decorationPart;
 
@@ -47,14 +43,6 @@ public class BasicBuildingFunction {
         this.type = type;
     }
 
-    public Integer getCaseFunctionId() {
-        return caseFunctionId;
-    }
-
-    public void setCaseFunctionId(Integer caseFunctionId) {
-        this.caseFunctionId = caseFunctionId;
-    }
-
     public String getBuildingNumber() {
         return buildingNumber;
     }
@@ -69,14 +57,6 @@ public class BasicBuildingFunction {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDecorationPart() {

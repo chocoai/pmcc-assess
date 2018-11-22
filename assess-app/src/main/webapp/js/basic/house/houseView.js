@@ -135,6 +135,7 @@ houseModelFun.initForm = function (itemA,itemB) {
     $("#" + this.config.trading.frm).clearAll();
     $("#" + houseModelFun.config.house.frm).initForm(itemA);
     $("#" + this.config.trading.frm).initForm(itemB);
+    $("#" + this.config.trading.frm).find(".tradingTime").val(formatDate(itemB.tradingTime));
     this.tradingInit(itemB);
     this.houseInit(itemA);
 };
@@ -167,6 +168,7 @@ houseModelFun.tradingInit = function (item) {
     AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, item.information, function (html, data) {
         $("#" + houseModelFun.config.trading.frm).find("select.information").empty().html(html).trigger('change');
     });
+
 };
 
 houseModelFun.tradingSellAndLease = {

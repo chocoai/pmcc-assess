@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -32,7 +33,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by kings on 2018-5-10.
@@ -51,6 +51,8 @@ public class PublicController {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     @ResponseBody
     @RequestMapping(value = "/importAjaxFile", name = "导入文件", method = RequestMethod.POST)
@@ -208,5 +210,17 @@ public class PublicController {
             attachmentVo.setHasKeep(false);
             return attachmentVo;
         });
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/closeProcess", name = "流程实例关闭")
+    public HttpResult closeProcess(String processInsId) {
+        try {
+            bpmRpcActivitiProcessManageService.closeProcess(processInsId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("流程关闭异常");
+        }
     }
 }

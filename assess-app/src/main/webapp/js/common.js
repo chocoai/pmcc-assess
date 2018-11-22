@@ -682,6 +682,27 @@ $(function () {
                     }
                 }
             });
+        },
+
+        //关闭流程
+        closeProcess: function (processInsId, callback) {
+            Loading.progressShow();
+            $.ajax({
+                url: getContextPath() + "/public/closeProcess",
+                type: "post",
+                dataType: "json",
+                data: {processInsId: processInsId},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        if (callback)
+                            callback();
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    }
+                }
+            });
         }
     };
 

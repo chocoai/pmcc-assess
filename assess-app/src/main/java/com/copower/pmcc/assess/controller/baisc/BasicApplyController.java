@@ -1,24 +1,20 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dto.output.basic.*;
-import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Ordering;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -27,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,15 +35,9 @@ public class BasicApplyController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ErpAreaService erpAreaService;
-    @Autowired
-    private ErpRpcDepartmentService erpRpcDepartmentService;
-    @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicApplyService basicApplyService;
-    @Autowired
-    private TemporaryBasicService temporaryBasicService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -94,7 +82,9 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApplySubmit", name = "案例数据申请 提交", method = RequestMethod.POST)
     public HttpResult basicApplySubmit(String formData) {
         try {
-            publicBasicService.saveBasic(formData);
+            BasicApply basicApply = publicBasicService.saveBasic(formData, false);
+            //发起流程
+            basicApplyService.sumTask(basicApply, FormatUtils.entityNameConvertToTableName(BasicApply.class));
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -128,10 +118,6 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApplyEdit", name = "返回修改页面", method = RequestMethod.GET)
     public ModelAndView basicApplyEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyEdit", processInsId, boxId, taskId, agentUserAccount);
-        //所有省份
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
-        //可选的执业部门
-        modelAndView.addObject("departmentAssess", erpRpcDepartmentService.getDepartmentAssess());
         try {
             BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
             if (StringUtils.isNotBlank(processInsId)) {
@@ -156,17 +142,19 @@ public class BasicApplyController extends BaseController {
         }
     }
 
+
+
     @ResponseBody
-    @RequestMapping(value = "/closeBasicApp", name = "流程实例关闭")
-    public HttpResult closeBasicApp(String processInsId) {
-        if (StringUtils.isNotBlank(processInsId)) {
-            bpmRpcActivitiProcessManageService.closeProcess(processInsId);
+    @RequestMapping(value = "/deleteBasicApply", name = "删除草稿数据")
+    public HttpResult deleteBasicApply(Integer id) {
+        try {
+            basicApplyService.deleteBasicApply(id);
             return HttpResult.newCorrectResult();
-        } else {
-            return HttpResult.newErrorResult("");
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("删除草稿数据异常");
         }
     }
-
 
     /**
      * 设置参数
@@ -273,20 +261,18 @@ public class BasicApplyController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/basicAppListView", name = "我的提交页面", method = {RequestMethod.GET})
+    public ModelAndView basicAppListView() {
+        String view = "/basic/basicAppListView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
+
     @ResponseBody
-    @RequestMapping(value = "/getBootstrapTableVo", name = "过程数据 list", method = {RequestMethod.GET})
+    @RequestMapping(value = "/getBootstrapTableVo", name = "我的提交数据", method = {RequestMethod.GET})
     public BootstrapTableVo getBootstrapTableVo(String estateName) {
         BootstrapTableVo vo = basicApplyService.getBootstrapTableVo(estateName, false);
         return vo;
-    }
-
-    @RequestMapping(value = "/basicAppListView", name = "转到basicAppListView页面 ", method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/basic/basicAppListView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        //所有带有此标识符的BasicApply 都为 临时数据
-        modelAndView.addObject("pauseApply", ProjectStatusEnum.PAUSEAPPLY.getKey());
-        return modelAndView;
     }
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
@@ -302,35 +288,30 @@ public class BasicApplyController extends BaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/basicApplyStart", name = "案例草稿申请", method = RequestMethod.GET)
+    public ModelAndView basicApplyStart(Integer applyId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        if (basicApply != null) {
+            try {
+                this.setViewParam(basicApply, modelAndView, "详情");
+            } catch (Exception e1) {
+                log.info("参数处理错误!", e1);
+            }
+        }
+        return modelAndView;
+    }
+
     @ResponseBody
-    @RequestMapping(value = "/temporary", name = "临时 提交", method = {RequestMethod.POST})
-    public HttpResult temporary(String formData) {
+    @RequestMapping(value = "/saveDraft", name = "保存草稿", method = {RequestMethod.POST})
+    public HttpResult saveDraft(String formData) {
         try {
-            temporaryBasicService.saveBasic(formData);
+            publicBasicService.saveBasic(formData,true);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
-    }
-
-    @RequestMapping(value = "/basicApplyStart", name = "案例数据恢复 申请", method = RequestMethod.GET)
-    public ModelAndView basicApplyStart(Integer applyId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
-        try {
-            BasicApply basicApply = temporaryBasicService.startApply(applyId);
-            if (basicApply != null) {
-                try {
-                    this.setViewParam(basicApply, modelAndView, "详情");
-                } catch (Exception e1) {
-                    log.info("参数处理错误!", e1);
-                }
-                modelAndView.addObject("startApply", ProjectStatusEnum.STARTAPPLY.getKey());
-            }
-        } catch (Exception e1) {
-            log.error("数据异常!", e1);
-        }
-        return modelAndView;
     }
 
     @RequestMapping(value = "/basicApplyDraft", name = "我的草稿", method = RequestMethod.GET)

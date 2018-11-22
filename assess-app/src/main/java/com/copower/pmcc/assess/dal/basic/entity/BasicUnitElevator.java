@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicUnitElevator {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer unitId;
 
     private String type;
@@ -20,8 +18,6 @@ public class BasicUnitElevator {
     private String quasiLoadWeight;
 
     private String runningSpeed;
-
-    private Boolean temporary;
 
     private String maintenance;
 
@@ -37,14 +33,6 @@ public class BasicUnitElevator {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getUnitId() {
@@ -101,14 +89,6 @@ public class BasicUnitElevator {
 
     public void setRunningSpeed(String runningSpeed) {
         this.runningSpeed = runningSpeed == null ? null : runningSpeed.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getMaintenance() {

@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitElevatorDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -109,26 +108,7 @@ public class CaseUnitElevatorService {
         return caseUnitElevatorDao.getUnitElevatorList(caseUnitElevator);
     }
 
-    public void upgradeVersion(CaseUnitElevator po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            this.saveCaseUnitElevator(po);
-        }else {
-            CaseUnitElevator oo = getEstateNetworkById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            this.saveCaseUnitElevator(oo);
-        }
-    }
+
 
     /**
      * 根据查询条件判断是否有数据

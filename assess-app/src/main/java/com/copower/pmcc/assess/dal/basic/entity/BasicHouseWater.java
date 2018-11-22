@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicHouseWater {
     private Integer id;
 
-    private Integer caseHouseWaterId;
-
     private Integer houseId;
 
     private Integer supplyErectionMethod;
-
-    private Boolean temporary;
 
     private String intakePointNumber;
 
@@ -47,14 +43,6 @@ public class BasicHouseWater {
         this.id = id;
     }
 
-    public Integer getCaseHouseWaterId() {
-        return caseHouseWaterId;
-    }
-
-    public void setCaseHouseWaterId(Integer caseHouseWaterId) {
-        this.caseHouseWaterId = caseHouseWaterId;
-    }
-
     public Integer getHouseId() {
         return houseId;
     }
@@ -69,14 +57,6 @@ public class BasicHouseWater {
 
     public void setSupplyErectionMethod(Integer supplyErectionMethod) {
         this.supplyErectionMethod = supplyErectionMethod;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getIntakePointNumber() {

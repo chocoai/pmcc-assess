@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicBuildingOutfit {
     private Integer id;
 
-    private Integer caseOutfitId;
-
     private String buildingNumber;
 
     private Integer buildingId;
-
-    private Boolean temporary;
 
     private Integer decorationPart;
 
@@ -37,14 +33,6 @@ public class BasicBuildingOutfit {
         this.id = id;
     }
 
-    public Integer getCaseOutfitId() {
-        return caseOutfitId;
-    }
-
-    public void setCaseOutfitId(Integer caseOutfitId) {
-        this.caseOutfitId = caseOutfitId;
-    }
-
     public String getBuildingNumber() {
         return buildingNumber;
     }
@@ -59,14 +47,6 @@ public class BasicBuildingOutfit {
 
     public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getDecorationPart() {

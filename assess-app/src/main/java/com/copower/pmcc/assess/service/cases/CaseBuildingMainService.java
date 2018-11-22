@@ -72,12 +72,17 @@ public class CaseBuildingMainService {
         return caseBuildingMainDao.getEstateById(id);
     }
 
+    public Integer getVersion(Integer id) {
+        if (id == null) return 0;
+        CaseBuildingMain caseBuildingMain = caseBuildingMainDao.getEstateById(id);
+        if (caseBuildingMain == null) return 0;
+        return caseBuildingMain.getVersion();
+    }
+
     public Integer saveAndUpdate(CaseBuildingMain caseBuildingMain) throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
-            caseBuildingMain.setVersion(0);
             int id = caseBuildingMainDao.addEstate(caseBuildingMain);
-            this.initUpdateSon(0, id);
             return id;
         } else {
             caseBuildingMainDao.updateEstate(caseBuildingMain);

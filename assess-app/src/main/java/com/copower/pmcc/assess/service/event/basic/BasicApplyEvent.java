@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.executor.ProcessEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +30,22 @@ public class BasicApplyEvent implements ProcessEventExecutor {
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
-        if (processExecution != null) {
-            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());
-            if (basicApply != null) {
-                basicApply.setStatus(ProjectStatusEnum.FINISH.getKey());
-                basicApplyService.updateBasicApply(basicApply);
-            }
-            publicBasicService.flowWrite(processExecution.getProcessInstanceId());
+        ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
+        BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processExecution.getProcessInstanceId());
+        switch (processStatusEnum) {
+            case CLOSE:
+                if (basicApply != null) {
+                    basicApply.setStatus(ProjectStatusEnum.CLOSE.getKey());
+                    basicApplyService.updateBasicApply(basicApply);
+                }
+                break;
+            case FINISH:
+                if (basicApply != null) {
+                    basicApply.setStatus(ProjectStatusEnum.FINISH.getKey());
+                    basicApplyService.updateBasicApply(basicApply);
+                }
+                publicBasicService.flowWrite(processExecution.getProcessInstanceId());
+                break;
         }
     }
 

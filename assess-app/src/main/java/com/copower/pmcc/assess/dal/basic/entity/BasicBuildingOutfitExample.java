@@ -165,66 +165,6 @@ public class BasicBuildingOutfitExample {
             return (Criteria) this;
         }
 
-        public Criteria andCaseOutfitIdIsNull() {
-            addCriterion("case_outfit_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdIsNotNull() {
-            addCriterion("case_outfit_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdEqualTo(Integer value) {
-            addCriterion("case_outfit_id =", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdNotEqualTo(Integer value) {
-            addCriterion("case_outfit_id <>", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdGreaterThan(Integer value) {
-            addCriterion("case_outfit_id >", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_outfit_id >=", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdLessThan(Integer value) {
-            addCriterion("case_outfit_id <", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdLessThanOrEqualTo(Integer value) {
-            addCriterion("case_outfit_id <=", value, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdIn(List<Integer> values) {
-            addCriterion("case_outfit_id in", values, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdNotIn(List<Integer> values) {
-            addCriterion("case_outfit_id not in", values, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdBetween(Integer value1, Integer value2) {
-            addCriterion("case_outfit_id between", value1, value2, "caseOutfitId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseOutfitIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_outfit_id not between", value1, value2, "caseOutfitId");
-            return (Criteria) this;
-        }
-
         public Criteria andBuildingNumberIsNull() {
             addCriterion("building_number is null");
             return (Criteria) this;
@@ -352,66 +292,6 @@ public class BasicBuildingOutfitExample {
 
         public Criteria andBuildingIdNotBetween(Integer value1, Integer value2) {
             addCriterion("building_id not between", value1, value2, "buildingId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIsNull() {
-            addCriterion("temporary is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIsNotNull() {
-            addCriterion("temporary is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryEqualTo(Boolean value) {
-            addCriterion("temporary =", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotEqualTo(Boolean value) {
-            addCriterion("temporary <>", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThan(Boolean value) {
-            addCriterion("temporary >", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("temporary >=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThan(Boolean value) {
-            addCriterion("temporary <", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryLessThanOrEqualTo(Boolean value) {
-            addCriterion("temporary <=", value, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryIn(List<Boolean> values) {
-            addCriterion("temporary in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotIn(List<Boolean> values) {
-            addCriterion("temporary not in", values, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary between", value1, value2, "temporary");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemporaryNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary not between", value1, value2, "temporary");
             return (Criteria) this;
         }
 

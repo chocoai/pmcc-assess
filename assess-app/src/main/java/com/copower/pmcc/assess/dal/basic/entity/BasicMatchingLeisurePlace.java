@@ -5,13 +5,9 @@ import java.util.Date;
 public class BasicMatchingLeisurePlace {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer estateId;
 
     private String type;
-
-    private Boolean temporary;
 
     private String name;
 
@@ -35,14 +31,6 @@ public class BasicMatchingLeisurePlace {
         this.id = id;
     }
 
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
-    }
-
     public Integer getEstateId() {
         return estateId;
     }
@@ -57,14 +45,6 @@ public class BasicMatchingLeisurePlace {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getName() {

@@ -123,24 +123,6 @@ public class CaseHouseFaceStreetService {
         return caseHouseFaceStreetDao.deleteHouseFaceStreet(id);
     }
 
-    public void upgradeVersion(CaseHouseFaceStreet oo) throws Exception {
-        if (oo.getId() == null || oo.getId().intValue() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            oo.setVersion(0);
-            caseHouseFaceStreetDao.addHouseFaceStreet(oo);
-        }else {
-            CaseHouseFaceStreet po = this.getCaseHouseFaceStreetById(oo.getId());
-            if (po.getVersion() == null){
-                po.setVersion(0);
-            }
-            int version = po.getVersion() +1;
-            BeanUtils.copyProperties(oo,po);
-            po.setVersion(version);
-            po.setCreator(commonService.thisUserAccount());
-            po.setId(null);
-            caseHouseFaceStreetDao.addHouseFaceStreet(po);
-        }
-    }
 
     /**
      * 根据查询条件判断是否有数据

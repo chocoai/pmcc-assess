@@ -3,10 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicBuildingOutfitMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingOutfit" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_outfit_id" property="caseOutfitId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
     <result column="material_price" property="materialPrice" jdbcType="INTEGER" />
@@ -75,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_outfit_id, building_number, building_id, temporary, decoration_part, decorating_material, 
-    material_price, construction_technology, creator, gmt_created, gmt_modified, build_number
+    id, building_number, building_id, decoration_part, decorating_material, material_price, 
+    construction_technology, creator, gmt_created, gmt_modified, build_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingOutfitExample" >
     select
@@ -112,14 +110,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building_outfit (case_outfit_id, building_number, building_id, 
-      temporary, decoration_part, decorating_material, 
-      material_price, construction_technology, 
+    insert into tb_basic_building_outfit (building_number, building_id, decoration_part, 
+      decorating_material, material_price, construction_technology, 
       creator, gmt_created, gmt_modified, 
       build_number)
-    values (#{caseOutfitId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, 
-      #{temporary,jdbcType=BIT}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
-      #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
+    values (#{buildingNumber,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
+      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{buildNumber,jdbcType=VARCHAR})
   </insert>
@@ -129,17 +125,11 @@
     </selectKey>
     insert into tb_basic_building_outfit
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseOutfitId != null" >
-        case_outfit_id,
-      </if>
       <if test="buildingNumber != null" >
         building_number,
       </if>
       <if test="buildingId != null" >
         building_id,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="decorationPart != null" >
         decoration_part,
@@ -167,17 +157,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseOutfitId != null" >
-        #{caseOutfitId,jdbcType=INTEGER},
-      </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="decorationPart != null" >
         #{decorationPart,jdbcType=INTEGER},
@@ -217,17 +201,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseOutfitId != null" >
-        case_outfit_id = #{record.caseOutfitId,jdbcType=INTEGER},
-      </if>
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.buildingId != null" >
         building_id = #{record.buildingId,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.decorationPart != null" >
         decoration_part = #{record.decorationPart,jdbcType=INTEGER},
@@ -261,10 +239,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_building_outfit
     set id = #{record.id,jdbcType=INTEGER},
-      case_outfit_id = #{record.caseOutfitId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_id = #{record.buildingId,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
       material_price = #{record.materialPrice,jdbcType=INTEGER},
@@ -280,17 +256,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingOutfit" >
     update tb_basic_building_outfit
     <set >
-      <if test="caseOutfitId != null" >
-        case_outfit_id = #{caseOutfitId,jdbcType=INTEGER},
-      </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="decorationPart != null" >
         decoration_part = #{decorationPart,jdbcType=INTEGER},
@@ -321,10 +291,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingOutfit" >
     update tb_basic_building_outfit
-    set case_outfit_id = #{caseOutfitId,jdbcType=INTEGER},
-      building_number = #{buildingNumber,jdbcType=VARCHAR},
+    set building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
       material_price = #{materialPrice,jdbcType=INTEGER},

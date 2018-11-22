@@ -37,26 +37,6 @@
     </div>
 </div>
 
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>教育条件信息</h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingEducationList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
 <div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
@@ -95,80 +75,96 @@
     </div>
 </div>
 
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>休闲娱乐信息</h4>
-        <div class="clearfix"></div>
+<div id="industryMatchingInfo" style="display: none;">
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>教育条件信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <button type="button" class="btn btn-success" onclick="matchingEducation.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+            <table class="table table-bordered" id="MatchingEducationList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingRecreationList">
-            <!-- cerare document add ajax data-->
-        </table>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>休闲娱乐信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <button type="button" class="btn btn-success" onclick="matchingRecreation.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+            <table class="table table-bordered" id="MatchingRecreationList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
-</div>
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>餐饮信息</h4>
-        <div class="clearfix"></div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>餐饮信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+            <table class="table table-bordered" id="MatchingRestaurantList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingRestaurant.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingRestaurantList">
-            <!-- cerare document add ajax data-->
-        </table>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>购物商场信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+            <table class="table table-bordered" id="MatchingMarketList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
-</div>
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>购物商场信息</h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingMarket.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingMarketList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>医养条件信息</h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="MatchingMedicalList">
-            <!-- cerare document add ajax data-->
-        </table>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h4>医养条件信息</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <button type="button" class="btn btn-success" onclick="matchingMedical.prototype.showModel()"
+                    data-toggle="modal" href="#divBox"> 新增
+            </button>
+            <table class="table table-bordered" id="MatchingMedicalList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
 </div>
 

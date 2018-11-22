@@ -6,8 +6,6 @@ import java.util.Date;
 public class BasicUnitHuxing {
     private Integer id;
 
-    private Integer caseId;
-
     private Integer unitId;
 
     private Integer houseLayout;
@@ -28,8 +26,6 @@ public class BasicUnitHuxing {
 
     private String name;
 
-    private Boolean temporary;
-
     private String orientation;
 
     private Date gmtCreated;
@@ -42,14 +38,6 @@ public class BasicUnitHuxing {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(Integer caseId) {
-        this.caseId = caseId;
     }
 
     public Integer getUnitId() {
@@ -130,14 +118,6 @@ public class BasicUnitHuxing {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public String getOrientation() {

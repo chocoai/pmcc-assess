@@ -6,11 +6,7 @@ import java.util.Date;
 public class BasicHouseRoom {
     private Integer id;
 
-    private Integer caseRoomId;
-
     private Integer houseId;
-
-    private Boolean temporary;
 
     private Integer roomType;
 
@@ -50,28 +46,12 @@ public class BasicHouseRoom {
         this.id = id;
     }
 
-    public Integer getCaseRoomId() {
-        return caseRoomId;
-    }
-
-    public void setCaseRoomId(Integer caseRoomId) {
-        this.caseRoomId = caseRoomId;
-    }
-
     public Integer getHouseId() {
         return houseId;
     }
 
     public void setHouseId(Integer houseId) {
         this.houseId = houseId;
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getRoomType() {

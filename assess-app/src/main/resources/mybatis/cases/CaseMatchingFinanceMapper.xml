@@ -3,7 +3,6 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseMatchingFinanceMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinance" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
@@ -73,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, version, estate_id, name, category, nature, service_content, auto_service_content, 
-    creator, gmt_created, gmt_modified
+    id, estate_id, name, category, nature, service_content, auto_service_content, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinanceExample" >
     select
@@ -110,14 +109,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_matching_finance (version, estate_id, name, 
-      category, nature, service_content, 
-      auto_service_content, creator, gmt_created, 
-      gmt_modified)
-    values (#{version,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{category,jdbcType=INTEGER}, #{nature,jdbcType=INTEGER}, #{serviceContent,jdbcType=VARCHAR}, 
-      #{autoServiceContent,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_matching_finance (estate_id, name, category, 
+      nature, service_content, auto_service_content, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{nature,jdbcType=INTEGER}, #{serviceContent,jdbcType=VARCHAR}, #{autoServiceContent,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinance" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +124,6 @@
     </selectKey>
     insert into tb_case_matching_finance
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        version,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -157,9 +153,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
@@ -201,9 +194,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
@@ -239,7 +229,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_matching_finance
     set id = #{record.id,jdbcType=INTEGER},
-      version = #{record.version,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
@@ -256,9 +245,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinance" >
     update tb_case_matching_finance
     <set >
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
@@ -291,8 +277,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseMatchingFinance" >
     update tb_case_matching_finance
-    set version = #{version,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
       nature = #{nature,jdbcType=INTEGER},

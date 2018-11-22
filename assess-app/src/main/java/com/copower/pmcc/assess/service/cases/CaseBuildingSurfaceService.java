@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingSurfaceDao;
@@ -119,29 +118,6 @@ public class CaseBuildingSurfaceService {
         return caseBuildingSurfaceDao.updateBuildingSurface(caseBuildingSurface);
     }
 
-    public void upgradeVersion(CaseBuildingSurface caseBuildingSurface) throws Exception {
-        if (caseBuildingSurface.getId() == null) {
-            caseBuildingSurface.setCreator(commonService.thisUserAccount());
-            caseBuildingSurface.setVersion(0);
-            caseBuildingSurfaceDao.addBuildingSurface(caseBuildingSurface);
-            return;
-        }
-        if (caseBuildingSurface.getId() != null) {
-            CaseBuildingSurface oo = this.getCaseBuildingSurfaceById(caseBuildingSurface.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingSurface, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            caseBuildingSurfaceDao.addBuildingSurface(oo);
-            return;
-        }
-    }
 
     /**
      * 删除

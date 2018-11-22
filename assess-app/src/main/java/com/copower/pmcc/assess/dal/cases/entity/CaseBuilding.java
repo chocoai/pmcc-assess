@@ -64,8 +64,6 @@ public class CaseBuilding {
 
     private String jsonContent;
 
-    private Integer version;
-
     private String creator;
 
     private String name;
@@ -312,14 +310,6 @@ public class CaseBuilding {
 
     public void setJsonContent(String jsonContent) {
         this.jsonContent = jsonContent == null ? null : jsonContent.trim();
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public String getCreator() {

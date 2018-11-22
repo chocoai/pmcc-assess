@@ -645,63 +645,63 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryIsNull() {
-            addCriterion("temporary is null");
+        public Criteria andDraftFlagIsNull() {
+            addCriterion("draft_flag is null");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryIsNotNull() {
-            addCriterion("temporary is not null");
+        public Criteria andDraftFlagIsNotNull() {
+            addCriterion("draft_flag is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryEqualTo(Boolean value) {
-            addCriterion("temporary =", value, "temporary");
+        public Criteria andDraftFlagEqualTo(Boolean value) {
+            addCriterion("draft_flag =", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryNotEqualTo(Boolean value) {
-            addCriterion("temporary <>", value, "temporary");
+        public Criteria andDraftFlagNotEqualTo(Boolean value) {
+            addCriterion("draft_flag <>", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryGreaterThan(Boolean value) {
-            addCriterion("temporary >", value, "temporary");
+        public Criteria andDraftFlagGreaterThan(Boolean value) {
+            addCriterion("draft_flag >", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("temporary >=", value, "temporary");
+        public Criteria andDraftFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag >=", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryLessThan(Boolean value) {
-            addCriterion("temporary <", value, "temporary");
+        public Criteria andDraftFlagLessThan(Boolean value) {
+            addCriterion("draft_flag <", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryLessThanOrEqualTo(Boolean value) {
-            addCriterion("temporary <=", value, "temporary");
+        public Criteria andDraftFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("draft_flag <=", value, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryIn(List<Boolean> values) {
-            addCriterion("temporary in", values, "temporary");
+        public Criteria andDraftFlagIn(List<Boolean> values) {
+            addCriterion("draft_flag in", values, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryNotIn(List<Boolean> values) {
-            addCriterion("temporary not in", values, "temporary");
+        public Criteria andDraftFlagNotIn(List<Boolean> values) {
+            addCriterion("draft_flag not in", values, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary between", value1, value2, "temporary");
+        public Criteria andDraftFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag between", value1, value2, "draftFlag");
             return (Criteria) this;
         }
 
-        public Criteria andTemporaryNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("temporary not between", value1, value2, "temporary");
+        public Criteria andDraftFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("draft_flag not between", value1, value2, "draftFlag");
             return (Criteria) this;
         }
 

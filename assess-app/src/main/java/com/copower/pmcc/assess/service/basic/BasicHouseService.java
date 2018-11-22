@@ -198,7 +198,6 @@ public class BasicHouseService {
                 basicHouseTradingSellList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(oo);
                     } catch (Exception e1) {
 
@@ -209,7 +208,6 @@ public class BasicHouseService {
                 basicHouseTradingLeaseList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(oo);
                     } catch (Exception e1) {
 
@@ -220,7 +218,6 @@ public class BasicHouseService {
                 basicHouseRoomList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseRoomService.saveAndUpdateBasicHouseRoom(oo);
                     } catch (Exception e1) {
 
@@ -231,7 +228,6 @@ public class BasicHouseService {
                 basicHouseWaterList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseWaterService.saveAndUpdateBasicHouseWater(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -242,7 +238,6 @@ public class BasicHouseService {
                 basicHouseIntelligentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseIntelligentService.saveAndUpdateBasicHouseIntelligent(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -253,7 +248,6 @@ public class BasicHouseService {
                 basicHouseFaceStreetList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseFaceStreetService.saveAndUpdateBasicHouseFaceStreet(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -264,7 +258,6 @@ public class BasicHouseService {
                 basicHouseEquipmentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseEquipmentService.saveAndUpdateBasicHouseEquipment(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -275,7 +268,6 @@ public class BasicHouseService {
                 basicHouseCorollaryEquipmentList.forEach(oo -> {
                     try {
                         oo.setHouseId(newId);
-                        oo.setTemporary(basicHouse.getTemporary());
                         basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(oo);
                     } catch (Exception e1) {
                         logger.error(e1.getMessage(),e1);
@@ -316,18 +308,12 @@ public class BasicHouseService {
     public Integer upgradeVersion(BasicHouse basicHouse) throws Exception {
         if (basicHouse.getId() == null || basicHouse.getId().intValue() == 0) {
             basicHouse.setCreator(commonService.thisUserAccount());
-            basicHouse.setVersion(0);
             Integer id = basicHouseDao.saveBasicHouse(basicHouse);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class), id);
             this.init(0, id,basicHouse);
             basicHouse.setId(id);
             return id;
         } else {
-            BasicHouse oo = getBasicHouseById(basicHouse.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicHouse.setVersion(oo.getVersion() + 1);
             basicHouseDao.updateBasicHouse(basicHouse);
             return basicHouse.getId();
         }
@@ -376,27 +362,17 @@ public class BasicHouseService {
         if (basicHouse.getUseEnvironment() != null) {
             dataDic = baseDataDicService.getDataDicById(basicHouse.getUseEnvironment());
             vo.setUseEnvironmentName(dataDic.getName());
-            dataDic = null;
         }
         if (basicHouse.getCertUse() != null) {
             dataDic = baseDataDicService.getDataDicById(basicHouse.getCertUse());
             vo.setCertUseName(dataDic.getName());
-            dataDic = null;
         }
         if (basicHouse.getPracticalUse() != null) {
             dataDic = baseDataDicService.getDataDicById(basicHouse.getPracticalUse());
             vo.setPracticalUseName(dataDic.getName());
-            dataDic = null;
         }
         if (basicHouse.getHuxingId() != null) {
-            try {
-                BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                if (basicUnitHuxing != null) {
-                    vo.setHuxingName(basicUnitHuxing.getHouseCategory());
-                }
-            } catch (Exception e1) {
-
-            }
+            vo.setHuxingName(basicUnitHuxingService.getHouseCategoryNameById(basicHouse.getHuxingId()));
         }
         vo.setNewsHuxingName(baseDataDicService.getNameById(basicHouse.getNewsHuxing()));
         return vo;

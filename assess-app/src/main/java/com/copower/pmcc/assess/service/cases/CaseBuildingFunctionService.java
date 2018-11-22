@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingFunctionDao;
@@ -80,42 +79,8 @@ public class CaseBuildingFunctionService {
         return caseBuildingFunctions;
     }
 
-    public void upgradeVersion(CaseBuildingFunction caseBuildingFunction)throws Exception{
-        if (caseBuildingFunction.getId() == null){
-            caseBuildingFunction.setCreator(commonService.thisUserAccount());
-            caseBuildingFunction.setVersion(0);
-            caseBuildingFunctionDao.addBuildingOutfit(caseBuildingFunction);
-            return;
-        }
-        if (caseBuildingFunction.getId() != null){
-            CaseBuildingFunction oo = this.getCaseBuildingFunctionById(caseBuildingFunction.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingFunction, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            caseBuildingFunctionDao.addBuildingOutfit(oo);
-            return;
-        }
-    }
-
-    public boolean removeCaseBuildingFunction(CaseBuildingFunction caseBuildingFunction) {
-        try {
-            caseBuildingFunctionDao.deleteBuildingOutfit(caseBuildingFunction.getId());
-            return true;
-        } catch (Exception e1) {
-            try {
-                throw new Exception();
-            } catch (Exception e11) {
-
-            }
-        }
-        return false;
+    public void removeCaseBuildingFunction(CaseBuildingFunction caseBuildingFunction) {
+        caseBuildingFunctionDao.deleteBuildingOutfit(caseBuildingFunction.getId());
     }
 
     public CaseBuildingFunctionVo getCaseBuildingFunctionVo(CaseBuildingFunction caseBuildingFunction) {

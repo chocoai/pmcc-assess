@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
@@ -16,7 +15,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -93,21 +89,18 @@ public class BasicUnitService {
             if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
                 for (BasicUnitHuxing oo : basicUnitHuxingList) {
                     oo.setUnitId(newId);
-                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
                 for (BasicUnitElevator oo : basicUnitElevatorList) {
                     oo.setUnitId(newId);
-                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitElevatorService.saveAndUpdateBasicUnitElevator(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
                 for (BasicUnitDecorate oo : basicUnitDecorateList) {
                     oo.setUnitId(newId);
-                    oo.setTemporary(basicUnit.getTemporary());
                     basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(oo);
                 }
             }
@@ -146,20 +139,12 @@ public class BasicUnitService {
     public Integer upgradeVersion(BasicUnit basicUnit) throws Exception {
         if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
             basicUnit.setCreator(commonService.thisUserAccount());
-            basicUnit.setVersion(0);
             Integer id = basicUnitDao.saveBasicUnit(basicUnit);
             this.initUpdateSon(0, id, basicUnit);
-            basicUnit.setId(id);
-            return id;
         } else {
-            BasicUnit oo = this.getBasicUnitById(basicUnit.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicUnit.setVersion(oo.getVersion() + 1);
             basicUnitDao.updateBasicUnit(basicUnit);
-            return basicUnit.getId();
         }
+        return basicUnit.getId();
     }
 
     /**

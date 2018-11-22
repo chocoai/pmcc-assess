@@ -130,24 +130,21 @@ public class CaseUnitService {
         return caseUnitDao.getUnitById(id);
     }
 
+    public Integer getVersion(Integer id){
+        if(id==null) return 0;
+        CaseUnit caseUnit = caseUnitDao.getUnitById(id);
+        if(caseUnit==null) return 0;
+        return caseUnit.getVersion();
+    }
+
+
     public Integer saveAndUpdateCaseUnit(CaseUnit caseUnit) {
         Integer id = null;
         if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
             caseUnit.setCreator(commonService.thisUserAccount());
-            caseUnit.setVersion(0);
             id = caseUnitDao.addUnit(caseUnit);
-            this.initAndUpdateSon(0,id);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
             return  id;
         } else {
-            CaseUnit oo = caseUnitDao.getUnitById(caseUnit.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            caseUnit.setVersion(oo.getVersion() + 1);
             caseUnitDao.updateUnit(caseUnit);
             return null;
         }

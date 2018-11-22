@@ -12,8 +12,8 @@ public class BaseConstant {
 
     public static final String ASSESS_BOX_RE_GROUP_KEY = "basis";//考核系统模型分组
     public static final String DATABASE_PMCC_ASSESS = "pmcc_assess";//pmcc_assess
-    public static final String DATABASE_PMCC_ASESS_BASIC = "pmcc_assess_basic";//pmcc_assess_basic
-    public static final String DATABASE_PMCC_ASESS_CASE = "pmcc_assess_case";//pmcc_assess_case
+    public static final String DATABASE_PMCC_ASSESS_BASIC = "pmcc_assess_basic";//pmcc_assess_basic
+    public static final String DATABASE_PMCC_ASSESS_CASE = "pmcc_assess_case";//pmcc_assess_case
 
     public static final String ASSESS_BASE_ASSIST_STAGE = "stage";//阶段信息表单分组
     public static final String ASSESS_BASE_ASSIST_MATTER = "matter";//工作事项表单分组信息

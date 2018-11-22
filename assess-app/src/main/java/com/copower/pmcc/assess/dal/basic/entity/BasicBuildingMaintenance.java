@@ -5,15 +5,11 @@ import java.util.Date;
 public class BasicBuildingMaintenance {
     private Integer id;
 
-    private Integer caseMaintenanceId;
-
     private String buildingNumber;
 
     private Integer buildingId;
 
     private String name;
-
-    private Boolean temporary;
 
     private Integer category;
 
@@ -33,14 +29,6 @@ public class BasicBuildingMaintenance {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCaseMaintenanceId() {
-        return caseMaintenanceId;
-    }
-
-    public void setCaseMaintenanceId(Integer caseMaintenanceId) {
-        this.caseMaintenanceId = caseMaintenanceId;
     }
 
     public String getBuildingNumber() {
@@ -65,14 +53,6 @@ public class BasicBuildingMaintenance {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public Boolean getTemporary() {
-        return temporary;
-    }
-
-    public void setTemporary(Boolean temporary) {
-        this.temporary = temporary;
     }
 
     public Integer getCategory() {

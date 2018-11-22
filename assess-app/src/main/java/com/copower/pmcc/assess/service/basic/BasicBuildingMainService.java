@@ -83,18 +83,11 @@ public class BasicBuildingMainService {
     public Integer upgradeVersion(BasicBuildingMain basicBuildingMain) throws Exception {
         if (basicBuildingMain.getId() == null || basicBuildingMain.getId().intValue() == 0) {
             basicBuildingMain.setCreator(commonService.thisUserAccount());
-            if (basicBuildingMain.getVersion() == null) {
-                basicBuildingMain.setVersion(0);
-            }
             Integer id = basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicBuildingMain.class), id);
             basicBuildingMain.setId(id);
             return  id ;
         } else {
-            BasicBuildingMain oo = basicBuildingMainDao.getBasicBuildingMainById(basicBuildingMain.getId());
-            basicBuildingMain.setVersion(oo.getVersion() + 1);
-            basicBuildingMainDao.updateBasicBuildingMain(basicBuildingMain);
-            basicBuildingMain.setId(basicBuildingMain.getId());
             return basicBuildingMain.getId();
         }
     }

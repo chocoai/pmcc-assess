@@ -126,25 +126,6 @@ public class CaseHouseIntelligentService {
         return caseHouseIntelligentDao.deleteHouseIntelligent(id);
     }
 
-    public void upgradeVersion(CaseHouseIntelligent oo) throws Exception {
-        if (oo.getId() == null || oo.getId().intValue() == 0) {
-            oo.setCreator(commonService.thisUserAccount());
-            oo.setVersion(0);
-            caseHouseIntelligentDao.addHouseIntelligent(oo);
-        }else {
-            CaseHouseIntelligent po = this.getCaseHouseIntelligentById(oo.getId());
-            if (po.getVersion() == null){
-                po.setVersion(0);
-            }
-            int version = po.getVersion() +1;
-            BeanUtils.copyProperties(oo,po);
-            po.setVersion(version);
-            po.setCreator(commonService.thisUserAccount());
-            po.setId(null);
-            caseHouseIntelligentDao.addHouseIntelligent(po);
-        }
-    }
-
     /**
      * 根据查询条件判断是否有数据
      * @param houseId

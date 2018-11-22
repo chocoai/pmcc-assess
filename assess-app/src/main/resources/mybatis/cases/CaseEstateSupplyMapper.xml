@@ -3,7 +3,6 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseEstateSupplyMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="version" property="version" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, version, estate_id, type, name, reputation, grade, line_grade, power, creator, 
-    gmt_created, gmt_modified
+    id, estate_id, type, name, reputation, grade, line_grade, power, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupplyExample" >
     select
@@ -111,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_estate_supply (version, estate_id, type, 
-      name, reputation, grade, 
-      line_grade, power, creator, 
-      gmt_created, gmt_modified)
-    values (#{version,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{reputation,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
-      #{lineGrade,jdbcType=VARCHAR}, #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_case_estate_supply (estate_id, type, name, 
+      reputation, grade, line_grade, 
+      power, creator, gmt_created, 
+      gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{reputation,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{lineGrade,jdbcType=VARCHAR}, 
+      #{power,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,9 +125,6 @@
     </selectKey>
     insert into tb_case_estate_supply
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        version,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -161,9 +157,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
@@ -208,9 +201,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
@@ -249,7 +239,6 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_estate_supply
     set id = #{record.id,jdbcType=INTEGER},
-      version = #{record.version,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
@@ -267,9 +256,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     update tb_case_estate_supply
     <set >
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
@@ -305,8 +291,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateSupply" >
     update tb_case_estate_supply
-    set version = #{version,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       reputation = #{reputation,jdbcType=VARCHAR},

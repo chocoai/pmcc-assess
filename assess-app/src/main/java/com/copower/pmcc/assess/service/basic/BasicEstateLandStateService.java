@@ -73,17 +73,9 @@ public class BasicEstateLandStateService {
     public Integer upgradeVersion(BasicEstateLandState basicEstateLandState) throws Exception {
         if (basicEstateLandState.getId() == null || basicEstateLandState.getId().intValue() == 0) {
             basicEstateLandState.setCreator(commonService.thisUserAccount());
-            if (basicEstateLandState.getVersion() == null) {
-                basicEstateLandState.setVersion(0);
-            }
             Integer id = basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
             return id;
         } else {
-            BasicEstateLandState oo = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
-            if (oo.getVersion() == null) {
-                oo.setVersion(0);
-            }
-            basicEstateLandState.setVersion(oo.getVersion() + 1);
             basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState);
             return null;
         }

@@ -3,11 +3,9 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicHouseEquipmentMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_equipment_id" property="caseEquipmentId" jdbcType="INTEGER" />
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="temporary" property="temporary" jdbcType="BIT" />
     <result column="equipment" property="equipment" jdbcType="VARCHAR" />
     <result column="equipment_price" property="equipmentPrice" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -73,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, case_equipment_id, house_id, type, category, temporary, equipment, equipment_price, 
-    creator, gmt_created, gmt_modified
+    id, house_id, type, category, equipment, equipment_price, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipmentExample" >
     select
@@ -110,14 +107,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_equipment (case_equipment_id, house_id, type, 
-      category, temporary, equipment, 
-      equipment_price, creator, gmt_created, 
-      gmt_modified)
-    values (#{caseEquipmentId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{category,jdbcType=INTEGER}, #{temporary,jdbcType=BIT}, #{equipment,jdbcType=VARCHAR}, 
-      #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_house_equipment (house_id, type, category, 
+      equipment, equipment_price, creator, 
+      gmt_created, gmt_modified)
+    values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{equipment,jdbcType=VARCHAR}, #{equipmentPrice,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -125,9 +120,6 @@
     </selectKey>
     insert into tb_basic_house_equipment
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseEquipmentId != null" >
-        case_equipment_id,
-      </if>
       <if test="houseId != null" >
         house_id,
       </if>
@@ -136,9 +128,6 @@
       </if>
       <if test="category != null" >
         category,
-      </if>
-      <if test="temporary != null" >
-        temporary,
       </if>
       <if test="equipment != null" >
         equipment,
@@ -157,9 +146,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseEquipmentId != null" >
-        #{caseEquipmentId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         #{houseId,jdbcType=INTEGER},
       </if>
@@ -168,9 +154,6 @@
       </if>
       <if test="category != null" >
         #{category,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        #{temporary,jdbcType=BIT},
       </if>
       <if test="equipment != null" >
         #{equipment,jdbcType=VARCHAR},
@@ -201,9 +184,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseEquipmentId != null" >
-        case_equipment_id = #{record.caseEquipmentId,jdbcType=INTEGER},
-      </if>
       <if test="record.houseId != null" >
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
@@ -212,9 +192,6 @@
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=INTEGER},
-      </if>
-      <if test="record.temporary != null" >
-        temporary = #{record.temporary,jdbcType=BIT},
       </if>
       <if test="record.equipment != null" >
         equipment = #{record.equipment,jdbcType=VARCHAR},
@@ -239,11 +216,9 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_house_equipment
     set id = #{record.id,jdbcType=INTEGER},
-      case_equipment_id = #{record.caseEquipmentId,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=INTEGER},
-      temporary = #{record.temporary,jdbcType=BIT},
       equipment = #{record.equipment,jdbcType=VARCHAR},
       equipment_price = #{record.equipmentPrice,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -256,9 +231,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment" >
     update tb_basic_house_equipment
     <set >
-      <if test="caseEquipmentId != null" >
-        case_equipment_id = #{caseEquipmentId,jdbcType=INTEGER},
-      </if>
       <if test="houseId != null" >
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
@@ -267,9 +239,6 @@
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=INTEGER},
-      </if>
-      <if test="temporary != null" >
-        temporary = #{temporary,jdbcType=BIT},
       </if>
       <if test="equipment != null" >
         equipment = #{equipment,jdbcType=VARCHAR},
@@ -291,11 +260,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicHouseEquipment" >
     update tb_basic_house_equipment
-    set case_equipment_id = #{caseEquipmentId,jdbcType=INTEGER},
-      house_id = #{houseId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=INTEGER},
-      temporary = #{temporary,jdbcType=BIT},
       equipment = #{equipment,jdbcType=VARCHAR},
       equipment_price = #{equipmentPrice,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},

@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.common.enums.ExamineFileUpLoadFieldEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitHuxingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
@@ -52,28 +50,6 @@ public class CaseUnitHuxingService {
      */
     public CaseUnitHuxing getCaseUnitHuxingById(Integer id) {
         return caseUnitHuxingDao.getUnitHuxingById(id);
-    }
-
-    public void upgradeVersion(CaseUnitHuxing po)throws Exception{
-        if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
-            po.setVersion(0);
-            int id = caseUnitHuxingDao.addUnitHuxing(po);
-            po.setId(id);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class), id);
-        }else {
-            CaseUnitHuxing oo = getCaseUnitHuxingById(po.getId());
-            if (oo.getVersion() == null){
-                oo.setVersion(0);
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(po, oo);
-            oo.setVersion(version);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            this.updateCaseUnitHuxing(oo);
-        }
     }
 
     /**

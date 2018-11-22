@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -16,6 +17,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,30 @@ public class BasicUnitHuxingService {
      */
     public BasicUnitHuxing getBasicUnitHuxingById(Integer id) throws Exception {
         return basicUnitHuxingDao.getBasicUnitHuxingById(id);
+    }
+
+    public String getHouseCategoryNameById(Integer id) {
+        try {
+            BasicUnitHuxing huxing = basicUnitHuxingDao.getBasicUnitHuxingById(id);
+            if (huxing == null || StringUtils.isBlank(huxing.getHouseCategory())) return null;
+            StringBuilder stringBuilder = new StringBuilder();
+            JSONObject jsonObject = JSONObject.parseObject(huxing.getHouseCategory());
+            if(StringUtils.isNotBlank(jsonObject.getString("house")))
+                stringBuilder.append(String.format("%s室",jsonObject.getString("house")));
+            if(StringUtils.isNotBlank(jsonObject.getString("saloon")))
+                stringBuilder.append(String.format("%s厅",jsonObject.getString("saloon")));
+            if(StringUtils.isNotBlank(jsonObject.getString("kitchen")))
+                stringBuilder.append(String.format("%s厨",jsonObject.getString("kitchen")));
+            if(StringUtils.isNotBlank(jsonObject.getString("toilet")))
+                stringBuilder.append(String.format("%s卫",jsonObject.getString("toilet")));
+            if(StringUtils.isNotBlank(jsonObject.getString("garden")))
+                stringBuilder.append(String.format("%s花园",jsonObject.getString("garden")));
+            if(StringUtils.isNotBlank(jsonObject.getString("balcony")))
+                stringBuilder.append(String.format("%s阳台",jsonObject.getString("balcony")));
+            return stringBuilder.toString();
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     /**
@@ -135,7 +162,7 @@ public class BasicUnitHuxingService {
             vo.setFileViewName(builder.toString());
         }
         vo.setHouseLayoutName(baseDataDicService.getNameById(basicUnitHuxing.getHouseLayout()));
-        vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation())?Integer.parseInt(basicUnitHuxing.getOrientation()):null));
+        vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation()) ? Integer.parseInt(basicUnitHuxing.getOrientation()) : null));
         return vo;
     }
 }
