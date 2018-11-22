@@ -12,6 +12,15 @@ public class DeclareBuildEngineeringVo extends DeclareBuildEngineering {
     private String cityName;
     private String districtName;
     private String fileViewName;
+    private Integer centerId;
+
+    public Integer getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(Integer centerId) {
+        this.centerId = centerId;
+    }
 
     public String getProvinceName() {
         return provinceName;

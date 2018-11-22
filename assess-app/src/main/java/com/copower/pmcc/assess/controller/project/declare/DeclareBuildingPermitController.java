@@ -97,7 +97,7 @@ public class DeclareBuildingPermitController {
             if (planDetailsId != null) {
                 declareBuildingPermit.setPlanDetailsId(planDetailsId);
             }
-            return HttpResult.newCorrectResult(declareBuildingPermitService.getDeclareBuildingPermitListVos(declareBuildingPermit));
+            return HttpResult.newCorrectResult(declareBuildingPermitService.declareBuildingPermitList(declareBuildingPermit));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2018/11/22 10:27
- * @Description:
+ * @Description:在建工程中间表
  */
 @Service
 public class DeclareBuildEngineeringAndEquipmentCenterService {

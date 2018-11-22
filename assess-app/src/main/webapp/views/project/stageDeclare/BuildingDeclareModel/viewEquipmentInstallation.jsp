@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/9/27
-  Time: 10:46
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_content">
@@ -16,15 +9,21 @@
                         <button type="button" class="btn btn-success" onclick="equipmentInstallation.showAddModel();"
                                 data-toggle="modal"> 新增
                         </button>
+                        <button type="button" class="btn btn-primary" onclick="equipmentInstallation.pasteAll();"
+                                data-toggle="modal"> 粘贴
+                        </button>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入设备安装
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入设备安装Excel文件
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a class="btn" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEquipmentInstall)">下载模板</a></li>
-                            <li><a class="btn btn-default" onclick="$('#equipmentInstallationUpload').val('').trigger('click')">导入</a></li>
+                            <li><a class="btn"
+                                   onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftDeclareBuildEquipmentInstall)">下载模板</a>
+                            </li>
+                            <li><a class="btn btn-default"
+                                   onclick="$('#equipmentInstallationUpload').val('').trigger('click')">导入</a></li>
                         </ul>
                     </div>
                 </small>
@@ -42,7 +41,8 @@
         </form>
     </div>
 </div>
-<input type="file" id="equipmentInstallationUpload" name="file" style="display: none;" onchange="equipmentInstallation.inputFile();">
+<input type="file" id="equipmentInstallationUpload" name="file" style="display: none;"
+       onchange="equipmentInstallation.inputFile();">
 
 <script>
 
@@ -51,43 +51,43 @@
         frm: "equipmentInstallationFrm",
         table: "equipmentInstallationTableList",
         box: "equipmentInstallationBox",
-        fileId:"equipmentInstallationFileId",
-        excelUpload:"equipmentInstallationUpload",
+        fileId: "equipmentInstallationFileId",
+        excelUpload: "equipmentInstallationUpload",
         declareBuildingConstructionPermit: {
             box: "declareBuildingConstructionPermitBoxE",
             frm: "declareBuildingConstructionPermitFrmE",
             fileId: "declareBuildingConstructionPermitFileIdE",
             name: "建筑工程施工许可证"
         },
-        declarePreSalePermit:{
-            box:"declarePreSalePermitBoxE",
-            frm:"declarePreSalePermitFrmE",
-            fileId:"declarePreSalePermitFileIdE",
+        declarePreSalePermit: {
+            box: "declarePreSalePermitBoxE",
+            frm: "declarePreSalePermitFrmE",
+            fileId: "declarePreSalePermitFileIdE",
             name: "商品房预售许可证"
         },
-        declareLandUsePermit:{
-            box:"declareLandUsePermitBoxE",
-            frm:"declareLandUsePermitFrmE",
-            fileId:"declareLandUsePermitFileIdE",
-            name:"建设用地规划许可证"
+        declareLandUsePermit: {
+            box: "declareLandUsePermitBoxE",
+            frm: "declareLandUsePermitFrmE",
+            fileId: "declareLandUsePermitFileIdE",
+            name: "建设用地规划许可证"
         },
-        declareBuildingPermit:{
-            box:"declareBuildingPermitBoxE",
-            frm:"declareBuildingPermitFrmE",
-            fileId:"declareBuildingPermitFileIdE",
-            name:"建设工程规划许可证"
+        declareBuildingPermit: {
+            box: "declareBuildingPermitBoxE",
+            frm: "declareBuildingPermitFrmE",
+            fileId: "declareBuildingPermitFileIdE",
+            name: "建设工程规划许可证"
         },
-        declareRealtyLandCert:{
-            box:"declareRealtyLandCertBoxE",
-            frm:"declareRealtyLandCertFrmE",
-            fileId:"declareRealtyLandCertFileIdE",
-            name:"土地证"
+        declareRealtyLandCert: {
+            box: "declareRealtyLandCertBoxE",
+            frm: "declareRealtyLandCertFrmE",
+            fileId: "declareRealtyLandCertFileIdE",
+            name: "土地证"
         },
-        declareRealtyRealEstateCert:{
-            box:"declareRealtyRealEstateCertBoxE",
-            frm:"declareRealtyRealEstateCertFrmE",
-            fileId:"declareRealtyRealEstateCertFileIdE",
-            name:"不动产"
+        declareRealtyRealEstateCert: {
+            box: "declareRealtyRealEstateCertBoxE",
+            frm: "declareRealtyRealEstateCertFrmE",
+            fileId: "declareRealtyRealEstateCertFileIdE",
+            name: "不动产"
         },
         declareEconomicIndicators: {
             box: "declareEconomicIndicatorsBox",
@@ -119,7 +119,7 @@
         }
     };
 
-    equipmentInstallation.showFile = function (target,tableName, id) {
+    equipmentInstallation.showFile = function (target, tableName, id) {
         FileUtils.getFileShows({
             target: target,
             formData: {
@@ -132,7 +132,7 @@
         });
     };
 
-    equipmentInstallation.fileUpload = function (target,tableName, id) {
+    equipmentInstallation.fileUpload = function (target, tableName, id) {
         FileUtils.uploadFiles({
             target: target,
             disabledTarget: "btn_submit",
@@ -143,8 +143,8 @@
                     tableId: id
                 };
                 return formData;
-            }, onUploadComplete: function (result,file) {
-                equipmentInstallation.showFile(target,tableName,id);
+            }, onUploadComplete: function (result, file) {
+                equipmentInstallation.showFile(target, tableName, id);
             },
             deleteFlag: true
         });
@@ -168,12 +168,12 @@
      **/
     equipmentInstallation.showAddModel = function () {
         $("#" + equipmentInstallationConfig.frm).clearAll();
-        if (equipmentInstallation.equipmentInstallationFlag){
+        if (equipmentInstallation.equipmentInstallationFlag) {
             equipmentInstallation.init();
             equipmentInstallation.equipmentInstallationFlag = false;
         }
-        equipmentInstallation.showFile(equipmentInstallationConfig.fileId,AssessDBKey.DeclareBuildEquipmentInstall,0);
-        equipmentInstallation.fileUpload(equipmentInstallationConfig.fileId,AssessDBKey.DeclareBuildEquipmentInstall,0);
+        equipmentInstallation.showFile(equipmentInstallationConfig.fileId, AssessDBKey.DeclareBuildEquipmentInstall, 0);
+        equipmentInstallation.fileUpload(equipmentInstallationConfig.fileId, AssessDBKey.DeclareBuildEquipmentInstall, 0);
         //使校验生效
         $("#" + equipmentInstallationConfig.frm).validate();
         $('#' + equipmentInstallationConfig.box).modal("show");
@@ -217,7 +217,7 @@
      **/
     equipmentInstallation.editData = function (id) {
         $("#" + equipmentInstallationConfig.frm).clearAll();
-        if (equipmentInstallation.equipmentInstallationFlag){
+        if (equipmentInstallation.equipmentInstallationFlag) {
             equipmentInstallation.init();
             equipmentInstallation.equipmentInstallationFlag = false;
         }
@@ -228,11 +228,11 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    var data = result.data ;
-                    if (equipmentInstallation.isEmpty(data)){
+                    var data = result.data;
+                    if (equipmentInstallation.isEmpty(data)) {
                         $("#" + equipmentInstallationConfig.frm).initForm(result.data);
-                        equipmentInstallation.showFile(equipmentInstallationConfig.fileId,AssessDBKey.DeclareBuildEquipmentInstall,data.id);
-                        equipmentInstallation.fileUpload(equipmentInstallationConfig.fileId,AssessDBKey.DeclareBuildEquipmentInstall,data.id);
+                        equipmentInstallation.showFile(equipmentInstallationConfig.fileId, AssessDBKey.DeclareBuildEquipmentInstall, data.id);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.fileId, AssessDBKey.DeclareBuildEquipmentInstall, data.id);
                         $("#" + equipmentInstallationConfig.frm + " input[name='declarationDate']").val(formatDate(data.declarationDate));
                         $("#" + equipmentInstallationConfig.frm + " input[name='expectedCompletionDate']").val(formatDate(data.expectedCompletionDate));
                         $("#" + equipmentInstallationConfig.frm + " input[name='startDate']").val(formatDate(data.startDate));
@@ -262,11 +262,11 @@
      * @date:2018-09-27
      **/
     equipmentInstallation.deleteData = function (id) {
-        Alert("是否删除",2,null,function () {
+        Alert("是否删除", 2, null, function () {
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById",
-                data: {id:id},
+                data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         equipmentInstallation.loadList();
@@ -318,8 +318,8 @@
     equipmentInstallation.declareBuildingPermitView = function (id) {
         var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).clearAll();
-        var buildingPermitId = item.buildingPermitId ;
-        if (equipmentInstallation.isEmpty(buildingPermitId)){
+        var buildingPermitId = item.buildingPermitId;
+        if (equipmentInstallation.isEmpty(buildingPermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
                 type: "get",
@@ -341,7 +341,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).initForm({pid: id});
             equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
@@ -359,7 +359,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareBuildingPermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
@@ -393,8 +392,8 @@
     equipmentInstallation.declareLandUsePermitView = function (id) {
         var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).clearAll();
-        var landUsePermitId = item.landUsePermitId ;
-        if (equipmentInstallation.isEmpty(landUsePermitId)){
+        var landUsePermitId = item.landUsePermitId;
+        if (equipmentInstallation.isEmpty(landUsePermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
                 type: "get",
@@ -416,7 +415,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).initForm({pid: id});
             equipmentInstallation.showFile(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
@@ -434,7 +433,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareLandUsePermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
@@ -469,7 +467,7 @@
         var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).clearAll();
         var preSalePermitId = item.preSalePermitId;
-        if (equipmentInstallation.isEmpty(preSalePermitId)){
+        if (equipmentInstallation.isEmpty(preSalePermitId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
                 type: "get",
@@ -491,7 +489,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).initForm({pid: id});
             equipmentInstallation.showFile(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
             equipmentInstallation.fileUpload(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
@@ -509,7 +507,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declarePreSalePermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
@@ -585,7 +582,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareBuildingConstructionPermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/saveAndUpdateDeclareBuildingConstructionPermit",
@@ -618,34 +614,34 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated = {
-        init:function () {
+        init: function () {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='unit']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='unit']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='unit']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='floor']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='floor']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='floor']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='roomNumber']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='streetNumber']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='attachedNumber']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='buildingNumber']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.write();
                 }
             });
@@ -659,7 +655,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var temp = null;
             var district = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " .district").eq(1).val();
             var unit = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='unit']").val();
@@ -689,7 +685,7 @@
             if (!equipmentInstallation.isEmpty(attachedNumber)) {
                 attachedNumber = "";
             } else {
-                attachedNumber =   "附" + attachedNumber;
+                attachedNumber = "附" + attachedNumber;
             }
             if (!equipmentInstallation.isEmpty(buildingNumber)) {
                 buildingNumber = "";
@@ -714,19 +710,19 @@
         }
     };
     equipmentInstallation.declareRealtyLandCertCertRoleCertName = {
-        init:function () {
+        init: function () {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='location']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='location']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='location']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='year']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='year']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='year']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='number']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='number']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='number']").val())) {
                     equipmentInstallation.declareRealtyLandCertCertRoleCertName.write();
                 }
             });
@@ -740,8 +736,8 @@
                 }
             });
         },
-        write:function () {
-            var temp = "" ;
+        write: function () {
+            var temp = "";
             var id = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " .type").eq(1).val();
             var location = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='location']").val();
             var year = $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='year']").val();
@@ -749,12 +745,12 @@
             if (equipmentInstallation.isEmpty(id)) {
                 AssessCommon.getDataDicInfo(id, function (data) {
                     if (equipmentInstallation.isEmpty(data)) {
-                        var temp = location +  data.name +year+ "第" + number + "号";
+                        var temp = location + data.name + year + "第" + number + "号";
                         $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
                     }
                 });
             } else {
-                var temp = location +  year+ "第" + number + "号";
+                var temp = location + year + "第" + number + "号";
                 $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='landCertName']").val(temp);
             }
         }
@@ -768,27 +764,27 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.type').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "", function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
         equipmentInstallation.declareRealtyLandCertCertRoleCertName.init();
         equipmentInstallation.declareRealtyLandCertCertRoleBeLocated.init();
     };
     equipmentInstallation.declareRealtyLandCertView = function (id) {
-        if (equipmentInstallation.declareRealtyLandCertFlag){
+        if (equipmentInstallation.declareRealtyLandCertFlag) {
             equipmentInstallation.declareRealtyLandCertInit();
             equipmentInstallation.declareRealtyLandCertFlag = false;
         }
         var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var landId = item.landId ;
+        var landId = item.landId;
         $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).clearAll();
-        if (equipmentInstallation.isEmpty(landId)){
+        if (equipmentInstallation.isEmpty(landId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
                 type: "get",
@@ -800,9 +796,9 @@
                         if (equipmentInstallation.isEmpty(data)) {
                             data.pidC = id;
                             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm(data);
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm,data.purpose,"purpose");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm,data.type,"type");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm,data.useRightType,"useRightType");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.purpose, "purpose");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.type, "type");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.useRightType, "useRightType");
                             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
                             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
                             equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
@@ -822,7 +818,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm({pidC: id});
             equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
@@ -834,7 +830,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareRealtyLandCert.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
@@ -867,34 +862,34 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated = {
-        init:function () {
+        init: function () {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='floor']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='roomNumber']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='streetNumber']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='attachedNumber']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='buildingNumber']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.write();
                 }
             });
@@ -908,7 +903,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var temp = "";
             var district = $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " .district").eq(1).val();
             var unit = $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='unit']").val();
@@ -963,14 +958,14 @@
         }
     };
     equipmentInstallation.declareRealtyRealEstateCertRoleCertName = {
-        init:function () {
+        init: function () {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='location']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleCertName.write();
                 }
             });
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='number']").blur(function () {
-                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val())){
+                if (equipmentInstallation.isEmpty($("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val())) {
                     equipmentInstallation.declareRealtyRealEstateCertRoleCertName.write();
                 }
             });
@@ -984,7 +979,7 @@
                 }
             });
         },
-        write:function () {
+        write: function () {
             var location = $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='location']").val();
             var number = $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='number']").val();
             var id = $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " .type").eq(1).val();
@@ -1019,30 +1014,30 @@
             cityValue: '',
             districtValue: ''
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType,'', function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, '', function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.type').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.estate_total_land_use, "", function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.purpose').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, "", function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.useRightType').empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, "",function (html, data) {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, "", function (html, data) {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).find('select.publicSituation').empty().html(html).trigger('change');
         });
         equipmentInstallation.declareRealtyRealEstateCertRoleCertName.init();
         equipmentInstallation.declareRealtyRealEstateCertRoleBeLocated.init();
     };
     equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
-        if (equipmentInstallation.declareRealtyRealEstateCertFlag){
+        if (equipmentInstallation.declareRealtyRealEstateCertFlag) {
             equipmentInstallation.declareRealtyRealEstateCertInit();
             equipmentInstallation.declareRealtyRealEstateCertFlag = false;
         }
         var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var realEstateId = item.realEstateId ;
+        var realEstateId = item.realEstateId;
         $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).clearAll();
-        if (equipmentInstallation.isEmpty(realEstateId)){
+        if (equipmentInstallation.isEmpty(realEstateId)) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
                 type: "get",
@@ -1054,9 +1049,9 @@
                         if (equipmentInstallation.isEmpty(data)) {
                             data.pidC = id;
                             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm(data);
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm,data.purpose,"purpose");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm,data.type,"type");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm,data.useRightType,"useRightType");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.purpose, "purpose");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.type, "type");
+                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.useRightType, "useRightType");
                             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
                             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
                             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
@@ -1079,7 +1074,7 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
-        }else {
+        } else {
             $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm({pidC: id});
             equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
             equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
@@ -1091,7 +1086,6 @@
             return false;
         }
         var data = formParams(equipmentInstallationConfig.declareRealtyRealEstateCert.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
@@ -1125,39 +1119,158 @@
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
         $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id,function () {
+        economicIndicators.initForm(id, function () {
             $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
         });
     };
 
 
+    equipmentInstallation.copyId = undefined;
+    //复制子数据
+    equipmentInstallation.copyData = function (id, centerId) {
+        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getData');
+        $.each(item, function (i, data) {
+            $("#equipmentInstallationCancel" + data.id).parent().hide();
+            $("#equipmentInstallationCopy" + data.id).parent().hide();
+        });
+        $.each(item, function (i, data) {
+            if (data.id != id) {
+                $("#equipmentInstallationPaste" + data.id).parent().show();
+            }
+        });
+        $("#equipmentInstallationCancel" + id).parent().show();
+        equipmentInstallation.copyId = centerId;
+    };
+
+    //粘贴子数据
+    equipmentInstallation.pasteData = function (id, centerId) {
+        Alert("确认粘贴", 2,
+            function () {//放弃操作后的函数
+                $.each($("#" + equipmentInstallationConfig.table).bootstrapTable('getData'), function (i, data) {
+                    $("#equipmentInstallationCancel" + data.id).parent().hide();
+                    $("#equipmentInstallationPaste" + data.id).parent().hide();
+                    $("#equipmentInstallationCopy" + data.id).parent().show();
+                });
+                equipmentInstallation.copyId = undefined;
+            },//具体操作函数
+            function () {
+                var copyId = equipmentInstallation.copyId;
+                console.log(copyId);
+                var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
+                equipmentInstallation.loadList();
+                toastr.success('成功');
+                equipmentInstallation.copyId = undefined;
+            }
+        );
+    };
+
+
+    //放弃复制
+    equipmentInstallation.cancelData = function (id, centerId) {
+        $("#equipmentInstallationCancel" + id).parent().hide();
+        $.each($("#" + equipmentInstallationConfig.table).bootstrapTable('getData'), function (i, data) {
+            $("#equipmentInstallationPaste" + data.id).parent().hide();
+            $("#equipmentInstallationCopy" + data.id).parent().show();
+        });
+        equipmentInstallation.copyId = undefined;
+    };
+
+    //把复制的从表粘贴到所有的列中
+    equipmentInstallation.pasteAll = function () {
+        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getSelections');
+        if (this.isEmpty(equipmentInstallation.copyId)) {
+            if (this.isEmpty(item)) {
+                if (item.length >= 1) {
+                    var copyId = equipmentInstallation.copyId;
+                    console.log(copyId);
+                    console.log(item);
+                    equipmentInstallation.copyId = undefined;
+                    toastr.success('成功');
+                    equipmentInstallation.loadList();
+                } else {
+                    Alert("请先勾选需要粘贴的对象!");
+                }
+            }
+        } else {
+            Alert("请先复制对象!");
+        }
+    };
+
+
     equipmentInstallation.loadList = function () {
         var cols = [];
-        cols.push({field: 'provinceName', title: '省'});
-        cols.push({field: 'cityName', title: '市'});
-        cols.push({field: 'districtName', title: '县'});
-        cols.push({field: 'bookEquipmentFee', title: '账面设备费'});
-        cols.push({field: 'bookCapitalCost', title: '账面资金成本'});
+        cols.push({
+            checkbox: true,
+            formatter: {
+                disabled: false,//设置是否可用
+                checked: false//设置选中
+            }
+        });
+        cols.push({
+            field: 'area', title: '区域', formatter: function (value, row, index) {
+                var result = '';
+                if (row.provinceName) {
+                    result = row.provinceName;
+                }
+                if (row.cityName) {
+                    result += row.cityName;
+                }
+                if (row.districtName) {
+                    result += row.districtName;
+                }
+                return result;
+            }
+        });
+        cols.push({field: 'provinceName', title: '省', visible: false});
+        cols.push({field: 'cityName', title: '市', visible: false});
+        cols.push({field: 'districtName', title: '县', visible: false});
+        cols.push({field: 'bookEquipmentFee', title: '账面设备费', visible: false});
+        cols.push({field: 'bookCapitalCost', title: '账面资金成本', visible: false});
         cols.push({field: 'bookInstallationFee', title: '账面安装费'});
         cols.push({field: 'declarer', title: '申报人'});
         cols.push({field: 'beLocated', title: '坐落'});
+        cols.push({field: 'centerId', title: '中间表id', visible: true});
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
+            field: 'id', title: '子类以及自身操作', formatter: function (value, row, index) {
                 var str = '<div class="dropdown">';
-                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>"+"操作" +"<span class='caret'>"+"</span>"+"</button>";
-                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>" ;
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" +row.id+")'"+">"+"删除"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" +row.id+")'"+">"+"编辑"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyLandCertView(" +row.id+")'"+">"+"土地证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyRealEstateCertView(" +row.id+")'"+">"+"不动产"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingPermitView(" +row.id+")'"+">"+"建设工程规划许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareLandUsePermitView(" +row.id+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" +row.id+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" +row.id+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
-                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.id + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
-                str += "</ul>" ;
+                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
+                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" + row.centerId + ")'" + ">" + "删除" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" + row.centerId + ")'" + ">" + "编辑" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
+                str += "</ul>";
                 str += "</div>";
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '复制从表数据', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="equipmentInstallationCopy' + row.id + '" data-placement="top" data-original-title="复制" onclick="equipmentInstallation.copyData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-copy fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '放弃粘贴数据', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin" style="display: none">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="equipmentInstallationCancel' + row.id + '" data-placement="top" data-original-title="放弃" onclick="equipmentInstallation.cancelData(' + row.id + ',' + row.centerId + ')">放弃</a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '粘贴从表数据', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin" style="display: none">';
+                str += '<a class="btn btn-xs btn-success tooltips" id="equipmentInstallationPaste' + row.id + '" data-placement="top" data-original-title="粘贴" onclick="equipmentInstallation.pasteData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-paste fa-white"></i></a>';
+                str += '</div>';
                 return str;
             }
         });
@@ -1165,11 +1278,22 @@
         TableInit(equipmentInstallationConfig.table, "${pageContext.request.contextPath}/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallList", cols, {
             planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id},
         }, {
+            method: "get",
             showColumns: false,
-            showRefresh: false,
+            showRefresh: true,
             search: false,
-            onLoadSuccess: function () {
+            striped: true,
+            rowAttributes: function (row, index) {
+
+            },
+            onLoadSuccess: function (data) {
                 $('.tooltips').tooltip();
+            },
+            onCheckAll: function (rows) {
+                console.info(rows);
+            },
+            onCheck: function (row) {
+                console.info(row);
             }
         });
     };
@@ -1187,11 +1311,11 @@
                 planDetailsId: ${empty projectPlanDetails.id?0:projectPlanDetails.id}
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
-            fileElementId:equipmentInstallationConfig.excelUpload,//文件选择框的id属性
+            fileElementId: equipmentInstallationConfig.excelUpload,//文件选择框的id属性
             dataType: 'json',//服务器返回的格式
             async: false,
             success: function (result) {
-                if (result.ret){
+                if (result.ret) {
                     equipmentInstallation.loadList();
                     Alert(result.data);
                 }
@@ -1285,7 +1409,7 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建设位置"  name="location" class="form-control"
+                                                   placeholder="建设位置" name="location" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1429,7 +1553,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="用地面积" data-rule-maxlength="100" data-rule-number='true' name="area" class="form-control"
+                                                   placeholder="用地面积" data-rule-maxlength="100" data-rule-number='true'
+                                                   name="area" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1565,7 +1690,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="预售面积(数字)" data-rule-maxlength="100" data-rule-number='true' name="preSaleArea" class="form-control"
+                                                   placeholder="预售面积(数字)" data-rule-maxlength="100"
+                                                   data-rule-number='true' name="preSaleArea" class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -1595,7 +1721,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="预售款监管信息" name="preSaleSupervisionInformation" class="form-control"
+                                                   placeholder="预售款监管信息" name="preSaleSupervisionInformation"
+                                                   class="form-control"
                                                    required="required">
                                         </div>
                                     </div>
@@ -2039,7 +2166,8 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">预期完成日期<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">预期完成日期<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input placeholder="预期完成日期"
                                                    name="expectedCompletionDate" data-date-format="yyyy-mm-dd"
@@ -2109,7 +2237,8 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">备注<span class="symbol required"></span></label>
+                                        <label class="col-sm-1 control-label">备注<span
+                                                class="symbol required"></span></label>
                                         <div class="col-sm-11">
                                             <textarea class="form-control" name="remark" required="required"></textarea>
                                         </div>
@@ -2218,7 +2347,8 @@
                                             所在地
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" name="location" required="required" class="form-control" placeholder="所在地">
+                                            <input type="text" name="location" required="required" class="form-control"
+                                                   placeholder="所在地">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2226,7 +2356,8 @@
                                             土地使用权人
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" name="ownership" required="required"  class="form-control" placeholder="土地使用权人">
+                                            <input type="text" name="ownership" required="required" class="form-control"
+                                                   placeholder="土地使用权人">
                                         </div>
                                     </div>
                                 </div>
@@ -2236,7 +2367,8 @@
                                             土地权证号
                                         </label>
                                         <div class="col-sm-11">
-                                            <input type="text" name="landCertName" readonly="readonly" class="form-control" placeholder="土地权证号">
+                                            <input type="text" name="landCertName" readonly="readonly"
+                                                   class="form-control" placeholder="土地权证号">
                                         </div>
                                     </div>
                                 </div>
@@ -2256,7 +2388,9 @@
                                             年份
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" required="required" data-rule-maxlength="100" data-rule-number='true' name="year" class="form-control" placeholder="年份(数字如:2018)">
+                                            <input type="text" required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true' name="year" class="form-control"
+                                                   placeholder="年份(数字如:2018)">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2264,7 +2398,8 @@
                                             编号
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" required="required" name="number" class="form-control" placeholder="编号">
+                                            <input type="text" required="required" name="number" class="form-control"
+                                                   placeholder="编号">
                                         </div>
                                     </div>
                                 </div>
@@ -2392,7 +2527,8 @@
                                             使用权类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                            <select required="required" name="useRightType"
+                                                    class="form-control search-select select2 useRightType">
                                                 <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
@@ -2500,7 +2636,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="equipmentInstallation.declareRealtyLandCertSaveAndUpdate();">
+                    <button type="button" class="btn btn-primary"
+                            onclick="equipmentInstallation.declareRealtyLandCertSaveAndUpdate();">
                         保存
                     </button>
                 </div>
@@ -2626,7 +2763,8 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">共有情况<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="publicSituation" class="form-control search-select select2 publicSituation"
+                                            <select name="publicSituation"
+                                                    class="form-control search-select select2 publicSituation"
                                                     required="required">
                                             </select>
                                         </div>
@@ -2635,7 +2773,8 @@
                                         <label class="col-sm-1 control-label">建筑面积<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <input type="text"
-                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control" data-rule-maxlength="100" data-rule-number='true'
+                                                   placeholder="建筑面积(数字)" name="floorArea" class="form-control"
+                                                   data-rule-maxlength="100" data-rule-number='true'
                                                    required="required">
                                         </div>
                                     </div>
@@ -2757,7 +2896,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="总层数(数字)" name="floorCount" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2765,7 +2905,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="证载面积(数字)" name="evidenceArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -2773,7 +2914,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="套内面积(数字)" name="innerArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -2833,7 +2975,8 @@
                                         <div class="col-sm-3">
                                             <input type="text"
                                                    placeholder="公摊面积(数字)" name="publicArea" class="form-control"
-                                                   required="required" data-rule-maxlength="100" data-rule-number='true'>
+                                                   required="required" data-rule-maxlength="100"
+                                                   data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
@@ -2916,7 +3059,8 @@
                                             使用权类型
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="useRightType" class="form-control search-select select2 useRightType">
+                                            <select required="required" name="useRightType"
+                                                    class="form-control search-select select2 useRightType">
                                                 <option value="请选择">请选择</option>
                                                 <option value="划拨" name="useRightType">划拨</option>
                                                 <option value="出证" name="useRightType">出证</option>
@@ -2985,7 +3129,8 @@
                                             附件<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-5">
-                                            <input id="declareRealtyRealEstateCertFileIdE" name="declareRealtyRealEstateCertFileIdE"
+                                            <input id="declareRealtyRealEstateCertFileIdE"
+                                                   name="declareRealtyRealEstateCertFileIdE"
                                                    required="required" placeholder="附件" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyRealEstateCertFileIdE"></div>
@@ -3001,7 +3146,8 @@
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         取消
                     </button>
-                    <label class="btn btn-primary" onclick="equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate()">
+                    <label class="btn btn-primary"
+                           onclick="equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate()">
                         保存
                     </label>
                 </div>

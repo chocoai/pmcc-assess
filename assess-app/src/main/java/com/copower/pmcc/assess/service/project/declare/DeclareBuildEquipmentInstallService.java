@@ -4,10 +4,7 @@ import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEquipmentInstallDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEquipmentInstallVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -63,6 +60,8 @@ public class DeclareBuildEquipmentInstallService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     public String importData(DeclareBuildEquipmentInstall declareBuildEquipmentInstall, MultipartFile multipartFile) throws Exception {
         String declareType = null;
@@ -132,6 +131,12 @@ public class DeclareBuildEquipmentInstallService {
             declareBuildEquipmentInstall.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildEquipmentInstallDao.addDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class), id);
+            DeclareBuildEngineeringAndEquipmentCenter oo = new DeclareBuildEngineeringAndEquipmentCenter();
+            oo.setPlanDetailsId(declareBuildEquipmentInstall.getPlanDetailsId());
+            oo.setBuildEquipmentId(id);
+            oo.setCreator(commonService.thisUserAccount());
+            oo.setType(DeclareBuildEquipmentInstall.class.getSimpleName());
+            declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(oo);
             return id;
         } else {
             declareBuildEquipmentInstallDao.updateDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
@@ -165,12 +170,32 @@ public class DeclareBuildEquipmentInstallService {
     }
 
     public void removeDeclareBuildEquipmentInstall(DeclareBuildEquipmentInstall declareBuildEquipmentInstall) {
+        DeclareBuildEngineeringAndEquipmentCenter oo = new DeclareBuildEngineeringAndEquipmentCenter();
+        oo.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(oo);
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
+            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter:declareBuildEngineeringAndEquipmentCenterList){
+                if (engineeringAndEquipmentCenter.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())){
+                    declareBuildEngineeringAndEquipmentCenterService.removeDeclareBuildEngineeringAndEquipmentCenter(engineeringAndEquipmentCenter);
+                }
+            }
+        }
         declareBuildEquipmentInstallDao.removeDeclareBuildEquipmentInstall(declareBuildEquipmentInstall);
     }
 
     public DeclareBuildEquipmentInstallVo getDeclareBuildEquipmentInstallVo(DeclareBuildEquipmentInstall declareBuildEquipmentInstall) {
         DeclareBuildEquipmentInstallVo vo = new DeclareBuildEquipmentInstallVo();
         BeanUtils.copyProperties(declareBuildEquipmentInstall, vo);
+        DeclareBuildEngineeringAndEquipmentCenter andEquipmentCenter = new DeclareBuildEngineeringAndEquipmentCenter();
+        andEquipmentCenter.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(andEquipmentCenter);
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
+            for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
+                if (oo.getBuildEquipmentId().equals(declareBuildEquipmentInstall.getId())){
+                    vo.setCenterId(oo.getId());
+                }
+            }
+        }
         if (StringUtils.isNotBlank(declareBuildEquipmentInstall.getProvince())) {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getProvince())) {
                 //省
@@ -183,7 +208,7 @@ public class DeclareBuildEquipmentInstallService {
             if (NumberUtils.isNumber(declareBuildEquipmentInstall.getCity())) {
                 vo.setCityName(erpAreaService.getSysAreaName(declareBuildEquipmentInstall.getCity()));
             }else {
-                //市
+                //市,区
                 vo.setCityName(declareBuildEquipmentInstall.getCity());
             }
         }
