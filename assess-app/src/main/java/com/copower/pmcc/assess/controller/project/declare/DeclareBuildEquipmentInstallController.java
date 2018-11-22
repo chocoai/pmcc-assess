@@ -69,7 +69,6 @@ public class DeclareBuildEquipmentInstallController {
             if (pid != null) {
                 declareBuildEquipmentInstall.setPid(pid);
             }
-//            declareBuildEquipmentInstall.setEnable("yes");
             vo = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallListVos(declareBuildEquipmentInstall);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

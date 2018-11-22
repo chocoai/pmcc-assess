@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/9/27
-  Time: 10:45
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_content">
@@ -22,7 +16,7 @@
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土建
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土建Excel文件
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
@@ -1151,9 +1145,8 @@
 
     civilEngineering.copyId = undefined;
     //复制子数据
-    civilEngineering.copyData = function (id, index) {
+    civilEngineering.copyData = function (id, centerId) {
         var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getData');
-        $("#" + civilEngineeringConfig.table).bootstrapTable('load', item);
         $.each(item, function (i, data) {
             $("#civilEngineeringCancel" + data.id).parent().hide();
             $("#civilEngineeringCopy" + data.id).parent().hide();
@@ -1164,11 +1157,11 @@
             }
         });
         $("#civilEngineeringCancel" + id).parent().show();
-        civilEngineering.copyId = id;
+        civilEngineering.copyId = centerId;
     };
 
     //粘贴子数据
-    civilEngineering.pasteData = function (id, index) {
+    civilEngineering.pasteData = function (id, centerId) {
         Alert("确认粘贴", 2,
             function () {//放弃操作后的函数
                 $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
@@ -1211,7 +1204,7 @@
     };
 
     //放弃复制
-    civilEngineering.cancelData = function (id, index) {
+    civilEngineering.cancelData = function (id, centerId) {
         $("#civilEngineeringCancel" + id).parent().hide();
         $.each($("#" + civilEngineeringConfig.table).bootstrapTable('getData'), function (i, data) {
             $("#civilEngineeringPaste" + data.id).parent().hide();
@@ -1251,46 +1244,47 @@
         cols.push({field: 'bookValue', title: '帐面价值', visible: true});
         cols.push({field: 'declarer', title: '申报人'});
         cols.push({field: 'beLocated', title: '坐落'});
+        cols.push({field: 'centerId', title: '中间表id', visible: true});
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '子类以及自身操作', formatter: function (value, row, index) {
                 var str = '<div class="dropdown">';
                 str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu1'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
                 str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu1'>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.id + ")'" + ">" + "土地证" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.id + ")'" + ">" + "不动产" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.id + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.deleteData(" + row.centerId + ")'" + ">" + "删除" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.editData(" + row.centerId + ")'" + ">" + "编辑" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" + row.centerId + ")'" + ">" + "建设用地规划许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" + row.centerId + ")'" + ">" + "建筑工程施工许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" + row.centerId + ")'" + ">" + "商品房预售许可证" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" + row.centerId + ")'" + ">" + "经济规划指标" + "</a>" + "</li>";
                 str += "</ul>";
                 str += "</div>";
                 return str;
             }
         });
         cols.push({
-            field: 'id', title: '复制', formatter: function (value, row, index) {
+            field: 'id', title: '复制从表数据', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCopy' + row.id + '" data-placement="top" data-original-title="复制" onclick="civilEngineering.copyData(' + row.id + ',' + index + ')"><i class="fa fa-copy fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCopy' + row.id + '" data-placement="top" data-original-title="复制" onclick="civilEngineering.copyData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-copy fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
         });
         cols.push({
-            field: 'id', title: '放弃', formatter: function (value, row, index) {
+            field: 'id', title: '放弃粘贴数据', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin" style="display: none">';
-                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCancel' + row.id + '" data-placement="top" data-original-title="放弃" onclick="civilEngineering.cancelData(' + row.id + ',' + index + ')">放弃</a>';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringCancel' + row.id + '" data-placement="top" data-original-title="放弃" onclick="civilEngineering.cancelData(' + row.id + ',' + row.centerId + ')">放弃</a>';
                 str += '</div>';
                 return str;
             }
         });
         cols.push({
-            field: 'id', title: '粘贴', formatter: function (value, row, index) {
+            field: 'id', title: '粘贴从表数据', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin" style="display: none">';
-                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringPaste' + row.id + '" data-placement="top" data-original-title="粘贴" onclick="civilEngineering.pasteData(' + row.id + ',' + index + ')"><i class="fa fa-paste fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips" id="civilEngineeringPaste' + row.id + '" data-placement="top" data-original-title="粘贴" onclick="civilEngineering.pasteData(' + row.id + ',' + row.centerId + ')"><i class="fa fa-paste fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }

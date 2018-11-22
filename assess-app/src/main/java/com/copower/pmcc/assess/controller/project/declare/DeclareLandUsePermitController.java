@@ -98,7 +98,7 @@ public class DeclareLandUsePermitController {
             if (planDetailsId != null) {
                 declareLandUsePermit.setPlanDetailsId(planDetailsId);
             }
-            return HttpResult.newCorrectResult(declareLandUsePermitService.getDeclareLandUsePermitListVos(declareLandUsePermit));
+            return HttpResult.newCorrectResult(declareLandUsePermitService.declareLandUsePermitList(declareLandUsePermit));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEconomicIndicatorsCenterDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicators;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicatorsCenter;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -16,17 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
 /**
  * @Auther: zch
  * @Date: 2018/11/22 10:25
- * @Description:
+ * @Description:在建工程 规划经济指标 中间表
  */
 @Service
 public class DeclareBuildEconomicIndicatorsCenterService {
-
+    @Autowired
+    private DeclareBuildEconomicIndicatorsService declareBuildEconomicIndicatorsService;
     @Autowired
     private DeclareBuildEconomicIndicatorsCenterDao declareBuildEconomicIndicatorsCenterDao;
     @Autowired
@@ -68,6 +71,14 @@ public class DeclareBuildEconomicIndicatorsCenterService {
     }
 
     public void removeDeclareBuildEconomicIndicatorsCenter(DeclareBuildEconomicIndicatorsCenter declareBuildEconomicIndicatorsCenter) {
+        DeclareBuildEconomicIndicators query = new DeclareBuildEconomicIndicators();
+        query.setPid(declareBuildEconomicIndicatorsCenter.getId());
+        List<DeclareBuildEconomicIndicators> declareBuildEconomicIndicatorsList = declareBuildEconomicIndicatorsService.declareBuildEconomicIndicatorsList(query);
+        if (!ObjectUtils.isEmpty(declareBuildEconomicIndicatorsList)){
+            for (DeclareBuildEconomicIndicators oo:declareBuildEconomicIndicatorsList){
+                declareBuildEconomicIndicatorsService.removeDeclareBuildEconomicIndicators(oo);
+            }
+        }
         declareBuildEconomicIndicatorsCenterDao.removeDeclareBuildEconomicIndicatorsCenter(declareBuildEconomicIndicatorsCenter);
     }
     

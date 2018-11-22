@@ -98,7 +98,7 @@ public class DeclarePreSalePermitController {
             if (planDetailsId != null) {
                 declarePreSalePermit.setPlanDetailsId(planDetailsId);
             }
-            return HttpResult.newCorrectResult(declarePreSalePermitService.getDeclarePreSalePermitListVos(declarePreSalePermit));
+            return HttpResult.newCorrectResult(declarePreSalePermitService.declarePreSalePermitList(declarePreSalePermit));
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("异常");

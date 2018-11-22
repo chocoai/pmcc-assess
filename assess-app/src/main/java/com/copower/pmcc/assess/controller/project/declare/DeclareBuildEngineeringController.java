@@ -69,7 +69,6 @@ public class DeclareBuildEngineeringController {
             if (pid != null) {
                 declareBuildEngineering.setPid(pid);
             }
-//            declareBuildEngineering.setEnable("yes");
             vo = declareBuildEngineeringService.getDeclareBuildEngineeringListVos(declareBuildEngineering);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);

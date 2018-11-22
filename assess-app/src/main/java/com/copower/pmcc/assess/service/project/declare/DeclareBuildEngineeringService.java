@@ -4,10 +4,7 @@ import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareInfo;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareBuildEngineeringVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -63,6 +60,8 @@ public class DeclareBuildEngineeringService {
     private DeclarePublicService declarePoiHelp;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     public String importData(DeclareBuildEngineering declareBuildEngineering, MultipartFile multipartFile) throws Exception {
         String declareType = null;
@@ -132,6 +131,12 @@ public class DeclareBuildEngineeringService {
             declareBuildEngineering.setCreator(commonService.thisUserAccount());
             Integer id = declareBuildEngineeringDao.addDeclareBuildEngineering(declareBuildEngineering);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class), id);
+            DeclareBuildEngineeringAndEquipmentCenter oo = new DeclareBuildEngineeringAndEquipmentCenter();
+            oo.setPlanDetailsId(declareBuildEngineering.getPlanDetailsId());
+            oo.setBuildEngineeringId(id);
+            oo.setCreator(commonService.thisUserAccount());
+            oo.setType(DeclareBuildEngineering.class.getSimpleName());
+            declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(oo);
             return id;
         } else {
             declareBuildEngineeringDao.updateDeclareBuildEngineering(declareBuildEngineering);
@@ -165,31 +170,54 @@ public class DeclareBuildEngineeringService {
     }
 
     public void removeDeclareBuildEngineering(DeclareBuildEngineering declareBuildEngineering) {
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        query.setBuildEngineeringId(declareBuildEngineering.getId());
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
+            for (DeclareBuildEngineeringAndEquipmentCenter engineeringAndEquipmentCenter:declareBuildEngineeringAndEquipmentCenterList){
+                if (engineeringAndEquipmentCenter.getBuildEngineeringId().equals(declareBuildEngineering.getId())){
+                    declareBuildEngineeringAndEquipmentCenterService.removeDeclareBuildEngineeringAndEquipmentCenter(engineeringAndEquipmentCenter);
+                }
+            }
+        }
         declareBuildEngineeringDao.removeDeclareBuildEngineering(declareBuildEngineering);
     }
 
     public DeclareBuildEngineeringVo getDeclareBuildEngineeringVo(DeclareBuildEngineering declareBuildEngineering) {
         DeclareBuildEngineeringVo vo = new DeclareBuildEngineeringVo();
         BeanUtils.copyProperties(declareBuildEngineering, vo);
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        query.setBuildEngineeringId(declareBuildEngineering.getId());
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
+            for (DeclareBuildEngineeringAndEquipmentCenter oo:declareBuildEngineeringAndEquipmentCenterList){
+                if (oo.getBuildEngineeringId().equals(declareBuildEngineering.getId())){
+                    vo.setCenterId(oo.getId());
+                }
+            }
+        }
+        //省
         if (StringUtils.isNotBlank(declareBuildEngineering.getProvince())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getProvince())) {
-                vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEngineering.getProvince()));//省
+                vo.setProvinceName(erpAreaService.getSysAreaName(declareBuildEngineering.getProvince()));
             } else {
-                vo.setProvinceName(declareBuildEngineering.getProvince());//省
+                vo.setProvinceName(declareBuildEngineering.getProvince());
             }
         }
+        //市或者区
         if (StringUtils.isNotBlank(declareBuildEngineering.getCity())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getCity())) {
-                vo.setCityName(erpAreaService.getSysAreaName(declareBuildEngineering.getCity()));//市或者县
+                vo.setCityName(erpAreaService.getSysAreaName(declareBuildEngineering.getCity()));
             } else {
-                vo.setCityName(declareBuildEngineering.getCity());//市或者县
+                vo.setCityName(declareBuildEngineering.getCity());
             }
         }
+        //县
         if (StringUtils.isNotBlank(declareBuildEngineering.getDistrict())) {
             if (NumberUtils.isNumber(declareBuildEngineering.getDistrict())) {
-                vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEngineering.getDistrict()));//县
+                vo.setDistrictName(erpAreaService.getSysAreaName(declareBuildEngineering.getDistrict()));
             } else {
-                vo.setDistrictName(declareBuildEngineering.getDistrict());//县
+                vo.setDistrictName(declareBuildEngineering.getDistrict());
             }
         }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(declareBuildEngineering.getId(), null, FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class));
