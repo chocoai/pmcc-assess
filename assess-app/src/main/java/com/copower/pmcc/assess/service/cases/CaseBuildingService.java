@@ -157,7 +157,6 @@ public class CaseBuildingService {
     public Integer saveAndUpdateCaseBuilding(CaseBuilding caseBuilding) {
         Integer id = null;
         if (caseBuilding.getId() == null || caseBuilding.getId().intValue() == 0) {
-            caseBuilding.setCreator(commonService.thisUserAccount());
             id = caseBuildingDao.addBuilding(caseBuilding);
             return id;
         } else {

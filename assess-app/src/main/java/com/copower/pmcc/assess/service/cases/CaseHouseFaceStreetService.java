@@ -99,7 +99,6 @@ public class CaseHouseFaceStreetService {
      * @return
      */
     public boolean addCaseHouseFaceStreet(CaseHouseFaceStreet caseHouseFaceStreet) {
-        caseHouseFaceStreet.setCreator(commonService.thisUserAccount());
         return caseHouseFaceStreetDao.addHouseFaceStreet(caseHouseFaceStreet);
     }
 

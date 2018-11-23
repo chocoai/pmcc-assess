@@ -55,7 +55,6 @@ public class CaseEstateTaggingService {
             stringBuilder.append(caseEstateTagging.getRemark());
         }
         caseEstateTagging.setContent(stringBuilder.toString());
-        caseEstateTagging.setCreator(commonService.thisUserAccount());
         caseEstateTaggingDao.saveCaseEstateTagging(caseEstateTagging);
     }
 

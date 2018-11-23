@@ -46,9 +46,7 @@ public class CaseHouseTradingService {
     public Integer saveAndUpdateCaseHouseTrading(CaseHouseTrading caseHouseTrading) {
         Integer id = null;
         if (caseHouseTrading.getId() == null || caseHouseTrading.getId().intValue() == 0) {
-            caseHouseTrading.setCreator(commonService.thisUserAccount());
             id = caseHouseTradingDao.addCaseHouseTrading(caseHouseTrading);
-            caseHouseTrading.setId(id);
             return id;
         }else {
             caseHouseTradingDao.updateCaseHouseTrading(caseHouseTrading);

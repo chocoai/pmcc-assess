@@ -100,7 +100,6 @@ public class CaseBuildingSurfaceService {
      * @return
      */
     public boolean addCaseBuildingSurface(CaseBuildingSurface caseBuildingSurface) {
-        caseBuildingSurface.setCreator(commonService.thisUserAccount());
 
         if (caseBuildingSurface.getBuildingId() == null) {
             caseBuildingSurface.setBuildingId(0);

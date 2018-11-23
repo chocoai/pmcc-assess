@@ -42,8 +42,6 @@ public class CaseHouseTradingLeaseService {
         Integer id = null;
 
         if (caseHouseTradingLease.getId() == null || caseHouseTradingLease.getId().intValue() == 0) {
-            caseHouseTradingLease.setCreator(commonService.thisUserAccount());
-            caseHouseTradingLease.setHouseId(0);
             id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(caseHouseTradingLease);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
@@ -56,7 +54,6 @@ public class CaseHouseTradingLeaseService {
 
     public void upgradeVersion(CaseHouseTradingLease po)throws Exception{
         if (po.getId()==null || po.getId().intValue() == 0){
-            po.setCreator(commonService.thisUserAccount());
             Integer id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(po);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);
@@ -65,7 +62,6 @@ public class CaseHouseTradingLeaseService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
             Integer id = caseHouseTradingLeaseDao.addCaseHouseTradingLease(oo);
             //更新附件
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouseTradingLease.class), id);

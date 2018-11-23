@@ -237,7 +237,6 @@ public class CaseHouseService {
     public Integer saveAndUpdateCaseHouse(CaseHouse caseHouse) {
         Integer id = null;
         if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
-            caseHouse.setCreator(commonService.thisUserAccount());
             id = caseHouseDao.addHouse(caseHouse);
             return id;
         } else {
@@ -249,7 +248,6 @@ public class CaseHouseService {
     public Integer upgradeVersion(CaseHouse caseHouse) throws Exception {
         Integer id = null;
         if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
-            caseHouse.setCreator(commonService.thisUserAccount());
             caseHouse.setVersion(0);
             id = caseHouseDao.addHouse(caseHouse);
             //更新附件

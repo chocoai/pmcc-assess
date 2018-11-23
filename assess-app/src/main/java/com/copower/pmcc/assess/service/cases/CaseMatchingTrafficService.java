@@ -79,7 +79,6 @@ public class CaseMatchingTrafficService {
      * @return
      */
     public boolean addMatchingTraffic(CaseMatchingTraffic caseMatchingTraffic) {
-        caseMatchingTraffic.setCreator(commonService.thisUserAccount());
         return caseMatchingTrafficDao.addMatchingTraffic(caseMatchingTraffic);
     }
 

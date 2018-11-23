@@ -123,7 +123,6 @@ public class CaseHouseCorollaryEquipmentService {
      * @return
      */
     public boolean addCaseHouseCorollaryEquipment(CaseHouseCorollaryEquipment caseHouseCorollaryEquipment) {
-        caseHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
         int id = 0;
         try {
             id = caseHouseCorollaryEquipmentDao.addEstateLandState(caseHouseCorollaryEquipment);

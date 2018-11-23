@@ -101,7 +101,6 @@ public class CaseMatchingFinanceService {
      * @return
      */
     public boolean addCaseMatchingFinance(CaseMatchingFinance caseMatchingFinance) {
-        caseMatchingFinance.setCreator(commonService.thisUserAccount());
         return caseMatchingFinanceDao.addMatchingFinance(caseMatchingFinance);
     }
 

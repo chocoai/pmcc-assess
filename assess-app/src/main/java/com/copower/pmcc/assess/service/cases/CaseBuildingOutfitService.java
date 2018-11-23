@@ -112,7 +112,6 @@ public class CaseBuildingOutfitService {
      * @return
      */
     public boolean addCaseBuildingOutfit(CaseBuildingOutfit caseBuildingOutfit) {
-        caseBuildingOutfit.setCreator(commonService.thisUserAccount());
         if (caseBuildingOutfit.getBuildingId() == null) {
             caseBuildingOutfit.setBuildingId(0);
         }

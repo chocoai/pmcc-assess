@@ -109,7 +109,6 @@ public class CaseUnitDecorateService {
      * @return
      */
     public boolean addCaseUnitDecorate(CaseUnitDecorate caseUnitDecorate) {
-        caseUnitDecorate.setCreator(commonService.thisUserAccount());
         return caseUnitDecorateDao.addUnitDecorate(caseUnitDecorate);
     }
 

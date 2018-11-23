@@ -103,7 +103,6 @@ public class CaseHouseWaterService {
      * @return
      */
     public boolean addCaseHouseWater(CaseHouseWater caseHouseWater) {
-        caseHouseWater.setCreator(commonService.thisUserAccount());
         return caseHouseWaterDao.addHouseWater(caseHouseWater);
     }
 

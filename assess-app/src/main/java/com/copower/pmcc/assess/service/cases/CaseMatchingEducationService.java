@@ -101,7 +101,6 @@ public class CaseMatchingEducationService {
      * @return
      */
     public boolean addCaseMatchingEducation(CaseMatchingEducation caseMatchingEducation) {
-        caseMatchingEducation.setCreator(commonService.thisUserAccount());
         return caseMatchingEducationDao.addMatchingEducation(caseMatchingEducation);
     }
 

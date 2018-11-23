@@ -42,7 +42,6 @@ public class CaseHouseTradingSellService {
         Integer id = null;
 
         if (caseHouseTradingSell.getId() == null || caseHouseTradingSell.getId().intValue() == 0) {
-            caseHouseTradingSell.setCreator(commonService.thisUserAccount());
             id = caseHouseTradingSellDao.addCaseHouseTradingSell(caseHouseTradingSell);
             return id;
         }else {

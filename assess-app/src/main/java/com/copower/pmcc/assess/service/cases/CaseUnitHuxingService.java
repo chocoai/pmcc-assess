@@ -121,7 +121,6 @@ public class CaseUnitHuxingService {
      * @return
      */
     public boolean addCaseUnitHuxing(CaseUnitHuxing caseUnitHuxing) {
-        caseUnitHuxing.setCreator(commonService.thisUserAccount());
         try {
             int id = caseUnitHuxingDao.addUnitHuxing(caseUnitHuxing);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class), id);

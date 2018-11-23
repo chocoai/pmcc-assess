@@ -102,7 +102,6 @@ public class CaseHouseRoomService {
      * @return
      */
     public boolean addCaseHouseRoom(CaseHouseRoom caseHouseRoom) {
-        caseHouseRoom.setCreator(commonService.thisUserAccount());
         return caseHouseRoomDao.addHouseRoom(caseHouseRoom);
     }
 

@@ -48,7 +48,6 @@ public class CaseEstateLandStateService {
 
     public boolean saveAndUpdateCaseEstateLandState(CaseEstateLandState caseEstateLandState) {
         if (caseEstateLandState.getId() == null || caseEstateLandState.getId().intValue() == 0) {
-            caseEstateLandState.setCreator(commonService.thisUserAccount());
             return caseEstateLandStateDao.addEstateLandState(caseEstateLandState);
         } else {
             return caseEstateLandStateDao.updateEstateLandState(caseEstateLandState);

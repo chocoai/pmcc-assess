@@ -38,7 +38,6 @@ public class CaseEstateNetworkService {
      * @date: 2018/7/18 14:31
      */
     public boolean saveCaseEstateNetwork(CaseEstateNetwork examineEstateNetwork) {
-        examineEstateNetwork.setCreator(commonService.thisUserAccount());
         return caseEstateNetworkDao.addEstateNetwork(examineEstateNetwork);
     }
 

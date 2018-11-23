@@ -103,7 +103,6 @@ public class CaseMatchingMaterialService {
      * @return
      */
     public boolean addCaseMatchingMaterial(CaseMatchingMaterial caseMatchingMaterial) {
-        caseMatchingMaterial.setCreator(commonService.thisUserAccount());
         return caseMatchingMaterialDao.addMatchingMaterial(caseMatchingMaterial);
     }
 

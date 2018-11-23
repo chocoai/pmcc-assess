@@ -110,7 +110,6 @@ public class CaseEstateSupplyService {
      * @return
      */
     public boolean addCaseEstateSupply(CaseEstateSupply examineEstateSupply) {
-        examineEstateSupply.setCreator(commonService.thisUserAccount());
         return caseEstateSupplyDao.addEstateNetwork(examineEstateSupply);
     }
 

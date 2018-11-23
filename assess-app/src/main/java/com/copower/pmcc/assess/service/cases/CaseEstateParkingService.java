@@ -111,7 +111,6 @@ public class CaseEstateParkingService {
      * @return
      */
     public boolean addEstateParking(CaseEstateParking examineEstateParking) {
-        examineEstateParking.setCreator(commonService.thisUserAccount());
         try {
             int id = caseEstateParkingDao.addEstateParking(examineEstateParking);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseEstateParking.class), id);

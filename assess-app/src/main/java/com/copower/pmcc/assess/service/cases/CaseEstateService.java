@@ -291,7 +291,6 @@ public class CaseEstateService {
 
     public Integer saveAndUpdateCaseEstate(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
-            caseEstate.setCreator(commonService.thisUserAccount());
             int id = caseEstateDao.addEstate(caseEstate);
             return id;
         } else {
@@ -302,7 +301,6 @@ public class CaseEstateService {
 
     public Integer upgradeVersion(CaseEstate caseEstate) throws Exception {
         if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
-            caseEstate.setCreator(commonService.thisUserAccount());
             caseEstate.setVersion(0);
             int id = caseEstateDao.addEstate(caseEstate);
             caseEstate.setId(id);
@@ -321,7 +319,6 @@ public class CaseEstateService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseEstate.getId();
             int newId = caseEstateDao.addEstate(oo);
             caseEstate.setId(newId);

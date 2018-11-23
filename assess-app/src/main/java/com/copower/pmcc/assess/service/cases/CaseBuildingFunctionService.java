@@ -41,7 +41,6 @@ public class CaseBuildingFunctionService {
 
     public Integer saveAndUpdateCaseBuildingFunction(CaseBuildingFunction caseBuildingFunction) {
         if (caseBuildingFunction.getId() == null) {
-            caseBuildingFunction.setCreator(commonService.thisUserAccount());
             return caseBuildingFunctionDao.addBuildingOutfit(caseBuildingFunction);
         } else {
             caseBuildingFunctionDao.updateBuildingOutfit(caseBuildingFunction);

@@ -100,7 +100,6 @@ public class CaseMatchingEnvironmentService {
      * @return
      */
     public boolean addCaseMatchingEnvironment(CaseMatchingEnvironment caseMatchingEnvironment) {
-        caseMatchingEnvironment.setCreator(commonService.thisUserAccount());
         return caseMatchingEnvironmentDao.addMatchingEnvironment(caseMatchingEnvironment);
     }
 

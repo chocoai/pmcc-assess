@@ -103,7 +103,6 @@ public class CaseBuildingMaintenanceService {
      * @return
      */
     public boolean addCaseBuildingMaintenance(CaseBuildingMaintenance caseBuildingMaintenance) {
-        caseBuildingMaintenance.setCreator(commonService.thisUserAccount());
         return caseBuildingMaintenanceDao.addBuildingMaintenance(caseBuildingMaintenance);
     }
 

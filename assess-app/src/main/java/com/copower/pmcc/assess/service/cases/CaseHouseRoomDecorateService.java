@@ -131,20 +131,17 @@ public class CaseHouseRoomDecorateService {
      * @return
      */
     public boolean addCaseHouseRoomDecorate(CaseHouseRoomDecorate caseHouseRoomDecorate) {
-        caseHouseRoomDecorate.setCreator(commonService.thisUserAccount());
         return caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
     }
 
     public void upgradeVersion(CaseHouseRoomDecorate caseHouseRoomDecorate)throws Exception{
         if (caseHouseRoomDecorate.getId()==null || caseHouseRoomDecorate.getId().intValue()==0){
-            caseHouseRoomDecorate.setCreator(commonService.thisUserAccount());
             caseHouseRoomDecorateDao.addHouseRoomDecorate(caseHouseRoomDecorate);
         }else {
             CaseHouseRoomDecorate oo = getCaseHouseRoomDecorateById(caseHouseRoomDecorate.getId());
             if (oo != null){
 
                 oo.setId(null);
-                oo.setCreator(commonService.thisUserAccount());
                 caseHouseRoomDecorateDao.addHouseRoomDecorate(oo);
             }
         }

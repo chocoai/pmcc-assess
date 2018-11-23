@@ -141,7 +141,6 @@ public class CaseUnitService {
     public Integer saveAndUpdateCaseUnit(CaseUnit caseUnit) {
         Integer id = null;
         if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
-            caseUnit.setCreator(commonService.thisUserAccount());
             id = caseUnitDao.addUnit(caseUnit);
             return  id;
         } else {
@@ -153,7 +152,6 @@ public class CaseUnitService {
     public Integer upgradeVersion(CaseUnit caseUnit)throws Exception{
         Integer id = null;
         if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
-            caseUnit.setCreator(commonService.thisUserAccount());
             caseUnit.setVersion(0);
             id = caseUnitDao.addUnit(caseUnit);
             //更新附件
@@ -172,7 +170,6 @@ public class CaseUnitService {
             oo.setId(null);
             oo.setGmtCreated(null);
             oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
             int oldId = caseUnit.getId();
             int newId = caseUnitDao.addUnit(oo);
             //更新附件

@@ -36,7 +36,6 @@ public class CaseUnitElevatorService {
      * @date: 2018/7/18 14:31
      */
     public boolean saveCaseUnitElevator(CaseUnitElevator caseUnitElevator) {
-        caseUnitElevator.setCreator(commonService.thisUserAccount());
         return caseUnitElevatorDao.addUnitElevator(caseUnitElevator);
     }
 

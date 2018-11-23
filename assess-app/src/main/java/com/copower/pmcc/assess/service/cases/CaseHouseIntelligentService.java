@@ -102,7 +102,6 @@ public class CaseHouseIntelligentService {
      * @return
      */
     public boolean addCaseHouseIntelligent(CaseHouseIntelligent caseHouseIntelligent) {
-        caseHouseIntelligent.setCreator(commonService.thisUserAccount());
         return caseHouseIntelligentDao.addHouseIntelligent(caseHouseIntelligent);
     }
 

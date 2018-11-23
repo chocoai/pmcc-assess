@@ -81,7 +81,6 @@ public class CaseBuildingMainService {
 
     public Integer saveAndUpdate(CaseBuildingMain caseBuildingMain) throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
-            caseBuildingMain.setCreator(commonService.thisUserAccount());
             int id = caseBuildingMainDao.addBuildingMain(caseBuildingMain);
             return id;
         } else {

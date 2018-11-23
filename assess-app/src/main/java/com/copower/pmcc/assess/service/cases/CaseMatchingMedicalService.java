@@ -100,7 +100,6 @@ public class CaseMatchingMedicalService {
      * @return
      */
     public boolean addCaseMatchingMedical(CaseMatchingMedical caseMatchingMedical) {
-        caseMatchingMedical.setCreator(commonService.thisUserAccount());
         return caseMatchingMedicalDao.addMatchingMedical(caseMatchingMedical);
     }
 
