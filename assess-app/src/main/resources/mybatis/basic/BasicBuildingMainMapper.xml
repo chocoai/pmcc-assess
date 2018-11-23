@@ -3,13 +3,16 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicBuildingMainMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="multipart_flag" property="multipartFlag" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, building_number, estate_id, apply_id, multipart_flag, creator, gmt_created, gmt_modified
+    id, estate_id, apply_id, building_number, building_name, multipart_flag, creator, 
+    gmt_created, gmt_modified, floor_count, location
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMainExample" >
     select
@@ -106,12 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building_main (building_number, estate_id, apply_id, 
-      multipart_flag, creator, gmt_created, 
-      gmt_modified)
-    values (#{buildingNumber,jdbcType=VARCHAR}, #{estateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, 
-      #{multipartFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_building_main (estate_id, apply_id, building_number, 
+      building_name, multipart_flag, creator, 
+      gmt_created, gmt_modified, floor_count, 
+      location)
+    values (#{estateId,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{buildingName,jdbcType=VARCHAR}, #{multipartFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{floorCount,jdbcType=INTEGER}, 
+      #{location,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -119,14 +125,17 @@
     </selectKey>
     insert into tb_basic_building_main
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="buildingNumber != null" >
-        building_number,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
       <if test="applyId != null" >
         apply_id,
+      </if>
+      <if test="buildingNumber != null" >
+        building_number,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
       </if>
       <if test="multipartFlag != null" >
         multipart_flag,
@@ -140,16 +149,25 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="floorCount != null" >
+        floor_count,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingNumber != null" >
+        #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="multipartFlag != null" >
         #{multipartFlag,jdbcType=BIT},
@@ -162,6 +180,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="floorCount != null" >
+        #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -177,14 +201,17 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.buildingNumber != null" >
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildingName != null" >
+        building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
       <if test="record.multipartFlag != null" >
         multipart_flag = #{record.multipartFlag,jdbcType=BIT},
@@ -198,6 +225,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.floorCount != null" >
+        floor_count = #{record.floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -206,13 +239,16 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_building_main
     set id = #{record.id,jdbcType=INTEGER},
-      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      building_name = #{record.buildingName,jdbcType=VARCHAR},
       multipart_flag = #{record.multipartFlag,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -220,14 +256,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     update tb_basic_building_main
     <set >
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingNumber != null" >
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="multipartFlag != null" >
         multipart_flag = #{multipartFlag,jdbcType=BIT},
@@ -241,18 +280,27 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="floorCount != null" >
+        floor_count = #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain" >
     update tb_basic_building_main
-    set building_number = #{buildingNumber,jdbcType=VARCHAR},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       apply_id = #{applyId,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
       multipart_flag = #{multipartFlag,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      floor_count = #{floorCount,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

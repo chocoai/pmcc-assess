@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicBuildingMaintenance {
     private Integer id;
 
-    private String buildingNumber;
-
     private Integer buildingId;
 
     private String name;
@@ -29,14 +27,6 @@ public class BasicBuildingMaintenance {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getBuildingId() {

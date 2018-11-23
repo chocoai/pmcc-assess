@@ -5,11 +5,13 @@ import java.util.Date;
 public class BasicBuildingMain {
     private Integer id;
 
-    private String buildingNumber;
-
     private Integer estateId;
 
     private Integer applyId;
+
+    private String buildingNumber;
+
+    private String buildingName;
 
     private Boolean multipartFlag;
 
@@ -19,20 +21,16 @@ public class BasicBuildingMain {
 
     private Date gmtModified;
 
+    private Integer floorCount;
+
+    private String location;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getEstateId() {
@@ -49,6 +47,22 @@ public class BasicBuildingMain {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
     }
 
     public Boolean getMultipartFlag() {
@@ -81,5 +95,21 @@ public class BasicBuildingMain {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getFloorCount() {
+        return floorCount;
+    }
+
+    public void setFloorCount(Integer floorCount) {
+        this.floorCount = floorCount;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 }

@@ -5,8 +5,6 @@ import java.util.Date;
 public class CaseBuildingOutfit {
     private Integer id;
 
-    private String buildingNumber;
-
     private Integer buildingId;
 
     private Integer decorationPart;
@@ -31,14 +29,6 @@ public class CaseBuildingOutfit {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getBuildingId() {

@@ -36,7 +36,7 @@ public class CaseBuildingMainService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.getEstateList(caseBuildingMain);
+        List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.getBuildingMainList(caseBuildingMain);
         vo.setTotal(page.getTotal());
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(caseBuildingMainList) ? new ArrayList<CaseBuildingMain>() : caseBuildingMainList);
         return vo;
@@ -65,16 +65,16 @@ public class CaseBuildingMainService {
     }
 
     public List<CaseBuildingMain> getCaseBuildingMainList(CaseBuildingMain caseBuildingMain) {
-        return caseBuildingMainDao.getEstateList(caseBuildingMain);
+        return caseBuildingMainDao.getBuildingMainList(caseBuildingMain);
     }
 
     public CaseBuildingMain getCaseBuildingMainById(Integer id) {
-        return caseBuildingMainDao.getEstateById(id);
+        return caseBuildingMainDao.getBuildingMainById(id);
     }
 
     public Integer getVersion(Integer id) {
         if (id == null) return 0;
-        CaseBuildingMain caseBuildingMain = caseBuildingMainDao.getEstateById(id);
+        CaseBuildingMain caseBuildingMain = caseBuildingMainDao.getBuildingMainById(id);
         if (caseBuildingMain == null) return 0;
         return caseBuildingMain.getVersion();
     }
@@ -82,10 +82,10 @@ public class CaseBuildingMainService {
     public Integer saveAndUpdate(CaseBuildingMain caseBuildingMain) throws Exception {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
-            int id = caseBuildingMainDao.addEstate(caseBuildingMain);
+            int id = caseBuildingMainDao.addBuildingMain(caseBuildingMain);
             return id;
         } else {
-            caseBuildingMainDao.updateEstate(caseBuildingMain);
+            caseBuildingMainDao.updateBuildingMain(caseBuildingMain);
             return null;
         }
     }
@@ -100,12 +100,12 @@ public class CaseBuildingMainService {
         if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
             caseBuildingMain.setCreator(commonService.thisUserAccount());
             caseBuildingMain.setVersion(0);
-            int id = caseBuildingMainDao.addEstate(caseBuildingMain);
+            int id = caseBuildingMainDao.addBuildingMain(caseBuildingMain);
             this.initUpdateSon(0, id);
             return id;
         } else {
             //更新版本
-            CaseBuildingMain oo = caseBuildingMainDao.getEstateById(caseBuildingMain.getId());
+            CaseBuildingMain oo = caseBuildingMainDao.getBuildingMainById(caseBuildingMain.getId());
             if (oo != null) {
                 if (oo.getVersion() == null) {
                     oo.setVersion(0);
@@ -119,13 +119,13 @@ public class CaseBuildingMainService {
             oo.setGmtCreated(null);
             oo.setCreator(commonService.thisUserAccount());
             int oldId = caseBuildingMain.getId();
-            int newId = caseBuildingMainDao.addEstate(oo);
+            int newId = caseBuildingMainDao.addBuildingMain(oo);
             this.initUpdateSon(oldId, newId);
             return newId;
         }
     }
 
     public boolean deleteCaseBuildingMain(Integer id) {
-        return caseBuildingMainDao.deleteEstate(id);
+        return caseBuildingMainDao.deleteBuildingMain(id);
     }
 }

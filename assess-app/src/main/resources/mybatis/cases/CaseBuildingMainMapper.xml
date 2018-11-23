@@ -5,6 +5,9 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="multipart_flag" property="multipartFlag" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -70,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, building_number, version, multipart_flag, creator, gmt_created, gmt_modified
+    id, estate_id, building_number, building_name, floor_count, location, version, multipart_flag, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMainExample" >
     select
@@ -106,10 +110,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_building_main (estate_id, building_number, version, 
+    insert into tb_case_building_main (estate_id, building_number, building_name, 
+      floor_count, location, version, 
       multipart_flag, creator, gmt_created, 
       gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+    values (#{estateId,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
+      #{floorCount,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
       #{multipartFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -124,6 +130,15 @@
       </if>
       <if test="buildingNumber != null" >
         building_number,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="floorCount != null" >
+        floor_count,
+      </if>
+      <if test="location != null" >
+        location,
       </if>
       <if test="version != null" >
         version,
@@ -147,6 +162,15 @@
       </if>
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorCount != null" >
+        #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
       </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
@@ -183,6 +207,15 @@
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.buildingName != null" >
+        building_name = #{record.buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floorCount != null" >
+        floor_count = #{record.floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
@@ -208,6 +241,9 @@
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+      building_name = #{record.buildingName,jdbcType=VARCHAR},
+      floor_count = #{record.floorCount,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
       multipart_flag = #{record.multipartFlag,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -225,6 +261,15 @@
       </if>
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="floorCount != null" >
+        floor_count = #{floorCount,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
       </if>
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
@@ -248,6 +293,9 @@
     update tb_case_building_main
     set estate_id = #{estateId,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
+      floor_count = #{floorCount,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
       multipart_flag = #{multipartFlag,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

@@ -1,15 +1,16 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingMain;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
-import com.copower.pmcc.assess.dto.output.basic.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -17,7 +18,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,9 +46,6 @@ public class BasicApplyController extends BaseController {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
-    @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-
 
     @RequestMapping(value = "/basicApplyIndex", name = "案例基础数据 初始", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex() {
@@ -56,7 +53,7 @@ public class BasicApplyController extends BaseController {
         //删除 所有 与 当前用户相关的临时数据
         try {
             basicEstateService.initUpdateSon(0, null, null);
-            basicBuildingService.init(0, null, null, null);
+            basicBuildingService.clearInvalidData();
             basicUnitService.initUpdateSon(0, null, null);
             basicHouseService.init(0, null, null);
         } catch (Exception e1) {
@@ -168,7 +165,6 @@ public class BasicApplyController extends BaseController {
         if (basicApply == null) {
             return;
         }
-        modelAndView.addObject("processInsId", basicApply.getProcessInsId());
         BasicUnit basicUnit = publicBasicService.getByByAppIdBasicUnit(basicApply.getId());
         BasicEstateVo basicEstateVo = publicBasicService.getByAppIdBasicEstate(basicApply.getId());
         BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getByAppIdEstateLandState(basicApply.getId());
@@ -187,70 +183,7 @@ public class BasicApplyController extends BaseController {
         List<BasicBuilding> basicBuildingList = null;
         if (buildingMain != null) {
             basicBuildingList = publicBasicService.getMainById(buildingMain);
-            if (!ObjectUtils.isEmpty(basicBuildingList)) {
-                int num = 0;
-                if (basicBuildingList.size() > 4) {
-                    num = 4;
-                }
-                if (basicBuildingList.size() <= 4) {
-                    num = basicBuildingList.size();
-                }
-                for (int i = 0; i < num; i++) {
-                    String port = basicBuildingList.get(i).getPart().toString();
-                    if (StringUtils.isEmpty(port)) {
-                        continue;
-                    }
-                    switch (port) {
-                        case "1": {
-                            BasicBuildingVo basicBuildingVo = publicBasicService.getBasicBuildingVo(basicBuildingList.get(i));
-                            modelAndView.addObject("oneBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                            modelAndView.addObject("oneBasicBuilding", basicBuildingVo);
-                        }
-                        break;
-                        case "2": {
-                            BasicBuildingVo basicBuildingVo = publicBasicService.getBasicBuildingVo(basicBuildingList.get(i));
-                            if (StringUtils.isEmpty(detail)) {
-                                modelAndView.addObject("twoBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("twoBasicBuilding", basicBuildingVo);
-                            }
-                            if (StringUtils.isNotBlank(detail)) {
-                                basicBuildingVo.setId(null);
-                                modelAndView.addObject("twoBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("twoBasicBuilding", basicBuildingVo);
-                            }
-                        }
-                        break;
-                        case "3": {
-                            BasicBuildingVo basicBuildingVo = publicBasicService.getBasicBuildingVo(basicBuildingList.get(i));
-                            if (StringUtils.isEmpty(detail)) {
-                                modelAndView.addObject("threeBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("threeBasicBuilding", basicBuildingVo);
-                            }
-                            if (StringUtils.isNotBlank(detail)) {
-                                basicBuildingVo.setId(null);
-                                modelAndView.addObject("threeBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("threeBasicBuilding", basicBuildingVo);
-                            }
-                        }
-                        break;
-                        case "4": {
-                            BasicBuildingVo basicBuildingVo = publicBasicService.getBasicBuildingVo(basicBuildingList.get(i));
-                            if (StringUtils.isEmpty(detail)) {
-                                modelAndView.addObject("fourBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("fourBasicBuilding", basicBuildingVo);
-                            }
-                            if (StringUtils.isNotBlank(detail)) {
-                                basicBuildingVo.setId(null);
-                                modelAndView.addObject("fourBasicBuildingJson", JSONObject.toJSONString(basicBuildingVo));
-                                modelAndView.addObject("fourBasicBuilding", basicBuildingVo);
-                            }
-                        }
-                        break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            modelAndView.addObject("basicBuildingList", basicBuildingList);
         }
     }
 

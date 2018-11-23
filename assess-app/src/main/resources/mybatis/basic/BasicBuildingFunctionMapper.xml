@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
     <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
@@ -74,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, type, building_number, building_id, decoration_part, decorating_material, material_price, 
-    construction_technology, creator, build_number, gmt_created, gmt_modified
+    id, type, building_id, decoration_part, decorating_material, material_price, construction_technology, 
+    creator, build_number, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunctionExample" >
     select
@@ -111,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building_function (type, building_number, building_id, 
-      decoration_part, decorating_material, material_price, 
-      construction_technology, creator, build_number, 
-      gmt_created, gmt_modified)
-    values (#{type,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingId,jdbcType=INTEGER}, 
-      #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, 
-      #{constructionTechnology,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{buildNumber,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_building_function (type, building_id, decoration_part, 
+      decorating_material, material_price, construction_technology, 
+      creator, build_number, gmt_created, 
+      gmt_modified)
+    values (#{type,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, 
+      #{decoratingMaterial,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{buildNumber,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -128,9 +127,6 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="type != null" >
         type,
-      </if>
-      <if test="buildingNumber != null" >
-        building_number,
       </if>
       <if test="buildingId != null" >
         building_id,
@@ -163,9 +159,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
-      </if>
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="buildingId != null" >
         #{buildingId,jdbcType=INTEGER},
@@ -211,9 +204,6 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
       <if test="record.buildingId != null" >
         building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
@@ -250,7 +240,6 @@
     update tb_basic_building_function
     set id = #{record.id,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
-      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_id = #{record.buildingId,jdbcType=INTEGER},
       decoration_part = #{record.decorationPart,jdbcType=INTEGER},
       decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
@@ -269,9 +258,6 @@
     <set >
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="buildingId != null" >
         building_id = #{buildingId,jdbcType=INTEGER},
@@ -306,7 +292,6 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction" >
     update tb_basic_building_function
     set type = #{type,jdbcType=INTEGER},
-      building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_id = #{buildingId,jdbcType=INTEGER},
       decoration_part = #{decorationPart,jdbcType=INTEGER},
       decorating_material = #{decoratingMaterial,jdbcType=INTEGER},

@@ -28,7 +28,7 @@ public class CaseBuildingMainDao {
      * @param id
      * @return
      */
-    public CaseBuildingMain getEstateById(Integer id) {
+    public CaseBuildingMain getBuildingMainById(Integer id) {
         return caseBuildingMainMapper.selectByPrimaryKey(id);
     }
 
@@ -38,7 +38,7 @@ public class CaseBuildingMainDao {
      * @param caseBuildingMain
      * @return
      */
-    public List<CaseBuildingMain> getEstateList(CaseBuildingMain caseBuildingMain) {
+    public List<CaseBuildingMain> getBuildingMainList(CaseBuildingMain caseBuildingMain) {
         CaseBuildingMainExample example = new CaseBuildingMainExample();
         MybatisUtils.convertObj2Example(caseBuildingMain, example);
         return caseBuildingMainMapper.selectByExample(example);
@@ -50,7 +50,7 @@ public class CaseBuildingMainDao {
      * @param caseBuildingMain
      * @return
      */
-    public Integer addEstate(CaseBuildingMain caseBuildingMain) {
+    public Integer addBuildingMain(CaseBuildingMain caseBuildingMain) {
         caseBuildingMainMapper.insertSelective(caseBuildingMain);
         return caseBuildingMain.getId();
     }
@@ -61,7 +61,7 @@ public class CaseBuildingMainDao {
      * @param caseBuildingMain
      * @return
      */
-    public boolean updateEstate(CaseBuildingMain caseBuildingMain) {
+    public boolean updateBuildingMain(CaseBuildingMain caseBuildingMain) {
         return caseBuildingMainMapper.updateByPrimaryKeySelective(caseBuildingMain) > 0;
     }
 
@@ -85,7 +85,7 @@ public class CaseBuildingMainDao {
      * @param id
      * @return
      */
-    public boolean deleteEstate(Integer id) {
+    public boolean deleteBuildingMain(Integer id) {
         return caseBuildingMainMapper.deleteByPrimaryKey(id) > 0;
     }
 }

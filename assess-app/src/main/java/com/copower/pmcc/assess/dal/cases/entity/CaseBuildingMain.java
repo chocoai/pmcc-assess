@@ -9,6 +9,12 @@ public class CaseBuildingMain {
 
     private String buildingNumber;
 
+    private String buildingName;
+
+    private Integer floorCount;
+
+    private String location;
+
     private Integer version;
 
     private Boolean multipartFlag;
@@ -41,6 +47,30 @@ public class CaseBuildingMain {
 
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName == null ? null : buildingName.trim();
+    }
+
+    public Integer getFloorCount() {
+        return floorCount;
+    }
+
+    public void setFloorCount(Integer floorCount) {
+        this.floorCount = floorCount;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 
     public Integer getVersion() {

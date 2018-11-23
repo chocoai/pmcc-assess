@@ -3,16 +3,13 @@
 <mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="part" property="part" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
     <result column="builder_id" property="builderId" jdbcType="INTEGER" />
     <result column="property_Id" property="propertyId" jdbcType="INTEGER" />
     <result column="be_completed_time" property="beCompletedTime" jdbcType="TIMESTAMP" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="property_type" property="propertyType" jdbcType="INTEGER" />
-    <result column="floor_count" property="floorCount" jdbcType="INTEGER" />
     <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
     <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
     <result column="facilities_use_fee" property="facilitiesUseFee" jdbcType="DECIMAL" />
@@ -27,7 +24,6 @@
     <result column="floor_height" property="floorHeight" jdbcType="DECIMAL" />
     <result column="diameter_depth" property="diameterDepth" jdbcType="DECIMAL" />
     <result column="land_use_year" property="landUseYear" jdbcType="INTEGER" />
-    <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
     <result column="building_structure" property="buildingStructure" jdbcType="INTEGER" />
     <result column="building_structure_lower" property="buildingStructureLower" jdbcType="INTEGER" />
@@ -96,12 +92,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, part, estate_id, case_building_main_id, builder_id, property_Id, be_completed_time, 
-    building_number, building_name, property_type, floor_count, unit_interval, property_fee, 
-    facilities_use_fee, floor_start, floor_end, building_height, building_area, cover_an_area, 
-    building_category, open_time, room_time, floor_height, diameter_depth, land_use_year, 
-    location, net_height, building_structure, building_structure_lower, json_content, 
-    creator, name, gmt_created, gmt_modified
+    id, estate_id, case_building_main_id, builder_id, property_Id, be_completed_time, 
+    building_number, property_type, unit_interval, property_fee, facilities_use_fee, 
+    floor_start, floor_end, building_height, building_area, cover_an_area, building_category, 
+    open_time, room_time, floor_height, diameter_depth, land_use_year, net_height, building_structure, 
+    building_structure_lower, json_content, creator, name, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample" >
     select
@@ -137,30 +132,26 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_case_building (part, estate_id, case_building_main_id, 
-      builder_id, property_Id, be_completed_time, 
-      building_number, building_name, property_type, 
-      floor_count, unit_interval, property_fee, 
+    insert into tb_case_building (estate_id, case_building_main_id, builder_id, 
+      property_Id, be_completed_time, building_number, 
+      property_type, unit_interval, property_fee, 
       facilities_use_fee, floor_start, floor_end, 
       building_height, building_area, cover_an_area, 
       building_category, open_time, room_time, 
       floor_height, diameter_depth, land_use_year, 
-      location, net_height, building_structure, 
-      building_structure_lower, json_content, creator, 
-      name, gmt_created, gmt_modified
-      )
-    values (#{part,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{caseBuildingMainId,jdbcType=INTEGER}, 
-      #{builderId,jdbcType=INTEGER}, #{propertyId,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, #{propertyType,jdbcType=INTEGER}, 
-      #{floorCount,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
+      net_height, building_structure, building_structure_lower, 
+      json_content, creator, name, 
+      gmt_created, gmt_modified)
+    values (#{estateId,jdbcType=INTEGER}, #{caseBuildingMainId,jdbcType=INTEGER}, #{builderId,jdbcType=INTEGER}, 
+      #{propertyId,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{propertyType,jdbcType=INTEGER}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
       #{facilitiesUseFee,jdbcType=DECIMAL}, #{floorStart,jdbcType=INTEGER}, #{floorEnd,jdbcType=INTEGER}, 
       #{buildingHeight,jdbcType=DECIMAL}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
       #{buildingCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=DECIMAL}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=INTEGER}, 
-      #{location,jdbcType=VARCHAR}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, 
-      #{buildingStructureLower,jdbcType=INTEGER}, #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{netHeight,jdbcType=DECIMAL}, #{buildingStructure,jdbcType=INTEGER}, #{buildingStructureLower,jdbcType=INTEGER}, 
+      #{jsonContent,jdbcType=CHAR}, #{creator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -168,9 +159,6 @@
     </selectKey>
     insert into tb_case_building
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="part != null" >
-        part,
-      </if>
       <if test="estateId != null" >
         estate_id,
       </if>
@@ -189,14 +177,8 @@
       <if test="buildingNumber != null" >
         building_number,
       </if>
-      <if test="buildingName != null" >
-        building_name,
-      </if>
       <if test="propertyType != null" >
         property_type,
-      </if>
-      <if test="floorCount != null" >
-        floor_count,
       </if>
       <if test="unitInterval != null" >
         unit_interval,
@@ -240,9 +222,6 @@
       <if test="landUseYear != null" >
         land_use_year,
       </if>
-      <if test="location != null" >
-        location,
-      </if>
       <if test="netHeight != null" >
         net_height,
       </if>
@@ -269,9 +248,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="part != null" >
-        #{part,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
       </if>
@@ -290,14 +266,8 @@
       <if test="buildingNumber != null" >
         #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildingName != null" >
-        #{buildingName,jdbcType=VARCHAR},
-      </if>
       <if test="propertyType != null" >
         #{propertyType,jdbcType=INTEGER},
-      </if>
-      <if test="floorCount != null" >
-        #{floorCount,jdbcType=INTEGER},
       </if>
       <if test="unitInterval != null" >
         #{unitInterval,jdbcType=VARCHAR},
@@ -341,9 +311,6 @@
       <if test="landUseYear != null" >
         #{landUseYear,jdbcType=INTEGER},
       </if>
-      <if test="location != null" >
-        #{location,jdbcType=VARCHAR},
-      </if>
       <if test="netHeight != null" >
         #{netHeight,jdbcType=DECIMAL},
       </if>
@@ -382,9 +349,6 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.part != null" >
-        part = #{record.part,jdbcType=INTEGER},
-      </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
@@ -403,14 +367,8 @@
       <if test="record.buildingNumber != null" >
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingName != null" >
-        building_name = #{record.buildingName,jdbcType=VARCHAR},
-      </if>
       <if test="record.propertyType != null" >
         property_type = #{record.propertyType,jdbcType=INTEGER},
-      </if>
-      <if test="record.floorCount != null" >
-        floor_count = #{record.floorCount,jdbcType=INTEGER},
       </if>
       <if test="record.unitInterval != null" >
         unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
@@ -454,9 +412,6 @@
       <if test="record.landUseYear != null" >
         land_use_year = #{record.landUseYear,jdbcType=INTEGER},
       </if>
-      <if test="record.location != null" >
-        location = #{record.location,jdbcType=VARCHAR},
-      </if>
       <if test="record.netHeight != null" >
         net_height = #{record.netHeight,jdbcType=DECIMAL},
       </if>
@@ -489,16 +444,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_case_building
     set id = #{record.id,jdbcType=INTEGER},
-      part = #{record.part,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
       builder_id = #{record.builderId,jdbcType=INTEGER},
       property_Id = #{record.propertyId,jdbcType=INTEGER},
       be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      building_name = #{record.buildingName,jdbcType=VARCHAR},
       property_type = #{record.propertyType,jdbcType=INTEGER},
-      floor_count = #{record.floorCount,jdbcType=INTEGER},
       unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
       property_fee = #{record.propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
@@ -513,7 +465,6 @@
       floor_height = #{record.floorHeight,jdbcType=DECIMAL},
       diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
       land_use_year = #{record.landUseYear,jdbcType=INTEGER},
-      location = #{record.location,jdbcType=VARCHAR},
       net_height = #{record.netHeight,jdbcType=DECIMAL},
       building_structure = #{record.buildingStructure,jdbcType=INTEGER},
       building_structure_lower = #{record.buildingStructureLower,jdbcType=INTEGER},
@@ -529,9 +480,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     update tb_case_building
     <set >
-      <if test="part != null" >
-        part = #{part,jdbcType=INTEGER},
-      </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
@@ -550,14 +498,8 @@
       <if test="buildingNumber != null" >
         building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildingName != null" >
-        building_name = #{buildingName,jdbcType=VARCHAR},
-      </if>
       <if test="propertyType != null" >
         property_type = #{propertyType,jdbcType=INTEGER},
-      </if>
-      <if test="floorCount != null" >
-        floor_count = #{floorCount,jdbcType=INTEGER},
       </if>
       <if test="unitInterval != null" >
         unit_interval = #{unitInterval,jdbcType=VARCHAR},
@@ -601,9 +543,6 @@
       <if test="landUseYear != null" >
         land_use_year = #{landUseYear,jdbcType=INTEGER},
       </if>
-      <if test="location != null" >
-        location = #{location,jdbcType=VARCHAR},
-      </if>
       <if test="netHeight != null" >
         net_height = #{netHeight,jdbcType=DECIMAL},
       </if>
@@ -633,16 +572,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseBuilding" >
     update tb_case_building
-    set part = #{part,jdbcType=INTEGER},
-      estate_id = #{estateId,jdbcType=INTEGER},
+    set estate_id = #{estateId,jdbcType=INTEGER},
       case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
       builder_id = #{builderId,jdbcType=INTEGER},
       property_Id = #{propertyId,jdbcType=INTEGER},
       be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
-      building_name = #{buildingName,jdbcType=VARCHAR},
       property_type = #{propertyType,jdbcType=INTEGER},
-      floor_count = #{floorCount,jdbcType=INTEGER},
       unit_interval = #{unitInterval,jdbcType=VARCHAR},
       property_fee = #{propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
@@ -657,7 +593,6 @@
       floor_height = #{floorHeight,jdbcType=DECIMAL},
       diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
       land_use_year = #{landUseYear,jdbcType=INTEGER},
-      location = #{location,jdbcType=VARCHAR},
       net_height = #{netHeight,jdbcType=DECIMAL},
       building_structure = #{buildingStructure,jdbcType=INTEGER},
       building_structure_lower = #{buildingStructureLower,jdbcType=INTEGER},

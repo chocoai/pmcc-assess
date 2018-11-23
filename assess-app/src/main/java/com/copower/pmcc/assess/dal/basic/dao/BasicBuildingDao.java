@@ -39,7 +39,7 @@ public class BasicBuildingDao {
         return  basicBuildingMapper.deleteByPrimaryKey(id)==1;
     }
 
-    public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding)throws SQLException{
+    public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding){
         BasicBuildingExample example = new BasicBuildingExample();
         MybatisUtils.convertObj2Example(basicBuilding, example);
         return basicBuildingMapper.selectByExample(example);

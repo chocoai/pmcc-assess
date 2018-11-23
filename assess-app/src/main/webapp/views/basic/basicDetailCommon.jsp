@@ -23,7 +23,7 @@
                 <c:if test="${basicApply.buildingPartInFlag eq true}">
                     <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
                                                         aria-expanded="false"
-                                                        onclick="objectData.build.init(1)">楼栋</a>
+                                                        onclick="objectData.building.init()">楼栋</a>
                     </li>
                 </c:if>
                 <c:if test="${basicApply.unitPartInFlag eq true}">
@@ -88,7 +88,8 @@
         basicBuilding: {
             key: "basicBuilding",
             name: "楼栋",
-            frm: "basicBuildFrm",
+            frm: "basicBuildingFrm",
+            mainFrm: "basicBuildingMainFrm",
             files: {
                 building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
                 building_figure_outside: "building_figure_outside",//外装图id和字段
@@ -195,141 +196,66 @@
         }
     };
 
-    var navButtonBuild;
-    (function () {
-        navButtonBuild = new Object();
-        navButtonBuild.groupFileId = "navButtonBuildGroupFileId";
-        navButtonBuild.isNotBlank = function (item) {
-            if (item) {
-                return true;
-            }
-            return false;
-        };
-
-        function writeUpdateFileId(num) {
-            var fieldsName = "";
-            var labelName = "";
-            if (num == 0) {
-                labelName = "平面图";
-                fieldsName = objectData.config.basicBuilding.files.building_floor_plan + "" + navButtonBuild.switchNumber;
-            }
-            if (num == 1) {
-                labelName = "外装图";
-                fieldsName = objectData.config.basicBuilding.files.building_figure_outside + "" + navButtonBuild.switchNumber;
-            }
-            if (num == 2) {
-                labelName = "外观图";
-                fieldsName = objectData.config.basicBuilding.files.building_floor_Appearance_figure + "" + navButtonBuild.switchNumber;
-            }
-            var label = "<label class='col-sm-1 control-label'>" + labelName + "</label>";
-            var div = "<div class='col-sm-3'>";
-            div += "<div id='" + "_" + fieldsName + "'>" + "</div>";
-            div += "</div>";
-            return label.concat(div);
-        };
-
-        //每次切换更改附件 id
-        navButtonBuild.updateFileId = function () {
-            var html = "";
-            for (var i = 0; i <= 2; i++) {
-                html += "<div class='x-valid'>";
-                html += writeUpdateFileId(i);
-                html += "</div>";
-            }
-            $("#" + navButtonBuild.groupFileId).empty().append(html);
-        };
-        //赋值
-        navButtonBuild.initData = function (data) {
-            $("#" + objectData.config.basicBuilding.frm).initForm(data);
-            $.each(objectData.config.basicBuilding.files, function (i, n) {
-                objectData.showFile(n + "" + navButtonBuild.switchNumber, AssessDBKey.BasicBuilding, data.id);
-            });
-        };
-        navButtonBuild.clearAll = function () {
-            $("#" + objectData.config.basicBuilding.frm).clearAll();
-        };
-    })();
-
-
-    navButtonBuild.switchNumber = 0;
-    navButtonBuild.switchInit = function (target, data, number) {
-        try{
-            if (objectData.isNotBlank(data)) {
-                navButtonBuild.clearAll();
-                navButtonBuild.switchNumber = number;
-                navButtonBuild.updateFileId();
-                navButtonBuild.initData(data);
-                navButtonBuild.dataButtonWrite(target);
-                buildingModel.prototype.viewInit();
-            } else {
-                toastr.success('无数据!');
-            }
-        }catch (e){
-
-        }
-    };
-    //第一栋
-    navButtonBuild.one = function (target, number) {
-        if (number == '1') {
-            if (objectData.isNotBlank('${oneBasicBuildingJson}')) {
-                var data = JSON.parse('${oneBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data, number);
-            } else {
-                toastr.success('无数据!');
-            }
-        }
-    };
-    //第二栋
-    navButtonBuild.two = function (target, number) {
-        if (number == '2') {
-            if (objectData.isNotBlank('${twoBasicBuildingJson}')) {
-                var data = JSON.parse('${twoBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data, number);
-            } else {
-                toastr.success('无数据!');
-            }
-        }
-    };
-    //第三栋
-    navButtonBuild.three = function (target, number) {
-        if (number == '3') {
-            if (objectData.isNotBlank('${threeBasicBuildingJson}')) {
-                var data = JSON.parse('${threeBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data, number);
-            } else {
-                toastr.success('无数据!');
-            }
-        }
-    };
-    //第四栋
-    navButtonBuild.four = function (target, number) {
-        if (number == '4') {
-            if (objectData.isNotBlank('${fourBasicBuildingJson}')) {
-                var data = JSON.parse('${fourBasicBuildingJson}');
-                navButtonBuild.switchInit(target, data, number);
-            } else {
-                toastr.success('无数据!');
-            }
-        }
-    };
-    navButtonBuild.dataButtonWrite = function (target) {
-        $.each($("#navButtonBuild button"), function (i, n) {
-            $(n).removeClass();
-            $(n).addClass("btn btn-default");
-        });
-        //改变按钮颜色
-        $(target).removeClass();
-        $(target).addClass("btn btn-primary");
-        $("." + buildingModel.prototype.config().sonTable).html(navButtonBuild.switchNumber + "部分");
-        $("." + buildingModel.prototype.config().examineBuildingSurfaceTable).html(navButtonBuild.switchNumber + "部分");
-        $("." + buildingModel.prototype.config().examineBuildingMaintenanceTable).html(navButtonBuild.switchNumber + "部分");
-        $("." + buildingModel.prototype.config().examineBuildingFunctionTable).html(navButtonBuild.switchNumber + "部分");
-    };
-
-    objectData.build = {
-        init: function (number) {
-            var target = $("#navButtonBuild button").eq(0)[0];
-            navButtonBuild.one(target, number);
+    objectData.building = {
+        //获取所有部分
+        getBuildingList: function (mainId) {
+            var buildings = undefined;
+            $.ajax({
+                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingListByMainId',
+                type: 'get',
+                async: false,
+                data: {basicBuildingMainId: mainId},
+                success: function (result) {
+                    if (result.ret) {
+                        buildings = result.data;
+                    }
+                }
+            })
+            return buildings;
+        },
+        //显示楼栋信息
+        showBuilding: function (id) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingById',
+                type: 'get',
+                async: false,
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + objectData.config.basicBuilding.frm).initLabel(result.data);
+                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=openTime]').text(formatDate(result.data.openTime));
+                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=roomTime]').text(formatDate(result.data.roomTime));
+                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=beCompletedTime]').text(formatDate(result.data.beCompletedTime));
+                        $("#" + objectData.config.basicBuilding.frm).initForm(result.data,function () {
+                            buildingModel.prototype.viewInit(); //加载从表数据
+                        });
+                    }
+                }
+            })
+        },
+        //显示html
+        show: function (item) {
+//            basicIndexCommon.buildingInit(item);
+//            basicIndexCommon.buildingShow();
+//            basicIndexCommon.showBuildingTab();
+        },
+        //显示
+        init:function () {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingMainByApplyId',
+                type: 'get',
+                data: {applyId: '${basicApply.id}'},
+                success: function (result) {
+                    if (result.ret) {
+                        $("#" + objectData.config.basicBuilding.mainFrm).initLabel(result.data);
+                        var buildings = objectData.building.getBuildingList(result.data.id);
+                        if (buildings && buildings.length > 0) {
+                            objectData.building.showBuilding(buildings[0].id);
+                            objectData.building.show(buildings[0]);
+                        }
+                    }
+                }
+            })
         }
     };
 
@@ -445,14 +371,19 @@
             }
         }
 
-        if (objectData.isNotBlank(basicUnit)) {
-            $("#profile-tab3").attr("data-toggle", "tab");
-            objectData.unit.init();
-        }
-
         if (objectData.isNotBlank(basicEstate)) {
             $("#profile-tab1").attr("data-toggle", "tab");
             objectData.estate.init();
+        }
+
+        if (objectData.isNotBlank(basicBuildingMain)) {
+            $("#profile-tab2").attr("data-toggle", "tab");
+            objectData.building.init();
+        }
+
+        if (objectData.isNotBlank(basicUnit)) {
+            $("#profile-tab3").attr("data-toggle", "tab");
+            objectData.unit.init();
         }
 
         if (objectData.isNotBlank(basicHouse)) {
@@ -460,11 +391,6 @@
             objectData.house.init();
         }
 
-        if (objectData.isNotBlank(basicBuildingMain)) {
-            $("#profile-tab2").attr("data-toggle", "tab");
-            navButtonBuild.one($("#navButtonBuild").find("button").eq(0)[0], 1);
-        }
-//============================================================||======================================================
         $('#caseTab a').eq(0).tab('show');
     });
 </script>

@@ -124,30 +124,30 @@ public class BasicHouseTradingService {
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getInformationType())){
             if (NumberUtils.isNumber(basicHouseTrading.getInformationType())){
-                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getInformationType())));
+                vo.setInformationTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getInformationType())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getPaymentMethod())){
             if (NumberUtils.isNumber(basicHouseTrading.getPaymentMethod())){
-                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getPaymentMethod())));
+                vo.setPaymentMethodName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getPaymentMethod())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getNormalTransaction())){
             if (NumberUtils.isNumber(basicHouseTrading.getNormalTransaction())){
-                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getNormalTransaction())));
+                vo.setNormalTransactionName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getNormalTransaction())));
             }
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getDescriptionContent())){
             if (NumberUtils.isNumber(basicHouseTrading.getDescriptionContent())){
-                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getDescriptionContent())));
+                vo.setDescriptionContentName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getDescriptionContent())));
             }
         }
         if (basicHouseTrading.getDescriptionType() != null){
-            vo.setTradingTypeName(baseDataDicService.getNameById(basicHouseTrading.getDescriptionType()));
+            vo.setDescriptionTypeName(baseDataDicService.getNameById(basicHouseTrading.getDescriptionType()));
         }
         if (StringUtils.isNotEmpty(basicHouseTrading.getTaxBurden())){
             if (NumberUtils.isNumber(basicHouseTrading.getTaxBurden())){
-                vo.setTradingTypeName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getTaxBurden())));
+                vo.setTaxBurdenName(baseDataDicService.getNameById(Integer.parseInt(basicHouseTrading.getTaxBurden())));
             }
         }
         return vo;

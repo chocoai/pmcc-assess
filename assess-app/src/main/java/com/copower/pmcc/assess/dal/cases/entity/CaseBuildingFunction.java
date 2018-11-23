@@ -7,8 +7,6 @@ public class CaseBuildingFunction {
 
     private Integer type;
 
-    private String buildingNumber;
-
     private Integer buildingId;
 
     private Integer decorationPart;
@@ -41,14 +39,6 @@ public class CaseBuildingFunction {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getBuildingId() {

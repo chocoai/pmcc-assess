@@ -6,8 +6,6 @@ import java.util.Date;
 public class CaseBuilding {
     private Integer id;
 
-    private Integer part;
-
     private Integer estateId;
 
     private Integer caseBuildingMainId;
@@ -20,11 +18,7 @@ public class CaseBuilding {
 
     private String buildingNumber;
 
-    private String buildingName;
-
     private Integer propertyType;
-
-    private Integer floorCount;
 
     private String unitInterval;
 
@@ -54,8 +48,6 @@ public class CaseBuilding {
 
     private Integer landUseYear;
 
-    private String location;
-
     private BigDecimal netHeight;
 
     private Integer buildingStructure;
@@ -78,14 +70,6 @@ public class CaseBuilding {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getPart() {
-        return part;
-    }
-
-    public void setPart(Integer part) {
-        this.part = part;
     }
 
     public Integer getEstateId() {
@@ -136,28 +120,12 @@ public class CaseBuilding {
         this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
-    public String getBuildingName() {
-        return buildingName;
-    }
-
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName == null ? null : buildingName.trim();
-    }
-
     public Integer getPropertyType() {
         return propertyType;
     }
 
     public void setPropertyType(Integer propertyType) {
         this.propertyType = propertyType;
-    }
-
-    public Integer getFloorCount() {
-        return floorCount;
-    }
-
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
     }
 
     public String getUnitInterval() {
@@ -270,14 +238,6 @@ public class CaseBuilding {
 
     public void setLandUseYear(Integer landUseYear) {
         this.landUseYear = landUseYear;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
     }
 
     public BigDecimal getNetHeight() {

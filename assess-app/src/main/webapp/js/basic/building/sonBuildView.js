@@ -14,17 +14,7 @@ var buildingModel;
             return false;
         },
         getBuildingId:function () {
-            var data = navButtonBuild.getObjArray(navButtonBuild.switchNumber);
-            var buildingId = data.id;
-            try {
-                return basicIndexCommon.getBuildId();
-                if (buildingModel.prototype.isEmpty(buildingId)){
-                    // return buildingId;
-                }
-            } catch (e) {
-                return "0" ;
-            }
-            return "0" ;
+            return $('#'+objectData.config.basicBuilding.frm).find('[name=id]').val();
         },
         /**
          * @author:  zch

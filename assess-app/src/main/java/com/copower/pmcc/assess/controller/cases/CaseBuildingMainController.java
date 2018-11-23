@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.controller.cases;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,36 +45,7 @@ public class CaseBuildingMainController {
     public ModelAndView editView(Integer id) {
         String view = "/case/caseBuild/caseBuildingView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        CaseBuildingMain caseBuildingMain = null;
-        caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(id);
-        if (caseBuildingMain != null) {
-            CaseBuilding query = new CaseBuilding();
-            query.setCaseBuildingMainId(caseBuildingMain.getId());
-            List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(query);
-            if(!CollectionUtils.isEmpty(caseBuildingList)){
-                for (int i = 0; i <caseBuildingList.size() ; i++) {
-                    switch (caseBuildingList.get(i).getPart()){
-                        case 1:
-                            modelAndView.addObject("oneCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
-                            modelAndView.addObject("oneCaseBuilding", caseBuildingList.get(i));
-                            break;
-                        case 2:
-                            modelAndView.addObject("twoCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
-                            modelAndView.addObject("twoCaseBuilding", caseBuildingList.get(i));
-                            break;
-                        case 3:
-                            modelAndView.addObject("threeCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
-                            modelAndView.addObject("threeCaseBuilding", caseBuildingList.get(i));
-                            break;
-                        case 4:
-                            modelAndView.addObject("fourCaseBuildingJson", JSONObject.toJSONString(caseBuildingService.getCaseBuildingVo(caseBuildingList.get(i))));
-                            modelAndView.addObject("fourCaseBuilding", caseBuildingList.get(i));
-                            break;
-                    }
-                }
-            }
-            modelAndView.addObject("caseBuildingMain", caseBuildingMain);
-        }
+        modelAndView.addObject("caseBuildingMain", caseBuildingMainService.getCaseBuildingMainById(id));
         return modelAndView;
     }
 

@@ -5,8 +5,6 @@ import java.util.Date;
 public class BasicBuildingSurface {
     private Integer id;
 
-    private String buildingNumber;
-
     private Integer buildingId;
 
     private Integer structure;
@@ -27,14 +25,6 @@ public class BasicBuildingSurface {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public Integer getBuildingId() {

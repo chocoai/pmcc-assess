@@ -120,7 +120,7 @@ public class BasicEstateLandStateService {
         BasicEstateLandStateVo vo = new BasicEstateLandStateVo();
         BeanUtils.copyProperties(basicEstateLandState, vo);
         if (basicEstateLandState.getLandUseType() != null) {
-            vo.setLandUseCategoryName(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
+            vo.setLandUseTypeName(baseDataDicService.getNameById(basicEstateLandState.getLandUseType()));
         }
         if (basicEstateLandState.getLandUseCategory() != null) {
             vo.setLandUseCategoryName(baseDataDicService.getNameById(basicEstateLandState.getLandUseCategory()));

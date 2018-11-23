@@ -175,7 +175,7 @@
         basicBuilding: {
             key: "basicBuilding",
             name: "楼栋",
-            frm: "basicBuildFrm",
+            frm: "basicBuildingFrm",
             files: {
                 building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
                 building_figure_outside: "building_figure_outside",//外装图id和字段
@@ -334,7 +334,6 @@
     };
 
     basicIndexCommon.estateInit = function (item) {
-        console.log(item.supplyHeating);
         basicIndexCommon.estateSupply("supplyHeating", item.supplyHeating);
         basicIndexCommon.estateSupply("supplyGas", item.supplyGas);
         basicIndexCommon.estateSupply("supplyWater", item.supplyWater);
@@ -399,6 +398,11 @@
         });
     };
 
+    basicIndexCommon.buildingShow = function () {
+        $("#profile-tab2").attr("data-toggle", "tab");
+        $('#caseTab a').eq(1).tab('show');
+    };
+
     basicIndexCommon.buildingInit = function (item) {
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, item.buildingCategory, function (html, data) {
             $("#" + basicIndexCommon.config.basicBuilding.frm).find('select.buildingCategory').empty().html(html).trigger('change');
@@ -411,9 +415,6 @@
             $("#" + basicIndexCommon.config.basicBuilding.frm).find('select.propertyType').empty().html(html).trigger('change');
         });
         $("#" + this.config.basicBuilding.frm).find("select.buildingStructure").change(function () {
-            /**
-             * 这 因为select2 自动创建 属性名相同的两个class 所以需要要手动取值
-             **/
             var id = $("#" + basicIndexCommon.config.basicBuilding.frm).find("select.buildingStructure").val();
             if (basicIndexCommon.isNotBlank(id)) {
                 AssessCommon.loadDataDicByPid(id, item.buildingStructureLower, function (html, data) {
@@ -424,19 +425,44 @@
         AssessCommon.loadDataDicByPid(item.buildingStructure, item.buildingStructureLower, function (html, data) {
             $("#" + basicIndexCommon.config.basicBuilding.frm).find("select.buildingStructureLower").empty().html(html).trigger('change');
         });
-        navButtonBuild.inputBlur();
-        navButtonBuild.one($("#navButtonBuild button").eq(0)[0], 1);
+        //初始化特殊数据
+        $("#" + basicIndexCommon.config.basicBuilding.frm).find('[name=openTime]').val(formatDate(item.openTime));
+        $("#" + basicIndexCommon.config.basicBuilding.frm).find('[name=roomTime]').val(formatDate(item.roomTime));
+        $("#" + basicIndexCommon.config.basicBuilding.frm).find('[name=beCompletedTime]').val(formatDate(item.beCompletedTime));
+
+        //初始化上传控件
+        $.each(basicIndexCommon.config.basicBuilding.files, function (key, value) {
+            basicIndexCommon.buildingInitUpload(value);
+            basicIndexCommon.buildingShowFile(value);
+        })
     };
 
-    basicIndexCommon.buildingShow = function () {
-        $('#caseTab a').eq(1).tab('show');
-        $("#profile-tab2").attr("data-toggle", "tab");
-    };
+    //楼栋附件上传控件
+    basicIndexCommon.buildingInitUpload = function (fieldsName) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicBuilding,
+                tableId: $("#" + basicIndexCommon.config.basicBuilding.frm).find('[name=id]').val()
+            },
+            deleteFlag: true
+        });
+    }
 
-    basicIndexCommon.buildMainWrite = function (item) {
-        $("#identifier").val(item.identifier);
-        $("#caseBuildingMainId").val(item.id);
-    };
+    //显示楼栋上传的附件
+    basicIndexCommon.buildingShowFile = function (fieldsName) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.BasicBuilding,
+                tableId: $("#" + basicIndexCommon.config.basicBuilding.frm).find('[name=id]').val()
+            },
+            deleteFlag: true
+        })
+    }
 
     basicIndexCommon.unitShow = function () {
         $("#profile-tab3").attr("data-toggle", "tab");

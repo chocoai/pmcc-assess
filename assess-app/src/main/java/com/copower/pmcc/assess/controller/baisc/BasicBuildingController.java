@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuilding;
+import com.copower.pmcc.assess.service.basic.BasicBuildingMainService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class BasicBuildingController {
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private BasicBuildingMainService basicBuildingMainService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -36,6 +34,17 @@ public class BasicBuildingController {
     public HttpResult getBasicBuildingById(Integer id){
         try {
             return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingById(id));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicBuildingMainByApplyId", name = "获取数据", method = {RequestMethod.GET})
+    public HttpResult getBasicBuildingMainByApplyId(Integer applyId){
+        try {
+            return HttpResult.newCorrectResult(basicBuildingMainService.getBasicBuildingMainByApplyId(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());
@@ -91,7 +100,7 @@ public class BasicBuildingController {
     @RequestMapping(value = "/initBuilding", name = "初始化", method = {RequestMethod.POST})
     public HttpResult basicBuildingList(){
         try {
-            basicBuildingService.init(0,null,null,null);
+            basicBuildingService.clearInvalidData();
             return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
@@ -100,14 +109,35 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteBuilding(Integer caseMainBuildId){
+    @RequestMapping(value = "/getBasicBuildingListByMainId", name = "获取楼栋部分数据", method = {RequestMethod.GET})
+    public HttpResult getBasicBuildingListByMainId(Integer basicBuildingMainId){
         try {
-            publicBasicService.appWriteBuilding(caseMainBuildId);
-            return HttpResult.newCorrectResult(200,"success");
+            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingListByMainId(basicBuildingMainId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addBuildingMainAndBuilding", name = "同时添加楼栋主数据及楼栋信息", method = {RequestMethod.POST})
+    public HttpResult addBuildingMainAndBuilding(String buildingNumber){
+        try {
+            return HttpResult.newCorrectResult(basicBuildingService.addBuildingMainAndBuilding(buildingNumber));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult("主数据添加异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
+    public HttpResult appWriteBuilding(Integer caseMainBuildId){
+        try {
+            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseMainBuildId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult("过程数据转移异常");
         }
     }
 }

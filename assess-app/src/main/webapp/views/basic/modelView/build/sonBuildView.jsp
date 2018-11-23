@@ -7,7 +7,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label></h4>
+        <h4>楼栋外装</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
@@ -25,7 +25,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>层面结构 <label class="control-label ExamineBuildingSurfaceList"></label></h4>
+        <h4>层面结构</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
@@ -43,7 +43,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label></h4>
+        <h4>维护结构</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
@@ -61,7 +61,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>维护结构 <label class="control-label examineBuildingFunctionList"></label></h4>
+        <h4>建筑功能</h4>
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"

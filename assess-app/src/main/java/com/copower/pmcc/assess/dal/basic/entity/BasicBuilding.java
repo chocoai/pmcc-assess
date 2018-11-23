@@ -6,8 +6,6 @@ import java.util.Date;
 public class BasicBuilding {
     private Integer id;
 
-    private Integer part;
-
     private Integer basicBuildingMainId;
 
     private Integer builderId;
@@ -21,8 +19,6 @@ public class BasicBuilding {
     private String buildingName;
 
     private Integer propertyType;
-
-    private Integer floorCount;
 
     private String unitInterval;
 
@@ -52,8 +48,6 @@ public class BasicBuilding {
 
     private Integer landUseYear;
 
-    private String location;
-
     private BigDecimal netHeight;
 
     private Integer buildingStructure;
@@ -76,14 +70,6 @@ public class BasicBuilding {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getPart() {
-        return part;
-    }
-
-    public void setPart(Integer part) {
-        this.part = part;
     }
 
     public Integer getBasicBuildingMainId() {
@@ -140,14 +126,6 @@ public class BasicBuilding {
 
     public void setPropertyType(Integer propertyType) {
         this.propertyType = propertyType;
-    }
-
-    public Integer getFloorCount() {
-        return floorCount;
-    }
-
-    public void setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
     }
 
     public String getUnitInterval() {
@@ -260,14 +238,6 @@ public class BasicBuilding {
 
     public void setLandUseYear(Integer landUseYear) {
         this.landUseYear = landUseYear;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
     }
 
     public BigDecimal getNetHeight() {
