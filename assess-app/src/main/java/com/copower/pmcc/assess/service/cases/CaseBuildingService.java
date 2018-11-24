@@ -138,6 +138,12 @@ public class CaseBuildingService {
         return caseBuildingDao.getBuildingList(caseBuilding);
     }
 
+    public List<CaseBuildingVo> getCaseBuildingListByMainId(Integer mainId) {
+        CaseBuilding where =new CaseBuilding();
+        where.setCaseBuildingMainId(mainId);
+        return caseBuildingVoList(where);
+    }
+
     public List<CaseBuildingVo> caseBuildingVoList(CaseBuilding caseBuilding){
         List<CaseBuilding> caseBuildingList =  caseBuildingDao.getBuildingList(caseBuilding);
         List<CaseBuildingVo> vos = new ArrayList<CaseBuildingVo>(10);
@@ -176,40 +182,17 @@ public class CaseBuildingService {
         }
         CaseBuildingVo vo = new CaseBuildingVo();
         BeanUtils.copyProperties(caseBuilding, vo);
-        BaseDataDic dataDic = null;
         if (caseBuilding.getPropertyType() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseBuilding.getPropertyType());
-            if (dataDic != null) {
-                vo.setPropertyTypeName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setPropertyTypeName(baseDataDicService.getNameById(caseBuilding.getPropertyType()));
         }
         if (caseBuilding.getBuildingStructure() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseBuilding.getBuildingStructure());
-            if (dataDic != null) {
-                vo.setBuildingStructureName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setBuildingStructureName(baseDataDicService.getNameById(caseBuilding.getBuildingStructure()));
         }
         if (caseBuilding.getBuildingStructureLower() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseBuilding.getBuildingStructureLower());
-            if (dataDic != null) {
-                vo.setBuildingStructureLowerName(dataDic.getName());
-                dataDic = null;
-            }
+            vo.setBuildingStructureLowerName(baseDataDicService.getNameById(caseBuilding.getBuildingStructureLower()));
         }
         if (caseBuilding.getBuildingCategory() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseBuilding.getBuildingCategory());
-            if (dataDic != null) {
-                vo.setBuildingCategoryName(dataDic.getName());
-                dataDic = null;
-            }
-        }
-        if (caseBuilding.getOpenTime() != null) {
-            vo.setOpenTimeName(DateUtils.format(caseBuilding.getOpenTime()));
-        }
-        if (caseBuilding.getRoomTime() != null) {
-            vo.setRoomTimeName(DateUtils.format(caseBuilding.getRoomTime()));
+            vo.setBuildingCategoryName(baseDataDicService.getNameById(caseBuilding.getBuildingCategory()));
         }
         if (caseBuilding.getPropertyId() != null) {
             DataProperty dataProperty = dataPropertyService.getByDataPropertyId(caseBuilding.getPropertyId());
@@ -222,9 +205,6 @@ public class CaseBuildingService {
             if (dataBuilder != null) {
                 vo.setDataBuildingName(dataBuilder.getName());
             }
-        }
-        if (caseBuilding.getBeCompletedTime() != null){
-            vo.setBeCompletedTimeName(DateUtils.format(caseBuilding.getBeCompletedTime()));
         }
         return vo;
     }

@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMainExample;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper;
@@ -60,6 +62,15 @@ public class CaseUnitDao {
      */
     public boolean updateUnit(CaseUnit caseUnit) {
         return caseUnitMapper.updateByPrimaryKeySelective(caseUnit) > 0;
+    }
+
+    public int updateBuildingMainId(Integer oldBuildingMainId, Integer newBuildingMainId) {
+        CaseUnitExample example = new CaseUnitExample();
+        example.createCriteria().andCaseBuildingMainIdEqualTo(oldBuildingMainId);
+
+        CaseUnit caseUnit = new CaseUnit();
+        caseUnit.setCaseBuildingMainId(newBuildingMainId);
+        return caseUnitMapper.updateByExampleSelective(caseUnit, example);
     }
 
     /**

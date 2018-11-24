@@ -67,16 +67,7 @@
                 return false;
             },
             getBuildingId: function () {
-                var data = formParams("basicBuildFrm");
-                var buildingId = data.id;
-                try {
-                    if (buildingModel.prototype.isEmpty(buildingId)) {
-                        return buildingId;
-                    }
-                } catch (e) {
-                    return "0";
-                }
-                return "0";
+                return $('#basicBuildingFrm').find('[name=id]').val();
             },
             /**
              * @author:  zch
@@ -124,7 +115,6 @@
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                         $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/caseBuildingOutfit/getCaseBuildingOutfitList", cols, {
-                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
                             buildingId: buildingModel.prototype.getBuildingId(),
                             approval:true
                         }, {
@@ -146,7 +136,6 @@
                         cols.push({field: 'description', title: '描述'});
                         $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceList", cols, {
-                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
                             buildingId: buildingModel.prototype.getBuildingId(),
                             approval:true
                         }, {
@@ -168,7 +157,6 @@
                         cols.push({field: 'name', title: '名称'});
                         $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/caseBuildingMaintenance/getCaseBuildingMaintenanceList", cols, {
-                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
                             buildingId: buildingModel.prototype.getBuildingId(),
                             approval:true
                         }, {
@@ -185,9 +173,6 @@
                 buildingFunction: {
                     loadDataDicList: function () {
                         var cols = [];
-                        // cols.push({field: 'waterProof', title: '防水'});
-                        // cols.push({field: 'heatPreservation', title: '保温'});
-                        // cols.push({field: 'heatInsulation', title: '隔热'});
                         cols.push({field: 'typeName', title: '类型'});
                         cols.push({field: 'decorationPartName', title: '装修部位'});
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
@@ -195,7 +180,6 @@
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                         $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/caseBuildingFunction/getCaseBuildingFunctionList", cols, {
-                            buildingNumber: buildingModel.prototype.isEmpty(navButtonBuild.switchNumber) ? navButtonBuild.switchNumber : '0',
                             buildingId: buildingModel.prototype.getBuildingId(),
                             approval:true
                         }, {

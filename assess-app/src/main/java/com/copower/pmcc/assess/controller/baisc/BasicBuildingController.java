@@ -132,9 +132,9 @@ public class BasicBuildingController {
 
     @ResponseBody
     @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteBuilding(Integer caseMainBuildId){
+    public HttpResult appWriteBuilding(Integer caseMainBuildingId){
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseMainBuildId));
+            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseMainBuildingId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult("过程数据转移异常");

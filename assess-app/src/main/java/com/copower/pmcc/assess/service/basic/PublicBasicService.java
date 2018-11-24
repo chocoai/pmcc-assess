@@ -470,11 +470,13 @@ public class PublicBasicService {
         if (basicBuildingMain != null) {
             BeanUtils.copyProperties(basicBuildingMain, caseBuildingMain);
             caseBuildingMain.setEstateId(estateId);
-            caseBuildingMain.setVersion(caseBuildingMainService.getVersion(basicApply.getCaseBuildingMainId()));
+            caseBuildingMain.setVersion(caseBuildingMainService.getVersion(basicApply.getCaseBuildingMainId())+1);
             caseBuildingMain.setId(null);
             caseBuildingMain.setGmtCreated(null);
             caseBuildingMain.setGmtModified(null);
             caseBuildingMainService.saveAndUpdate(caseBuildingMain);
+
+            flowWriteCaseBuilding(basicBuildingMain,caseBuildingMain);
         }
         return caseBuildingMain;
     }
@@ -970,25 +972,46 @@ public class PublicBasicService {
             BasicHouse basicHouse = this.getByAppIdBasicHouseVo(basicApply.getId());
             BasicHouseTrading basicTrading = this.getByAppIdBasicHouseTrading(basicApply.getId());
 
-            CaseEstate caseEstate = null;
-            CaseBuildingMain caseBuildingMain = null;
-            CaseUnit caseUnit = null;
+            //1.如果楼盘升级，则新增一条楼盘数据，并将与该楼盘相关关联的楼栋数据关联id更新为新添加的楼盘数据id
+            //2.楼栋与单元处理方式与楼盘一致
+            Integer estateId = basicApply.getCaseEstateId();
+            Integer buildingMainId = basicApply.getCaseBuildingMainId();
+            Integer unitId = basicApply.getCaseUnitId();
+
 
             //处理楼盘
-            if (basicEstate != null) {
-                caseEstate = this.flowWriteCaseEstate(basicApply, basicEstate, basicEstateLandState);
+            if (basicApply.getEstatePartInFlag() == Boolean.TRUE && basicEstate != null) {
+                CaseEstate caseEstate = this.flowWriteCaseEstate(basicApply, basicEstate, basicEstateLandState);
+                if (estateId != null && estateId > 0) {
+                    //更新楼栋关联id
+                    caseBuildingMainService.updateEstateId(estateId, caseEstate.getId());
+                }
+                estateId = caseEstate.getId();
             }
+
             //处理楼栋
-            if (basicBuildingMain != null) {
-                caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuildingMain, caseEstate.getId());
+            if (basicApply.getBuildingPartInFlag() == Boolean.TRUE && basicBuildingMain != null) {
+                CaseBuildingMain caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuildingMain, estateId);
+                if (buildingMainId != null && buildingMainId > 0) {
+                    //更新单元关联id
+                    caseUnitService.updateBuildingMainId(buildingMainId, caseBuildingMain.getId());
+                }
+                buildingMainId = caseBuildingMain.getId();
             }
+
             //处理单元
-            if (basicUnit != null) {
-                caseUnit = this.flowWriteCaseUnit(basicApply, basicUnit, caseBuildingMain.getId());
+            if (basicApply.getUnitPartInFlag() == Boolean.TRUE && basicUnit != null) {
+                CaseUnit caseUnit = this.flowWriteCaseUnit(basicApply, basicUnit, buildingMainId);
+                if (unitId != null && unitId > 0) {
+                    //更新单元关联id
+                    caseHouseService.updateUnitId(unitId, caseUnit.getId());
+                }
+                unitId = caseUnit.getId();
             }
+
             //处理房屋
-            if (basicHouse != null) {
-                this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, caseUnit.getId());
+            if (basicApply.getHousePartInFlag() == Boolean.TRUE && basicHouse != null) {
+                this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
             }
         }
     }

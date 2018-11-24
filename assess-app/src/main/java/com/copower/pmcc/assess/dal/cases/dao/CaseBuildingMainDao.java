@@ -65,6 +65,15 @@ public class CaseBuildingMainDao {
         return caseBuildingMainMapper.updateByPrimaryKeySelective(caseBuildingMain) > 0;
     }
 
+    public int updateEstateId(Integer oldEstateId, Integer newEstateId) {
+        CaseBuildingMainExample example = new CaseBuildingMainExample();
+        example.createCriteria().andEstateIdEqualTo(oldEstateId);
+
+        CaseBuildingMain caseBuildingMain = new CaseBuildingMain();
+        caseBuildingMain.setEstateId(newEstateId);
+        return caseBuildingMainMapper.updateByExampleSelective(caseBuildingMain, example);
+    }
+
     public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String identifier, Integer estateId) {
         CaseBuildingMainExample example = new CaseBuildingMainExample();
         CaseBuildingMainExample.Criteria criteria = example.createCriteria();

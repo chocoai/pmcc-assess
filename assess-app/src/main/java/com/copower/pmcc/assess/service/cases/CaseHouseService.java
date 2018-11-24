@@ -245,35 +245,8 @@ public class CaseHouseService {
         }
     }
 
-    public Integer upgradeVersion(CaseHouse caseHouse) throws Exception {
-        Integer id = null;
-        if (caseHouse.getId() == null || caseHouse.getId().intValue() == 0) {
-            caseHouse.setVersion(0);
-            id = caseHouseDao.addHouse(caseHouse);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), id);
-            caseHouse.setId(id);
-            return id;
-        } else {
-            CaseHouse oo = caseHouseDao.getHouseById(caseHouse.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseHouse, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseHouse.getId();
-            int newId = caseHouseDao.addHouse(oo);
-            caseHouse.setId(newId);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseHouse.class), newId);
-            return newId;
-        }
+    public int updateUnitId(Integer oldUnitId,Integer newUnitId){
+        return caseHouseDao.updateUnitId(oldUnitId, newUnitId);
     }
 
     public boolean deleteCaseHouse(Integer id) {

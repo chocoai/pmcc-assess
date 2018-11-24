@@ -89,6 +89,10 @@ public class CaseBuildingMainService {
         }
     }
 
+    public int updateEstateId(Integer oldEstateId, Integer newEstateId){
+        return caseBuildingMainDao.updateEstateId(oldEstateId, newEstateId);
+    }
+
     public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String identifier, Integer estateId, Integer maxRows) {
         PageHelper.startPage(0, maxRows);
         List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.autoCompleteCaseBuildingMain(identifier, estateId);

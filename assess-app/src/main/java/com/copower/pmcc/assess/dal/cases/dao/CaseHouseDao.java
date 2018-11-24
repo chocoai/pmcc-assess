@@ -2,6 +2,8 @@ package com.copower.pmcc.assess.dal.cases.dao;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang.StringUtils;
@@ -74,6 +76,15 @@ public class CaseHouseDao {
      */
     public boolean updateHouse(CaseHouse caseHouse) {
         return caseHouseMapper.updateByPrimaryKeySelective(caseHouse) > 0;
+    }
+
+    public int updateUnitId(Integer oldUnitId, Integer newUnitId) {
+        CaseHouseExample example = new CaseHouseExample();
+        example.createCriteria().andUnitIdEqualTo(oldUnitId);
+
+        CaseHouse caseHouse = new CaseHouse();
+        caseHouse.setUnitId(newUnitId);
+        return caseHouseMapper.updateByExampleSelective(caseHouse, example);
     }
 
     /**

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,7 +46,16 @@ public class CaseBuildingMainController {
     public ModelAndView editView(Integer id) {
         String view = "/case/caseBuild/caseBuildingView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("caseBuildingMain", caseBuildingMainService.getCaseBuildingMainById(id));
+        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(id);
+        modelAndView.addObject("caseBuildingMain", caseBuildingMain);
+        if(caseBuildingMain!=null){
+            List<CaseBuildingVo> caseBuildingList = caseBuildingService.getCaseBuildingListByMainId(caseBuildingMain.getId());
+            if(CollectionUtils.isEmpty(caseBuildingList)){
+                modelAndView.addObject("caseBuilding", new CaseBuildingVo());
+            }else {
+                modelAndView.addObject("caseBuilding", caseBuildingList.get(0));
+            }
+        }
         return modelAndView;
     }
 

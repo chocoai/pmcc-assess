@@ -196,69 +196,6 @@
         }
     };
 
-    objectData.building = {
-        //获取所有部分
-        getBuildingList: function (mainId) {
-            var buildings = undefined;
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingListByMainId',
-                type: 'get',
-                async: false,
-                data: {basicBuildingMainId: mainId},
-                success: function (result) {
-                    if (result.ret) {
-                        buildings = result.data;
-                    }
-                }
-            })
-            return buildings;
-        },
-        //显示楼栋信息
-        showBuilding: function (id) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingById',
-                type: 'get',
-                async: false,
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicBuilding.frm).initLabel(result.data);
-                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=openTime]').text(formatDate(result.data.openTime));
-                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=roomTime]').text(formatDate(result.data.roomTime));
-                        $("#" + objectData.config.basicBuilding.frm).find('[data-name=beCompletedTime]').text(formatDate(result.data.beCompletedTime));
-                        $("#" + objectData.config.basicBuilding.frm).initForm(result.data,function () {
-                            buildingModel.prototype.viewInit(); //加载从表数据
-                        });
-                    }
-                }
-            })
-        },
-        //显示html
-        show: function (item) {
-//            basicIndexCommon.buildingInit(item);
-//            basicIndexCommon.buildingShow();
-//            basicIndexCommon.showBuildingTab();
-        },
-        //显示
-        init:function () {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingMainByApplyId',
-                type: 'get',
-                data: {applyId: '${basicApply.id}'},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicBuilding.mainFrm).initLabel(result.data);
-                        var buildings = objectData.building.getBuildingList(result.data.id);
-                        if (buildings && buildings.length > 0) {
-                            objectData.building.showBuilding(buildings[0].id);
-                            objectData.building.show(buildings[0]);
-                        }
-                    }
-                }
-            })
-        }
-    };
-
     objectData.unit = {
         init: function () {
             unitDecorate.prototype.loadDataDicList();
@@ -358,37 +295,31 @@
 
     $(function () {
         //选项卡处理
-        var basicUnit = "${basicUnit}";
-        var basicApply = "${basicApply}";
-        var basicEstate = "${basicEstate}";
-        var basicHouse = "${basicHouse}";
-        var basicBuildingMain = "${basicBuildingMain}";
-
-        if (objectData.isNotBlank(basicApply)) {
+        if (objectData.isNotBlank("${basicApply}")) {
             var industryA = "${basicApply.type}";
             if (objectData.isNotBlank(industryA)) {
                 industry.keyApp(industryA);
             }
-        }
 
-        if (objectData.isNotBlank(basicEstate)) {
-            $("#profile-tab1").attr("data-toggle", "tab");
-            objectData.estate.init();
-        }
+            if ("${basicApply.estatePartInFlag}"=='true') {
+                $("#profile-tab1").attr("data-toggle", "tab");
+                objectData.estate.init();
+            }
 
-        if (objectData.isNotBlank(basicBuildingMain)) {
-            $("#profile-tab2").attr("data-toggle", "tab");
-            objectData.building.init();
-        }
+            if ("${basicApply.buildingPartInFlag}"=='true') {
+                $("#profile-tab2").attr("data-toggle", "tab");
+                buildingCommon.detail('${basicApply.id}');
+            }
 
-        if (objectData.isNotBlank(basicUnit)) {
-            $("#profile-tab3").attr("data-toggle", "tab");
-            objectData.unit.init();
-        }
+            if ("${basicApply.unitPartInFlag}"=='true') {
+                $("#profile-tab3").attr("data-toggle", "tab");
+                objectData.unit.init();
+            }
 
-        if (objectData.isNotBlank(basicHouse)) {
-            $("#profile-tab4").attr("data-toggle", "tab");
-            objectData.house.init();
+            if ("${basicApply.housePartInFlag}"=='true') {
+                $("#profile-tab4").attr("data-toggle", "tab");
+                objectData.house.init();
+            }
         }
 
         $('#caseTab a').eq(0).tab('show');

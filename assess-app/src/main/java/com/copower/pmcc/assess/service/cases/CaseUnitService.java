@@ -149,34 +149,8 @@ public class CaseUnitService {
         }
     }
 
-    public Integer upgradeVersion(CaseUnit caseUnit)throws Exception{
-        Integer id = null;
-        if (caseUnit.getId() == null || caseUnit.getId().intValue() == 0) {
-            caseUnit.setVersion(0);
-            id = caseUnitDao.addUnit(caseUnit);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), id);
-            return  id;
-        } else {
-            CaseUnit oo = caseUnitDao.getUnitById(caseUnit.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseUnit, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            int oldId = caseUnit.getId();
-            int newId = caseUnitDao.addUnit(oo);
-            //更新附件
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(CaseUnit.class), newId);
-            caseUnit.setId(newId);
-            return newId;
-        }
+    public int updateBuildingMainId(Integer oldBuildingMainId, Integer newBuildingMainId){
+        return caseUnitDao.updateBuildingMainId(oldBuildingMainId, newBuildingMainId);
     }
 
     public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId, Integer maxRows){

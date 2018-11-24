@@ -84,15 +84,12 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success"
-                                           onclick="objectData.building.add(this)"
-                                           value="添加">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'))" value="添加">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.building.edit()"
-                                           value="修改">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'))" value="修改">
                                 </div>
                             </div>
                         </div>
@@ -581,128 +578,6 @@
         }
     };
 
-    //处理 楼栋
-    objectData.buildingFlag = true;
-    objectData.building = {
-        //添加数据，显示数据
-        add: function (_this) {
-            objectData.building.show({});
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/addBuildingMainAndBuilding',
-                data: {buildingNumber: $(_this).closest('.form-group').find('[name=buildingNumber]').val()},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicBuilding.mainFrm).initForm(result.data);
-                        var buildings = objectData.building.getBuildingList(result.data.id);
-                        if (buildings && buildings.length > 0) {
-                            objectData.building.showBuilding(buildings[0].id);
-                        }
-                    }
-                }
-            })
-        },
-        //获取所有部分
-        getBuildingList: function (mainId) {
-            var buildings = undefined;
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingListByMainId',
-                type: 'get',
-                async: false,
-                data: {basicBuildingMainId: mainId},
-                success: function (result) {
-                    if (result.ret) {
-                        buildings = result.data;
-                    }
-                }
-            })
-            return buildings;
-        },
-        //显示楼栋信息
-        showBuilding: function (id) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingById',
-                type: 'get',
-                async: false,
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + objectData.config.basicBuilding.frm).initForm(result.data, function () {
-                            buildingModel.prototype.viewInit(); //加载从表数据
-                        });
-                    }
-                }
-            })
-        },
-        //显示html
-        show: function (item) {
-            basicIndexCommon.buildingInit(item);
-            basicIndexCommon.buildingShow();
-            basicIndexCommon.showBuildingTab();
-        },
-        edit: function () {
-            var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
-            if (!objectData.isNotBlank(buildingId)) {
-                Alert("请查询楼栋!");
-                return false;
-            }
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseBuildingMain/getcaseBuildingMainById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingId},
-                success: function (result) {
-                    if (result.ret) {
-                        objectData.firstRemove.buildFirst();
-                        var caseBuildingMain = result.data.caseBuildingMain;
-                        var caseBuildingList = result.data.caseBuildingList;
-
-                        objectData.building.appWriteBuilding(caseBuildingMain.id,
-                            function () {
-                                toastr.success('数据转移成功!');
-                                $.each(caseBuildingList, function (i, n) {
-                                    if (objectData.isNotBlank(n.part)) {
-                                        navButtonBuild.setObjArrayElement(n.part, n);
-                                    }
-                                });
-                                basicIndexCommon.buildingInit({});
-                                basicIndexCommon.buildingShow();
-                            },
-                            function (data) {
-                                Alert("失败!" + data);
-                            });
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        //数据转移
-        appWriteBuilding: function (id, callback, callbackError) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicBuilding/appWriteBuilding",
-                type: "post",
-                data: {caseMainBuildId: id},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-                        if (result.ret && callback) {
-                            callback(result.data);
-                        }
-                        if (!result.ret && callbackError) {
-                            callbackError("未获取到数据!");
-                        }
-                    }
-                },
-                error: function (result) {
-                    if (!result.ret && callbackError) {
-                        callbackError(result.errmsg);
-                    }
-                }
-            });
-        }
-    };
-
     //处理单元
     objectData.unit = {
         show: function () {
@@ -939,31 +814,14 @@
             if ('${basicApply.estatePartInFlag}' == 'true') {
                 objectData.estate.show(JSON.parse('${el:toJsonString(basicEstate)}'), ${el:toJsonString(basicEstateLandState)});
             }
-
             //初始楼栋信息
             if ('${basicApply.buildingPartInFlag}' == 'true') {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/basicBuilding/getBasicBuildingMainByApplyId',
-                    type: 'get',
-                    data: {applyId: '${basicApply.id}'},
-                    success: function (result) {
-                        if (result.ret) {
-                            $("#" + objectData.config.basicBuilding.mainFrm).initForm(result.data);
-                            var buildings = objectData.building.getBuildingList(result.data.id);
-                            if (buildings && buildings.length > 0) {
-                                objectData.building.showBuilding(buildings[0].id);
-                                objectData.building.show(buildings[0]);
-                            }
-                        }
-                    }
-                })
+                buildingCommon.init('${basicApply.id}');
             }
-
             //初始单元信息
             if ('${basicApply.unitPartInFlag}' == 'true') {
                 objectData.unit.show({}, {});
             }
-
             //初始房屋信息
             if ('${basicApply.housePartInFlag}' == 'true') {
                 objectData.house.show({}, {});

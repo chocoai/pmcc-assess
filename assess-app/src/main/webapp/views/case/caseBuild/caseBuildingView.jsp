@@ -56,7 +56,7 @@
                     </form>
                     <div style="margin-bottom: 10px; border-bottom:2px solid #E6E9ED;"></div>
                     <form class="form-horizontal" id="basicBuildingFrm">
-                        <input type="hidden" name="id">
+                        <input type="hidden" name="id" value="${caseBuilding.id}">
                         <div class="form-group" style="display: none;">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -81,7 +81,7 @@
                                     户型区间
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="unitInterval"></label>
+                                    <label class="form-control" data-name="unitInterval">${caseBuilding.unitInterval}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -89,7 +89,7 @@
                                     物业费
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="propertyFee"></label>
+                                    <label class="form-control" data-name="propertyFee">${caseBuilding.propertyFee}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -97,7 +97,7 @@
                                     配套公共设施使用费
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="facilitiesUseFee"></label>
+                                    <label class="form-control" data-name="facilitiesUseFee">${caseBuilding.facilitiesUseFee}</label>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                                     建筑高度
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="buildingHeight"></label>
+                                    <label class="form-control" data-name="buildingHeight">${caseBuilding.buildingHeight}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -115,7 +115,7 @@
                                     建筑面积
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="buildingArea"></label>
+                                    <label class="form-control" data-name="buildingArea">${caseBuilding.buildingArea}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -123,7 +123,7 @@
                                     占地面积
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="coverAnArea"></label>
+                                    <label class="form-control" data-name="coverAnArea">${caseBuilding.coverAnArea}</label>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                                     层高
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="floorHeight"></label>
+                                    <label class="form-control" data-name="floorHeight">${caseBuilding.floorHeight}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -141,7 +141,7 @@
                                     径深
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="diameterDepth"></label>
+                                    <label class="form-control" data-name="diameterDepth">${caseBuilding.diameterDepth}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -149,7 +149,7 @@
                                     土地使用年限
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="landUseYear"></label>
+                                    <label class="form-control" data-name="landUseYear">${caseBuilding.landUseYear}</label>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                                     开盘时间
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="openTime"></label>
+                                    <label class="form-control" data-name="openTime"><fmt:formatDate value="${caseBuilding.openTime}"></fmt:formatDate> </label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -168,7 +168,7 @@
                                     交房时间
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="roomTime"></label>
+                                    <label class="form-control" data-name="roomTime"><fmt:formatDate value="${caseBuilding.roomTime}"></fmt:formatDate></label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -176,7 +176,7 @@
                                     竣工时间
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="beCompletedTime"></label>
+                                    <label class="form-control" data-name="beCompletedTime"><fmt:formatDate value="${caseBuilding.beCompletedTime}"></fmt:formatDate></label>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                                     物业类型
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="propertyTypeName"></label>
+                                    <label class="form-control" data-name="propertyTypeName">${caseBuilding.propertyTypeName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -195,7 +195,7 @@
                                     建筑结构类型
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="buildingStructureName"></label>
+                                    <label class="form-control" data-name="buildingStructureName">${caseBuilding.buildingStructureName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -203,7 +203,7 @@
                                     建筑结构类别
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="buildingStructureLowerName"></label>
+                                    <label class="form-control" data-name="buildingStructureLowerName">${caseBuilding.buildingStructureLowerName}</label>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                                     建筑类别
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="buildingCategoryName"></label>
+                                    <label class="form-control" data-name="buildingCategoryName">${caseBuilding.buildingCategoryName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -222,7 +222,7 @@
                                     建筑公司
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="dataBuildingName"></label>
+                                    <label class="form-control" data-name="dataBuildingName">${caseBuilding.dataBuildingName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -230,7 +230,7 @@
                                     物业公司
                                 </label>
                                 <div class="col-sm-3">
-                                    <label class="form-control" data-name="propertyName"></label>
+                                    <label class="form-control" data-name="propertyName">${caseBuilding.propertyName}</label>
                                 </div>
                             </div>
                         </div>
@@ -276,25 +276,8 @@
     </div>
 </div>
 <script type="text/javascript">
-
-    var objectData = new Object();
-
-    objectData.config = {
-        basicBuilding: {
-            key: "basicBuilding",
-            name: "楼栋",
-            frm: "basicBuildFrm",
-            files: {
-                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
-                building_figure_outside: "building_figure_outside",//外装图id和字段
-                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
-            }
-        }
-    };
-
-
     $(function () {
-
+        buildingModel.prototype.viewInit();
     });
 </script>
 <%@include file="/views/share/main_footer.jsp" %>

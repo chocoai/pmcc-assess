@@ -322,17 +322,16 @@ public class BasicBuildingService {
     /**
      * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
      *
-     * @param caseMainBuildId
+     * @param caseMainBuildingId
      * @throws Exception
      */
     @Transactional(rollbackFor = {Exception.class})
-    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildId) throws Exception {
-        if (caseMainBuildId == null) {
+    public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId) throws Exception {
+        if (caseMainBuildingId == null) {
             throw new Exception("null point");
         }
-        Map<String, Object> map = Maps.newHashMap();
         this.clearInvalidData();//清理数据
-        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseMainBuildId);
+        CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseMainBuildingId);
         if (caseBuildingMain == null) return null;
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
         BeanUtils.copyProperties(caseBuildingMain, basicBuildingMain);
@@ -343,7 +342,7 @@ public class BasicBuildingService {
         basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
 
         CaseBuilding where = new CaseBuilding();
-        where.setCaseBuildingMainId(caseMainBuildId);
+        where.setCaseBuildingMainId(caseMainBuildingId);
         List<CaseBuilding> caseBuildingList = caseBuildingService.getCaseBuildingList(where);
         if (CollectionUtils.isEmpty(caseBuildingList)) return null;
         List<CaseBuildingOutfit> buildingOutfitList = null;

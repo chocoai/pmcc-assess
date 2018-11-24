@@ -60,12 +60,12 @@
 </div>
 
 <script type="application/javascript">
-    var buildingModel;
+    var buildingModelDetail;
     (function () {
         //配置的局部变量用做 对象属性 (初始化标识符)
-        buildingModel = function () {
+        buildingModelDetail = function () {
         };
-        buildingModel.prototype = {
+        buildingModelDetail.prototype = {
             isEmpty: function (item) {
                 if (item) {
                     return true;
@@ -81,10 +81,10 @@
              * @date: 页面 初始化
              **/
             viewInit: function () {
-                buildingModel.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
-                buildingModel.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
-                buildingModel.prototype.sonModelMethod.buildingSurface.loadDataDicList();
-                buildingModel.prototype.sonModelMethod.buildingFunction.loadDataDicList();
+                buildingModelDetail.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
+                buildingModelDetail.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
+                buildingModelDetail.prototype.sonModelMethod.buildingSurface.loadDataDicList();
+                buildingModelDetail.prototype.sonModelMethod.buildingFunction.loadDataDicList();
             },
             /**
              * @author:  zch
@@ -119,9 +119,9 @@
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                         cols.push({field: 'materialPriceName', title: '材料价格区间'});
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                        $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
-                        TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
-                            buildingId: buildingModel.prototype.getBuildingId(),
+                        $("#" + buildingModelDetail.prototype.config().sonTable).bootstrapTable('destroy');
+                        TableInit(buildingModelDetail.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
+                            buildingId: buildingModelDetail.prototype.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -140,9 +140,9 @@
                         var cols = [];
                         cols.push({field: 'structureName', title: '层面结构'});
                         cols.push({field: 'description', title: '描述'});
-                        $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
-                        TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
-                            buildingId: buildingModel.prototype.getBuildingId(),
+                        $("#" + buildingModelDetail.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
+                        TableInit(buildingModelDetail.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
+                            buildingId: buildingModelDetail.prototype.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -161,9 +161,9 @@
                         cols.push({field: 'categoryName', title: '类别'});
                         cols.push({field: 'materialQualityName', title: '材质'});
                         cols.push({field: 'name', title: '名称'});
-                        $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
-                        TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
-                            buildingId: buildingModel.prototype.getBuildingId(),
+                        $("#" + buildingModelDetail.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
+                        TableInit(buildingModelDetail.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
+                            buildingId: buildingModelDetail.prototype.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -184,9 +184,9 @@
                         cols.push({field: 'decoratingMaterialName', title: '装修材料'});
                         cols.push({field: 'materialPriceName', title: '材料价格区间'});
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-                        $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
-                        TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
-                            buildingId: buildingModel.prototype.getBuildingId(),
+                        $("#" + buildingModelDetail.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
+                        TableInit(buildingModelDetail.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
+                            buildingId: buildingModelDetail.prototype.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
