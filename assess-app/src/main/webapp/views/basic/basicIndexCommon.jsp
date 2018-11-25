@@ -20,7 +20,7 @@
         <div role="tabpanel" id="contentTabPanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
                 <li role="presentation" style="display: none;">
-                    <a href="#caseEstate" role="tab" id="profile-tab1" aria-expanded="true">
+                    <a href="#caseEstate" role="tab" data-toggle="tab" id="profile-tab1" aria-expanded="true">
                         楼盘
                         <c:if test="${basicApply.id eq 0}">
                             <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
-                    <a href="#caseBuilding" role="tab" id="profile-tab2" aria-expanded="false">
+                    <a href="#caseBuilding" role="tab" data-toggle="tab" id="profile-tab2" aria-expanded="true">
                         楼栋
                         <c:if test="${basicApply.id eq 0}">
                             <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
-                    <a href="#caseUnit" role="tab" id="profile-tab3" aria-expanded="false">
+                    <a href="#caseUnit" role="tab" data-toggle="tab" id="profile-tab3" aria-expanded="true">
                         单元
                         <c:if test="${basicApply.id eq 0}">
                             <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li role="presentation" style="display: none;">
-                    <a href="#caseHouse" role="tab" id="profile-tab4" aria-expanded="false">
+                    <a href="#caseHouse" role="tab" data-toggle="tab" id="profile-tab4" aria-expanded="true">
                         房屋
                         <c:if test="${basicApply.id eq 0}">
                             <i class="fa fa-close" onclick="basicIndexCommon.hideTab(this);"
@@ -277,7 +277,6 @@
         assessProperty.select(function (row) {
             $(this_).parent().prev().val(row.name);
             $(this_).parent().prev().prev().val(row.id);
-            navButtonBuild.tempSaveData();
         });
     };
     //建造商选择
@@ -285,7 +284,6 @@
         assessBuilder.select(function (row) {
             $(this_).parent().prev().val(row.name);
             $(this_).parent().prev().prev().val(row.id);
-            navButtonBuild.tempSaveData();
         });
     };
     //板块选择
@@ -375,7 +373,7 @@
         } else {
             retHtml += "<option value='false'>" + "无" + "</option>";
         }
-        $("#" + this.config.basicEstate.frm).find("select[name='" + name + "']").empty().html(retHtml);
+        $("#" + this.config.basicEstate.frm).find("select[name='" + name + "']").empty().html(retHtml).trigger('change');
     };
 
     basicIndexCommon.estateLandStateInit = function (item) {

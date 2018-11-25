@@ -84,7 +84,7 @@ public class CaseBuildingMainDao {
         if (estateId != null) {
             criteria.andEstateIdEqualTo(estateId);
         }
-        example.setOrderByClause("building_number");
+        example.setOrderByClause("building_number,version desc");
         return caseBuildingMainMapper.selectByExample(example);
     }
 

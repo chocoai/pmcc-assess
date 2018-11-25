@@ -210,7 +210,7 @@ public class PublicBasicService {
         CaseEstate caseEstate = new CaseEstate();
         if (basicEstate != null) {
             BeanUtils.copyProperties(basicEstate, caseEstate);
-            caseEstate.setVersion(caseEstateService.getVersion(basicApply.getCaseEstateId()));
+            caseEstate.setVersion(caseEstateService.getVersion(basicApply.getCaseEstateId())+1);
             caseEstate.setId(null);
             caseEstate.setGmtCreated(null);
             caseEstate.setGmtModified(null);
@@ -1140,7 +1140,6 @@ public class PublicBasicService {
                     basicEstate.setApplyId(basicApply.getId());
                     basicEstate.setType(basicApply.getType());
                     basicEstateService.upgradeVersion(basicEstate);
-                    this.saveBasicBasicEstateTagging(basicEstate);
                     if (basicEstate.getId() != null) {
                         BasicEstateLandState basicEstateLandState = null;
                         if (StringUtils.isNotEmpty(jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar()))) {
@@ -1171,7 +1170,7 @@ public class PublicBasicService {
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING.getVar());
                 BasicBuilding basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
                 if (basicBuilding != null) {
-                    basicBuildingService.upgradeVersion(basicBuilding);
+                    basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding);
                 }
             }
         }

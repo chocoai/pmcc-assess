@@ -81,7 +81,6 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().sonFrm);
-                    data.buildingNumber = buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModelView.prototype.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
@@ -159,7 +158,6 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().sonTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().sonTable, getContextPath()+"/basicBuildingOutfit/getBootstrapTableVo", cols, {
-                        buildingNumber: buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
                         buildingId:buildingModelView.prototype.getBuildingId()
                     }, {
                         showColumns: false,
@@ -201,7 +199,6 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingSurfaceFrm);
-                    data.buildingNumber = buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModelView.prototype.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
@@ -268,7 +265,6 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingSurfaceTable, getContextPath()+"/basicBuildingSurface/getBootstrapTableVo", cols, {
-                        buildingNumber: buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0',
                         buildingId:buildingModelView.prototype.getBuildingId()
                     }, {
                         showColumns: false,
@@ -309,7 +305,6 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingMaintenanceFrm);
-                    data.buildingNumber = buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModelView.prototype.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
@@ -380,7 +375,6 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingMaintenanceTable, getContextPath()+"/basicBuildingMaintenance/getBootstrapTableVo", cols, {
-                        buildingNumber: buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
                         buildingId:buildingModelView.prototype.getBuildingId()
                     }, {
                         showColumns: false,
@@ -421,7 +415,6 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingFunctionFrm);
-                    data.buildingNumber = buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ;
                     data.buildingId = buildingModelView.prototype.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
@@ -503,7 +496,6 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingFunctionTable, getContextPath()+"/basicBuildingFunction/getBootstrapTableVo", cols, {
-                        buildingNumber: buildingModelView.prototype.isEmpty(navButtonBuild.switchNumber)?navButtonBuild.switchNumber:'0' ,
                         buildingId:buildingModelView.prototype.getBuildingId()
                     }, {
                         showColumns: false,

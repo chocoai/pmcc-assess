@@ -10,7 +10,7 @@
     buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
 
     //添加楼栋
-    buildingCommon.add = function ($form) {
+    buildingCommon.add = function ($form,callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/addBuildingMainAndBuilding',
             data: {
@@ -23,13 +23,16 @@
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
+                    if(callback){
+                        callback();
+                    }
                 }
             }
         })
     }
 
     //编辑楼栋
-    buildingCommon.edit = function ($form) {
+    buildingCommon.edit = function ($form,callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
             data: {caseMainBuildingId: $form.find("input[name='caseBuildingMainId']").val()},
@@ -40,13 +43,16 @@
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
+                    if(callback){
+                        callback();
+                    }
                 }
             }
         })
     }
 
     //楼栋初始化by applyId
-    buildingCommon.init = function (applyId) {
+    buildingCommon.init = function (applyId,callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
             type: 'get',
@@ -57,6 +63,9 @@
                     var buildings = buildingCommon.getBuildingList(result.data.id);
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
+                    }
+                    if(callback){
+                        callback();
                     }
                 }
             }

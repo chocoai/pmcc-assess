@@ -93,7 +93,7 @@ public class BasicApplyController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
         try {
             BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
-            this.setViewParam(basicApply, modelAndView, "");
+            this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
         }
@@ -120,7 +120,7 @@ public class BasicApplyController extends BaseController {
             if (StringUtils.isNotBlank(processInsId)) {
                 basicApply.setProcessInsId(processInsId);
             }
-            this.setViewParam(basicApply, modelAndView, null);
+            this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
         }
@@ -158,10 +158,9 @@ public class BasicApplyController extends BaseController {
      *
      * @param basicApply
      * @param modelAndView
-     * @param detail
      * @throws Exception
      */
-    private void setViewParam(BasicApply basicApply, ModelAndView modelAndView, String detail) throws Exception {
+    private void setViewParam(BasicApply basicApply, ModelAndView modelAndView) throws Exception {
         if (basicApply == null) {
             return;
         }
@@ -207,7 +206,7 @@ public class BasicApplyController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
-            this.setViewParam(basicApply, modelAndView, null);
+            this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
         }
@@ -220,7 +219,7 @@ public class BasicApplyController extends BaseController {
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
         if (basicApply != null) {
             try {
-                this.setViewParam(basicApply, modelAndView, "详情");
+                this.setViewParam(basicApply, modelAndView);
             } catch (Exception e1) {
                 log.info("参数处理错误!", e1);
             }

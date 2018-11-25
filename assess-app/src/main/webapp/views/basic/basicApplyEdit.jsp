@@ -389,7 +389,6 @@
                 basicIndexCommon.estateLandStateInit(itemB);
                 objectData.estateFlag = false;
             }
-            $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
             basicIndexCommon.estateLoadList();
             basicIndexCommon.showEstateTab();
         },
@@ -752,6 +751,8 @@
     //检测是否为 草稿重新申请
     objectData.startApply = function () {
         if ('${basicApply.id}' != '0') {
+            industry.keyApp("${basicApply.type}");
+
             //初始楼盘信息
             if ('${basicApply.estatePartInFlag}' == 'true') {
                 objectData.estate.show(JSON.parse('${el:toJsonString(basicEstate)}'), ${el:toJsonString(basicEstateLandState)});

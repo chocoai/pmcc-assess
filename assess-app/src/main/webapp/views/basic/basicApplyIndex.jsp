@@ -84,12 +84,12 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'))" value="添加">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab)" value="添加">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'))" value="修改">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab)" value="修改">
                                 </div>
                             </div>
                         </div>
@@ -549,7 +549,9 @@
                         CaseEstateLandState = {};
                     }
                     $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
+                    $("#" + objectData.config.basicEstate.frm).find('[name=id]').val(0);
                     $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
+                    $("#" + objectData.config.basicEstate.frmLandState).find('[name=id]').val(0);
                     objectData.estate.show(CaseEstate, CaseEstateLandState);
                     basicIndexCommon.estateInit(CaseEstate);
                     basicIndexCommon.estateLandStateInit(CaseEstateLandState);
@@ -598,6 +600,7 @@
                 function (data) {
                     toastr.success('数据转移成功!');
                     $("#" + objectData.config.basicUnit.frm).initForm(data);
+                    $("#" + objectData.config.basicUnit.frm).find('[name=id]').val(0);
                     objectData.unit.show();
                 },
                 function () {
@@ -660,6 +663,8 @@
                     }
                     objectData.house.show();
                     basicIndexCommon.houseInit(CaseHouse, CaseHouseTrading);
+                    $("#" + objectData.config.basicHouse.frm).find('[name=id]').val(0);
+                    $("#" + objectData.config.basicHouse.tradingFrm).find('[name=id]').val(0);
                     toastr.success('数据转移成功!');
                 },
                 function (item) {
@@ -816,7 +821,7 @@
             }
             //初始楼栋信息
             if ('${basicApply.buildingPartInFlag}' == 'true') {
-                buildingCommon.init('${basicApply.id}');
+                buildingCommon.init('${basicApply.id}',basicIndexCommon.showBuildingTab);
             }
             //初始单元信息
             if ('${basicApply.unitPartInFlag}' == 'true') {

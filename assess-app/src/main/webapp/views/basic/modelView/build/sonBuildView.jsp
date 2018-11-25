@@ -11,7 +11,7 @@
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
-                onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
+                onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.showModel();"> 新增
         </button>
         <table class="table table-bordered" id="ExamineBuildingOutfitList">
             <!-- cerare document add ajax data-->
@@ -29,7 +29,7 @@
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
-                onclick="buildingModel.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
+                onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.showModel()"> 新增
         </button>
         <table class="table table-bordered" id="ExamineBuildingSurfaceList">
             <!-- cerare document add ajax data-->
@@ -47,7 +47,7 @@
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
-                onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
+                onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.showModel();"> 新增
         </button>
         <table class="table table-bordered" id="ExamineBuildingMaintenanceList">
             <!-- cerare document add ajax data-->
@@ -65,7 +65,7 @@
     </div>
     <div class="x_content collapse">
         <button type="button" class="btn btn-success" data-toggle="modal"
-                onclick="buildingModel.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
+                onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.showModel();"> 新增
         </button>
         <table class="table table-bordered" id="examineBuildingFunctionList">
         </table>
@@ -149,7 +149,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="buildingModel.prototype.sonModelMethod.buildingOutfit.saveData();">
+                            onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.saveData();">
                         保存
                     </button>
                 </div>
@@ -218,7 +218,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="buildingModel.prototype.sonModelMethod.buildingMaintenance.saveData();">
+                            onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.saveData();">
                         保存
                     </button>
                 </div>
@@ -277,7 +277,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="buildingModel.prototype.sonModelMethod.buildingSurface.saveData();">
+                            onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.saveData();">
                         保存
                     </button>
                 </div>
@@ -373,7 +373,7 @@
                         取消
                     </button>
                     <button type="button" class="btn btn-primary"
-                            onclick="buildingModel.prototype.sonModelMethod.buildingFunction.saveData();">
+                            onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.saveData();">
                         保存
                     </button>
                 </div>
