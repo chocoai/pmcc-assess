@@ -66,4 +66,16 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/copyDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "在建工程中间表 copy")
+    public HttpResult copy(Integer id,Integer copyId,String type){
+        try {
+            declareBuildEngineeringAndEquipmentCenterService.copy(id,copyId,type);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
 }
