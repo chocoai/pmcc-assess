@@ -511,7 +511,7 @@ var unitElevator;
     }
 
     //绑定事件
-    $('#'+unitHuxing.prototype.config().table).closest('.x_panel').bind('click',function () {
-        unitHuxing.prototype.loadDataDicList();
+    $('#'+unitElevator.prototype.config().table).closest('.x_panel').bind('click',function () {
+        unitElevator.prototype.loadDataDicList();
     })
 })();
