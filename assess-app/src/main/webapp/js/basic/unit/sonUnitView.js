@@ -35,7 +35,7 @@ var unitDecorate;
             });
             $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitDecorate.prototype.config().table, getContextPath()+"/basicUnitDecorate/getBootstrapTableVo", cols, {
-                unitId: basicIndexCommon.getUnitId()
+                unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -74,7 +74,7 @@ var unitDecorate;
                 return false;
             }
             var data = formParams(unitDecorate.prototype.config().frm);
-            data.unitId = basicIndexCommon.getUnitId() ;
+            data.unitId = unitCommon.getUnitId() ;
             $.ajax({
                 url: getContextPath()+"/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
                 type: "post",
@@ -133,6 +133,11 @@ var unitDecorate;
             });
         }
     }
+
+    //绑定事件
+    $('#'+unitDecorate.prototype.config().table).closest('.x_panel').bind('click',function () {
+        unitDecorate.prototype.loadDataDicList();
+    })
 })();
 ////----------------------------------
 var unitHuxing;
@@ -177,7 +182,7 @@ var unitHuxing;
             });
             $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitHuxing.prototype.config().table, getContextPath()+"/basicUnitHuxing/getBootstrapTableVo", cols, {
-                unitId: basicIndexCommon.getUnitId()
+                unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -216,7 +221,7 @@ var unitHuxing;
                 return false;
             }
             var data = formParams(unitHuxing.prototype.config().frm);
-            data.unitId = basicIndexCommon.getUnitId() ;
+            data.unitId = unitCommon.getUnitId() ;
             data.houseCategory = unitHuxing.prototype.rule("get",data);
             $.ajax({
                 url: getContextPath()+"/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
@@ -343,8 +348,27 @@ var unitHuxing;
         init: function (item) {
             $("#" + unitHuxing.prototype.config().frm).clearAll();
             $("#" + unitHuxing.prototype.config().frm).initForm(item);
-            basicIndexCommon.showFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
-            basicIndexCommon.uploadFile(unitHuxing.prototype.config().unitHuxingFileIDFildName,AssessDBKey.BasicUnitHuxing,item.id);
+            FileUtils.uploadFiles({
+                target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                    tableName: AssessDBKey.BasicUnitHuxing,
+                    tableId: item.id
+                },
+                deleteFlag: true
+            });
+
+            FileUtils.getFileShows({
+                target: unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                formData: {
+                    fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
+                    tableName: AssessDBKey.BasicUnitHuxing,
+                    tableId: item.id
+                },
+                deleteFlag: true
+            })
+
             if (unitHuxing.prototype.isNotNull(item.houseCategory)){
                 unitHuxing.prototype.rule("set",JSON.parse(item.houseCategory));
             }
@@ -356,6 +380,11 @@ var unitHuxing;
             });
         }
     }
+
+    //绑定事件
+    $('#'+unitHuxing.prototype.config().table).closest('.x_panel').bind('click',function () {
+        unitHuxing.prototype.loadDataDicList();
+    })
 })();
 
 var unitElevator;
@@ -395,7 +424,7 @@ var unitElevator;
             });
             $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
             TableInit(unitElevator.prototype.config().table, getContextPath()+"/basicUnitElevator/getBootstrapTableVo", cols, {
-                unitId: basicIndexCommon.getUnitId()
+                unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -434,7 +463,7 @@ var unitElevator;
                 return false;
             }
             var data = formParams(unitElevator.prototype.config().frm);
-            data.unitId = basicIndexCommon.getUnitId();
+            data.unitId = unitCommon.getUnitId();
             $.ajax({
                 url: getContextPath()+"/basicUnitElevator/saveAndUpdateBasicUnitElevator",
                 type: "post",
@@ -481,4 +510,8 @@ var unitElevator;
         }
     }
 
+    //绑定事件
+    $('#'+unitHuxing.prototype.config().table).closest('.x_panel').bind('click',function () {
+        unitHuxing.prototype.loadDataDicList();
+    })
 })();

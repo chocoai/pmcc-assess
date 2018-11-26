@@ -59,7 +59,11 @@ public class BasicEstateTaggingService {
         }
         basicEstateTagging.setContent(stringBuilder.toString());
         basicEstateTagging.setCreator(commonService.thisUserAccount());
-        basicEstateTaggingDao.saveBasicEstateTagging(basicEstateTagging);
+        basicEstateTaggingDao.addBasicEstateTagging(basicEstateTagging);
+    }
+
+    public void addBasicEstateTagging(BasicEstateTagging basicEstateTagging) throws Exception {
+        basicEstateTaggingDao.addBasicEstateTagging(basicEstateTagging);
     }
 
 

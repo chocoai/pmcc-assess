@@ -497,3 +497,4 @@
 </div>
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
+<script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>

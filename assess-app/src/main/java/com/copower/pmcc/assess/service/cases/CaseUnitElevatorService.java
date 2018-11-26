@@ -52,7 +52,7 @@ public class CaseUnitElevatorService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseUnitElevator> vos = getEstateNetworkLists(caseUnitElevator);
+        List<CaseUnitElevator> vos = getUnitElevatorList(caseUnitElevator);
         vo.setTotal(page.getTotal());
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CaseUnitElevator>() : vos);
         return vo;
@@ -66,7 +66,7 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 14:33
      */
-    public boolean updateEstateNetwork(CaseUnitElevator caseUnitElevator) {
+    public boolean updateUnitElevator(CaseUnitElevator caseUnitElevator) {
         return caseUnitElevatorDao.updateUnitElevator(caseUnitElevator);
     }
 
@@ -79,7 +79,7 @@ public class CaseUnitElevatorService {
      * @date: 2018/7/18 14:34
      */
     @Transactional
-    public boolean deleteEstateNetwork(Integer id) {
+    public boolean deleteUnitElevator(Integer id) {
         return caseUnitElevatorDao.deleteUnitElevator(id);
     }
 
@@ -91,7 +91,7 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 14:36
      */
-    public CaseUnitElevator getEstateNetworkById(Integer id) {
+    public CaseUnitElevator getUnitElevatorById(Integer id) {
         return caseUnitElevatorDao.getUnitElevatorById(id);
     }
 
@@ -103,7 +103,7 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 14:36
      */
-    public List<CaseUnitElevator> getEstateNetworkLists(CaseUnitElevator caseUnitElevator) {
+    public List<CaseUnitElevator> getUnitElevatorList(CaseUnitElevator caseUnitElevator) {
         return caseUnitElevatorDao.getUnitElevatorList(caseUnitElevator);
     }
 

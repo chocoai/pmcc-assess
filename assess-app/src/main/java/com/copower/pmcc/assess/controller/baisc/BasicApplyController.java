@@ -52,9 +52,9 @@ public class BasicApplyController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
         //删除 所有 与 当前用户相关的临时数据
         try {
-            basicEstateService.initUpdateSon(0, null, null);
+            basicEstateService.clearInvalidData();
             basicBuildingService.clearInvalidData();
-            basicUnitService.initUpdateSon(0, null, null);
+            basicUnitService.clearInvalidData();
             basicHouseService.init(0, null, null);
         } catch (Exception e1) {
             log.error("清除数据异常", e1);

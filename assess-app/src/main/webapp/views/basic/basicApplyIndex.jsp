@@ -57,13 +57,13 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.estate.show({},{})"
+                                    <input type="button" class="btn btn-success" onclick="estateCommon.add($(this).closest('form'),basicIndexCommon.showEstateTab());"
                                            value="添加">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.estate.edit()"
+                                    <input type="button" class="btn btn-success" onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
                                            value="修改">
                                 </div>
                             </div>
@@ -84,12 +84,12 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab)" value="添加">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab);" value="添加">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab)" value="修改">
+                                    <input type="button" class="btn btn-success" onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);" value="修改">
                                 </div>
                             </div>
                         </div>
@@ -108,13 +108,13 @@
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.unit.show({},{})"
+                                    <input type="button" class="btn btn-success" onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
                                            value="添加">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="objectData.unit.edit()"
+                                    <input type="button" class="btn btn-success" onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
                                            value="修改">
                                 </div>
                             </div>
@@ -508,126 +508,6 @@
                 }
             }
         );
-    };
-
-
-    objectData.estateFlag = true;
-    //处理 楼盘
-    objectData.estate = {
-        //显示 楼盘页面
-        show: function (itemA, itemB) {
-            basicIndexCommon.estateShow();
-            if (objectData.estateFlag) {
-                basicIndexCommon.estateInit(itemA);
-                basicIndexCommon.estateLandStateInit(itemB);
-                objectData.estateFlag = false;
-            }
-            $("#" + objectData.config.basicEstate.frm).initForm({name: $("#" + objectData.config.basicApply.frm).find("input[name='" + objectData.config.basicEstate.key + "']").val()});
-            basicIndexCommon.estateLoadList();
-            basicIndexCommon.showEstateTab();
-        },
-        //编辑楼盘页面
-        edit: function () {
-            var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
-            if (!objectData.isNotBlank(estateId)) {
-                Alert("请查询楼盘!");
-                return false;
-            }
-            $("#" + objectData.config.basicEstate.frm).clearAll();
-            $("#" + objectData.config.basicEstate.frmLandState).clearAll();
-            objectData.firstRemove.estateFirst();
-
-            objectData.estate.appWriteEstate(estateId,
-                function (data) {
-                    toastr.success('数据转移成功!');
-                    var CaseEstate = data.CaseEstate;
-                    var CaseEstateLandState = data.CaseEstateLandState;
-                    if (!objectData.isNotBlank(CaseEstate)) {
-                        CaseEstate = {};
-                    }
-                    if (!objectData.isNotBlank(CaseEstateLandState)) {
-                        CaseEstateLandState = {};
-                    }
-                    $("#" + objectData.config.basicEstate.frm).initForm(CaseEstate);
-                    $("#" + objectData.config.basicEstate.frm).find('[name=id]').val(0);
-                    $("#" + objectData.config.basicEstate.frmLandState).initForm(CaseEstateLandState);
-                    $("#" + objectData.config.basicEstate.frmLandState).find('[name=id]').val(0);
-                    objectData.estate.show(CaseEstate, CaseEstateLandState);
-                    basicIndexCommon.estateInit(CaseEstate);
-                    basicIndexCommon.estateLandStateInit(CaseEstateLandState);
-                },
-                function (item) {
-                    objectData.estate.show({}, {});
-                    Alert("失败!" + item);
-                });
-        },
-        //转移数据
-        appWriteEstate: function (id, callback) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicEstate/appWriteEstate",
-                type: "POST",
-                data: {caseEstateId: id},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret && callback) {
-                        callback(result.data);
-                    }
-                    if (!result.ret && callbackError) {
-                        callbackError("未获取到数据!");
-                    }
-                }
-            });
-        }
-    };
-
-    //处理单元
-    objectData.unit = {
-        show: function () {
-            basicIndexCommon.unitShow();
-            basicIndexCommon.unitLoadList();
-            $("#" + objectData.config.basicUnit.frm).initForm({unitNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicUnit.key + "']").val()});
-            basicIndexCommon.showUnitTab();
-        },
-        edit: function () {
-            var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
-            if (!objectData.isNotBlank(unitId)) {
-                Alert("请查询单元!");
-                return false;
-            }
-            objectData.firstRemove.unitFirst();
-
-            objectData.unit.appWriteUnit(unitId,
-                function (data) {
-                    toastr.success('数据转移成功!');
-                    $("#" + objectData.config.basicUnit.frm).initForm(data);
-                    $("#" + objectData.config.basicUnit.frm).find('[name=id]').val(0);
-                    objectData.unit.show();
-                },
-                function () {
-                    objectData.unit.show();
-                });
-        },
-        appWriteUnit: function (id, callback, callbackError) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicUnit/appWriteUnit",
-                type: "POST",
-                data: {caseUnitId: id},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret && callback) {
-                        callback(result.data);
-                    }
-                    if (!result.ret && callbackError) {
-                        callbackError("未获取到数据!");
-                    }
-                },
-                error: function (result) {
-                    if (!result.ret && callbackError) {
-                        callbackError(result.errmsg);
-                    }
-                }
-            });
-        }
     };
 
     //处理房屋

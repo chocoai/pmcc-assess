@@ -39,7 +39,7 @@ var matchingMainConversion;
             $("#" + matchingMainConversion.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMainConversion.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainConversion.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -79,7 +79,7 @@ var matchingMainConversion;
                 return false;
             }
             var data = formParams(matchingMainConversion.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -129,6 +129,11 @@ var matchingMainConversion;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingMainConversion.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMainConversion.prototype.loadDataDicList();
+    })
 })();
 
 var matchingMainRoad;
@@ -167,7 +172,7 @@ var matchingMainRoad;
             $("#" + matchingMainRoad.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMainRoad.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMainRoad.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -207,7 +212,7 @@ var matchingMainRoad;
                 return false;
             }
             var data = formParams(matchingMainRoad.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -257,6 +262,11 @@ var matchingMainRoad;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingMainRoad.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMainRoad.prototype.loadDataDicList();
+    })
 })();
 
 var matchingMetro;
@@ -296,7 +306,7 @@ var matchingMetro;
             $("#" + matchingMetro.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMetro.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingMetro.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -346,7 +356,7 @@ var matchingMetro;
                 return false;
             }
             var data = formParams(matchingMetro.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -432,6 +442,11 @@ var matchingMetro;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingMetro.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMetro.prototype.loadDataDicList();
+    })
 })();
 
 var matchingTrafficHub;
@@ -471,7 +486,7 @@ var matchingTrafficHub;
             $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingTrafficHub.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTrafficHub.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -511,7 +526,7 @@ var matchingTrafficHub;
                 return false;
             }
             var data = formParams(matchingTrafficHub.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -564,6 +579,11 @@ var matchingTrafficHub;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingTrafficHub.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingTrafficHub.prototype.loadDataDicList();
+    })
 })();
 
 
@@ -604,7 +624,7 @@ var matchingTransit;
             $("#" + matchingTransit.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingTransit.prototype.config().table, getContextPath()+"/basicMatchingTraffic/getBootstrapTableVo", cols, {
                 type: matchingTransit.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -654,7 +674,7 @@ var matchingTransit;
                 return false;
             }
             var data = formParams(matchingTransit.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingTraffic/saveAndUpdateBasicMatchingTraffic",
                 type: "post",
@@ -740,6 +760,11 @@ var matchingTransit;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingTransit.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingTransit.prototype.loadDataDicList();
+    })
 })();
 
 
@@ -780,7 +805,7 @@ var matchingMedical;
             });
             $("#" + matchingMedical.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMedical.prototype.config().table, getContextPath()+"/basicMatchingMedical/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -819,7 +844,7 @@ var matchingMedical;
                 return false;
             }
             var data = formParams(matchingMedical.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingMedical/saveAndUpdateBasicMatchingMedical",
                 type: "post",
@@ -872,6 +897,11 @@ var matchingMedical;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingMedical.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMedical.prototype.loadDataDicList();
+    })
 })();
 
 var matchingMaterial;
@@ -911,7 +941,7 @@ var matchingMaterial;
             });
             $("#" + matchingMaterial.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMaterial.prototype.config().table, getContextPath()+"/basicMatchingMaterial/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -950,7 +980,7 @@ var matchingMaterial;
                 return false;
             }
             var data = formParams(matchingMaterial.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingMaterial/saveAndUpdateBasicMatchingMaterial",
                 type: "post",
@@ -1006,6 +1036,11 @@ var matchingMaterial;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingMaterial.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMaterial.prototype.loadDataDicList();
+    })
 })();
 
 
@@ -1047,7 +1082,7 @@ var matchingMarket;
             $("#" + matchingMarket.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingMarket.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingMarket.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1097,7 +1132,7 @@ var matchingMarket;
                 return false;
             }
             var data = formParams(matchingMarket.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             data.type = matchingMarket.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1190,6 +1225,11 @@ var matchingMarket;
             }
         }
     }
+
+    //绑定事件
+    $('#'+matchingMarket.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingMarket.prototype.loadDataDicList();
+    })
 })();
 
 var matchingRestaurant;
@@ -1230,7 +1270,7 @@ var matchingRestaurant;
             $("#" + matchingRestaurant.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingRestaurant.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRestaurant.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1280,7 +1320,7 @@ var matchingRestaurant;
                 return false;
             }
             var data = formParams(matchingRestaurant.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             data.type = matchingRestaurant.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1373,6 +1413,11 @@ var matchingRestaurant;
             }
         }
     }
+
+    //绑定事件
+    $('#'+matchingRestaurant.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingRestaurant.prototype.loadDataDicList();
+    })
 })();
 
 var matchingRecreation;
@@ -1412,7 +1457,7 @@ var matchingRecreation;
             $("#" + matchingRecreation.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingRecreation.prototype.config().table, getContextPath()+"/basicMatchingLeisurePlace/getBootstrapTableVo", cols, {
                 type: matchingRecreation.prototype.config().type,
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1462,7 +1507,7 @@ var matchingRecreation;
                 return false;
             }
             var data = formParams(matchingRecreation.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             data.type = matchingRecreation.prototype.config().type;
             $.ajax({
                 url: getContextPath()+"/basicMatchingLeisurePlace/saveAndUpdateBasicMatchingLeisurePlace",
@@ -1552,6 +1597,11 @@ var matchingRecreation;
             }
         }
     }
+
+    //绑定事件
+    $('#'+matchingRecreation.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingRecreation.prototype.loadDataDicList();
+    })
 })();
 
 
@@ -1592,7 +1642,7 @@ var matchingFinance;
             });
             $("#" + matchingFinance.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingFinance.prototype.config().table, getContextPath() + "/basicMatchingFinance/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1631,7 +1681,7 @@ var matchingFinance;
                 return false;
             }
             var data = formParams(matchingFinance.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingFinance/saveAndUpdateBasicMatchingFinance",
                 type: "post",
@@ -1687,6 +1737,11 @@ var matchingFinance;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingFinance.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingFinance.prototype.loadDataDicList();
+    })
 })();
 
 var matchingEnvironment;
@@ -1725,7 +1780,7 @@ var matchingEnvironment;
             });
             $("#" + matchingEnvironment.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingEnvironment.prototype.config().table, getContextPath()+"/basicMatchingEnvironment/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1764,7 +1819,7 @@ var matchingEnvironment;
                 return false;
             }
             var data = formParams(matchingEnvironment.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingEnvironment/saveAndUpdateBasicMatchingEnvironment",
                 type: "post",
@@ -1820,6 +1875,11 @@ var matchingEnvironment;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingEnvironment.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingEnvironment.prototype.loadDataDicList();
+    })
 })();
 
 var matchingEducation;
@@ -1860,7 +1920,7 @@ var matchingEducation;
             });
             $("#" + matchingEducation.prototype.config().table).bootstrapTable('destroy');
             TableInit(matchingEducation.prototype.config().table, getContextPath()+"/basicMatchingEducation/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1899,7 +1959,7 @@ var matchingEducation;
                 return false;
             }
             var data = formParams(matchingEducation.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicMatchingEducation/saveAndUpdateBasicMatchingEducation",
                 type: "post",
@@ -1958,6 +2018,11 @@ var matchingEducation;
             });
         }
     }
+
+    //绑定事件
+    $('#'+matchingEducation.prototype.config().table).closest('.x_panel').bind('click',function () {
+        matchingEducation.prototype.loadDataDicList();
+    })
 })();
 
 var estateNetwork;
@@ -1995,7 +2060,7 @@ var estateNetwork;
             });
             $("#" + estateNetwork.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateNetwork.prototype.config().table, getContextPath()+"/basicEstateNetwork/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -2034,7 +2099,7 @@ var estateNetwork;
                 return false;
             }
             var data = formParams(estateNetwork.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateNetwork/saveAndUpdateBasicEstateNetwork",
                 type: "post",
@@ -2077,6 +2142,11 @@ var estateNetwork;
             $("#" + estateNetwork.prototype.config().frm).initForm(item);
         }
     }
+
+    //绑定事件
+    $('#'+estateNetwork.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateNetwork.prototype.loadDataDicList();
+    })
 })();
 
 var estateParking;
@@ -2116,7 +2186,7 @@ var estateParking;
             });
             $("#" + estateParking.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateParking.prototype.config().table, getContextPath()+"/basicEstateParking/getBootstrapTableVo", cols, {
-                estateId: basicIndexCommon.getEstateId()
+                estateId: estateCommon.getEstateId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -2155,7 +2225,7 @@ var estateParking;
                 return false;
             }
             var data = formParams(estateParking.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateParking/saveAndUpdateBasicEstateParking",
                 type: "post",
@@ -2200,13 +2270,33 @@ var estateParking;
         init: function (item) {
             $("#" + estateParking.prototype.config().frm).clearAll();
             $("#" + estateParking.prototype.config().frm).initForm(item);
-            basicIndexCommon.showFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
-            basicIndexCommon.uploadFile(estateParking.prototype.config().fileIDName, AssessDBKey.BasicEstateParking, estateParking.prototype.isNotBlank(item.id) ? item.id : "0");
-            // AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
-            //     $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
-            // });
+            FileUtils.uploadFiles({
+                target: estateParking.prototype.config().fileIDName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: estateParking.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicEstateParking,
+                    tableId: estateParking.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            });
+
+            FileUtils.getFileShows({
+                target: estateParking.prototype.config().fileIDName,
+                formData: {
+                    fieldsName: estateParking.prototype.config().fileIDName,
+                    tableName: AssessDBKey.BasicEstateParking,
+                    tableId: estateParking.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            })
         }
     }
+
+    //绑定事件
+    $('#'+estateParking.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateParking.prototype.loadDataDicList();
+    })
 })();
 
 
@@ -2246,7 +2336,7 @@ var estateSupplyWater;
                     return str;
                 }
             });
-            var estateId = basicIndexCommon.getEstateId();
+            var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyWater.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyWater.prototype.config().type,
@@ -2290,7 +2380,7 @@ var estateSupplyWater;
                 return false;
             }
             var data = formParams(estateSupplyWater.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2343,6 +2433,11 @@ var estateSupplyWater;
             });
         }
     }
+
+    //绑定事件
+    $('#'+estateSupplyWater.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateSupplyWater.prototype.loadDataDicList();
+    })
 })();
 
 var estateSupplyPower;
@@ -2381,7 +2476,7 @@ var estateSupplyPower;
                     return str;
                 }
             });
-            var estateId = basicIndexCommon.getEstateId();
+            var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyPower.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyPower.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyPower.prototype.config().type,
@@ -2425,7 +2520,7 @@ var estateSupplyPower;
                 return false;
             }
             var data = formParams(estateSupplyPower.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2478,6 +2573,11 @@ var estateSupplyPower;
             });
         }
     }
+
+    //绑定事件
+    $('#'+estateSupplyPower.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateSupplyPower.prototype.loadDataDicList();
+    })
 })();
 
 var estateSupplyHeating;
@@ -2514,7 +2614,7 @@ var estateSupplyHeating;
                     return str;
                 }
             });
-            var estateId = basicIndexCommon.getEstateId();
+            var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyHeating.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyHeating.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 type: estateSupplyHeating.prototype.config().type,
@@ -2558,7 +2658,7 @@ var estateSupplyHeating;
                 return false;
             }
             var data = formParams(estateSupplyHeating.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2611,6 +2711,11 @@ var estateSupplyHeating;
             });
         }
     }
+
+    //绑定事件
+    $('#'+estateSupplyHeating.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateSupplyHeating.prototype.loadDataDicList();
+    })
 })();
 
 var estateSupplyGas;
@@ -2647,7 +2752,7 @@ var estateSupplyGas;
                     return str;
                 }
             });
-            var estateId = basicIndexCommon.getEstateId();
+            var estateId = estateCommon.getEstateId();
             $("#" + estateSupplyGas.prototype.config().table).bootstrapTable('destroy');
             TableInit(estateSupplyGas.prototype.config().table, getContextPath()+"/basicEstateSupply/getBootstrapTableVo", cols, {
                 estateId: estateId,
@@ -2691,7 +2796,7 @@ var estateSupplyGas;
                 return false;
             }
             var data = formParams(estateSupplyGas.prototype.config().frm);
-            data.estateId = basicIndexCommon.getEstateId();
+            data.estateId = estateCommon.getEstateId();
             $.ajax({
                 url: getContextPath()+"/basicEstateSupply/saveAndUpdateBasicEstateSupply",
                 type: "post",
@@ -2744,4 +2849,9 @@ var estateSupplyGas;
             });
         }
     }
+
+    //绑定事件
+    $('#'+estateSupplyGas.prototype.config().table).closest('.x_panel').bind('click',function () {
+        estateSupplyGas.prototype.loadDataDicList();
+    })
 })();

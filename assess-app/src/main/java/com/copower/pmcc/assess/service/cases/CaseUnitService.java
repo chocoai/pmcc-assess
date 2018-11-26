@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
@@ -9,7 +8,6 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -58,7 +56,7 @@ public class CaseUnitService {
         CaseHouse queryHouse = new CaseHouse();
         queryHouse.setUnitId(oldId);
         List<CaseUnitDecorate> caseUnitDecorates = caseUnitDecorateService.getCaseUnitDecorateList(caseUnitDecorate);
-        List<CaseUnitElevator> caseUnitElevators = caseUnitElevatorService.getEstateNetworkLists(caseUnitElevator);
+        List<CaseUnitElevator> caseUnitElevators = caseUnitElevatorService.getUnitElevatorList(caseUnitElevator);
         List<CaseUnitHuxingVo> caseUnitHuxings = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
         List<CaseHouse> caseHouseList = caseHouseService.getCaseHouseList(queryHouse);
         if (oldId==null){
@@ -69,7 +67,7 @@ public class CaseUnitService {
             }
             if (!ObjectUtils.isEmpty(caseUnitElevators)){
                 for (CaseUnitElevator oo:caseUnitElevators){
-                    caseUnitElevatorService.deleteEstateNetwork(oo.getId());
+                    caseUnitElevatorService.deleteUnitElevator(oo.getId());
                 }
             }
             if (!ObjectUtils.isEmpty(caseUnitHuxings)){
@@ -94,7 +92,7 @@ public class CaseUnitService {
             if (!ObjectUtils.isEmpty(caseUnitElevators)){
                 for (CaseUnitElevator oo:caseUnitElevators){
                     oo.setUnitId(newId);
-                    caseUnitElevatorService.updateEstateNetwork(oo);
+                    caseUnitElevatorService.updateUnitElevator(oo);
                 }
             }
             if (!ObjectUtils.isEmpty(caseUnitHuxings)){

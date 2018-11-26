@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basic.mapper.BasicEstateLandStateMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -42,5 +43,13 @@ public class BasicEstateLandStateDao {
         BasicEstateLandStateExample example = new BasicEstateLandStateExample();
         MybatisUtils.convertObj2Example(basicEstateLandState, example);
         return basicEstateLandStateMapper.selectByExample(example);
+    }
+
+    public BasicEstateLandState getLandStateByEstateId(Integer estateId)throws SQLException{
+        BasicEstateLandStateExample example = new BasicEstateLandStateExample();
+        example.createCriteria().andEstateIdEqualTo(estateId);
+        List<BasicEstateLandState> landStates = basicEstateLandStateMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(landStates)) return null;
+        return landStates.get(0);
     }
 }

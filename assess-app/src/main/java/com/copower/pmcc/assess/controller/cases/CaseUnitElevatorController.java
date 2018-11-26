@@ -33,7 +33,7 @@ public class CaseUnitElevatorController {
         CaseUnitElevator caseUnitElevator = null;
         try {
             if (id!=null){
-                caseUnitElevator = caseUnitElevatorService.getEstateNetworkById(id);
+                caseUnitElevator = caseUnitElevatorService.getUnitElevatorById(id);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
@@ -64,7 +64,7 @@ public class CaseUnitElevatorController {
     public HttpResult delete(Integer id) {
         try {
             if (id!=null){
-                return HttpResult.newCorrectResult(caseUnitElevatorService.deleteEstateNetwork(id));
+                return HttpResult.newCorrectResult(caseUnitElevatorService.deleteUnitElevator(id));
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s"+e1.getMessage()),e1);
@@ -80,7 +80,7 @@ public class CaseUnitElevatorController {
             if (caseUnitElevator.getId()==null || caseUnitElevator.getId().equals(0)){
                 caseUnitElevatorService.saveCaseUnitElevator(caseUnitElevator);
             }else {
-                caseUnitElevatorService.updateEstateNetwork(caseUnitElevator);
+                caseUnitElevatorService.updateUnitElevator(caseUnitElevator);
             }
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {

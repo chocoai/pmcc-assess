@@ -30,3 +30,4 @@
 </div>
 
 <%@include file="/views/basic/modelView/unit/sonUnitView.jsp" %>
+<script src="${pageContext.request.contextPath}/js/basic/unit/unit.common.js"></script>

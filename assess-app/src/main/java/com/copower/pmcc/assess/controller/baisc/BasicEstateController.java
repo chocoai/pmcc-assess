@@ -3,10 +3,8 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -86,15 +82,26 @@ public class BasicEstateController {
         }
     }
 
+
     @ResponseBody
-    @RequestMapping(value = "/initEstate", name = "初始化", method = {RequestMethod.POST})
-    public HttpResult initUpdateSon(){
+    @RequestMapping(value = "/getBasicEstateByApplyId", name = "获取数据", method = {RequestMethod.GET})
+    public HttpResult getBasicEstateByApplyId(Integer applyId){
         try {
-            basicEstateService.initUpdateSon(0,null,null);
-            return HttpResult.newCorrectResult("success");
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateByApplyId(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addEstateAndLandstate", name = "添加楼盘及土地基本信息", method = {RequestMethod.POST})
+    public HttpResult addEstateAndLandstate(String estateName){
+        try {
+            return HttpResult.newCorrectResult(basicEstateService.addEstateAndLandstate(estateName));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult("添加楼盘及土地基本信息异常");
         }
     }
 
@@ -102,10 +109,10 @@ public class BasicEstateController {
     @RequestMapping(value = "/appWriteEstate", name = "过程数据转移", method = {RequestMethod.POST})
     public HttpResult appWriteEstate(Integer caseEstateId){
         try {
-            return HttpResult.newCorrectResult(200,publicBasicService.appWriteEstate(caseEstateId));
+            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

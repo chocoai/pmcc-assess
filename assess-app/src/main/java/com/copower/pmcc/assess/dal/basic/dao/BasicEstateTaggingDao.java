@@ -25,7 +25,7 @@ public class BasicEstateTaggingDao {
         return basicEstateTaggingMapper.selectByPrimaryKey(id);
     }
 
-    public Integer saveBasicEstateTagging(BasicEstateTagging basicEstateTagging)throws SQLException{
+    public Integer addBasicEstateTagging(BasicEstateTagging basicEstateTagging)throws SQLException{
         basicEstateTaggingMapper.insertSelective(basicEstateTagging);
         return basicEstateTagging.getId();
     }

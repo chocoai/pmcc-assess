@@ -346,4 +346,5 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/estate/sonEstateDetail.jsp" %>
+<script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 

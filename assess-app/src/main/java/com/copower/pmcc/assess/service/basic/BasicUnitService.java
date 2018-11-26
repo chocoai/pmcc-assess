@@ -5,7 +5,16 @@ import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
+import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.cases.CaseUnitDecorateService;
+import com.copower.pmcc.assess.service.cases.CaseUnitElevatorService;
+import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
+import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -17,8 +26,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -43,69 +56,19 @@ public class BasicUnitService {
     private BasicUnitDecorateService basicUnitDecorateService;
     @Autowired
     private BasicUnitDao basicUnitDao;
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+    @Autowired
+    private CaseUnitHuxingService caseUnitHuxingService;
+    @Autowired
+    private CaseUnitService caseUnitService;
+    @Autowired
+    private CaseUnitElevatorService caseUnitElevatorService;
+    @Autowired
+    private CaseUnitDecorateService caseUnitDecorateService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void initUpdateSon(Integer oldId, Integer newId, BasicUnit basicUnit) throws Exception {
-        BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
-        BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
-        BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
-        SysAttachmentDto query = new SysAttachmentDto();
-        queryBasicUnitHuxing.setUnitId(oldId);
-        queryBasicUnitElevator.setUnitId(oldId);
-        queryBasicUnitDecorate.setUnitId(oldId);
-        query.setTableId(oldId);
-        queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
-        queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
-        queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
-        query.setCreater(commonService.thisUserAccount());
-        query.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
-        List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
-        List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
-        if (newId == null) {
-            if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
-                for (BasicUnitHuxing oo : basicUnitHuxingList) {
-                    basicUnitHuxingService.deleteBasicUnitHuxing(oo.getId());
-                }
-            }
-            if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
-                for (BasicUnitElevator oo : basicUnitElevatorList) {
-                    basicUnitElevatorService.deleteBasicUnitElevator(oo.getId());
-                }
-            }
-            if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
-                for (BasicUnitDecorate oo : basicUnitDecorateList) {
-                    basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
-                }
-            }
-            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
-                for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
-                    baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
-                }
-            }
-        }
-        if (newId != null) {
-            if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
-                for (BasicUnitHuxing oo : basicUnitHuxingList) {
-                    oo.setUnitId(newId);
-                    basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(oo);
-                }
-            }
-            if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
-                for (BasicUnitElevator oo : basicUnitElevatorList) {
-                    oo.setUnitId(newId);
-                    basicUnitElevatorService.saveAndUpdateBasicUnitElevator(oo);
-                }
-            }
-            if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
-                for (BasicUnitDecorate oo : basicUnitDecorateList) {
-                    oo.setUnitId(newId);
-                    basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(oo);
-                }
-            }
-        }
-    }
 
     /**
      * 获取数据
@@ -134,17 +97,6 @@ public class BasicUnitService {
             basicUnitDao.updateBasicUnit(basicUnit);
             return null;
         }
-    }
-
-    public Integer upgradeVersion(BasicUnit basicUnit) throws Exception {
-        if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
-            basicUnit.setCreator(commonService.thisUserAccount());
-            Integer id = basicUnitDao.saveBasicUnit(basicUnit);
-            this.initUpdateSon(0, id, basicUnit);
-        } else {
-            basicUnitDao.updateBasicUnit(basicUnit);
-        }
-        return basicUnit.getId();
     }
 
     /**
@@ -180,4 +132,207 @@ public class BasicUnitService {
         return vo;
     }
 
+
+    /**
+     * 清理无效数据
+     *
+     * @throws Exception
+     */
+    @Transactional
+    public void clearInvalidData() throws Exception {
+        BasicUnit where = new BasicUnit();
+        where.setApplyId(0);
+        where.setCreator(commonService.thisUserAccount());
+        List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
+        if (CollectionUtils.isEmpty(unitList)) return;
+        BasicUnit unit = unitList.get(0);
+        BasicUnitHuxing queryBasicUnitHuxing = new BasicUnitHuxing();
+        BasicUnitElevator queryBasicUnitElevator = new BasicUnitElevator();
+        BasicUnitDecorate queryBasicUnitDecorate = new BasicUnitDecorate();
+
+        queryBasicUnitHuxing.setUnitId(unit.getId());
+        queryBasicUnitElevator.setUnitId(unit.getId());
+        queryBasicUnitDecorate.setUnitId(unit.getId());
+
+        queryBasicUnitHuxing.setCreator(commonService.thisUserAccount());
+        queryBasicUnitElevator.setCreator(commonService.thisUserAccount());
+        queryBasicUnitDecorate.setCreator(commonService.thisUserAccount());
+
+        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(queryBasicUnitHuxing);
+        List<BasicUnitElevator> basicUnitElevatorList = basicUnitElevatorService.basicUnitElevatorList(queryBasicUnitElevator);
+        List<BasicUnitDecorate> basicUnitDecorateList = basicUnitDecorateService.basicUnitDecorateList(queryBasicUnitDecorate);
+
+        if (!ObjectUtils.isEmpty(basicUnitHuxingList)) {
+            for (BasicUnitHuxing oo : basicUnitHuxingList) {
+                basicUnitHuxingService.deleteBasicUnitHuxing(oo.getId());
+                //删除户型相关附件
+                SysAttachmentDto query = new SysAttachmentDto();
+                query.setTableId(oo.getId());
+                query.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+                if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                        baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
+                    }
+                }
+            }
+        }
+        if (!ObjectUtils.isEmpty(basicUnitElevatorList)) {
+            for (BasicUnitElevator oo : basicUnitElevatorList) {
+                basicUnitElevatorService.deleteBasicUnitElevator(oo.getId());
+            }
+        }
+        if (!ObjectUtils.isEmpty(basicUnitDecorateList)) {
+            for (BasicUnitDecorate oo : basicUnitDecorateList) {
+                basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
+            }
+        }
+    }
+
+
+    /**
+     * 获取数据
+     *
+     * @param applyId
+     * @return
+     * @throws Exception
+     */
+    public BasicUnit getBasicUnitByApplyId(Integer applyId) throws Exception {
+        BasicUnit where = new BasicUnit();
+        where.setApplyId(applyId);
+        List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
+        if (CollectionUtils.isEmpty(basicUnits)) return null;
+        return basicUnits.get(0);
+    }
+
+    /**
+     * 添加楼盘及土地基本信息
+     *
+     * @return
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public BasicUnit addUnit(String unitNumber) throws Exception {
+        this.clearInvalidData();
+        BasicUnit basicUnit = new BasicUnit();
+        basicUnit.setUnitNumber(unitNumber);
+        basicUnit.setApplyId(0);
+        basicUnit.setCreator(commonService.thisUserAccount());
+        basicUnitDao.saveBasicUnit(basicUnit);
+        return basicUnit;
+    }
+
+
+    /**
+     * 将 CaseUnit 下的子类 转移到 BasicUnit下的子类中去 (用做过程数据)
+     *
+     * @param caseUnitId
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = {Exception.class})
+    public BasicUnit appWriteUnit(Integer caseUnitId) throws Exception {
+        this.clearInvalidData();
+        if (caseUnitId == null) {
+            throw new Exception("null point");
+        }
+        CaseUnit caseUnit = caseUnitService.getCaseUnitById(caseUnitId);
+        if (caseUnit == null) return null;
+        BasicUnit basicUnit = new BasicUnit();
+        BeanUtils.copyProperties(caseUnit, basicUnit);
+        basicUnit.setApplyId(0);
+        basicUnit.setCreator(commonService.thisUserAccount());
+        basicUnit.setGmtCreated(null);
+        basicUnit.setGmtModified(null);
+        basicUnitDao.saveBasicUnit(basicUnit);
+
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseUnitElevator> caseUnitHuxingList = null;
+                    CaseUnitElevator query = new CaseUnitElevator();
+                    query.setUnitId(caseUnitId);
+                    caseUnitHuxingList = caseUnitElevatorService.getUnitElevatorList(query);
+                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
+                        for (CaseUnitElevator caseUnitElevator : caseUnitHuxingList) {
+                            BasicUnitElevator basicUnitElevator = new BasicUnitElevator();
+                            BeanUtils.copyProperties(caseUnitElevator, basicUnitElevator);
+                            basicUnitElevator.setUnitId(0);
+                            basicUnitElevator.setId(null);
+                            basicUnitElevator.setGmtCreated(null);
+                            basicUnitElevator.setGmtModified(null);
+                            basicUnitElevatorService.saveAndUpdateBasicUnitElevator(basicUnitElevator);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.info("", e1);
+                }
+            }
+        });
+
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseUnitDecorate> caseUnitHuxingList = null;
+                    CaseUnitDecorate query = new CaseUnitDecorate();
+                    query.setUnitId(caseUnitId);
+                    caseUnitHuxingList = caseUnitDecorateService.getCaseUnitDecorateList(query);
+                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
+                        for (CaseUnitDecorate caseUnitDecorate : caseUnitHuxingList) {
+                            BasicUnitDecorate basicUnitDecorate = new BasicUnitDecorate();
+                            BeanUtils.copyProperties(caseUnitDecorate, basicUnitDecorate);
+                            basicUnitDecorate.setUnitId(0);
+                            basicUnitDecorate.setId(null);
+                            basicUnitDecorate.setGmtCreated(null);
+                            basicUnitDecorate.setGmtModified(null);
+                            basicUnitDecorateService.saveAndUpdateBasicUnitDecorate(basicUnitDecorate);
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.info("", e1);
+                }
+            }
+        });
+
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<CaseUnitHuxingVo> caseUnitHuxingList = null;
+                    CaseUnitHuxing query = new CaseUnitHuxing();
+                    query.setUnitId(caseUnitId);
+                    caseUnitHuxingList = caseUnitHuxingService.getCaseUnitHuxingList(query);
+                    if (!ObjectUtils.isEmpty(caseUnitHuxingList)) {
+                        for (CaseUnitHuxingVo caseUnitHuxing : caseUnitHuxingList) {
+                            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                            BeanUtils.copyProperties(caseUnitHuxing, basicUnitHuxing);
+                            basicUnitHuxing.setUnitId(0);
+                            basicUnitHuxing.setId(null);
+                            basicUnitHuxing.setGmtCreated(null);
+                            basicUnitHuxing.setGmtModified(null);
+                            Integer id = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing);
+
+                            List<SysAttachmentDto> sysAttachmentDtoList = null;
+                            SysAttachmentDto queryAttachment = new SysAttachmentDto();
+                            queryAttachment.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
+                            queryAttachment.setTableId(caseUnitHuxing.getId());
+                            sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryAttachment);
+                            if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+                                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                                    SysAttachmentDto attachmentDto = new SysAttachmentDto();
+                                    attachmentDto.setTableId(id);
+                                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                                    baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e1) {
+                    logger.info("", e1);
+                }
+            }
+        });
+        return basicUnit;
+    }
 }

@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -44,17 +43,6 @@ public class CaseEstateTaggingService {
      * @throws Exception
      */
     public void saveCaseEstateTagging(CaseEstateTagging caseEstateTagging) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder();
-        if(!StringUtils.isEmpty(caseEstateTagging.getBuildingNumber())){
-            stringBuilder.append(caseEstateTagging.getBuildingNumber()).append("栋");
-        }
-        if(!StringUtils.isEmpty(caseEstateTagging.getUnitNumber())){
-            stringBuilder.append(caseEstateTagging.getUnitNumber()).append("单元");
-        }
-        if(!StringUtils.isEmpty(caseEstateTagging.getRemark())){
-            stringBuilder.append(caseEstateTagging.getRemark());
-        }
-        caseEstateTagging.setContent(stringBuilder.toString());
         caseEstateTaggingDao.saveCaseEstateTagging(caseEstateTagging);
     }
 
@@ -77,7 +65,7 @@ public class CaseEstateTaggingService {
      * @return
      * @throws Exception
      */
-    public List<CaseEstateTagging> caseEstateTaggingList(CaseEstateTagging caseEstateTagging) throws Exception {
+    public List<CaseEstateTagging> getCaseEstateTaggingList(CaseEstateTagging caseEstateTagging) throws Exception {
         return caseEstateTaggingDao.caseEstateTaggingList(caseEstateTagging);
     }
 
