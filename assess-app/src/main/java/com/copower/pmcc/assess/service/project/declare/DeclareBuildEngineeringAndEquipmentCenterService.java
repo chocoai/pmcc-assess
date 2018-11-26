@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -12,10 +13,14 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -35,6 +40,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private ErpAreaService erpAreaService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DeclareBuildEngineeringService declareBuildEngineeringService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
@@ -70,5 +77,36 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     public void removeDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         declareBuildEngineeringAndEquipmentCenterDao.removeDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter);
     }
-    
+
+    /**
+     * 处理copy 数据
+     *
+     * @param id
+     * @param copyId
+     * @param type
+     */
+    public void copy(Integer id, Integer copyId, String type) {
+        if (StringUtils.isNotBlank(type)) {
+            //在建工程（土建）
+            if (Objects.equal("civilEngineering", type)) {
+                DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(id);
+                DeclareBuildEngineeringAndEquipmentCenter centerA = getDeclareBuildEngineeringAndEquipmentCenterById(copyId);
+                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                query.setBuildEngineeringId(declareBuildEngineering.getId());
+                query.setType(DeclareBuildEngineering.class.getSimpleName());
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                if (!ObjectUtils.isEmpty(centerList)) {
+                    DeclareBuildEngineeringAndEquipmentCenter centerB = centerList.get(0);
+                    if (centerB != null){
+                        int cid = centerB.getId();
+                        BeanUtils.copyProperties(centerA,centerB);
+                        centerB.setId(cid);
+                        declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(centerB);
+                    }
+                }
+            }
+            //其它
+        }
+    }
+
 }
