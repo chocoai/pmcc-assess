@@ -99,6 +99,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                     DeclareBuildEngineeringAndEquipmentCenter centerB = centerList.get(0);
                     if (centerB != null){
                         int cid = centerB.getId();
+                        centerA.setBuildEngineeringId(null);
+                        centerA.setBuildEquipmentId(null);
                         BeanUtils.copyProperties(centerA,centerB);
                         centerB.setId(cid);
                         declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(centerB);
