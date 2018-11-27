@@ -135,13 +135,13 @@
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="添加"
-                                           onclick="objectData.house.show({},{})">
+                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <div class="col-sm-2">
                                     <input type="button" class="btn btn-success" value="修改"
-                                           onclick="objectData.house.edit()">
+                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-warning" onclick="temporary();">
+                        <button class="btn btn-warning" onclick="saveDraft();">
                             保存<i style="margin-left: 10px" class="fa fa-save"></i>
                         </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
@@ -177,7 +177,6 @@
     var objectData = new Object();
     objectData.config = {
         id: "basicApplyId",
-        view: {save: "saveView", detail: "detailView"},
         basicApply: {
             frm: "basicApplyFrm"
         },
@@ -185,26 +184,13 @@
             key: "estateName",
             name: "楼盘",
             frm: "basicEstateFrm",
-            frmLandState: "basicLandState",
-            files: {
-                filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
-                waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
-                powerSupplyPlan: "power_supply_plan",//供电平面图id和字段
-                airSupplyPlan: "air_supply_plan",//供气平面图id和字段
-                heatingPlan: "heating_plan",//采暖平面图id和字段
-                fileAppearance: "estate_floor_Appearance_figure" //外观图id和字段
-            }
+            frmLandState: "basicLandState"
         },
         basicBuilding: {
             key: "buildingNumber",
             name: "楼栋",
             frm: "basicBuildingFrm",
-            mainFrm: "basicBuildingMainFrm",
-            files: {
-                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
-                building_figure_outside: "building_figure_outside",//外装图id和字段
-                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
-            }
+            mainFrm: "basicBuildingMainFrm"
         },
         basicUnit: {
             key: "unitNumber",
@@ -217,100 +203,6 @@
             frm: "basicHouseFrm",
             tradingFrm: "basicTradingFrm"
         }
-    };
-    //注入id
-    basicIndexCommon.setAppId(objectData.config.id);
-    //说明是index 页面
-    basicIndexCommon.setIndex(new Date());
-
-    /**
-     * 判断字符串以及null等
-     */
-    objectData.isNotBlank = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    /**
-     * 判断对象 属性
-     */
-    objectData.isNotBlankObjectProperty = function (obj) {
-        for (var key in obj) {
-            //跳过下面四个input
-            if (key != 'name' && key != 'houseNumber' && key != 'buildingNumber' && key != 'unitNumber') {
-                if (objectData.isNotBlank(obj[key])) {
-                    return true;
-                }
-            }
-        }
-        return false
-    };
-
-    /**
-     * 判断对象
-     */
-    objectData.isNotBlankObject = function (obj) {
-        for (var key in obj) {
-            return true;
-        }
-        return false
-    };
-
-    objectData.select2Assignment = function (frm, data, name) {
-        if (objectData.isNotBlank(data)) {
-            $("#" + frm).find("select." + name).val(data).trigger("change");
-            $("#" + frm).find("select[name='" + name + "']").val(data).trigger("change");
-            $("#" + frm).find("select[name='" + name + "']").val(data);
-        } else {
-            $("#" + frm).find("select." + name).val(null).trigger("change");
-        }
-    };
-
-    /**
-     * form label 赋值
-     **/
-    objectData.initLabelForm = function (frm, data) {
-        if (!this.isNotBlank(frm)) {
-            return false;
-        }
-        if (!this.isNotBlankObject(data)) {
-            return false;
-        }
-        $("#" + frm).find("label").each(function (i, n) {
-            var name = $(n).attr("data-name");
-            if (objectData.isNotBlank(name)) {
-                $(n).html(eval("data." + name));
-            }
-        });
-    };
-
-
-    objectData.uploadFile = function (fieldsName, table, id) {
-        FileUtils.uploadFiles({
-            target: fieldsName,
-            disabledTarget: "btn_submit",
-            formData: {
-                fieldsName: fieldsName,
-                tableName: table,
-                tableId: objectData.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: true
-        });
-    };
-    objectData.showFile = function (fieldsName, table, id) {
-        FileUtils.getFileShows({
-            target: fieldsName,
-            formData: {
-                fieldsName: fieldsName,
-                tableName: table,
-                tableId: objectData.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: true
-        })
     };
 
     /**
@@ -510,159 +402,6 @@
         );
     };
 
-    //处理房屋
-    objectData.houseFlag = true;
-    objectData.house = {
-        show: function () {
-            basicIndexCommon.houseShow();
-            if (objectData.houseFlag) {
-                basicIndexCommon.houseInit({}, {});
-                objectData.houseFlag = false;
-            }
-            basicIndexCommon.houseLoadList();
-            $("#" + objectData.config.basicHouse.frm).initForm({houseNumber: $("#" + objectData.config.id).find("input[name='" + objectData.config.basicHouse.key + "']").val()});
-            basicIndexCommon.showHouseTab();
-        },
-        edit: function () {
-            var id = $("#" + objectData.config.basicApply.frm).find("input[name='caseHouseId']").val();
-            if (!objectData.isNotBlank(id)) {
-                Alert("请先查询房屋");
-                return false;
-            }
-            objectData.firstRemove.houseFirst();
-
-            objectData.house.appWriteHouse(id,
-                function (data) {
-                    var CaseHouseTrading = data.CaseHouseTrading;
-                    var CaseHouse = data.CaseHouse;
-                    if (!objectData.isNotBlank(CaseHouseTrading)) {
-                        CaseHouseTrading = {};
-                    }
-                    if (!objectData.isNotBlank(CaseHouse)) {
-                        CaseHouse = {};
-                    }
-                    objectData.house.show();
-                    basicIndexCommon.houseInit(CaseHouse, CaseHouseTrading);
-                    $("#" + objectData.config.basicHouse.frm).find('[name=id]').val(0);
-                    $("#" + objectData.config.basicHouse.tradingFrm).find('[name=id]').val(0);
-                    toastr.success('数据转移成功!');
-                },
-                function (item) {
-                    objectData.house.show();
-                    Alert("失败!" + item);
-                });
-        },
-        appWriteHouse: function (id, callback, callbackError) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouse/appWriteHouse",
-                type: "POST",
-                data: {caseHouseId: id},
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret && callback) {
-                        callback(result.data);
-                    }
-                    if (!result.ret && callbackError) {
-                        callbackError("未获取到数据!");
-                    }
-                },
-                error: function (result) {
-                    if (!result.ret && callbackError) {
-                        callbackError(result.errmsg);
-                    }
-                }
-            });
-        }
-    };
-
-
-    //删除 楼盘 楼盘 单元 房屋 下 子类的临时数据!
-    objectData.firstRemove = {
-        houseFirst: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicHouse/initHouse",
-                type: "post",
-                async: false,
-                dataType: "json",
-                success: function (result) {
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        estateFirst: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicEstate/initEstate",
-                type: "post",
-                dataType: "json",
-                async: false,
-                success: function (result) {
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        unitFirst: function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicUnit/initUnit",
-                type: "post",
-                async: false,
-                dataType: "json",
-                success: function (result) {
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        }
-    };
-
-
-    /**
-     * 校验
-     **/
-    objectData.valid = function () {
-        var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
-        var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
-        var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
-        var basicEstate = formParams(objectData.config.basicEstate.frm);
-        var basicUnit = formParams(objectData.config.basicUnit.frm);
-        var basicHouse = formParams(objectData.config.basicHouse.frm);
-        var basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
-        var forms = $("#" + objectData.config.id).find("form");
-        $.each(forms, function (i, n) {
-
-        });
-        if (objectData.isNotBlankObjectProperty(basicUnit)) {//单元检测到有数据 ==> 选择了楼栋 或者说是添加了楼栋数据的情况下才进行赋值
-            if (objectData.isNotBlank(buildingId) || objectData.isNotBlank(num > 1)) {
-                if (!$("#" + objectData.config.basicUnit.frm).valid()) {
-                    toastr.success('单元有必须的数据未填写!');
-                    return false;
-                }
-            } else {
-                Alert("未选择楼栋或者是没添加新的楼栋数据!");
-                return false;
-            }
-        }
-        if (objectData.isNotBlankObjectProperty(basicHouse)) {//检测到 房屋有数据 ==> 选择了单元 或者说是单元数据
-            if (objectData.isNotBlank(unitId) || objectData.isNotBlankObjectProperty(basicUnit)) {
-                if (!$("#" + objectData.config.basicHouse.frm).valid()) {
-                    toastr.success('房屋有必须的数据未填写!');
-                    return false;
-                }
-            } else {
-                Alert("未选择单元或者是没添加新的单元数据!");
-                return false;
-            }
-        }
-        if (num <= 1 && !objectData.isNotBlankObjectProperty(basicEstate) && !objectData.isNotBlankObjectProperty(basicUnit) && !objectData.isNotBlankObjectProperty(basicHouse)) {
-            Alert("未添加任何数据!");
-            return false;
-        }
-        return true;
-    };
 
     //收集数据
     objectData.formParams = function () {
@@ -697,7 +436,7 @@
         if ('${basicApply.id}' != '0') {
             //初始楼盘信息
             if ('${basicApply.estatePartInFlag}' == 'true') {
-                objectData.estate.show(JSON.parse('${el:toJsonString(basicEstate)}'), ${el:toJsonString(basicEstateLandState)});
+                estateCommon.init('${basicApply.id}',basicIndexCommon.showEstateTab);
             }
             //初始楼栋信息
             if ('${basicApply.buildingPartInFlag}' == 'true') {
@@ -705,12 +444,11 @@
             }
             //初始单元信息
             if ('${basicApply.unitPartInFlag}' == 'true') {
-                objectData.unit.show({}, {});
+                unitCommon.init('${basicApply.id}',basicIndexCommon.showUnitTab);
             }
             //初始房屋信息
             if ('${basicApply.housePartInFlag}' == 'true') {
-                objectData.house.show({}, {});
-                basicIndexCommon.houseInit(JSON.parse('${el:toJsonString(basicHouse)}'), JSON.parse('${el:toJsonString(basicHouseTrading)}'));
+                houseCommon.init('${basicApply.id}',basicIndexCommon.showHouseTab);
             }
             $("#" + objectData.config.basicApply.frm).find('[id=type${basicApply.type}]').trigger('click');
             $("#" + objectData.config.basicApply.frm).find('input').attr('readonly', 'readonly');
@@ -744,16 +482,15 @@
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();
                     });
+                }else{
+                    Alert("提交数据失败!");
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
 
     //保存草稿
-    function temporary() {
+    function saveDraft() {
         Loading.progressShow();
         var data = objectData.formParams();
         var formData = JSON.stringify(data);
@@ -766,9 +503,11 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("保存数据成功!", 1, null, function () {
+                    Alert("保存草稿成功!", 1, null, function () {
                         window.close();
                     });
+                }else{
+                    Alert("保存草稿失败!");
                 }
             },
             error: function (result) {

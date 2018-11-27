@@ -895,62 +895,52 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateEqualTo(String value) {
+        public Criteria andShapeStateEqualTo(Integer value) {
             addCriterion("shape_state =", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateNotEqualTo(String value) {
+        public Criteria andShapeStateNotEqualTo(Integer value) {
             addCriterion("shape_state <>", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateGreaterThan(String value) {
+        public Criteria andShapeStateGreaterThan(Integer value) {
             addCriterion("shape_state >", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateGreaterThanOrEqualTo(String value) {
+        public Criteria andShapeStateGreaterThanOrEqualTo(Integer value) {
             addCriterion("shape_state >=", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateLessThan(String value) {
+        public Criteria andShapeStateLessThan(Integer value) {
             addCriterion("shape_state <", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateLessThanOrEqualTo(String value) {
+        public Criteria andShapeStateLessThanOrEqualTo(Integer value) {
             addCriterion("shape_state <=", value, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateLike(String value) {
-            addCriterion("shape_state like", value, "shapeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andShapeStateNotLike(String value) {
-            addCriterion("shape_state not like", value, "shapeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andShapeStateIn(List<String> values) {
+        public Criteria andShapeStateIn(List<Integer> values) {
             addCriterion("shape_state in", values, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateNotIn(List<String> values) {
+        public Criteria andShapeStateNotIn(List<Integer> values) {
             addCriterion("shape_state not in", values, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateBetween(String value1, String value2) {
+        public Criteria andShapeStateBetween(Integer value1, Integer value2) {
             addCriterion("shape_state between", value1, value2, "shapeState");
             return (Criteria) this;
         }
 
-        public Criteria andShapeStateNotBetween(String value1, String value2) {
+        public Criteria andShapeStateNotBetween(Integer value1, Integer value2) {
             addCriterion("shape_state not between", value1, value2, "shapeState");
             return (Criteria) this;
         }
@@ -965,62 +955,52 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessEqualTo(String value) {
+        public Criteria andPlanenessEqualTo(Integer value) {
             addCriterion("planeness =", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessNotEqualTo(String value) {
+        public Criteria andPlanenessNotEqualTo(Integer value) {
             addCriterion("planeness <>", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessGreaterThan(String value) {
+        public Criteria andPlanenessGreaterThan(Integer value) {
             addCriterion("planeness >", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessGreaterThanOrEqualTo(String value) {
+        public Criteria andPlanenessGreaterThanOrEqualTo(Integer value) {
             addCriterion("planeness >=", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessLessThan(String value) {
+        public Criteria andPlanenessLessThan(Integer value) {
             addCriterion("planeness <", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessLessThanOrEqualTo(String value) {
+        public Criteria andPlanenessLessThanOrEqualTo(Integer value) {
             addCriterion("planeness <=", value, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessLike(String value) {
-            addCriterion("planeness like", value, "planeness");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanenessNotLike(String value) {
-            addCriterion("planeness not like", value, "planeness");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanenessIn(List<String> values) {
+        public Criteria andPlanenessIn(List<Integer> values) {
             addCriterion("planeness in", values, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessNotIn(List<String> values) {
+        public Criteria andPlanenessNotIn(List<Integer> values) {
             addCriterion("planeness not in", values, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessBetween(String value1, String value2) {
+        public Criteria andPlanenessBetween(Integer value1, Integer value2) {
             addCriterion("planeness between", value1, value2, "planeness");
             return (Criteria) this;
         }
 
-        public Criteria andPlanenessNotBetween(String value1, String value2) {
+        public Criteria andPlanenessNotBetween(Integer value1, Integer value2) {
             addCriterion("planeness not between", value1, value2, "planeness");
             return (Criteria) this;
         }
@@ -1035,62 +1015,52 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeEqualTo(String value) {
+        public Criteria andDevelopmentDegreeEqualTo(Integer value) {
             addCriterion("development_degree =", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeNotEqualTo(String value) {
+        public Criteria andDevelopmentDegreeNotEqualTo(Integer value) {
             addCriterion("development_degree <>", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeGreaterThan(String value) {
+        public Criteria andDevelopmentDegreeGreaterThan(Integer value) {
             addCriterion("development_degree >", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeGreaterThanOrEqualTo(String value) {
+        public Criteria andDevelopmentDegreeGreaterThanOrEqualTo(Integer value) {
             addCriterion("development_degree >=", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeLessThan(String value) {
+        public Criteria andDevelopmentDegreeLessThan(Integer value) {
             addCriterion("development_degree <", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeLessThanOrEqualTo(String value) {
+        public Criteria andDevelopmentDegreeLessThanOrEqualTo(Integer value) {
             addCriterion("development_degree <=", value, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeLike(String value) {
-            addCriterion("development_degree like", value, "developmentDegree");
-            return (Criteria) this;
-        }
-
-        public Criteria andDevelopmentDegreeNotLike(String value) {
-            addCriterion("development_degree not like", value, "developmentDegree");
-            return (Criteria) this;
-        }
-
-        public Criteria andDevelopmentDegreeIn(List<String> values) {
+        public Criteria andDevelopmentDegreeIn(List<Integer> values) {
             addCriterion("development_degree in", values, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeNotIn(List<String> values) {
+        public Criteria andDevelopmentDegreeNotIn(List<Integer> values) {
             addCriterion("development_degree not in", values, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeBetween(String value1, String value2) {
+        public Criteria andDevelopmentDegreeBetween(Integer value1, Integer value2) {
             addCriterion("development_degree between", value1, value2, "developmentDegree");
             return (Criteria) this;
         }
 
-        public Criteria andDevelopmentDegreeNotBetween(String value1, String value2) {
+        public Criteria andDevelopmentDegreeNotBetween(Integer value1, Integer value2) {
             addCriterion("development_degree not between", value1, value2, "developmentDegree");
             return (Criteria) this;
         }
@@ -1245,62 +1215,52 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainEqualTo(String value) {
+        public Criteria andTopographicTerrainEqualTo(Integer value) {
             addCriterion("topographic_terrain =", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainNotEqualTo(String value) {
+        public Criteria andTopographicTerrainNotEqualTo(Integer value) {
             addCriterion("topographic_terrain <>", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainGreaterThan(String value) {
+        public Criteria andTopographicTerrainGreaterThan(Integer value) {
             addCriterion("topographic_terrain >", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainGreaterThanOrEqualTo(String value) {
+        public Criteria andTopographicTerrainGreaterThanOrEqualTo(Integer value) {
             addCriterion("topographic_terrain >=", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainLessThan(String value) {
+        public Criteria andTopographicTerrainLessThan(Integer value) {
             addCriterion("topographic_terrain <", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainLessThanOrEqualTo(String value) {
+        public Criteria andTopographicTerrainLessThanOrEqualTo(Integer value) {
             addCriterion("topographic_terrain <=", value, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainLike(String value) {
-            addCriterion("topographic_terrain like", value, "topographicTerrain");
-            return (Criteria) this;
-        }
-
-        public Criteria andTopographicTerrainNotLike(String value) {
-            addCriterion("topographic_terrain not like", value, "topographicTerrain");
-            return (Criteria) this;
-        }
-
-        public Criteria andTopographicTerrainIn(List<String> values) {
+        public Criteria andTopographicTerrainIn(List<Integer> values) {
             addCriterion("topographic_terrain in", values, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainNotIn(List<String> values) {
+        public Criteria andTopographicTerrainNotIn(List<Integer> values) {
             addCriterion("topographic_terrain not in", values, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainBetween(String value1, String value2) {
+        public Criteria andTopographicTerrainBetween(Integer value1, Integer value2) {
             addCriterion("topographic_terrain between", value1, value2, "topographicTerrain");
             return (Criteria) this;
         }
 
-        public Criteria andTopographicTerrainNotBetween(String value1, String value2) {
+        public Criteria andTopographicTerrainNotBetween(Integer value1, Integer value2) {
             addCriterion("topographic_terrain not between", value1, value2, "topographicTerrain");
             return (Criteria) this;
         }

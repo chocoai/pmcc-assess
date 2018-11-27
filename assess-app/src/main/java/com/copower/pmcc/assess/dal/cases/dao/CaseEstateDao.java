@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEstate;
-import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseEstateMapper;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseEstateMapper;
@@ -24,7 +24,7 @@ public class CaseEstateDao {
     @Autowired
     private CaseEstateMapper caseEstateMapper;
     @Autowired
-    private CustomCaseEstateMapper customCaseEstateMapper;
+    private CustomCaseMapper customCaseEstateMapper;
 
     /**
      * 获取数据信息
@@ -102,11 +102,11 @@ public class CaseEstateDao {
      * @param district
      * @return
      */
-    public List<CustomCaseEstate> getLatestVersionEstateList(String name,String province,String city,String district){
-        return customCaseEstateMapper.getCustomCaseEstateList(name, province, city, district);
+    public List<CustomCaseEntity> getLatestVersionEstateList(String name, String province, String city, String district){
+        return customCaseEstateMapper.getCaseEstateList(name, province, city, district);
     }
 
-    public List<CustomCaseEstate> getLatestVersionEstateList(String name){
+    public List<CustomCaseEntity> getLatestVersionEstateList(String name){
         return getLatestVersionEstateList(name,null,null,null);
     }
 

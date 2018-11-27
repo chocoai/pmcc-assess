@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseExample;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
-import com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,15 +24,17 @@ import java.util.List;
 public class CaseHouseDao {
     @Autowired
     private CaseHouseMapper caseHouseMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
-    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId,String houseNumber)throws SQLException{
+    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId, String houseNumber) throws SQLException {
         CaseHouseExample example = new CaseHouseExample();
         CaseHouseExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (StringUtils.isNotEmpty(houseNumber)){
-            criteria.andHouseNumberLike(String.format("%s%s%s","%",houseNumber,"%"));
+        if (StringUtils.isNotEmpty(houseNumber)) {
+            criteria.andHouseNumberLike(String.format("%s%s%s", "%", houseNumber, "%"));
         }
-        if (unitId != null){
+        if (unitId != null) {
             criteria.andUnitIdEqualTo(unitId);
         }
         return caseHouseMapper.selectByExample(example);
@@ -40,6 +42,7 @@ public class CaseHouseDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -49,6 +52,7 @@ public class CaseHouseDao {
 
     /**
      * 获取数据列表
+     *
      * @param caseHouse
      * @return
      */
@@ -61,6 +65,7 @@ public class CaseHouseDao {
 
     /**
      * 新增
+     *
      * @param caseHouse
      * @return
      */
@@ -71,6 +76,7 @@ public class CaseHouseDao {
 
     /**
      * 编辑
+     *
      * @param caseHouse
      * @return
      */
@@ -88,11 +94,22 @@ public class CaseHouseDao {
     }
 
     /**
+     * 获取最新版本房屋信息
+     *
+     * @param unitId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionHouseList(String houseNumber, Integer unitId) {
+        return customCaseMapper.getCaseHouseList(houseNumber, unitId);
+    }
+
+    /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteHouse(Integer id){
+    public boolean deleteHouse(Integer id) {
         return caseHouseMapper.deleteByPrimaryKey(id) > 0;
     }
 

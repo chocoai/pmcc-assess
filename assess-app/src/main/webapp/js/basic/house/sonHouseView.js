@@ -39,7 +39,7 @@ var houseHeating;
             $("#" + houseHeating.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHeating.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseHeating.prototype.config().type,
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -79,7 +79,7 @@ var houseHeating;
             }
             var data = formParams(houseHeating.prototype.config().frm);
             data.type = houseHeating.prototype.config().type;
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -132,6 +132,11 @@ var houseHeating;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseHeating.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseHeating.prototype.loadDataDicList();
+    })
 })();
 
 var houseAirConditioner;
@@ -171,7 +176,7 @@ var houseAirConditioner;
             $("#" + houseAirConditioner.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseAirConditioner.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseAirConditioner.prototype.config().type,
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -211,7 +216,7 @@ var houseAirConditioner;
             }
             var data = formParams(houseAirConditioner.prototype.config().frm);
             data.type = houseAirConditioner.prototype.config().type;
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -264,6 +269,11 @@ var houseAirConditioner;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseAirConditioner.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseAirConditioner.prototype.loadDataDicList();
+    })
 })();
 
 var houseNewWind;
@@ -303,7 +313,7 @@ var houseNewWind;
             $("#" + houseNewWind.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseNewWind.prototype.config().table, getContextPath() + "/basicHouseEquipment/getBootstrapTableVo", cols, {
                 type: houseNewWind.prototype.config().type,
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -343,7 +353,7 @@ var houseNewWind;
             }
             var data = formParams(houseNewWind.prototype.config().frm);
             data.type = houseNewWind.prototype.config().type;
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseEquipment/saveAndUpdateBasicHouseEquipment",
                 type: "post",
@@ -396,6 +406,11 @@ var houseNewWind;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseNewWind.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseNewWind.prototype.loadDataDicList();
+    })
 })();
 
 var houseCorollaryEquipment;
@@ -439,7 +454,7 @@ var houseCorollaryEquipment;
             });
             $("#" + houseCorollaryEquipment.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseCorollaryEquipment.prototype.config().table, getContextPath() + "/basicHouseCorollaryEquipment/getBootstrapTableVo", cols, {
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -478,7 +493,7 @@ var houseCorollaryEquipment;
                 return false;
             }
             var data = formParams(houseCorollaryEquipment.prototype.config().frm);
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseCorollaryEquipment/saveAndUpdateBasicHouseCorollaryEquipment",
                 type: "post",
@@ -536,6 +551,11 @@ var houseCorollaryEquipment;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseCorollaryEquipment.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseCorollaryEquipment.prototype.loadDataDicList();
+    })
 })();
 
 var houseFaceStreet;
@@ -574,7 +594,7 @@ var houseFaceStreet;
             });
             $("#" + houseFaceStreet.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseFaceStreet.prototype.config().table, getContextPath() + "/basicHouseFaceStreet/getBootstrapTableVo", cols, {
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -623,7 +643,7 @@ var houseFaceStreet;
                 return false;
             }
             var data = formParams(houseFaceStreet.prototype.config().frm);
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseFaceStreet/saveAndUpdateBasicHouseFaceStreet",
                 type: "post",
@@ -714,6 +734,11 @@ var houseFaceStreet;
             }
         }
     }
+
+    //绑定事件
+    $('#'+houseFaceStreet.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseFaceStreet.prototype.loadDataDicList();
+    })
 })();
 
 var houseIntelligent;
@@ -755,7 +780,7 @@ var houseIntelligent;
             });
             $("#" + houseIntelligent.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseIntelligent.prototype.config().table, getContextPath() + "/basicHouseIntelligent/getBootstrapTableVo", cols, {
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -794,7 +819,7 @@ var houseIntelligent;
                 return false;
             }
             var data = formParams(houseIntelligent.prototype.config().frm);
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseIntelligent/saveAndUpdateBasicHouseIntelligent",
                 type: "post",
@@ -859,6 +884,11 @@ var houseIntelligent;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseIntelligent.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseIntelligent.prototype.loadDataDicList();
+    })
 })();
 
 var houseWater;
@@ -899,7 +929,7 @@ var houseWater;
             });
             $("#" + houseWater.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseWater.prototype.config().table, getContextPath() + "/basicHouseWater/getBootstrapTableVo", cols, {
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -938,7 +968,7 @@ var houseWater;
                 return false;
             }
             var data = formParams(houseWater.prototype.config().frm);
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseWater/saveAndUpdateBasicHouseWater",
                 type: "post",
@@ -1000,6 +1030,11 @@ var houseWater;
             });
         }
     }
+
+    //绑定事件
+    $('#'+houseWater.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseWater.prototype.loadDataDicList();
+    })
 })();
 
 var houseRoom;
@@ -1048,7 +1083,7 @@ var houseRoom;
             });
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                houseId: basicIndexCommon.getHouseId()
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1190,7 +1225,7 @@ var houseRoom;
                 return false;
             }
             var data = formParams(houseRoom.prototype.config().frm);
-            data.houseId = basicIndexCommon.getHouseId();
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
                 type: "post",
@@ -1241,5 +1276,10 @@ var houseRoom;
             }
         }
     }
+
+    //绑定事件
+    $('#'+houseRoom.prototype.config().table).closest('.x_panel').bind('click',function () {
+        houseRoom.prototype.loadDataDicList();
+    })
 })();
 

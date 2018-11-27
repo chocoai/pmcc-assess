@@ -5,7 +5,7 @@ import java.util.Date;
 public class CaseUnit {
     private Integer id;
 
-    private Integer caseBuildingMainId;
+    private Integer buildingMainId;
 
     private Integer buildingId;
 
@@ -29,12 +29,12 @@ public class CaseUnit {
         this.id = id;
     }
 
-    public Integer getCaseBuildingMainId() {
-        return caseBuildingMainId;
+    public Integer getBuildingMainId() {
+        return buildingMainId;
     }
 
-    public void setCaseBuildingMainId(Integer caseBuildingMainId) {
-        this.caseBuildingMainId = caseBuildingMainId;
+    public void setBuildingMainId(Integer buildingMainId) {
+        this.buildingMainId = buildingMainId;
     }
 
     public Integer getBuildingId() {

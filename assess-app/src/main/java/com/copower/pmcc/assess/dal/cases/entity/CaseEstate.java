@@ -16,7 +16,11 @@ public class CaseEstate {
 
     private Integer blockId;
 
+    private String blockName;
+
     private Integer developerId;
+
+    private String developerName;
 
     private String name;
 
@@ -48,13 +52,13 @@ public class CaseEstate {
 
     private String priceRange;
 
-    private Boolean supplyPower;
+    private Integer supplyPower;
 
-    private Boolean supplyWater;
+    private Integer supplyWater;
 
-    private Boolean supplyGas;
+    private Integer supplyGas;
 
-    private Boolean supplyHeating;
+    private Integer supplyHeating;
 
     private Integer version;
 
@@ -112,12 +116,28 @@ public class CaseEstate {
         this.blockId = blockId;
     }
 
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName == null ? null : blockName.trim();
+    }
+
     public Integer getDeveloperId() {
         return developerId;
     }
 
     public void setDeveloperId(Integer developerId) {
         this.developerId = developerId;
+    }
+
+    public String getDeveloperName() {
+        return developerName;
+    }
+
+    public void setDeveloperName(String developerName) {
+        this.developerName = developerName == null ? null : developerName.trim();
     }
 
     public String getName() {
@@ -240,35 +260,35 @@ public class CaseEstate {
         this.priceRange = priceRange == null ? null : priceRange.trim();
     }
 
-    public Boolean getSupplyPower() {
+    public Integer getSupplyPower() {
         return supplyPower;
     }
 
-    public void setSupplyPower(Boolean supplyPower) {
+    public void setSupplyPower(Integer supplyPower) {
         this.supplyPower = supplyPower;
     }
 
-    public Boolean getSupplyWater() {
+    public Integer getSupplyWater() {
         return supplyWater;
     }
 
-    public void setSupplyWater(Boolean supplyWater) {
+    public void setSupplyWater(Integer supplyWater) {
         this.supplyWater = supplyWater;
     }
 
-    public Boolean getSupplyGas() {
+    public Integer getSupplyGas() {
         return supplyGas;
     }
 
-    public void setSupplyGas(Boolean supplyGas) {
+    public void setSupplyGas(Integer supplyGas) {
         this.supplyGas = supplyGas;
     }
 
-    public Boolean getSupplyHeating() {
+    public Integer getSupplyHeating() {
         return supplyHeating;
     }
 
-    public void setSupplyHeating(Boolean supplyHeating) {
+    public void setSupplyHeating(Integer supplyHeating) {
         this.supplyHeating = supplyHeating;
     }
 

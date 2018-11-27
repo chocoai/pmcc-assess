@@ -170,6 +170,11 @@ AssessDicKey.examine_house_information_sources = "examine.house.information.sour
 
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
+AssessDicKey.estatePlaneness = "estate.planeness";//土地平整度
+AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
+AssessDicKey.estateShape_state = "estate.shape_state";//土地形状状况
+AssessDicKey.estateTopographic_terrain = "estate.topographic_terrain";//地形地势
+AssessDicKey.estateSupplySituation = "estate.supply.situation";//供应情况
 
 AssessDicKey.build_addedvalueadditionaltaxrate = "build.addedValueAdditionalTaxRate";//增值及附加税率
 AssessDicKey.build_landAcquisitionTaxRate = "build.landAcquisitionTaxRate";//土地取得税率

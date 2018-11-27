@@ -14,11 +14,11 @@ public class BasicEstateVo extends BasicEstate {
     private String provinceName;
     private String cityName;
     private String districtName;
-
-    private String blockName;
-
-    private String developerName;
     private String landLevelName;
+    private String supplyGasName;
+    private String supplyPowerName;
+    private String supplyWaterName;
+    private String supplyHeatingName;
 
     public String getVolumetricRateName() {
         return volumetricRateName;
@@ -60,27 +60,43 @@ public class BasicEstateVo extends BasicEstate {
         this.districtName = districtName;
     }
 
-    public String getBlockName() {
-        return blockName;
-    }
-
-    public void setBlockName(String blockName) {
-        this.blockName = blockName;
-    }
-
-    public String getDeveloperName() {
-        return developerName;
-    }
-
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName;
-    }
-
     public String getLandLevelName() {
         return landLevelName;
     }
 
     public void setLandLevelName(String landLevelName) {
         this.landLevelName = landLevelName;
+    }
+
+    public String getSupplyGasName() {
+        return supplyGasName;
+    }
+
+    public void setSupplyGasName(String supplyGasName) {
+        this.supplyGasName = supplyGasName;
+    }
+
+    public String getSupplyPowerName() {
+        return supplyPowerName;
+    }
+
+    public void setSupplyPowerName(String supplyPowerName) {
+        this.supplyPowerName = supplyPowerName;
+    }
+
+    public String getSupplyWaterName() {
+        return supplyWaterName;
+    }
+
+    public void setSupplyWaterName(String supplyWaterName) {
+        this.supplyWaterName = supplyWaterName;
+    }
+
+    public String getSupplyHeatingName() {
+        return supplyHeatingName;
+    }
+
+    public void setSupplyHeatingName(String supplyHeatingName) {
+        this.supplyHeatingName = supplyHeatingName;
     }
 }

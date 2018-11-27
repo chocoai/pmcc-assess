@@ -14,7 +14,6 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +54,7 @@ public class BasicApplyController extends BaseController {
             basicEstateService.clearInvalidData();
             basicBuildingService.clearInvalidData();
             basicUnitService.clearInvalidData();
-            basicHouseService.init(0, null, null);
+            basicHouseService.clearInvalidData();
         } catch (Exception e1) {
             log.error("清除数据异常", e1);
         }
@@ -79,9 +78,9 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApplySubmit", name = "案例数据申请 提交", method = RequestMethod.POST)
     public HttpResult basicApplySubmit(String formData) {
         try {
-            BasicApply basicApply = publicBasicService.saveBasic(formData, false);
+            BasicApply basicApply = publicBasicService.saveBasicApply(formData, false);
             //发起流程
-            basicApplyService.sumTask(basicApply, FormatUtils.entityNameConvertToTableName(BasicApply.class));
+            basicApplyService.processStartSubmit(basicApply);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
@@ -104,7 +103,7 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
     public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
-            publicBasicService.approvalAndWrite(approvalModelDto);
+            basicApplyService.processApprovalSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
@@ -131,14 +130,14 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicEditSubmit", name = "案例返回修改 提交")
     public HttpResult basicEditSubmit(ApprovalModelDto approvalModelDto, String formData) {
         try {
-            publicBasicService.basicEditSubmit(approvalModelDto, formData);
+            publicBasicService.saveBasicApply(formData, false);
+            basicApplyService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
-
 
 
     @ResponseBody
@@ -231,7 +230,7 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/saveDraft", name = "保存草稿", method = {RequestMethod.POST})
     public HttpResult saveDraft(String formData) {
         try {
-            publicBasicService.saveBasic(formData,true);
+            publicBasicService.saveBasicApply(formData, true);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);

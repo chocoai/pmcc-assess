@@ -3,32 +3,27 @@
  */
 
 ;(function ($) {
-    var estateCommon = {};
-    estateCommon.estateLandStateForm = $('#basicLandState');
-    estateCommon.estateForm = $('#basicEstateFrm');
+    var houseCommon = {};
+    houseCommon.houseTradingForm = $('#basicTradingFrm');
+    houseCommon.houseForm = $('#basicHouseFrm');
     //附件上传控件id数组
-    estateCommon.estateFileControlIdArray = [
-        'estate_floor_total_plan',
-        'water_supply_plan',
-        'power_supply_plan',
-        'air_supply_plan',
-        'heating_plan',
-        'estate_floor_Appearance_figure'];
+    houseCommon.houseFileControlIdArray = [
+        'house_floor_total_plan'];
 
-    estateCommon.getEstateId = function () {
-        return $('#basicEstateFrm').find('[name=id]').val();
+    houseCommon.getHouseId = function () {
+        return houseCommon.houseForm.find('[name=id]').val();
     }
 
     //添加楼盘
-    estateCommon.add = function ($form, callback) {
+    houseCommon.add = function ($form, callback) {
         $.ajax({
-            url: getContextPath() + '/basicEstate/addEstateAndLandstate',
+            url: getContextPath() + '/basicHouse/addHouseAndTrading',
             data: {
-                estateName: $form.find('[name=estateName]').val()
+                houseNumber: $form.find('[name=houseNumber]').val()
             },
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.showEstateView(result.data);
+                    houseCommon.showHouseView(result.data);
                     if (callback) {
                         callback();
                     }
@@ -38,13 +33,13 @@
     }
 
     //编辑楼盘
-    estateCommon.edit = function ($form, callback) {
+    houseCommon.edit = function ($form, callback) {
         $.ajax({
-            url: getContextPath() + '/basicEstate/appWriteEstate',
-            data: {caseEstateId: $form.find("input[name='caseEstateId']").val()},
+            url: getContextPath() + '/basicHouse/appWriteHouse',
+            data: {caseHouseId: $form.find("input[name='caseHouseId']").val()},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.showEstateView(result.data);
+                    houseCommon.showHouseView(result.data);
                     if (callback) {
                         callback();
                     }
@@ -54,14 +49,14 @@
     }
 
     //楼盘初始化by applyId
-    estateCommon.init = function (applyId, callback) {
+    houseCommon.init = function (applyId, callback) {
         $.ajax({
-            url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
+            url: getContextPath() + '/basicHouse/getBasicHouseByApplyId',
             type: 'get',
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.showEstateView(result.data);
+                    houseCommon.showHouseView(result.data);
                     if (callback) {
                         callback();
                     }
@@ -71,88 +66,108 @@
     }
 
     //楼盘明细
-    estateCommon.detail = function (applyId) {
+    houseCommon.detail = function (applyId) {
         $.ajax({
-            url: getContextPath() + '/basicEstate/getBasicEstateByApplyId',
+            url: getContextPath() + '/basicHouse/getBasicHouseByApplyId',
             type: 'get',
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.estateForm.initLabel(result.data.estate);
-                    estateCommon.estateLandStateForm.initLabel(result.data.landState);
-                    estateCommon.showEstateDetail(result.data.estate.id);
+                    houseCommon.houseForm.initLabel(result.data.house);
+                    houseCommon.houseTradingForm.initLabel(result.data.trading);
                 }
             }
         })
     }
 
     //显示楼盘对应部分信息
-    estateCommon.showEstateView = function (data) {
-        estateCommon.estateForm.initForm(data.estate, function () {
+    houseCommon.showHouseView = function (data) {
+        houseCommon.houseForm.initForm(data.house, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
-            AssessCommon.initAreaInfo({
-                provinceTarget: estateCommon.estateForm.find('[name=province]'),
-                cityTarget: estateCommon.estateForm.find('[name=city]'),
-                districtTarget: estateCommon.estateForm.find('[name=district]'),
-                provinceValue: data.estate.province,
-                cityValue: data.estate.city,
-                districtValue: data.estate.district
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.house.certUse, function (html, data) {
+                houseCommon.houseForm.find("select.certUse").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.house.practicalUse, function (html, data) {
+                houseCommon.houseForm.find("select.practicalUse").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.house.useEnvironment, function (html, data) {
+                houseCommon.houseForm.find("select.useEnvironment").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, data.house.newsHuxing, function (html, data) {
+                houseCommon.houseForm.find("select.newsHuxing").empty().html(html).trigger('change');
             });
 
             //初始化上传控件
-            $.each(estateCommon.estateFileControlIdArray, function (i, item) {
-                estateCommon.fileUpload(item);
+            $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+                houseCommon.fileUpload(item);
             })
             //------------------------以上部分可只初始化一次
 
             //附件显示
-            $.each(estateCommon.estateFileControlIdArray, function (i, item) {
-                estateCommon.fileShow(item);
+            $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+                houseCommon.fileShow(item);
             })
         });
-        estateCommon.estateLandStateForm.initForm(data.landState, function () {
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.landState.landUseType, function (html, data) {
-                estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadDataDicByPid(data.landState.landUseType, data.landState.landUseCategory, function (html, data) {
-                estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
+
+        //交易情况
+        houseCommon.houseTradingForm.initForm(data.trading, function () {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.trading.taxBurden, function (html, data) {
+                houseCommon.houseTradingForm.find("select.taxBurden").empty().html(html).trigger('change');
             });
-            estateCommon.estateLandStateForm.find("select.landUseType").change(function () {
-                var id = estateCommon.estateLandStateForm.find("select.landUseType").val();
-                AssessCommon.loadDataDicByPid(id, null, function (html, data) {
-                    estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
-                });
+            AssessCommon.loadDataDicByKey(AssessDicKey.basicHouseTransactionType, data.trading.tradingType, function (html, data) {
+                houseCommon.houseTradingForm.find("select.tradingType").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.trading.descriptionType, function (html, data) {
+                houseCommon.houseTradingForm.find("select.descriptionType").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, data.trading.normalTransaction, function (html, data) {
+                houseCommon.houseTradingForm.find("select.normalTransaction").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, data.trading.paymentMethod, function (html, data) {
+                houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, data.trading.informationType, function (html, data) {
+                houseCommon.houseTradingForm.find("select.informationType").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.trading.financingConditions, function (html, data) {
+                houseCommon.houseTradingForm.find("select.financingConditions").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.trading.scopeProperty, function (html, data) {
+                houseCommon.houseTradingForm.find("select.scopeProperty").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, data.trading.information, function (html, data) {
+                houseCommon.houseTradingForm.find("select.information").empty().html(html).trigger('change');
             });
         })
     }
 
 
     //附件上传
-    estateCommon.fileUpload = function (fieldsName) {
+    houseCommon.fileUpload = function (fieldsName) {
         FileUtils.uploadFiles({
             target: fieldsName,
             disabledTarget: "btn_submit",
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.BasicEstate,
-                tableId: estateCommon.getEstateId()
+                tableName: AssessDBKey.BasicHouse,
+                tableId: houseCommon.getHouseId()
             },
             deleteFlag: true
         });
     }
 
     //附件显示
-    estateCommon.fileShow = function (fieldsName, deleteFlag) {
+    houseCommon.fileShow = function (fieldsName, deleteFlag) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
-                tableName: AssessDBKey.BasicEstate,
-                tableId: estateCommon.getEstateId()
+                tableName: AssessDBKey.BasicHouse,
+                tableId: houseCommon.getHouseId()
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
     }
 
-    window.estateCommon = estateCommon;
+    window.houseCommon = houseCommon;
 })(jQuery);

@@ -80,7 +80,7 @@ public class CaseUnitController {
         BootstrapTableVo vo = new BootstrapTableVo();
         try {
             if (caseBuildingMainId != null) {
-                caseUnit.setCaseBuildingMainId(caseBuildingMainId);
+                caseUnit.setBuildingMainId(caseBuildingMainId);
                 vo = caseUnitService.getCaseUnitListVos(caseUnit);
             }
         } catch (Exception e1) {

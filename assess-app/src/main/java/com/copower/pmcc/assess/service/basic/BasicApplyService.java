@@ -2,13 +2,14 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -17,6 +18,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,13 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-10-24.
@@ -49,6 +49,8 @@ public class BasicApplyService {
     private CommonService commonService;
     @Autowired
     private BaseParameterService baseParameterService;
+    @Autowired
+    private PublicService publicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -86,18 +88,17 @@ public class BasicApplyService {
      * 流程发起
      *
      * @param basicApply
-     * @param tableName
      * @return
      * @throws Exception
      */
-    public ProcessUserDto sumTask(BasicApply basicApply, String tableName) throws Exception {
+    public ProcessUserDto processStartSubmit(BasicApply basicApply) throws Exception {
         ProcessUserDto processUserDto = null;
         ProcessInfo processInfo = new ProcessInfo();
         //流程描述
         processInfo.setFolio(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
         final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        processInfo.setTableName(tableName);
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApply.class));
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
@@ -115,6 +116,36 @@ public class BasicApplyService {
             throw e;
         }
         return processUserDto;
+    }
+
+    /**
+     * 审批
+     *
+     * @param approvalModelDto
+     * @throws Exception
+     */
+    public void processApprovalSubmit(ApprovalModelDto approvalModelDto) throws Exception {
+        try {
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * 案例 返回修改 提交
+     *
+     * @param approvalModelDto
+     * @throws Exception
+     */
+    public void processEditSubmit(ApprovalModelDto approvalModelDto) throws Exception {
+       try{
+            processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
     }
 
     public BootstrapTableVo getBootstrapTableVo(String estateName, Boolean draftFlag) {

@@ -3,10 +3,8 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouse;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -87,14 +83,24 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/initHouse", name = "初始化", method = {RequestMethod.POST})
-    public HttpResult initHouse(){
+    @RequestMapping(value = "/getBasicHouseByApplyId", name = "获取数据", method = {RequestMethod.GET})
+    public HttpResult getBasicHouseByApplyId(Integer applyId){
         try {
-            basicHouseService.init(0,null,null);
-            return HttpResult.newCorrectResult("success");
+            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseByApplyId(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addHouseAndLandstate", name = "添加房屋及交易信息", method = {RequestMethod.POST})
+    public HttpResult addHouseAndTrading(String houseNumber){
+        try {
+            return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult("添加房屋及交易信息异常");
         }
     }
 
@@ -102,7 +108,7 @@ public class BasicHouseController {
     @RequestMapping(value = "/appWriteHouse", name = "过程数据", method = {RequestMethod.POST})
     public HttpResult appWriteHouse(Integer caseHouseId){
         try {
-            return HttpResult.newCorrectResult(200,publicBasicService.appWriteHouse(caseHouseId));
+            return HttpResult.newCorrectResult(200,basicHouseService.appWriteHouse(caseHouseId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(500,e.getMessage());

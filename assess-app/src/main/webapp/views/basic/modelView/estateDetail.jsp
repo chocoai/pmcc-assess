@@ -1,11 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_content">
-    <div class="x_title">
-        <h3>楼盘基本信息
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <form class="form-horizontal" id="frm_estate">
+<form class="form-horizontal" id="frm_estate">
+    <div class="x_content">
+        <div class="x_title">
+            <h3>
+                <small>楼盘基本信息</small>
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+
         <input type="hidden" name="id" value="${basicEstate.id}">
         <div class="form-group">
             <div class="x-valid">
@@ -66,37 +68,7 @@
                     <label class="form-control">${basicEstate.position}</label>
                 </div>
             </div>
-            <div class="x-valid supplyGas">
-                <label class="col-sm-1 control-label">供气信息</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.supplyGas?'有':'无'}</label>
-                </div>
-            </div>
         </div>
-
-        <div class="form-group">
-            <div class="x-valid supplyPower">
-                <label class="col-sm-1 control-label">供电信息</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.supplyPower?'有':'无'}</label>
-                </div>
-            </div>
-
-            <div class="x-valid supplyWater">
-                <label class="col-sm-1 control-label">供排水情况</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.supplyWater?'有':'无'}</label>
-                </div>
-            </div>
-
-            <div class="x-valid supplyHeating">
-                <label class="col-sm-1 control-label">供热信息</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.supplyHeating?'有':'无'}</label>
-                </div>
-            </div>
-        </div>
-
 
         <div class="form-group">
             <div class="x-valid">
@@ -120,7 +92,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="form-group">
             <div class="x-valid">
@@ -222,14 +193,55 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
 
+    <div class="x_content" id="industrySupplyInfo" style="display: none;">
+        <div class="x_title">
+            <h3>
+                <small>
+                    楼盘供应信息
+                </small>
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="x-valid supplyGas">
+                    <label class="col-sm-1 control-label">供气信息</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstate.supplyGasName}</label>
+                    </div>
+                </div>
+                <div class="x-valid supplyPower">
+                    <label class="col-sm-1 control-label">供电信息</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstate.supplyPowerName}</label>
+                    </div>
+                </div>
+
+                <div class="x-valid supplyWater">
+                    <label class="col-sm-1 control-label">供排水情况</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstate.supplyWaterName}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="x-valid supplyHeating">
+                    <label class="col-sm-1 control-label">供热信息</label>
+                    <div class="col-sm-3">
+                        <label class="form-control">${basicEstate.supplyHeatingName}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <div class="x_content">
     <div class="x_title">
         <h3>
-            土地基本信息
+            <small>土地基本信息</small>
         </h3>
         <div class="clearfix"></div>
     </div>
@@ -295,13 +307,13 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状状况</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.shapeState}</label>
+                    <label class="form-control">${basicEstateLandState.shapeStateName}</label>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地平整度</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.planeness}</label>
+                    <label class="form-control">${basicEstateLandState.planenessName}</label>
                 </div>
             </div>
         </div>
@@ -310,7 +322,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.developmentDegree}</label>
+                    <label class="form-control">${basicEstateLandState.developmentDegreeName}</label>
                 </div>
             </div>
 
@@ -332,7 +344,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicEstateLandState.topographicTerrain}</label>
+                    <label class="form-control">${basicEstateLandState.topographicTerrainName}</label>
                 </div>
             </div>
 

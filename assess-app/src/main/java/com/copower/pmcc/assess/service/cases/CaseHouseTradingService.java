@@ -58,13 +58,13 @@ public class CaseHouseTradingService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseHouseTradingVo> vos = caseHouseTradingList(caseHouseTrading);
+        List<CaseHouseTradingVo> vos = caseHouseTradingVoList(caseHouseTrading);
         vo.setRows(vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public List<CaseHouseTradingVo> caseHouseTradingList(CaseHouseTrading caseHouseTrading){
+    public List<CaseHouseTradingVo> caseHouseTradingVoList(CaseHouseTrading caseHouseTrading){
         List<CaseHouseTradingVo> vos = Lists.newArrayList();
         List<CaseHouseTrading> caseHouseTradings = caseHouseTradingDao.getCaseHouseTradingList(caseHouseTrading);
         if (!ObjectUtils.isEmpty(caseHouseTradings)){
@@ -75,7 +75,7 @@ public class CaseHouseTradingService {
         return vos;
     }
 
-    public List<CaseHouseTrading> caseHouseTradingLists(CaseHouseTrading caseHouseTrading){
+    public List<CaseHouseTrading> caseHouseTradingList(CaseHouseTrading caseHouseTrading){
         return caseHouseTradingDao.getCaseHouseTradingList(caseHouseTrading);
     }
 

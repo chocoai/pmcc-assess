@@ -19,8 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,17 +67,6 @@ public class BasicHouseTradingService {
         }
     }
 
-    public Integer upgradeVersion(BasicHouseTrading basicHouseTrading)throws Exception{
-        if (basicHouseTrading.getId()== null || basicHouseTrading.getId().intValue()==0){
-            basicHouseTrading.setCreator(commonService.thisUserAccount());
-            Integer id = basicHouseTradingDao.saveBasicHouseTrading(basicHouseTrading);
-            basicHouseTrading.setId(id);
-            return id;
-        }else {
-            basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading);
-            return basicHouseTrading.getId();
-        }
-    }
 
     /**
      * 删除数据
@@ -95,6 +86,18 @@ public class BasicHouseTradingService {
      */
     public List<BasicHouseTrading> basicHouseTradingList(BasicHouseTrading basicHouseTrading)throws Exception{
         return basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+    }
+
+    public BasicHouseTrading getTradingByHouseId(Integer houseId){
+        try {
+            BasicHouseTrading basicHouseTrading=new BasicHouseTrading();
+            basicHouseTrading.setHouseId(houseId);
+            List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+            if(CollectionUtils.isEmpty(tradings)) return null;
+            return tradings.get(0);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading)throws Exception{

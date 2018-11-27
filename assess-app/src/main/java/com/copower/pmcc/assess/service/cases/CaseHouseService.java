@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -14,21 +13,18 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Ordering;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -96,7 +92,7 @@ public class CaseHouseService {
         CaseHouseTrading queryTrading = new CaseHouseTrading();
         queryTrading.setHouseId(oldId);
 
-        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingList(queryTrading);
+        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingVoList(queryTrading);
         List<CaseHouseTradingSellVo> caseHouseTradingSellVos = caseHouseTradingSellService.caseHouseTradingSellList(caseHouseTradingSell, null);
         List<CaseHouseTradingLeaseVo> caseHouseTradingLeaseVos = caseHouseTradingLeaseService.caseHouseTradingLeaseList(caseHouseTradingLease, null);
         List<CaseHouseEquipment> caseHouseEquipments = caseHouseEquipmentService.getCaseHouseEquipmentList(caseHouseEquipment);
@@ -227,10 +223,10 @@ public class CaseHouseService {
         return caseHouseDao.getHouseById(id);
     }
 
-    public Integer getVersion(Integer id){
-        if(id==null) return 0;
+    public Integer getVersion(Integer id) {
+        if (id == null) return 0;
         CaseHouse caseHouse = caseHouseDao.getHouseById(id);
-        if(caseHouse==null) return 0;
+        if (caseHouse == null) return 0;
         return caseHouse.getVersion();
     }
 
@@ -245,7 +241,7 @@ public class CaseHouseService {
         }
     }
 
-    public int updateUnitId(Integer oldUnitId,Integer newUnitId){
+    public int updateUnitId(Integer oldUnitId, Integer newUnitId) {
         return caseHouseDao.updateUnitId(oldUnitId, newUnitId);
     }
 
@@ -254,46 +250,36 @@ public class CaseHouseService {
         return caseHouseDao.deleteHouse(id);
     }
 
-    public List<CaseHouse> autoCompleteCaseHouse(Integer unitId, String houseNumber, Integer maxRows) throws Exception {
-        List<CaseHouse> caseHouseList = caseHouseDao.autoCompleteCaseHouse(unitId, houseNumber);
-        Ordering<CaseHouse> ordering = Ordering.from(new Comparator<CaseHouse>() {
-            @Override
-            public int compare(CaseHouse o1, CaseHouse o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        }).reverse();
-        Collections.sort(caseHouseList, ordering);
-        List<CaseHouse> list = new ArrayList<CaseHouse>(10);
-        if (!ObjectUtils.isEmpty(caseHouseList)) {
-            for (int i = 0; i < maxRows; i++) {
-                if (i < caseHouseList.size()) {
-                    list.add(caseHouseList.get(i));
-                }
+    public List<CaseHouse> autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) throws Exception {
+        PageHelper.startPage(0, maxRows);
+        List<CustomCaseEntity> houseList = caseHouseDao.getLatestVersionHouseList(houseNumber, unitId);
+        List<CaseHouse> caseHouseList = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(houseList)) {
+            for (CustomCaseEntity caseEntity : houseList) {
+                CaseHouse caseHouse = new CaseHouse();
+                caseHouse.setId(caseEntity.getId());
+                caseHouse.setHouseNumber(caseEntity.getName());
+                caseHouse.setVersion(caseEntity.getVersion());
+                caseHouseList.add(caseHouse);
             }
         }
-        return list;
+        return caseHouseList;
     }
 
-    public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse){
+    public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse) {
         CaseHouseVo vo = new CaseHouseVo();
-        BaseDataDic dataDic = null;
-        BeanUtils.copyProperties(caseHouse,vo);
+        BeanUtils.copyProperties(caseHouse, vo);
         if (caseHouse.getUseEnvironment() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseHouse.getUseEnvironment());
-            vo.setUseEnvironmentName(dataDic.getName());
-            dataDic = null;
+            vo.setUseEnvironmentName(baseDataDicService.getNameById(caseHouse.getUseEnvironment()));
         }
         if (caseHouse.getCertUse() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseHouse.getCertUse());
-            vo.setCertUseName(dataDic.getName());
-            dataDic = null;
+            vo.setCertUseName(baseDataDicService.getNameById(caseHouse.getCertUse()));
         }
         if (caseHouse.getPracticalUse() != null) {
-            dataDic = baseDataDicService.getDataDicById(caseHouse.getPracticalUse());
-            vo.setPracticalUseName(dataDic.getName());
-            dataDic = null;
+            vo.setPracticalUseName(baseDataDicService.getNameById(caseHouse.getPracticalUse()));
         }
-        vo.setNewsHuxingName(baseDataDicService.getNameById(caseHouse.getNewsHuxing()));
+        if (caseHouse.getNewsHuxing() != null)
+            vo.setNewsHuxingName(baseDataDicService.getNameById(caseHouse.getNewsHuxing()));
         return vo;
     }
 }

@@ -41,28 +41,25 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道</label>
+                <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="街道"
-                           name="street" class="form-control" value="${basicEstate.street}">
+                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
+                           name="name" class="form-control" value="${basicEstate.name}">
                 </div>
             </div>
-
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道号</label>
+                <label class="col-sm-1 control-label">楼盘方位</label>
                 <div class="col-sm-3">
-                    <input type="text"
-                           placeholder="街道号" name="streetNumber" class="form-control"
-                           value="${basicEstate.streetNumber}">
+                    <input type="text" placeholder="楼盘方位"
+                           name="position" class="form-control" value="${basicEstate.position}">
                 </div>
             </div>
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">基础版块<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="blockId" value="${basicEstate.blockId}">
-                        <input type="text" readonly="readonly"
+                        <input type="text"
                                placeholder="基础版块" class="form-control" name="blockName"
                                value="${basicEstate.blockName}">
                         <span class="input-group-btn">
@@ -82,23 +79,33 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼盘名称<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">街道</label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" placeholder="楼盘名称" required="required"
-                           name="name" class="form-control" value="${basicEstate.name}">
+                    <input type="text" placeholder="街道"
+                           name="street" class="form-control" value="${basicEstate.street}">
+                </div>
+            </div>
+
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">街道号</label>
+                <div class="col-sm-3">
+                    <input type="text"
+                           placeholder="街道号" name="streetNumber" class="form-control"
+                           value="${basicEstate.streetNumber}">
                 </div>
             </div>
             <div class="x-valid">
-                <label class="col-sm-1 control-label">楼盘方位</label>
+                <label class="col-sm-1 control-label">附号</label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼盘方位"
-                           name="position" class="form-control" value="${basicEstate.position}">
+                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                           placeholder="附号(请输入数字)"
+                           name="attachNumber" class="form-control" value="${basicEstate.attachNumber}">
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">占地面积</label>
@@ -129,15 +136,6 @@
         </div>
 
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">楼盘概况</label>
-                <div class="col-sm-11">
-                        <textarea class="form-control" name="description"
-                                  placeholder="楼盘概况">${basicEstate.description}</textarea>
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="x-valid">
@@ -154,7 +152,7 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="hidden" name="developerId" value="${basicEstate.developerId}">
-                        <input type="text" readonly="readonly"
+                        <input type="text"
                                placeholder="开发商" class="form-control" name="developerName"
                                value="${basicEstate.developerName}">
                         <span class="input-group-btn">
@@ -200,12 +198,13 @@
                            name="priceRange" class="form-control" value="${basicEstate.priceRange}">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">附号</label>
-                <div class="col-sm-3">
-                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                           placeholder="附号(请输入数字)"
-                           name="attachNumber" class="form-control" value="${basicEstate.attachNumber}">
+                <label class="col-sm-1 control-label">楼盘概况</label>
+                <div class="col-sm-11">
+                        <textarea class="form-control" name="description"
+                                  placeholder="楼盘概况">${basicEstate.description}</textarea>
                 </div>
             </div>
         </div>
@@ -275,6 +274,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="x_content" id="industrySupplyInfo" style="display: none;">
@@ -291,22 +291,14 @@
                 <div class="x-valid supplyGas">
                     <label class="col-sm-1 control-label">供气信息</label>
                     <div class="col-sm-3">
-                        <select name="supplyGas" class="form-control search-select select2"
-                                required="required">
-                            <option selected="selected" value="">请选择</option>
-                            <option value="true">有</option>
-                            <option value="false">无</option>
+                        <select class="form-control search-select select2 supplyGas" name="supplyGas">
                         </select>
                     </div>
                 </div>
                 <div class="x-valid supplyPower">
                     <label class="col-sm-1 control-label">供电信息</label>
                     <div class="col-sm-3">
-                        <select name="supplyPower" class="form-control search-select select2"
-                                required="required">
-                            <option selected="selected" value="">请选择</option>
-                            <option value="true">有</option>
-                            <option value="false">无</option>
+                        <select class="form-control search-select select2 supplyPower" name="supplyPower">
                         </select>
                     </div>
                 </div>
@@ -314,11 +306,7 @@
                 <div class="x-valid supplyWater">
                     <label class="col-sm-1 control-label">供排水情况</label>
                     <div class="col-sm-3">
-                        <select name="supplyWater" class="form-control search-select select2"
-                                required="required">
-                            <option selected="selected" value="">请选择</option>
-                            <option value="true">有</option>
-                            <option value="false">无</option>
+                        <select class="form-control search-select select2 supplyWater" name="supplyWater">
                         </select>
                     </div>
                 </div>
@@ -327,11 +315,7 @@
                 <div class="x-valid supplyHeating">
                     <label class="col-sm-1 control-label">供热信息</label>
                     <div class="col-sm-3">
-                        <select name="supplyHeating" class="form-control search-select select2"
-                                required="required">
-                            <option selected="selected" value="">请选择</option>
-                            <option value="true">有</option>
-                            <option value="false">无</option>
+                        <select class="form-control search-select select2 supplyHeating" name="supplyHeating">
                         </select>
                     </div>
                 </div>
@@ -438,25 +422,24 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地形状状况</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地形状状况"
-                           name="shapeState" value="${basicEstateLandState.shapeState}">
+                    <select class="form-control search-select select2 shapeState" name="shapeState">
+                    </select>
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地平整度</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地平整度"
-                           name="planeness" value="${basicEstateLandState.planeness}">
+                    <select class="form-control search-select select2 planeness" name="planeness">
+                    </select>
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">土地开发程度</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="土地开发程度"
-                           name="developmentDegree" value="${basicEstateLandState.developmentDegree}">
+                    <select class="form-control search-select select2 developmentDegree" name="developmentDegree">
+                    </select>
                 </div>
             </div>
 
@@ -480,8 +463,8 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">地形地势</label>
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="地形地势" name="topographicTerrain"
-                           value="${basicEstateLandState.topographicTerrain}">
+                    <select class="form-control search-select select2 topographicTerrain" name="topographicTerrain">
+                    </select>
                 </div>
             </div>
 

@@ -141,7 +141,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">正常交易</label>
+                <label class="col-sm-1 control-label">交易情况</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouseTrading.normalTransactionName}</label>
                 </div>
@@ -279,3 +279,4 @@
 </div>
 
 <%@include file="/views/basic/modelView/house/sonHouseDetail.jsp" %>
+<script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>

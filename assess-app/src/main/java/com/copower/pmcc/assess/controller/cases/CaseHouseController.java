@@ -3,7 +3,10 @@ package com.copower.pmcc.assess.controller.cases;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
-import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
+import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.cases.*;
@@ -12,7 +15,6 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -57,14 +61,13 @@ public class CaseHouseController {
     private CaseHouseEquipmentService caseHouseEquipmentService;
 
 
-
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) {
         String view = "/case/caseHouse/caseHouseView";
         CaseHouse caseHouse = null;
         CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
         caseHouseTrading.setHouseId(id);
-        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingList(caseHouseTrading);
+        List<CaseHouseTradingVo> caseHouseTradingList = caseHouseTradingService.caseHouseTradingVoList(caseHouseTrading);
         if (!ObjectUtils.isEmpty(caseHouseTradingList)) {
             caseHouseTrading = caseHouseTradingList.get(0);
         }
@@ -108,15 +111,8 @@ public class CaseHouseController {
                 caseHouse = caseHouseService.getCaseHouseById(id);
                 CaseHouseTrading caseHouseTrading = new CaseHouseTrading();
                 caseHouseTrading.setHouseId(id);
-                List<CaseHouseTradingVo> houseTradings = caseHouseTradingService.caseHouseTradingList(caseHouseTrading);
-                Ordering<CaseHouseTradingVo> ordering = Ordering.from(new Comparator<CaseHouseTradingVo>() {
-                    @Override
-                    public int compare(CaseHouseTradingVo o1, CaseHouseTradingVo o2) {
-                        return o1.getId().compareTo(o2.getId());
-                    }
-                }).reverse();
+                List<CaseHouseTradingVo> houseTradings = caseHouseTradingService.caseHouseTradingVoList(caseHouseTrading);
                 if (!ObjectUtils.isEmpty(houseTradings)) {
-                    Collections.sort(houseTradings,ordering);
                     objectMap.put(CaseHouseTrading.class.getSimpleName(), houseTradings.get(0));
                 }
                 objectMap.put(CaseHouse.class.getSimpleName(), caseHouse);
@@ -185,7 +181,7 @@ public class CaseHouseController {
             }
             Integer id = caseHouseService.saveAndUpdateCaseHouse(caseHouse);
             if (id != null) {
-                caseHouseService.initAndUpdateSon(0,id);
+                caseHouseService.initAndUpdateSon(0, id);
             }
             if (caseHouseTrading != null) {
                 caseHouseTrading.setHouseId(id);
@@ -242,7 +238,7 @@ public class CaseHouseController {
     @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
     public HttpResult initAndUpdateSon() {
         try {
-            caseHouseService.initAndUpdateSon(0,null);
+            caseHouseService.initAndUpdateSon(0, null);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
@@ -253,15 +249,15 @@ public class CaseHouseController {
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
     public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) {
         List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (unitId == null){
+        if (unitId == null) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
-        if (!StringUtils.isNotBlank(houseNumber)){
+        if (!StringUtils.isNotBlank(houseNumber)) {
             return HttpResult.newCorrectResult(keyValueDtos);
         }
         try {
-            List<CaseHouse> caseHouseList = caseHouseService.autoCompleteCaseHouse(unitId, houseNumber, maxRows);
-            if (!ObjectUtils.isEmpty(caseHouseList)){
+            List<CaseHouse> caseHouseList = caseHouseService.autoCompleteCaseHouse(houseNumber, unitId, maxRows);
+            if (!ObjectUtils.isEmpty(caseHouseList)) {
                 CaseHouse caseHouse = caseHouseList.get(0);
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(String.valueOf(caseHouse.getId()));

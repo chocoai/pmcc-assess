@@ -9,7 +9,7 @@ public class CaseEstateParking {
 
     private Integer estateId;
 
-    private String parkingType;
+    private Integer parkingType;
 
     private String location;
 
@@ -43,12 +43,12 @@ public class CaseEstateParking {
         this.estateId = estateId;
     }
 
-    public String getParkingType() {
+    public Integer getParkingType() {
         return parkingType;
     }
 
-    public void setParkingType(String parkingType) {
-        this.parkingType = parkingType == null ? null : parkingType.trim();
+    public void setParkingType(Integer parkingType) {
+        this.parkingType = parkingType;
     }
 
     public String getLocation() {

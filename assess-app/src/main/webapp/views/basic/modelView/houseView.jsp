@@ -163,7 +163,7 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">正常交易<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">交易情况<span class="symbol required"></span></label>
                 <div class="col-sm-3">
                     <select class="form-control search-select select2 normalTransaction"
                             name="normalTransaction"
@@ -329,7 +329,7 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/house/houseView.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
 
 <div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"

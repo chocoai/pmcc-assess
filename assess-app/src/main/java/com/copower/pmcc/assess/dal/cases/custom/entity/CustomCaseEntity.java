@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.cases.custom.entity;
 /**
  * Created by kings on 2018-11-21.
  */
-public class CustomCaseEstate {
+public class CustomCaseEntity {
     private Integer id;
     private String name;
     private Integer version;

@@ -556,6 +556,76 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andBlockNameIsNull() {
+            addCriterion("block_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameIsNotNull() {
+            addCriterion("block_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameEqualTo(String value) {
+            addCriterion("block_name =", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotEqualTo(String value) {
+            addCriterion("block_name <>", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameGreaterThan(String value) {
+            addCriterion("block_name >", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameGreaterThanOrEqualTo(String value) {
+            addCriterion("block_name >=", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLessThan(String value) {
+            addCriterion("block_name <", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLessThanOrEqualTo(String value) {
+            addCriterion("block_name <=", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameLike(String value) {
+            addCriterion("block_name like", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotLike(String value) {
+            addCriterion("block_name not like", value, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameIn(List<String> values) {
+            addCriterion("block_name in", values, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotIn(List<String> values) {
+            addCriterion("block_name not in", values, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameBetween(String value1, String value2) {
+            addCriterion("block_name between", value1, value2, "blockName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBlockNameNotBetween(String value1, String value2) {
+            addCriterion("block_name not between", value1, value2, "blockName");
+            return (Criteria) this;
+        }
+
         public Criteria andDeveloperIdIsNull() {
             addCriterion("developer_id is null");
             return (Criteria) this;
@@ -613,6 +683,76 @@ public class BasicEstateExample {
 
         public Criteria andDeveloperIdNotBetween(Integer value1, Integer value2) {
             addCriterion("developer_id not between", value1, value2, "developerId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameIsNull() {
+            addCriterion("developer_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameIsNotNull() {
+            addCriterion("developer_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameEqualTo(String value) {
+            addCriterion("developer_name =", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameNotEqualTo(String value) {
+            addCriterion("developer_name <>", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameGreaterThan(String value) {
+            addCriterion("developer_name >", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameGreaterThanOrEqualTo(String value) {
+            addCriterion("developer_name >=", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameLessThan(String value) {
+            addCriterion("developer_name <", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameLessThanOrEqualTo(String value) {
+            addCriterion("developer_name <=", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameLike(String value) {
+            addCriterion("developer_name like", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameNotLike(String value) {
+            addCriterion("developer_name not like", value, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameIn(List<String> values) {
+            addCriterion("developer_name in", values, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameNotIn(List<String> values) {
+            addCriterion("developer_name not in", values, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameBetween(String value1, String value2) {
+            addCriterion("developer_name between", value1, value2, "developerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeveloperNameNotBetween(String value1, String value2) {
+            addCriterion("developer_name not between", value1, value2, "developerName");
             return (Criteria) this;
         }
 
@@ -1636,52 +1776,52 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingEqualTo(Boolean value) {
+        public Criteria andSupplyHeatingEqualTo(Integer value) {
             addCriterion("supply_heating =", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingNotEqualTo(Boolean value) {
+        public Criteria andSupplyHeatingNotEqualTo(Integer value) {
             addCriterion("supply_heating <>", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingGreaterThan(Boolean value) {
+        public Criteria andSupplyHeatingGreaterThan(Integer value) {
             addCriterion("supply_heating >", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyHeatingGreaterThanOrEqualTo(Integer value) {
             addCriterion("supply_heating >=", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingLessThan(Boolean value) {
+        public Criteria andSupplyHeatingLessThan(Integer value) {
             addCriterion("supply_heating <", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingLessThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyHeatingLessThanOrEqualTo(Integer value) {
             addCriterion("supply_heating <=", value, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingIn(List<Boolean> values) {
+        public Criteria andSupplyHeatingIn(List<Integer> values) {
             addCriterion("supply_heating in", values, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingNotIn(List<Boolean> values) {
+        public Criteria andSupplyHeatingNotIn(List<Integer> values) {
             addCriterion("supply_heating not in", values, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyHeatingBetween(Integer value1, Integer value2) {
             addCriterion("supply_heating between", value1, value2, "supplyHeating");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyHeatingNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyHeatingNotBetween(Integer value1, Integer value2) {
             addCriterion("supply_heating not between", value1, value2, "supplyHeating");
             return (Criteria) this;
         }
@@ -1696,52 +1836,52 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerEqualTo(Boolean value) {
+        public Criteria andSupplyPowerEqualTo(Integer value) {
             addCriterion("supply_power =", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerNotEqualTo(Boolean value) {
+        public Criteria andSupplyPowerNotEqualTo(Integer value) {
             addCriterion("supply_power <>", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerGreaterThan(Boolean value) {
+        public Criteria andSupplyPowerGreaterThan(Integer value) {
             addCriterion("supply_power >", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyPowerGreaterThanOrEqualTo(Integer value) {
             addCriterion("supply_power >=", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerLessThan(Boolean value) {
+        public Criteria andSupplyPowerLessThan(Integer value) {
             addCriterion("supply_power <", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerLessThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyPowerLessThanOrEqualTo(Integer value) {
             addCriterion("supply_power <=", value, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerIn(List<Boolean> values) {
+        public Criteria andSupplyPowerIn(List<Integer> values) {
             addCriterion("supply_power in", values, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerNotIn(List<Boolean> values) {
+        public Criteria andSupplyPowerNotIn(List<Integer> values) {
             addCriterion("supply_power not in", values, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyPowerBetween(Integer value1, Integer value2) {
             addCriterion("supply_power between", value1, value2, "supplyPower");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyPowerNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyPowerNotBetween(Integer value1, Integer value2) {
             addCriterion("supply_power not between", value1, value2, "supplyPower");
             return (Criteria) this;
         }
@@ -1756,52 +1896,52 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterEqualTo(Boolean value) {
+        public Criteria andSupplyWaterEqualTo(Integer value) {
             addCriterion("supply_water =", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterNotEqualTo(Boolean value) {
+        public Criteria andSupplyWaterNotEqualTo(Integer value) {
             addCriterion("supply_water <>", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterGreaterThan(Boolean value) {
+        public Criteria andSupplyWaterGreaterThan(Integer value) {
             addCriterion("supply_water >", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyWaterGreaterThanOrEqualTo(Integer value) {
             addCriterion("supply_water >=", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterLessThan(Boolean value) {
+        public Criteria andSupplyWaterLessThan(Integer value) {
             addCriterion("supply_water <", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterLessThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyWaterLessThanOrEqualTo(Integer value) {
             addCriterion("supply_water <=", value, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterIn(List<Boolean> values) {
+        public Criteria andSupplyWaterIn(List<Integer> values) {
             addCriterion("supply_water in", values, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterNotIn(List<Boolean> values) {
+        public Criteria andSupplyWaterNotIn(List<Integer> values) {
             addCriterion("supply_water not in", values, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyWaterBetween(Integer value1, Integer value2) {
             addCriterion("supply_water between", value1, value2, "supplyWater");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyWaterNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyWaterNotBetween(Integer value1, Integer value2) {
             addCriterion("supply_water not between", value1, value2, "supplyWater");
             return (Criteria) this;
         }
@@ -1816,52 +1956,52 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasEqualTo(Boolean value) {
+        public Criteria andSupplyGasEqualTo(Integer value) {
             addCriterion("supply_gas =", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasNotEqualTo(Boolean value) {
+        public Criteria andSupplyGasNotEqualTo(Integer value) {
             addCriterion("supply_gas <>", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasGreaterThan(Boolean value) {
+        public Criteria andSupplyGasGreaterThan(Integer value) {
             addCriterion("supply_gas >", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyGasGreaterThanOrEqualTo(Integer value) {
             addCriterion("supply_gas >=", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasLessThan(Boolean value) {
+        public Criteria andSupplyGasLessThan(Integer value) {
             addCriterion("supply_gas <", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasLessThanOrEqualTo(Boolean value) {
+        public Criteria andSupplyGasLessThanOrEqualTo(Integer value) {
             addCriterion("supply_gas <=", value, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasIn(List<Boolean> values) {
+        public Criteria andSupplyGasIn(List<Integer> values) {
             addCriterion("supply_gas in", values, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasNotIn(List<Boolean> values) {
+        public Criteria andSupplyGasNotIn(List<Integer> values) {
             addCriterion("supply_gas not in", values, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyGasBetween(Integer value1, Integer value2) {
             addCriterion("supply_gas between", value1, value2, "supplyGas");
             return (Criteria) this;
         }
 
-        public Criteria andSupplyGasNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andSupplyGasNotBetween(Integer value1, Integer value2) {
             addCriterion("supply_gas not between", value1, value2, "supplyGas");
             return (Criteria) this;
         }

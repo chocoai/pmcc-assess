@@ -23,7 +23,6 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +34,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -223,7 +221,7 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicBuildingMain addBuildingMainAndBuilding(String buildingNumber) throws Exception {
         this.clearInvalidData();
 
@@ -258,7 +256,7 @@ public class BasicBuildingService {
      *
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public void clearInvalidData() throws Exception {
         BasicBuildingMain where = new BasicBuildingMain();
         where.setApplyId(0);
@@ -325,7 +323,7 @@ public class BasicBuildingService {
      * @param caseMainBuildingId
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicBuildingMain appWriteBuilding(Integer caseMainBuildingId) throws Exception {
         if (caseMainBuildingId == null) {
             throw new Exception("null point");

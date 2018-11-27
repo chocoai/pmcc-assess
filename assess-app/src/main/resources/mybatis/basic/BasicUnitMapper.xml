@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicUnit" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="basic_building_main_id" property="basicBuildingMainId" jdbcType="INTEGER" />
+    <result column="building_main_id" property="buildingMainId" jdbcType="INTEGER" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="elevator_household_ratio" property="elevatorHouseholdRatio" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -70,8 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, basic_building_main_id, unit_number, elevator_household_ratio, creator, 
-    gmt_created, gmt_modified
+    id, apply_id, building_main_id, unit_number, elevator_household_ratio, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnitExample" >
     select
@@ -107,10 +107,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit (apply_id, basic_building_main_id, unit_number, 
+    insert into tb_basic_unit (apply_id, building_main_id, unit_number, 
       elevator_household_ratio, creator, gmt_created, 
       gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{basicBuildingMainId,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, 
+    values (#{applyId,jdbcType=INTEGER}, #{buildingMainId,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, 
       #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -123,8 +123,8 @@
       <if test="applyId != null" >
         apply_id,
       </if>
-      <if test="basicBuildingMainId != null" >
-        basic_building_main_id,
+      <if test="buildingMainId != null" >
+        building_main_id,
       </if>
       <if test="unitNumber != null" >
         unit_number,
@@ -146,8 +146,8 @@
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="basicBuildingMainId != null" >
-        #{basicBuildingMainId,jdbcType=INTEGER},
+      <if test="buildingMainId != null" >
+        #{buildingMainId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
@@ -181,8 +181,8 @@
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
-      <if test="record.basicBuildingMainId != null" >
-        basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
+      <if test="record.buildingMainId != null" >
+        building_main_id = #{record.buildingMainId,jdbcType=INTEGER},
       </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
@@ -208,7 +208,7 @@
     update tb_basic_unit
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
-      basic_building_main_id = #{record.basicBuildingMainId,jdbcType=INTEGER},
+      building_main_id = #{record.buildingMainId,jdbcType=INTEGER},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -224,8 +224,8 @@
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="basicBuildingMainId != null" >
-        basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
+      <if test="buildingMainId != null" >
+        building_main_id = #{buildingMainId,jdbcType=INTEGER},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
@@ -248,7 +248,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicUnit" >
     update tb_basic_unit
     set apply_id = #{applyId,jdbcType=INTEGER},
-      basic_building_main_id = #{basicBuildingMainId,jdbcType=INTEGER},
+      building_main_id = #{buildingMainId,jdbcType=INTEGER},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

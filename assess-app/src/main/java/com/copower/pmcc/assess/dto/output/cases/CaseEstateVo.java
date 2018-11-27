@@ -14,10 +14,6 @@ public class CaseEstateVo extends CaseEstate {
     private String provinceName;
     private String cityName;
     private String districtName;
-
-    private String blockName;
-
-    private String developerName;
     private String landLevelName;
 
     public String getVolumetricRateName() {
@@ -58,22 +54,6 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
-    }
-
-    public String getBlockName() {
-        return blockName;
-    }
-
-    public void setBlockName(String blockName) {
-        this.blockName = blockName;
-    }
-
-    public String getDeveloperName() {
-        return developerName;
-    }
-
-    public void setDeveloperName(String developerName) {
-        this.developerName = developerName;
     }
 
     public String getLandLevelName() {

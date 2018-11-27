@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +105,18 @@ public class BasicEstateLandStateService {
         return basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
     }
 
+    public BasicEstateLandState getLandStateByEstateId(Integer estateId){
+        try {
+            BasicEstateLandState basicEstateLandState=new BasicEstateLandState();
+            basicEstateLandState.setEstateId(estateId);
+            List<BasicEstateLandState> estateLandStates = basicEstateLandStateDao.basicEstateLandStateList(basicEstateLandState);
+            if(!CollectionUtils.isEmpty(estateLandStates)) return estateLandStates.get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+        return null;
+    }
+
     public BootstrapTableVo getBootstrapTableVo(BasicEstateLandState basicEstateLandState) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -127,6 +141,18 @@ public class BasicEstateLandStateService {
         }
         if (basicEstateLandState.getLandLevel() != null) {
             vo.setLandLevelName(dataLandLevelDetailService.getCacheNameById(basicEstateLandState.getLandLevel()));
+        }
+        if (basicEstateLandState.getShapeState() != null) {
+            vo.setShapeStateName(baseDataDicService.getNameById(basicEstateLandState.getShapeState()));
+        }
+        if (basicEstateLandState.getPlaneness() != null) {
+            vo.setPlanenessName(baseDataDicService.getNameById(basicEstateLandState.getPlaneness()));
+        }
+        if (basicEstateLandState.getDevelopmentDegree() != null) {
+            vo.setDevelopmentDegreeName(baseDataDicService.getNameById(basicEstateLandState.getDevelopmentDegree()));
+        }
+        if (basicEstateLandState.getTopographicTerrain() != null) {
+            vo.setTopographicTerrainName(baseDataDicService.getNameById(basicEstateLandState.getTopographicTerrain()));
         }
         return vo;
     }

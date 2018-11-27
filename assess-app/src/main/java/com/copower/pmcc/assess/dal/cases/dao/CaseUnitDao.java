@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
-import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMainExample;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper;
@@ -23,6 +23,8 @@ import java.util.List;
 public class CaseUnitDao {
     @Autowired
     private CaseUnitMapper caseUnitMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
     /**
      * 获取数据信息
@@ -66,11 +68,20 @@ public class CaseUnitDao {
 
     public int updateBuildingMainId(Integer oldBuildingMainId, Integer newBuildingMainId) {
         CaseUnitExample example = new CaseUnitExample();
-        example.createCriteria().andCaseBuildingMainIdEqualTo(oldBuildingMainId);
+        example.createCriteria().andBuildingMainIdEqualTo(oldBuildingMainId);
 
         CaseUnit caseUnit = new CaseUnit();
-        caseUnit.setCaseBuildingMainId(newBuildingMainId);
+        caseUnit.setBuildingMainId(newBuildingMainId);
         return caseUnitMapper.updateByExampleSelective(caseUnit, example);
+    }
+
+    /**
+     * 获取最新半单元信息
+     * @param buildingMainId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber,Integer buildingMainId){
+        return customCaseMapper.getCaseUnitList(unitNumber,buildingMainId);
     }
 
     /**
@@ -90,7 +101,7 @@ public class CaseUnitDao {
             criteria.andUnitNumberLike(String.format("%s%s%s","%",unitNumber,"%"));
         }
         if (caseBuildingMainId != null){
-            criteria.andCaseBuildingMainIdEqualTo(caseBuildingMainId);
+            criteria.andBuildingMainIdEqualTo(caseBuildingMainId);
         }
         return caseUnitMapper.selectByExample(example);
     }

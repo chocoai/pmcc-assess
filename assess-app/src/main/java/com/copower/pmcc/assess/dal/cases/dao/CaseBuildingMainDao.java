@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMainExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMainMapper;
@@ -20,6 +22,8 @@ public class CaseBuildingMainDao {
 
     @Autowired
     private CaseBuildingMainMapper caseBuildingMainMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
 
     /**
@@ -86,6 +90,15 @@ public class CaseBuildingMainDao {
         }
         example.setOrderByClause("building_number,version desc");
         return caseBuildingMainMapper.selectByExample(example);
+    }
+
+    /**
+     * 获取最新版本楼栋主信息
+     * @param estateId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionBuildingMainList(String buildingNumber,Integer estateId){
+        return customCaseMapper.getCaseBuildingMainList(buildingNumber,estateId);
     }
 
     /**

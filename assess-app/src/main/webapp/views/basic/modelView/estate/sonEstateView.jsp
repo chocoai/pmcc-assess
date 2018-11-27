@@ -764,8 +764,8 @@
                                             车位类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="parkingType"
-                                                   placeholder="车位类型" required="required">
+                                            <select class="form-control search-select select2 parkingType" name="parkingType">
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

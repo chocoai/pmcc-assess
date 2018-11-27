@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="parking_type" property="parkingType" jdbcType="VARCHAR" />
+    <result column="parking_type" property="parkingType" jdbcType="INTEGER" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -109,7 +109,7 @@
     insert into tb_basic_estate_parking (estate_id, number, parking_type, 
       location, creator, gmt_created, 
       gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{parkingType,jdbcType=VARCHAR}, 
+    values (#{estateId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{parkingType,jdbcType=INTEGER}, 
       #{location,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -149,7 +149,7 @@
         #{number,jdbcType=INTEGER},
       </if>
       <if test="parkingType != null" >
-        #{parkingType,jdbcType=VARCHAR},
+        #{parkingType,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
@@ -184,7 +184,7 @@
         number = #{record.number,jdbcType=INTEGER},
       </if>
       <if test="record.parkingType != null" >
-        parking_type = #{record.parkingType,jdbcType=VARCHAR},
+        parking_type = #{record.parkingType,jdbcType=INTEGER},
       </if>
       <if test="record.location != null" >
         location = #{record.location,jdbcType=VARCHAR},
@@ -208,7 +208,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
-      parking_type = #{record.parkingType,jdbcType=VARCHAR},
+      parking_type = #{record.parkingType,jdbcType=INTEGER},
       location = #{record.location,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -227,7 +227,7 @@
         number = #{number,jdbcType=INTEGER},
       </if>
       <if test="parkingType != null" >
-        parking_type = #{parkingType,jdbcType=VARCHAR},
+        parking_type = #{parkingType,jdbcType=INTEGER},
       </if>
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
@@ -248,7 +248,7 @@
     update tb_basic_estate_parking
     set estate_id = #{estateId,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
-      parking_type = #{parkingType,jdbcType=VARCHAR},
+      parking_type = #{parkingType,jdbcType=INTEGER},
       location = #{location,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

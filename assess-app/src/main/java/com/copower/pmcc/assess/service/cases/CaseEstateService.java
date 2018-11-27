@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.basis.entity.DataDeveloper;
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEstate;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
@@ -11,7 +10,6 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
@@ -36,8 +34,6 @@ import java.util.List;
 public class CaseEstateService {
     @Autowired
     private CaseEstateDao caseEstateDao;
-    @Autowired
-    private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -299,40 +295,13 @@ public class CaseEstateService {
         }
     }
 
-    public Integer upgradeVersion(CaseEstate caseEstate) throws Exception {
-        if (caseEstate.getId() == null || caseEstate.getId().intValue() == 0) {
-            caseEstate.setVersion(0);
-            int id = caseEstateDao.addEstate(caseEstate);
-            caseEstate.setId(id);
-            return id;
-        } else {
-            //更新版本
-            CaseEstate oo = caseEstateDao.getEstateById(caseEstate.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseEstate, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            int oldId = caseEstate.getId();
-            int newId = caseEstateDao.addEstate(oo);
-            caseEstate.setId(newId);
-            return newId;
-        }
-    }
-
     public boolean deleteCaseEstate(Integer id) {
         return caseEstateDao.deleteEstate(id);
     }
 
-    public List<CustomCaseEstate> autoCompleteCaseEstate(String name, Integer maxRows) {
-        //PageHelper.startPage(0,maxRows);
-        List<CustomCaseEstate> caseEstateList = caseEstateDao.getLatestVersionEstateList(name);
+    public List<CustomCaseEntity> autoCompleteCaseEstate(String name, Integer maxRows) {
+        PageHelper.startPage(0,maxRows);
+        List<CustomCaseEntity> caseEstateList = caseEstateDao.getLatestVersionEstateList(name);
         return caseEstateList;
     }
 

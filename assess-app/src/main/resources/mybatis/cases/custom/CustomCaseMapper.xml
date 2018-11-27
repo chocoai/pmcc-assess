@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getCaseEstateList" parameterType="map" resultMap="BaseResultMap">
+        SELECT id,`name`,version FROM (
+        SELECT DISTINCT id,`name`,version FROM tb_case_estate where 1=1
+        <if test="name!=null and name!=''">
+            AND `name` LIKE CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+        <if test="province!=null and province!=''">
+            AND province = #{province}
+        </if>
+        <if test="city!=null and city!=''">
+            AND city = #{city}
+        </if>
+        <if test="district!=null and district!=''">
+            AND district = #{district}
+        </if>
+        ORDER BY version DESC) AS T
+        GROUP BY `name` ORDER BY version DESC,NAME
+    </select>
+
+    <select id="getCaseBuildingMainList" parameterType="map" resultMap="BaseResultMap">
+        SELECT id,building_number AS `name`,version FROM (
+        SELECT id,building_number,version FROM tb_case_building_main WHERE 1=1
+        <if test="buildingNumber!=null and buildingNumber!=''">
+            AND building_number LIKE CONCAT(CONCAT('%', #{buildingNumber}), '%')
+        </if>
+        <if test="estateId!=null">
+            AND estate_id=#{estateId}
+        </if>
+        ORDER BY version DESC) AS T
+        GROUP BY building_number ORDER BY version DESC,building_number
+    </select>
+
+    <select id="getCaseUnitList" parameterType="map" resultMap="BaseResultMap">
+        SELECT id,unit_number AS `name`,version FROM (
+        SELECT id,unit_number,version FROM tb_case_unit WHERE 1=1
+        <if test="unitNumber!=null and unitNumber!=''">
+            AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
+        </if>
+        <if test="buildingMainId!=null">
+            AND building_main_id=#{buildingMainId}
+        </if>
+        ORDER BY version DESC) AS T
+        GROUP BY unit_number ORDER BY version DESC,unit_number
+    </select>
+
+    <select id="getCaseHouseList" parameterType="map" resultMap="BaseResultMap">
+        SELECT id,house_number AS `name`,version FROM (
+        SELECT id,house_number,version FROM tb_case_house WHERE 1=1
+        <if test="houseNumber!=null and houseNumber!=''">
+            AND house_number LIKE CONCAT(CONCAT('%', #{houseNumber}), '%')
+        </if>
+        <if test="unitId!=null">
+            AND unit_id=#{unitId}
+        </if>
+        ORDER BY version DESC) AS T
+        GROUP BY house_number ORDER BY version DESC,house_number
+    </select>
+</mapper>
+

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.BeanCopyHelp;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingMainDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
@@ -11,8 +11,10 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class CaseBuildingMainService {
 
     public void initUpdateSon(Integer oldId, Integer newId) throws Exception {
         CaseUnit queryUnit = new CaseUnit();
-        queryUnit.setCaseBuildingMainId(oldId);
+        queryUnit.setBuildingMainId(oldId);
         List<CaseUnit> caseUnitList = caseUnitService.getCaseUnitList(queryUnit);
         if (newId == null) {
             if (!ObjectUtils.isEmpty(caseUnitList)) {
@@ -57,7 +59,7 @@ public class CaseBuildingMainService {
         if (newId != null) {
             if (!ObjectUtils.isEmpty(caseUnitList)) {
                 for (CaseUnit oo : caseUnitList) {
-                    oo.setCaseBuildingMainId(newId);
+                    oo.setBuildingMainId(newId);
                     caseUnitService.saveAndUpdateCaseUnit(oo);
                 }
             }
@@ -93,40 +95,22 @@ public class CaseBuildingMainService {
         return caseBuildingMainDao.updateEstateId(oldEstateId, newEstateId);
     }
 
-    public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String identifier, Integer estateId, Integer maxRows) {
+    public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String buildingNumber, Integer estateId, Integer maxRows) {
         PageHelper.startPage(0, maxRows);
-        List<CaseBuildingMain> caseBuildingMainList = caseBuildingMainDao.autoCompleteCaseBuildingMain(identifier, estateId);
+        List<CustomCaseEntity> mainList = caseBuildingMainDao.getLatestVersionBuildingMainList(buildingNumber, estateId);
+        List<CaseBuildingMain> caseBuildingMainList = Lists.newArrayList();
+        if(!CollectionUtils.isEmpty(mainList)){
+            for (CustomCaseEntity caseEntity : mainList) {
+                CaseBuildingMain caseBuildingMain=new CaseBuildingMain();
+                caseBuildingMain.setId(caseEntity.getId());
+                caseBuildingMain.setBuildingNumber(caseEntity.getName());
+                caseBuildingMain.setVersion(caseEntity.getVersion());
+                caseBuildingMainList.add(caseBuildingMain);
+            }
+        }
         return caseBuildingMainList;
     }
 
-    public Integer upgradeVersion(CaseBuildingMain caseBuildingMain) throws Exception {
-        if (caseBuildingMain.getId() == null || caseBuildingMain.getId().intValue() == 0) {
-            caseBuildingMain.setCreator(commonService.thisUserAccount());
-            caseBuildingMain.setVersion(0);
-            int id = caseBuildingMainDao.addBuildingMain(caseBuildingMain);
-            this.initUpdateSon(0, id);
-            return id;
-        } else {
-            //更新版本
-            CaseBuildingMain oo = caseBuildingMainDao.getBuildingMainById(caseBuildingMain.getId());
-            if (oo != null) {
-                if (oo.getVersion() == null) {
-                    oo.setVersion(0);
-                }
-            }
-            int version = oo.getVersion() + 1;
-            BeanCopyHelp.copyPropertiesIgnoreNull(caseBuildingMain, oo);
-            oo.setVersion(version);
-            oo.setId(null);
-            oo.setGmtCreated(null);
-            oo.setGmtCreated(null);
-            oo.setCreator(commonService.thisUserAccount());
-            int oldId = caseBuildingMain.getId();
-            int newId = caseBuildingMainDao.addBuildingMain(oo);
-            this.initUpdateSon(oldId, newId);
-            return newId;
-        }
-    }
 
     public boolean deleteCaseBuildingMain(Integer id) {
         return caseBuildingMainDao.deleteBuildingMain(id);

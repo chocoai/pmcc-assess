@@ -25,17 +25,17 @@ public class CaseEstateLandState {
 
     private String northTo;
 
-    private String shapeState;
+    private Integer shapeState;
 
-    private String planeness;
+    private Integer planeness;
 
-    private String developmentDegree;
+    private Integer developmentDegree;
 
     private String restrictiveCondition;
 
     private String soil;
 
-    private String topographicTerrain;
+    private Integer topographicTerrain;
 
     private String creator;
 
@@ -131,28 +131,28 @@ public class CaseEstateLandState {
         this.northTo = northTo == null ? null : northTo.trim();
     }
 
-    public String getShapeState() {
+    public Integer getShapeState() {
         return shapeState;
     }
 
-    public void setShapeState(String shapeState) {
-        this.shapeState = shapeState == null ? null : shapeState.trim();
+    public void setShapeState(Integer shapeState) {
+        this.shapeState = shapeState;
     }
 
-    public String getPlaneness() {
+    public Integer getPlaneness() {
         return planeness;
     }
 
-    public void setPlaneness(String planeness) {
-        this.planeness = planeness == null ? null : planeness.trim();
+    public void setPlaneness(Integer planeness) {
+        this.planeness = planeness;
     }
 
-    public String getDevelopmentDegree() {
+    public Integer getDevelopmentDegree() {
         return developmentDegree;
     }
 
-    public void setDevelopmentDegree(String developmentDegree) {
-        this.developmentDegree = developmentDegree == null ? null : developmentDegree.trim();
+    public void setDevelopmentDegree(Integer developmentDegree) {
+        this.developmentDegree = developmentDegree;
     }
 
     public String getRestrictiveCondition() {
@@ -171,12 +171,12 @@ public class CaseEstateLandState {
         this.soil = soil == null ? null : soil.trim();
     }
 
-    public String getTopographicTerrain() {
+    public Integer getTopographicTerrain() {
         return topographicTerrain;
     }
 
-    public void setTopographicTerrain(String topographicTerrain) {
-        this.topographicTerrain = topographicTerrain == null ? null : topographicTerrain.trim();
+    public void setTopographicTerrain(Integer topographicTerrain) {
+        this.topographicTerrain = topographicTerrain;
     }
 
     public String getCreator() {

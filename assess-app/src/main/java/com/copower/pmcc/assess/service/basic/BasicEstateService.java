@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
@@ -53,6 +54,8 @@ public class BasicEstateService {
     private ErpAreaService erpAreaService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     @Autowired
     private BasicEstateDao basicEstateDao;
     @Autowired
@@ -208,6 +211,18 @@ public class BasicEstateService {
                 vo.setBlockName(dataBlock.getName());
             }
         }
+        if (basicEstate.getSupplyGas() != null) {
+            vo.setSupplyGasName(baseDataDicService.getNameById(basicEstate.getSupplyGas()));
+        }
+        if (basicEstate.getSupplyPower() != null) {
+            vo.setSupplyPowerName(baseDataDicService.getNameById(basicEstate.getSupplyPower()));
+        }
+        if (basicEstate.getSupplyWater() != null) {
+            vo.setSupplyWaterName(baseDataDicService.getNameById(basicEstate.getSupplyWater()));
+        }
+        if (basicEstate.getSupplyHeating() != null) {
+            vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
+        }
         return vo;
     }
 
@@ -217,7 +232,7 @@ public class BasicEstateService {
      *
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public void clearInvalidData() throws Exception {
         BasicEstate where = new BasicEstate();
         where.setApplyId(0);
@@ -368,12 +383,18 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    public BasicEstate getBasicEstateByApplyId(Integer applyId) throws Exception {
+    public Map<String, Object> getBasicEstateByApplyId(Integer applyId) throws Exception {
+        Map<String, Object> objectMap = Maps.newHashMap();
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
         List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
         if (CollectionUtils.isEmpty(basicEstates)) return null;
-        return basicEstates.get(0);
+        BasicEstate basicEstate = basicEstates.get(0);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
+
+        BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState));
+        return objectMap;
     }
 
 
@@ -383,7 +404,7 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public Map<String, Object> addEstateAndLandstate(String estateName) throws Exception {
         this.clearInvalidData();
         Map<String, Object> objectMap = Maps.newHashMap();
@@ -393,13 +414,14 @@ public class BasicEstateService {
         basicEstate.setApplyId(0);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstateDao.saveBasicEstate(basicEstate);
-        objectMap.put("estate", getBasicEstateVo(basicEstate));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
+        basicEstateLandState.setName(estateName);
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
         basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
-        objectMap.put("landState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         return objectMap;
     }
 
@@ -410,7 +432,7 @@ public class BasicEstateService {
      * @param caseEstateId
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public Map<String, Object> appWriteEstate(Integer caseEstateId) throws Exception {
         this.clearInvalidData();
         if (caseEstateId == null) {
@@ -426,7 +448,7 @@ public class BasicEstateService {
         basicEstate.setGmtCreated(null);
         basicEstate.setGmtModified(null);
         basicEstateDao.saveBasicEstate(basicEstate);
-        objectMap.put("estate", getBasicEstateVo(basicEstate));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstate.class.getSimpleName()), getBasicEstateVo(basicEstate));
 
         //附件拷贝
         List<SysAttachmentDto> sysAttachmentDtoList = null;
@@ -455,7 +477,7 @@ public class BasicEstateService {
             basicEstateLandState.setGmtModified(null);
             basicEstateLandStateDao.saveBasicEstateLandState(basicEstateLandState);
 
-            objectMap.put("landState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState));
         }
 
         CaseEstateParking estateParking = new CaseEstateParking();

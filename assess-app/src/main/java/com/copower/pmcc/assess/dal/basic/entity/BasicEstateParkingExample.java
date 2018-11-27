@@ -295,62 +295,52 @@ public class BasicEstateParkingExample {
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeEqualTo(String value) {
+        public Criteria andParkingTypeEqualTo(Integer value) {
             addCriterion("parking_type =", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotEqualTo(String value) {
+        public Criteria andParkingTypeNotEqualTo(Integer value) {
             addCriterion("parking_type <>", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeGreaterThan(String value) {
+        public Criteria andParkingTypeGreaterThan(Integer value) {
             addCriterion("parking_type >", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andParkingTypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("parking_type >=", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeLessThan(String value) {
+        public Criteria andParkingTypeLessThan(Integer value) {
             addCriterion("parking_type <", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeLessThanOrEqualTo(String value) {
+        public Criteria andParkingTypeLessThanOrEqualTo(Integer value) {
             addCriterion("parking_type <=", value, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeLike(String value) {
-            addCriterion("parking_type like", value, "parkingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andParkingTypeNotLike(String value) {
-            addCriterion("parking_type not like", value, "parkingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andParkingTypeIn(List<String> values) {
+        public Criteria andParkingTypeIn(List<Integer> values) {
             addCriterion("parking_type in", values, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotIn(List<String> values) {
+        public Criteria andParkingTypeNotIn(List<Integer> values) {
             addCriterion("parking_type not in", values, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeBetween(String value1, String value2) {
+        public Criteria andParkingTypeBetween(Integer value1, Integer value2) {
             addCriterion("parking_type between", value1, value2, "parkingType");
             return (Criteria) this;
         }
 
-        public Criteria andParkingTypeNotBetween(String value1, String value2) {
+        public Criteria andParkingTypeNotBetween(Integer value1, Integer value2) {
             addCriterion("parking_type not between", value1, value2, "parkingType");
             return (Criteria) this;
         }

@@ -13,12 +13,12 @@
     <result column="south_to" property="southTo" jdbcType="VARCHAR" />
     <result column="west_to" property="westTo" jdbcType="VARCHAR" />
     <result column="north_to" property="northTo" jdbcType="VARCHAR" />
-    <result column="shape_state" property="shapeState" jdbcType="VARCHAR" />
-    <result column="planeness" property="planeness" jdbcType="VARCHAR" />
-    <result column="development_degree" property="developmentDegree" jdbcType="VARCHAR" />
+    <result column="shape_state" property="shapeState" jdbcType="INTEGER" />
+    <result column="planeness" property="planeness" jdbcType="INTEGER" />
+    <result column="development_degree" property="developmentDegree" jdbcType="INTEGER" />
     <result column="restrictive_condition" property="restrictiveCondition" jdbcType="VARCHAR" />
     <result column="soil" property="soil" jdbcType="VARCHAR" />
-    <result column="topographic_terrain" property="topographicTerrain" jdbcType="VARCHAR" />
+    <result column="topographic_terrain" property="topographicTerrain" jdbcType="INTEGER" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -130,9 +130,9 @@
     values (#{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landUseType,jdbcType=INTEGER}, 
       #{landUseCategory,jdbcType=INTEGER}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
       #{eastTo,jdbcType=VARCHAR}, #{southTo,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
-      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=VARCHAR}, #{planeness,jdbcType=VARCHAR}, 
-      #{developmentDegree,jdbcType=VARCHAR}, #{restrictiveCondition,jdbcType=VARCHAR}, 
-      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, #{planeness,jdbcType=INTEGER}, 
+      #{developmentDegree,jdbcType=INTEGER}, #{restrictiveCondition,jdbcType=VARCHAR}, 
+      #{soil,jdbcType=VARCHAR}, #{topographicTerrain,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState" >
@@ -231,13 +231,13 @@
         #{northTo,jdbcType=VARCHAR},
       </if>
       <if test="shapeState != null" >
-        #{shapeState,jdbcType=VARCHAR},
+        #{shapeState,jdbcType=INTEGER},
       </if>
       <if test="planeness != null" >
-        #{planeness,jdbcType=VARCHAR},
+        #{planeness,jdbcType=INTEGER},
       </if>
       <if test="developmentDegree != null" >
-        #{developmentDegree,jdbcType=VARCHAR},
+        #{developmentDegree,jdbcType=INTEGER},
       </if>
       <if test="restrictiveCondition != null" >
         #{restrictiveCondition,jdbcType=VARCHAR},
@@ -246,7 +246,7 @@
         #{soil,jdbcType=VARCHAR},
       </if>
       <if test="topographicTerrain != null" >
-        #{topographicTerrain,jdbcType=VARCHAR},
+        #{topographicTerrain,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -302,13 +302,13 @@
         north_to = #{record.northTo,jdbcType=VARCHAR},
       </if>
       <if test="record.shapeState != null" >
-        shape_state = #{record.shapeState,jdbcType=VARCHAR},
+        shape_state = #{record.shapeState,jdbcType=INTEGER},
       </if>
       <if test="record.planeness != null" >
-        planeness = #{record.planeness,jdbcType=VARCHAR},
+        planeness = #{record.planeness,jdbcType=INTEGER},
       </if>
       <if test="record.developmentDegree != null" >
-        development_degree = #{record.developmentDegree,jdbcType=VARCHAR},
+        development_degree = #{record.developmentDegree,jdbcType=INTEGER},
       </if>
       <if test="record.restrictiveCondition != null" >
         restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
@@ -317,7 +317,7 @@
         soil = #{record.soil,jdbcType=VARCHAR},
       </if>
       <if test="record.topographicTerrain != null" >
-        topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
+        topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -346,12 +346,12 @@
       south_to = #{record.southTo,jdbcType=VARCHAR},
       west_to = #{record.westTo,jdbcType=VARCHAR},
       north_to = #{record.northTo,jdbcType=VARCHAR},
-      shape_state = #{record.shapeState,jdbcType=VARCHAR},
-      planeness = #{record.planeness,jdbcType=VARCHAR},
-      development_degree = #{record.developmentDegree,jdbcType=VARCHAR},
+      shape_state = #{record.shapeState,jdbcType=INTEGER},
+      planeness = #{record.planeness,jdbcType=INTEGER},
+      development_degree = #{record.developmentDegree,jdbcType=INTEGER},
       restrictive_condition = #{record.restrictiveCondition,jdbcType=VARCHAR},
       soil = #{record.soil,jdbcType=VARCHAR},
-      topographic_terrain = #{record.topographicTerrain,jdbcType=VARCHAR},
+      topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -393,13 +393,13 @@
         north_to = #{northTo,jdbcType=VARCHAR},
       </if>
       <if test="shapeState != null" >
-        shape_state = #{shapeState,jdbcType=VARCHAR},
+        shape_state = #{shapeState,jdbcType=INTEGER},
       </if>
       <if test="planeness != null" >
-        planeness = #{planeness,jdbcType=VARCHAR},
+        planeness = #{planeness,jdbcType=INTEGER},
       </if>
       <if test="developmentDegree != null" >
-        development_degree = #{developmentDegree,jdbcType=VARCHAR},
+        development_degree = #{developmentDegree,jdbcType=INTEGER},
       </if>
       <if test="restrictiveCondition != null" >
         restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
@@ -408,7 +408,7 @@
         soil = #{soil,jdbcType=VARCHAR},
       </if>
       <if test="topographicTerrain != null" >
-        topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
+        topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -434,12 +434,12 @@
       south_to = #{southTo,jdbcType=VARCHAR},
       west_to = #{westTo,jdbcType=VARCHAR},
       north_to = #{northTo,jdbcType=VARCHAR},
-      shape_state = #{shapeState,jdbcType=VARCHAR},
-      planeness = #{planeness,jdbcType=VARCHAR},
-      development_degree = #{developmentDegree,jdbcType=VARCHAR},
+      shape_state = #{shapeState,jdbcType=INTEGER},
+      planeness = #{planeness,jdbcType=INTEGER},
+      development_degree = #{developmentDegree,jdbcType=INTEGER},
       restrictive_condition = #{restrictiveCondition,jdbcType=VARCHAR},
       soil = #{soil,jdbcType=VARCHAR},
-      topographic_terrain = #{topographicTerrain,jdbcType=VARCHAR},
+      topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

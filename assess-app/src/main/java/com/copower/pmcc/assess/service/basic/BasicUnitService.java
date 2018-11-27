@@ -138,7 +138,7 @@ public class BasicUnitService {
      *
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public void clearInvalidData() throws Exception {
         BasicUnit where = new BasicUnit();
         where.setApplyId(0);
@@ -211,7 +211,7 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicUnit addUnit(String unitNumber) throws Exception {
         this.clearInvalidData();
         BasicUnit basicUnit = new BasicUnit();
@@ -229,7 +229,7 @@ public class BasicUnitService {
      * @param caseUnitId
      * @throws Exception
      */
-    @Transactional(rollbackFor = {Exception.class})
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicUnit appWriteUnit(Integer caseUnitId) throws Exception {
         this.clearInvalidData();
         if (caseUnitId == null) {

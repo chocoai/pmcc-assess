@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicEstateParkingDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstateParking;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateParkingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -67,7 +66,7 @@ public class BasicEstateParkingService {
             basicEstateParking.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateParkingDao.saveBasicEstateParking(basicEstateParking);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), id);
-            return  id ;
+            return id;
         } else {
             BasicEstateParking oo = basicEstateParkingDao.getBasicEstateParkingById(basicEstateParking.getId());
             basicEstateParkingDao.updateBasicEstateParking(basicEstateParking);
@@ -98,7 +97,7 @@ public class BasicEstateParkingService {
         return basicEstateParkingDao.basicEstateParkingList(basicEstateParking);
     }
 
-    public void removeBasicEstateParking(BasicEstateParking basicEstateParking)throws Exception{
+    public void removeBasicEstateParking(BasicEstateParking basicEstateParking) throws Exception {
         basicEstateParkingDao.removeBasicEstateParking(basicEstateParking);
     }
 
@@ -114,28 +113,27 @@ public class BasicEstateParkingService {
         return vo;
     }
 
-    public BasicEstateParkingVo getBasicEstateParkingVo(BasicEstateParking basicEstateParking){
-        if (basicEstateParking==null){
+    public BasicEstateParkingVo getBasicEstateParkingVo(BasicEstateParking basicEstateParking) {
+        if (basicEstateParking == null) {
             return null;
         }
         BasicEstateParkingVo vo = new BasicEstateParkingVo();
-        BeanUtils.copyProperties(basicEstateParking,vo);
-        BaseDataDic dataDic = null;
-
+        BeanUtils.copyProperties(basicEstateParking, vo);
+        if (basicEstateParking.getParkingType() != null && basicEstateParking.getParkingType() > 0) {
+            vo.setParkingTypeName(baseDataDicService.getNameById(basicEstateParking.getParkingType()));
+        }
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicEstateParking.getId(), null, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                if (sysAttachmentDto != null) {
+                    builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                    builder.append(" ");
                 }
             }
             vo.setFileViewName(builder.toString());
         }
         return vo;
     }
-    
+
 }

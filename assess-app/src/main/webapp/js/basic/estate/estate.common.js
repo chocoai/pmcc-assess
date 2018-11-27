@@ -78,9 +78,8 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.estateForm.initLabel(result.data.estate);
-                    estateCommon.estateLandStateForm.initLabel(result.data.landState);
-                    estateCommon.showEstateDetail(result.data.estate.id);
+                    estateCommon.estateForm.initLabel(result.data.basicEstate);
+                    estateCommon.estateLandStateForm.initLabel(result.data.basicEstateLandState);
                 }
             }
         })
@@ -88,40 +87,63 @@
 
     //显示楼盘对应部分信息
     estateCommon.showEstateView = function (data) {
-        estateCommon.estateForm.initForm(data.estate, function () {
+        estateCommon.estateForm.initForm(data.basicEstate, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
             AssessCommon.initAreaInfo({
                 provinceTarget: estateCommon.estateForm.find('[name=province]'),
                 cityTarget: estateCommon.estateForm.find('[name=city]'),
                 districtTarget: estateCommon.estateForm.find('[name=district]'),
-                provinceValue: data.estate.province,
-                cityValue: data.estate.city,
-                districtValue: data.estate.district
+                provinceValue: data.basicEstate.province,
+                cityValue: data.basicEstate.city,
+                districtValue: data.basicEstate.district
             });
+
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyGas, function (html, data) {
+                estateCommon.estateForm.find('select.supplyGas').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyPower, function (html, data) {
+                estateCommon.estateForm.find('select.supplyPower').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyWater, function (html, data) {
+                estateCommon.estateForm.find('select.supplyWater').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateSupplySituation, data.basicEstate.supplyHeating, function (html, data) {
+                estateCommon.estateForm.find('select.supplyHeating').empty().html(html).trigger('change');
+            }, true);
 
             //初始化上传控件
             $.each(estateCommon.estateFileControlIdArray, function (i, item) {
                 estateCommon.fileUpload(item);
             })
-            //------------------------以上部分可只初始化一次
 
             //附件显示
             $.each(estateCommon.estateFileControlIdArray, function (i, item) {
                 estateCommon.fileShow(item);
             })
         });
-        estateCommon.estateLandStateForm.initForm(data.landState, function () {
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.landState.landUseType, function (html, data) {
-                estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadDataDicByPid(data.landState.landUseType, data.landState.landUseCategory, function (html, data) {
-                estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
-            });
+        estateCommon.estateLandStateForm.initForm(data.basicEstateLandState, function () {
+            //绑定变更事件
             estateCommon.estateLandStateForm.find("select.landUseType").change(function () {
                 var id = estateCommon.estateLandStateForm.find("select.landUseType").val();
-                AssessCommon.loadDataDicByPid(id, null, function (html, data) {
+                AssessCommon.loadDataDicByPid(id, data.basicEstateLandState.landUseCategory, function (html, data) {
                     estateCommon.estateLandStateForm.find('select.landUseCategory').empty().html(html).trigger('change');
                 });
+                data.basicEstateLandState.landUseCategory = null;//第一次执行成功后置为空
+            });
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_total_land_use, data.basicEstateLandState.landUseType, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.landUseType').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.basicEstateLandState.planeness, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degree, data.basicEstateLandState.developmentDegree, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.developmentDegree').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateShape_state, data.basicEstateLandState.shapeState, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.shapeState').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.estateTopographic_terrain, data.basicEstateLandState.topographicTerrain, function (html, data) {
+                estateCommon.estateLandStateForm.find('select.topographicTerrain').empty().html(html).trigger('change');
             });
         })
     }

@@ -39,12 +39,8 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_case_building" domainObjectName="CaseBuilding"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_building_function" domainObjectName="CaseBuildingFunction"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_building_main" domainObjectName="CaseBuildingMain"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_building_maintenance" domainObjectName="CaseBuildingMaintenance"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_building_outfit" domainObjectName="CaseBuildingOutfit"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
-        <table tableName="tb_case_building_surface" domainObjectName="CaseBuildingSurface"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+        <table tableName="tb_case_estate" domainObjectName="CaseEstate"><generatedKey column="id" sqlStatement="MySql" identity="true"/></table>
+
     </context>
 
 </generatorConfiguration>

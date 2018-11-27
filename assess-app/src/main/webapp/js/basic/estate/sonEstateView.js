@@ -2171,9 +2171,9 @@ var estateParking;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'parkingType', title: '车位类型'});
+            cols.push({field: 'location', title: '车位位置'});
+            cols.push({field: 'parkingTypeName', title: '车位类型'});
             cols.push({field: 'number', title: '车位数量'});
-            cols.push({field: 'location', title: '车辆位置'});
             cols.push({field: 'fileViewName', title: '上传的附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -2270,6 +2270,10 @@ var estateParking;
         init: function (item) {
             $("#" + estateParking.prototype.config().frm).clearAll();
             $("#" + estateParking.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.estate_car_type, item.parkingType, function (html, data) {
+                $("#" + estateParking.prototype.config().frm).find("select.parkingType").empty().html(html).trigger('change');
+            });
+
             FileUtils.uploadFiles({
                 target: estateParking.prototype.config().fileIDName,
                 disabledTarget: "btn_submit",
