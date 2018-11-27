@@ -8,6 +8,7 @@ import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
@@ -41,6 +43,8 @@ import java.util.List;
 @RequestMapping("/public")
 public class PublicController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -222,5 +226,11 @@ public class PublicController {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("流程关闭异常");
         }
+    }
+
+    @RequestMapping(value = "/tempTest", name = "临时的控制器 (测试图片缩放问题)", method = RequestMethod.GET)
+    public ModelAndView tempTest(){
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/tempTest", "0", 0, "0", "");
+        return  modelAndView;
     }
 }
