@@ -44,13 +44,13 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_build_engineering_and_equipment_center" domainObjectName="DeclareBuildEngineeringAndEquipmentCenter">
+        <table tableName="tb_data_img_two_dimensional" domainObjectName="DataImgTwoDimensional">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_declare_build_economic_indicators_center" domainObjectName="DeclareBuildEconomicIndicatorsCenter">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_declare_build_economic_indicators_center" domainObjectName="DeclareBuildEconomicIndicatorsCenter">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_declare_build_engineering" domainObjectName="DeclareBuildEngineering">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
