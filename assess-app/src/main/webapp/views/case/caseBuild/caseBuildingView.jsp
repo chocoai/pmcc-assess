@@ -264,7 +264,7 @@
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-6">
+                        <div class="col-sm-6 col-sm-offset-5">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
@@ -277,8 +277,23 @@
 </div>
 <script type="text/javascript">
     $(function () {
+        fileShow('building_floor_plan');
+        fileShow('building_figure_outside');
+        fileShow('building_floor_Appearance_figure');
         buildingModel.prototype.viewInit();
     });
+
+    function fileShow(fieldsName) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.CaseBuilding,
+                tableId: '${caseBuilding.id}'
+            },
+            deleteFlag: false
+        })
+    }
 </script>
 <%@include file="/views/share/main_footer.jsp" %>
 </body>

@@ -6,12 +6,17 @@
     var houseCommon = {};
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
+    houseCommon.basicApplyForm = $('#basicApplyFrm');
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
-        'house_floor_total_plan'];
+        'house_new_huxing_plan',
+        'house_img_plan'];
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val();
+    }
+    houseCommon.getApplyId = function () {
+        return houseCommon.houseForm.find('[name=applyId]').val();
     }
 
     //添加楼盘
@@ -73,8 +78,8 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    houseCommon.houseForm.initLabel(result.data.house);
-                    houseCommon.houseTradingForm.initLabel(result.data.trading);
+                    houseCommon.houseForm.initLabel(result.data.basicHouse);
+                    houseCommon.houseTradingForm.initLabel(result.data.basicHouseTrading);
                 }
             }
         })
@@ -82,18 +87,18 @@
 
     //显示楼盘对应部分信息
     houseCommon.showHouseView = function (data) {
-        houseCommon.houseForm.initForm(data.house, function () {
+        houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.house.certUse, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
                 houseCommon.houseForm.find("select.certUse").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.house.practicalUse, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
                 houseCommon.houseForm.find("select.practicalUse").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.house.useEnvironment, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
                 houseCommon.houseForm.find("select.useEnvironment").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, data.house.newsHuxing, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, data.basicHouse.newsHuxing, function (html, data) {
                 houseCommon.houseForm.find("select.newsHuxing").empty().html(html).trigger('change');
             });
 
@@ -101,41 +106,52 @@
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileUpload(item);
             })
-            //------------------------以上部分可只初始化一次
 
             //附件显示
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileShow(item);
             })
+
+            if (data.basicHouse.huxingPlan) {
+                //显示户型图
+                var huxingPlanJson = JSON.parse(data.basicHouse.huxingPlan);
+                FileUtils.getFileShows({
+                    target: "house_huxing_plan",
+                    formData: {
+                        tableName: huxingPlanJson.tableName,
+                        tableId: huxingPlanJson.id
+                    }
+                })
+            }
         });
 
         //交易情况
-        houseCommon.houseTradingForm.initForm(data.trading, function () {
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.trading.taxBurden, function (html, data) {
+        houseCommon.houseTradingForm.initForm(data.basicHouseTrading, function () {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.basicHouseTrading.taxBurden, function (html, data) {
                 houseCommon.houseTradingForm.find("select.taxBurden").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.basicHouseTransactionType, data.trading.tradingType, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.basicHouseTransactionType, data.basicHouseTrading.tradingType, function (html, data) {
                 houseCommon.houseTradingForm.find("select.tradingType").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.trading.descriptionType, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.basicHouseTrading.descriptionType, function (html, data) {
                 houseCommon.houseTradingForm.find("select.descriptionType").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, data.trading.normalTransaction, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, data.basicHouseTrading.normalTransaction, function (html, data) {
                 houseCommon.houseTradingForm.find("select.normalTransaction").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, data.trading.paymentMethod, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, data.basicHouseTrading.paymentMethod, function (html, data) {
                 houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, data.trading.informationType, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, data.basicHouseTrading.informationType, function (html, data) {
                 houseCommon.houseTradingForm.find("select.informationType").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.trading.financingConditions, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.basicHouseTrading.financingConditions, function (html, data) {
                 houseCommon.houseTradingForm.find("select.financingConditions").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.trading.scopeProperty, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.basicHouseTrading.scopeProperty, function (html, data) {
                 houseCommon.houseTradingForm.find("select.scopeProperty").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, data.trading.information, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, data.basicHouseTrading.information, function (html, data) {
                 houseCommon.houseTradingForm.find("select.information").empty().html(html).trigger('change');
             });
         })
@@ -166,6 +182,31 @@
                 tableId: houseCommon.getHouseId()
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
+        })
+    }
+
+    //户型选择
+    houseCommon.selectHuxing = function (_this) {
+        assessHuxing.select({
+            basicApplyId: houseCommon.getApplyId(),
+            caseUnitId: houseCommon.basicApplyForm.find('[name=caseUnitId]').val(),
+            success: function (row) {
+                //1.赋值 2.显示附件数据
+                $(_this).closest('.input-group').find(':text').val(row.name);
+                houseCommon.houseForm.find('[name=orientation]').val(row.orientationName);
+                houseCommon.houseForm.find('[name=huxingPlan]').val(JSON.stringify({
+                    id: row.id,
+                    tableName: row.tableName
+                }));
+                FileUtils.getFileShows({
+                    target: "house_huxing_plan",
+                    formData: {
+                        tableName: row.tableName,
+                        tableId: row.id
+                    },
+                    deleteFlag: false
+                })
+            }
         })
     }
 

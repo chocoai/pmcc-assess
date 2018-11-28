@@ -102,21 +102,14 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'description', title: '描述'});
+                cols.push({field: 'name', title: '户型'});
+                cols.push({field: 'area', title: '面积'});
+                cols.push({field: 'orientationName', title: '朝向'});
                 cols.push({field: 'spanLength', title: '跨长'});
-                cols.push({field: 'orientation', title: '朝向'});
                 cols.push({field: 'spanWidth', title: '跨宽'});
                 cols.push({field: 'spanNumber', title: '跨数'});
+                cols.push({field: 'description', title: '描述'});
                 cols.push({field: 'fileViewName', title: '户型图'});
-                cols.push({
-                    field: 'houseCategory', title: '房型', formatter: function (value, row, index) {
-                        var str = "";
-                        if (unitHuxing.prototype.isNotNull(row.houseCategory)){
-                            str = unitHuxing.prototype.rule("formatter",JSON.parse(row.houseCategory));
-                        }
-                        return str;
-                    }
-                });
 
                 $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitHuxing.prototype.config().table, "${pageContext.request.contextPath}/caseUnitHuxing/getCaseUnitHuxingList", cols, {

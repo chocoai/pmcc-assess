@@ -15,6 +15,10 @@ public class CaseEstateVo extends CaseEstate {
     private String cityName;
     private String districtName;
     private String landLevelName;
+    private String supplyGasName;
+    private String supplyPowerName;
+    private String supplyWaterName;
+    private String supplyHeatingName;
 
     public String getVolumetricRateName() {
         return volumetricRateName;
@@ -62,5 +66,37 @@ public class CaseEstateVo extends CaseEstate {
 
     public void setLandLevelName(String landLevelName) {
         this.landLevelName = landLevelName;
+    }
+
+    public String getSupplyGasName() {
+        return supplyGasName;
+    }
+
+    public void setSupplyGasName(String supplyGasName) {
+        this.supplyGasName = supplyGasName;
+    }
+
+    public String getSupplyPowerName() {
+        return supplyPowerName;
+    }
+
+    public void setSupplyPowerName(String supplyPowerName) {
+        this.supplyPowerName = supplyPowerName;
+    }
+
+    public String getSupplyWaterName() {
+        return supplyWaterName;
+    }
+
+    public void setSupplyWaterName(String supplyWaterName) {
+        this.supplyWaterName = supplyWaterName;
+    }
+
+    public String getSupplyHeatingName() {
+        return supplyHeatingName;
+    }
+
+    public void setSupplyHeatingName(String supplyHeatingName) {
+        this.supplyHeatingName = supplyHeatingName;
     }
 }

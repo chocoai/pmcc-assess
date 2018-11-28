@@ -34,29 +34,6 @@
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">街道</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.street}</label>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">街道号</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.streetNumber}</label>
-                </div>
-            </div>
-
-
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">基础版块</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.blockName}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="x-valid">
                 <label class="col-sm-1 control-label">楼盘名称</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicEstate.name}</label>
@@ -68,8 +45,33 @@
                     <label class="form-control">${basicEstate.position}</label>
                 </div>
             </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">基础版块</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstate.blockName}</label>
+                </div>
+            </div>
         </div>
-
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">街道</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstate.street}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">街道号</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstate.streetNumber}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">附号</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicEstate.attachNumber}</label>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">占地面积</label>
@@ -92,16 +94,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">楼盘概况</label>
-                <div class="col-sm-11">
-                    <label class="form-control">${basicEstate.description}</label>
-                </div>
-            </div>
-        </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">楼栋数</label>
@@ -138,14 +130,16 @@
                     <label class="form-control">${basicEstate.priceRange}</label>
                 </div>
             </div>
+
+        </div>
+        <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">附号</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.attachNumber}</label>
+                <label class="col-sm-1 control-label">楼盘概况</label>
+                <div class="col-sm-11">
+                    <label class="form-control">${basicEstate.description}</label>
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">总平面图</label>

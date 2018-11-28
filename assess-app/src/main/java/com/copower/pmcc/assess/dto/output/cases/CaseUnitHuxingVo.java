@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
 public class CaseUnitHuxingVo extends CaseUnitHuxing {
     private String houseLayoutName;
     private String fileViewName;
+    private String orientationName;
 
     public String getHouseLayoutName() {
         return houseLayoutName;
@@ -25,5 +26,13 @@ public class CaseUnitHuxingVo extends CaseUnitHuxing {
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public String getOrientationName() {
+        return orientationName;
+    }
+
+    public void setOrientationName(String orientationName) {
+        this.orientationName = orientationName;
     }
 }

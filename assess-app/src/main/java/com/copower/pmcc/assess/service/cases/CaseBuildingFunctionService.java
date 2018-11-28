@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingFunctionDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunction;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingFunctionVo;
@@ -85,42 +83,31 @@ public class CaseBuildingFunctionService {
     public CaseBuildingFunctionVo getCaseBuildingFunctionVo(CaseBuildingFunction caseBuildingFunction) {
         CaseBuildingFunctionVo vo = new CaseBuildingFunctionVo();
         BeanUtils.copyProperties(caseBuildingFunction, vo);
+        if (caseBuildingFunction.getType() != null) {
+            vo.setTypeName(baseDataDicService.getNameById(caseBuildingFunction.getType()));
+        }
         if (caseBuildingFunction.getDecorationPart() != null) {
-            vo.setDecorationPartName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART, caseBuildingFunction.getDecorationPart()));
+            vo.setDecorationPartName(baseDataDicService.getNameById(caseBuildingFunction.getDecorationPart()));
         }
         if (caseBuildingFunction.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATING_MATERIAL, caseBuildingFunction.getDecoratingMaterial()));
+            vo.setDecoratingMaterialName(baseDataDicService.getNameById(caseBuildingFunction.getDecoratingMaterial()));
         }
         if (caseBuildingFunction.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIAL_PRICE, caseBuildingFunction.getMaterialPrice()));
+            vo.setMaterialPriceName(baseDataDicService.getNameById(caseBuildingFunction.getMaterialPrice()));
         }
         if (caseBuildingFunction.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY, caseBuildingFunction.getConstructionTechnology()));
+            vo.setConstructionTechnologyName(baseDataDicService.getNameById(caseBuildingFunction.getConstructionTechnology()));
         }
         return vo;
     }
 
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
-    }
-
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param buildingId
      * @return
      */
-    public boolean hasBuildingFunctionData(Integer buildingId){
-        return caseBuildingFunctionDao.countByBuildingId(buildingId)>0;
+    public boolean hasBuildingFunctionData(Integer buildingId) {
+        return caseBuildingFunctionDao.countByBuildingId(buildingId) > 0;
     }
 }

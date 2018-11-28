@@ -9,7 +9,10 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
-
+            <form id="basicApplyFrm" class="form-horizontal">
+                <input type="hidden" name="id" value="${basicApply.id}">
+                <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+            </form>
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
 
             <div class="x_panel">
@@ -43,8 +46,6 @@
 <script type="text/javascript">
     var objectData = new Object();
     objectData.config = {
-        id: "basicApplyId",
-        view: {save: "saveView", detail: "detailView"},
         basicApply: {
             frm: "basicApplyFrm"
         },
@@ -52,26 +53,13 @@
             key: "estateName",
             name: "楼盘",
             frm: "basicEstateFrm",
-            frmLandState: "basicLandState",
-            files: {
-                filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
-                waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
-                powerSupplyPlan: "power_supply_plan",//供电平面图id和字段
-                airSupplyPlan: "air_supply_plan",//供气平面图id和字段
-                heatingPlan: "heating_plan",//采暖平面图id和字段
-                fileAppearance: "estate_floor_Appearance_figure" //外观图id和字段
-            }
+            frmLandState: "basicLandState"
         },
         basicBuilding: {
             key: "buildingNumber",
             name: "楼栋",
             frm: "basicBuildingFrm",
-            mainFrm: "basicBuildingMainFrm",
-            files: {
-                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
-                building_figure_outside: "building_figure_outside",//外装图id和字段
-                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
-            }
+            mainFrm: "basicBuildingMainFrm"
         },
         basicUnit: {
             key: "unitNumber",
@@ -111,12 +99,11 @@
             item.basicHouse = formParams(objectData.config.basicHouse.frm);
             item.basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
         }
-        item.industry = $("#" + industry.config.id).find(":radio:checked").val();
         return item;
     };
 
-    //检测是否为 草稿重新申请
-    objectData.startApply = function () {
+    //返回修改
+    objectData.editApply = function () {
         if ('${basicApply.id}' != '0') {
             industry.keyApp("${basicApply.type}");
 
@@ -144,7 +131,7 @@
 
 
     $(function () {
-        objectData.startApply();
+        objectData.editApply();
     });
 </script>
 <script type="application/javascript">

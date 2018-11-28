@@ -2,11 +2,15 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitHuxingDao;
+import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
+import com.copower.pmcc.assess.dto.output.basic.BasicSelectUnitHuxingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
+import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -24,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.sql.SQLException;
@@ -45,6 +50,12 @@ public class BasicUnitHuxingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private CaseUnitHuxingService caseUnitHuxingService;
+    @Autowired
+    private BasicUnitService basicUnitService;
+
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -64,18 +75,18 @@ public class BasicUnitHuxingService {
             if (huxing == null || StringUtils.isBlank(huxing.getHouseCategory())) return null;
             StringBuilder stringBuilder = new StringBuilder();
             JSONObject jsonObject = JSONObject.parseObject(huxing.getHouseCategory());
-            if(StringUtils.isNotBlank(jsonObject.getString("house")))
-                stringBuilder.append(String.format("%s室",jsonObject.getString("house")));
-            if(StringUtils.isNotBlank(jsonObject.getString("saloon")))
-                stringBuilder.append(String.format("%s厅",jsonObject.getString("saloon")));
-            if(StringUtils.isNotBlank(jsonObject.getString("kitchen")))
-                stringBuilder.append(String.format("%s厨",jsonObject.getString("kitchen")));
-            if(StringUtils.isNotBlank(jsonObject.getString("toilet")))
-                stringBuilder.append(String.format("%s卫",jsonObject.getString("toilet")));
-            if(StringUtils.isNotBlank(jsonObject.getString("garden")))
-                stringBuilder.append(String.format("%s花园",jsonObject.getString("garden")));
-            if(StringUtils.isNotBlank(jsonObject.getString("balcony")))
-                stringBuilder.append(String.format("%s阳台",jsonObject.getString("balcony")));
+            if (StringUtils.isNotBlank(jsonObject.getString("house")))
+                stringBuilder.append(String.format("%s室", jsonObject.getString("house")));
+            if (StringUtils.isNotBlank(jsonObject.getString("saloon")))
+                stringBuilder.append(String.format("%s厅", jsonObject.getString("saloon")));
+            if (StringUtils.isNotBlank(jsonObject.getString("kitchen")))
+                stringBuilder.append(String.format("%s厨", jsonObject.getString("kitchen")));
+            if (StringUtils.isNotBlank(jsonObject.getString("toilet")))
+                stringBuilder.append(String.format("%s卫", jsonObject.getString("toilet")));
+            if (StringUtils.isNotBlank(jsonObject.getString("garden")))
+                stringBuilder.append(String.format("%s花园", jsonObject.getString("garden")));
+            if (StringUtils.isNotBlank(jsonObject.getString("balcony")))
+                stringBuilder.append(String.format("%s阳台", jsonObject.getString("balcony")));
             return stringBuilder.toString();
         } catch (SQLException e) {
             return null;
@@ -147,22 +158,63 @@ public class BasicUnitHuxingService {
         }
         BasicUnitHuxingVo vo = new BasicUnitHuxingVo();
         BeanUtils.copyProperties(basicUnitHuxing, vo);
-        BaseDataDic dataDic = null;
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicUnitHuxing.getId(), null, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                if (sysAttachmentDto != null) {
+                    builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                    builder.append(" ");
                 }
             }
             vo.setFileViewName(builder.toString());
         }
         vo.setHouseLayoutName(baseDataDicService.getNameById(basicUnitHuxing.getHouseLayout()));
         vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation()) ? Integer.parseInt(basicUnitHuxing.getOrientation()) : null));
+        return vo;
+    }
+
+    /**
+     * 获取选择户型数据列表
+     *
+     * @param basicApplyId
+     * @return
+     */
+    public BootstrapTableVo getSelectHuxingList(Integer basicApplyId, Integer caseUnitId) throws Exception {
+        BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApplyId);
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicSelectUnitHuxingVo> list = Lists.newArrayList();
+        if (basicUnit != null) {
+            BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+            basicUnitHuxing.setUnitId(basicUnit.getId());
+            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+            if(!CollectionUtils.isEmpty(basicUnitHuxingList)){
+                for (BasicUnitHuxing unitHuxing : basicUnitHuxingList) {
+                    BasicUnitHuxingVo unitHuxingVo = getBasicUnitHuxingVo(unitHuxing);
+                    BasicSelectUnitHuxingVo basicSelectUnitHuxingVo=new BasicSelectUnitHuxingVo();
+                    BeanUtils.copyProperties(unitHuxingVo,basicSelectUnitHuxingVo);
+                    basicSelectUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class));
+                    list.add(basicSelectUnitHuxingVo);
+                }
+            }
+
+        } else if (caseUnitId != null) {
+            CaseUnitHuxing caseUnitHuxing = new CaseUnitHuxing();
+            caseUnitHuxing.setUnitId(caseUnitId);
+            List<CaseUnitHuxingVo> huxingList = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
+            if(!CollectionUtils.isEmpty(huxingList)){
+                for (CaseUnitHuxingVo huxing : huxingList) {
+                    BasicSelectUnitHuxingVo basicSelectUnitHuxingVo=new BasicSelectUnitHuxingVo();
+                    BeanUtils.copyProperties(huxing,basicSelectUnitHuxingVo);
+                    basicSelectUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
+                    list.add(basicSelectUnitHuxingVo);
+                }
+            }
+        }
+        vo.setRows(ObjectUtils.isEmpty(list) ? Lists.newArrayList() : list);
+        vo.setTotal(page.getTotal());
         return vo;
     }
 }

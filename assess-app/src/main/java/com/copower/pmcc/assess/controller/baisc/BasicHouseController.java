@@ -94,7 +94,7 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/addHouseAndLandstate", name = "添加房屋及交易信息", method = {RequestMethod.POST})
+    @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
     public HttpResult addHouseAndTrading(String houseNumber){
         try {
             return HttpResult.newCorrectResult(basicHouseService.addHouseAndTrading(houseNumber));

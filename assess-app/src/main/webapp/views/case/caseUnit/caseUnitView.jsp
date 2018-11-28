@@ -53,20 +53,20 @@
                 <%@include file="/views/case/caseUnit/caseUnitDecorate.jsp" %>
             </div>
 
-            <!-- 电梯信息 -->
-            <div style="display: ${hasUnitElevatorData?'block':'none'};">
-                <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
-            </div>
-
             <!-- 户型信息 -->
             <div style="display: ${hasUnitHuxingData?'block':'none'};">
                 <%@include file="/views/case/caseUnit/caseUnitHuxing.jsp" %>
             </div>
 
+            <!-- 电梯信息 -->
+            <div style="display: ${hasUnitElevatorData?'block':'none'};">
+                <%@include file="/views/case/caseUnit/caseUnitElevator.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-6">
+                        <div class="col-sm-6 col-sm-offset-5">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>

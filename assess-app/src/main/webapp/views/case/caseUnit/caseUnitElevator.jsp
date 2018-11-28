@@ -35,17 +35,10 @@
 
     var unitElevator;
     (function () {
-        var flag = true;
         unitElevator = function () {
 
         };
         unitElevator.prototype = {
-            setFlag:function (flag_) {
-                flag = flag_;
-            },
-            getFlag:function () {
-                return flag;
-            },
             viewInit: function () {
                 unitElevator.prototype.loadDataDicList();
             },
@@ -58,13 +51,15 @@
             },
             loadDataDicList: function () {
                 var cols = [];
+                cols.push({field: 'maintenance', title: '电梯维护情况'});
+                cols.push({field: 'typeName', title: '电梯类型'});
+                cols.push({field: 'brand', title: '电梯品牌'});
                 cols.push({field: 'number', title: '电梯数量'});
                 cols.push({field: 'quasiLoadNumber', title: '准载人数'});
                 cols.push({field: 'quasiLoadWeight', title: '准载重量'});
                 cols.push({field: 'runningSpeed', title: '运行速度'});
                 $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
                 TableInit(unitElevator.prototype.config().table, "${pageContext.request.contextPath}/caseUnitElevator/getCaseUnitElevatorList", cols, {
-                    name: $("#queryName").val(),
                     unitId: '${empty caseUnit.id?0:caseUnit.id}'
                 }, {
                     showColumns: false,
@@ -74,10 +69,6 @@
                         $('.tooltips').tooltip();
                     }
                 });
-            },
-
-            init:function () {
-                
             }
         }
 

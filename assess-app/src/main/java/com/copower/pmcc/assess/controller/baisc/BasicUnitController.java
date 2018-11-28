@@ -83,8 +83,8 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasicEstateByApplyId", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicEstateByApplyId(Integer applyId){
+    @RequestMapping(value = "/getBasicUnitByApplyId", name = "获取数据", method = {RequestMethod.GET})
+    public HttpResult getBasicUnitByApplyId(Integer applyId){
         try {
             return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByApplyId(applyId));
         } catch (Exception e) {

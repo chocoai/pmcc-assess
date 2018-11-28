@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitHuxingDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitHuxing;
 import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
@@ -77,41 +76,25 @@ public class CaseUnitHuxingService {
     }
 
     public CaseUnitHuxingVo getCaseUnitHuxingVo(CaseUnitHuxing caseUnitHuxing) {
-        if (caseUnitHuxing==null){
+        if (caseUnitHuxing == null) {
             return null;
         }
         CaseUnitHuxingVo vo = new CaseUnitHuxingVo();
         BeanUtils.copyProperties(caseUnitHuxing, vo);
-        vo.setHouseLayoutName(baseDataDicService.getNameById(caseUnitHuxing.getHouseLayout()));
+        if (caseUnitHuxing.getOrientation() != null)
+            vo.setOrientationName(baseDataDicService.getNameById(Integer.valueOf(caseUnitHuxing.getOrientation())));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(caseUnitHuxing.getId(), null, FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            if (sysAttachmentDtos.size() >= 1) {
-                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
-                    if (sysAttachmentDto != null) {
-                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
-                        builder.append(" ");
-                    }
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                if (sysAttachmentDto != null) {
+                    builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto));
+                    builder.append(" ");
                 }
             }
             vo.setFileViewName(builder.toString());
         }
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**
@@ -154,10 +137,11 @@ public class CaseUnitHuxingService {
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param unitId
      * @return
      */
-    public boolean hasUnitHuxingData(Integer unitId){
-        return caseUnitHuxingDao.countByUnitId(unitId)>0;
+    public boolean hasUnitHuxingData(Integer unitId) {
+        return caseUnitHuxingDao.countByUnitId(unitId) > 0;
     }
 }

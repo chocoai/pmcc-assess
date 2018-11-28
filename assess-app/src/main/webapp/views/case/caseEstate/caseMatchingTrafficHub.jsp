@@ -60,10 +60,8 @@
             loadDataDicList: function () {
                 var cols = [];
                 cols.push({field: 'name', title: '名称'});
+                cols.push({field: 'natureName', title: '性质'});
                 cols.push({field: 'distanceName', title: '距离'});
-                // cols.push({field: 'type', title: '类型'});
-                cols.push({field: 'lineName', title: '线路名称'});
-                cols.push({field: 'theLine', title: '所在线路'});
                 $("#" + matchingTrafficHub.prototype.config().table).bootstrapTable('destroy');
                 TableInit(matchingTrafficHub.prototype.config().table, "${pageContext.request.contextPath}/caseMatchingTraffic/getCaseMatchingTrafficList", cols, {
                     type: matchingTrafficHub.prototype.config().type,

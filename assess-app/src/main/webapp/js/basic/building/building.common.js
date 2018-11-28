@@ -10,7 +10,7 @@
     buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
 
     //添加楼栋
-    buildingCommon.add = function ($form,callback) {
+    buildingCommon.add = function ($form, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/addBuildingMainAndBuilding',
             data: {
@@ -23,7 +23,7 @@
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
-                    if(callback){
+                    if (callback) {
                         callback();
                     }
                 }
@@ -32,7 +32,7 @@
     }
 
     //编辑楼栋
-    buildingCommon.edit = function ($form,callback) {
+    buildingCommon.edit = function ($form, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
             data: {caseMainBuildingId: $form.find("input[name='caseBuildingMainId']").val()},
@@ -43,7 +43,7 @@
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
-                    if(callback){
+                    if (callback) {
                         callback();
                     }
                 }
@@ -52,7 +52,7 @@
     }
 
     //楼栋初始化by applyId
-    buildingCommon.init = function (applyId,callback) {
+    buildingCommon.init = function (applyId, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingMainByApplyId',
             type: 'get',
@@ -64,7 +64,7 @@
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
-                    if(callback){
+                    if (callback) {
                         callback();
                     }
                 }
@@ -118,32 +118,26 @@
                 if (result.ret) {
                     buildingCommon.buildingForm.initForm(result.data, function () {
                         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据
+                        buildingCommon.buildingForm.find("select.buildingStructure").change(function () {
+                            var id = buildingCommon.buildingForm.find("select.buildingStructure").val();
+                            AssessCommon.loadDataDicByPid(id, result.data.buildingStructureLower, function (html, data) {
+                                buildingCommon.buildingForm.find("select.buildingStructureLower").empty().html(html).trigger('change');
+                            });
+                            result.data.buildingStructureLower = null;
+                        });
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, result.data.buildingCategory, function (html, data) {
                             buildingCommon.buildingForm.find('select.buildingCategory').empty().html(html).trigger('change');
                         });
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, result.data.buildingStructure, function (html, data) {
                             buildingCommon.buildingForm.find('select.buildingStructure').empty().html(html).trigger('change');
-                            buildingCommon.buildingForm.find('select.buildingStructure').val(result.data.buildingStructure).trigger("change");
                         });
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, result.data.propertyType, function (html, data) {
                             buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
-                        });
-                        buildingCommon.buildingForm.find("select.buildingStructure").change(function () {
-                            var id = buildingCommon.buildingForm.find("select.buildingStructure").val();
-                            if (basicIndexCommon.isNotBlank(id)) {
-                                AssessCommon.loadDataDicByPid(id, result.data.buildingStructureLower, function (html, data) {
-                                    buildingCommon.buildingForm.find("select.buildingStructureLower").empty().html(html);
-                                });
-                            }
-                        });
-                        AssessCommon.loadDataDicByPid(result.data.buildingStructure, result.data.buildingStructureLower, function (html, data) {
-                            buildingCommon.buildingForm.find("select.buildingStructureLower").empty().html(html).trigger('change');
                         });
                         //初始化上传控件
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
                             buildingCommon.fileUpload(item);
                         })
-                        //------------------------以上部分可只初始化一次
 
                         //附件显示
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
@@ -175,7 +169,13 @@
                     buildingCommon.buildingForm.find('[data-name=openTime]').text(formatDate(result.data.openTime));
                     buildingCommon.buildingForm.find('[data-name=roomTime]').text(formatDate(result.data.roomTime));
                     buildingCommon.buildingForm.find('[data-name=beCompletedTime]').text(formatDate(result.data.beCompletedTime));
-                    buildingCommon.buildingForm.initForm(result.data,function () {
+
+                    buildingCommon.buildingForm.initForm(result.data, function () {
+                        //附件显示
+                        $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
+                            buildingCommon.fileShow(item);
+                        })
+
                         buildingModelDetail.prototype.viewInit(); //加载从表数据
                     });
                 }

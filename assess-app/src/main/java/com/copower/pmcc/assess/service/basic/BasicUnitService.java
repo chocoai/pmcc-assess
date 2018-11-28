@@ -200,6 +200,9 @@ public class BasicUnitService {
     public BasicUnit getBasicUnitByApplyId(Integer applyId) throws Exception {
         BasicUnit where = new BasicUnit();
         where.setApplyId(applyId);
+        if (applyId == null || applyId == 0) {
+            where.setCreator(commonService.thisUserAccount());
+        }
         List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
         if (CollectionUtils.isEmpty(basicUnits)) return null;
         return basicUnits.get(0);

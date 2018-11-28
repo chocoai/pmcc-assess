@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicBuildingFunctionDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicBuildingFunction;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingFunctionVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -118,36 +117,21 @@ public class BasicBuildingFunctionService {
         }
         BasicBuildingFunctionVo vo = new BasicBuildingFunctionVo();
         BeanUtils.copyProperties(basicBuildingFunction,vo);
-        BaseDataDic dataDic = null;
-        if (basicBuildingFunction.getDecoratingMaterial() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getDecoratingMaterial());
-            if (dataDic != null){
-                vo.setDecoratingMaterialName(dataDic.getName());
-                dataDic = null;
-            }
+        if (basicBuildingFunction.getType() != null) {
+            vo.setTypeName(baseDataDicService.getNameById(basicBuildingFunction.getType()));
         }
-        if (basicBuildingFunction.getDecorationPart() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getDecorationPart());
-            if (dataDic != null){
-                vo.setDecorationPartName(dataDic.getName());
-                dataDic = null;
-            }
+        if (basicBuildingFunction.getDecorationPart() != null) {
+            vo.setDecorationPartName(baseDataDicService.getNameById(basicBuildingFunction.getDecorationPart()));
         }
-        if (basicBuildingFunction.getMaterialPrice() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getMaterialPrice());
-            if (dataDic != null){
-                vo.setMaterialPriceName(dataDic.getName());
-                dataDic = null;
-            }
+        if (basicBuildingFunction.getDecoratingMaterial() != null) {
+            vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicBuildingFunction.getDecoratingMaterial()));
         }
-        if (basicBuildingFunction.getConstructionTechnology() != null){
-            dataDic = baseDataDicService.getDataDicById(basicBuildingFunction.getConstructionTechnology());
-            if (dataDic != null){
-                vo.setConstructionTechnologyName(dataDic.getName());
-                dataDic = null;
-            }
+        if (basicBuildingFunction.getMaterialPrice() != null) {
+            vo.setMaterialPriceName(baseDataDicService.getNameById(basicBuildingFunction.getMaterialPrice()));
         }
-        vo.setTypeName(baseDataDicService.getNameById(basicBuildingFunction.getType()));
+        if (basicBuildingFunction.getConstructionTechnology() != null) {
+            vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicBuildingFunction.getConstructionTechnology()));
+        }
         return vo;
     }
 }

@@ -7,6 +7,8 @@ public class CaseUnit {
 
     private Integer buildingMainId;
 
+    private Integer type;
+
     private Integer buildingId;
 
     private String unitNumber;
@@ -35,6 +37,14 @@ public class CaseUnit {
 
     public void setBuildingMainId(Integer buildingMainId) {
         this.buildingMainId = buildingMainId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getBuildingId() {

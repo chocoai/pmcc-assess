@@ -10,13 +10,13 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="x_panel">
+                <form class="form-horizontal" id="frm_estate">
+                    <div class="x_content">
+                        <div class="x_title">
+                            <h4>楼盘基本信息</h4>
+                            <div class="clearfix"></div>
+                        </div>
 
-                <div class="x_content">
-                    <div class="x_title">
-                        <h3>楼盘基本信息</h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <form class="form-horizontal" id="frm_estate">
                         <input type="hidden" name="id" value="${caseEstate.id}">
                         <div class="form-group">
                             <div class="x-valid">
@@ -40,30 +40,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">街道</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.street}</label>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">街道号</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.streetNumber}</label>
-                                </div>
-                            </div>
-
-
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">基础版块</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.blockName}</label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称</label>
@@ -77,49 +53,33 @@
                                     <label class="form-control">${caseEstate.position}</label>
                                 </div>
                             </div>
-                            <c:if test="${not empty caseEstate.supplyPower}">
-                                <div class="x-valid supplyGas">
-                                    <label class="col-sm-1 control-label">供气信息</label>
-                                    <div class="col-sm-3">
-                                        <label class="form-control">${caseEstate.supplyPower?'有':'无'}</label>
-                                    </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">基础版块</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${caseEstate.blockName}</label>
                                 </div>
-                            </c:if>
-                        </div>
-                        <c:if test="${not empty caseEstate.supplyPower or not empty caseEstate.supplyWater or not empty caseEstate.supplyHeating}">
-                            <div class="form-group">
-                                <c:if test="${not empty caseEstate.supplyPower}">
-                                    <div class="x-valid supplyPower">
-                                        <label class="col-sm-1 control-label">供电信息</label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">
-                                                    ${caseEstate.supplyPower?'有':'无'}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </c:if>
-                                <c:if test="${not empty caseEstate.supplyWater}">
-                                    <div class="x-valid supplyWater">
-                                        <label class="col-sm-1 control-label">供排水情况</label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">
-                                                    ${caseEstate.supplyWater?'有':'无'}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </c:if>
-                                <c:if test="${not empty caseEstate.supplyHeating}">
-                                    <div class="x-valid supplyHeating">
-                                        <label class="col-sm-1 control-label">供热信息</label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">
-                                                    ${caseEstate.supplyHeating?'有':'无'}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </c:if>
                             </div>
-                        </c:if>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">街道</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${caseEstate.street}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">街道号</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${caseEstate.streetNumber}</label>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">附号</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${caseEstate.attachNumber}</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">占地面积</label>
@@ -178,12 +138,7 @@
                                     <label class="form-control">${caseEstate.priceRange}</label>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">附号</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseEstate.attachNumber}</label>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="form-group">
                             <div class="x-valid">
@@ -197,7 +152,10 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">地图标注</label>
                                 <div class="col-sm-5">
-                                    <div class="btn btn-success" onclick="window.open('${pageContext.request.contextPath}/caseEstate/detail?estateId=${caseEstate.id}')">地图标注</div>
+                                    <div class="btn btn-success"
+                                         onclick="window.open('${pageContext.request.contextPath}/caseEstate/detail?estateId=${caseEstate.id}')">
+                                        地图标注
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +166,6 @@
                                     <div id="_estate_floor_total_plan"></div>
                                 </div>
                             </div>
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">外观图</label>
                                 <div class="col-sm-5">
@@ -216,42 +173,84 @@
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${caseEstate.type eq 1}">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">供水平面图</label>
+                                    <div class="col-sm-5">
+                                        <div id="_water_supply_plan"></div>
+                                    </div>
+                                </div>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">供水平面图</label>
-                                <div class="col-sm-5">
-                                    <div id="_water_supply_plan"></div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">供电平面图</label>
+                                    <div class="col-sm-5">
+                                        <div id="_power_supply_plan"></div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">供气平面图</label>
+                                    <div class="col-sm-5">
+                                        <div id="_air_supply_plan"></div>
+                                    </div>
+                                </div>
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">采暖平面图</label>
+                                    <div class="col-sm-5">
+                                        <div id="_heating_plan"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </div>
+                    <c:if test="${caseEstate.type eq 0}">
+                        <div class="x_content" style="display: none;">
+                            <div class="x_title">
+                                <h4>
+                                    楼盘供应信息
+                                </h4>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="x-valid supplyGas">
+                                        <label class="col-sm-1 control-label">供气信息</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${caseEstate.supplyGasName}</label>
+                                        </div>
+                                    </div>
+                                    <div class="x-valid supplyPower">
+                                        <label class="col-sm-1 control-label">供电信息</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${caseEstate.supplyPowerName}</label>
+                                        </div>
+                                    </div>
 
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">供电平面图</label>
-                                <div class="col-sm-5">
-                                    <div id="_power_supply_plan"></div>
+                                    <div class="x-valid supplyWater">
+                                        <label class="col-sm-1 control-label">供排水情况</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${caseEstate.supplyWaterName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid supplyHeating">
+                                        <label class="col-sm-1 control-label">供热信息</label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control">${caseEstate.supplyHeatingName}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </c:if>
+                </form>
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">供气平面图</label>
-                                <div class="col-sm-5">
-                                    <div id="_air_supply_plan"></div>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">采暖平面图</label>
-                                <div class="col-sm-5">
-                                    <div id="_heating_plan"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
                 <div class="x_content">
                     <div class="x_title">
-                        <h3>楼盘土地实体情况 </h3>
+                        <h4>楼盘土地实体情况 </h4>
                         <div class="clearfix"></div>
                     </div>
                     <form id="frm_estateLandState" class="form-horizontal">
@@ -314,13 +313,13 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地形状状况</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${caseEstateLandState.shapeState}</label>
+                                    <label class="form-control">${caseEstateLandState.shapeStateName}</label>
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地平整度</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${caseEstateLandState.planeness}</label>
+                                    <label class="form-control">${caseEstateLandState.planenessName}</label>
                                 </div>
                             </div>
                         </div>
@@ -329,7 +328,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">土地开发程度</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${caseEstateLandState.developmentDegree}</label>
+                                    <label class="form-control">${caseEstateLandState.developmentDegreeName}</label>
                                 </div>
                             </div>
 
@@ -351,7 +350,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">地形地势</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${caseEstateLandState.topographicTerrain}</label>
+                                    <label class="form-control">${caseEstateLandState.topographicTerrainName}</label>
                                 </div>
                             </div>
 
@@ -374,26 +373,6 @@
             <!-- 车位信息 -->
             <div class="parking" style="display:${hasEstateParkingData?'block':'none'};">
                 <%@include file="/views/case/caseEstate/caseParking.jsp" %>
-            </div>
-
-            <!-- 供气 -->
-            <div class="supplygas" style="display:${hasEstateSupplyGas?'block':'none'};">
-                <%@include file="/views/case/caseEstate/caseSupplyGas.jsp" %>
-            </div>
-
-            <!-- 供热 -->
-            <div class="supplyheating" style="display: ${hasEstateSupplyHeating?'block':'none'};">
-                <%@include file="/views/case/caseEstate/caseSupplyHeating.jsp" %>
-            </div>
-
-            <!-- 供电 -->
-            <div class="supplypower" style="display: ${hasEstateSupplyPower?'block':'none'};">
-                <%@include file="/views/case/caseEstate/caseSupplyPower.jsp" %>
-            </div>
-
-            <!-- 供水 -->
-            <div class="supplywater" style="display: ${hasEstateSupplyWater?'block':'none'};">
-                <%@include file="/views/case/caseEstate/caseSupplyWater.jsp" %>
             </div>
 
             <!-- 教育 -->
@@ -426,11 +405,6 @@
                 <%@include file="/views/case/caseEstate/caseMatchingRestaurant.jsp" %>
             </div>
 
-            <!-- 原材料及销售条件 -->
-            <div class="material" style="display: ${hasMatchingMaterialData?'block':'none'};">
-                <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
-            </div>
-
             <!-- 医养条件 -->
             <div class="medical" style="display: ${hasMatchingMedicalData?'block':'none'};">
                 <%@include file="/views/case/caseEstate/caseMatchingMedical.jsp" %>
@@ -461,10 +435,35 @@
                 <%@include file="/views/case/caseEstate/caseMatchingTrafficHub.jsp" %>
             </div>
 
+            <!-- 供气 -->
+            <div class="supplygas" style="display:${hasEstateSupplyGas?'block':'none'};">
+                <%@include file="/views/case/caseEstate/caseSupplyGas.jsp" %>
+            </div>
+
+            <!-- 供热 -->
+            <div class="supplyheating" style="display: ${hasEstateSupplyHeating?'block':'none'};">
+                <%@include file="/views/case/caseEstate/caseSupplyHeating.jsp" %>
+            </div>
+
+            <!-- 供电 -->
+            <div class="supplypower" style="display: ${hasEstateSupplyPower?'block':'none'};">
+                <%@include file="/views/case/caseEstate/caseSupplyPower.jsp" %>
+            </div>
+
+            <!-- 供水 -->
+            <div class="supplywater" style="display: ${hasEstateSupplyWater?'block':'none'};">
+                <%@include file="/views/case/caseEstate/caseSupplyWater.jsp" %>
+            </div>
+
+            <!-- 原材料及销售条件 -->
+            <div class="material" style="display: ${hasMatchingMaterialData?'block':'none'};">
+                <%@include file="/views/case/caseEstate/caseMatchingMaterial.jsp" %>
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-6">
+                        <div class="col-sm-6 col-sm-offset-5">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
@@ -567,131 +566,6 @@
     };
 
 
-    var otherFlag = true;
-    caseEstate.other = {
-        /**
-         * @author:  zch
-         * 描述:获取选择的子类数据
-         * @date:2018-09-17
-         **/
-        tempSave: function () {
-            if ($("#" + caseEstate.config.other.frm()).find('input:checkbox:checked').length <= 0) {
-                toastr.info("请选择子项表单");
-                return false;
-            }
-            var data = formParams(caseEstate.config.other.frm());
-            console.log(data);
-            //处理子类显示问题
-            if (caseEstate.isEmpty(data)) {
-                if (data.matching) {
-                    var matching = data.matching.split(",");
-                    $.each(matching, function (i, n) {
-                        AssessCommon.getDataDicInfo(n, function (item) {
-                            var fieldName = caseEstate.other.subFileName(item.fieldName);
-                            var jq = $("." + fieldName);
-                            if (jq.size() > 0) {
-                                jq.toggle();
-                            }
-                            console.log(fieldName);
-                        });
-                    });
-                }
-
-                if (data.other) {
-                    var other = data.other.split(",");
-                    $.each(other, function (i, n) {
-                        AssessCommon.getDataDicInfo(n, function (item) {
-                            var fieldName = caseEstate.other.subFileName(item.fieldName);
-                            var jq = $("." + fieldName);
-                            if (jq.size() > 0) {
-                                jq.toggle();
-                            }
-                            console.log(fieldName);
-                        });
-                    });
-                }
-            }
-            $("#" + caseEstate.config.other.box()).modal("hide");
-        },
-        showBoxDiv: function () {
-            if (caseEstate.other.getOtherFlag()) {
-                caseEstate.other.selectInit();
-                caseEstate.other.setOtherFlag(false);
-            }
-            $("#" + caseEstate.config.other.box()).modal("show");
-        },
-        getOtherFlag: function () {
-            return otherFlag;
-        },
-        setOtherFlag: function (item) {
-            otherFlag = item;
-        },
-        /**
-         * @author:  zch
-         * 描述:载入需要选择的子类信息
-         * @date:2018-09-17
-         **/
-        selectInit: function () {
-            var num = 6;
-            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateOther, "", function (html, data) {
-                var resetHtml = "";
-                var k = 0;
-                $.each(data, function (i, n) {
-                    if (i % num == 0) {
-                        k++;
-                    }
-                });
-                for (var i = 0; i < k; i++) {
-                    resetHtml += "<div class='form-group'>";
-                    for (var j = i * num; j < i * num + num; j++) {
-                        if (j < data.length) {
-                            resetHtml += "<div class='col-sm-2'>";
-                            resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' id='other" + data[j].id + "' name='other' required='required' value='" + data[j].id + "'" + ">";
-                            resetHtml += "<label for='other" + data[j].id + "'>" + data[j].name + "</label>";
-                            resetHtml += "</span>";
-                            resetHtml += "</div>";
-                        }
-                    }
-                    resetHtml += "</div>";
-                }
-                //HTML
-                $("#" + caseEstate.config.other.frm() + "HTMLOther").append(resetHtml);
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.casesEstateMatching, "", function (html, data) {
-                var resetHtml = "";
-                var k = 0;
-                $.each(data, function (i, n) {
-                    if (i % num == 0) {
-                        k++;
-                    }
-                });
-                for (var i = 0; i < k; i++) {
-                    resetHtml += "<div class='form-group'>";
-                    for (var j = i * num; j < i * num + num; j++) {
-                        if (j < data.length) {
-                            resetHtml += "<div class='col-sm-2'>";
-                            resetHtml += "<span class='checkbox-inline'>";
-                            resetHtml += "<input type='checkbox' id='matching" + data[j].id + "' required='required' name='matching' value='" + data[j].id + "'" + ">";
-                            resetHtml += "<label for='matching" + data[j].id + "'>" + data[j].name + "</label>";
-                            resetHtml += "</span>";
-                            resetHtml += "</div>";
-                        }
-                    }
-                    resetHtml += "</div>";
-                }
-                //HTML
-                $("#" + caseEstate.config.other.frm() + "HTMLMatching").append(resetHtml);
-            });
-        },
-        subFileName: function (upFileName) {
-            var index1 = upFileName.lastIndexOf(".");
-            var index2 = upFileName.length;
-            var suffix = upFileName.substring(index1 + 1, index2);//后缀名
-            return suffix;
-        }
-    };
-
     $(function () {
         caseEstate.estateModel.init();
     });
@@ -699,54 +573,3 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
-<div id="otherDivBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼盘下属子类</h3>
-            </div>
-            <form id="frmOther" class="form-horizontal">
-                <input type="hidden" id="id" name="id" value="0">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <h3 class="modal-title">其它信息</h3>
-                                    </div>
-                                </div>
-                                <!--xxx -->
-                                <div id="frmOtherHTMLOther">
-
-                                </div>
-                                <!--xxx -->
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <h3 class="modal-title">配套信息</h3>
-                                    </div>
-                                </div>
-                                <!--xxx -->
-                                <div id="frmOtherHTMLMatching">
-
-                                </div>
-                                <!--xxx -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="caseEstate.other.tempSave();">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

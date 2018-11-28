@@ -10,6 +10,7 @@
     </div>
     <form class="form-horizontal" id="basicHouseFrm">
         <input type="hidden" name="id" value="${basicHouse.id}">
+        <input type="hidden" name="applyId" value="${basicHouse.applyId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
@@ -35,26 +36,30 @@
                     </select>
                 </div>
             </div>
-
-            <div class="x-valid" id="industryNewsHuxing">
-                <label class="col-sm-1 control-label">最新户型</label>
-                <div class="col-sm-3">
-                    <select class="form-control search-select select2 newsHuxing"
-                            name="newsHuxing">
-                    </select>
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">户型选择</label>
+                <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <select class="form-control huxingId" name="huxingId">
-                        </select>
-                        <label class="input-group-addon btn" onclick="houseModelFun.unitHuxingSelectLoad(this)">刷新户型<i
-                                class="fa fa-refresh"></i></label>
+                        <input type="hidden" name="huxingPlan" value='${basicHouse.huxingPlan}'>
+                        <input type="text"
+                               placeholder="户型" class="form-control" name="huxingName"
+                               value="${basicHouse.huxingName}">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                data-toggle="tooltip"
+                                data-original-title="选择"
+                                onclick="houseCommon.selectHuxing(this)">
+                        <i class="fa fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default docs-tooltip"
+                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                data-toggle="tooltip" data-original-title="清除">
+                        <i class="fa fa-trash-o"></i>
+                        </button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -62,7 +67,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">户型图</label>
                 <div class="col-sm-3">
-                    <div class="house_latest_family_plan"></div>
+                    <div id="_house_huxing_plan"></div>
                 </div>
             </div>
 
@@ -71,6 +76,23 @@
                 <div class="col-sm-3">
                     <input type="text" placeholder="朝向" name="orientation"
                            class="form-control" value="${basicHouse.orientation}">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="新户型" name="newHuxingName"
+                           class="form-control" value="${basicHouse.newHuxingName}">
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型图</label>
+                <div class="col-sm-3">
+                    <input id="house_new_huxing_plan"
+                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <div id="_house_new_huxing_plan"></div>
                 </div>
             </div>
         </div>
@@ -330,6 +352,7 @@
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
 
 <div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"

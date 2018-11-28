@@ -457,6 +457,7 @@ public class PublicBasicService {
         if (basicBuildingMain != null) {
             BeanUtils.copyProperties(basicBuildingMain, caseBuildingMain);
             caseBuildingMain.setEstateId(estateId);
+            caseBuildingMain.setType(basicApply.getType());
             caseBuildingMain.setVersion(caseBuildingMainService.getVersion(basicApply.getCaseBuildingMainId()) + 1);
             caseBuildingMain.setId(null);
             caseBuildingMain.setGmtCreated(null);
@@ -599,6 +600,7 @@ public class PublicBasicService {
         if (basicUnit != null) {
             BeanUtils.copyProperties(basicUnit, caseUnit);
             caseUnit.setBuildingMainId(caseBuildingMainId);
+            caseUnit.setType(basicApply.getType());
             caseUnit.setVersion(caseUnitService.getVersion(basicApply.getCaseUnitId()) + 1);
             caseUnit.setId(null);
             caseUnit.setGmtCreated(null);
@@ -698,6 +700,7 @@ public class PublicBasicService {
         if (basicHouse != null) {
             BeanUtils.copyProperties(basicHouse, caseHouse);
             caseHouse.setUnitId(unitId);
+            caseHouse.setType(basicApply.getType());
             caseHouse.setVersion(caseHouseService.getVersion(basicApply.getCaseHouseId()) + 1);
             caseHouse.setId(null);
             caseHouse.setGmtCreated(null);
@@ -1004,10 +1007,6 @@ public class PublicBasicService {
     }
 
 
-
-
-
-
     /**
      * 保存数据
      *
@@ -1095,7 +1094,8 @@ public class PublicBasicService {
                 if (basicHouse != null) {
                     basicHouse.setApplyId(basicApply.getId());
                     Integer house = basicHouseService.saveAndUpdateBasicHouse(basicHouse);
-                    BasicHouseTrading basicTrading = JSONObject.parseObject(jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar()), BasicHouseTrading.class);
+                    jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
+                    BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                     if (basicTrading != null) {
                         basicTrading.setHouseId(house);
                         basicTrading.setApplyId(basicApply.getId());

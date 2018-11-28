@@ -472,8 +472,8 @@ var matchingTrafficHub;
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({field: 'distanceName', title: '距离'});
             cols.push({field: 'natureName', title: '性质'});
+            cols.push({field: 'distanceName', title: '距离'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

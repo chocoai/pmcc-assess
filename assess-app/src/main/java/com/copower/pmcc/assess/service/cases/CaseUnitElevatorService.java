@@ -2,16 +2,21 @@ package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.dal.cases.dao.CaseUnitElevatorDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
+import com.copower.pmcc.assess.dto.output.cases.CaseUnitElevatorVo;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,9 @@ public class CaseUnitElevatorService {
     private CaseUnitElevatorDao caseUnitElevatorDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+
     /**
      * 功能描述:
      *
@@ -40,7 +48,6 @@ public class CaseUnitElevatorService {
     }
 
     /**
-     *
      * 功能描述:
      *
      * @param: caseUnitElevator
@@ -48,11 +55,14 @@ public class CaseUnitElevatorService {
      * @auther: zch
      * @date: 2018/7/18 15:02
      */
-    public BootstrapTableVo getCaseUnitElevatorList(CaseUnitElevator caseUnitElevator){
+    public BootstrapTableVo getCaseUnitElevatorList(CaseUnitElevator caseUnitElevator) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseUnitElevator> vos = getUnitElevatorList(caseUnitElevator);
+        List<CaseUnitElevator> list = getUnitElevatorList(caseUnitElevator);
+        List<CaseUnitElevatorVo> vos = null;
+        if (!CollectionUtils.isEmpty(list))
+            vos = LangUtils.transform(list, o -> getBasicUnitElevatorVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<CaseUnitElevator>() : vos);
         return vo;
@@ -108,13 +118,25 @@ public class CaseUnitElevatorService {
     }
 
 
+    public CaseUnitElevatorVo getBasicUnitElevatorVo(CaseUnitElevator caseUnitElevator) {
+        if (caseUnitElevator == null) {
+            return null;
+        }
+        CaseUnitElevatorVo vo = new CaseUnitElevatorVo();
+        BeanUtils.copyProperties(caseUnitElevator, vo);
+        if (caseUnitElevator.getType() != null)
+            vo.setTypeName(baseDataDicService.getNameById(Integer.valueOf(caseUnitElevator.getType())));
+        return vo;
+    }
+
 
     /**
      * 根据查询条件判断是否有数据
+     *
      * @param unitId
      * @return
      */
-    public boolean hasUnitElevatorData(Integer unitId){
-        return caseUnitElevatorDao.countByUnitId(unitId)>0;
+    public boolean hasUnitElevatorData(Integer unitId) {
+        return caseUnitElevatorDao.countByUnitId(unitId) > 0;
     }
 }

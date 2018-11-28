@@ -13,9 +13,11 @@ public class BasicHouse {
 
     private Integer floor;
 
-    private Integer huxingId;
+    private String huxingName;
 
-    private Integer newsHuxing;
+    private String huxingPlan;
+
+    private String newHuxingName;
 
     private Integer certUse;
 
@@ -77,20 +79,28 @@ public class BasicHouse {
         this.floor = floor;
     }
 
-    public Integer getHuxingId() {
-        return huxingId;
+    public String getHuxingName() {
+        return huxingName;
     }
 
-    public void setHuxingId(Integer huxingId) {
-        this.huxingId = huxingId;
+    public void setHuxingName(String huxingName) {
+        this.huxingName = huxingName == null ? null : huxingName.trim();
     }
 
-    public Integer getNewsHuxing() {
-        return newsHuxing;
+    public String getHuxingPlan() {
+        return huxingPlan;
     }
 
-    public void setNewsHuxing(Integer newsHuxing) {
-        this.newsHuxing = newsHuxing;
+    public void setHuxingPlan(String huxingPlan) {
+        this.huxingPlan = huxingPlan == null ? null : huxingPlan.trim();
+    }
+
+    public String getNewHuxingName() {
+        return newHuxingName;
+    }
+
+    public void setNewHuxingName(String newHuxingName) {
+        this.newHuxingName = newHuxingName == null ? null : newHuxingName.trim();
     }
 
     public Integer getCertUse() {

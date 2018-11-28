@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateLandStateDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
@@ -61,18 +60,11 @@ public class CaseEstateLandStateService {
     public CaseEstateLandStateVo getCaseEstateLandStateVo(CaseEstateLandState caseEstateLandState){
         CaseEstateLandStateVo vo = new CaseEstateLandStateVo();
         BeanUtils.copyProperties(caseEstateLandState,vo);
-        BaseDataDic dataDic = null;
         if (caseEstateLandState.getLandUseType() != null){
-            dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseType());
-            if (dataDic != null){
-                vo.setLandUseTypeName(dataDic.getName());
-            }
+            vo.setLandUseTypeName(baseDataDicService.getNameById(caseEstateLandState.getLandUseType()));
         }
         if (caseEstateLandState.getLandUseCategory() != null){
-            dataDic = baseDataDicService.getDataDicById(caseEstateLandState.getLandUseCategory());
-            if (dataDic != null){
-                vo.setLandUseCategoryName(dataDic.getName());
-            }
+            vo.setLandUseCategoryName(baseDataDicService.getNameById(caseEstateLandState.getLandUseCategory()));
         }
         if (caseEstateLandState.getLandLevel() != null) {
             DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(caseEstateLandState.getLandLevel());
@@ -81,8 +73,19 @@ public class CaseEstateLandStateService {
             }
         }
         if (caseEstateLandState.getLandLevel() != null){
-            String s = dataLandLevelDetailService.getCacheNameById(caseEstateLandState.getLandLevel());
-            vo.setLandLevelName(s);
+            vo.setLandLevelName(dataLandLevelDetailService.getCacheNameById(caseEstateLandState.getLandLevel()));
+        }
+        if (caseEstateLandState.getShapeState() != null) {
+            vo.setShapeStateName(baseDataDicService.getNameById(caseEstateLandState.getShapeState()));
+        }
+        if (caseEstateLandState.getPlaneness() != null) {
+            vo.setPlanenessName(baseDataDicService.getNameById(caseEstateLandState.getPlaneness()));
+        }
+        if (caseEstateLandState.getDevelopmentDegree() != null) {
+            vo.setDevelopmentDegreeName(baseDataDicService.getNameById(caseEstateLandState.getDevelopmentDegree()));
+        }
+        if (caseEstateLandState.getTopographicTerrain() != null) {
+            vo.setTopographicTerrainName(baseDataDicService.getNameById(caseEstateLandState.getTopographicTerrain()));
         }
         return vo;
     }

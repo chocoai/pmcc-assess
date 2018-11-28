@@ -334,16 +334,13 @@
             <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
                 <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
             </div>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-6">
+                        <div class="col-sm-6 col-sm-offset-5">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
-
                         </div>
                     </div>
                 </div>

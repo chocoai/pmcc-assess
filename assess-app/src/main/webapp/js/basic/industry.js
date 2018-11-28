@@ -34,14 +34,16 @@ industry.config = {
         material: "industryMaterial"
     },
     unit: {
-        spanWidth: "industrySpanWidth",//跨宽
-        spanNumber: "industrySpanNumber",//跨数
-        spanLength: "industrySpanLength",//跨长
+        span: "industrySpan"//跨长 跨宽 跨数
     },
     house: {
-        newsHuxing: "industryNewsHuxing",//最新户型
-        useEnvironment: "industryUseEnvironment",//使用环境
-        corollaryEquipment: "industryCorollaryEquipment",//房屋配套设备设施信息
+        airConditioner: "industryAirConditioner",//空调情况
+        newWind: "industryNewWind",//新风情况
+        heating: "industryHeating",//供暖情况
+        intelligent: "industryIntelligent",//电力通讯网络
+        water: "industryWater",//供排水情况
+        corollaryEquipment: "industryCorollaryEquipment",//配套设备设施
+        useEnvironment: "industryUseEnvironment"//使用环境
     }
 };
 
@@ -76,22 +78,26 @@ industry.industryOne = {
         $("#" + industry.config.estate.supplyPower).hide();
         $("#" + industry.config.estate.supplyWater).hide();
         $("#" + industry.config.estate.material).hide();
-        $("#" + industry.config.estate.supply).show();
-        $("#" + industry.config.estate.matchingInfo).show();
         $("#" + industry.config.estate.water_supply_plan).hide();
         $("#" + industry.config.estate.power_supply_plan).hide();
         $("#" + industry.config.estate.air_supply_plan).hide();
         $("#" + industry.config.estate.heating_plan).hide();
+
+        $("#" + industry.config.estate.supply).show();
+        $("#" + industry.config.estate.matchingInfo).show();
     },
     unit: function () {
-        $("#" + industry.config.unit.spanWidth).hide();
-        $("#" + industry.config.unit.spanNumber).hide();
-        $("#" + industry.config.unit.spanLength).hide();
+        $("#" + industry.config.unit.span).hide();
     },
     house: function () {
         $("#" + industry.config.house.useEnvironment).hide();
-        $("#" + industry.config.house.newsHuxing).show();
         $("#" + industry.config.house.corollaryEquipment).hide();
+
+        $("#" + industry.config.house.airConditioner).show();
+        $("#" + industry.config.house.newWind).show();
+        $("#" + industry.config.house.heating).show();
+        $("#" + industry.config.house.intelligent).show();
+        $("#" + industry.config.house.water).show();
     }
 };
 
@@ -116,22 +122,26 @@ industry.industryTwo = {
         $("#" + industry.config.estate.supplyPower).show();
         $("#" + industry.config.estate.supplyWater).show();
         $("#" + industry.config.estate.material).show();
-        $("#" + industry.config.estate.supply).hide();
-        $("#" + industry.config.estate.matchingInfo).hide();
         $("#" + industry.config.estate.water_supply_plan).show();
         $("#" + industry.config.estate.power_supply_plan).show();
         $("#" + industry.config.estate.air_supply_plan).show();
         $("#" + industry.config.estate.heating_plan).show();
+
+        $("#" + industry.config.estate.supply).hide();
+        $("#" + industry.config.estate.matchingInfo).hide();
     },
     unit: function () {
-        $("#" + industry.config.unit.spanWidth).show();
-        $("#" + industry.config.unit.spanNumber).show();
-        $("#" + industry.config.unit.spanLength).show();
+        $("#" + industry.config.unit.span).show();
     },
     house: function () {
         $("#" + industry.config.house.corollaryEquipment).show();
         $("#" + industry.config.house.useEnvironment).show();
-        $("#" + industry.config.house.newsHuxing).hide();
+
+        $("#" + industry.config.house.airConditioner).hide();
+        $("#" + industry.config.house.newWind).hide();
+        $("#" + industry.config.house.heating).hide();
+        $("#" + industry.config.house.intelligent).hide();
+        $("#" + industry.config.house.water).hide();
     }
 };
 
