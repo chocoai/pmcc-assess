@@ -19,10 +19,10 @@ var unitDecorate;
         },
         loadDataDicList: function () {
             var cols = [];
+            cols.push({field: 'location', title: '所在位置'});
             cols.push({field: 'decorationPartName', title: '装修部位'});
             cols.push({field: 'decoratingMaterialName', title: '装修材料'});
             cols.push({field: 'materialPriceName', title: '材料价格区间'});
-            cols.push({field: 'location', title: '所在位置'});
             cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -34,7 +34,7 @@ var unitDecorate;
                 }
             });
             $("#" + unitDecorate.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitDecorate.prototype.config().table, getContextPath()+"/basicUnitDecorate/getBootstrapTableVo", cols, {
+            TableInit(unitDecorate.prototype.config().table, getContextPath() + "/basicUnitDecorate/getBootstrapTableVo", cols, {
                 unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
@@ -47,7 +47,7 @@ var unitDecorate;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitDecorate/deleteBasicUnitDecorate",
+                url: getContextPath() + "/basicUnitDecorate/deleteBasicUnitDecorate",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -74,9 +74,9 @@ var unitDecorate;
                 return false;
             }
             var data = formParams(unitDecorate.prototype.config().frm);
-            data.unitId = unitCommon.getUnitId() ;
+            data.unitId = unitCommon.getUnitId();
             $.ajax({
-                url: getContextPath()+"/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
+                url: getContextPath() + "/basicUnitDecorate/saveAndUpdateBasicUnitDecorate",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -97,7 +97,7 @@ var unitDecorate;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitDecorate/getBasicUnitDecorateById",
+                url: getContextPath() + "/basicUnitDecorate/getBasicUnitDecorateById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -135,7 +135,7 @@ var unitDecorate;
     }
 
     //绑定事件
-    $('#'+unitDecorate.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + unitDecorate.prototype.config().table).closest('.x_panel').bind('click', function () {
         unitDecorate.prototype.loadDataDicList();
     })
 })();
@@ -155,22 +155,14 @@ var unitHuxing;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'description', title: '描述'});
-            cols.push({field: 'spanLength', title: '跨长'});
+            cols.push({field: 'name', title: '户型'});
+            cols.push({field: 'area', title: '面积'});
             cols.push({field: 'orientationName', title: '朝向'});
-            cols.push({field: 'houseLayoutName', title: '房型'});
+            cols.push({field: 'spanLength', title: '跨长'});
             cols.push({field: 'spanWidth', title: '跨宽'});
             cols.push({field: 'spanNumber', title: '跨数'});
+            cols.push({field: 'description', title: '描述'});
             cols.push({field: 'fileViewName', title: '户型图'});
-            cols.push({
-                field: 'houseCategory', title: '房型', formatter: function (value, row, index) {
-                    var str = "";
-                    if (unitHuxing.prototype.isNotNull(row.houseCategory)){
-                        str = unitHuxing.prototype.rule("formatter",JSON.parse(row.houseCategory));
-                    }
-                    return str;
-                }
-            });
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -181,7 +173,7 @@ var unitHuxing;
                 }
             });
             $("#" + unitHuxing.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitHuxing.prototype.config().table, getContextPath()+"/basicUnitHuxing/getBootstrapTableVo", cols, {
+            TableInit(unitHuxing.prototype.config().table, getContextPath() + "/basicUnitHuxing/getBootstrapTableVo", cols, {
                 unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
@@ -194,7 +186,7 @@ var unitHuxing;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitHuxing/deleteBasicUnitHuxing",
+                url: getContextPath() + "/basicUnitHuxing/deleteBasicUnitHuxing",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -221,10 +213,11 @@ var unitHuxing;
                 return false;
             }
             var data = formParams(unitHuxing.prototype.config().frm);
-            data.unitId = unitCommon.getUnitId() ;
-            data.houseCategory = unitHuxing.prototype.rule("get",data);
+            data.unitId = unitCommon.getUnitId();
+            data.houseCategory = unitHuxing.prototype.rule("get", data);
+            data.name = unitHuxing.prototype.rule("formatter", data);
             $.ajax({
-                url: getContextPath()+"/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
+                url: getContextPath() + "/basicUnitHuxing/saveAndUpdateBasicUnitHuxing",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -273,7 +266,7 @@ var unitHuxing;
                 return text;
             }
             //转为json存入数据库
-            if (flag == "get"){
+            if (flag == "get") {
                 var data = {};
                 if (unitHuxing.prototype.isNotNull(item.house)) {
                     data.house = item.house;
@@ -296,7 +289,7 @@ var unitHuxing;
                 return JSON.stringify(data);
             }
             //赋值
-            if (flag == "set"){
+            if (flag == "set") {
                 if (unitHuxing.prototype.isNotNull(item.house)) {
                     $("#" + unitHuxing.prototype.config().frm + " input[name='house']").val(item.house);
                 }
@@ -325,16 +318,16 @@ var unitHuxing;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitHuxing/getBasicUnitHuxingById",
+                url: getContextPath() + "/basicUnitHuxing/getBasicUnitHuxingById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        var data = result.data ;
-                        if (unitHuxing.prototype.isNotNull(data)){
+                        var data = result.data;
+                        if (unitHuxing.prototype.isNotNull(data)) {
                             unitHuxing.prototype.init(data);
-                        }else {
+                        } else {
                             unitHuxing.prototype.init({});
                         }
                         $('#' + unitHuxing.prototype.config().box).modal("show");
@@ -354,7 +347,7 @@ var unitHuxing;
                 formData: {
                     fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                     tableName: AssessDBKey.BasicUnitHuxing,
-                    tableId: item.id
+                    tableId: unitHuxing.prototype.isNotNull(item.id) ? item.id : 0
                 },
                 deleteFlag: true
             });
@@ -364,13 +357,13 @@ var unitHuxing;
                 formData: {
                     fieldsName: unitHuxing.prototype.config().unitHuxingFileIDFildName,
                     tableName: AssessDBKey.BasicUnitHuxing,
-                    tableId: item.id
+                    tableId: unitHuxing.prototype.isNotNull(item.id) ? item.id : 0
                 },
                 deleteFlag: true
             })
 
-            if (unitHuxing.prototype.isNotNull(item.houseCategory)){
-                unitHuxing.prototype.rule("set",JSON.parse(item.houseCategory));
+            if (unitHuxing.prototype.isNotNull(item.houseCategory)) {
+                unitHuxing.prototype.rule("set", JSON.parse(item.houseCategory));
             }
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseHouse_layout, item.houseLayout, function (html, data) {
                 $("#" + unitHuxing.prototype.config().frm).find('select.houseLayout').empty().html(html).trigger('change');
@@ -382,7 +375,7 @@ var unitHuxing;
     }
 
     //绑定事件
-    $('#'+unitHuxing.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + unitHuxing.prototype.config().table).closest('.x_panel').bind('click', function () {
         unitHuxing.prototype.loadDataDicList();
     })
 })();
@@ -393,8 +386,8 @@ var unitElevator;
 
     };
     unitElevator.prototype = {
-        isNotNull:function (item) {
-            if (item){
+        isNotNull: function (item) {
+            if (item) {
                 return true;
             }
             return false;
@@ -408,8 +401,10 @@ var unitElevator;
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'number', title: '电梯数量'});
+            cols.push({field: 'maintenance', title: '电梯维护情况'});
             cols.push({field: 'typeName', title: '电梯类型'});
+            cols.push({field: 'brand', title: '电梯品牌'});
+            cols.push({field: 'number', title: '电梯数量'});
             cols.push({field: 'quasiLoadNumber', title: '准载人数'});
             cols.push({field: 'quasiLoadWeight', title: '准载重量'});
             cols.push({field: 'runningSpeed', title: '运行速度'});
@@ -423,7 +418,7 @@ var unitElevator;
                 }
             });
             $("#" + unitElevator.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitElevator.prototype.config().table, getContextPath()+"/basicUnitElevator/getBootstrapTableVo", cols, {
+            TableInit(unitElevator.prototype.config().table, getContextPath() + "/basicUnitElevator/getBootstrapTableVo", cols, {
                 unitId: unitCommon.getUnitId()
             }, {
                 showColumns: false,
@@ -436,7 +431,7 @@ var unitElevator;
         },
         removeData: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitElevator/deleteBasicUnitElevator",
+                url: getContextPath() + "/basicUnitElevator/deleteBasicUnitElevator",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -465,7 +460,7 @@ var unitElevator;
             var data = formParams(unitElevator.prototype.config().frm);
             data.unitId = unitCommon.getUnitId();
             $.ajax({
-                url: getContextPath()+"/basicUnitElevator/saveAndUpdateBasicUnitElevator",
+                url: getContextPath() + "/basicUnitElevator/saveAndUpdateBasicUnitElevator",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -486,7 +481,7 @@ var unitElevator;
         },
         getAndInit: function (id) {
             $.ajax({
-                url: getContextPath()+"/basicUnitElevator/getBasicUnitElevatorById",
+                url: getContextPath() + "/basicUnitElevator/getBasicUnitElevatorById",
                 type: "get",
                 dataType: "json",
                 data: {id: id},
@@ -501,7 +496,7 @@ var unitElevator;
                 }
             })
         },
-        init:function (item) {
+        init: function (item) {
             $("#" + unitElevator.prototype.config().frm).clearAll();
             $("#" + unitElevator.prototype.config().frm).initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {
@@ -511,7 +506,7 @@ var unitElevator;
     }
 
     //绑定事件
-    $('#'+unitElevator.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + unitElevator.prototype.config().table).closest('.x_panel').bind('click', function () {
         unitElevator.prototype.loadDataDicList();
     })
 })();

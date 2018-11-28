@@ -387,6 +387,8 @@ public class BasicEstateService {
         Map<String, Object> objectMap = Maps.newHashMap();
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
+        if(applyId==null||applyId==0)
+            where.setCreator(commonService.thisUserAccount());
         List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
         if (CollectionUtils.isEmpty(basicEstates)) return null;
         BasicEstate basicEstate = basicEstates.get(0);

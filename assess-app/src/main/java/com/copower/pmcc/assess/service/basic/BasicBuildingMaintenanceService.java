@@ -123,12 +123,10 @@ public class BasicBuildingMaintenanceService {
         if (basicBuildingMaintenance.getCategory() != null){
             dataDic = baseDataDicService.getDataDicById(basicBuildingMaintenance.getCategory());
             vo.setCategoryName(dataDic.getName());
-            dataDic = null;
         }
         if (basicBuildingMaintenance.getMaterialQuality() != null){
             dataDic = baseDataDicService.getDataDicById(basicBuildingMaintenance.getMaterialQuality());
             vo.setMaterialQualityName(dataDic.getName());
-            dataDic = null;
         }
         return vo;
     }

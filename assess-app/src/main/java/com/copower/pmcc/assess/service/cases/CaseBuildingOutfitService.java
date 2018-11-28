@@ -1,7 +1,5 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBuildingOutfitDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingOutfit;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingOutfitVo;
@@ -76,33 +74,18 @@ public class CaseBuildingOutfitService {
         CaseBuildingOutfitVo vo = new CaseBuildingOutfitVo();
         BeanUtils.copyProperties(caseBuildingOutfit, vo);
         if (caseBuildingOutfit.getDecorationPart() != null) {
-            vo.setDecorationPartName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATION_PART, caseBuildingOutfit.getDecorationPart()));
+            vo.setDecorationPartName( baseDataDicService.getNameById(caseBuildingOutfit.getDecorationPart()));
         }
         if (caseBuildingOutfit.getDecoratingMaterial() != null) {
-            vo.setDecoratingMaterialName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_DECORATING_MATERIAL, caseBuildingOutfit.getDecoratingMaterial()));
+            vo.setDecoratingMaterialName( baseDataDicService.getNameById(caseBuildingOutfit.getDecoratingMaterial()));
         }
         if (caseBuildingOutfit.getMaterialPrice() != null) {
-            vo.setMaterialPriceName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_MATERIAL_PRICE, caseBuildingOutfit.getMaterialPrice()));
+            vo.setMaterialPriceName( baseDataDicService.getNameById(caseBuildingOutfit.getMaterialPrice()));
         }
         if (caseBuildingOutfit.getConstructionTechnology() != null) {
-            vo.setConstructionTechnologyName(getValue(AssessExamineTaskConstant.EXAMINE_BUILDING_CONSTRUCTION_TECHNOLOGY, caseBuildingOutfit.getConstructionTechnology()));
+            vo.setConstructionTechnologyName( baseDataDicService.getNameById(caseBuildingOutfit.getConstructionTechnology()));
         }
         return vo;
-    }
-
-    private String getValue(String key, Integer v) {
-        StringBuilder builder = new StringBuilder(1024);
-        List<BaseDataDic> baseDataDic = baseDataDicService.getCacheDataDicList(key);
-        if (baseDataDic.size() >= 1) {
-            if (v != null) {
-                for (BaseDataDic base : baseDataDic) {
-                    if (base.getId().intValue() == v.intValue()) {
-                        builder.append(base.getName());
-                    }
-                }
-            }
-        }
-        return builder.toString();
     }
 
     /**

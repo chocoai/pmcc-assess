@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingFunction;
  * @Description:
  */
 public class CaseBuildingFunctionVo extends CaseBuildingFunction {
+    private String typeName;
     private String decorationPartName;
 
     private String decoratingMaterialName;
@@ -15,6 +16,14 @@ public class CaseBuildingFunctionVo extends CaseBuildingFunction {
     private String materialPriceName;
 
     private String constructionTechnologyName;
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getDecorationPartName() {
         return decorationPartName;

@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.cases.dao.CaseEstateDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.cases.CaseEstateVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -64,6 +65,8 @@ public class CaseEstateService {
     private DataDeveloperService dataDeveloperService;
     @Autowired
     private DataBlockService dataBlockService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -332,6 +335,18 @@ public class CaseEstateService {
             if (dataBlock != null) {
                 vo.setBlockName(dataBlock.getName());
             }
+        }
+        if (caseEstate.getSupplyGas() != null) {
+            vo.setSupplyGasName(baseDataDicService.getNameById(caseEstate.getSupplyGas()));
+        }
+        if (caseEstate.getSupplyPower() != null) {
+            vo.setSupplyPowerName(baseDataDicService.getNameById(caseEstate.getSupplyPower()));
+        }
+        if (caseEstate.getSupplyWater() != null) {
+            vo.setSupplyWaterName(baseDataDicService.getNameById(caseEstate.getSupplyWater()));
+        }
+        if (caseEstate.getSupplyHeating() != null) {
+            vo.setSupplyHeatingName(baseDataDicService.getNameById(caseEstate.getSupplyHeating()));
         }
         return vo;
     }

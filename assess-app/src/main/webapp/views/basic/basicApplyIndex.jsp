@@ -357,8 +357,6 @@
     objectData.autocompleteHouse = function (_this) {
         var that = _this;
         var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
-        if (!objectData.isNotBlank(unitId)) {
-        }
         var childs = $(_this).closest('.form-group').children();
         childs.eq(1).show();
         childs.eq(2).hide();

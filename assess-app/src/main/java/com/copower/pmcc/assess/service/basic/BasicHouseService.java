@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basic.entity.*;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingLeaseVo;
@@ -93,7 +92,7 @@ public class BasicHouseService {
     private CaseHouseService caseHouseService;
     @Autowired
     private CaseHouseTradingService caseHouseTradingService;
-    
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -158,28 +157,20 @@ public class BasicHouseService {
     }
 
     public BasicHouseVo getBasicHouseVo(BasicHouse basicHouse) {
-        if (basicHouse == null){
+        if (basicHouse == null) {
             return null;
         }
         BasicHouseVo vo = new BasicHouseVo();
-        BaseDataDic dataDic = null;
         BeanUtils.copyProperties(basicHouse, vo);
         if (basicHouse.getUseEnvironment() != null) {
-            dataDic = baseDataDicService.getDataDicById(basicHouse.getUseEnvironment());
-            vo.setUseEnvironmentName(dataDic.getName());
+            vo.setUseEnvironmentName(baseDataDicService.getNameById(basicHouse.getUseEnvironment()));
         }
         if (basicHouse.getCertUse() != null) {
-            dataDic = baseDataDicService.getDataDicById(basicHouse.getCertUse());
-            vo.setCertUseName(dataDic.getName());
+            vo.setCertUseName(baseDataDicService.getNameById(basicHouse.getCertUse()));
         }
         if (basicHouse.getPracticalUse() != null) {
-            dataDic = baseDataDicService.getDataDicById(basicHouse.getPracticalUse());
-            vo.setPracticalUseName(dataDic.getName());
+            vo.setPracticalUseName(baseDataDicService.getNameById(basicHouse.getPracticalUse()));
         }
-        if (basicHouse.getHuxingId() != null) {
-            vo.setHuxingName(basicUnitHuxingService.getHouseCategoryNameById(basicHouse.getHuxingId()));
-        }
-        vo.setNewsHuxingName(baseDataDicService.getNameById(basicHouse.getNewsHuxing()));
         return vo;
     }
 
@@ -198,7 +189,7 @@ public class BasicHouseService {
         if (CollectionUtils.isEmpty(houseList)) return;
         BasicHouse house = houseList.get(0);
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(house.getId());
-        
+
         List<BasicHouseTradingSell> basicHouseTradingSellList = null;
         List<BasicHouseTradingLease> basicHouseTradingLeaseList = null;
         List<BasicHouseRoom> basicHouseRoomList = null;
@@ -217,7 +208,7 @@ public class BasicHouseService {
         BasicHouseFaceStreet queryBasicHouseFaceStreet = new BasicHouseFaceStreet();
         BasicHouseEquipment queryBasicHouseEquipment = new BasicHouseEquipment();
         BasicHouseCorollaryEquipment queryBasicHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-        
+
 
         queryLease.setHouseId(house.getId());
         querySell.setHouseId(house.getId());
@@ -227,7 +218,7 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setHouseId(house.getId());
         queryBasicHouseEquipment.setHouseId(house.getId());
         queryBasicHouseCorollaryEquipment.setHouseId(house.getId());
-       
+
 
         queryLease.setCreator(commonService.thisUserAccount());
         querySell.setCreator(commonService.thisUserAccount());
@@ -237,7 +228,7 @@ public class BasicHouseService {
         queryBasicHouseFaceStreet.setCreator(commonService.thisUserAccount());
         queryBasicHouseEquipment.setCreator(commonService.thisUserAccount());
         queryBasicHouseCorollaryEquipment.setCreator(commonService.thisUserAccount());
-        
+
         basicHouseTradingSellList = basicHouseTradingSellService.basicHouseTradingSells(querySell);
         basicHouseTradingLeaseList = basicHouseTradingLeaseService.basicHouseTradingLeaseList(queryLease);
         basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(queryRoom);
@@ -247,13 +238,13 @@ public class BasicHouseService {
         basicHouseEquipmentList = basicHouseEquipmentService.basicHouseEquipmentList(queryBasicHouseEquipment);
         basicHouseCorollaryEquipmentList = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(queryBasicHouseCorollaryEquipment);
 
-        
+
         if (!ObjectUtils.isEmpty(basicHouseTradingSellList)) {
             basicHouseTradingSellList.forEach(oo -> {
                 try {
                     basicHouseTradingSellService.deleteBasicHouseTradingSell(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
@@ -262,7 +253,7 @@ public class BasicHouseService {
                 try {
                     basicHouseTradingLeaseService.deleteBasicHouseTradingLease(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
@@ -271,64 +262,64 @@ public class BasicHouseService {
                 try {
                     basicHouseRoomService.deleteBasicHouseRoom(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseWaterList)){
+        if (!ObjectUtils.isEmpty(basicHouseWaterList)) {
             basicHouseWaterList.forEach(oo -> {
                 try {
                     basicHouseWaterService.deleteBasicHouseWater(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseIntelligentList)){
+        if (!ObjectUtils.isEmpty(basicHouseIntelligentList)) {
             basicHouseIntelligentList.forEach(oo -> {
                 try {
                     basicHouseIntelligentService.deleteBasicHouseIntelligent(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)){
+        if (!ObjectUtils.isEmpty(basicHouseFaceStreetList)) {
             basicHouseFaceStreetList.forEach(oo -> {
                 try {
                     basicHouseFaceStreetService.deleteBasicHouseFaceStreet(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseEquipmentList)){
+        if (!ObjectUtils.isEmpty(basicHouseEquipmentList)) {
             basicHouseEquipmentList.forEach(oo -> {
                 try {
                     basicHouseEquipmentService.deleteBasicHouseEquipment(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)){
+        if (!ObjectUtils.isEmpty(basicHouseCorollaryEquipmentList)) {
             basicHouseCorollaryEquipmentList.forEach(oo -> {
                 try {
                     basicHouseCorollaryEquipmentService.deleteBasicHouseCorollaryEquipment(oo.getId());
                 } catch (Exception e1) {
-                    logger.error(e1.getMessage(),e1);
+                    logger.error(e1.getMessage(), e1);
                 }
             });
         }
-        
+
         //清理附件
         SysAttachmentDto queryFile = new SysAttachmentDto();
         queryFile.setTableId(house.getId());
         queryFile.setCreater(commonService.thisUserAccount());
         queryFile.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
         sysAttachmentDtoList = baseAttachmentService.getAttachmentList(queryFile);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)){
-            for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
+        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
                 baseAttachmentService.deleteAttachment(sysAttachmentDto.getId());
             }
         }
@@ -346,12 +337,21 @@ public class BasicHouseService {
      * @return
      * @throws Exception
      */
-    public BasicHouse getBasicHouseByApplyId(Integer applyId) throws Exception {
+    public Map<String, Object> getBasicHouseByApplyId(Integer applyId) throws Exception {
+        Map<String, Object> objectMap = Maps.newHashMap();
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
+        if(applyId==null||applyId==0){
+            where.setCreator(commonService.thisUserAccount());
+        }
         List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
         if (CollectionUtils.isEmpty(basicHouses)) return null;
-        return basicHouses.get(0);
+        BasicHouse basicHouse = basicHouses.get(0);
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
+
+        BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading));
+        return objectMap;
     }
 
     /**
@@ -365,18 +365,19 @@ public class BasicHouseService {
         this.clearInvalidData();
         Map<String, Object> objectMap = Maps.newHashMap();
 
+
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setHouseNumber(houseNumber);
         basicHouse.setApplyId(0);
         basicHouse.setCreator(commonService.thisUserAccount());
         basicHouseDao.saveBasicHouse(basicHouse);
-        objectMap.put("house", getBasicHouseVo(basicHouse));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setHouseId(basicHouse.getId());
         basicHouseTrading.setCreator(commonService.thisUserAccount());
         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-        objectMap.put("trading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         return objectMap;
     }
 
@@ -401,7 +402,7 @@ public class BasicHouseService {
         basicHouse.setGmtCreated(null);
         basicHouse.setGmtModified(null);
         basicHouseDao.saveBasicHouse(basicHouse);
-        objectMap.put("house", getBasicHouseVo(basicHouse));
+        objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));
 
         //附件拷贝
         SysAttachmentDto queryFile = new SysAttachmentDto();
@@ -428,7 +429,7 @@ public class BasicHouseService {
             basicHouseTrading.setGmtCreated(null);
             basicHouseTrading.setGmtModified(null);
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading);
-            objectMap.put("trading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
+            objectMap.put(FormatUtils.toLowerCaseFirstChar(CaseHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTrading));
         }
 
 

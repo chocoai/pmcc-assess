@@ -8,4 +8,13 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
  * @Description:
  */
 public class CaseUnitElevatorVo extends CaseUnitElevator {
+    private String typeName;
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 }

@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Auther: zch
@@ -71,6 +68,17 @@ public class BasicUnitHuxingController {
                 }
             }
             return basicUnitHuxingService.getBootstrapTableVo(basicUnitHuxing);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return null;
+        }
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getSelectHuxingList", name = "获取选择户型数据列表")
+    public BootstrapTableVo getSelectHuxingList(Integer basicApplyId,Integer caseUnitId){
+        try {
+            return basicUnitHuxingService.getSelectHuxingList(basicApplyId,caseUnitId);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return null;

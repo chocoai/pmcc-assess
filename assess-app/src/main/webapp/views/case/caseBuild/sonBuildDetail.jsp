@@ -1,56 +1,83 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<div class="x_content">
-    <div class="x_title">
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
         <h3>
-            楼栋外装 <label class="control-label ExamineBuildingOutfitList"></label>
+            楼栋外装
         </h3>
         <div class="clearfix"></div>
     </div>
-    <div>
-        <table class="table table-bordered" id="ExamineBuildingOutfitList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-<div class="x_content" id="industrySurface">
-    <div class="x_title">
-        <h3>
-            层面结构 <label class="control-label ExamineBuildingSurfaceList"></label>
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div>
-        <table class="table table-bordered" id="ExamineBuildingSurfaceList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-<div class="x_content" id="industryMaintenance">
-    <div class="x_title">
-        <h3>
-            维护结构 <label class="control-label ExamineBuildingMaintenanceList"></label>
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div>
-        <table class="table table-bordered" id="ExamineBuildingMaintenanceList">
-            <!-- cerare document add ajax data-->
-        </table>
+    <div class="x_content collapse">
+        <div>
+            <table class="table table-bordered" id="ExamineBuildingOutfitList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
 </div>
 
-<div class="x_content">
-    <div class="x_title">
+<c:if test="${caseBuildingMain.type eq 1}">
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h3>
+                层面结构
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <div>
+                <table class="table table-bordered" id="ExamineBuildingSurfaceList">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title collapse-link">
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i
+                        class="fa fa-chevron-up"></i></a></li>
+            </ul>
+            <h3>
+                维护结构
+            </h3>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content collapse">
+            <div>
+                <table class="table table-bordered" id="ExamineBuildingMaintenanceList">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </div>
+        </div>
+    </div>
+</c:if>
+
+<div class="x_panel">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
         <h3>
-            建筑功能 <label class="control-label examineBuildingFunctionList"></label>
+            建筑功能
         </h3>
         <div class="clearfix"></div>
     </div>
-    <div>
-        <table class="table table-bordered" id="examineBuildingFunctionList">
-            <!-- cerare document add ajax data-->
-        </table>
+    <div class="x_content collapse">
+        <div>
+            <table class="table table-bordered" id="examineBuildingFunctionList">
+                <!-- cerare document add ajax data-->
+            </table>
+        </div>
     </div>
 </div>
 <script type="application/javascript">
@@ -116,7 +143,7 @@
                         $("#" + buildingModel.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().sonTable, "${pageContext.request.contextPath}/caseBuildingOutfit/getCaseBuildingOutfitList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
-                            approval:true
+                            approval: true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -137,7 +164,7 @@
                         $("#" + buildingModel.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/caseBuildingSurface/getCaseBuildingSurfaceList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
-                            approval:true
+                            approval: true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -158,7 +185,7 @@
                         $("#" + buildingModel.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/caseBuildingMaintenance/getCaseBuildingMaintenanceList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
-                            approval:true
+                            approval: true
                         }, {
                             showColumns: false,
                             showRefresh: false,
@@ -181,7 +208,7 @@
                         $("#" + buildingModel.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModel.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/caseBuildingFunction/getCaseBuildingFunctionList", cols, {
                             buildingId: buildingModel.prototype.getBuildingId(),
-                            approval:true
+                            approval: true
                         }, {
                             showColumns: false,
                             showRefresh: false,

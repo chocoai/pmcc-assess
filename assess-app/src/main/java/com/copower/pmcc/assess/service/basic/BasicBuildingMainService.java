@@ -59,6 +59,8 @@ public class BasicBuildingMainService {
     public BasicBuildingMain getBasicBuildingMainByApplyId(Integer applyId) throws Exception {
         BasicBuildingMain where=new BasicBuildingMain();
         where.setApplyId(applyId);
+        if(applyId==null||applyId==0)
+            where.setCreator(commonService.thisUserAccount());
         List<BasicBuildingMain> buildingMainList = basicBuildingMainDao.basicBuildingMainList(where);
         if(CollectionUtils.isEmpty(buildingMainList)) return null;
         return buildingMainList.get(0);

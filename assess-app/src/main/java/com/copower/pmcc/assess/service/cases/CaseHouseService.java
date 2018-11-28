@@ -278,8 +278,6 @@ public class CaseHouseService {
         if (caseHouse.getPracticalUse() != null) {
             vo.setPracticalUseName(baseDataDicService.getNameById(caseHouse.getPracticalUse()));
         }
-        if (caseHouse.getNewsHuxing() != null)
-            vo.setNewsHuxingName(baseDataDicService.getNameById(caseHouse.getNewsHuxing()));
         return vo;
     }
 }
