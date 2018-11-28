@@ -12,7 +12,7 @@
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
         <div class="right_col" role="main">
-            <div class="x_panel">
+            <div class="x_panel" style="width:800px; height: 400px;">
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -24,7 +24,11 @@
                 </div>
                 <div class="x_content">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                        <img id="imgA" src="https://www.baidu.com/img/bd_logo1.png?where=super"/>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div id="imgA" class="ui-widget-content">
+                            <img src="https://www.baidu.com/img/bd_logo1.png?where=super" width="220" height="40"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,13 +41,15 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/rotate/jquery.rotate.min.js"></script>
 <script type="text/javascript">
+
     var obj = {};
 
     /**
      * 背景设置
      */
     obj.setBackGround = function () {
-        $(".container").css('background', 'url(${pageContext.request.contextPath}/views/data/DF8A8A34.png)');
+        var url = "${pageContext.request.contextPath}/views/data/DF8A8A34.png";//left no-repeat
+        $(".x_panel").css('background', 'url(' + url + ')');
     };
 
     /**
@@ -69,10 +75,11 @@
         });
     };
 
+
     $(document).ready(function () {
         obj.setBackGround();
         //缩放
-        // $("#imgA").resizable();
+        $("#imgA").resizable();
         //开启拖动
         $("#imgA").draggable();
         //开启旋转
