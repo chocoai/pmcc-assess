@@ -7,8 +7,8 @@ houseModelFun.config = {
     },
     trading: {
         frm: "basicTradingFrm",
-        leaseID: "BasicHouseTradingLease",//房屋出租
-        sellID: "BasicHouseTradingSell",//房屋出售
+        leaseID: "ExamineHouseTradingLease",//房屋出租
+        sellID: "ExamineHouseTradingSell",//房屋出售
         totalSale: "totalSale",//出售总额
         divBoxSon: "divBoxTradingLeaseAndSell",
         tableSon: "tableTradingLeaseAndSell",
@@ -48,127 +48,12 @@ houseModelFun.isNotBlankObject = function (obj) {
     return false
 };
 
-houseModelFun.uploadFile = function (fieldsName, table, id) {
-    FileUtils.uploadFiles({
-        target: fieldsName,
-        disabledTarget: "btn_submit",
-        formData: {
-            fieldsName: fieldsName,
-            tableName: table,
-            tableId: this.isNotBlank(id) ? id : "0",
-            // creater: "${currUserAccount}"
-        },
-        deleteFlag: true
-    });
-};
-houseModelFun.showFile = function (fieldsName, table, id) {
-    FileUtils.getFileShows({
-        target: fieldsName,
-        formData: {
-            fieldsName: fieldsName,
-            tableName: table,
-            tableId: this.isNotBlank(id) ? id : "0",
-            // creater: "${currUserAccount}"
-        },
-        deleteFlag: true
-    })
-};
-
 houseModelFun.select2Assignment = function (frm, data, name) {
     if (this.isNotBlank(data)) {
         $("#" + frm).find("select." + name).val(data).trigger("change");
     } else {
         $("#" + frm).find("select." + name).val(null).trigger("change");
     }
-};
-
-houseModelFun.houseInit = function (item) {
-    this.showFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, basicIndexCommon.getHouseId());
-    this.uploadFile(houseModelFun.config.house.houseFileId, AssessDBKey.BasicHouse, basicIndexCommon.getHouseId());
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
-        $("#" + houseModelFun.config.house.frm).find("select.certUse").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePracticalUse, item.practicalUse, function (html, data) {
-        $("#" + houseModelFun.config.house.frm).find("select.practicalUse").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, item.useEnvironment, function (html, data) {
-        $("#" + houseModelFun.config.house.frm).find("select.useEnvironment").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNewsHuxing, item.newsHuxing, function (html, data) {
-        $("#" + houseModelFun.config.house.frm).find("select.newsHuxing").empty().html(html).trigger('change');
-    });
-};
-
-houseModelFun.unitHuxingSelectLoad = function (item) {
-    var unitId = $("#" + basicIndexCommon.getAppId()).find("input[name='" + basicIndexCommon.config.basicUnit.key + "']").attr("data-id");
-    unitId = this.isNotBlank(unitId) ? unitId : "0";
-    $.ajax({
-        url: getContextPath()+"/basicUnitHuxing/basicUnitHuxingList",
-        type: "get",
-        dataType: "json",
-        data: {unitId: unitId},
-        success: function (result) {
-            if (result.ret) {
-                var data = result.data;
-                var retHtml = '<option value="" selected>-请选择-</option>';
-                $.each(result.data, function (i, item) {
-                    var houseCategory = "";
-                    try {
-                        houseCategory = unitHuxing.prototype.rule("formatter", JSON.parse(item.houseCategory));
-                    } catch (e) {
-                        console.error(e);
-                        console.log("函数失效!");
-                    }
-                    retHtml += ' <option value="' + item.id + '">' + houseCategory + '</option>';
-                });
-                $(item).prev().empty().append(retHtml);
-            }
-        },
-        error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
-        }
-    });
-};
-
-houseModelFun.initForm = function (itemA,itemB) {
-    $("#" + houseModelFun.config.house.frm).clearAll();
-    $("#" + this.config.trading.frm).clearAll();
-    $("#" + houseModelFun.config.house.frm).initForm(itemA);
-    $("#" + this.config.trading.frm).initForm(itemB);
-    $("#" + this.config.trading.frm).find(".tradingTime").val(formatDate(itemB.tradingTime));
-    this.tradingInit(itemB);
-    this.houseInit(itemA);
-};
-
-houseModelFun.tradingInit = function (item) {
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, item.taxBurden, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.taxBurden").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.basicHouseTransactionType, item.tradingType, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.tradingType").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, item.descriptionType, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.descriptionType").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseNormalTransaction, item.normalTransaction, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.normalTransaction").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, item.paymentMethod, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.paymentMethod").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseClassificationInformationSources, item.informationType, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.informationType").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, item.financingConditions, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.financingConditions").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, item.scopeProperty, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.scopeProperty").empty().html(html).trigger('change');
-    });
-    AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_information_sources, item.information, function (html, data) {
-        $("#" + houseModelFun.config.trading.frm).find("select.information").empty().html(html).trigger('change');
-    });
-
 };
 
 houseModelFun.tradingSellAndLease = {
@@ -245,7 +130,7 @@ houseModelFun.tradingSellAndLease = {
         });
         $("#" + houseModelFun.config.trading.tableSon).bootstrapTable('destroy');
         TableInit(houseModelFun.config.trading.tableSon, getContextPath()+"/basicHouseTradingLeaseAndSell/getLeaseAndSellVos", cols, {
-            type: type_, houseId: basicIndexCommon.getHouseId()
+            type: type_, houseId: houseCommon.getHouseId()
         }, {
             showColumns: false,
             showRefresh: false,

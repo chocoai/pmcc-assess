@@ -16,13 +16,11 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -250,20 +248,10 @@ public class CaseHouseService {
         return caseHouseDao.deleteHouse(id);
     }
 
-    public List<CaseHouse> autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) throws Exception {
+    public List<CustomCaseEntity> autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) throws Exception {
         PageHelper.startPage(0, maxRows);
         List<CustomCaseEntity> houseList = caseHouseDao.getLatestVersionHouseList(houseNumber, unitId);
-        List<CaseHouse> caseHouseList = Lists.newArrayList();
-        if (!CollectionUtils.isEmpty(houseList)) {
-            for (CustomCaseEntity caseEntity : houseList) {
-                CaseHouse caseHouse = new CaseHouse();
-                caseHouse.setId(caseEntity.getId());
-                caseHouse.setHouseNumber(caseEntity.getName());
-                caseHouse.setVersion(caseEntity.getVersion());
-                caseHouseList.add(caseHouse);
-            }
-        }
-        return caseHouseList;
+        return houseList;
     }
 
     public CaseHouseVo getCaseHouseVo(CaseHouse caseHouse) {

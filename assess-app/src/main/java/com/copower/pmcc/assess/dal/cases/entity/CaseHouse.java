@@ -15,8 +15,6 @@ public class CaseHouse {
 
     private String huxingName;
 
-    private String huxingPlan;
-
     private String newHuxingName;
 
     private Integer certUse;
@@ -87,14 +85,6 @@ public class CaseHouse {
 
     public void setHuxingName(String huxingName) {
         this.huxingName = huxingName == null ? null : huxingName.trim();
-    }
-
-    public String getHuxingPlan() {
-        return huxingPlan;
-    }
-
-    public void setHuxingPlan(String huxingPlan) {
-        this.huxingPlan = huxingPlan == null ? null : huxingPlan.trim();
     }
 
     public String getNewHuxingName() {

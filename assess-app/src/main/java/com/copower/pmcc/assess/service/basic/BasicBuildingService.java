@@ -223,11 +223,11 @@ public class BasicBuildingService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicBuildingMain addBuildingMainAndBuilding(String buildingNumber) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
 
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
         basicBuildingMain.setBuildingNumber(buildingNumber);
-        basicBuildingMain.setBuildingName(buildingNumber+'栋');
+        basicBuildingMain.setBuildingName(buildingNumber + '栋');
         basicBuildingMain.setApplyId(0);
         basicBuildingMain.setCreator(commonService.thisUserAccount());
         basicBuildingMainDao.saveBasicBuildingMain(basicBuildingMain);
@@ -241,6 +241,7 @@ public class BasicBuildingService {
 
     /**
      * 根据主表id获取所有楼栋部分信息
+     *
      * @param basicBuildingMainId
      * @return
      */
@@ -257,10 +258,11 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public void clearInvalidData() throws Exception {
+    public void clearInvalidData(Integer applyId) throws Exception {
         BasicBuildingMain where = new BasicBuildingMain();
-        where.setApplyId(0);
-        where.setCreator(commonService.thisUserAccount());
+        where.setApplyId(applyId);
+        if (applyId.equals(0))
+            where.setCreator(commonService.thisUserAccount());
         List<BasicBuildingMain> buildingMainList = basicBuildingMainDao.basicBuildingMainList(where);
         BasicBuildingMain basicBuildingMain = null;
         if (CollectionUtils.isEmpty(buildingMainList)) return;
@@ -328,7 +330,7 @@ public class BasicBuildingService {
         if (caseMainBuildingId == null) {
             throw new Exception("null point");
         }
-        this.clearInvalidData();//清理数据
+        this.clearInvalidData(0);//清理数据
         CaseBuildingMain caseBuildingMain = caseBuildingMainService.getCaseBuildingMainById(caseMainBuildingId);
         if (caseBuildingMain == null) return null;
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();

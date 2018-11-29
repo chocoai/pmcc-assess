@@ -11,10 +11,8 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -95,20 +93,10 @@ public class CaseBuildingMainService {
         return caseBuildingMainDao.updateEstateId(oldEstateId, newEstateId);
     }
 
-    public List<CaseBuildingMain> autoCompleteCaseBuildingMain(String buildingNumber, Integer estateId, Integer maxRows) {
+    public List<CustomCaseEntity> autoCompleteCaseBuildingMain(String buildingNumber, Integer estateId, Integer maxRows) {
         PageHelper.startPage(0, maxRows);
         List<CustomCaseEntity> mainList = caseBuildingMainDao.getLatestVersionBuildingMainList(buildingNumber, estateId);
-        List<CaseBuildingMain> caseBuildingMainList = Lists.newArrayList();
-        if(!CollectionUtils.isEmpty(mainList)){
-            for (CustomCaseEntity caseEntity : mainList) {
-                CaseBuildingMain caseBuildingMain=new CaseBuildingMain();
-                caseBuildingMain.setId(caseEntity.getId());
-                caseBuildingMain.setBuildingNumber(caseEntity.getName());
-                caseBuildingMain.setVersion(caseEntity.getVersion());
-                caseBuildingMainList.add(caseBuildingMain);
-            }
-        }
-        return caseBuildingMainList;
+        return mainList;
     }
 
 

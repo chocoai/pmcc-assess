@@ -1,16 +1,14 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingMain;
 import com.copower.pmcc.assess.dto.output.cases.CaseBuildingVo;
 import com.copower.pmcc.assess.service.cases.CaseBuildingMainService;
 import com.copower.pmcc.assess.service.cases.CaseBuildingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,25 +104,10 @@ public class CaseBuildingMainController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String identifier, Integer estateId, Integer maxRows) {
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (StringUtils.isBlank(identifier)) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
-        if (estateId == null) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
+    public HttpResult autoCompleteCaseEstate(String buildingNumber, Integer estateId, Integer maxRows) {
         try {
-            List<CaseBuildingMain> buildingMains = caseBuildingMainService.autoCompleteCaseBuildingMain(identifier, estateId, maxRows);
-            if (!ObjectUtils.isEmpty(buildingMains)) {
-                for (CaseBuildingMain caseBuilding : buildingMains) {
-                    KeyValueDto keyValueDto = new KeyValueDto();
-                    keyValueDto.setKey(String.valueOf(caseBuilding.getId()));
-                    keyValueDto.setValue(caseBuilding.getBuildingNumber());
-                    keyValueDtos.add(keyValueDto);
-                }
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
+            List<CustomCaseEntity> caseEntities = caseBuildingMainService.autoCompleteCaseBuildingMain(buildingNumber, estateId, maxRows);
+            return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

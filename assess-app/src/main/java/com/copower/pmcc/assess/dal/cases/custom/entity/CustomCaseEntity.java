@@ -6,6 +6,7 @@ package com.copower.pmcc.assess.dal.cases.custom.entity;
 public class CustomCaseEntity {
     private Integer id;
     private String name;
+    private Integer type;
     private Integer version;
 
     public Integer getId() {
@@ -22,6 +23,14 @@ public class CustomCaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getVersion() {

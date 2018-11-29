@@ -12,12 +12,10 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -150,20 +148,10 @@ public class CaseUnitService {
         return caseUnitDao.updateBuildingMainId(oldBuildingMainId, newBuildingMainId);
     }
 
-    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId, Integer maxRows){
+    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId, Integer maxRows){
         PageHelper.startPage(0,maxRows);
-        List<CustomCaseEntity> unitList = caseUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingMainId);
-        List<CaseUnit> caseUnitList = Lists.newArrayList();
-        if(!CollectionUtils.isEmpty(unitList)){
-            for (CustomCaseEntity caseEntity : unitList) {
-                CaseUnit caseUnit=new CaseUnit();
-                caseUnit.setId(caseEntity.getId());
-                caseUnit.setUnitNumber(caseEntity.getName());
-                caseUnit.setVersion(caseEntity.getVersion());
-                caseUnitList.add(caseUnit);
-            }
-        }
-        return caseUnitList;
+        List<CustomCaseEntity> caseEntityList = caseUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingMainId);
+        return caseEntityList;
     }
 
     public boolean deleteCaseUnit(Integer id) {

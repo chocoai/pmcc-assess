@@ -34,24 +34,10 @@
 
     var houseRoom;
     (function () {
-        var flag = true;
-        var sonFlag = true;
         houseRoom = function () {
 
         };
         houseRoom.prototype = {
-            setFlag: function (flag_) {
-                flag = flag_;
-            },
-            getFlag: function () {
-                return flag;
-            },
-            setSonFlag: function (sonFlag_) {
-                sonFlag = sonFlag_;
-            },
-            getSonFlag: function () {
-                return sonFlag;
-            },
             viewInit: function () {
                 houseRoom.prototype.loadDataDicList();
 
@@ -70,7 +56,6 @@
             },
             loadDataDicList: function () {
                 var cols = [];
-                cols.push({field: 'name', title: '房间名称'});
                 cols.push({field: 'roomTypeName', title: '房间类型'});
                 cols.push({field: 'area', title: '面积'});
                 cols.push({field: 'sunshine', title: '日照'});
@@ -89,7 +74,6 @@
                 });
                 $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                 TableInit(houseRoom.prototype.config().table, "${pageContext.request.contextPath}/caseHouseRoom/getCaseHouseRoomList", cols, {
-                    type: houseRoom.prototype.config().type,
                     houseId:'${empty caseHouse.id?0:caseHouse.id}'
                 }, {
                     showColumns: false,
@@ -126,10 +110,7 @@
                         $('.tooltips').tooltip();
                     }
                 });
-            },
-
-
-
+            }
         }
     })();
 
@@ -156,8 +137,4 @@
         </div>
     </div>
 </div>
-
-
-
-</html>
 

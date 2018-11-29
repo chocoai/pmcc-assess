@@ -181,10 +181,11 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public void clearInvalidData() throws Exception {
+    public void clearInvalidData(Integer applyId) throws Exception {
         BasicHouse where = new BasicHouse();
-        where.setApplyId(0);
-        where.setCreator(commonService.thisUserAccount());
+        where.setApplyId(applyId);
+        if (applyId == 0)
+            where.setCreator(commonService.thisUserAccount());
         List<BasicHouse> houseList = basicHouseDao.basicHouseList(where);
         if (CollectionUtils.isEmpty(houseList)) return;
         BasicHouse house = houseList.get(0);
@@ -341,7 +342,7 @@ public class BasicHouseService {
         Map<String, Object> objectMap = Maps.newHashMap();
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
-        if(applyId==null||applyId==0){
+        if (applyId == null || applyId == 0) {
             where.setCreator(commonService.thisUserAccount());
         }
         List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
@@ -362,7 +363,7 @@ public class BasicHouseService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public Map<String, Object> addHouseAndTrading(String houseNumber) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 
 
@@ -584,5 +585,32 @@ public class BasicHouseService {
             }
         }
         return objectMap;
+    }
+
+
+    /**
+     * 拷贝户型图
+     *
+     * @param sourceTableId
+     * @param sourceTableName
+     * @param targetTableId
+     * @param fieldsName
+     */
+    public void copyHuxingPlan(Integer sourceTableId, String sourceTableName, Integer targetTableId, String fieldsName) throws Exception {
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(targetTableId);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+        attachmentDto.setFieldsName(fieldsName);
+        //清除原关联的附件
+        baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableId(sourceTableId);
+        where.setTableName(sourceTableName);
+        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(where);
+        if (CollectionUtils.isEmpty(attachmentList)) return;
+        for (SysAttachmentDto sysAttachmentDto : attachmentList) {
+            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+        }
     }
 }

@@ -302,9 +302,9 @@ public class CaseEstateService {
         return caseEstateDao.deleteEstate(id);
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseEstate(String name, Integer maxRows) {
+    public List<CustomCaseEntity> autoCompleteCaseEstate(String name,String province,String city, Integer maxRows) {
         PageHelper.startPage(0,maxRows);
-        List<CustomCaseEntity> caseEstateList = caseEstateDao.getLatestVersionEstateList(name);
+        List<CustomCaseEntity> caseEstateList = caseEstateDao.getLatestVersionEstateList(name,province,city,null);
         return caseEstateList;
     }
 

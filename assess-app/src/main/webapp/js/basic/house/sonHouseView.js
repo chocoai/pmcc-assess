@@ -134,7 +134,7 @@ var houseHeating;
     }
 
     //绑定事件
-    $('#'+houseHeating.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseHeating.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseHeating.prototype.loadDataDicList();
     })
 })();
@@ -271,7 +271,7 @@ var houseAirConditioner;
     }
 
     //绑定事件
-    $('#'+houseAirConditioner.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseAirConditioner.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseAirConditioner.prototype.loadDataDicList();
     })
 })();
@@ -408,7 +408,7 @@ var houseNewWind;
     }
 
     //绑定事件
-    $('#'+houseNewWind.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseNewWind.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseNewWind.prototype.loadDataDicList();
     })
 })();
@@ -553,7 +553,7 @@ var houseCorollaryEquipment;
     }
 
     //绑定事件
-    $('#'+houseCorollaryEquipment.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseCorollaryEquipment.prototype.loadDataDicList();
     })
 })();
@@ -736,7 +736,7 @@ var houseFaceStreet;
     }
 
     //绑定事件
-    $('#'+houseFaceStreet.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseFaceStreet.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseFaceStreet.prototype.loadDataDicList();
     })
 })();
@@ -886,7 +886,7 @@ var houseIntelligent;
     }
 
     //绑定事件
-    $('#'+houseIntelligent.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseIntelligent.prototype.loadDataDicList();
     })
 })();
@@ -1032,7 +1032,7 @@ var houseWater;
     }
 
     //绑定事件
-    $('#'+houseWater.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseWater.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseWater.prototype.loadDataDicList();
     })
 })();
@@ -1266,19 +1266,19 @@ var houseRoom;
         init: function (item) {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             $("#" + houseRoom.prototype.config().frm).initForm(item);
-            var basicHouse = formParams(basicIndexCommon.config.basicHouse.frm);
-            if (houseRoom.prototype.isEmpty(basicHouse.practicalUse)) {
-                AssessCommon.loadDataDicByPid(basicHouse.practicalUse, item.roomType, function (html, data) {
+            var practicalUse = houseCommon.houseForm.find('[name=practicalUse]').val();
+            if (houseRoom.prototype.isEmpty(practicalUse)) {
+                AssessCommon.loadDataDicByPid(practicalUse, item.roomType, function (html, data) {
                     $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
                 });
-            }else {
+            } else {
                 Alert("请先选择房屋下的实际用途");
             }
         }
     }
 
     //绑定事件
-    $('#'+houseRoom.prototype.config().table).closest('.x_panel').bind('click',function () {
+    $('#' + houseRoom.prototype.config().table).closest('.x_panel').bind('click', function () {
         houseRoom.prototype.loadDataDicList();
     })
 })();

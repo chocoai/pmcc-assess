@@ -51,10 +51,10 @@ public class BasicApplyController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyIndex", "0", 0, "0", "");
         //删除 所有 与 当前用户相关的临时数据
         try {
-            basicEstateService.clearInvalidData();
-            basicBuildingService.clearInvalidData();
-            basicUnitService.clearInvalidData();
-            basicHouseService.clearInvalidData();
+            basicEstateService.clearInvalidData(0);
+            basicBuildingService.clearInvalidData(0);
+            basicUnitService.clearInvalidData(0);
+            basicHouseService.clearInvalidData(0);
         } catch (Exception e1) {
             log.error("清除数据异常", e1);
         }
@@ -136,19 +136,6 @@ public class BasicApplyController extends BaseController {
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
-        }
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/deleteBasicApply", name = "删除草稿数据")
-    public HttpResult deleteBasicApply(Integer id) {
-        try {
-            basicApplyService.deleteBasicApply(id);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("删除草稿数据异常");
         }
     }
 
@@ -235,6 +222,18 @@ public class BasicApplyController extends BaseController {
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteBasicApply", name = "删除草稿数据")
+    public HttpResult deleteBasicApply(Integer id) {
+        try {
+            basicApplyService.deleteBasicApply(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("删除草稿数据异常");
         }
     }
 

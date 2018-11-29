@@ -9,17 +9,6 @@
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <div class="x_panel">
-
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>
-                        房屋
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-
                 <div class="x_content">
                     <div class="x_title">
                         <h4>房屋基本信息 </h4>
@@ -40,42 +29,48 @@
                                     <label class="form-control">${caseHouse.floor}</label>
                                 </div>
                             </div>
-                            <div class="x-valid" id="industryUseEnvironment">
-                                <label class="col-sm-1 control-label">使用环境</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseHouse.useEnvironmentName}</label>
+                            <c:if test="${caseHouse.type eq 1}">
+                                <div class="x-valid" id="industryUseEnvironment">
+                                    <label class="col-sm-1 control-label">使用环境</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control">${caseHouse.useEnvironmentName}</label>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="x-valid" id="industryNewsHuxing">
-                                <label class="col-sm-1 control-label">最新户型</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${caseHouse.newsHuxingName}</label>
-                                </div>
-                            </div>
+                            </c:if>
                         </div>
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">户型选择</label>
+                                <label class="col-sm-1 control-label">户型</label>
                                 <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <label class="form-control">${caseHouse.huxingId}</label>
-                                    </div>
+                                    <label class="form-control">${caseHouse.huxingName}</label>
                                 </div>
                             </div>
 
                             <div class="x-valid">
-                                <div class="col-sm-3 house_latest_family_plan">
-
+                                <label class="col-sm-1 control-label">户型图</label>
+                                <div class="col-sm-3" id="_house_huxing_plan">
                                 </div>
                             </div>
-
-
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">朝向</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${caseHouse.orientation}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">新户型</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control">${caseHouse.newHuxingName}</label>
+                                </div>
+                            </div>
+
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">新户型图</label>
+                                <div class="col-sm-3" id="_house_new_huxing_plan">
+
                                 </div>
                             </div>
                         </div>
@@ -131,7 +126,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <form class="form-horizontal" id="basicTradingFrm">
-                        <input type="hidden" value="${caseHouseTrading.id}">
+                        <input type="hidden" name="id" value="${caseHouseTrading.id}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">财产范围</label>
@@ -155,7 +150,7 @@
 
                         <div class="form-group">
                             <div class="x-valid">
-                                <label class="col-sm-1 control-label">正常交易</label>
+                                <label class="col-sm-1 control-label">交易情况</label>
                                 <div class="col-sm-3">
                                     <label class="form-control">${caseHouseTrading.normalTransactionName}</label>
                                 </div>
@@ -198,7 +193,7 @@
 
                         </div>
 
-                        <div class="form-group BasicHouseTradingSell" style="display: none">
+                        <div class="form-group ExamineHouseTradingSell" style="display: none">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                                 <div class="col-sm-3">
@@ -216,21 +211,18 @@
                             <div class="x-valid" style="display: none;">
                                 <label class="col-sm-1 control-label">出售总额</label>
                                 <div class="col-sm-3">
-                                    <input type="text" readonly="readonly" class="form-control" name="totalSale"
-                                           value="${caseHouseTrading.totalSale}">
+                                    <input type="text" readonly="readonly" class="form-control" name="totalSale" value="${caseHouseTrading.totalSale}">
                                 </div>
                             </div>
                             <div class="x-valid" style="display: none;">
                                 <label class="col-sm-1 control-label">分期支付利率</label>
                                 <div class="col-sm-3">
-                                    <input type="text" readonly="readonly" class="form-control"
-                                           name="installmentInterestRate"
-                                           value="${caseHouseTrading.installmentInterestRate}">
+                                    <input type="text" readonly="readonly" class="form-control" name="installmentInterestRate" value="${caseHouseTrading.installmentInterestRate}">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group BasicHouseTradingLease" style="display: none">
+                        <div class="form-group ExamineHouseTradingLease" style="display: none">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                                 <div class="col-sm-3">
@@ -261,7 +253,7 @@
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">交易时间</label>
                                 <div class="col-sm-3">
-                                    <label class="form-control">${caseHouseTrading.tradingTimeName}</label>
+                                    <label class="form-control"><fmt:formatDate value="${caseHouseTrading.tradingTime}" pattern="yyyy-MM-dd"></fmt:formatDate> </label>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -295,11 +287,16 @@
                     </form>
                 </div>
             </div>
+            <!-- 房间 -->
+            <div class="room" style="display: ${hasHouseRoomData?'block':'none'};">
+                <%@include file="/views/case/caseHouse/caseHouseRoom.jsp" %>
+            </div>
 
             <!-- 临街 -->
             <div class="street" style="display: ${hasHouseFaceStreetData?'block':'none'};">
                 <%@include file="/views/case/caseHouse/caseHouseFaceStreet.jsp" %>
             </div>
+
             <!-- 房屋配套设备设施 -->
             <div class="corollary_equipment" style="display: ${hasHouseCorollaryEquipmentData?'block':'none'};">
                 <%@include file="/views/case/caseHouse/caseHouseCorollaryEquipment.jsp" %>
@@ -310,14 +307,14 @@
                 <%@include file="/views/case/caseHouse/caseHouseIntelligent.jsp" %>
             </div>
 
-            <!-- 房间 -->
-            <div class="room" style="display: ${hasHouseRoomData?'block':'none'};">
-                <%@include file="/views/case/caseHouse/caseHouseRoom.jsp" %>
-            </div>
-
             <!-- 供排水	 -->
             <div class="water" style="display: ${hasHouseWaterData?'block':'none'};">
                 <%@include file="/views/case/caseHouse/caseHouseWater.jsp" %>
+            </div>
+
+            <!-- 新风情况	 -->
+            <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
+                <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
             </div>
 
             <!-- 空调情况	 -->
@@ -330,10 +327,7 @@
                 <%@include file="/views/case/caseHouse/caseHouseHeating.jsp" %>
             </div>
 
-            <!-- 新风情况	 -->
-            <div class="houseNewWind" style="display: ${hasHouseEquipmentNewWind?'block':'none'};">
-                <%@include file="/views/case/caseHouse/caseHouseNewWind.jsp" %>
-            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
@@ -348,47 +342,17 @@
         </div>
     </div>
 </div>
-<script>
+<script type="text/javascript">
     var objectData = new Object();
 
     objectData.config = {
-        id: "basicApplyId",
-        option: {},
-        basicEstate: {
-            key: "basicEstate",
-            name: "楼盘",
-            frm: "basicEstateFrm",
-            frmLandState: "basicLandState",
-            files: {
-                filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
-                waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
-                powerSupplyPlan: "power_supply_plan",//供电平面图id和字段
-                airSupplyPlan: "air_supply_plan",//供气平面图id和字段
-                heatingPlan: "heating_plan",//采暖平面图id和字段
-                fileAppearance: "estate_floor_Appearance_figure" //外观图id和字段
-            }
-        },
-        basicBuilding: {
-            key: "basicBuilding",
-            name: "楼栋",
-            frm: "basicBuildFrm",
-            files: {
-                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
-                building_figure_outside: "building_figure_outside",//外装图id和字段
-                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
-            }
-        },
-        basicUnit: {
-            key: "basicUnit",
-            name: "单元"
-        },
         basicHouse: {
             key: "basicHouse",
             name: "房屋",
             frm: "basicHouseFrm",
             tradingFrm: "basicTradingFrm",
-            leaseID: "CaseHouseTradingLease",//房屋出租
-            sellID: "CaseHouseTradingSell",//房屋出售
+            leaseID: "ExamineHouseTradingLease",//房屋出租
+            sellID: "ExamineHouseTradingSell",//房屋出售
             totalSale: "totalSale",//出售总额
             divBoxSon: "divBoxTradingLeaseAndSell",
             tableSon: "tableTradingLeaseAndSell",
@@ -407,44 +371,13 @@
         return false;
     };
 
-    /**
-     * 判断对象 属性
-     */
-    objectData.isNotBlankObjectProperty = function (obj) {
-        for (var key in obj) {
-            if (objectData.isNotBlank(obj[key])) {
-                return true;
-            }
-        }
-        return false
-    };
-
-    /**
-     * 判断对象
-     */
-    objectData.isNotBlankObject = function (obj) {
-        for (var key in obj) {
-            return true;
-        }
-        return false
-    };
-
-    objectData.select2Assignment = function (frm, data, name) {
-        if (objectData.isNotBlank(data)) {
-            $("#" + frm).find("select." + name).val(data).trigger("change");
-        } else {
-            $("#" + frm).find("select." + name).val(null).trigger("change");
-        }
-    };
-
-    objectData.showFile = function (fieldsName, table, id) {
+    objectData.showFile = function (fieldsName) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
                 fieldsName: fieldsName,
-                tableName: table,
-                tableId: objectData.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
+                tableName: AssessDBKey.CaseHouse,
+                tableId: "${caseHouse.id}"
             },
             deleteFlag: false
         })
@@ -452,7 +385,6 @@
 
     objectData.house = {
         init: function () {
-            objectData.showFile(objectData.config.basicHouse.houseFileId, AssessDBKey.CaseHouse, '${empty caseHouse.id?0:caseHouse.id}');
             var tradingID = "${caseHouseTrading.tradingType}";
             var tradingType = null;
             AssessCommon.getDataDicInfo(tradingID, function (data) {
@@ -469,7 +401,7 @@
                     $("#" + objectData.config.basicHouse.tradingFrm).find("#" + objectData.config.basicHouse.tableSon + "Div").hide();
                 }
             });
-            AssessCommon.getDataDicInfo("${basicHouseTrading.paymentMethod}", function (data) {
+            AssessCommon.getDataDicInfo("${caseHouseTrading.paymentMethod}", function (data) {
                 if (data.name == '一次性') {
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().show();
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().hide();
@@ -482,27 +414,9 @@
                     objectData.house.subLoadList(objectData.config.basicHouse.sellID);
                 }
             });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/caseUnitHuxing/getCaseUnitHuxingById",
-                type: "get",
-                dataType: "json",
-                data: {id: '${empty caseHouse.huxingId?0:caseHouse.huxingId}'},
-                success: function (result) {
-                    if (result.ret) {
-                        if (objectData.isNotBlank(result.data)) {
-                            if (objectData.isNotBlank(result.data.fileViewName)) {
-                                $("#" + objectData.config.basicHouse.frm).find(".house_latest_family_plan").html(result.data.fileViewName);
-                            }
-                        }
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
-                }
-            });
+
+            objectData.showFile('house_huxing_plan');
+            objectData.showFile('house_img_plan');
         },
         subLoadList: function (type_) {
             var cols = [];

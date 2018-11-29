@@ -97,18 +97,6 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/initBuilding", name = "初始化", method = {RequestMethod.POST})
-    public HttpResult basicBuildingList(){
-        try {
-            basicBuildingService.clearInvalidData();
-            return HttpResult.newCorrectResult(200,"success");
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
-            return HttpResult.newErrorResult(500,e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getBasicBuildingListByMainId", name = "获取楼栋部分数据", method = {RequestMethod.GET})
     public HttpResult getBasicBuildingListByMainId(Integer basicBuildingMainId){
         try {

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/map", name = "高德地图相关处理")
 public class MapController {
 
-    @RequestMapping(value = "/positionPicker", name = "拖动选址")
+    @RequestMapping(value = "/positionPicker", name = "当前位置定位")
     public ModelAndView positionPicker() {
         ModelAndView modelAndView = new ModelAndView("/base/mapPositionPicker");
         return modelAndView;

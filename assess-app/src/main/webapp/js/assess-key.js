@@ -186,15 +186,6 @@ AssessDicKey.workProgrammeSetUse = "work.programme.set.use";//设定用途
 
 AssessDicKey.mdHypothesisDevelopment = "md.hypothesis.development";//建设、住宅、商业、办公、车库、地下商业、建设周期
 
-//案例数据维护
-AssessDicKey.casesHouseTransactionType = "cases.common.transaction.type";//交易类型
-AssessDicKey.casesEstateOther = "cases.estate.other";//案例楼盘 其它信息
-AssessDicKey.casesEstateMatching = "cases.estate.matching";//案例楼盘 配套信息
-AssessDicKey.casesHouseMatching = "cases.house.matching";//案例房屋 配套信息
-
-//案例过程数据
-AssessDicKey.basicHouseTransactionType = "basic.common.transaction.type";//交易类型
-
 
 /**
  * 文件模板key

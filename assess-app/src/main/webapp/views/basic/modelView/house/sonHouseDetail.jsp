@@ -21,36 +21,6 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>供排水情况</h4>
-    </div>
-    <div class="x_content collapse">
-        <table class="table table-bordered" id="HouseWaterList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>电力通讯网络</h4>
-    </div>
-    <div class="x_content collapse">
-        <table class="table table-bordered" id="HouseIntelligentList">
-            <!-- cerare document add ajax data-->
-        </table>
-    </div>
-</div>
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
         <h4>临街（路）状况</h4>
     </div>
     <div class="x_content collapse">
@@ -60,7 +30,7 @@
     </div>
 </div>
 
-<div class="x_panel">
+<div class="x_panel" id="industryCorollaryEquipment">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -75,7 +45,37 @@
     </div>
 </div>
 
-<div class="x_panel">
+<div class="x_panel" id="industryIntelligent">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>电力通讯网络</h4>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="HouseIntelligentList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industryWater">
+    <div class="x_title collapse-link">
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i
+                    class="fa fa-chevron-up"></i></a></li>
+        </ul>
+        <h4>供排水情况</h4>
+    </div>
+    <div class="x_content collapse">
+        <table class="table table-bordered" id="HouseWaterList">
+            <!-- cerare document add ajax data-->
+        </table>
+    </div>
+</div>
+
+<div class="x_panel" id="industryNewWind">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<div class="x_panel">
+<div class="x_panel" id="industryAirConditioner">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -105,7 +105,7 @@
     </div>
 </div>
 
-<div class="x_panel">
+<div class="x_panel" id="industryHeating">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i
@@ -204,6 +204,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + houseRoom.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseRoom.prototype.loadDataDicList();
+        })
     })();
 
     var houseCorollaryEquipment;
@@ -250,6 +255,10 @@
                 });
             }
         }
+        //绑定事件
+        $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseCorollaryEquipment.prototype.loadDataDicList();
+        })
     })();
 
     var houseFaceStreet;
@@ -290,8 +299,12 @@
                     }
                 });
             }
-
         }
+
+        //绑定事件
+        $('#' + houseFaceStreet.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseFaceStreet.prototype.loadDataDicList();
+        })
     })();
 
     var houseIntelligent;
@@ -336,6 +349,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseIntelligent.prototype.loadDataDicList();
+        })
     })();
 
     var houseWater;
@@ -379,6 +397,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + houseWater.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseWater.prototype.loadDataDicList();
+        })
     })();
 
     var houseHeating;
@@ -421,6 +444,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + houseHeating.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseHeating.prototype.loadDataDicList();
+        })
     })();
 
     var houseAirConditioner;
@@ -463,6 +491,11 @@
                 });
             },
         }
+
+        //绑定事件
+        $('#' + houseAirConditioner.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseAirConditioner.prototype.loadDataDicList();
+        })
     })();
 
     var houseNewWind;
@@ -505,6 +538,11 @@
                 });
             },
         }
+
+        //绑定事件
+        $('#' + houseNewWind.prototype.config().table).closest('.x_panel').bind('click', function () {
+            houseNewWind.prototype.loadDataDicList();
+        })
     })();
 </script>
 
