@@ -107,7 +107,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                 if (Objects.equal(DeclareBuildEquipmentInstall.class.getSimpleName(), type)) {
                     DeclareBuildEquipmentInstall declareBuildEquipmentInstall = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallById(Integer.parseInt(id));
                     DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                    query.setBuildEngineeringId(declareBuildEquipmentInstall.getId());
+                    query.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
                     query.setType(DeclareBuildEquipmentInstall.class.getSimpleName());
                     centerList = declareBuildEngineeringAndEquipmentCenterList(query);
                 }
