@@ -166,6 +166,126 @@ public class DataImgTwoDimensionalExample {
             return (Criteria) this;
         }
 
+        public Criteria andHeightIsNull() {
+            addCriterion("height is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightIsNotNull() {
+            addCriterion("height is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightEqualTo(BigDecimal value) {
+            addCriterion("height =", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightNotEqualTo(BigDecimal value) {
+            addCriterion("height <>", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightGreaterThan(BigDecimal value) {
+            addCriterion("height >", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("height >=", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightLessThan(BigDecimal value) {
+            addCriterion("height <", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("height <=", value, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightIn(List<BigDecimal> values) {
+            addCriterion("height in", values, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightNotIn(List<BigDecimal> values) {
+            addCriterion("height not in", values, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("height between", value1, value2, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("height not between", value1, value2, "height");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIsNull() {
+            addCriterion("width is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIsNotNull() {
+            addCriterion("width is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthEqualTo(BigDecimal value) {
+            addCriterion("width =", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotEqualTo(BigDecimal value) {
+            addCriterion("width <>", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthGreaterThan(BigDecimal value) {
+            addCriterion("width >", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("width >=", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthLessThan(BigDecimal value) {
+            addCriterion("width <", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("width <=", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIn(List<BigDecimal> values) {
+            addCriterion("width in", values, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotIn(List<BigDecimal> values) {
+            addCriterion("width not in", values, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("width between", value1, value2, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("width not between", value1, value2, "width");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

@@ -6,6 +6,10 @@ import java.util.Date;
 public class DataImgTwoDimensional {
     private Integer id;
 
+    private BigDecimal height;
+
+    private BigDecimal width;
+
     private String name;
 
     private String imgUrl;
@@ -28,6 +32,22 @@ public class DataImgTwoDimensional {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public BigDecimal getHeight() {
+        return height;
+    }
+
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
+
+    public BigDecimal getWidth() {
+        return width;
+    }
+
+    public void setWidth(BigDecimal width) {
+        this.width = width;
     }
 
     public String getName() {

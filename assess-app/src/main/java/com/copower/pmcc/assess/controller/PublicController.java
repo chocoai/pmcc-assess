@@ -228,9 +228,5 @@ public class PublicController {
         }
     }
 
-    @RequestMapping(value = "/tempTest", name = "临时的控制器 (测试图片缩放问题)", method = RequestMethod.GET)
-    public ModelAndView tempTest(){
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/data/tempTest", "0", 0, "0", "");
-        return  modelAndView;
-    }
+
 }

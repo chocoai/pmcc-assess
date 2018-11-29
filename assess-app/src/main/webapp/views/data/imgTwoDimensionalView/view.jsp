@@ -80,6 +80,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="详情" onclick="landLevel.fineData(' + row.id + ',\'tb_List\')"><i class="fa fa-search"></i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
@@ -104,7 +105,12 @@
         },
         editData:function (id) {
             var href = "${pageContext.request.contextPath}/dataImgTwoDimensional/index";
-            href += "&id=" +id;
+            href += "?id=" +id;
+            window.open(href, "");
+        },
+        fineData:function (id) {
+            var href = "${pageContext.request.contextPath}/dataImgTwoDimensional/detail";
+            href += "?id=" +id;
             window.open(href, "");
         },
         removeData:function (id) {
@@ -113,6 +119,7 @@
                 $.ajax({
                     url: '${pageContext.request.contextPath}/dataImgTwoDimensional/deleteDataImgTwoDimensionalById',
                     data: {id: id},
+                    method:"post",
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {

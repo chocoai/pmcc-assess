@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataImgTwoDimensionalMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="height" property="height" jdbcType="DECIMAL" />
+    <result column="width" property="width" jdbcType="DECIMAL" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
     <result column="background_url" property="backgroundUrl" jdbcType="VARCHAR" />
@@ -71,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, img_url, background_url, style, deg, creator, gmt_created, gmt_modified
+    id, height, width, name, img_url, background_url, style, deg, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensionalExample" >
     select
@@ -107,12 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_img_two_dimensional (name, img_url, background_url, 
-      style, deg, creator, 
-      gmt_created, gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{backgroundUrl,jdbcType=VARCHAR}, 
-      #{style,jdbcType=VARCHAR}, #{deg,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_data_img_two_dimensional (height, width, name, 
+      img_url, background_url, style, 
+      deg, creator, gmt_created, 
+      gmt_modified)
+    values (#{height,jdbcType=DECIMAL}, #{width,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, 
+      #{imgUrl,jdbcType=VARCHAR}, #{backgroundUrl,jdbcType=VARCHAR}, #{style,jdbcType=VARCHAR}, 
+      #{deg,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -120,6 +125,12 @@
     </selectKey>
     insert into tb_data_img_two_dimensional
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
       <if test="name != null" >
         name,
       </if>
@@ -146,6 +157,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="height != null" >
+        #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=DECIMAL},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
@@ -184,6 +201,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.height != null" >
+        height = #{record.height,jdbcType=DECIMAL},
+      </if>
+      <if test="record.width != null" >
+        width = #{record.width,jdbcType=DECIMAL},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -216,6 +239,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_data_img_two_dimensional
     set id = #{record.id,jdbcType=INTEGER},
+      height = #{record.height,jdbcType=DECIMAL},
+      width = #{record.width,jdbcType=DECIMAL},
       name = #{record.name,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
       background_url = #{record.backgroundUrl,jdbcType=VARCHAR},
@@ -231,6 +256,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional" >
     update tb_data_img_two_dimensional
     <set >
+      <if test="height != null" >
+        height = #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=DECIMAL},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -260,7 +291,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional" >
     update tb_data_img_two_dimensional
-    set name = #{name,jdbcType=VARCHAR},
+    set height = #{height,jdbcType=DECIMAL},
+      width = #{width,jdbcType=DECIMAL},
+      name = #{name,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR},
       background_url = #{backgroundUrl,jdbcType=VARCHAR},
       style = #{style,jdbcType=VARCHAR},

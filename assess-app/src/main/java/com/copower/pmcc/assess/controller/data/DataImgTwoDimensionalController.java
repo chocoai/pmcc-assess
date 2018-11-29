@@ -50,9 +50,15 @@ public class DataImgTwoDimensionalController {
     }
 
     @RequestMapping(value = "/detail", name = "转到详情页面 ", method = {RequestMethod.GET})
-    public ModelAndView detail() {
+    public ModelAndView detail(Integer id) {
         String view = "/data/imgTwoDimensionalView/detail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        if (id != null){
+            DataImgTwoDimensional dataImgTwoDimensional = dataImgTwoDimensionalService.getDataImgTwoDimensionalById(id);
+            if (dataImgTwoDimensional != null){
+                modelAndView.addObject("dataImgTwoDimensional",dataImgTwoDimensional);
+            }
+        }
         return modelAndView;
     }
 
