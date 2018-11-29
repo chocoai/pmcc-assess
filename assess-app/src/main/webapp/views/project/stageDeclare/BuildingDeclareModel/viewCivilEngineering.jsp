@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_content">
@@ -495,7 +494,7 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                   var data = result.data;
+                    var data = result.data;
                     var realEstateId = data.realEstateId;
                     $("#" + civilEngineeringConfig.declareRealtyRealEstateCert.frm).clearAll();
                     if (civilEngineering.isEmpty(realEstateId)) {
@@ -764,7 +763,7 @@
             success: function (result) {
                 if (result.ret) {
                     var data = result.data;
-                    var landId = data.landId ;
+                    var landId = data.landId;
                     if (civilEngineering.isEmpty(landId)) {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
@@ -850,37 +849,50 @@
      * @date:2018-09-28
      **/
     civilEngineering.declareBuildingPermitView = function (id) {
-        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareBuildingPermit.frm).clearAll();
-        var buildingPermitId = item.buildingPermitId;
-        if (civilEngineering.isEmpty(buildingPermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingPermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (civilEngineering.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm(data);
-                            $("#" + civilEngineeringConfig.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
-                            civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
-                            civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var buildingPermitId = result.data.buildingPermitId;
+                    if (civilEngineering.isEmpty(buildingPermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: buildingPermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (civilEngineering.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm(data);
+                                        $("#" + civilEngineeringConfig.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                        civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm({pid: id});
+                        civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
+                        civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + civilEngineeringConfig.declareBuildingPermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + civilEngineeringConfig.declareBuildingPermit.frm).initForm({pid: id});
-            civilEngineering.showFile(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
-            civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
-        }
-        $('#' + civilEngineeringConfig.declareBuildingPermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     };
 
     /**
@@ -893,7 +905,6 @@
             return false;
         }
         var data = formParams(civilEngineeringConfig.declareBuildingPermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareBuildingPermit/saveAndUpdateDeclareBuildingPermit",
@@ -903,9 +914,9 @@
                     $('#' + civilEngineeringConfig.declareBuildingPermit.box).modal("hide");
                     var item = result.data;
                     if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.buildingPermitId = item;
+                        fData.id = data.pid
                         civilEngineering.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -925,37 +936,51 @@
      * @date:2018-09-28
      **/
     civilEngineering.declareLandUsePermitView = function (id) {
-        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareLandUsePermit.frm).clearAll();
-        var landUsePermitId = item.landUsePermitId;
-        if (civilEngineering.isEmpty(landUsePermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: landUsePermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (civilEngineering.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm(data);
-                            $("#" + civilEngineeringConfig.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
-                            civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
-                            civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var landUsePermitId = result.data.landUsePermitId;
+                    if (civilEngineering.isEmpty(landUsePermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: landUsePermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (civilEngineering.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm(data);
+                                        $("#" + civilEngineeringConfig.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                        civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm({pid: id});
+                        civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
+                        civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + civilEngineeringConfig.declareLandUsePermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + civilEngineeringConfig.declareLandUsePermit.frm).initForm({pid: id});
-            civilEngineering.showFile(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
-            civilEngineering.fileUpload(civilEngineeringConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
-        }
-        $('#' + civilEngineeringConfig.declareLandUsePermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
     /**
@@ -968,7 +993,6 @@
             return false;
         }
         var data = formParams(civilEngineeringConfig.declareLandUsePermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declareLandUsePermit/saveAndUpdateDeclareLandUsePermit",
@@ -979,8 +1003,9 @@
                     var item = result.data;
                     if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                         var pid = data.pid;
-                        var fData = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.landUsePermitId = item;
+                        fData.id = data.pid;
                         civilEngineering.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -1000,37 +1025,51 @@
      * @date:2018-09-28
      **/
     civilEngineering.declarePreSalePermitView = function (id) {
-        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declarePreSalePermit.frm).clearAll();
-        var preSalePermitId = item.preSalePermitId;
-        if (civilEngineering.isEmpty(preSalePermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: preSalePermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (civilEngineering.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm(data);
-                            $("#" + civilEngineeringConfig.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
-                            civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
-                            civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var preSalePermitId = result.data.preSalePermitId;
+                    if (civilEngineering.isEmpty(preSalePermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: preSalePermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (civilEngineering.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm(data);
+                                        $("#" + civilEngineeringConfig.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                        civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm({pid: id});
+                        civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
+                        civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + civilEngineeringConfig.declarePreSalePermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + civilEngineeringConfig.declarePreSalePermit.frm).initForm({pid: id});
-            civilEngineering.showFile(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
-            civilEngineering.fileUpload(civilEngineeringConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
-        }
-        $('#' + civilEngineeringConfig.declarePreSalePermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
     /**
@@ -1043,7 +1082,6 @@
             return false;
         }
         var data = formParams(civilEngineeringConfig.declarePreSalePermit.frm);
-        <%--data.planDetailsId = '${empty projectPlanDetails.id?0:projectPlanDetails.id}';--%>
         $.ajax({
             type: "POST",
             url: "${pageContext.request.contextPath}/declarePreSalePermit/saveAndUpdateDeclarePreSalePermit",
@@ -1053,9 +1091,9 @@
                     $('#' + civilEngineeringConfig.declarePreSalePermit.box).modal("hide");
                     var item = result.data;
                     if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.preSalePermitId = item;
+                        fData.id = data.pid;
                         civilEngineering.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -1075,38 +1113,52 @@
      * @date:2018-09-28
      **/
     civilEngineering.declareBuildingConstructionPermitView = function (id) {
-        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).clearAll();
-        var buildingConstructionPermitId = item.buildingConstructionPermitId;
-        if (civilEngineering.isEmpty(buildingConstructionPermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingConstructionPermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (civilEngineering.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm(data);
-                            $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
-                            $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
-                            civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
-                            civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var buildingConstructionPermitId = result.data.buildingConstructionPermitId;
+                    if (civilEngineering.isEmpty(buildingConstructionPermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: buildingConstructionPermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (civilEngineering.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm(data);
+                                        $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
+                                        $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                        civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm({pid: id});
+                        civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
+                        civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + civilEngineeringConfig.declareBuildingConstructionPermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + civilEngineeringConfig.declareBuildingConstructionPermit.frm).initForm({pid: id});
-            civilEngineering.showFile(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
-            civilEngineering.fileUpload(civilEngineeringConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
-        }
-        $('#' + civilEngineeringConfig.declareBuildingConstructionPermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
 
@@ -1130,8 +1182,9 @@
                     var item = result.data;
                     if (civilEngineering.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
                         var pid = data.pid;
-                        var fData = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.buildingConstructionPermitId = item;
+                        fData.id = data.pid ;
                         civilEngineering.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -1149,14 +1202,56 @@
     /**
      * 经济指标
      */
-    civilEngineering.declareEconomicIndicatorsView = function (id) {
-        var item = $("#" + civilEngineeringConfig.table).bootstrapTable('getRowByUniqueId', id);
-        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
-        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
-        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
-        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id, function () {
-            $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+    civilEngineering.declareEconomicIndicatorsView = function (pid) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var indicatorId = result.data.indicatorId;
+                    if (civilEngineering.isEmpty(indicatorId)){
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                        economicIndicators.initForm(indicatorId, function () {
+                            $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+                        });
+                    }else {
+                        $.ajax({
+                            type: "POST",
+                            url: "${pageContext.request.contextPath}/declareBuildEconomicIndicatorsCenter/saveAndUpdateDeclareBuildEconomicIndicatorsCenter",
+                            data: {planDetailsId:"${projectPlanDetails.id}"},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var id = result.data;
+                                    var fData = {};
+                                    fData.indicatorId = id;
+                                    fData.id = pid ;
+                                    civilEngineering.handleFather(fData);
+                                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
+                                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
+                                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                                    $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                                    economicIndicators.initForm(id, function () {
+                                        $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+                                    });
+                                } else {
+                                    console.log(result.errmsg);
+                                    Alert("保存失败:" + result.errmsg);
+                                }
+                            },
+                            error: function (e) {
+                                Alert("调用服务端方法失败，失败原因:" + e);
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
         });
     };
 
@@ -1194,7 +1289,7 @@
                 $.ajax({
                     type: "post",
                     url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
-                    data: {id:id,copyId:copyId,type:"civilEngineering"},
+                    data: {ids: id, copyId: copyId, type: "DeclareBuildEngineering"},
                     success: function (result) {
                         if (result.ret) {
                             civilEngineering.loadList();
@@ -1219,12 +1314,34 @@
             if (this.isEmpty(item)) {
                 if (item.length >= 1) {
                     var copyId = civilEngineering.copyId;
-                    console.log(copyId);
-                    console.log(item);
+                    var ids = "" ;
+                    $.each(item,function (i,n) {
+                        if (i == item.length-1){
+                            ids += n.id
+                        }else {
+                            ids += n.id+",";
+                        }
+                    });
+                    $.ajax({
+                        type: "post",
+                        url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+                        data: {ids: ids, copyId: copyId, type: "DeclareBuildEngineering"},
+                        success: function (result) {
+                            if (result.ret) {
+                                civilEngineering.loadList();
+                                toastr.success('成功');
+                                civilEngineering.copyId = undefined;
+                            } else {
+                                Alert("失败:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
                     civilEngineering.copyId = undefined;
-                    toastr.success('成功');
                     civilEngineering.loadList();
-                }else {
+                } else {
                     Alert("请先勾选需要粘贴的对象!");
                 }
             }
@@ -1335,10 +1452,10 @@
                 $('.tooltips').tooltip();
             },
             onCheckAll: function (rows) {
-                console.info(rows);
+
             },
             onCheck: function (row) {
-                console.info(row);
+
             }
         });
     };
