@@ -16,13 +16,13 @@
                     <div class="form-group">
                         <div class="col-sm-1">
                             <ul class="nav nav-pills nav-stacked">
-                                <li class="active"><a href="#" onclick="resizableRotate.keyDown()">开启键盘左右移动</a></li>
-                                <li><a href="#" onclick="resizableRotate.startAll()">开启鼠标旋转</a></li>
+                                <%--<li class="active"><a href="#" onclick="resizableRotate.keyDown()">开启键盘左右移动</a></li>--%>
+                                <%--<li><a href="#" onclick="resizableRotate.startAll()">开启鼠标旋转</a></li>--%>
                                 <li><a href="#" onclick="resizableRotate.imgMaxAndMin(true)">放大</a></li>
                                 <li><a href="#" onclick="resizableRotate.imgMaxAndMin(false)">缩小</a></li>
                                 <li><a href="#" onclick="resizableRotate.rotateTransform(true)">右旋转</a></li>
                                 <li><a href="#" onclick="resizableRotate.rotateTransform(false)">左旋转</a></li>
-                                <li><a href="#" onclick="resizableRotate.canvasHandle()">canvas 操作</a></li>
+                                <%--<li><a href="#" onclick="resizableRotate.canvasHandle()">canvas 操作</a></li>--%>
                             </ul>
                         </div>
                         <div class="col-sm-11" style="height:616px;">
@@ -107,7 +107,8 @@
      * 拖动
      */
     resizableRotate.draggable = function () {
-        $("#" + resizableRotate.config.img.id).parent().draggable();
+        // $("#" + resizableRotate.config.img.id).parent().draggable();
+        $("#" + resizableRotate.config.img.id).draggable();
     };
 
     /**
@@ -243,6 +244,7 @@
         resizableRotate.style();
         //设置背景
         resizableRotate.setBackGround();
+        resizableRotate.draggable();
         var dataImgTwoDimensional = "${dataImgTwoDimensional}" ;
         if (resizableRotate.isNotBlank(dataImgTwoDimensional)){
             $("#" + resizableRotate.config.img.id).attr("style", "${dataImgTwoDimensional.style}");
