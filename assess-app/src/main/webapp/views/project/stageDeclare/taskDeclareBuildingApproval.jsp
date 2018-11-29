@@ -3,9 +3,10 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
-
+<%@include file="/views/project/stageDeclare/BuildingDeclareModel/viewEconomicIndicatorsDetail.jsp" %>
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -715,6 +716,12 @@
             frm: "declareRealtyRealEstateCertFrm",
             fileId: "declareRealtyRealEstateCertFileId",
             name: "不动产"
+        },
+        declareEconomicIndicators: {
+            box: "declareEconomicIndicatorsBox",
+            frm: "declareEconomicIndicatorsFrm",
+            fileId: "declareEconomicIndicatorsFileId",
+            name: "经济指标"
         }
     };
 
@@ -1187,6 +1194,32 @@
         });
     };
 
+    /**
+     * 经济指标
+     */
+    civilEngineering.declareEconomicIndicatorsView = function (pid) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var indicatorId = result.data.indicatorId;
+                    if (civilEngineering.isEmpty(indicatorId)){
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).clearAll();
+                        $("#" + civilEngineeringConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                        economicIndicators.initForm(indicatorId, function () {
+                            $('#' + civilEngineeringConfig.declareEconomicIndicators.box).modal("show");
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
     civilEngineering.loadList = function () {
         var cols = [];
         cols.push({field: 'provinceName', title: '省'});
@@ -1209,6 +1242,7 @@
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareLandUsePermitView(" +row.centerId+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareBuildingConstructionPermitView(" +row.centerId+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declarePreSalePermitView(" +row.centerId+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='civilEngineering.declareEconomicIndicatorsView(" +row.centerId+")'"+">"+"经济指标"+ "</a>" + "</li>";
                 str += "</ul>" ;
                 str += "</div>";
                 return str;
@@ -1233,6 +1267,7 @@
 </script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js"></script>
 <script type="application/javascript">
     var config = {
         declare: {
