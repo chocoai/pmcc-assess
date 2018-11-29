@@ -283,19 +283,9 @@
     };
 
     equipmentInstallation.handleFather = function (item) {
-        //处理日期转换问题
-        if (civilEngineering.isEmpty(item.declarationDate)) {
-            item.declarationDate = formatDate(item.declarationDate);
-        }
-        if (civilEngineering.isEmpty(item.startDate)) {
-            item.startDate = formatDate(item.startDate);
-        }
-        if (civilEngineering.isEmpty(item.expectedCompletionDate)) {
-            item.expectedCompletionDate = formatDate(item.expectedCompletionDate);
-        }
         $.ajax({
             type: "POST",
-            url: "${pageContext.request.contextPath}/declareBuildEquipmentInstall/saveAndUpdateDeclareBuildEquipmentInstall",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter",
             data: item,
             success: function (result) {
                 if (result.ret) {
@@ -316,37 +306,50 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declareBuildingPermitView = function (id) {
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).clearAll();
-        var buildingPermitId = item.buildingPermitId;
-        if (equipmentInstallation.isEmpty(buildingPermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingPermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).initForm(data);
-                            $("#" + equipmentInstallationConfig.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var buildingPermitId = result.data.buildingPermitId;
+                    if (equipmentInstallation.isEmpty(buildingPermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareBuildingPermit/getDeclareBuildingPermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: buildingPermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).initForm(data);
+                                        $("#" + equipmentInstallationConfig.declareBuildingPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).initForm({pid: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declareBuildingPermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declareBuildingPermit.frm).initForm({pid: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
-        }
-        $('#' + equipmentInstallationConfig.declareBuildingPermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     };
 
     /**
@@ -368,9 +371,9 @@
                     $('#' + equipmentInstallationConfig.declareBuildingPermit.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.buildingPermitId = item;
+                        fData.id = data.pid ;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -390,37 +393,51 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declareLandUsePermitView = function (id) {
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).clearAll();
-        var landUsePermitId = item.landUsePermitId;
-        if (equipmentInstallation.isEmpty(landUsePermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: landUsePermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).initForm(data);
-                            $("#" + equipmentInstallationConfig.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var landUsePermitId = result.data.landUsePermitId;
+                    if (equipmentInstallation.isEmpty(landUsePermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareLandUsePermit/getDeclareLandUsePermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: landUsePermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).initForm(data);
+                                        $("#" + equipmentInstallationConfig.declareLandUsePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).initForm({pid: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declareLandUsePermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declareLandUsePermit.frm).initForm({pid: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
-        }
-        $('#' + equipmentInstallationConfig.declareLandUsePermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
     /**
@@ -442,9 +459,9 @@
                     $('#' + equipmentInstallationConfig.declareLandUsePermit.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.landUsePermitId = item;
+                        fData.id = data.pid ;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -464,37 +481,51 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declarePreSalePermitView = function (id) {
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).clearAll();
-        var preSalePermitId = item.preSalePermitId;
-        if (equipmentInstallation.isEmpty(preSalePermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: preSalePermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).initForm(data);
-                            $("#" + equipmentInstallationConfig.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var preSalePermitId = result.data.preSalePermitId;
+                    if (equipmentInstallation.isEmpty(preSalePermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declarePreSalePermit/getDeclarePreSalePermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: preSalePermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).initForm(data);
+                                        $("#" + equipmentInstallationConfig.declarePreSalePermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).initForm({pid: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declarePreSalePermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declarePreSalePermit.frm).initForm({pid: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
-        }
-        $('#' + equipmentInstallationConfig.declarePreSalePermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
     /**
@@ -516,9 +547,9 @@
                     $('#' + equipmentInstallationConfig.declarePreSalePermit.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.preSalePermitId = item;
+                        fData.id = data.pid ;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -538,38 +569,52 @@
      * @date:2018-09-28
      **/
     equipmentInstallation.declareBuildingConstructionPermitView = function (id) {
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
         $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm).clearAll();
-        var buildingConstructionPermitId = item.buildingConstructionPermitId;
-        if (equipmentInstallation.isEmpty(buildingConstructionPermitId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
-                type: "get",
-                dataType: "json",
-                data: {id: buildingConstructionPermitId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pid = id;
-                            $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm).initForm(data);
-                            $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
-                            $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var buildingConstructionPermitId = result.data.buildingConstructionPermitId;
+                    if (equipmentInstallation.isEmpty(buildingConstructionPermitId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: buildingConstructionPermitId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pid = id;
+                                        $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm).initForm(data);
+                                        $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm + " input[name='contractPeriod']").val(formatDate(data.contractPeriod));
+                                        $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm + " input[name='date']").val(formatDate(data.date));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, data.id);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm).initForm({pid: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declareBuildingConstructionPermit.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declareBuildingConstructionPermit.frm).initForm({pid: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
-        }
-        $('#' + equipmentInstallationConfig.declareBuildingConstructionPermit.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
 
     /**
@@ -591,9 +636,9 @@
                     $('#' + equipmentInstallationConfig.declareBuildingConstructionPermit.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pid = data.pid;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pid);
+                        var fData = {};
                         fData.buildingConstructionPermitId = item;
+                        fData.id = data.pid ;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -781,49 +826,63 @@
             equipmentInstallation.declareRealtyLandCertInit();
             equipmentInstallation.declareRealtyLandCertFlag = false;
         }
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var landId = item.landId;
-        $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).clearAll();
-        if (equipmentInstallation.isEmpty(landId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
-                type: "get",
-                dataType: "json",
-                data: {id: landId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pidC = id;
-                            $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm(data);
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.purpose, "purpose");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.type, "type");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.useRightType, "useRightType");
-                            $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                            $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
-                            AssessCommon.initAreaInfo({
-                                provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "province"),
-                                cityTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "city"),
-                                districtTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "district"),
-                                provinceValue: data.province,
-                                cityValue: data.city,
-                                districtValue: data.district
-                            });
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var landId = result.data.landId;
+                    $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).clearAll();
+                    if (equipmentInstallation.isEmpty(landId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: landId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pidC = id;
+                                        $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm(data);
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.purpose, "purpose");
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.type, "type");
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyLandCert.frm, data.useRightType, "useRightType");
+                                        $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
+                                        $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, data.id);
+                                        AssessCommon.initAreaInfo({
+                                            provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "province"),
+                                            cityTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "city"),
+                                            districtTarget: $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm + "district"),
+                                            provinceValue: data.province,
+                                            cityValue: data.city,
+                                            districtValue: data.district
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm({pidC: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declareRealtyLandCert.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).initForm({pidC: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyLandCert.fileId, AssessDBKey.DeclareRealtyLandCert, 0);
-        }
-        $('#' + equipmentInstallationConfig.declareRealtyLandCert.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+
     };
     equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
         if (!$("#" + equipmentInstallationConfig.declareRealtyLandCert.frm).valid()) {
@@ -839,9 +898,9 @@
                     $('#' + equipmentInstallationConfig.declareRealtyLandCert.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pidC = data.pidC;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pidC);
+                        var fData = {};
                         fData.landId = item;
+                        fData.id = data.pidC;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -1034,52 +1093,65 @@
             equipmentInstallation.declareRealtyRealEstateCertInit();
             equipmentInstallation.declareRealtyRealEstateCertFlag = false;
         }
-        var item = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
-        var realEstateId = item.realEstateId;
         $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).clearAll();
-        if (equipmentInstallation.isEmpty(realEstateId)) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
-                type: "get",
-                dataType: "json",
-                data: {id: realEstateId},
-                success: function (result) {
-                    if (result.ret) {
-                        var data = result.data;
-                        if (equipmentInstallation.isEmpty(data)) {
-                            data.pidC = id;
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm(data);
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.purpose, "purpose");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.type, "type");
-                            equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.useRightType, "useRightType");
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
-                            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
-                            equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
-                            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
-                            AssessCommon.initAreaInfo({
-                                provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "province"),
-                                cityTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "city"),
-                                districtTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "district"),
-                                provinceValue: data.province,
-                                cityValue: data.city,
-                                districtValue: data.district
-                            });
-                        }
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var realEstateId = result.data.realEstateId;
+                    if (equipmentInstallation.isEmpty(realEstateId)) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
+                            type: "get",
+                            dataType: "json",
+                            data: {id: realEstateId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var data = result.data;
+                                    if (equipmentInstallation.isEmpty(data)) {
+                                        data.pidC = id;
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm(data);
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.purpose, "purpose");
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.type, "type");
+                                        equipmentInstallation.objectWriteSelectData(equipmentInstallationConfig.declareRealtyRealEstateCert.frm, data.useRightType, "useRightType");
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='terminationDate']").val(formatDate(data.terminationDate));
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useEndDate']").val(formatDate(data.useEndDate));
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='useStartDate']").val(formatDate(data.useStartDate));
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='registrationTime']").val(formatDate(data.registrationTime));
+                                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + " input[name='registrationDate']").val(formatDate(data.registrationDate));
+                                        equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
+                                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, data.id);
+                                        AssessCommon.initAreaInfo({
+                                            provinceTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "province"),
+                                            cityTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "city"),
+                                            districtTarget: $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm + "district"),
+                                            provinceValue: data.province,
+                                            cityValue: data.city,
+                                            districtValue: data.district
+                                        });
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                Alert("调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
+                    } else {
+                        $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm({pidC: id});
+                        equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
+                        equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
                     }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    $('#' + equipmentInstallationConfig.declareRealtyRealEstateCert.box).modal("show");
+                } else {
+                    Alert("保存失败:" + result.errmsg);
                 }
-            });
-        } else {
-            $("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).initForm({pidC: id});
-            equipmentInstallation.showFile(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
-            equipmentInstallation.fileUpload(equipmentInstallationConfig.declareRealtyRealEstateCert.fileId, AssessDBKey.DeclareRealtyRealEstateCert, 0);
-        }
-        $('#' + equipmentInstallationConfig.declareRealtyRealEstateCert.box).modal("show");
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
     };
     equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
         if (!$("#" + equipmentInstallationConfig.declareRealtyRealEstateCert.frm).valid()) {
@@ -1095,9 +1167,9 @@
                     $('#' + equipmentInstallationConfig.declareRealtyRealEstateCert.box).modal("hide");
                     var item = result.data;
                     if (equipmentInstallation.isEmpty(item)) {//把新增的子类绑定到父类上区 (依据是每次新增都会把保存的id返回回来)
-                        var pidC = data.pidC;
-                        var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', pidC);
+                        var fData = {};
                         fData.realEstateId = item;
+                        fData.id = data.pidC ;
                         equipmentInstallation.handleFather(fData);
                         toastr.success('成功!');
                     }
@@ -1114,13 +1186,56 @@
     /**
      * 经济指标
      */
-    equipmentInstallation.declareEconomicIndicatorsView = function (id) {
-        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).clearAll();
-        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
-        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
-        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
-        economicIndicators.initForm(id, function () {
-            $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+    equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var indicatorId = result.data.indicatorId;
+                    if (equipmentInstallation.isEmpty(indicatorId)){
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).clearAll();
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                        economicIndicators.initForm(indicatorId, function () {
+                            $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+                        });
+                    }else {
+                        $.ajax({
+                            type: "POST",
+                            url: "${pageContext.request.contextPath}/declareBuildEconomicIndicatorsCenter/saveAndUpdateDeclareBuildEconomicIndicatorsCenter",
+                            data: {planDetailsId:"${projectPlanDetails.id}"},
+                            success: function (result) {
+                                if (result.ret) {
+                                    var id = result.data;
+                                    var fData = {};
+                                    fData.indicatorId = id;
+                                    fData.id = pid ;
+                                    equipmentInstallation.handleFather(fData);
+                                    $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).clearAll();
+                                    $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(id);
+                                    $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=planDetailsId]').val('${projectPlanDetails.id}');
+                                    $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                                    economicIndicators.initForm(id, function () {
+                                        $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+                                    });
+                                } else {
+                                    console.log(result.errmsg);
+                                    Alert("保存失败:" + result.errmsg);
+                                }
+                            },
+                            error: function (e) {
+                                Alert("调用服务端方法失败，失败原因:" + e);
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
         });
     };
 
@@ -1155,10 +1270,22 @@
             },//具体操作函数
             function () {
                 var copyId = equipmentInstallation.copyId;
-                console.log(copyId);
-                var fData = $("#" + equipmentInstallationConfig.table).bootstrapTable('getRowByUniqueId', id);
-                equipmentInstallation.loadList();
-                toastr.success('成功');
+                $.ajax({
+                    type: "post",
+                    url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+                    data: {ids: id, copyId: copyId, type: "DeclareBuildEquipmentInstall"},
+                    success: function (result) {
+                        if (result.ret) {
+                            equipmentInstallation.loadList();
+                            toastr.success('成功');
+                        } else {
+                            Alert("保存失败:" + result.errmsg);
+                        }
+                    },
+                    error: function (e) {
+                        Alert("调用服务端方法失败，失败原因:" + e);
+                    }
+                });
                 equipmentInstallation.copyId = undefined;
             }
         );
@@ -1182,11 +1309,31 @@
             if (this.isEmpty(item)) {
                 if (item.length >= 1) {
                     var copyId = equipmentInstallation.copyId;
-                    console.log(copyId);
-                    console.log(item);
+                    var ids = "" ;
+                    $.each(item,function (i,n) {
+                        if (i == item.length-1){
+                            ids += n.id
+                        }else {
+                            ids += n.id+",";
+                        }
+                    });
+                    $.ajax({
+                        type: "post",
+                        url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
+                        data: {ids: ids, copyId: copyId, type: "DeclareBuildEquipmentInstall"},
+                        success: function (result) {
+                            if (result.ret) {
+                                toastr.success('成功');
+                                equipmentInstallation.loadList();
+                            } else {
+                                Alert("失败:" + result.errmsg);
+                            }
+                        },
+                        error: function (e) {
+                            Alert("调用服务端方法失败，失败原因:" + e);
+                        }
+                    });
                     equipmentInstallation.copyId = undefined;
-                    toastr.success('成功');
-                    equipmentInstallation.loadList();
                 } else {
                     Alert("请先勾选需要粘贴的对象!");
                 }
@@ -1236,8 +1383,8 @@
                 var str = '<div class="dropdown">';
                 str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown' id='dropdownMenu2'>" + "操作" + "<span class='caret'>" + "</span>" + "</button>";
                 str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" + row.centerId + ")'" + ">" + "删除" + "</a>" + "</li>";
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" + row.centerId + ")'" + ">" + "编辑" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.deleteData(" + row.id + ")'" + ">" + "删除" + "</a>" + "</li>";
+                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.editData(" + row.id + ")'" + ">" + "编辑" + "</a>" + "</li>";
                 str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyLandCertView(" + row.centerId + ")'" + ">" + "土地证" + "</a>" + "</li>";
                 str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareRealtyRealEstateCertView(" + row.centerId + ")'" + ">" + "不动产" + "</a>" + "</li>";
                 str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingPermitView(" + row.centerId + ")'" + ">" + "建设工程规划许可证" + "</a>" + "</li>";

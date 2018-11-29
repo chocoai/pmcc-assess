@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 /**
  * @Auther: zch
  * @Date: 2018/11/22 17:39
@@ -68,9 +69,9 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
 
     @ResponseBody
     @RequestMapping(value = "/copyDeclareBuildEngineeringAndEquipmentCenter", method = {RequestMethod.POST}, name = "在建工程中间表 copy")
-    public HttpResult copy(Integer id,Integer copyId,String type){
+    public HttpResult copy(Integer copyId,String type,String ids){
         try {
-            declareBuildEngineeringAndEquipmentCenterService.copy(id,copyId,type);
+            declareBuildEngineeringAndEquipmentCenterService.copy(ids,copyId,type);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

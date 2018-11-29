@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.declare;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +43,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private DeclareBuildEngineeringService declareBuildEngineeringService;
+    @Autowired
+    private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
@@ -81,33 +84,46 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     /**
      * 处理copy 数据
      *
-     * @param id
+     * @param ids
      * @param copyId
      * @param type
      */
-    public void copy(Integer id, Integer copyId, String type) {
-        if (StringUtils.isNotBlank(type)) {
-            //在建工程（土建）
-            if (Objects.equal("civilEngineering", type)) {
-                DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(id);
+    public void copy(String ids, Integer copyId, String type) {
+        if (StringUtils.isEmpty(ids)) {
+            return;
+        }
+        for (String id : ids.split(",")) {
+            if (StringUtils.isNotBlank(type)) {
+                //在建工程（土建）
                 DeclareBuildEngineeringAndEquipmentCenter centerA = getDeclareBuildEngineeringAndEquipmentCenterById(copyId);
-                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                query.setBuildEngineeringId(declareBuildEngineering.getId());
-                query.setType(DeclareBuildEngineering.class.getSimpleName());
-                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                List<DeclareBuildEngineeringAndEquipmentCenter> centerList = null;
+                if (Objects.equal(DeclareBuildEngineering.class.getSimpleName(), type)) {
+                    DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(Integer.parseInt(id));
+                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                    query.setBuildEngineeringId(declareBuildEngineering.getId());
+                    query.setType(DeclareBuildEngineering.class.getSimpleName());
+                    centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                }
+                if (Objects.equal(DeclareBuildEquipmentInstall.class.getSimpleName(), type)) {
+                    DeclareBuildEquipmentInstall declareBuildEquipmentInstall = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallById(Integer.parseInt(id));
+                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                    query.setBuildEquipmentId(declareBuildEquipmentInstall.getId());
+                    query.setType(DeclareBuildEquipmentInstall.class.getSimpleName());
+                    centerList = declareBuildEngineeringAndEquipmentCenterList(query);
+                }
+                //在建工程 (设备安装)
                 if (!ObjectUtils.isEmpty(centerList)) {
                     DeclareBuildEngineeringAndEquipmentCenter centerB = centerList.get(0);
-                    if (centerB != null){
+                    if (centerB != null) {
                         int cid = centerB.getId();
                         centerA.setBuildEngineeringId(null);
                         centerA.setBuildEquipmentId(null);
-                        BeanUtils.copyProperties(centerA,centerB);
+                        BeanUtils.copyProperties(centerA, centerB);
                         centerB.setId(cid);
                         declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(centerB);
                     }
                 }
             }
-            //其它
         }
     }
 
