@@ -1,17 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kings
-  Date: 2018-5-17
-  Time: 11:13
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar'></script>
-<!-- UI组件库 1.0 -->
-<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
-<div id="containerMap" style="display: none;" tabindex="0"></div>
-<script type="text/javascript">
-    var gaoDeMap = {};
+/**
+ * Created by kings on 2018-11-29.
+ */
+document.write('<script type="text/javascript" src="//webapi.amap.com/maps?v=1.4.6&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.ToolBar"></script>');
+document.write('<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>');
+document.write('<div id="containerMap" style="display: none;" tabindex="0"></div>');
+
+var mapPosition={};
+
+mapPosition.complete=function (callback) {
     //高德地图接入定位
     AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
         var map, geolocation;
@@ -31,19 +27,8 @@
             });
             map.addControl(geolocation);
             geolocation.getCurrentPosition();
-            AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+            AMap.event.addListener(geolocation, 'complete', callback);//返回定位信息
             AMap.event.addListener(geolocation, 'error', function () {});      //返回定位出错信息
         });
-
-        //解析定位结果
-        function onComplete(data) {
-            gaoDeMap.location = data;
-            //执行定位成功方法
-            console.log('定位成功');
-            if(gaoDeMap.positionSuccess){
-                gaoDeMap.positionSuccess(data);
-            }
-        }
     });
-
-</script>
+}

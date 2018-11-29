@@ -8,12 +8,6 @@
         ${ddlSql}
     </select>
 
-    <select id="getFuniHousesTypeLpbh" parameterType="map" resultType="map">
-        ${ddlSql}
-    </select>
-
-
-
     <insert id="customTableDdlInsert" parameterType="com.copower.pmcc.assess.dal.basis.custom.entity.CustomDdlTable" useGeneratedKeys="true" keyProperty="id" >
         ${ddlSql}
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">

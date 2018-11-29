@@ -18,5 +18,4 @@ public interface CustomDdlTableMapper {
     void customTableDdl(@Param("ddlSql") String ddlSql);//直接用SQL对数据库中表进行新增或删除
     List<Map> customTableSelect(@Param("ddlSql") String ddlSql);//查询自定义表相关数据
     int customTableDdlInsert(CustomDdlTable customDdlTable);//查询自定义表相关数据
-    List<Map> getFuniHousesTypeLpbh(@Param("ddlSql") String ddlSql);//查询tb_funi_houses_type表中的lpbh
 }

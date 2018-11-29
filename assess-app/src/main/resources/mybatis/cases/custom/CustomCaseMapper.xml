@@ -7,8 +7,8 @@
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
     <select id="getCaseEstateList" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,`name`,version FROM (
-        SELECT DISTINCT id,`name`,version FROM tb_case_estate where 1=1
+        SELECT id,`name`,`type`,version FROM (
+        SELECT DISTINCT id,`name`,`type`,version FROM tb_case_estate where 1=1
         <if test="name!=null and name!=''">
             AND `name` LIKE CONCAT(CONCAT('%', #{name}), '%')
         </if>
@@ -26,8 +26,8 @@
     </select>
 
     <select id="getCaseBuildingMainList" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,building_number AS `name`,version FROM (
-        SELECT id,building_number,version FROM tb_case_building_main WHERE 1=1
+        SELECT id,building_number AS `name`,`type`,version FROM (
+        SELECT id,building_number,`type`,version FROM tb_case_building_main WHERE 1=1
         <if test="buildingNumber!=null and buildingNumber!=''">
             AND building_number LIKE CONCAT(CONCAT('%', #{buildingNumber}), '%')
         </if>
@@ -39,8 +39,8 @@
     </select>
 
     <select id="getCaseUnitList" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,unit_number AS `name`,version FROM (
-        SELECT id,unit_number,version FROM tb_case_unit WHERE 1=1
+        SELECT id,unit_number AS `name`,`type`,version FROM (
+        SELECT id,unit_number,`type`,version FROM tb_case_unit WHERE 1=1
         <if test="unitNumber!=null and unitNumber!=''">
             AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
         </if>
@@ -52,8 +52,8 @@
     </select>
 
     <select id="getCaseHouseList" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,house_number AS `name`,version FROM (
-        SELECT id,house_number,version FROM tb_case_house WHERE 1=1
+        SELECT id,house_number AS `name`,`type`,version FROM (
+        SELECT id,house_number,`type`,version FROM tb_case_house WHERE 1=1
         <if test="houseNumber!=null and houseNumber!=''">
             AND house_number LIKE CONCAT(CONCAT('%', #{houseNumber}), '%')
         </if>

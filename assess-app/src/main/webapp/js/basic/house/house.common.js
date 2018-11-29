@@ -9,6 +9,7 @@
     houseCommon.basicApplyForm = $('#basicApplyFrm');
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
+        'house_huxing_plan',
         'house_new_huxing_plan',
         'house_img_plan'];
 
@@ -78,8 +79,13 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    houseCommon.houseForm.initLabel(result.data.basicHouse);
-                    houseCommon.houseTradingForm.initLabel(result.data.basicHouseTrading);
+                    houseCommon.houseForm.initForm(result.data.basicHouse, function () {
+                        //附件显示
+                        $.each(houseCommon.houseFileControlIdArray, function (i, item) {
+                            houseCommon.fileShow(item, false);
+                        })
+                    })
+                    houseCommon.houseTradingForm.initForm(result.data.basicHouseTrading);
                 }
             }
         })
@@ -111,18 +117,6 @@
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
                 houseCommon.fileShow(item);
             })
-
-            if (data.basicHouse.huxingPlan) {
-                //显示户型图
-                var huxingPlanJson = JSON.parse(data.basicHouse.huxingPlan);
-                FileUtils.getFileShows({
-                    target: "house_huxing_plan",
-                    formData: {
-                        tableName: huxingPlanJson.tableName,
-                        tableId: huxingPlanJson.id
-                    }
-                })
-            }
         });
 
         //交易情况
@@ -130,7 +124,7 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.basicHouseTrading.taxBurden, function (html, data) {
                 houseCommon.houseTradingForm.find("select.taxBurden").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataDicByKey(AssessDicKey.basicHouseTransactionType, data.basicHouseTrading.tradingType, function (html, data) {
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.basicHouseTrading.tradingType, function (html, data) {
                 houseCommon.houseTradingForm.find("select.tradingType").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.basicHouseTrading.descriptionType, function (html, data) {
@@ -191,24 +185,23 @@
             basicApplyId: houseCommon.getApplyId(),
             caseUnitId: houseCommon.basicApplyForm.find('[name=caseUnitId]').val(),
             success: function (row) {
-                //1.赋值 2.显示附件数据
+                //1.赋值 2.拷贝附件并显示附件数据
                 $(_this).closest('.input-group').find(':text').val(row.name);
                 houseCommon.houseForm.find('[name=orientation]').val(row.orientationName);
-                houseCommon.houseForm.find('[name=huxingPlan]').val(JSON.stringify({
-                    id: row.id,
-                    tableName: row.tableName
-                }));
-                FileUtils.getFileShows({
-                    target: "house_huxing_plan",
-                    formData: {
-                        tableName: row.tableName,
-                        tableId: row.id
+                $.ajax({
+                    url:getContextPath() + '/basicHouse/copyHuxingPlan',
+                    data:{
+                        sourceTableId:row.id,
+                        sourceTableName:row.tableName,
+                        targetTableId:houseCommon.getHouseId(),
+                        fieldsName:houseCommon.houseFileControlIdArray[0]
                     },
-                    deleteFlag: false
+                    success:function (result) {
+                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0],false);
+                    }
                 })
             }
         })
     }
-
     window.houseCommon = houseCommon;
 })(jQuery);

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.BasicHouseTradingLeaseAndSellDtoTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineHouseTradingSellAndLeaseDtoTypeEnum;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingLease;
 import com.copower.pmcc.assess.dal.basic.entity.BasicHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.basic.BasicHouseTradingLeaseAndSellDto;
@@ -29,12 +29,12 @@ public class BasicHouseTradingLeaseAndSellDtoService {
     public void saveBasicHouseTradingLeaseAndSellDto(BasicHouseTradingLeaseAndSellDto basicHouseTradingLeaseAndSellDto) throws Exception{
         String tradingType = basicHouseTradingLeaseAndSellDto.getTradingType();
         if (StringUtils.isNotEmpty(tradingType)) {
-            if (Objects.equal(tradingType, BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingLease.getKey())) {
+            if (Objects.equal(tradingType, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())) {
                 BasicHouseTradingLease basicHouseTradingLease = new BasicHouseTradingLease();
                 BeanUtils.copyProperties(basicHouseTradingLeaseAndSellDto, basicHouseTradingLease);
                 basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(basicHouseTradingLease);
             }
-            if (Objects.equal(tradingType, BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingSell.getKey())) {
+            if (Objects.equal(tradingType, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())) {
                 BasicHouseTradingSell basicHouseTradingSell = new BasicHouseTradingSell();
                 BeanUtils.copyProperties(basicHouseTradingLeaseAndSellDto, basicHouseTradingSell);
                 basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(basicHouseTradingSell);
@@ -44,20 +44,20 @@ public class BasicHouseTradingLeaseAndSellDtoService {
 
     public BootstrapTableVo getVoList(String type,BasicHouseTradingLease basicHouseTradingLease,BasicHouseTradingSell basicHouseTradingSell)throws Exception{
         BootstrapTableVo vo = null;
-        if (Objects.equal(type,BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingLease.getKey())){
+        if (Objects.equal(type,ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())){
             vo = basicHouseTradingLeaseService.getBootstrapTableVo(basicHouseTradingLease,type);
         }
-        if (Objects.equal(type,BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingSell.getKey())){
+        if (Objects.equal(type,ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())){
             vo = basicHouseTradingSellService.getBootstrapTableVo(basicHouseTradingSell,type);
         }
         return vo;
     }
 
     public void remove(String type,Integer id)throws Exception{
-        if (Objects.equal(type,BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingLease.getKey())){
+        if (Objects.equal(type,ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())){
             basicHouseTradingLeaseService.deleteBasicHouseTradingLease(id);
         }
-        if (Objects.equal(type,BasicHouseTradingLeaseAndSellDtoTypeEnum.BasicHouseTradingSell.getKey())){
+        if (Objects.equal(type,ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())){
             basicHouseTradingSellService.deleteBasicHouseTradingSell(id);
         }
     }

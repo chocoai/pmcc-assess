@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -51,6 +52,14 @@ public class BasicApplyService {
     private BaseParameterService baseParameterService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
+    @Autowired
+    private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -201,7 +210,12 @@ public class BasicApplyService {
      *
      * @param id
      */
-    public void deleteBasicApply(Integer id) {
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    public void deleteBasicApply(Integer id) throws Exception {
+        basicEstateService.clearInvalidData(id);
+        basicBuildingService.clearInvalidData(id);
+        basicUnitService.clearInvalidData(id);
+        basicHouseService.clearInvalidData(id);
         basicApplyDao.deleteBasicApply(id);
     }
 

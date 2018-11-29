@@ -12,11 +12,9 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateLandState;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,22 +246,10 @@ public class CaseEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String name, Integer maxRows) {
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (!org.apache.commons.lang3.StringUtils.isNotBlank(name)) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
+    public HttpResult autoCompleteCaseEstate(String name,String province,String city, Integer maxRows) {
         try {
-            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name, maxRows);
-            if (!ObjectUtils.isEmpty(caseEstateList)) {
-                for (CustomCaseEntity caseEstate : caseEstateList) {
-                    KeyValueDto keyValueDto = new KeyValueDto();
-                    keyValueDto.setKey(String.valueOf(caseEstate.getId()));
-                    keyValueDto.setValue(caseEstate.getName());
-                    keyValueDtos.add(keyValueDto);
-                }
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
+            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name,province,city, maxRows);
+            return HttpResult.newCorrectResult(caseEstateList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

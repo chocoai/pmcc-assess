@@ -43,7 +43,6 @@
                 <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="hidden" name="huxingPlan" value='${basicHouse.huxingPlan}'>
                         <input type="text"
                                placeholder="户型" class="form-control" name="huxingName"
                                value="${basicHouse.huxingName}">
@@ -96,7 +95,7 @@
                 </div>
             </div>
         </div>
-
+d
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">证载用途</label>
@@ -244,7 +243,7 @@
             </div>
         </div>
 
-        <div class="form-group BasicHouseTradingSell" style="display: none">
+        <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
@@ -280,7 +279,7 @@
             </div>
         </div>
 
-        <div class="form-group BasicHouseTradingLease" style="display: none">
+        <div class="form-group ExamineHouseTradingLease" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                 <div class="col-sm-3">
@@ -352,6 +351,7 @@
 </div>
 <%@include file="/views/basic/modelView/house/sonHouseView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/basic/house/houseView.js"></script>
 <script src="${pageContext.request.contextPath}/js/basic/huxing.select.js"></script>
 
 <div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"

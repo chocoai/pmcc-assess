@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ExamineHouseEquipmentTypeEnum;
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTrading;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
@@ -11,11 +12,8 @@ import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseHouseTradingVo;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,23 +246,9 @@ public class CaseHouseController {
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
     public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId, Integer maxRows) {
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (unitId == null) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
-        if (!StringUtils.isNotBlank(houseNumber)) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
         try {
-            List<CaseHouse> caseHouseList = caseHouseService.autoCompleteCaseHouse(houseNumber, unitId, maxRows);
-            if (!ObjectUtils.isEmpty(caseHouseList)) {
-                CaseHouse caseHouse = caseHouseList.get(0);
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(caseHouse.getId()));
-                keyValueDto.setValue(caseHouse.getHouseNumber());
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
+            List<CustomCaseEntity> caseEntities = caseHouseService.autoCompleteCaseHouse(houseNumber, unitId, maxRows);
+            return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

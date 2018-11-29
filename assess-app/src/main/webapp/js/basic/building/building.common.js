@@ -143,12 +143,6 @@
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {
                             buildingCommon.fileShow(item);
                         })
-
-                        //数据特殊处理
-                        buildingCommon.buildingForm.find('[name=openTime]').val(formatDate(result.data.openTime));
-                        buildingCommon.buildingForm.find('[name=roomTime]').val(formatDate(result.data.roomTime));
-                        buildingCommon.buildingForm.find('[name=beCompletedTime]').val(formatDate(result.data.beCompletedTime));
-
                         buildingModelView.prototype.viewInit(); //加载从表数据
                     });
                 }

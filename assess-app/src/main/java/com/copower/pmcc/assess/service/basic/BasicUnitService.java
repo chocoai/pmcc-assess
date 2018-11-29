@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basic.dao.BasicUnitDao;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitDecorate;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitElevator;
-import com.copower.pmcc.assess.dal.basic.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitDecorate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnitElevator;
@@ -139,10 +136,11 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public void clearInvalidData() throws Exception {
+    public void clearInvalidData(Integer applyId) throws Exception {
         BasicUnit where = new BasicUnit();
-        where.setApplyId(0);
-        where.setCreator(commonService.thisUserAccount());
+        where.setApplyId(applyId);
+        if (applyId.equals(0))
+            where.setCreator(commonService.thisUserAccount());
         List<BasicUnit> unitList = basicUnitDao.basicUnitList(where);
         if (CollectionUtils.isEmpty(unitList)) return;
         BasicUnit unit = unitList.get(0);
@@ -187,6 +185,8 @@ public class BasicUnitService {
                 basicUnitDecorateService.deleteBasicUnitDecorate(oo.getId());
             }
         }
+
+        basicUnitDao.deleteBasicUnit(unit.getId());
     }
 
 
@@ -216,7 +216,7 @@ public class BasicUnitService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicUnit addUnit(String unitNumber) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setUnitNumber(unitNumber);
         basicUnit.setApplyId(0);
@@ -234,7 +234,7 @@ public class BasicUnitService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public BasicUnit appWriteUnit(Integer caseUnitId) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
         if (caseUnitId == null) {
             throw new Exception("null point");
         }
@@ -338,4 +338,6 @@ public class BasicUnitService {
         });
         return basicUnit;
     }
+
+
 }

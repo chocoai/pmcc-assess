@@ -17,7 +17,7 @@
                     </h2>
                 </div>
             </div>
-            <div class="x_panel" style="display: ${basicApply.id eq 0?'block':'none'}">
+            <div class="x_panel" ${basicApply.id eq 0?'':'style="display:none"'}>
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i
@@ -31,17 +31,39 @@
                 <div class="x_content">
                     <form id="basicApplyFrm" class="form-horizontal">
                         <input type="hidden" name="id" value="${basicApply.id}">
-                        <div class="form-group" id="industry">
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    省
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="province" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    市
+                                </label>
+                                <div class="col-sm-1">
+                                    <select name="city" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
                             <span class="col-sm-2 col-sm-offset-1 checkbox-inline">
-                                <input type="radio" id="type0" name="type" value="0">
-                                <label for="type0">非工业与仓储</label>
+                                <input type="radio" id="applyFormType0" name="type" value="0">
+                                <label for="applyFormType0">非工业与仓储</label>
                             </span>
 
                             <span class="col-sm-2  checkbox-inline">
-                                <input type="radio" id="type1" name="type" value="1">
-                                <label for="type1">工业与仓储</label>
+                                <input type="radio" id="applyFormType1" name="type" value="1">
+                                <label for="applyFormType1">工业与仓储</label>
                             </span>
                         </div>
+                        <div class="form-group" id="industry">
+
+                        </div>
+
 
                         <div class="form-group">
                             <div class="x-valid">
@@ -55,16 +77,17 @@
                                            onkeydown="objectData.autocompleteEstate(this);">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
+                            <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="estateCommon.add($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                    <input type="button" class="btn btn-success"
+                                           onclick="estateCommon.add($(this).closest('form'),basicIndexCommon.showEstateTab());"
                                            value="添加">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
-                                           value="修改">
+                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
+                                           onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                           value="引用">
+                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
+                                           onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                           value="升版本">
                                 </div>
                             </div>
                         </div>
@@ -82,14 +105,17 @@
                                            onkeydown="objectData.autocompleteBuilding(this)">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
+                            <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab);" value="添加">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);" value="修改">
+                                    <input type="button" class="btn btn-success"
+                                           onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                           value="添加">
+                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
+                                           onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                           value="引用">
+                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
+                                           onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                           value="升版本">
                                 </div>
                             </div>
                         </div>
@@ -106,20 +132,20 @@
                                            onkeydown="objectData.autocompleteUnit(this);">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
+                            <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                    <input type="button" class="btn btn-success"
+                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
                                            value="添加">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
-                                           value="修改">
+                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
+                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                           value="引用">
+                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
+                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                           value="升版本">
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -132,15 +158,16 @@
                                            onkeydown="objectData.autocompleteHouse(this)">
                                 </div>
                             </div>
-                            <div class="x-valid" style="display: none;">
+                            <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" value="添加"
+                                    <input type="button" class="btn btn-success"
+                                           value="添加"
                                            onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
-                                </div>
-                            </div>
-                            <div class="x-valid" style="display: none;">
-                                <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success" value="修改"
+                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
+                                           value="引用"
+                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
+                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
+                                           value="升版本"
                                            onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
                                 </div>
                             </div>
@@ -171,6 +198,7 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
 <script type="text/javascript">
@@ -210,29 +238,32 @@
      */
     objectData.autocompleteEstate = function (_this) {
         var that = _this;
-        var childs = $(_this).closest('.form-group').children();
-        childs.eq(1).show();
-        childs.eq(2).hide();
-        $(that).autocomplete(
-            {
+        var group = $(_this).closest('.form-group');
+        group.find('[name=caseEstateId]').val('');
+        group.find('.btn-reference,.btn-upgrade').hide();
+        $(that).autocomplete({
                 source: function (request, response) {
-                    var itemVal = $(that).val();
                     $.ajax({
                         url: "${pageContext.request.contextPath}/caseEstate/autoCompleteCaseEstate",
                         type: "get",
                         dataType: "json",
                         data: {
                             maxRows: 10,
-                            name: itemVal
+                            province: $("#" + objectData.config.basicApply.frm).find('[name=province]').val(),
+                            city: $("#" + objectData.config.basicApply.frm).find('[name=city]').val(),
+                            name: $(that).val()
                         },
                         success: function (result) {
                             if (result.ret) {
-                                response($.each(result.data, function (i, item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.key
-                                    }
-                                }));
+                                var responseArray = [];
+                                $.each(result.data, function (i, item) {
+                                    responseArray.push({
+                                        label: item.name,
+                                        type: item.type,
+                                        id: item.id
+                                    });
+                                })
+                                response(responseArray);
                             } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
@@ -240,14 +271,11 @@
                     });
                 },
                 minLength: 2,
-                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    childs.eq(1).hide();
-                    childs.eq(2).show();
-                    $(that).closest('div').find('[name=caseEstateId]').val(ele.item.key);
-                },
-                /*当焦点移动到一个条目上（未选择）时触发。默认的动作是把文本域中的值替换为获得焦点的条目的值，即使该事件是通过键盘交互触发的。取消该事件会阻止值被更新，但不会阻止菜单项获得焦点。*/
-                focus: function (event, ui) {
+                    group.find('[name=caseEstateId]').val(ele.item.id);
+                    group.find('.btn-reference,.btn-upgrade').show();
+                    //选择楼盘的类型
+                    $('#applyFormType' + ele.item.type).trigger('click');
                 }
             }
         );
@@ -259,11 +287,10 @@
     objectData.autocompleteBuilding = function (_this) {
         var that = _this;
         var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
-        var childs = $(_this).closest('.form-group').children();
-        childs.eq(1).show();
-        childs.eq(2).hide();
-        $(that).autocomplete(
-            {
+        var group = $(_this).closest('.form-group');
+        group.find('[name=caseBuildingMainId]').val('');
+        group.find('.btn-reference,.btn-upgrade').hide();
+        $(that).autocomplete({
                 source: function (request, response) {
                     var itemVal = $(that).val();
                     $.ajax({
@@ -272,17 +299,20 @@
                         dataType: "json",
                         data: {
                             maxRows: 10,
-                            identifier: itemVal,
+                            buildingNumber: itemVal,
                             estateId: estateId
                         },
                         success: function (result) {
                             if (result.ret) {
-                                response($.each(result.data, function (i, item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.key
-                                    }
-                                }));
+                                var responseArray = [];
+                                $.each(result.data, function (i, item) {
+                                    responseArray.push({
+                                        label: item.name,
+                                        type: item.type,
+                                        id: item.id
+                                    });
+                                })
+                                response(responseArray);
                             } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
@@ -290,13 +320,10 @@
                     });
                 },
                 minLength: 1,
-                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
+                    /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    childs.eq(1).hide();
-                    childs.eq(2).show();
-                    $(that).closest('div').find('[name=caseBuildingMainId]').val(ele.item.key);
-                },
-                focus: function (event, ui) {
+                    group.find('[name=caseBuildingMainId]').val(ele.item.id);
+                    group.find('.btn-reference,.btn-upgrade').show();
                 }
             }
         );
@@ -308,9 +335,9 @@
     objectData.autocompleteUnit = function (_this) {
         var that = _this;
         var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
-        var childs = $(_this).closest('.form-group').children();
-        childs.eq(1).show();
-        childs.eq(2).hide();
+        var group = $(_this).closest('.form-group');
+        group.find('[name=caseUnitId]').val('');
+        group.find('.btn-reference,.btn-upgrade').hide();
         $(that).autocomplete(
             {
                 source: function (request, response) {
@@ -326,12 +353,15 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                response($.each(result.data, function (i, item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.key
-                                    }
-                                }));
+                                var responseArray = [];
+                                $.each(result.data, function (i, item) {
+                                    responseArray.push({
+                                        label: item.name,
+                                        type: item.type,
+                                        id: item.id
+                                    });
+                                })
+                                response(responseArray);
                             } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
@@ -339,13 +369,9 @@
                     });
                 },
                 minLength: 1,
-                /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    childs.eq(1).hide();
-                    childs.eq(2).show();
-                    $(that).closest('div').find('[name=caseUnitId]').val(ele.item.key);
-                },
-                focus: function (event, ui) {
+                    group.find('[name=caseUnitId]').val(ele.item.id);
+                    group.find('.btn-reference,.btn-upgrade').show();
                 }
             }
         );
@@ -357,9 +383,9 @@
     objectData.autocompleteHouse = function (_this) {
         var that = _this;
         var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
-        var childs = $(_this).closest('.form-group').children();
-        childs.eq(1).show();
-        childs.eq(2).hide();
+        var group = $(_this).closest('.form-group');
+        group.find('[name=caseHouseId]').val('');
+        group.find('.btn-reference,.btn-upgrade').hide();
         $(that).autocomplete(
             {
                 source: function (request, response) {
@@ -375,12 +401,15 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                response($.each(result.data, function (i, item) {
-                                    return {
-                                        label: item.value,
-                                        value: item.key
-                                    }
-                                }));
+                                var responseArray = [];
+                                $.each(result.data, function (i, item) {
+                                    responseArray.push({
+                                        label: item.name,
+                                        type: item.type,
+                                        id: item.id
+                                    });
+                                })
+                                response(responseArray);
                             } else {
                                 Alert("调用服务端方法失败，失败原因:" + result.errmsg);
                             }
@@ -390,11 +419,8 @@
                 minLength: 1,
                 /*当从菜单中选择条目时触发。默认的动作是把文本域中的值替换为被选中的条目的值。取消该事件会阻止值被更新，但不会阻止菜单关闭。*/
                 select: function (event, ele) {
-                    childs.eq(1).hide();
-                    childs.eq(2).show();
-                    $(that).closest('div').find('[name=caseHouseId]').val(ele.item.key);
-                },
-                focus: function (event, ui) {
+                    group.find('[name=caseHouseId]').val(ele.item.id);
+                    group.find('.btn-reference,.btn-upgrade').show();
                 }
             }
         );
@@ -434,22 +460,21 @@
         if ('${basicApply.id}' != '0') {
             //初始楼盘信息
             if ('${basicApply.estatePartInFlag}' == 'true') {
-                estateCommon.init('${basicApply.id}',basicIndexCommon.showEstateTab);
+                estateCommon.init('${basicApply.id}', basicIndexCommon.showEstateTab);
             }
             //初始楼栋信息
             if ('${basicApply.buildingPartInFlag}' == 'true') {
-                buildingCommon.init('${basicApply.id}',basicIndexCommon.showBuildingTab);
+                buildingCommon.init('${basicApply.id}', basicIndexCommon.showBuildingTab);
             }
             //初始单元信息
             if ('${basicApply.unitPartInFlag}' == 'true') {
-                unitCommon.init('${basicApply.id}',basicIndexCommon.showUnitTab);
+                unitCommon.init('${basicApply.id}', basicIndexCommon.showUnitTab);
             }
             //初始房屋信息
             if ('${basicApply.housePartInFlag}' == 'true') {
-                houseCommon.init('${basicApply.id}',basicIndexCommon.showHouseTab);
+                houseCommon.init('${basicApply.id}', basicIndexCommon.showHouseTab);
             }
-            $("#" + objectData.config.basicApply.frm).find('[id=type${basicApply.type}]').trigger('click');
-            $("#" + objectData.config.basicApply.frm).find('input').attr('readonly', 'readonly');
+            $("#" + objectData.config.basicApply.frm).find('[id=applyFormType${basicApply.type}]').trigger('click');
         } else {
             $("#" + objectData.config.basicApply.frm).find('[name=type]:eq(0)').trigger('click');
         }
@@ -458,7 +483,22 @@
 
     $(function () {
         objectData.startApply();
+
+        //定位成功回调方法
+        mapPosition.complete(function (data) {
+            var province = data.addressComponent.province;
+            var city = data.addressComponent.city;
+            if (province && city) {
+                AssessCommon.initAreaInfo({
+                    provinceTarget: $("#" + objectData.config.basicApply.frm).find('[name=province]'),
+                    cityTarget: $("#" + objectData.config.basicApply.frm).find('[name=city]'),
+                    provinceDefaultText: province.replace('省', ''),
+                    cityDefaultText: city.replace('市', '')
+                });
+            }
+        })
     });
+
 </script>
 
 <script type="text/javascript">
@@ -480,7 +520,7 @@
                     Alert("提交数据成功!", 1, null, function () {
                         window.close();
                     });
-                }else{
+                } else {
                     Alert("提交数据失败!");
                 }
             }
@@ -504,7 +544,7 @@
                     Alert("保存草稿成功!", 1, null, function () {
                         window.close();
                     });
-                }else{
+                } else {
                     Alert("保存草稿失败!");
                 }
             },

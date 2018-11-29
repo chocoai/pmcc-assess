@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.CaseHouseTradingLeaseAndSellDtoTypeEnum;
+import com.copower.pmcc.assess.common.enums.ExamineHouseTradingSellAndLeaseDtoTypeEnum;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingLease;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouseTradingSell;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
@@ -32,12 +32,12 @@ public class CaseHouseTradingLeaseAndSellDtoService {
         if (caseHouseTradingLeaseAndSellDto != null) {
             String tradingType = caseHouseTradingLeaseAndSellDto.getTradingType();
             if (!StringUtils.isEmpty(tradingType)) {
-                if (Objects.equal(tradingType, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingLease.getKey())){//房屋出售
+                if (Objects.equal(tradingType, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())){//房屋出租
                     CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
                     BeanUtils.copyProperties(caseHouseTradingLeaseAndSellDto,caseHouseTradingLease);
                     caseHouseTradingLeaseService.saveAndUpdateCaseHouseTradingLease(caseHouseTradingLease);
                 }
-                if (Objects.equal(tradingType, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingSell.getKey())){//房屋出租
+                if (Objects.equal(tradingType, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())){//房屋出售
                     CaseHouseTradingSell caseHouseTradingSell = new CaseHouseTradingSell();
                     BeanUtils.copyProperties(caseHouseTradingLeaseAndSellDto,caseHouseTradingSell);
                     caseHouseTradingSellService.saveAndUpdateCaseHouseTradingSell(caseHouseTradingSell);
@@ -48,10 +48,10 @@ public class CaseHouseTradingLeaseAndSellDtoService {
 
     public BootstrapTableVo getVoList(String type,CaseHouseTradingLease caseHouseTradingLease,CaseHouseTradingSell caseHouseTradingSell){
         BootstrapTableVo vo = null;
-        if (Objects.equal(type, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingLease.getKey())){//房屋出售
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())){//房屋出租
             vo = caseHouseTradingLeaseService.getBootstrapTableVo(caseHouseTradingLease,type);
         }
-        if (Objects.equal(type, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingSell.getKey())){//房屋出租
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())){//房屋出售
             vo = caseHouseTradingSellService.getBootstrapTableVo(caseHouseTradingSell,type);
         }
         return vo;
@@ -59,12 +59,12 @@ public class CaseHouseTradingLeaseAndSellDtoService {
 
     @Transactional
     public boolean remove(String type, Integer id) {
-        if (Objects.equal(type, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingLease.getKey())) {//房屋出售
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingLease.getKey())) {//房屋出租
             CaseHouseTradingLease caseHouseTradingLease = new CaseHouseTradingLease();
             caseHouseTradingLease.setId(id);
             caseHouseTradingLeaseService.deleteCaseHouseTradingLease(caseHouseTradingLease);
         }
-        if (Objects.equal(type, CaseHouseTradingLeaseAndSellDtoTypeEnum.CaseHouseTradingSell.getKey())) {//房屋出租
+        if (Objects.equal(type, ExamineHouseTradingSellAndLeaseDtoTypeEnum.ExamineHouseTradingSell.getKey())) {//房屋出售
             CaseHouseTradingSell caseHouseTradingSell = new CaseHouseTradingSell();
             caseHouseTradingSell.setId(id);
             caseHouseTradingSellService.deleteCaseHouseTradingSell(caseHouseTradingSell);

@@ -30,36 +30,39 @@
                     <label class="form-control">${basicHouse.useEnvironmentName}</label>
                 </div>
             </div>
-
-            <div class="x-valid" id="industryNewsHuxing">
-                <label class="col-sm-1 control-label">最新户型</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicHouse.newsHuxingName}</label>
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">户型选择</label>
+                <label class="col-sm-1 control-label">户型</label>
                 <div class="col-sm-3">
-                    <div class="input-group">
-                        <label class="form-control">${basicHouse.huxingId}</label>
-                    </div>
+                    <label class="form-control">${basicHouse.huxingName}</label>
                 </div>
             </div>
-
             <div class="x-valid">
-                <div class="col-sm-3 house_latest_family_plan">
+                <label class="col-sm-1 control-label">户型图</label>
+                <div class="col-sm-3" id="_house_huxing_plan">
 
                 </div>
             </div>
-
-
             <div class="x-valid">
                 <label class="col-sm-1 control-label">朝向</label>
                 <div class="col-sm-3">
                     <label class="form-control">${basicHouse.orientation}</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型</label>
+                <div class="col-sm-3">
+                    <label class="form-control">${basicHouse.newHuxingName}</label>
+                </div>
+            </div>
+            <div class="x-valid">
+                <label class="col-sm-1 control-label">新户型图</label>
+                <div class="col-sm-3" id="_house_new_huxing_plan">
+
                 </div>
             </div>
         </div>
@@ -184,7 +187,7 @@
 
         </div>
 
-        <div class="form-group BasicHouseTradingSell" style="display: none">
+        <div class="form-group ExamineHouseTradingSell" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">买方支付的额外税费</label>
                 <div class="col-sm-3">
@@ -213,7 +216,7 @@
             </div>
         </div>
 
-        <div class="form-group BasicHouseTradingLease" style="display: none">
+        <div class="form-group ExamineHouseTradingLease" style="display: none">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">承租方支付的额外税费</label>
                 <div class="col-sm-3">
@@ -244,7 +247,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">交易时间</label>
                 <div class="col-sm-3">
-                    <label class="form-control">${basicHouseTrading.tradingTimeName}</label>
+                    <label class="form-control"><fmt:formatDate value="${basicHouseTrading.tradingTime}" pattern="yyyy-MM-dd"></fmt:formatDate> </label>
                 </div>
             </div>
             <div class="x-valid">

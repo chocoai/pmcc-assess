@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.assist;
 
-import com.copower.pmcc.assess.dal.basic.custom.mapper.CustomBasicDdlTableMapper;
 import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomDdlTable;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
@@ -22,24 +21,13 @@ import java.util.Map;
 public class DdlMySqlAssist {
     @Autowired
     private CustomDdlTableMapper customDdlTableMapper;
-    @Autowired
-    private CustomBasicDdlTableMapper customBasicDdlTableMapper;
 
-    @Deprecated
-    public void insertBasicEstate(BasicEstate basicEstate)throws SQLException{
-        customBasicDdlTableMapper.insertBasicEstate(basicEstate);
-    }
 
     public void customTableDdl(String sql) {
         customDdlTableMapper.customTableDdl(sql);
     }
     public List<Map> customTableSelect(String sql) {
         List<Map> maps = customDdlTableMapper.customTableSelect(sql);
-        return maps;
-    }
-
-    public List<Map> getFuniHousesTypeLpbh(String sql){
-        List<Map> maps = customDdlTableMapper.getFuniHousesTypeLpbh(sql);
         return maps;
     }
 

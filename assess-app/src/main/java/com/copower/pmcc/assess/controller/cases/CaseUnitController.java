@@ -1,19 +1,16 @@
 package com.copower.pmcc.assess.controller.cases;
 
+import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseHouse;
 import com.copower.pmcc.assess.dal.cases.entity.CaseUnit;
 import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -140,23 +137,9 @@ public class CaseUnitController {
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-        if (!StringUtils.isNotBlank(unitNumber)) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
-        if (caseBuildingMainId == null) {
-            return HttpResult.newCorrectResult(keyValueDtos);
-        }
         try {
-            List<CaseUnit> caseUnitList = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
-            if (!ObjectUtils.isEmpty(caseUnitList)) {
-                CaseUnit caseUnit = caseUnitList.get(0);
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(String.valueOf(caseUnit.getId()));
-                keyValueDto.setValue(caseUnit.getUnitNumber());
-                keyValueDtos.add(keyValueDto);
-            }
-            return HttpResult.newCorrectResult(keyValueDtos);
+            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
+            return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

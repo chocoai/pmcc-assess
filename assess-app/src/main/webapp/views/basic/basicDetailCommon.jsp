@@ -70,36 +70,6 @@
 
     objectData.config = {
         id: "basicApplyId",
-        option: {},
-        basicEstate: {
-            key: "basicEstate",
-            name: "楼盘",
-            frm: "basicEstateFrm",
-            frmLandState: "basicLandState",
-            files: {
-                filePlanTotal: "estate_floor_total_plan",//总平面图id和字段
-                waterSupplyPlan: "water_supply_plan",//供水平面图id和字段
-                powerSupplyPlan: "power_supply_plan",//供电平面图id和字段
-                airSupplyPlan: "air_supply_plan",//供气平面图id和字段
-                heatingPlan: "heating_plan",//采暖平面图id和字段
-                fileAppearance: "estate_floor_Appearance_figure" //外观图id和字段
-            }
-        },
-        basicBuilding: {
-            key: "basicBuilding",
-            name: "楼栋",
-            frm: "basicBuildingFrm",
-            mainFrm: "basicBuildingMainFrm",
-            files: {
-                building_floor_plan: "building_floor_plan",//平面图id和字段 (楼栋)
-                building_figure_outside: "building_figure_outside",//外装图id和字段
-                building_floor_Appearance_figure: "building_floor_Appearance_figure"//外观图id和字段
-            }
-        },
-        basicUnit: {
-            key: "basicUnit",
-            name: "单元"
-        },
         basicHouse: {
             key: "basicHouse",
             name: "房屋",
@@ -115,106 +85,8 @@
         }
     };
 
-    /**
-     * 判断字符串以及null等
-     */
-    objectData.isNotBlank = function (item) {
-        if (item) {
-            return true;
-        }
-        return false;
-    };
-
-    /**
-     * 判断对象 属性
-     */
-    objectData.isNotBlankObjectProperty = function (obj) {
-        for (var key in obj) {
-            if (objectData.isNotBlank(obj[key])) {
-                return true;
-            }
-        }
-        return false
-    };
-
-    /**
-     * 判断对象
-     */
-    objectData.isNotBlankObject = function (obj) {
-        for (var key in obj) {
-            return true;
-        }
-        return false
-    };
-
-    objectData.select2Assignment = function (frm, data, name) {
-        if (objectData.isNotBlank(data)) {
-            $("#" + frm).find("select." + name).val(data).trigger("change");
-        } else {
-            $("#" + frm).find("select." + name).val(null).trigger("change");
-        }
-    };
-
-
-    objectData.showFile = function (fieldsName, table, id) {
-        FileUtils.getFileShows({
-            target: fieldsName,
-            formData: {
-                fieldsName: fieldsName,
-                tableName: table,
-                tableId: objectData.isNotBlank(id) ? id : "0",
-                creater: "${currUserAccount}"
-            },
-            deleteFlag: false
-        })
-    };
-
-    objectData.estate = {
-        init: function () {
-            $.each(objectData.config.basicEstate.files, function (i, n) {
-                objectData.showFile(n, AssessDBKey.BasicEstate, "${basicEstate.id}");
-            });
-            estateNetwork.prototype.loadDataDicList();
-            estateParking.prototype.loadDataDicList();
-            estateSupplyWater.prototype.loadDataDicList();
-            estateSupplyPower.prototype.loadDataDicList();
-            estateSupplyHeating.prototype.loadDataDicList();
-            estateSupplyGas.prototype.loadDataDicList();
-            matchingEducation.prototype.loadDataDicList();
-            matchingEnvironment.prototype.loadDataDicList();
-            matchingFinance.prototype.loadDataDicList();
-            matchingRecreation.prototype.loadDataDicList();
-            matchingRestaurant.prototype.loadDataDicList();
-            matchingMarket.prototype.loadDataDicList();
-            matchingMaterial.prototype.loadDataDicList();
-            matchingMedical.prototype.loadDataDicList();
-            matchingTransit.prototype.loadDataDicList();
-            matchingTrafficHub.prototype.loadDataDicList();
-            matchingMetro.prototype.loadDataDicList();
-            matchingMainRoad.prototype.loadDataDicList();
-            matchingMainConversion.prototype.loadDataDicList();
-        }
-    };
-
-    objectData.unit = {
-        init: function () {
-            unitDecorate.prototype.loadDataDicList();
-            unitHuxing.prototype.loadDataDicList();
-            unitElevator.prototype.loadDataDicList();
-        }
-    };
-
     objectData.house = {
         init: function () {
-            houseRoom.prototype.loadDataDicList();
-            houseWater.prototype.loadDataDicList();
-            houseIntelligent.prototype.loadDataDicList();
-            houseFaceStreet.prototype.loadDataDicList();
-            houseCorollaryEquipment.prototype.loadDataDicList();
-            houseNewWind.prototype.loadDataDicList();
-            houseAirConditioner.prototype.loadDataDicList();
-            houseHeating.prototype.loadDataDicList();
-            objectData.showFile(objectData.config.basicHouse.houseFileId, AssessDBKey.BasicHouse, '${empty basicHouse.id?0:basicHouse.id}');
             var tradingID = "${basicHouseTrading.tradingType}";
             var tradingType = null;
             AssessCommon.getDataDicInfo(tradingID, function (data) {
@@ -241,28 +113,6 @@
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='totalSale']").parent().parent().hide();
                     $("#" + objectData.config.basicHouse.tradingFrm).find("input[name='installmentInterestRate']").parent().parent().show();
                     $("#" + objectData.config.basicHouse.tableSon + "Div").show();
-                    objectData.house.subLoadList(objectData.config.basicHouse.sellID);
-                }
-            });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicUnitHuxing/getBasicUnitHuxingById",
-                type: "get",
-                dataType: "json",
-                data: {id: '${empty basicHouse.huxingId?0:basicHouse.huxingId}'},
-                success: function (result) {
-                    if (result.ret) {
-                        if (objectData.isNotBlank(result.data)) {
-                            if (objectData.isNotBlank(result.data.fileViewName)) {
-                                $("#" + objectData.config.basicHouse.frm).find(".house_latest_family_plan").html(result.data.fileViewName);
-                            }
-                        }
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
                 }
             });
         },
@@ -295,31 +145,23 @@
 
     $(function () {
         //选项卡处理
-        if (objectData.isNotBlank("${basicApply}")) {
-            var industryA = "${basicApply.type}";
-            if (objectData.isNotBlank(industryA)) {
-                industry.keyApp(industryA);
-            }
+        industry.keyApp("${basicApply.type}");
 
-            if ("${basicApply.estatePartInFlag}"=='true') {
-                $("#profile-tab1").attr("data-toggle", "tab");
-                objectData.estate.init();
-            }
+        if ("${basicApply.estatePartInFlag}" == 'true') {
+            objectData.estate.init();
+        }
 
-            if ("${basicApply.buildingPartInFlag}"=='true') {
-                $("#profile-tab2").attr("data-toggle", "tab");
-                buildingCommon.detail('${basicApply.id}');
-            }
+        if ("${basicApply.buildingPartInFlag}" == 'true') {
+            buildingCommon.detail('${basicApply.id}');
+        }
 
-            if ("${basicApply.unitPartInFlag}"=='true') {
-                $("#profile-tab3").attr("data-toggle", "tab");
-                objectData.unit.init();
-            }
+        if ("${basicApply.unitPartInFlag}" == 'true') {
+            objectData.unit.init();
+        }
 
-            if ("${basicApply.housePartInFlag}"=='true') {
-                $("#profile-tab4").attr("data-toggle", "tab");
-                objectData.house.init();
-            }
+        if ("${basicApply.housePartInFlag}" == 'true') {
+            houseCommon.detail('${basicApply.id}');
+            objectData.house.init();
         }
 
         $('#caseTab a').eq(0).tab('show');

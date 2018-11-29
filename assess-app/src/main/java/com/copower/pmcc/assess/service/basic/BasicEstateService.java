@@ -233,10 +233,11 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public void clearInvalidData() throws Exception {
+    public void clearInvalidData(Integer applyId) throws Exception {
         BasicEstate where = new BasicEstate();
-        where.setApplyId(0);
-        where.setCreator(commonService.thisUserAccount());
+        where.setApplyId(applyId);
+        if (applyId.equals(0))
+            where.setCreator(commonService.thisUserAccount());
         List<BasicEstate> estateList = basicEstateDao.basicEstateList(where);
         if (CollectionUtils.isEmpty(estateList)) return;
         BasicEstate estate = estateList.get(0);
@@ -387,7 +388,7 @@ public class BasicEstateService {
         Map<String, Object> objectMap = Maps.newHashMap();
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
-        if(applyId==null||applyId==0)
+        if (applyId == null || applyId == 0)
             where.setCreator(commonService.thisUserAccount());
         List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
         if (CollectionUtils.isEmpty(basicEstates)) return null;
@@ -408,7 +409,7 @@ public class BasicEstateService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public Map<String, Object> addEstateAndLandstate(String estateName) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 
         BasicEstate basicEstate = new BasicEstate();
@@ -436,7 +437,7 @@ public class BasicEstateService {
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
     public Map<String, Object> appWriteEstate(Integer caseEstateId) throws Exception {
-        this.clearInvalidData();
+        this.clearInvalidData(0);
         if (caseEstateId == null) {
             throw new Exception("null point");
         }

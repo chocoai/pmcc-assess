@@ -114,4 +114,16 @@ public class BasicHouseController {
             return HttpResult.newErrorResult(500,e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/copyHuxingPlan", name = "拷贝户型图", method = {RequestMethod.POST})
+    public HttpResult copyHuxingPlan(Integer sourceTableId,String sourceTableName,Integer targetTableId,String fieldsName){
+        try {
+            basicHouseService.copyHuxingPlan(sourceTableId,sourceTableName,targetTableId,fieldsName);
+            return HttpResult.newCorrectResult(null);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
+            return HttpResult.newErrorResult("拷贝户型图异常");
+        }
+    }
 }
