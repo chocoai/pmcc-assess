@@ -29,13 +29,13 @@ public class BasicApply {
 
     private Integer caseHouseId;
 
-    private Boolean estatePartInFlag;
+    private String estatePartInMode;
 
-    private Boolean buildingPartInFlag;
+    private String buildingPartInMode;
 
-    private Boolean unitPartInFlag;
+    private String unitPartInMode;
 
-    private Boolean housePartInFlag;
+    private String housePartInMode;
 
     private String creator;
 
@@ -147,36 +147,36 @@ public class BasicApply {
         this.caseHouseId = caseHouseId;
     }
 
-    public Boolean getEstatePartInFlag() {
-        return estatePartInFlag;
+    public String getEstatePartInMode() {
+        return estatePartInMode;
     }
 
-    public void setEstatePartInFlag(Boolean estatePartInFlag) {
-        this.estatePartInFlag = estatePartInFlag;
+    public void setEstatePartInMode(String estatePartInMode) {
+        this.estatePartInMode = estatePartInMode == null ? null : estatePartInMode.trim();
     }
 
-    public Boolean getBuildingPartInFlag() {
-        return buildingPartInFlag;
+    public String getBuildingPartInMode() {
+        return buildingPartInMode;
     }
 
-    public void setBuildingPartInFlag(Boolean buildingPartInFlag) {
-        this.buildingPartInFlag = buildingPartInFlag;
+    public void setBuildingPartInMode(String buildingPartInMode) {
+        this.buildingPartInMode = buildingPartInMode == null ? null : buildingPartInMode.trim();
     }
 
-    public Boolean getUnitPartInFlag() {
-        return unitPartInFlag;
+    public String getUnitPartInMode() {
+        return unitPartInMode;
     }
 
-    public void setUnitPartInFlag(Boolean unitPartInFlag) {
-        this.unitPartInFlag = unitPartInFlag;
+    public void setUnitPartInMode(String unitPartInMode) {
+        this.unitPartInMode = unitPartInMode == null ? null : unitPartInMode.trim();
     }
 
-    public Boolean getHousePartInFlag() {
-        return housePartInFlag;
+    public String getHousePartInMode() {
+        return housePartInMode;
     }
 
-    public void setHousePartInFlag(Boolean housePartInFlag) {
-        this.housePartInFlag = housePartInFlag;
+    public void setHousePartInMode(String housePartInMode) {
+        this.housePartInMode = housePartInMode == null ? null : housePartInMode.trim();
     }
 
     public String getCreator() {

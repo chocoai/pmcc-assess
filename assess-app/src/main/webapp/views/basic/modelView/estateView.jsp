@@ -66,7 +66,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicIndexCommon.blockSelect(this)">
+                                onclick="basicCommon.blockSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -159,7 +159,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicIndexCommon.developerSelect(this)">
+                                onclick="basicCommon.developerSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -327,7 +327,7 @@
     <div class="x_title">
         <h3>
             <small>
-                土地交易基本信息
+                土地基本信息
             </small>
         </h3>
         <div class="clearfix"></div>
@@ -373,7 +373,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicIndexCommon.landLevelSelect(this)">
+                                onclick="basicCommon.landLevelSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

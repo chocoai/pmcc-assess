@@ -15,10 +15,10 @@
     <result column="case_building_main_id" property="caseBuildingMainId" jdbcType="INTEGER" />
     <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
     <result column="case_house_id" property="caseHouseId" jdbcType="INTEGER" />
-    <result column="estate_part_in_flag" property="estatePartInFlag" jdbcType="BIT" />
-    <result column="building_part_in_flag" property="buildingPartInFlag" jdbcType="BIT" />
-    <result column="unit_part_in_flag" property="unitPartInFlag" jdbcType="BIT" />
-    <result column="house_part_in_flag" property="housePartInFlag" jdbcType="BIT" />
+    <result column="estate_part_in_mode" property="estatePartInMode" jdbcType="VARCHAR" />
+    <result column="building_part_in_mode" property="buildingPartInMode" jdbcType="VARCHAR" />
+    <result column="unit_part_in_mode" property="unitPartInMode" jdbcType="VARCHAR" />
+    <result column="house_part_in_mode" property="housePartInMode" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -84,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, process_ins_id, type, estate_name, building_number, unit_number, house_number, 
     status, draft_flag, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
-    estate_part_in_flag, building_part_in_flag, unit_part_in_flag, house_part_in_flag, 
+    estate_part_in_mode, building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample" >
@@ -125,15 +125,15 @@
       building_number, unit_number, house_number, 
       status, draft_flag, case_estate_id, 
       case_building_main_id, case_unit_id, case_house_id, 
-      estate_part_in_flag, building_part_in_flag, unit_part_in_flag, 
-      house_part_in_flag, creator, gmt_created, 
+      estate_part_in_mode, building_part_in_mode, unit_part_in_mode, 
+      house_part_in_mode, creator, gmt_created, 
       gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
       #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
       #{caseBuildingMainId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, 
-      #{estatePartInFlag,jdbcType=BIT}, #{buildingPartInFlag,jdbcType=BIT}, #{unitPartInFlag,jdbcType=BIT}, 
-      #{housePartInFlag,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{estatePartInMode,jdbcType=VARCHAR}, #{buildingPartInMode,jdbcType=VARCHAR}, #{unitPartInMode,jdbcType=VARCHAR}, 
+      #{housePartInMode,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
@@ -178,17 +178,17 @@
       <if test="caseHouseId != null" >
         case_house_id,
       </if>
-      <if test="estatePartInFlag != null" >
-        estate_part_in_flag,
+      <if test="estatePartInMode != null" >
+        estate_part_in_mode,
       </if>
-      <if test="buildingPartInFlag != null" >
-        building_part_in_flag,
+      <if test="buildingPartInMode != null" >
+        building_part_in_mode,
       </if>
-      <if test="unitPartInFlag != null" >
-        unit_part_in_flag,
+      <if test="unitPartInMode != null" >
+        unit_part_in_mode,
       </if>
-      <if test="housePartInFlag != null" >
-        house_part_in_flag,
+      <if test="housePartInMode != null" >
+        house_part_in_mode,
       </if>
       <if test="creator != null" >
         creator,
@@ -237,17 +237,17 @@
       <if test="caseHouseId != null" >
         #{caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="estatePartInFlag != null" >
-        #{estatePartInFlag,jdbcType=BIT},
+      <if test="estatePartInMode != null" >
+        #{estatePartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="buildingPartInFlag != null" >
-        #{buildingPartInFlag,jdbcType=BIT},
+      <if test="buildingPartInMode != null" >
+        #{buildingPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="unitPartInFlag != null" >
-        #{unitPartInFlag,jdbcType=BIT},
+      <if test="unitPartInMode != null" >
+        #{unitPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="housePartInFlag != null" >
-        #{housePartInFlag,jdbcType=BIT},
+      <if test="housePartInMode != null" >
+        #{housePartInMode,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -308,17 +308,17 @@
       <if test="record.caseHouseId != null" >
         case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="record.estatePartInFlag != null" >
-        estate_part_in_flag = #{record.estatePartInFlag,jdbcType=BIT},
+      <if test="record.estatePartInMode != null" >
+        estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingPartInFlag != null" >
-        building_part_in_flag = #{record.buildingPartInFlag,jdbcType=BIT},
+      <if test="record.buildingPartInMode != null" >
+        building_part_in_mode = #{record.buildingPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="record.unitPartInFlag != null" >
-        unit_part_in_flag = #{record.unitPartInFlag,jdbcType=BIT},
+      <if test="record.unitPartInMode != null" >
+        unit_part_in_mode = #{record.unitPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="record.housePartInFlag != null" >
-        house_part_in_flag = #{record.housePartInFlag,jdbcType=BIT},
+      <if test="record.housePartInMode != null" >
+        house_part_in_mode = #{record.housePartInMode,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -349,10 +349,10 @@
       case_building_main_id = #{record.caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
       case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
-      estate_part_in_flag = #{record.estatePartInFlag,jdbcType=BIT},
-      building_part_in_flag = #{record.buildingPartInFlag,jdbcType=BIT},
-      unit_part_in_flag = #{record.unitPartInFlag,jdbcType=BIT},
-      house_part_in_flag = #{record.housePartInFlag,jdbcType=BIT},
+      estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
+      building_part_in_mode = #{record.buildingPartInMode,jdbcType=VARCHAR},
+      unit_part_in_mode = #{record.unitPartInMode,jdbcType=VARCHAR},
+      house_part_in_mode = #{record.housePartInMode,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -399,17 +399,17 @@
       <if test="caseHouseId != null" >
         case_house_id = #{caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="estatePartInFlag != null" >
-        estate_part_in_flag = #{estatePartInFlag,jdbcType=BIT},
+      <if test="estatePartInMode != null" >
+        estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="buildingPartInFlag != null" >
-        building_part_in_flag = #{buildingPartInFlag,jdbcType=BIT},
+      <if test="buildingPartInMode != null" >
+        building_part_in_mode = #{buildingPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="unitPartInFlag != null" >
-        unit_part_in_flag = #{unitPartInFlag,jdbcType=BIT},
+      <if test="unitPartInMode != null" >
+        unit_part_in_mode = #{unitPartInMode,jdbcType=VARCHAR},
       </if>
-      <if test="housePartInFlag != null" >
-        house_part_in_flag = #{housePartInFlag,jdbcType=BIT},
+      <if test="housePartInMode != null" >
+        house_part_in_mode = #{housePartInMode,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -437,10 +437,10 @@
       case_building_main_id = #{caseBuildingMainId,jdbcType=INTEGER},
       case_unit_id = #{caseUnitId,jdbcType=INTEGER},
       case_house_id = #{caseHouseId,jdbcType=INTEGER},
-      estate_part_in_flag = #{estatePartInFlag,jdbcType=BIT},
-      building_part_in_flag = #{buildingPartInFlag,jdbcType=BIT},
-      unit_part_in_flag = #{unitPartInFlag,jdbcType=BIT},
-      house_part_in_flag = #{housePartInFlag,jdbcType=BIT},
+      estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
+      building_part_in_mode = #{buildingPartInMode,jdbcType=VARCHAR},
+      unit_part_in_mode = #{unitPartInMode,jdbcType=VARCHAR},
+      house_part_in_mode = #{housePartInMode,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

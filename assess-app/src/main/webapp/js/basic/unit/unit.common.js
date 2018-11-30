@@ -11,33 +11,43 @@
     }
 
     //添加单元
-    unitCommon.add = function ($form, callback) {
+    unitCommon.add = function (_this, callback) {
+        var unitNumber = $(_this).closest('form').find('[name=unitNumber]').val();
+        if (!unitNumber) {
+            toastr.info('请填写单元编号！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicUnit/addUnit',
             data: {
-                unitNumber: $form.find('[name=unitNumber]').val()
+                unitNumber: unitNumber
             },
             success: function (result) {
                 if (result.ret) {
                     unitCommon.unitForm.initForm(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }
         })
     }
 
-    //编辑单元
-    unitCommon.edit = function ($form, callback) {
+    //升级单元
+    unitCommon.upgrade = function (_this, callback) {
+        var caseUnitId = $(_this).closest('form').find("input[name='caseUnitId']").val();
+        if(!caseUnitId){
+            toastr.info('请选择系统中已存在的单元信息！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicUnit/appWriteUnit',
-            data: {caseUnitId: $form.find("input[name='caseUnitId']").val()},
+            data: {caseUnitId: caseUnitId},
             success: function (result) {
                 if (result.ret) {
                     unitCommon.unitForm.initForm(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }

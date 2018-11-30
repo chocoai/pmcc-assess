@@ -538,8 +538,8 @@ var houseCorollaryEquipment;
         init: function (item) {
             $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll();
             $("#" + houseCorollaryEquipment.prototype.config().frm).initForm(item);
-            basicIndexCommon.showFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
-            basicIndexCommon.uploadFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicCommon.showFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
+            basicCommon.uploadFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_price, item.price_select, function (html, data) {
                 $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.price_select").empty().html(html).trigger('change');
             });

@@ -10,11 +10,16 @@
     buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
 
     //添加楼栋
-    buildingCommon.add = function ($form, callback) {
+    buildingCommon.add = function (_this, callback) {
+        var buildingNumber = $(_this).closest('form').find('[name=buildingNumber]').val();
+        if (!buildingNumber) {
+            toastr.info('请填写楼栋编号！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicBuilding/addBuildingMainAndBuilding',
             data: {
-                buildingNumber: $form.find('[name=buildingNumber]').val()
+                buildingNumber: buildingNumber
             },
             success: function (result) {
                 if (result.ret) {
@@ -24,18 +29,23 @@
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }
         })
     }
 
-    //编辑楼栋
-    buildingCommon.edit = function ($form, callback) {
+    //升级楼栋
+    buildingCommon.upgrade = function (_this, callback) {
+        var caseBuildingMainId = $(_this).closest('form').find("input[name='caseBuildingMainId']").val();
+        if(!caseBuildingMainId){
+            toastr.info('请选择系统中已存在的楼栋信息！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicBuilding/appWriteBuilding',
-            data: {caseMainBuildingId: $form.find("input[name='caseBuildingMainId']").val()},
+            data: {caseMainBuildingId: caseBuildingMainId},
             success: function (result) {
                 if (result.ret) {
                     buildingCommon.buildingMainForm.initForm(result.data);
@@ -44,7 +54,7 @@
                         buildingCommon.showBuildingView(buildings[0].id);
                     }
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }

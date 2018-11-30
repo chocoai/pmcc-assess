@@ -31,6 +31,10 @@
                 <div class="x_content">
                     <form id="basicApplyFrm" class="form-horizontal">
                         <input type="hidden" name="id" value="${basicApply.id}">
+                        <input type="hidden" name="estatePartInMode" value="${basicApply.estatePartInMode}">
+                        <input type="hidden" name="buildingPartInMode" value="${basicApply.buildingPartInMode}">
+                        <input type="hidden" name="unitPartInMode" value="${basicApply.unitPartInMode}">
+                        <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -60,11 +64,6 @@
                                 <label for="applyFormType1">工业与仓储</label>
                             </span>
                         </div>
-                        <div class="form-group" id="industry">
-
-                        </div>
-
-
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -74,19 +73,21 @@
                                     <input type="hidden" name="caseEstateId" value="${basicApply.caseEstateId}">
                                     <input type="text" class="form-control" name="estateName" placeholder="楼盘名称"
                                            value="${basicApply.estateName}"
-                                           onkeydown="objectData.autocompleteEstate(this);">
+                                           onkeydown="basicApplyIndex.autocompleteEstate(this);">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success"
-                                           onclick="estateCommon.add($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                    <input type="button" class="btn btn-success" data-mode="add"
+                                           onclick="estateCommon.add(this,basicCommon.showEstateTab);"
                                            value="添加">
-                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
-                                           onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                           style="display: none;"
+                                           onclick="estateCommon.upgrade(this,basicCommon.showEstateTab);"
                                            value="引用">
-                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
-                                           onclick="estateCommon.edit($(this).closest('form'),basicIndexCommon.showEstateTab());"
+                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                           style="display: none;"
+                                           onclick="estateCommon.upgrade(this,basicCommon.showEstateTab);"
                                            value="升版本">
                                 </div>
                             </div>
@@ -102,19 +103,21 @@
                                            value="${basicApply.caseBuildingMainId}">
                                     <input type="text" class="form-control" name="buildingNumber" placeholder="楼栋编号"
                                            value="${basicApply.buildingNumber}"
-                                           onkeydown="objectData.autocompleteBuilding(this)">
+                                           onkeydown="basicApplyIndex.autocompleteBuilding(this)">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success"
-                                           onclick="buildingCommon.add($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                    <input type="button" class="btn btn-success" data-mode="add"
+                                           onclick="buildingCommon.add(this,basicCommon.showBuildingTab);"
                                            value="添加">
-                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
-                                           onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                           style="display: none;"
+                                           onclick="buildingCommon.upgrade(this,basicCommon.showBuildingTab);"
                                            value="引用">
-                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
-                                           onclick="buildingCommon.edit($(this).closest('form'),basicIndexCommon.showBuildingTab);"
+                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                           style="display: none;"
+                                           onclick="buildingCommon.upgrade(this,basicCommon.showBuildingTab);"
                                            value="升版本">
                                 </div>
                             </div>
@@ -129,19 +132,21 @@
                                     <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
                                     <input type="text" class="form-control" name="unitNumber" placeholder="单元编号"
                                            value="${basicApply.unitNumber}"
-                                           onkeydown="objectData.autocompleteUnit(this);">
+                                           onkeydown="basicApplyIndex.autocompleteUnit(this);">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success"
-                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                    <input type="button" class="btn btn-success" data-mode="add"
+                                           onclick="unitCommon.add(this,basicCommon.showUnitTab);"
                                            value="添加">
-                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
-                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                           style="display: none;"
+                                           onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
                                            value="引用">
-                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
-                                           onclick="unitCommon.add($(this).closest('form'),basicIndexCommon.showUnitTab);"
+                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                           style="display: none;"
+                                           onclick="unitCommon.upgrade(this,basicCommon.showUnitTab);"
                                            value="升版本">
                                 </div>
                             </div>
@@ -155,20 +160,22 @@
                                     <input type="hidden" name="caseHouseId" value="${basicApply.caseHouseId}">
                                     <input type="text" class="form-control" name="houseNumber" placeholder="房屋编号"
                                            value="${basicApply.houseNumber}"
-                                           onkeydown="objectData.autocompleteHouse(this)">
+                                           onkeydown="basicApplyIndex.autocompleteHouse(this)">
                                 </div>
                             </div>
                             <div class="x-valid">
                                 <div class="col-sm-2">
-                                    <input type="button" class="btn btn-success"
+                                    <input type="button" class="btn btn-success" data-mode="add"
                                            value="添加"
-                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
-                                    <input type="button" class="btn btn-warning btn-reference" style="display: none;"
+                                           onclick="houseCommon.add(this,basicCommon.showHouseTab);">
+                                    <input type="button" class="btn btn-warning btn-reference" data-mode="reference"
+                                           style="display: none;"
                                            value="引用"
-                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
-                                    <input type="button" class="btn btn-warning btn-upgrade" style="display: none;"
+                                           onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
+                                    <input type="button" class="btn btn-warning btn-upgrade" data-mode="upgrade"
+                                           style="display: none;"
                                            value="升版本"
-                                           onclick="houseCommon.add($(this).closest('form'),basicIndexCommon.showHouseTab);">
+                                           onclick="houseCommon.upgrade(this,basicCommon.showHouseTab);">
                                 </div>
                             </div>
                         </div>
@@ -202,41 +209,12 @@
 <%@include file="/views/share/main_footer.jsp" %>
 </html>
 <script type="text/javascript">
-    var objectData = new Object();
-    objectData.config = {
-        id: "basicApplyId",
-        basicApply: {
-            frm: "basicApplyFrm"
-        },
-        basicEstate: {
-            key: "estateName",
-            name: "楼盘",
-            frm: "basicEstateFrm",
-            frmLandState: "basicLandState"
-        },
-        basicBuilding: {
-            key: "buildingNumber",
-            name: "楼栋",
-            frm: "basicBuildingFrm",
-            mainFrm: "basicBuildingMainFrm"
-        },
-        basicUnit: {
-            key: "unitNumber",
-            name: "单元",
-            frm: "basicUnitFrm"
-        },
-        basicHouse: {
-            key: "houseNumber",
-            name: "房屋",
-            frm: "basicHouseFrm",
-            tradingFrm: "basicTradingFrm"
-        }
-    };
+    var basicApplyIndex = new Object();
 
     /**
      * 楼盘 信息自动补全
      */
-    objectData.autocompleteEstate = function (_this) {
+    basicApplyIndex.autocompleteEstate = function (_this) {
         var that = _this;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseEstateId]').val('');
@@ -249,8 +227,8 @@
                         dataType: "json",
                         data: {
                             maxRows: 10,
-                            province: $("#" + objectData.config.basicApply.frm).find('[name=province]').val(),
-                            city: $("#" + objectData.config.basicApply.frm).find('[name=city]').val(),
+                            province: basicCommon.basicApplyForm.find('[name=province]').val(),
+                            city: basicCommon.basicApplyForm.find('[name=city]').val(),
                             name: $(that).val()
                         },
                         success: function (result) {
@@ -284,9 +262,10 @@
     /**
      * 楼栋 信息自动补全
      */
-    objectData.autocompleteBuilding = function (_this) {
+    basicApplyIndex.autocompleteBuilding = function (_this) {
         var that = _this;
-        var estateId = $("#" + objectData.config.basicApply.frm).find("input[name='caseEstateId']").val();
+        var estateId = basicCommon.basicApplyForm.find("input[name='caseEstateId']").val();
+        if (!estateId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseBuildingMainId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
@@ -332,9 +311,10 @@
     /**
      * 单元信息自动补全
      */
-    objectData.autocompleteUnit = function (_this) {
+    basicApplyIndex.autocompleteUnit = function (_this) {
         var that = _this;
-        var buildingId = $("#" + objectData.config.basicApply.frm).find("input[name='caseBuildingMainId']").val();
+        var buildingId = basicCommon.basicApplyForm.find("input[name='caseBuildingMainId']").val();
+        if (!buildingId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseUnitId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
@@ -380,9 +360,10 @@
     /**
      * 房屋信息自动补全
      */
-    objectData.autocompleteHouse = function (_this) {
+    basicApplyIndex.autocompleteHouse = function (_this) {
         var that = _this;
-        var unitId = $("#" + objectData.config.basicApply.frm).find("input[name='caseUnitId']").val();
+        var unitId = basicCommon.basicApplyForm.find("input[name='caseUnitId']").val();
+        if (!unitId) return;
         var group = $(_this).closest('.form-group');
         group.find('[name=caseHouseId]').val('');
         group.find('.btn-reference,.btn-upgrade').hide();
@@ -428,61 +409,56 @@
 
 
     //收集数据
-    objectData.formParams = function () {
+    basicApplyIndex.formParams = function () {
         var item = {};
-        var basicApply = formParams(objectData.config.basicApply.frm);
-        basicApply.estatePartInFlag = basicIndexCommon.partInFlag.estate;
-        basicApply.buildingPartInFlag = basicIndexCommon.partInFlag.building;
-        basicApply.unitPartInFlag = basicIndexCommon.partInFlag.unit;
-        basicApply.housePartInFlag = basicIndexCommon.partInFlag.house;
+        var basicApply = formSerializeArray(basicCommon.basicApplyForm);
         item.basicApply = basicApply;
-        if (basicApply.estatePartInFlag) {
-            item.basicEstate = formParams(objectData.config.basicEstate.frm);
-            item.basicEstateLandState = formParams(objectData.config.basicEstate.frmLandState);
+        if (basicApply.estatePartInMode) {
+            item.basicEstate = formSerializeArray(estateCommon.estateForm);
+            item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
         }
-        if (basicApply.buildingPartInFlag) {
-            item.basicBuildingMain = formParams(objectData.config.basicBuilding.mainFrm);
-            item.basicBuilding = formParams(objectData.config.basicBuilding.frm);
+        if (basicApply.buildingPartInMode) {
+            item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
+            item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
         }
-        if (basicApply.unitPartInFlag) {
-            item.basicUnit = formParams(objectData.config.basicUnit.frm);
+        if (basicApply.unitPartInMode) {
+            item.basicUnit = formSerializeArray(unitCommon.unitForm);
         }
-        if (basicApply.housePartInFlag) {
-            item.basicHouse = formParams(objectData.config.basicHouse.frm);
-            item.basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
+        if (basicApply.housePartInMode) {
+            item.basicHouse = formSerializeArray(houseCommon.houseForm);
+            item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
         }
-        item.industry = $("#" + industry.config.id).find(":radio:checked").val();
         return item;
     };
 
     //检测是否为 草稿重新申请
-    objectData.startApply = function () {
+    basicApplyIndex.startApply = function () {
         if ('${basicApply.id}' != '0') {
             //初始楼盘信息
-            if ('${basicApply.estatePartInFlag}' == 'true') {
-                estateCommon.init('${basicApply.id}', basicIndexCommon.showEstateTab);
+            if ('${basicApply.estatePartInMode}') {
+                estateCommon.init('${basicApply.id}', basicCommon.showEstateTab);
             }
             //初始楼栋信息
-            if ('${basicApply.buildingPartInFlag}' == 'true') {
-                buildingCommon.init('${basicApply.id}', basicIndexCommon.showBuildingTab);
+            if ('${basicApply.buildingPartInMode}') {
+                buildingCommon.init('${basicApply.id}', basicCommon.showBuildingTab);
             }
             //初始单元信息
-            if ('${basicApply.unitPartInFlag}' == 'true') {
-                unitCommon.init('${basicApply.id}', basicIndexCommon.showUnitTab);
+            if ('${basicApply.unitPartInMode}') {
+                unitCommon.init('${basicApply.id}', basicCommon.showUnitTab);
             }
             //初始房屋信息
-            if ('${basicApply.housePartInFlag}' == 'true') {
-                houseCommon.init('${basicApply.id}', basicIndexCommon.showHouseTab);
+            if ('${basicApply.housePartInMode}') {
+                houseCommon.init('${basicApply.id}', basicCommon.showHouseTab);
             }
-            $("#" + objectData.config.basicApply.frm).find('[id=applyFormType${basicApply.type}]').trigger('click');
+            basicCommon.basicApplyForm.find('[id=applyFormType${basicApply.type}]').trigger('click');
         } else {
-            $("#" + objectData.config.basicApply.frm).find('[name=type]:eq(0)').trigger('click');
+            basicCommon.basicApplyForm.find('[name=type]:eq(0)').trigger('click');
         }
     };
 
 
     $(function () {
-        objectData.startApply();
+        basicApplyIndex.startApply();
 
         //定位成功回调方法
         mapPosition.complete(function (data) {
@@ -490,8 +466,8 @@
             var city = data.addressComponent.city;
             if (province && city) {
                 AssessCommon.initAreaInfo({
-                    provinceTarget: $("#" + objectData.config.basicApply.frm).find('[name=province]'),
-                    cityTarget: $("#" + objectData.config.basicApply.frm).find('[name=city]'),
+                    provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                    cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
                     provinceDefaultText: province.replace('省', ''),
                     cityDefaultText: city.replace('市', '')
                 });
@@ -505,9 +481,11 @@
 
     //提交
     function submit() {
+        if (!basicCommon.submitFormValid()) {
+            return false;
+        }
         Loading.progressShow();
-        var data = objectData.formParams();
-        var formData = JSON.stringify(data);
+        var formData = JSON.stringify(basicCommon.getFormData());
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApplySubmit",
             type: "post",
@@ -529,9 +507,11 @@
 
     //保存草稿
     function saveDraft() {
+        if (!basicCommon.saveDraftValid()) {
+            return false;
+        }
         Loading.progressShow();
-        var data = objectData.formParams();
-        var formData = JSON.stringify(data);
+        var formData = JSON.stringify(basicCommon.getFormData());
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/saveDraft",
             type: "post",

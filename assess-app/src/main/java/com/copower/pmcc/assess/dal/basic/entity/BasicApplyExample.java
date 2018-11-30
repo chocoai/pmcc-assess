@@ -945,243 +945,283 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagIsNull() {
-            addCriterion("estate_part_in_flag is null");
+        public Criteria andEstatePartInModeIsNull() {
+            addCriterion("estate_part_in_mode is null");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagIsNotNull() {
-            addCriterion("estate_part_in_flag is not null");
+        public Criteria andEstatePartInModeIsNotNull() {
+            addCriterion("estate_part_in_mode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagEqualTo(Boolean value) {
-            addCriterion("estate_part_in_flag =", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeEqualTo(String value) {
+            addCriterion("estate_part_in_mode =", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagNotEqualTo(Boolean value) {
-            addCriterion("estate_part_in_flag <>", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeNotEqualTo(String value) {
+            addCriterion("estate_part_in_mode <>", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagGreaterThan(Boolean value) {
-            addCriterion("estate_part_in_flag >", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeGreaterThan(String value) {
+            addCriterion("estate_part_in_mode >", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("estate_part_in_flag >=", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeGreaterThanOrEqualTo(String value) {
+            addCriterion("estate_part_in_mode >=", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagLessThan(Boolean value) {
-            addCriterion("estate_part_in_flag <", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeLessThan(String value) {
+            addCriterion("estate_part_in_mode <", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagLessThanOrEqualTo(Boolean value) {
-            addCriterion("estate_part_in_flag <=", value, "estatePartInFlag");
+        public Criteria andEstatePartInModeLessThanOrEqualTo(String value) {
+            addCriterion("estate_part_in_mode <=", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagIn(List<Boolean> values) {
-            addCriterion("estate_part_in_flag in", values, "estatePartInFlag");
+        public Criteria andEstatePartInModeLike(String value) {
+            addCriterion("estate_part_in_mode like", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagNotIn(List<Boolean> values) {
-            addCriterion("estate_part_in_flag not in", values, "estatePartInFlag");
+        public Criteria andEstatePartInModeNotLike(String value) {
+            addCriterion("estate_part_in_mode not like", value, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagBetween(Boolean value1, Boolean value2) {
-            addCriterion("estate_part_in_flag between", value1, value2, "estatePartInFlag");
+        public Criteria andEstatePartInModeIn(List<String> values) {
+            addCriterion("estate_part_in_mode in", values, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andEstatePartInFlagNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("estate_part_in_flag not between", value1, value2, "estatePartInFlag");
+        public Criteria andEstatePartInModeNotIn(List<String> values) {
+            addCriterion("estate_part_in_mode not in", values, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagIsNull() {
-            addCriterion("building_part_in_flag is null");
+        public Criteria andEstatePartInModeBetween(String value1, String value2) {
+            addCriterion("estate_part_in_mode between", value1, value2, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagIsNotNull() {
-            addCriterion("building_part_in_flag is not null");
+        public Criteria andEstatePartInModeNotBetween(String value1, String value2) {
+            addCriterion("estate_part_in_mode not between", value1, value2, "estatePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagEqualTo(Boolean value) {
-            addCriterion("building_part_in_flag =", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeIsNull() {
+            addCriterion("building_part_in_mode is null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagNotEqualTo(Boolean value) {
-            addCriterion("building_part_in_flag <>", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeIsNotNull() {
+            addCriterion("building_part_in_mode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagGreaterThan(Boolean value) {
-            addCriterion("building_part_in_flag >", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeEqualTo(String value) {
+            addCriterion("building_part_in_mode =", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("building_part_in_flag >=", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeNotEqualTo(String value) {
+            addCriterion("building_part_in_mode <>", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagLessThan(Boolean value) {
-            addCriterion("building_part_in_flag <", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeGreaterThan(String value) {
+            addCriterion("building_part_in_mode >", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagLessThanOrEqualTo(Boolean value) {
-            addCriterion("building_part_in_flag <=", value, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeGreaterThanOrEqualTo(String value) {
+            addCriterion("building_part_in_mode >=", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagIn(List<Boolean> values) {
-            addCriterion("building_part_in_flag in", values, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeLessThan(String value) {
+            addCriterion("building_part_in_mode <", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagNotIn(List<Boolean> values) {
-            addCriterion("building_part_in_flag not in", values, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeLessThanOrEqualTo(String value) {
+            addCriterion("building_part_in_mode <=", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagBetween(Boolean value1, Boolean value2) {
-            addCriterion("building_part_in_flag between", value1, value2, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeLike(String value) {
+            addCriterion("building_part_in_mode like", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingPartInFlagNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("building_part_in_flag not between", value1, value2, "buildingPartInFlag");
+        public Criteria andBuildingPartInModeNotLike(String value) {
+            addCriterion("building_part_in_mode not like", value, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagIsNull() {
-            addCriterion("unit_part_in_flag is null");
+        public Criteria andBuildingPartInModeIn(List<String> values) {
+            addCriterion("building_part_in_mode in", values, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagIsNotNull() {
-            addCriterion("unit_part_in_flag is not null");
+        public Criteria andBuildingPartInModeNotIn(List<String> values) {
+            addCriterion("building_part_in_mode not in", values, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagEqualTo(Boolean value) {
-            addCriterion("unit_part_in_flag =", value, "unitPartInFlag");
+        public Criteria andBuildingPartInModeBetween(String value1, String value2) {
+            addCriterion("building_part_in_mode between", value1, value2, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagNotEqualTo(Boolean value) {
-            addCriterion("unit_part_in_flag <>", value, "unitPartInFlag");
+        public Criteria andBuildingPartInModeNotBetween(String value1, String value2) {
+            addCriterion("building_part_in_mode not between", value1, value2, "buildingPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagGreaterThan(Boolean value) {
-            addCriterion("unit_part_in_flag >", value, "unitPartInFlag");
+        public Criteria andUnitPartInModeIsNull() {
+            addCriterion("unit_part_in_mode is null");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("unit_part_in_flag >=", value, "unitPartInFlag");
+        public Criteria andUnitPartInModeIsNotNull() {
+            addCriterion("unit_part_in_mode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagLessThan(Boolean value) {
-            addCriterion("unit_part_in_flag <", value, "unitPartInFlag");
+        public Criteria andUnitPartInModeEqualTo(String value) {
+            addCriterion("unit_part_in_mode =", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagLessThanOrEqualTo(Boolean value) {
-            addCriterion("unit_part_in_flag <=", value, "unitPartInFlag");
+        public Criteria andUnitPartInModeNotEqualTo(String value) {
+            addCriterion("unit_part_in_mode <>", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagIn(List<Boolean> values) {
-            addCriterion("unit_part_in_flag in", values, "unitPartInFlag");
+        public Criteria andUnitPartInModeGreaterThan(String value) {
+            addCriterion("unit_part_in_mode >", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagNotIn(List<Boolean> values) {
-            addCriterion("unit_part_in_flag not in", values, "unitPartInFlag");
+        public Criteria andUnitPartInModeGreaterThanOrEqualTo(String value) {
+            addCriterion("unit_part_in_mode >=", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagBetween(Boolean value1, Boolean value2) {
-            addCriterion("unit_part_in_flag between", value1, value2, "unitPartInFlag");
+        public Criteria andUnitPartInModeLessThan(String value) {
+            addCriterion("unit_part_in_mode <", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andUnitPartInFlagNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("unit_part_in_flag not between", value1, value2, "unitPartInFlag");
+        public Criteria andUnitPartInModeLessThanOrEqualTo(String value) {
+            addCriterion("unit_part_in_mode <=", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagIsNull() {
-            addCriterion("house_part_in_flag is null");
+        public Criteria andUnitPartInModeLike(String value) {
+            addCriterion("unit_part_in_mode like", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagIsNotNull() {
-            addCriterion("house_part_in_flag is not null");
+        public Criteria andUnitPartInModeNotLike(String value) {
+            addCriterion("unit_part_in_mode not like", value, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagEqualTo(Boolean value) {
-            addCriterion("house_part_in_flag =", value, "housePartInFlag");
+        public Criteria andUnitPartInModeIn(List<String> values) {
+            addCriterion("unit_part_in_mode in", values, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagNotEqualTo(Boolean value) {
-            addCriterion("house_part_in_flag <>", value, "housePartInFlag");
+        public Criteria andUnitPartInModeNotIn(List<String> values) {
+            addCriterion("unit_part_in_mode not in", values, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagGreaterThan(Boolean value) {
-            addCriterion("house_part_in_flag >", value, "housePartInFlag");
+        public Criteria andUnitPartInModeBetween(String value1, String value2) {
+            addCriterion("unit_part_in_mode between", value1, value2, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("house_part_in_flag >=", value, "housePartInFlag");
+        public Criteria andUnitPartInModeNotBetween(String value1, String value2) {
+            addCriterion("unit_part_in_mode not between", value1, value2, "unitPartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagLessThan(Boolean value) {
-            addCriterion("house_part_in_flag <", value, "housePartInFlag");
+        public Criteria andHousePartInModeIsNull() {
+            addCriterion("house_part_in_mode is null");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagLessThanOrEqualTo(Boolean value) {
-            addCriterion("house_part_in_flag <=", value, "housePartInFlag");
+        public Criteria andHousePartInModeIsNotNull() {
+            addCriterion("house_part_in_mode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagIn(List<Boolean> values) {
-            addCriterion("house_part_in_flag in", values, "housePartInFlag");
+        public Criteria andHousePartInModeEqualTo(String value) {
+            addCriterion("house_part_in_mode =", value, "housePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagNotIn(List<Boolean> values) {
-            addCriterion("house_part_in_flag not in", values, "housePartInFlag");
+        public Criteria andHousePartInModeNotEqualTo(String value) {
+            addCriterion("house_part_in_mode <>", value, "housePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagBetween(Boolean value1, Boolean value2) {
-            addCriterion("house_part_in_flag between", value1, value2, "housePartInFlag");
+        public Criteria andHousePartInModeGreaterThan(String value) {
+            addCriterion("house_part_in_mode >", value, "housePartInMode");
             return (Criteria) this;
         }
 
-        public Criteria andHousePartInFlagNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("house_part_in_flag not between", value1, value2, "housePartInFlag");
+        public Criteria andHousePartInModeGreaterThanOrEqualTo(String value) {
+            addCriterion("house_part_in_mode >=", value, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeLessThan(String value) {
+            addCriterion("house_part_in_mode <", value, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeLessThanOrEqualTo(String value) {
+            addCriterion("house_part_in_mode <=", value, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeLike(String value) {
+            addCriterion("house_part_in_mode like", value, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeNotLike(String value) {
+            addCriterion("house_part_in_mode not like", value, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeIn(List<String> values) {
+            addCriterion("house_part_in_mode in", values, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeNotIn(List<String> values) {
+            addCriterion("house_part_in_mode not in", values, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeBetween(String value1, String value2) {
+            addCriterion("house_part_in_mode between", value1, value2, "housePartInMode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHousePartInModeNotBetween(String value1, String value2) {
+            addCriterion("house_part_in_mode not between", value1, value2, "housePartInMode");
             return (Criteria) this;
         }
 
