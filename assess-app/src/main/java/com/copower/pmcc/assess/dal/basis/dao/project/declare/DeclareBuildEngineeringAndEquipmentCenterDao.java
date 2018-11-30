@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipm
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenterExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildEngineeringAndEquipmentCenterMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +45,21 @@ public class DeclareBuildEngineeringAndEquipmentCenterDao {
     public List<DeclareBuildEngineeringAndEquipmentCenter> getDeclareBuildEngineeringAndEquipmentCenterList(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter){
         DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
         MybatisUtils.convertObj2Example(declareBuildEngineeringAndEquipmentCenter, example);
+        return declareBuildEngineeringAndEquipmentCenterMapper.selectByExample(example);
+    }
+    public List<DeclareBuildEngineeringAndEquipmentCenter> getDeclareBuildEngineeringAndEquipmentCenterList(String type,Integer buildEngineeringId,Integer buildEquipmentId){
+        DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
+        DeclareBuildEngineeringAndEquipmentCenterExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotBlank(type)){
+            criteria.andTypeLike(String.format("%s%s%s","%",type,"%"));
+        }
+        if (buildEngineeringId != null){
+            criteria.andBuildEngineeringIdEqualTo(buildEngineeringId);
+        }
+        if (buildEquipmentId != null){
+            criteria.andBuildEquipmentIdEqualTo(buildEquipmentId);
+        }
         return declareBuildEngineeringAndEquipmentCenterMapper.selectByExample(example);
     }
     

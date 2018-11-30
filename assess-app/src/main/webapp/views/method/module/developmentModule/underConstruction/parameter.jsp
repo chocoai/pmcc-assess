@@ -275,5 +275,10 @@
 
     $(function () {
         underParameter.init();
+        var num = 0;
+        $("#economicIndicators").find("input").each(function (i,n) {
+            num += Number($(n).val());
+        });
+        $("#" + underParameter.config.frm).find(".villaResidenceBuildArea").html(num);
     });
 </script>

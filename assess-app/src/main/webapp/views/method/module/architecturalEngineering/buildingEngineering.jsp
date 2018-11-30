@@ -91,6 +91,14 @@
         $("#buildingEngineeringID").find('.total').text(total.toFixed(2));
     }
 
+    buildingEngineering.getJsonValue = function () {
+        var arr = [];
+        $("#buildingEngineeringID").find(':text').each(function () {
+            arr.push({name:$(this).attr("name"),value:$(this).val()});
+        });
+        return arr;
+    };
+
 
 </script>
 

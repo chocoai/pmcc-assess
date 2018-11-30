@@ -66,7 +66,7 @@
                 }
             }
         })
-    }
+    };
 
     //递归设置treeview的html
     constructionEngineering.recursionTreeView = function (nodes) {
@@ -87,12 +87,12 @@
                 }
             })
         }
-    }
+    };
 
     //获取合计值
     constructionEngineering.getTotal = function () {
         return $("#constructionEngineeringID").find('.total').text();
-    }
+    };
 
     //计算合计值
     constructionEngineering.sumTotal = function () {
@@ -108,6 +108,26 @@
             }
         })
         $("#constructionEngineeringID").find('.total').text(total.toFixed(2));
-    }
+    };
+
+    //获取要保存的json数据
+    constructionEngineering.getJsonValue = function () {
+        var arr = [];
+        $("#constructionEngineeringID").find('tbody tr').each(function () {
+            var currency = $(this).find('td:eq(1)').find(':text').val();
+            var completionDegree = $(this).find('td:eq(2)').find(':text').attr('data-value');
+            arr.push({
+                currency:{
+                    name:$(this).find('td:eq(1)').find(':text').attr("name"),
+                    value:$(this).find('td:eq(1)').find(':text').val()
+                },
+                completionDegree:{
+                    name:$(this).find('td:eq(2)').find(':text').attr("name"),
+                    value:$(this).find('td:eq(2)').find(':text').val()
+                }
+            });
+        });
+        return arr;
+    };
 
 </script>

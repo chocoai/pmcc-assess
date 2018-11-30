@@ -9,11 +9,16 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdCostAndDevelopmentOtherService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEquipmentInstallService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +58,14 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private DeclareBuildEngineeringService declareBuildEngineeringService;
+    @Autowired
+    private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -343,6 +356,35 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                 if (areaGroupId != null) {
                     SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.get(areaGroupId);
                     modelAndView.addObject("schemeAreaGroup", schemeAreaGroup);
+                }
+                if (schemeJudgeObject.getDeclareRecordId() != null) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                    if (declareRecord != null) {
+                        if (declareRecord.getDataTableId() != null) {
+                            if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRecord.getDataTableName())) {
+                                List<DeclareBuildEconomicIndicators> buildEconomicIndicatorsList = Lists.newArrayList();
+                                if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareBuildEngineering.class), declareRecord.getDataTableName())) {
+                                    DeclareBuildEngineering declareBuildEngineering = declareBuildEngineeringService.getDeclareBuildEngineeringById(declareRecord.getDataTableId());
+                                    if (declareBuildEngineering != null) {
+                                        List<DeclareBuildEconomicIndicators> indicators = declareBuildEngineeringAndEquipmentCenterService.getDeclareBuildEconomicIndicatorsList(DeclareBuildEngineering.class.getSimpleName(), declareBuildEngineering.getId(), null);
+                                        if (!ObjectUtils.isEmpty(indicators)) {
+                                            buildEconomicIndicatorsList.addAll(indicators);
+                                        }
+                                    }
+                                }
+                                if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareBuildEquipmentInstall.class), declareRecord.getDataTableName())) {
+                                    DeclareBuildEquipmentInstall declareBuildEquipmentInstall = declareBuildEquipmentInstallService.getDeclareBuildEquipmentInstallById(declareRecord.getDataTableId());
+                                    if (declareBuildEquipmentInstall != null) {
+                                        List<DeclareBuildEconomicIndicators> indicators = declareBuildEngineeringAndEquipmentCenterService.getDeclareBuildEconomicIndicatorsList(DeclareBuildEquipmentInstall.class.getSimpleName(), null, declareBuildEquipmentInstall.getId());
+                                        if (!ObjectUtils.isEmpty(indicators)) {
+                                            buildEconomicIndicatorsList.addAll(indicators);
+                                        }
+                                    }
+                                }
+                                modelAndView.addObject("buildEconomicIndicatorsList",buildEconomicIndicatorsList);
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -1,10 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/8/17
-  Time: 11:05
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- 假设开发法 -->
 <div class="x_panel">
@@ -17,6 +12,13 @@
     </div>
 
     <div class="x_content optionsBuildBox">
+        <div id="economicIndicators">
+            <c:forEach items="${buildEconomicIndicatorsList}" var="economicIndicators">
+                <c:if test="${economicIndicators.customKey=='houseBuildingArea'}">
+                    <input type="hidden" value="${economicIndicators.content}">
+                </c:if>
+            </c:forEach>
+        </div>
         <div>
             <!-- 隐藏框数据 -->
             <input type="hidden" id="mdCostAndDevelopmentOtherHypothesisJSON"
@@ -124,7 +126,6 @@
     };
 
 
-
     var optionsBuildBox = new Object();
     optionsBuildBox.showHypothesisDevelopment = function () {
         $(".landEngineering").show();
@@ -178,7 +179,7 @@
     optionsBuildBox.getBuildKey = function () {
         var val = $(".optionsBuildBox :radio:checked").val();
         if (val == 1) {
-            return "MdDevelopmentArchitectural" ;
+            return "MdDevelopmentArchitectural";
         }
         if (val == 2) {
             return "MdDevelopmentHypothesis";
@@ -200,19 +201,19 @@
         var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}";
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}";
         var mdDevelopment = "${mdDevelopment.type}";
-        if(mdDevelopment == "tb_md_development_hypothesis"){
-            $(".optionsBuildBox :radio").each(function (i,n) {
-                if ($(n).val() == "2"){
-                    $(n).attr("checked",'checked');
+        if (mdDevelopment == "tb_md_development_hypothesis") {
+            $(".optionsBuildBox :radio").each(function (i, n) {
+                if ($(n).val() == "2") {
+                    $(n).attr("checked", 'checked');
                 }
             });
             optionsBuildBox.showArchitecturalEngineering();
         }
-        if(mdDevelopment == "tb_md_development_architectural"){
+        if (mdDevelopment == "tb_md_development_architectural") {
             optionsBuildBox.showHypothesisDevelopment();
-            $(".optionsBuildBox :radio").each(function (i,n) {
-                if ($(n).val() == "1"){
-                    $(n).attr("checked",'checked');
+            $(".optionsBuildBox :radio").each(function (i, n) {
+                if ($(n).val() == "1") {
+                    $(n).attr("checked", 'checked');
                 }
             });
         }

@@ -645,27 +645,16 @@
                 yes: function () {
                     $(input).val(buildingEngineering.getTotal);
                     layer.close(layer.index);
+                    build.constructionInstallationEngineeringFeeEvent.serverSave(buildingEngineering.getJsonValue());
                 },
                 content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {
                     buildingEngineering.viewInit();
                 }
             });
-            $(function () {
-                constructEngineeringObject.viewInit();
-            });
-        },
-        eventSave: function () {
-            var data = constructEngineeringObject.getCalculatedResults();
-            build.algsObj.getAndSet("set", build.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
-            build.algsObj.constructionInstallationEngineeringFee();
-            build.constructionInstallationEngineeringFeeEvent.close();
-            build.constructionInstallationEngineeringFeeEvent.serverSave(constructEngineeringObject.loadData());
-        },
-        close: function () {
-            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         serverSave: function (data) {
+            console.log(data);
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
             $.ajax({
                 url: url,
@@ -673,7 +662,7 @@
                 data: {
                     jsonContent: JSON.stringify(data),
                     type: "MdCostBuilding",
-                    id: "${mdCostAndDevelopmentOtherBuilding.id}"
+                    id: build.isEmpty("${mdCostAndDevelopmentOtherBuilding.id}")?"${mdCostAndDevelopmentOtherBuilding.id}":"0"
                 },
                 dataType: "json",
                 success: function (result) {
