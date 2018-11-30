@@ -6,6 +6,8 @@ var AssessDBKey = {}
 //图片识别 key 根据此地址配置 com.copower.pmcc.erp.api.enums.AliOcrMethodEnum
 AssessDBKey.HouseOcrkey = "houseCert";//房产证
 
+AssessDBKey.DataImgTwoDimensional = "tb_data_img_two_dimensional";
+
 AssessDBKey.ReportTemplate = "tb_report_template";
 AssessDBKey.ProjectPlanDetails = "tb_project_plan_details";
 AssessDBKey.ProjectInfo = "tb_project_info";

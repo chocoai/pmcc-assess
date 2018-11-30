@@ -41,6 +41,7 @@ public class DataImgTwoDimensionalDao {
 
     public List<DataImgTwoDimensional> getDataImgTwoDimensionalList(DataImgTwoDimensional dataImgTwoDimensional){
         DataImgTwoDimensionalExample example = new DataImgTwoDimensionalExample();
+//        MybatisUtils.convertObj2Example(dataImgTwoDimensional, example);
         DataImgTwoDimensionalExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         return dataImgTwoDimensionalMapper.selectByExample(example);

@@ -12,11 +12,17 @@ public class DataImgTwoDimensional {
 
     private String name;
 
+    private Integer imgId;
+
     private String imgUrl;
+
+    private Integer backgroundId;
 
     private String backgroundUrl;
 
-    private String style;
+    private BigDecimal leftN;
+
+    private BigDecimal topN;
 
     private BigDecimal deg;
 
@@ -58,12 +64,28 @@ public class DataImgTwoDimensional {
         this.name = name == null ? null : name.trim();
     }
 
+    public Integer getImgId() {
+        return imgId;
+    }
+
+    public void setImgId(Integer imgId) {
+        this.imgId = imgId;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl == null ? null : imgUrl.trim();
+    }
+
+    public Integer getBackgroundId() {
+        return backgroundId;
+    }
+
+    public void setBackgroundId(Integer backgroundId) {
+        this.backgroundId = backgroundId;
     }
 
     public String getBackgroundUrl() {
@@ -74,12 +96,20 @@ public class DataImgTwoDimensional {
         this.backgroundUrl = backgroundUrl == null ? null : backgroundUrl.trim();
     }
 
-    public String getStyle() {
-        return style;
+    public BigDecimal getLeftN() {
+        return leftN;
     }
 
-    public void setStyle(String style) {
-        this.style = style == null ? null : style.trim();
+    public void setLeftN(BigDecimal leftN) {
+        this.leftN = leftN;
+    }
+
+    public BigDecimal getTopN() {
+        return topN;
+    }
+
+    public void setTopN(BigDecimal topN) {
+        this.topN = topN;
     }
 
     public BigDecimal getDeg() {

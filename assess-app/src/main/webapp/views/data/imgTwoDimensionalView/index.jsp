@@ -10,22 +10,20 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
-
+            <img src="${pageContext.request.contextPath}${dataImgTwoDimensional.backgroundUrl}" style="display: none"
+                 id="test">
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
                         <div class="col-sm-1">
                             <ul class="nav nav-pills nav-stacked">
-                                <%--<li class="active"><a href="#" onclick="resizableRotate.keyDown()">开启键盘左右移动</a></li>--%>
-                                <%--<li><a href="#" onclick="resizableRotate.startAll()">开启鼠标旋转</a></li>--%>
                                 <li><a href="#" onclick="resizableRotate.imgMaxAndMin(true)">放大</a></li>
                                 <li><a href="#" onclick="resizableRotate.imgMaxAndMin(false)">缩小</a></li>
                                 <li><a href="#" onclick="resizableRotate.rotateTransform(true)">右旋转</a></li>
                                 <li><a href="#" onclick="resizableRotate.rotateTransform(false)">左旋转</a></li>
-                                <%--<li><a href="#" onclick="resizableRotate.canvasHandle()">canvas 操作</a></li>--%>
                             </ul>
                         </div>
-                        <div class="col-sm-11" style="height:616px;">
+                        <div class="col-sm-11">
                             <img id="imgA"/>
                         </div>
                     </div>
@@ -74,41 +72,41 @@
 
     resizableRotate.config = {
         background: {
-            url: "${pageContext.request.contextPath}/views/data/imgTwoDimensionalView/E2B8A525.png"
+            url: '${pageContext.request.contextPath}' + '${dataImgTwoDimensional.backgroundUrl}'
         },
         img: {
             id: "imgA",
             class: "ui-widget-content",
-            src: "${pageContext.request.contextPath}/views/data/imgTwoDimensionalView/B69B3AFB.png"
+            src: '${pageContext.request.contextPath}' + '${dataImgTwoDimensional.imgUrl}'
         }
     };
 
     resizableRotate.style = function () {
+        //获取背景图片的原始宽和高(只指出IE9)
+        var w1 = document.getElementById('test').naturalWidth;
+        var h1 = document.getElementById('test').naturalHeight;
+        $("#" + resizableRotate.config.img.id).parent().css('height', h1);
+        $("#" + resizableRotate.config.img.id).parent().css('background', 'url(' + resizableRotate.config.background.url + ')');
         $("#" + resizableRotate.config.img.id).css({width: 530 / 5, height: 708 / 5});
         $("#" + resizableRotate.config.img.id).attr("src", resizableRotate.config.img.src);
         $("#" + resizableRotate.config.img.id).attr("style", "left:0px; top:0px; position:absolute;transform: rotate(0deg);");
+
+        if (resizableRotate.isNotBlank("${dataImgTwoDimensional.id}")) {
+            document.getElementById(resizableRotate.config.img.id).width = Number('${dataImgTwoDimensional.width}');
+            document.getElementById(resizableRotate.config.img.id).height = Number('${dataImgTwoDimensional.height}');
+            $("#" + resizableRotate.config.img.id).offset({top:'${dataImgTwoDimensional.topN}',left:'${dataImgTwoDimensional.leftN}'});
+            document.getElementById(resizableRotate.config.img.id).style.transform = 'rotate(' + '${dataImgTwoDimensional.deg}' + 'deg)';
+        }
+        //拖动
+        $("#" + resizableRotate.config.img.id).draggable();
     };
 
-    /**
-     * 背景设置
-     */
-    resizableRotate.setBackGround = function () {
-        $("#" + resizableRotate.config.img.id).parent().css('background', 'url(' + resizableRotate.config.background.url + ')');
-    };
 
     /**
      * 缩放
      */
     resizableRotate.resizable = function () {
         $("#" + resizableRotate.config.img.id).resizable();
-    };
-
-    /**
-     * 拖动
-     */
-    resizableRotate.draggable = function () {
-        // $("#" + resizableRotate.config.img.id).parent().draggable();
-        $("#" + resizableRotate.config.img.id).draggable();
     };
 
     /**
@@ -119,15 +117,21 @@
         var item = {
             deg: resizableRotate.getAngle(document.getElementById(resizableRotate.config.img.id)),
             style: ele.attr("style"),
-            imgUrl:resizableRotate.config.img.src,
-            backgroundUrl:resizableRotate.config.background.url,
-            height:$("#"+resizableRotate.config.img.id).height(),
-            width:$("#"+resizableRotate.config.img.id).width(),
-            id:"${dataImgTwoDimensional.id}"
+            imgUrl: resizableRotate.config.img.src,
+            backgroundUrl: resizableRotate.config.background.url,
+            height: $("#" + resizableRotate.config.img.id).height(),
+            width: $("#" + resizableRotate.config.img.id).width(),
+            id: "${dataImgTwoDimensional.id}",
+            imgId:"${dataImgTwoDimensional.imgId}",
+            backgroundId:"${dataImgTwoDimensional.backgroundId}",
+            leftN:$("#" + resizableRotate.config.img.id).offset().left,
+            topN:$("#" + resizableRotate.config.img.id).offset().top
         };
+        console.log(item);
         return item;
     };
 
+    //旋转
     resizableRotate.rotateTransform = function (flag) {
         var img = document.getElementById(resizableRotate.config.img.id);
         var current = 0;
@@ -141,6 +145,7 @@
         }
     };
 
+    //获取style 中的旋转度数
     resizableRotate.getAngle = function (el) {
         var st = window.getComputedStyle(el, null);
         var tr = st.getPropertyValue("-webkit-transform") ||
@@ -187,16 +192,17 @@
     };
 
     resizableRotate.startAll = function () {
-       Alert("方法不建议使用",2,null,function () {
-           //缩放
-           resizableRotate.resizable();
-           //开启拖动
-           resizableRotate.draggable();
-           //开启旋转
-           resizableRotate.rotateRun();
-       });
+        Alert("方法不建议使用", 2, null, function () {
+            //缩放
+            resizableRotate.resizable();
+            //开启拖动
+            resizableRotate.draggable();
+            //开启旋转
+            resizableRotate.rotateRun();
+        });
     };
 
+    //键盘上下移动
     resizableRotate.keyDown = function () {
         var img = document.getElementById(resizableRotate.config.img.id);
         img.left = 0;
@@ -227,6 +233,7 @@
         Alert("暂时未提供!");
     };
 
+    //方法或者缩小
     resizableRotate.imgMaxAndMin = function (flag) {
         var oImg = document.getElementById(resizableRotate.config.img.id);
         if (flag) {
@@ -242,15 +249,6 @@
     $(document).ready(function () {
         //设置被拖动的图片样式
         resizableRotate.style();
-        //设置背景
-        resizableRotate.setBackGround();
-        resizableRotate.draggable();
-        var dataImgTwoDimensional = "${dataImgTwoDimensional}" ;
-        if (resizableRotate.isNotBlank(dataImgTwoDimensional)){
-            $("#" + resizableRotate.config.img.id).attr("style", "${dataImgTwoDimensional.style}");
-            $("#" + resizableRotate.config.img.id).height("${dataImgTwoDimensional.height}");
-            $("#" + resizableRotate.config.img.id).width("${dataImgTwoDimensional.width}");
-        }
     });
 
     //提交

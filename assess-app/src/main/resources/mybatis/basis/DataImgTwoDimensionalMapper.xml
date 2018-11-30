@@ -6,9 +6,12 @@
     <result column="height" property="height" jdbcType="DECIMAL" />
     <result column="width" property="width" jdbcType="DECIMAL" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="img_id" property="imgId" jdbcType="INTEGER" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="background_id" property="backgroundId" jdbcType="INTEGER" />
     <result column="background_url" property="backgroundUrl" jdbcType="VARCHAR" />
-    <result column="style" property="style" jdbcType="VARCHAR" />
+    <result column="left_N" property="leftN" jdbcType="DECIMAL" />
+    <result column="top_N" property="topN" jdbcType="DECIMAL" />
     <result column="deg" property="deg" jdbcType="DECIMAL" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -73,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, height, width, name, img_url, background_url, style, deg, creator, gmt_created, 
-    gmt_modified
+    id, height, width, name, img_id, img_url, background_id, background_url, left_N, 
+    top_N, deg, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensionalExample" >
     select
@@ -111,11 +114,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_img_two_dimensional (height, width, name, 
-      img_url, background_url, style, 
+      img_id, img_url, background_id, 
+      background_url, left_N, top_N, 
       deg, creator, gmt_created, 
       gmt_modified)
     values (#{height,jdbcType=DECIMAL}, #{width,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, 
-      #{imgUrl,jdbcType=VARCHAR}, #{backgroundUrl,jdbcType=VARCHAR}, #{style,jdbcType=VARCHAR}, 
+      #{imgId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{backgroundId,jdbcType=INTEGER}, 
+      #{backgroundUrl,jdbcType=VARCHAR}, #{leftN,jdbcType=DECIMAL}, #{topN,jdbcType=DECIMAL}, 
       #{deg,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -134,14 +139,23 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="imgId != null" >
+        img_id,
+      </if>
       <if test="imgUrl != null" >
         img_url,
+      </if>
+      <if test="backgroundId != null" >
+        background_id,
       </if>
       <if test="backgroundUrl != null" >
         background_url,
       </if>
-      <if test="style != null" >
-        style,
+      <if test="leftN != null" >
+        left_N,
+      </if>
+      <if test="topN != null" >
+        top_N,
       </if>
       <if test="deg != null" >
         deg,
@@ -166,14 +180,23 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="imgId != null" >
+        #{imgId,jdbcType=INTEGER},
+      </if>
       <if test="imgUrl != null" >
         #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroundId != null" >
+        #{backgroundId,jdbcType=INTEGER},
       </if>
       <if test="backgroundUrl != null" >
         #{backgroundUrl,jdbcType=VARCHAR},
       </if>
-      <if test="style != null" >
-        #{style,jdbcType=VARCHAR},
+      <if test="leftN != null" >
+        #{leftN,jdbcType=DECIMAL},
+      </if>
+      <if test="topN != null" >
+        #{topN,jdbcType=DECIMAL},
       </if>
       <if test="deg != null" >
         #{deg,jdbcType=DECIMAL},
@@ -210,14 +233,23 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.imgId != null" >
+        img_id = #{record.imgId,jdbcType=INTEGER},
+      </if>
       <if test="record.imgUrl != null" >
         img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backgroundId != null" >
+        background_id = #{record.backgroundId,jdbcType=INTEGER},
       </if>
       <if test="record.backgroundUrl != null" >
         background_url = #{record.backgroundUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.style != null" >
-        style = #{record.style,jdbcType=VARCHAR},
+      <if test="record.leftN != null" >
+        left_N = #{record.leftN,jdbcType=DECIMAL},
+      </if>
+      <if test="record.topN != null" >
+        top_N = #{record.topN,jdbcType=DECIMAL},
       </if>
       <if test="record.deg != null" >
         deg = #{record.deg,jdbcType=DECIMAL},
@@ -242,9 +274,12 @@
       height = #{record.height,jdbcType=DECIMAL},
       width = #{record.width,jdbcType=DECIMAL},
       name = #{record.name,jdbcType=VARCHAR},
+      img_id = #{record.imgId,jdbcType=INTEGER},
       img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      background_id = #{record.backgroundId,jdbcType=INTEGER},
       background_url = #{record.backgroundUrl,jdbcType=VARCHAR},
-      style = #{record.style,jdbcType=VARCHAR},
+      left_N = #{record.leftN,jdbcType=DECIMAL},
+      top_N = #{record.topN,jdbcType=DECIMAL},
       deg = #{record.deg,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -265,14 +300,23 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="imgId != null" >
+        img_id = #{imgId,jdbcType=INTEGER},
+      </if>
       <if test="imgUrl != null" >
         img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="backgroundId != null" >
+        background_id = #{backgroundId,jdbcType=INTEGER},
       </if>
       <if test="backgroundUrl != null" >
         background_url = #{backgroundUrl,jdbcType=VARCHAR},
       </if>
-      <if test="style != null" >
-        style = #{style,jdbcType=VARCHAR},
+      <if test="leftN != null" >
+        left_N = #{leftN,jdbcType=DECIMAL},
+      </if>
+      <if test="topN != null" >
+        top_N = #{topN,jdbcType=DECIMAL},
       </if>
       <if test="deg != null" >
         deg = #{deg,jdbcType=DECIMAL},
@@ -294,9 +338,12 @@
     set height = #{height,jdbcType=DECIMAL},
       width = #{width,jdbcType=DECIMAL},
       name = #{name,jdbcType=VARCHAR},
+      img_id = #{imgId,jdbcType=INTEGER},
       img_url = #{imgUrl,jdbcType=VARCHAR},
+      background_id = #{backgroundId,jdbcType=INTEGER},
       background_url = #{backgroundUrl,jdbcType=VARCHAR},
-      style = #{style,jdbcType=VARCHAR},
+      left_N = #{leftN,jdbcType=DECIMAL},
+      top_N = #{topN,jdbcType=DECIMAL},
       deg = #{deg,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

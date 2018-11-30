@@ -24,30 +24,73 @@
                 </div>
                 <div class="x_content">
                     <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <label class="col-sm-1 control-label">
-                                名称
-                            </label>
-                            <div class="col-sm-1">
-                                <input type="text" name="name" id="queryName" class="form-control">
-                            </div>
+                        <div class="form-group">
                             <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="landLevel.loadLandLevelList()">
-                                    查询
-                                </button>
-
                                 <button type="button" class="btn btn-success"
                                         onclick="landLevel.showModel()"
                                         data-toggle="modal"> 新增
                                 </button>
                             </div>
+
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-success"
+                                        onclick="dataImgTwoDimensionalBackgroundFun()"
+                                        data-toggle="modal"> 背景图导入
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-success"
+                                        onclick="dataImgTwoDimensionalImgFun()"
+                                        data-toggle="modal"> 户型图导入
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="file" id="dataImgTwoDimensionalBackground" name="dataImgTwoDimensionalBackground" style="display: none"
+                                   onchange="dataImgTwoDimensionalBackgroundChange(this)">
+
+                            <input type="file" id="dataImgTwoDimensionalImg" name="dataImgTwoDimensionalImg" style="display: none"
+                                   onchange="dataImgTwoDimensionalImgChange(this)">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="tb_FatherList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                               <label class="control-label">户型图</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="dataImgTwoDimensionalImgTable">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">背景图</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="dataImgTwoDimensionalBackgroundTable">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
                         </div>
 
                     </form>
-                    <table class="table table-bordered" id="tb_FatherList">
-                        <!-- cerare document add ajax data-->
-                    </table>
                 </div>
             </div>
         </div>
@@ -58,9 +101,11 @@
 </body>
 
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
     $(function () {
         landLevel.loadLandLevelList();
+        loadDataList();
     });
 
     var landLevel = {
@@ -89,7 +134,7 @@
             });
             $("#" + landLevel.config().table).bootstrapTable('destroy');
             TableInit(landLevel.config().table, "${pageContext.request.contextPath}/dataImgTwoDimensional/getBootstrapTableVo", cols, {
-                name: $("#queryName").val()
+                name: null
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -100,7 +145,18 @@
             });
         },
         showModel:function () {
+            var itemA = $("#dataImgTwoDimensionalImgTable").bootstrapTable('getSelections');
+            var itemB = $("#dataImgTwoDimensionalBackgroundTable").bootstrapTable('getSelections');
+            if (itemA.length < 1){
+                Alert("请选择户型图");
+                return false;
+            }
+            if (itemB.length < 1){
+                Alert("请选背景图");
+                return false;
+            }
             var href = "${pageContext.request.contextPath}/dataImgTwoDimensional/index";
+            href += "?sysAttachmentIdA=" +itemA[0].id+"&sysAttachmentIdB="+itemB[0].id;
             window.open(href, "");
         },
         editData:function (id) {
@@ -132,6 +188,116 @@
                 })
             })
         }
+    };
+
+    function dataImgTwoDimensionalBackgroundChange() {
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/public/importAjaxFile",
+            data: {
+                tableName: AssessDBKey.DataImgTwoDimensional,
+                tableId: 0,
+                fieldsName: "dataImgTwoDimensionalBackground"
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: "dataImgTwoDimensionalBackground",//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    loadDataList();
+                    Alert("success");
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    function dataImgTwoDimensionalBackgroundFun() {
+        $("#dataImgTwoDimensionalBackground").attr("data-id", 0);
+        $("#dataImgTwoDimensionalBackground").trigger('click');
+    }
+
+    function dataImgTwoDimensionalImgFun() {
+        $("#dataImgTwoDimensionalImg").attr("data-id", 0);
+        $("#dataImgTwoDimensionalImg").trigger('click');
+    }
+
+    function dataImgTwoDimensionalImgChange() {
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/public/importAjaxFile",
+            data: {
+                tableName: AssessDBKey.DataImgTwoDimensional,
+                tableId: 0,
+                fieldsName: "dataImgTwoDimensionalImg"
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: "dataImgTwoDimensionalImg",//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    loadDataList();
+                    Alert("success");
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    }
+
+    function loadDataList() {
+        (function () {
+            var colsA = [];
+            colsA.push({
+                checkbox: true
+            });
+            colsA.push({
+                field: 'id', title: '名称', formatter: function (value, row, index) {
+                    return row.fileName;
+                }
+            });
+            $("#dataImgTwoDimensionalImgTable").bootstrapTable('destroy');
+            TableInit('dataImgTwoDimensionalImgTable', "${pageContext.request.contextPath}/dataImgTwoDimensional/dataImgTwoDimensionalImg", colsA, {
+                name: null
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                singleSelect : true,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }());
+        (function () {
+            var colsB = [];
+            colsB.push({
+                radio: true
+            });
+            colsB.push({
+                field: 'id', title: '名称', formatter: function (value, row, index) {
+                    return row.fileName;
+                }
+            });
+            $("#dataImgTwoDimensionalBackgroundTable").bootstrapTable('destroy');
+            TableInit('dataImgTwoDimensionalBackgroundTable', "${pageContext.request.contextPath}/dataImgTwoDimensional/dataImgTwoDimensionalBackground", colsB, {
+                name: null
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }());
     }
 </script>
 

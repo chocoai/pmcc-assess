@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.data.DataImgTwoDimensionalService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -22,7 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/dataImgTwoDimensional")
 @Controller
 public class DataImgTwoDimensionalController {
-
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -37,14 +39,34 @@ public class DataImgTwoDimensionalController {
     }
 
     @RequestMapping(value = "/index", name = "转到index页面 save and update ", method = {RequestMethod.GET})
-    public ModelAndView index(Integer id) {
+    public ModelAndView index(Integer id, Integer sysAttachmentIdA, Integer sysAttachmentIdB) {
         String view = "/data/imgTwoDimensionalView/index";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        if (id != null){
-            DataImgTwoDimensional dataImgTwoDimensional = dataImgTwoDimensionalService.getDataImgTwoDimensionalById(id);
-            if (dataImgTwoDimensional != null){
-                modelAndView.addObject("dataImgTwoDimensional",dataImgTwoDimensional);
+        DataImgTwoDimensional dataImgTwoDimensional = null;
+        if (id != null) {
+            dataImgTwoDimensional = dataImgTwoDimensionalService.getDataImgTwoDimensionalById(id);
+            if (dataImgTwoDimensional.getBackgroundId() != null){
+                dataImgTwoDimensional.setBackgroundUrl(baseAttachmentService.getViewImageUrl(dataImgTwoDimensional.getBackgroundId()));
             }
+            if (dataImgTwoDimensional.getImgId() != null){
+                dataImgTwoDimensional.setImgUrl(baseAttachmentService.getViewImageUrl(dataImgTwoDimensional.getImgId()));
+            }
+        }
+        try {
+            if (sysAttachmentIdA != null && sysAttachmentIdB != null) {
+                if (dataImgTwoDimensional == null) {
+                    dataImgTwoDimensional = new DataImgTwoDimensional();
+                }
+                dataImgTwoDimensional.setImgId(sysAttachmentIdA);
+                dataImgTwoDimensional.setBackgroundId(sysAttachmentIdB);
+                dataImgTwoDimensional.setImgUrl(baseAttachmentService.getViewImageUrl(sysAttachmentIdA));
+                dataImgTwoDimensional.setBackgroundUrl(baseAttachmentService.getViewImageUrl(sysAttachmentIdB));
+            }
+        } catch (Exception e1) {
+            log.error("", e1);
+        }
+        if (dataImgTwoDimensional != null) {
+            modelAndView.addObject("dataImgTwoDimensional", dataImgTwoDimensional);
         }
         return modelAndView;
     }
@@ -53,10 +75,16 @@ public class DataImgTwoDimensionalController {
     public ModelAndView detail(Integer id) {
         String view = "/data/imgTwoDimensionalView/detail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        if (id != null){
+        if (id != null) {
             DataImgTwoDimensional dataImgTwoDimensional = dataImgTwoDimensionalService.getDataImgTwoDimensionalById(id);
-            if (dataImgTwoDimensional != null){
-                modelAndView.addObject("dataImgTwoDimensional",dataImgTwoDimensional);
+            if (dataImgTwoDimensional != null) {
+                if (dataImgTwoDimensional.getBackgroundId() != null){
+                    dataImgTwoDimensional.setBackgroundUrl(baseAttachmentService.getViewImageUrl(dataImgTwoDimensional.getBackgroundId()));
+                }
+                if (dataImgTwoDimensional.getImgId() != null){
+                    dataImgTwoDimensional.setImgUrl(baseAttachmentService.getViewImageUrl(dataImgTwoDimensional.getImgId()));
+                }
+                modelAndView.addObject("dataImgTwoDimensional", dataImgTwoDimensional);
             }
         }
         return modelAndView;
@@ -81,7 +109,7 @@ public class DataImgTwoDimensionalController {
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "获取户型在图片上的二维坐标信息列表")
     public BootstrapTableVo getDataImgTwoDimensionalList(DataImgTwoDimensional dataImgTwoDimensional) {
         BootstrapTableVo vo = null;
-        if (dataImgTwoDimensional == null){
+        if (dataImgTwoDimensional == null) {
             dataImgTwoDimensional = new DataImgTwoDimensional();
         }
         try {
@@ -120,5 +148,31 @@ public class DataImgTwoDimensionalController {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/dataImgTwoDimensionalImg", method = {RequestMethod.GET}, name = "dataImgTwoDimensionalImg")
+    public BootstrapTableVo dataImgTwoDimensionalImg() {
+        BootstrapTableVo vo = null;
+        try {
+            vo = dataImgTwoDimensionalService.dataImgTwoDimensionalImg();
+        } catch (Exception e1) {
+            log.error(String.format("exception: %s", e1.getMessage()), e1);
+            return null;
+        }
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/dataImgTwoDimensionalBackground", method = {RequestMethod.GET}, name = "dataImgTwoDimensionalBackground")
+    public BootstrapTableVo dataImgTwoDimensionalBackground() {
+        BootstrapTableVo vo = null;
+        try {
+            vo = dataImgTwoDimensionalService.dataImgTwoDimensionalBackground();
+        } catch (Exception e1) {
+            log.error(String.format("exception: %s", e1.getMessage()), e1);
+            return null;
+        }
+        return vo;
     }
 }

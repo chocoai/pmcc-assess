@@ -2,16 +2,23 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataImgTwoDimensionalDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataImgTwoDimensional;
+import com.copower.pmcc.assess.dto.output.data.DataImgTwoDimensionalVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +28,8 @@ import java.util.List;
  */
 @Service
 public class DataImgTwoDimensionalService {
-
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private DataImgTwoDimensionalDao dataImgTwoDimensionalDao;
     @Autowired
@@ -69,6 +77,49 @@ public class DataImgTwoDimensionalService {
             throw new Exception("null point");
         }
         dataImgTwoDimensionalDao.removeDataImgTwoDimensional(dataImgTwoDimensional);
+    }
+
+    public DataImgTwoDimensionalVo getDataImgTwoDimensionalVo(DataImgTwoDimensional dataImgTwoDimensional){
+        if (dataImgTwoDimensional==null){
+            return null;
+        }
+        DataImgTwoDimensionalVo vo = new DataImgTwoDimensionalVo();
+        BeanUtils.copyProperties(dataImgTwoDimensional,vo);
+        return vo;
+    }
+
+    public BootstrapTableVo dataImgTwoDimensionalImg(){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DataImgTwoDimensional.class));
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setFieldsName("dataImgTwoDimensionalImg");
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (ObjectUtils.isEmpty(sysAttachmentDtoList)){
+            sysAttachmentDtoList = new ArrayList<SysAttachmentDto>(1);
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(sysAttachmentDtoList);
+        return vo;
+    }
+
+    public BootstrapTableVo dataImgTwoDimensionalBackground(){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(DataImgTwoDimensional.class));
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setFieldsName("dataImgTwoDimensionalBackground");
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (ObjectUtils.isEmpty(sysAttachmentDtoList)){
+            sysAttachmentDtoList = new ArrayList<SysAttachmentDto>(1);
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(sysAttachmentDtoList);
+        return vo;
     }
 
 }

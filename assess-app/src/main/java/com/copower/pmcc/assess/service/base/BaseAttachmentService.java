@@ -297,4 +297,27 @@ public class BaseAttachmentService {
         this.addAttachment(sysAttachmentDto);
         return String.format("%d", sysAttachmentDto.getId());
     }
+
+    public String getViewImageUrl(Integer id) {
+        SysAttachmentDto sysAttachment = getSysAttachmentDto(id);
+        //复制一份附件到临时目录，并返还临时文件的查看地址
+        String strDayTempDirName = DateUtils.formatNowToYMD();
+        String basePath = "/temporary";
+        String localDirPath = servletContext.getRealPath(basePath + "/" + strDayTempDirName);
+        //清除今天以前的临时文件
+        FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
+        FileUtils.folderMake(localDirPath);
+
+        String loaclFileName = FileUtils.joinFileName(String.valueOf(id), sysAttachment.getFileExtension());
+        String viewUrl = basePath + "/" + strDayTempDirName + "/" + loaclFileName;
+        String fullPath = localDirPath + File.separator + loaclFileName;
+        if (!FileUtils.checkFileExists(new File(fullPath))) {
+            try {
+                ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), loaclFileName, localDirPath);
+            } catch (Exception e) {
+               logger.error("",e);
+            }
+        }
+        return viewUrl;
+    }
 }

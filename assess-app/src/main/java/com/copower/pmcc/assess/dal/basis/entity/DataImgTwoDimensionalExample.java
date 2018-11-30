@@ -356,6 +356,66 @@ public class DataImgTwoDimensionalExample {
             return (Criteria) this;
         }
 
+        public Criteria andImgIdIsNull() {
+            addCriterion("img_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdIsNotNull() {
+            addCriterion("img_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdEqualTo(Integer value) {
+            addCriterion("img_id =", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdNotEqualTo(Integer value) {
+            addCriterion("img_id <>", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdGreaterThan(Integer value) {
+            addCriterion("img_id >", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("img_id >=", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdLessThan(Integer value) {
+            addCriterion("img_id <", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdLessThanOrEqualTo(Integer value) {
+            addCriterion("img_id <=", value, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdIn(List<Integer> values) {
+            addCriterion("img_id in", values, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdNotIn(List<Integer> values) {
+            addCriterion("img_id not in", values, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdBetween(Integer value1, Integer value2) {
+            addCriterion("img_id between", value1, value2, "imgId");
+            return (Criteria) this;
+        }
+
+        public Criteria andImgIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("img_id not between", value1, value2, "imgId");
+            return (Criteria) this;
+        }
+
         public Criteria andImgUrlIsNull() {
             addCriterion("img_url is null");
             return (Criteria) this;
@@ -423,6 +483,66 @@ public class DataImgTwoDimensionalExample {
 
         public Criteria andImgUrlNotBetween(String value1, String value2) {
             addCriterion("img_url not between", value1, value2, "imgUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdIsNull() {
+            addCriterion("background_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdIsNotNull() {
+            addCriterion("background_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdEqualTo(Integer value) {
+            addCriterion("background_id =", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdNotEqualTo(Integer value) {
+            addCriterion("background_id <>", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdGreaterThan(Integer value) {
+            addCriterion("background_id >", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("background_id >=", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdLessThan(Integer value) {
+            addCriterion("background_id <", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdLessThanOrEqualTo(Integer value) {
+            addCriterion("background_id <=", value, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdIn(List<Integer> values) {
+            addCriterion("background_id in", values, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdNotIn(List<Integer> values) {
+            addCriterion("background_id not in", values, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdBetween(Integer value1, Integer value2) {
+            addCriterion("background_id between", value1, value2, "backgroundId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBackgroundIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("background_id not between", value1, value2, "backgroundId");
             return (Criteria) this;
         }
 
@@ -496,73 +616,123 @@ public class DataImgTwoDimensionalExample {
             return (Criteria) this;
         }
 
-        public Criteria andStyleIsNull() {
-            addCriterion("style is null");
+        public Criteria andLeftNIsNull() {
+            addCriterion("left_N is null");
             return (Criteria) this;
         }
 
-        public Criteria andStyleIsNotNull() {
-            addCriterion("style is not null");
+        public Criteria andLeftNIsNotNull() {
+            addCriterion("left_N is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStyleEqualTo(String value) {
-            addCriterion("style =", value, "style");
+        public Criteria andLeftNEqualTo(BigDecimal value) {
+            addCriterion("left_N =", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleNotEqualTo(String value) {
-            addCriterion("style <>", value, "style");
+        public Criteria andLeftNNotEqualTo(BigDecimal value) {
+            addCriterion("left_N <>", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleGreaterThan(String value) {
-            addCriterion("style >", value, "style");
+        public Criteria andLeftNGreaterThan(BigDecimal value) {
+            addCriterion("left_N >", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleGreaterThanOrEqualTo(String value) {
-            addCriterion("style >=", value, "style");
+        public Criteria andLeftNGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("left_N >=", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleLessThan(String value) {
-            addCriterion("style <", value, "style");
+        public Criteria andLeftNLessThan(BigDecimal value) {
+            addCriterion("left_N <", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleLessThanOrEqualTo(String value) {
-            addCriterion("style <=", value, "style");
+        public Criteria andLeftNLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("left_N <=", value, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleLike(String value) {
-            addCriterion("style like", value, "style");
+        public Criteria andLeftNIn(List<BigDecimal> values) {
+            addCriterion("left_N in", values, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleNotLike(String value) {
-            addCriterion("style not like", value, "style");
+        public Criteria andLeftNNotIn(List<BigDecimal> values) {
+            addCriterion("left_N not in", values, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleIn(List<String> values) {
-            addCriterion("style in", values, "style");
+        public Criteria andLeftNBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("left_N between", value1, value2, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleNotIn(List<String> values) {
-            addCriterion("style not in", values, "style");
+        public Criteria andLeftNNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("left_N not between", value1, value2, "leftN");
             return (Criteria) this;
         }
 
-        public Criteria andStyleBetween(String value1, String value2) {
-            addCriterion("style between", value1, value2, "style");
+        public Criteria andTopNIsNull() {
+            addCriterion("top_N is null");
             return (Criteria) this;
         }
 
-        public Criteria andStyleNotBetween(String value1, String value2) {
-            addCriterion("style not between", value1, value2, "style");
+        public Criteria andTopNIsNotNull() {
+            addCriterion("top_N is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNEqualTo(BigDecimal value) {
+            addCriterion("top_N =", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNNotEqualTo(BigDecimal value) {
+            addCriterion("top_N <>", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNGreaterThan(BigDecimal value) {
+            addCriterion("top_N >", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("top_N >=", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNLessThan(BigDecimal value) {
+            addCriterion("top_N <", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("top_N <=", value, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNIn(List<BigDecimal> values) {
+            addCriterion("top_N in", values, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNNotIn(List<BigDecimal> values) {
+            addCriterion("top_N not in", values, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("top_N between", value1, value2, "topN");
+            return (Criteria) this;
+        }
+
+        public Criteria andTopNNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("top_N not between", value1, value2, "topN");
             return (Criteria) this;
         }
 
