@@ -18,9 +18,7 @@
                 <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
             </form>
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
-
             <div class="x_panel">
-
                 <div class="x_content">
                     <div class="col-sm-5 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -48,11 +46,7 @@
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
-    var objectData = new Object();
-
-
-    //返回修改
-    objectData.editApply = function () {
+    $(function () {
         if ('${basicApply.id}' != '0') {
             industry.keyApp("${basicApply.type}");
 
@@ -84,11 +78,6 @@
                 });
             }
         }
-    };
-
-
-    $(function () {
-        objectData.editApply();
     });
 </script>
 <script type="application/javascript">

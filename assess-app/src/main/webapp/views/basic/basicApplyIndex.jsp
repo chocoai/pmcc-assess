@@ -407,30 +407,6 @@
         );
     };
 
-
-    //收集数据
-    basicApplyIndex.formParams = function () {
-        var item = {};
-        var basicApply = formSerializeArray(basicCommon.basicApplyForm);
-        item.basicApply = basicApply;
-        if (basicApply.estatePartInMode) {
-            item.basicEstate = formSerializeArray(estateCommon.estateForm);
-            item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
-        }
-        if (basicApply.buildingPartInMode) {
-            item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
-            item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
-        }
-        if (basicApply.unitPartInMode) {
-            item.basicUnit = formSerializeArray(unitCommon.unitForm);
-        }
-        if (basicApply.housePartInMode) {
-            item.basicHouse = formSerializeArray(houseCommon.houseForm);
-            item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
-        }
-        return item;
-    };
-
     //检测是否为 草稿重新申请
     basicApplyIndex.startApply = function () {
         if ('${basicApply.id}' != '0') {

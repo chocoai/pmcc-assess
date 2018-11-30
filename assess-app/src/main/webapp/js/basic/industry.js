@@ -15,7 +15,7 @@ industry.config = {
     id: "industry",
     notIndustry: {key: 0, name: "非工业与仓储"},
     industry: {key: 1, name: "工业与仓储"},
-    defaultKey: "1",
+    defaultKey: "0",
     build: {
         surface: "industrySurface",//层面结构
         maintenance: "industryMaintenance",//维护结构
@@ -26,7 +26,7 @@ industry.config = {
         supplyPower: "industrySupplyPower",//供电信息
         supplyWater: "industrySupplyWater", //供排水情况
         supply: "industrySupplyInfo",//供排水情况,供电信息,供热信息,供气信息 配置在楼盘中的有无  id
-        matchingInfo:"industryMatchingInfo",//教育、娱乐、参与、购物、医养
+        matchingInfo: "industryMatchingInfo",//教育、娱乐、参与、购物、医养
         water_supply_plan: "industry_water_supply_plan",//供水平面图
         power_supply_plan: "industry_power_supply_plan",//供电平面图
         air_supply_plan: "industry_air_supply_plan",//供气平面图
@@ -146,7 +146,7 @@ industry.industryTwo = {
 };
 
 industry.changeEvent = function () {
-    $("#" + industry.config.id).find("input[type='radio']").change(function () {
+    basicCommon.basicApplyForm.find("input[type='radio']").change(function () {
         var item = $("#" + industry.config.id).find(":radio:checked").val();
         if (industry.isNotBlank(item)) {
             if (item == industry.config.notIndustry.key) {
