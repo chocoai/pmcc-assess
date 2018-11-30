@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -970,9 +971,9 @@ public class PublicBasicService {
 
 
             //处理楼盘
-            if (basicApply.getEstatePartInFlag() == Boolean.TRUE && basicEstate != null) {
+            if (StringUtils.isNotBlank(basicApply.getEstatePartInMode()) && basicEstate != null) {
                 CaseEstate caseEstate = this.flowWriteCaseEstate(basicApply, basicEstate, basicEstateLandState);
-                if (estateId != null && estateId > 0) {
+                if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getEstatePartInMode()) && estateId != null && estateId > 0) {
                     //更新楼栋关联id
                     caseBuildingMainService.updateEstateId(estateId, caseEstate.getId());
                 }
@@ -980,9 +981,9 @@ public class PublicBasicService {
             }
 
             //处理楼栋
-            if (basicApply.getBuildingPartInFlag() == Boolean.TRUE && basicBuildingMain != null) {
+            if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode()) && basicBuildingMain != null) {
                 CaseBuildingMain caseBuildingMain = this.flowWriteCaseBuildingMain(basicApply, basicBuildingMain, estateId);
-                if (buildingMainId != null && buildingMainId > 0) {
+                if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getBuildingPartInMode()) && buildingMainId != null && buildingMainId > 0) {
                     //更新单元关联id
                     caseUnitService.updateBuildingMainId(buildingMainId, caseBuildingMain.getId());
                 }
@@ -990,9 +991,9 @@ public class PublicBasicService {
             }
 
             //处理单元
-            if (basicApply.getUnitPartInFlag() == Boolean.TRUE && basicUnit != null) {
+            if (StringUtils.isNotBlank(basicApply.getUnitPartInMode()) && basicUnit != null) {
                 CaseUnit caseUnit = this.flowWriteCaseUnit(basicApply, basicUnit, buildingMainId);
-                if (unitId != null && unitId > 0) {
+                if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getUnitPartInMode()) && unitId != null && unitId > 0) {
                     //更新单元关联id
                     caseHouseService.updateUnitId(unitId, caseUnit.getId());
                 }
@@ -1000,12 +1001,11 @@ public class PublicBasicService {
             }
 
             //处理房屋
-            if (basicApply.getHousePartInFlag() == Boolean.TRUE && basicHouse != null) {
+            if (StringUtils.isNotBlank(basicApply.getHousePartInMode()) && basicHouse != null) {
                 this.flowWriteCaseHouse(basicApply, basicHouse, basicTrading, unitId);
             }
         }
     }
-
 
     /**
      * 保存数据
@@ -1018,16 +1018,25 @@ public class PublicBasicService {
         if (StringUtils.isEmpty(formData)) {
             return null;
         }
+        //1.如果是添加新数据，取案例中的数据查看是否有重复信息
+        //2.如果是升级版本数据，则根据处理情况
+        //3.
+
         String jsonContent = null;
         JSONObject jsonObject = JSON.parseObject(formData);
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_APPLY.getVar());
         BasicApply basicApply = JSONObject.parseObject(jsonContent, BasicApply.class);
-        basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
-        basicApply.setDraftFlag(isDraft);
-        basicApply.setCreator(commonService.thisUserAccount());
-        basicApplyService.saveBasicApply(basicApply);
+        if (basicApply.getId() == null || basicApply.getId() <= 0) {
+            basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
+            basicApply.setDraftFlag(isDraft);
+            basicApply.setCreator(commonService.thisUserAccount());
+            basicApplyService.saveBasicApply(basicApply);
+        } else {
+            basicApply = basicApplyService.getByBasicApplyId(basicApply.getId());
+        }
 
-        if (basicApply.getEstatePartInFlag() == Boolean.TRUE) {
+
+        if (StringUtils.isNotBlank(basicApply.getEstatePartInMode())) {
             //楼盘过程数据
             BasicEstate basicEstate = null;
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
@@ -1052,7 +1061,7 @@ public class PublicBasicService {
             }
         }
 
-        if (basicApply.getBuildingPartInFlag() == Boolean.TRUE) {
+        if (StringUtils.isNotBlank(basicApply.getBuildingPartInMode())) {
             //楼栋主过程数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING_MAIN.getVar());
             BasicBuildingMain basicBuildingMain = null;
@@ -1072,7 +1081,7 @@ public class PublicBasicService {
             }
         }
 
-        if (basicApply.getUnitPartInFlag() == Boolean.TRUE) {
+        if (StringUtils.isNotBlank(basicApply.getUnitPartInMode())) {
             //单元过程数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_UNIT.getVar());
             BasicUnit basicUnit = null;
@@ -1085,7 +1094,7 @@ public class PublicBasicService {
             }
         }
 
-        if (basicApply.getHousePartInFlag() == Boolean.TRUE) {
+        if (StringUtils.isNotBlank(basicApply.getHousePartInMode())) {
             //处理房屋数据
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE.getVar());
             BasicHouse basicHouse = null;

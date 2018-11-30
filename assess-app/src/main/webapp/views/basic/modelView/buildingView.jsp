@@ -253,7 +253,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicIndexCommon.builderSelect(this)">
+                                onclick="basicCommon.builderSelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"
@@ -278,7 +278,7 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
-                                onclick="basicIndexCommon.propertySelect(this)">
+                                onclick="basicCommon.propertySelect(this)">
                         <i class="fa fa-search"></i>
                         </button>
                         <button type="button" class="btn btn-default docs-tooltip"

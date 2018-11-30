@@ -12,6 +12,10 @@
             <form id="basicApplyFrm" class="form-horizontal">
                 <input type="hidden" name="id" value="${basicApply.id}">
                 <input type="hidden" name="caseUnitId" value="${basicApply.caseUnitId}">
+                <input type="hidden" name="estatePartInMode" value="${basicApply.estatePartInMode}">
+                <input type="hidden" name="buildingPartInMode" value="${basicApply.buildingPartInMode}">
+                <input type="hidden" name="unitPartInMode" value="${basicApply.unitPartInMode}">
+                <input type="hidden" name="housePartInMode" value="${basicApply.housePartInMode}">
             </form>
             <%@include file="/views/basic/basicIndexCommon.jsp" %>
 
@@ -45,62 +49,7 @@
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     var objectData = new Object();
-    objectData.config = {
-        basicApply: {
-            frm: "basicApplyFrm"
-        },
-        basicEstate: {
-            key: "estateName",
-            name: "楼盘",
-            frm: "basicEstateFrm",
-            frmLandState: "basicLandState"
-        },
-        basicBuilding: {
-            key: "buildingNumber",
-            name: "楼栋",
-            frm: "basicBuildingFrm",
-            mainFrm: "basicBuildingMainFrm"
-        },
-        basicUnit: {
-            key: "unitNumber",
-            name: "单元",
-            frm: "basicUnitFrm"
-        },
-        basicHouse: {
-            key: "houseNumber",
-            name: "房屋",
-            frm: "basicHouseFrm",
-            tradingFrm: "basicTradingFrm"
-        }
-    };
 
-
-    //收集数据
-    objectData.formParams = function () {
-        var item = {};
-        var basicApply = formParams(objectData.config.basicApply.frm);
-        basicApply.estatePartInFlag = basicIndexCommon.partInFlag.estate;
-        basicApply.buildingPartInFlag = basicIndexCommon.partInFlag.building;
-        basicApply.unitPartInFlag = basicIndexCommon.partInFlag.unit;
-        basicApply.housePartInFlag = basicIndexCommon.partInFlag.house;
-        item.basicApply = basicApply;
-        if (basicApply.estatePartInFlag == true) {
-            item.basicEstate = formParams(objectData.config.basicEstate.frm);
-            item.basicEstateLandState = formParams(objectData.config.basicEstate.frmLandState);
-        }
-        if (basicApply.buildingPartInFlag == true) {
-            item.basicBuildingMain = formParams(objectData.config.basicBuilding.mainFrm);
-            item.basicBuilding = formParams(objectData.config.basicBuilding.frm);
-        }
-        if (basicApply.unitPartInFlag == true) {
-            item.basicUnit = formParams(objectData.config.basicUnit.frm);
-        }
-        if (basicApply.housePartInFlag == true) {
-            item.basicHouse = formParams(objectData.config.basicHouse.frm);
-            item.basicTrading = formParams(objectData.config.basicHouse.tradingFrm);
-        }
-        return item;
-    };
 
     //返回修改
     objectData.editApply = function () {
@@ -108,23 +57,31 @@
             industry.keyApp("${basicApply.type}");
 
             //初始楼盘信息
-            if ('${basicApply.estatePartInFlag}' == 'true') {
-                estateCommon.init('${basicApply.id}',basicIndexCommon.showEstateTab);
+            if ('${basicApply.estatePartInMode}') {
+                estateCommon.init('${basicApply.id}', function () {
+                    basicCommon.showEstateTab('${basicApply.estatePartInMode}');
+                });
             }
 
             //初始楼栋信息
-            if ('${basicApply.buildingPartInFlag}' == 'true') {
-                buildingCommon.init('${basicApply.id}',basicIndexCommon.showBuildingTab);
+            if ('${basicApply.buildingPartInMode}') {
+                buildingCommon.init('${basicApply.id}', function () {
+                    basicCommon.showBuildingTab('${basicApply.buildingPartInMode}');
+                });
             }
 
             //初始单元信息
-            if ('${basicApply.unitPartInFlag}' == 'true') {
-                unitCommon.init('${basicApply.id}',basicIndexCommon.showUnitTab);
+            if ('${basicApply.unitPartInMode}') {
+                unitCommon.init('${basicApply.id}', function () {
+                    basicCommon.showUnitTab('${basicApply.unitPartInMode}');
+                });
             }
 
             //初始房屋信息
-            if ('${basicApply.housePartInFlag}' == 'true') {
-                houseCommon.init('${basicApply.id}',basicIndexCommon.showHouseTab);
+            if ('${basicApply.housePartInMode}') {
+                houseCommon.init('${basicApply.id}', function () {
+                    basicCommon.showHouseTab('${basicApply.housePartInMode}');
+                });
             }
         }
     };
@@ -137,7 +94,7 @@
 <script type="application/javascript">
     function saveform() {
         var data = {};
-        data.formData = JSON.stringify(objectData.formParams());
+        data.formData = JSON.stringify(basicCommon.getFormData());
         var approvalData = formParams('frm_approval');
         data = $.extend({}, approvalData, data);
         Loading.progressShow();

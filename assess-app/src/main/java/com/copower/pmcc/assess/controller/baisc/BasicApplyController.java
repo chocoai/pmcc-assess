@@ -62,14 +62,6 @@ public class BasicApplyController extends BaseController {
         //设置初始参数
         BasicApply basicApply = new BasicApply();
         basicApply.setId(0);
-        basicApply.setCaseEstateId(0);
-        basicApply.setCaseBuildingMainId(0);
-        basicApply.setCaseUnitId(0);
-        basicApply.setCaseHouseId(0);
-        basicApply.setEstatePartInFlag(false);
-        basicApply.setBuildingPartInFlag(false);
-        basicApply.setUnitPartInFlag(false);
-        basicApply.setHousePartInFlag(false);
         modelAndView.addObject("basicApply", basicApply);
         return modelAndView;
     }

@@ -15,8 +15,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房号<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input type="text" data-rule-number='true'
-                           placeholder="房号" name="houseNumber"
+                    <input type="text"  required placeholder="房号" name="houseNumber"
                            class="form-control" value="${basicHouse.houseNumber}">
                 </div>
             </div>
@@ -89,8 +88,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">新户型图</label>
                 <div class="col-sm-3">
-                    <input id="house_new_huxing_plan"
-                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <input id="house_new_huxing_plan" placeholder="上传附件" class="form-control" type="file">
                     <div id="_house_new_huxing_plan"></div>
                 </div>
             </div>
@@ -122,7 +120,6 @@ d
                 </div>
             </div>
         </div>
-
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋出租占用情况途描述</label>
@@ -133,10 +130,9 @@ d
         </div>
         <div class="form-group">
             <div class="x-valid">
-                <label class="col-sm-1 control-label">房屋平面图<span class="symbol required"></span></label>
+                <label class="col-sm-1 control-label">房屋平面图</label>
                 <div class="col-sm-5">
-                    <input id="house_img_plan"
-                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <input id="house_img_plan" placeholder="上传附件" class="form-control" type="file">
                     <div id="_house_img_plan"></div>
                 </div>
             </div>

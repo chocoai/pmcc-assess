@@ -6,7 +6,6 @@
     var houseCommon = {};
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
-    houseCommon.basicApplyForm = $('#basicApplyFrm');
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [
         'house_huxing_plan',
@@ -20,41 +19,51 @@
         return houseCommon.houseForm.find('[name=applyId]').val();
     }
 
-    //添加楼盘
-    houseCommon.add = function ($form, callback) {
+    //添加房屋
+    houseCommon.add = function (_this, callback) {
+        var houseNumber = $(_this).closest('form').find('[name=houseNumber]').val();
+        if (!houseNumber) {
+            toastr.info('请填写房屋编号！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicHouse/addHouseAndTrading',
             data: {
-                houseNumber: $form.find('[name=houseNumber]').val()
+                houseNumber: houseNumber
             },
             success: function (result) {
                 if (result.ret) {
                     houseCommon.showHouseView(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }
         })
     }
 
-    //编辑楼盘
-    houseCommon.edit = function ($form, callback) {
+    //升级房屋
+    houseCommon.upgrade = function (_this, callback) {
+        var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val()
+        if (!caseHouseId) {
+            toastr.info('请选择系统中已存在的房屋信息！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicHouse/appWriteHouse',
-            data: {caseHouseId: $form.find("input[name='caseHouseId']").val()},
+            data: {caseHouseId: caseHouseId},
             success: function (result) {
                 if (result.ret) {
                     houseCommon.showHouseView(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }
         })
     }
 
-    //楼盘初始化by applyId
+    //房屋初始化by applyId
     houseCommon.init = function (applyId, callback) {
         $.ajax({
             url: getContextPath() + '/basicHouse/getBasicHouseByApplyId',
@@ -71,7 +80,7 @@
         })
     }
 
-    //楼盘明细
+    //房屋明细
     houseCommon.detail = function (applyId) {
         $.ajax({
             url: getContextPath() + '/basicHouse/getBasicHouseByApplyId',
@@ -91,7 +100,7 @@
         })
     }
 
-    //显示楼盘对应部分信息
+    //显示房屋对应部分信息
     houseCommon.showHouseView = function (data) {
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
@@ -183,21 +192,21 @@
     houseCommon.selectHuxing = function (_this) {
         assessHuxing.select({
             basicApplyId: houseCommon.getApplyId(),
-            caseUnitId: houseCommon.basicApplyForm.find('[name=caseUnitId]').val(),
+            caseUnitId: basicCommon.basicApplyForm.find('[name=caseUnitId]').val(),
             success: function (row) {
                 //1.赋值 2.拷贝附件并显示附件数据
                 $(_this).closest('.input-group').find(':text').val(row.name);
                 houseCommon.houseForm.find('[name=orientation]').val(row.orientationName);
                 $.ajax({
-                    url:getContextPath() + '/basicHouse/copyHuxingPlan',
-                    data:{
-                        sourceTableId:row.id,
-                        sourceTableName:row.tableName,
-                        targetTableId:houseCommon.getHouseId(),
-                        fieldsName:houseCommon.houseFileControlIdArray[0]
+                    url: getContextPath() + '/basicHouse/copyHuxingPlan',
+                    data: {
+                        sourceTableId: row.id,
+                        sourceTableName: row.tableName,
+                        targetTableId: houseCommon.getHouseId(),
+                        fieldsName: houseCommon.houseFileControlIdArray[0]
                     },
-                    success:function (result) {
-                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0],false);
+                    success: function (result) {
+                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
                     }
                 })
             }

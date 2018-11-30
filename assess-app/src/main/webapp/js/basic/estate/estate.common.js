@@ -20,33 +20,43 @@
     }
 
     //添加楼盘
-    estateCommon.add = function ($form, callback) {
+    estateCommon.add = function (_this, callback) {
+        var estateName = $(_this).closest('form').find('[name=estateName]').val();
+        if (!estateName) {
+            toastr.info('请填写楼盘名称！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicEstate/addEstateAndLandstate',
             data: {
-                estateName: $form.find('[name=estateName]').val()
+                estateName: estateName
             },
             success: function (result) {
                 if (result.ret) {
                     estateCommon.showEstateView(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }
         })
     }
 
-    //编辑楼盘
-    estateCommon.edit = function ($form, callback) {
+    //升级楼盘
+    estateCommon.upgrade = function (_this, callback) {
+        var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
+        if(!caseEstateId){
+            toastr.info('请选择系统中已存在的楼盘信息！');
+            return false;
+        }
         $.ajax({
             url: getContextPath() + '/basicEstate/appWriteEstate',
-            data: {caseEstateId: $form.find("input[name='caseEstateId']").val()},
+            data: {caseEstateId: caseEstateId},
             success: function (result) {
                 if (result.ret) {
                     estateCommon.showEstateView(result.data);
                     if (callback) {
-                        callback();
+                        callback($(_this).attr('data-mode'));
                     }
                 }
             }

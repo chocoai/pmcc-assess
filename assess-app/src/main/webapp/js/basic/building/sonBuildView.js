@@ -14,7 +14,7 @@ var buildingModelView;
             return false;
         },
         getBuildingId:function () {
-            return $('#'+objectData.config.basicBuilding.frm).find('[name=id]').val();
+            return buildingCommon.buildingMainForm.find('[name=id]').val();
         },
         /**
          * @author:  zch
