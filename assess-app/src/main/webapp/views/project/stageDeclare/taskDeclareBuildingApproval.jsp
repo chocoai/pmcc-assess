@@ -136,6 +136,12 @@
             frm:"declareRealtyRealEstateCertFrmE",
             fileId:"declareRealtyRealEstateCertFileIdE",
             name:"不动产"
+        },
+        declareEconomicIndicators: {
+            box: "declareEconomicIndicatorsBox",
+            frm: "declareEconomicIndicatorsFrm",
+            fileId: "declareEconomicIndicatorsFileId",
+            name: "经济指标"
         }
     };
 
@@ -623,6 +629,31 @@
 
     };
 
+    //经济指标
+    equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
+            data: {id: pid},
+            success: function (result) {
+                if (result.ret) {
+                    var indicatorId = result.data.indicatorId;
+                    if (equipmentInstallation.isEmpty(indicatorId)){
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).clearAll();
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('[name=pid]').val(indicatorId);
+                        $("#" + equipmentInstallationConfig.declareEconomicIndicators.frm).find('.dynamic').remove();
+                        economicIndicators.initForm(indicatorId, function () {
+                            $('#' + equipmentInstallationConfig.declareEconomicIndicators.box).modal("show");
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                Alert("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    };
+
     equipmentInstallation.loadList = function () {
         var cols = [];
         cols.push({field: 'provinceName', title: '省'});
@@ -646,6 +677,8 @@
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareLandUsePermitView(" +row.centerId+")'"+">"+"建设用地规划许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareBuildingConstructionPermitView(" +row.centerId+")'"+">"+"建筑工程施工许可证"+ "</a>" + "</li>";
                 str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declarePreSalePermitView(" +row.centerId+")'"+">"+"商品房预售许可证"+ "</a>" + "</li>";
+                str += "<li role='presentation'>"+ "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='equipmentInstallation.declareEconomicIndicatorsView(" +row.centerId+")'"+">"+"经济指标"+ "</a>" + "</li>";
+                str += "</ul>" ;
                 str += "</ul>" ;
                 str += "</div>";
                 return str;
