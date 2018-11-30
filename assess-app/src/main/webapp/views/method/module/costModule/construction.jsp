@@ -1035,21 +1035,13 @@
                 yes: function () {
                     $(input).val(constructionEngineering.getTotal);
                     layer.close(layer.index);
+                    construction.constructionInstallationEngineeringFeeEvent.serverSave(constructionEngineering.getJsonValue());
                 },
                 content: $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {
                     constructionEngineering.viewInit();
                 }
             });
-        },
-        eventSave: function () {
-            construction.algsObj.getAndSet("set", construction.config.inputConfig.constructionInstallationEngineeringFee.tax, constructEngineeringObjectA.getCalculatedResults());
-            construction.constructionInstallationEngineeringFeeEvent.serverSave(constructEngineeringObjectA.loadData());
-            construction.algsObj.constructionInstallationEngineeringFee();
-            construction.constructionInstallationEngineeringFeeEvent.close();
-        },
-        close: function () {
-            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
         },
         serverSave: function (data) {
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
@@ -1059,7 +1051,7 @@
                 data: {
                     jsonContent: JSON.stringify(data),
                     type: "MdCostConstruction",
-                    id: "${mdCostAndDevelopmentOtherConstruction.id}"
+                    id: construction.isEmpty("${mdCostAndDevelopmentOtherConstruction.id}")?"${mdCostAndDevelopmentOtherConstruction.id}":"0"
                 },
                 dataType: "json",
                 success: function (result) {

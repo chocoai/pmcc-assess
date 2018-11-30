@@ -31,7 +31,7 @@ public class MdCostAndDevelopmentOtherService {
     }
 
     public void saveAndUpdateMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
-        if (mdCostAndDevelopmentOther.getId() == null) {
+        if (mdCostAndDevelopmentOther.getId() == null || mdCostAndDevelopmentOther.getId().intValue()==0) {
             if (Objects.equal(mdCostAndDevelopmentOther.getType(), MdCostBuilding.class.getSimpleName())) {
                 mdCostAndDevelopmentOther.setDatabaseName(FormatUtils.entityNameConvertToTableName(MdCostBuilding.class));
             }

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEconomicIndicators;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineering;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEquipmentInstall;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +47,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclareBuildEngineeringService declareBuildEngineeringService;
     @Autowired
     private DeclareBuildEquipmentInstallService declareBuildEquipmentInstallService;
+    @Autowired
+    private DeclareBuildEconomicIndicatorsService declareBuildEconomicIndicatorsService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
@@ -67,6 +71,22 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
+    }
+
+    public List<DeclareBuildEconomicIndicators> getDeclareBuildEconomicIndicatorsList(String type,Integer buildEngineeringId,Integer buildEquipmentId){
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(type, buildEngineeringId, buildEquipmentId);
+        List<DeclareBuildEconomicIndicators> economicIndicators = new ArrayList<DeclareBuildEconomicIndicators>(10);
+        if (!ObjectUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)){
+            for (DeclareBuildEngineeringAndEquipmentCenter buildEngineeringAndEquipmentCenter:declareBuildEngineeringAndEquipmentCenterList){
+                Integer indicatorId = buildEngineeringAndEquipmentCenter.getIndicatorId();
+                if (indicatorId != null){
+                    if (!ObjectUtils.isEmpty(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId))){
+                        economicIndicators.addAll(declareBuildEconomicIndicatorsService.getEntityListByPid(indicatorId));
+                    }
+                }
+            }
+        }
+        return  economicIndicators;
     }
 
     public List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList(DeclareBuildEngineeringAndEquipmentCenter oo) {
