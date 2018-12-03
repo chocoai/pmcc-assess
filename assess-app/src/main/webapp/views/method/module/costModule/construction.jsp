@@ -786,7 +786,7 @@
             construction.algsObj.interestInvestment();//投资利息
             construction.algsObj.investmentProfit();//投资利润
         },
-        //不可预见费
+        //不可预见费(废弃)
         unforeseenExpenses: function () {
             var a = 0, b = 0, c = 0;
             a = $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html();
@@ -815,7 +815,7 @@
             temp = a + b + c + d + e + f;
             temp = temp.toFixed(4);
             $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(temp);
-            construction.algsObj.unforeseenExpenses();//不可预见费
+            // construction.algsObj.unforeseenExpenses();//不可预见费
         },
         //其它工程费率 计算金额
         otherEngineeringCost: function () {
@@ -1036,6 +1036,7 @@
                     $(input).val(constructionEngineering.getTotal);
                     layer.close(layer.index);
                     construction.constructionInstallationEngineeringFeeEvent.serverSave(constructionEngineering.getJsonValue());
+                    construction.algsObj.constructionInstallationEngineeringFee();
                 },
                 content: $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {

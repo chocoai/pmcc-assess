@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/10/12
-  Time: 16:54
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -18,27 +12,27 @@
     <div class="x_content">
         <form class="form-horizontal">
             <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        契税率
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="契税率" class="form-control" readonly="readonly"
-                               name="deedTax">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--契税率--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="契税率" class="form-control" readonly="readonly"--%>
+                               <%--name="deedTax">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        交易费率
-                    </label>
-                    <div class="col-sm-3">
-                        <input type="text"
-                               placeholder="交易费率" class="form-control" readonly="readonly"
-                               name="transactionCostTax">
-                    </div>
-                </div>
+                <%--<div class="x-valid">--%>
+                    <%--<label class="col-sm-1 control-label">--%>
+                        <%--交易费率--%>
+                    <%--</label>--%>
+                    <%--<div class="col-sm-3">--%>
+                        <%--<input type="text"--%>
+                               <%--placeholder="交易费率" class="form-control" readonly="readonly"--%>
+                               <%--name="transactionCostTax">--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
             <div class="form-group">
                 <div class="x-valid">

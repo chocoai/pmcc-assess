@@ -6,28 +6,6 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--勘察设计和前期工程费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"--%>
-                <%--name="reconnaissanceDesign">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--建筑安装工程费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="建筑安装工程费" class="form-control" readonly="readonly"--%>
-                <%--name="constructionInstallationEngineeringFee" value="0">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
                 <input type="hidden"
                        placeholder="建筑安装工程费" class="form-control" readonly="readonly"
                        name="constructionInstallationEngineeringFee" value="0">
@@ -46,27 +24,6 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--管理费--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="管理费" class="form-control" readonly="readonly"--%>
-                <%--name="managementExpense">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--不可预见费--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="不可预见费" class="form-control" readonly="readonly"--%>
-                <%--name="unforeseenExpenses">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
                 <input type="hidden"
                        placeholder="管理费" class="form-control" readonly="readonly"
                        name="managementExpense">
@@ -81,12 +38,6 @@
 
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/buildingEngineering.jsp"></jsp:include>
-        <%--<div class="modal-footer">--%>
-            <%--<input class="btn btn btn-primary" type="button" value="关闭"--%>
-                   <%--onclick="build.constructionInstallationEngineeringFeeEvent.close()">--%>
-            <%--<input class="btn btn-success" value="确认" type="button"--%>
-                   <%--onclick="build.constructionInstallationEngineeringFeeEvent.eventSave()">--%>
-        <%--</div>--%>
     </div>
 
 </div>
@@ -395,7 +346,7 @@
         replacementValue: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, temp = 0;
             var p = 0, o = 0, s = 0;
-            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            // a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
             b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
             c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
             c = Number(c);
@@ -421,7 +372,7 @@
         //投资利润
         investmentProfit: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
-            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            // a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
             b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
             c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
             c = Number(c);
@@ -438,7 +389,7 @@
         //投资利息
         interestInvestment: function () {
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
-            a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
+            // a = build.algsObj.getAndSet("get", build.config.inputConfig.unforeseenExpenses.key, null);//不可预见费
             b = build.algsObj.getAndSet("get", build.config.inputConfig.managementExpense.key, null);//管理费
             c = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();//建设成本
             c = Number(c);
@@ -453,7 +404,7 @@
             $("#" + build.config.id).find("." + build.config.inputConfig.interestInvestment.key).html(temp);//投资利息
             build.algsObj.replacementValue();//重置价格
         },
-        //不可预见费
+        //不可预见费(方法废弃)
         unforeseenExpenses: function () {
             var a = 0, b = 0, c = 0, d = 0;
             a = $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html();
@@ -488,7 +439,7 @@
             if (b >= 0.03 && b <= 0.07) {
                 build.algsObj.getAndSet("set", build.config.inputConfig.managementExpense.key, c);
             }
-            build.algsObj.unforeseenExpenses();//不可预见费
+            // build.algsObj.unforeseenExpenses();//不可预见费
         },
         //建设成本
         constructionCost: function () {
@@ -498,7 +449,7 @@
             b = $("#" + build.config.id + " ." + build.config.inputConfig.infrastructureMatchingCost.tax).eq(1).val();//公共配套设施建设费
             b = Number(b);
             // d = build.algsObj.getAndSet("get", build.config.inputConfig.devDuring.tax, null);
-            d = $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).val()//开发期间税
+            d = $("#" + build.config.id).find("select." + build.config.inputConfig.devDuring.tax).val();//开发期间税
             d = Number(d);
             c = build.algsObj.getAndSet("get", build.config.inputConfig.constructionInstallationEngineeringFee.key, null);
             e = build.algsObj.getAndSet("get", build.config.inputConfig.otherEngineeringCost.tax, null);
@@ -511,7 +462,8 @@
             if (!AssessCommon.isNumber(e) || !AssessCommon.isNumber(f)) {
                 return false;
             }
-            console.log("a:" + a + " b:" + b + " c:" + c + " d:" + d + " e:" + e + " f:" + f);
+            // console.log('建设成本');
+            // console.log("a:" + a + " b:" + b + " c:" + c + " d:" + d + " e:" + e + " f:" + f);
             $("#" + build.config.id).find("." + build.config.inputConfig.constructionCost.key).html(temp);
             build.algsObj.managementExpense();//管理费
         },
@@ -538,10 +490,8 @@
             c = build.algsObj.getAndSet("get", build.config.totalTaxRate.education, null);//教育费附加
             d = build.algsObj.getAndSet("get", build.config.totalTaxRate.localEducation, null);//地方教育费附加
             e = build.algsObj.getAndSet("get", build.config.totalTaxRate.stampDuty, null);//印花税
-            temp = 1 + b + c + d;
-            temp = a * temp;
-            temp = e + temp;
-            temp = AssessCommon.pointToPercent(temp);
+            temp = e + a * (1 + b + c + d);
+            temp = AssessCommon.pointToPercent(temp.toFixed(3));
             build.algsObj.getAndSet("set", build.config.totalTaxRate.key, temp);
             build.algsObj.replacementValue();//重置价格
         },
@@ -646,6 +596,7 @@
                     $(input).val(buildingEngineering.getTotal);
                     layer.close(layer.index);
                     build.constructionInstallationEngineeringFeeEvent.serverSave(buildingEngineering.getJsonValue());
+                    build.algsObj.constructionInstallationEngineeringFee();
                 },
                 content: $("#" + build.config.id).find("." + build.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {
@@ -654,7 +605,6 @@
             });
         },
         serverSave: function (data) {
-            console.log(data);
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";
             $.ajax({
                 url: url,

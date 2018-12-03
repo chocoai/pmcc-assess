@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/10/8
-  Time: 15:13
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -101,18 +95,9 @@
                     其它工程费
                 </label>
                 <div class="x-valid">
-                    <div class="col-sm-5">
+                    <div class="col-sm-11">
                         <input type="text"
                                placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
-                    </div>
-                </div>
-                <label class="col-sm-1 control-label">
-                    其它工程费说明
-                </label>
-                <div class="x-valid">
-                    <div class="col-sm-5">
-                        <input type="text"
-                               placeholder="其它工程费说明" class="form-control" name="otherEngineeringCostTaxExplain">
                     </div>
                 </div>
             </div>
