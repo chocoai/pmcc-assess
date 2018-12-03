@@ -268,4 +268,8 @@ public class CaseHouseService {
         }
         return vo;
     }
+
+    public Boolean hasHouse(String houseNumber, Integer unitId) {
+        return caseHouseDao.getHouseCount(houseNumber, unitId) > 0;
+    }
 }

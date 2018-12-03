@@ -149,7 +149,7 @@ public class BasicApplyService {
      * @throws Exception
      */
     public void processEditSubmit(ApprovalModelDto approvalModelDto) throws Exception {
-       try{
+        try {
             processControllerComponent.processSubmitLoopTaskNodeArg(publicService.getEditApprovalModel(approvalModelDto), false);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -218,5 +218,23 @@ public class BasicApplyService {
         basicHouseService.clearInvalidData(id);
         basicApplyDao.deleteBasicApply(id);
     }
+
+    /**
+     * 楼盘是否重复申请
+     *
+     * @param estateName
+     * @param province
+     * @param city
+     * @param applyId
+     * @return
+     */
+    public Boolean hasApplyEstate(String estateName, String province, String city, Integer applyId) {
+        BasicApply basicApply = new BasicApply();
+        basicApply.setEstateName(estateName);
+        basicApply.setProvince(province);
+        basicApply.setCity(city);
+        return basicApplyDao.getBasicApplyCount(basicApply, applyId) > 0;
+    }
+
 
 }

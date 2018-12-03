@@ -11,7 +11,7 @@
                     楼栋号
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingNumber"></label>
+                    <label class="form-control" name="buildingNumber"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -19,7 +19,7 @@
                     楼栋名称
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingName"></label>
+                    <label class="form-control" name="buildingName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -27,7 +27,7 @@
                     总层数
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="floorCount"></label>
+                    <label class="form-control" name="floorCount"></label>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                     所在位置
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="location"></label>
+                    <label class="form-control" name="location"></label>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                     楼层起
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="floorStart"></label>
+                    <label class="form-control" name="floorStart"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -59,7 +59,7 @@
                     楼层止
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="floorEnd"></label>
+                    <label class="form-control" name="floorEnd"></label>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     户型区间
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="unitInterval"></label>
+                    <label class="form-control" name="unitInterval"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -77,7 +77,7 @@
                     物业费
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="propertyFee"></label>
+                    <label class="form-control" name="propertyFee"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -85,7 +85,7 @@
                     配套公共设施使用费
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="facilitiesUseFee"></label>
+                    <label class="form-control" name="facilitiesUseFee"></label>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                     建筑高度
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingHeight"></label>
+                    <label class="form-control" name="buildingHeight"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -103,7 +103,7 @@
                     建筑面积
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingArea"></label>
+                    <label class="form-control" name="buildingArea"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -111,7 +111,7 @@
                     占地面积
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="coverAnArea"></label>
+                    <label class="form-control" name="coverAnArea"></label>
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                     层高
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="floorHeight"></label>
+                    <label class="form-control" name="floorHeight"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -129,7 +129,7 @@
                     径深
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="diameterDepth"></label>
+                    <label class="form-control" name="diameterDepth"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -137,7 +137,7 @@
                     土地使用年限
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="landUseYear"></label>
+                    <label class="form-control" name="landUseYear"></label>
                 </div>
             </div>
         </div>
@@ -148,7 +148,7 @@
                     开盘时间
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="openTime"></label>
+                    <label class="form-control dbdate" name="openTime"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -156,7 +156,7 @@
                     交房时间
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="roomTime"></label>
+                    <label class="form-control dbdate" name="roomTime"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -164,7 +164,7 @@
                     竣工时间
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="beCompletedTime"></label>
+                    <label class="form-control dbdate" name="beCompletedTime"></label>
                 </div>
             </div>
         </div>
@@ -175,7 +175,7 @@
                     物业类型
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="propertyTypeName"></label>
+                    <label class="form-control" name="propertyTypeName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -183,7 +183,7 @@
                     建筑结构类型
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingStructureName"></label>
+                    <label class="form-control" name="buildingStructureName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -191,7 +191,7 @@
                     建筑结构类别
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingStructureLowerName"></label>
+                    <label class="form-control" name="buildingStructureLowerName"></label>
                 </div>
             </div>
         </div>
@@ -202,7 +202,7 @@
                     建筑类别
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="buildingCategoryName"></label>
+                    <label class="form-control" name="buildingCategoryName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -210,7 +210,7 @@
                     建筑公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="dataBuildingName"></label>
+                    <label class="form-control" name="dataBuildingName"></label>
                 </div>
             </div>
             <div class="x-valid">
@@ -218,7 +218,7 @@
                     物业公司
                 </label>
                 <div class="col-sm-3">
-                    <label class="form-control" data-name="propertyName"></label>
+                    <label class="form-control" name="propertyName"></label>
                 </div>
             </div>
         </div>

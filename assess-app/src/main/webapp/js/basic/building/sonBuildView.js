@@ -13,9 +13,6 @@ var buildingModelView;
             }
             return false;
         },
-        getBuildingId:function () {
-            return buildingCommon.buildingMainForm.find('[name=id]').val();
-        },
         /**
          * @author:  zch
          * 描述:
@@ -81,7 +78,7 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().sonFrm);
-                    data.buildingId = buildingModelView.prototype.getBuildingId();
+                    data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingOutfit/saveAndUpdateBasicBuildingOutfit",
                         type: "post",
@@ -158,7 +155,7 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().sonTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().sonTable, getContextPath()+"/basicBuildingOutfit/getBootstrapTableVo", cols, {
-                        buildingId:buildingModelView.prototype.getBuildingId()
+                        buildingId:buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -199,7 +196,7 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingSurfaceFrm);
-                    data.buildingId = buildingModelView.prototype.getBuildingId();
+                    data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingSurface/saveAndUpdateBasicBuildingSurface",
                         type: "post",
@@ -265,7 +262,7 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingSurfaceTable, getContextPath()+"/basicBuildingSurface/getBootstrapTableVo", cols, {
-                        buildingId:buildingModelView.prototype.getBuildingId()
+                        buildingId:buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -305,7 +302,7 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingMaintenanceFrm);
-                    data.buildingId = buildingModelView.prototype.getBuildingId();
+                    data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingMaintenance/saveAndUpdateBasicBuildingMaintenance",
                         type: "post",
@@ -375,7 +372,7 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingMaintenanceTable, getContextPath()+"/basicBuildingMaintenance/getBootstrapTableVo", cols, {
-                        buildingId:buildingModelView.prototype.getBuildingId()
+                        buildingId:buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,
@@ -415,7 +412,7 @@ var buildingModelView;
                         return false;
                     }
                     var data = formParams(buildingModelView.prototype.config().examineBuildingFunctionFrm);
-                    data.buildingId = buildingModelView.prototype.getBuildingId();
+                    data.buildingId = buildingCommon.getBuildingId();
                     $.ajax({
                         url: getContextPath()+"/basicBuildingFunction/saveAndUpdateBasicBuildingFunction",
                         type: "post",
@@ -496,7 +493,7 @@ var buildingModelView;
                     });
                     $("#" + buildingModelView.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                     TableInit(buildingModelView.prototype.config().examineBuildingFunctionTable, getContextPath()+"/basicBuildingFunction/getBootstrapTableVo", cols, {
-                        buildingId:buildingModelView.prototype.getBuildingId()
+                        buildingId:buildingCommon.getBuildingId()
                     }, {
                         showColumns: false,
                         showRefresh: false,

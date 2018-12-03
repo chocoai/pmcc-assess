@@ -24,7 +24,7 @@
             <div class="page-title">
                 <div class="title_left">
                     <h2><i class="fa "></i>
-                        案例查询
+                        楼盘案例查询
                     </h2>
                 </div>
             </div>
@@ -42,6 +42,24 @@
                     <form class="form-horizontal" id="frmCaseEstate">
                         <div class="form-group">
                             <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    省
+                                </label>
+                                <div class="col-sm-2">
+                                    <select name="province" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    市
+                                </label>
+                                <div class="col-sm-2">
+                                    <select name="city" class="form-control search-select select2">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="x-valid">
                                 <label class="col-sm-1 control-label">楼盘名称</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control" name="search"
@@ -53,7 +71,8 @@
                                     <label class="btn btn-primary" onclick="baseFun.caseEstate.find();">
                                         查询
                                     </label>
-                                    <a class="btn btn-success" target="_blank" href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
+                                    <a class="btn btn-success" target="_blank"
+                                       href="${pageContext.request.contextPath}/basicApply/basicApplyIndex">新增</a>
                                 </div>
                             </div>
                         </div>
@@ -146,9 +165,8 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
-
 <%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js"></script>
 </html>
 <script type="text/javascript">
     var BaseViewFun = function () {
@@ -267,7 +285,6 @@
             TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
                 name: estate.search,
                 city: estate.city,
-                district: estate.district,
                 province: estate.province
             }, {
                 showColumns: false,
@@ -341,7 +358,7 @@
             window.open(href, "");
         },
         loadDataList: function (id) {
-            if (!baseFun.isEmpty(id)){
+            if (!baseFun.isEmpty(id)) {
                 return false;
             }
             var cols = [];
@@ -451,9 +468,29 @@
 
     $(function () {
         baseFun.event.selectInit();
-        baseFun.caseEstate.loadDataList();
         baseFun.caseBuild.loadDataList(null);
         baseFun.caseUnit.loadDataList(null);
         baseFun.caseHouse.loadDataList(null);
+
+        //定位成功回调方法
+        try {
+            mapPosition.complete(function (data) {
+                var province = data.addressComponent.province;
+                var city = data.addressComponent.city;
+                if (province && city) {
+                    AssessCommon.initAreaInfo({
+                        provinceTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=province]'),
+                        cityTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=city]'),
+                        provinceDefaultText: province.replace('省', ''),
+                        cityDefaultText: city.replace('市', ''),
+                        success: function () {
+                            baseFun.caseEstate.loadDataList(true);
+                        }
+                    });
+                }
+            })
+        } catch (e) {
+            baseFun.caseEstate.loadDataList();
+        }
     });
 </script>

@@ -783,11 +783,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            车辆图
+                                            平面图
                                         </label>
                                         <div class="col-sm-10">
-                                            <input id="house_estateParking" name="house_estateParking"
-                                                   required="required" placeholder="上传附件" class="form-control"
+                                            <input id="house_estateParking" name="house_estateParking" placeholder="上传附件" class="form-control"
                                                    type="file">
                                             <div id="_house_estateParking"></div>
                                         </div>

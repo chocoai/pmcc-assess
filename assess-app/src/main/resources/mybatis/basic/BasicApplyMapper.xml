@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
@@ -82,9 +84,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, type, estate_name, building_number, unit_number, house_number, 
-    status, draft_flag, case_estate_id, case_building_main_id, case_unit_id, case_house_id, 
-    estate_part_in_mode, building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
+    id, process_ins_id, province, city, type, estate_name, building_number, unit_number, 
+    house_number, status, draft_flag, case_estate_id, case_building_main_id, case_unit_id, 
+    case_house_id, estate_part_in_mode, building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApplyExample" >
@@ -121,20 +123,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (process_ins_id, type, estate_name, 
-      building_number, unit_number, house_number, 
-      status, draft_flag, case_estate_id, 
-      case_building_main_id, case_unit_id, case_house_id, 
-      estate_part_in_mode, building_part_in_mode, unit_part_in_mode, 
-      house_part_in_mode, creator, gmt_created, 
-      gmt_modified)
-    values (#{processInsId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
-      #{caseBuildingMainId,jdbcType=INTEGER}, #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, 
-      #{estatePartInMode,jdbcType=VARCHAR}, #{buildingPartInMode,jdbcType=VARCHAR}, #{unitPartInMode,jdbcType=VARCHAR}, 
-      #{housePartInMode,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_apply (process_ins_id, province, city, 
+      type, estate_name, building_number, 
+      unit_number, house_number, status, 
+      draft_flag, case_estate_id, case_building_main_id, 
+      case_unit_id, case_house_id, estate_part_in_mode, 
+      building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{processInsId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{draftFlag,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, #{caseBuildingMainId,jdbcType=INTEGER}, 
+      #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, #{estatePartInMode,jdbcType=VARCHAR}, 
+      #{buildingPartInMode,jdbcType=VARCHAR}, #{unitPartInMode,jdbcType=VARCHAR}, #{housePartInMode,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,6 +148,12 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
       </if>
       <if test="type != null" >
         type,
@@ -203,6 +213,12 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
@@ -275,6 +291,12 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -338,6 +360,8 @@
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
@@ -365,6 +389,12 @@
     <set >
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
@@ -426,6 +456,8 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicApply" >
     update tb_basic_apply
     set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       estate_name = #{estateName,jdbcType=VARCHAR},
       building_number = #{buildingNumber,jdbcType=VARCHAR},

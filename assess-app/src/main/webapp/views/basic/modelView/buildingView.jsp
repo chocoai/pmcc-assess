@@ -57,20 +57,19 @@
         <div class="form-group" style="display: none;">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼层起<span class="symbol required"></span>
+                    楼层起
                 </label>
                 <div class="col-sm-3">
-                    <input type="text" placeholder="楼层起(数字)" name="floorStart"
-                           data-rule-number='true' class="form-control" required="required">
+                    <input type="text" placeholder="楼层起(数字)" name="floorStart" data-rule-number='true' class="form-control" >
                 </div>
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">
-                    楼层止<span class="symbol required"></span>
+                    楼层止
                 </label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="楼层止(数字)" name="floorEnd"
-                           data-rule-number='true' class="form-control" required="required">
+                           data-rule-number='true' class="form-control" >
                 </div>
             </div>
         </div>
@@ -296,8 +295,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">平面图<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input id="building_floor_plan" name="frm_estate_floor_total_plan"
-                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <input id="building_floor_plan" placeholder="上传附件" class="form-control" type="file">
                     <div id="_building_floor_plan"></div>
                 </div>
             </div>
@@ -305,8 +303,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">外装图<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input id="building_figure_outside" name="frm_estate_floor_total_plan"
-                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <input id="building_figure_outside"  placeholder="上传附件" class="form-control" type="file">
                     <div id="_building_figure_outside"></div>
                 </div>
             </div>
@@ -314,8 +311,7 @@
             <div class="x-valid">
                 <label class="col-sm-1 control-label">外观图<span class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <input id="building_floor_Appearance_figure" name="frm_estate_floor_total_plan"
-                           required="required" placeholder="上传附件" class="form-control" type="file">
+                    <input id="building_floor_Appearance_figure" placeholder="上传附件" class="form-control" type="file">
                     <div id="_building_floor_Appearance_figure"></div>
                 </div>
             </div>

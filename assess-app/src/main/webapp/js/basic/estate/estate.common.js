@@ -21,7 +21,10 @@
 
     //添加楼盘
     estateCommon.add = function (_this, callback) {
-        var estateName = $(_this).closest('form').find('[name=estateName]').val();
+        var $form = $(_this).closest('form');
+        var province = $form.find('[name=province]').val();
+        var city = $form.find('[name=city]').val();
+        var estateName = $form.find('[name=estateName]').val();
         if (!estateName) {
             toastr.info('请填写楼盘名称！');
             return false;
@@ -29,7 +32,9 @@
         $.ajax({
             url: getContextPath() + '/basicEstate/addEstateAndLandstate',
             data: {
-                estateName: estateName
+                estateName: estateName,
+                province: province,
+                city: city
             },
             success: function (result) {
                 if (result.ret) {
@@ -45,7 +50,7 @@
     //升级楼盘
     estateCommon.upgrade = function (_this, callback) {
         var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
-        if(!caseEstateId){
+        if (!caseEstateId) {
             toastr.info('请选择系统中已存在的楼盘信息！');
             return false;
         }
@@ -88,8 +93,13 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    estateCommon.estateForm.initLabel(result.data.basicEstate);
-                    estateCommon.estateLandStateForm.initLabel(result.data.basicEstateLandState);
+                    estateCommon.estateForm.initForm(result.data.basicEstate,function () {
+                        //附件显示
+                        $.each(estateCommon.estateFileControlIdArray, function (i, item) {
+                            estateCommon.fileShow(item);
+                        })
+                    });
+                    estateCommon.estateLandStateForm.initForm(result.data.basicEstateLandState);
                 }
             }
         })

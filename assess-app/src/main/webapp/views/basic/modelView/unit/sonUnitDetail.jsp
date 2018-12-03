@@ -92,6 +92,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + unitDecorate.prototype.config().table).closest('.x_panel').bind('click', function () {
+            unitDecorate.prototype.loadDataDicList();
+        })
     })();
     ////----------------------------------
     var unitHuxing;
@@ -137,6 +142,11 @@
                 return false;
             }
         }
+
+        //绑定事件
+        $('#' + unitHuxing.prototype.config().table).closest('.x_panel').bind('click', function () {
+            unitHuxing.prototype.loadDataDicList();
+        })
     })();
 
     var unitElevator;
@@ -181,6 +191,11 @@
                 });
             }
         }
+
+        //绑定事件
+        $('#' + unitElevator.prototype.config().table).closest('.x_panel').bind('click', function () {
+            unitElevator.prototype.loadDataDicList();
+        })
     })();
 
 </script>

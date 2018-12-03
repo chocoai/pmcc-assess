@@ -96,9 +96,9 @@ public class BasicEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/addEstateAndLandstate", name = "添加楼盘及土地基本信息", method = {RequestMethod.POST})
-    public HttpResult addEstateAndLandstate(String estateName){
+    public HttpResult addEstateAndLandstate(String estateName,String province,String city){
         try {
-            return HttpResult.newCorrectResult(basicEstateService.addEstateAndLandstate(estateName));
+            return HttpResult.newCorrectResult(basicEstateService.addEstateAndLandstate(estateName,province,city));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult("添加楼盘及土地基本信息异常");

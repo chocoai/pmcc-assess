@@ -538,8 +538,27 @@ var houseCorollaryEquipment;
         init: function (item) {
             $("#" + houseCorollaryEquipment.prototype.config().frm).clearAll();
             $("#" + houseCorollaryEquipment.prototype.config().frm).initForm(item);
-            basicCommon.showFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
-            basicCommon.uploadFile(houseCorollaryEquipment.prototype.config().FileID, AssessDBKey.BasicHouseCorollaryEquipment, houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0");
+
+            FileUtils.uploadFiles({
+                target: houseCorollaryEquipment.prototype.config().FileID,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: houseCorollaryEquipment.prototype.config().FileID,
+                    tableName: AssessDBKey.BasicHouseCorollaryEquipment,
+                    tableId: houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            });
+
+            FileUtils.getFileShows({
+                target: houseCorollaryEquipment.prototype.config().FileID,
+                formData: {
+                    fieldsName: houseCorollaryEquipment.prototype.config().FileID,
+                    tableName: AssessDBKey.BasicHouseCorollaryEquipment,
+                    tableId: houseCorollaryEquipment.prototype.isNotBlank(item.id) ? item.id : "0"
+                },
+                deleteFlag: true
+            })
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_corollary_equipment_price, item.price_select, function (html, data) {
                 $("#" + houseCorollaryEquipment.prototype.config().frm).find("select.price_select").empty().html(html).trigger('change');
             });
@@ -1076,7 +1095,7 @@ var houseRoom;
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-search-minus fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }

@@ -157,4 +157,15 @@ public class CaseUnitService {
     public boolean deleteCaseUnit(Integer id) {
         return caseUnitDao.deleteUnit(id);
     }
+
+
+    /**
+     * 是否有单元
+     * @param unitNumber
+     * @param caseBuildingMainId
+     * @return
+     */
+    public boolean hasUnit(String unitNumber, Integer caseBuildingMainId){
+        return caseUnitDao.getUnitCount(unitNumber, caseBuildingMainId) > 0;
+    }
 }

@@ -79,7 +79,6 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    unitCommon.unitForm.initLabel(result.data);
                     unitCommon.unitForm.initForm(result.data);
                 }
             }
