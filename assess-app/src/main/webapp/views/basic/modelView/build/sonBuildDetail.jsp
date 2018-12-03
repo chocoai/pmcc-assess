@@ -121,7 +121,7 @@
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                         $("#" + buildingModelDetail.prototype.config().sonTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().sonTable, "${pageContext.request.contextPath}/basicBuildingOutfit/getBootstrapTableVo", cols, {
-                            buildingId: buildingModelDetail.prototype.getBuildingId(),
+                            buildingId: buildingCommon.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -142,7 +142,7 @@
                         cols.push({field: 'description', title: '描述'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingSurfaceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingSurfaceTable, "${pageContext.request.contextPath}/basicBuildingSurface/getBootstrapTableVo", cols, {
-                            buildingId: buildingModelDetail.prototype.getBuildingId(),
+                            buildingId: buildingCommon.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -163,7 +163,7 @@
                         cols.push({field: 'name', title: '名称'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingMaintenanceTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingMaintenanceTable, "${pageContext.request.contextPath}/basicBuildingMaintenance/getBootstrapTableVo", cols, {
-                            buildingId: buildingModelDetail.prototype.getBuildingId(),
+                            buildingId: buildingCommon.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,
@@ -186,7 +186,7 @@
                         cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
                         $("#" + buildingModelDetail.prototype.config().examineBuildingFunctionTable).bootstrapTable('destroy');
                         TableInit(buildingModelDetail.prototype.config().examineBuildingFunctionTable, "${pageContext.request.contextPath}/basicBuildingFunction/getBootstrapTableVo", cols, {
-                            buildingId: buildingModelDetail.prototype.getBuildingId(),
+                            buildingId: buildingCommon.getBuildingId(),
                             approval:true
                         }, {
                             showColumns: false,

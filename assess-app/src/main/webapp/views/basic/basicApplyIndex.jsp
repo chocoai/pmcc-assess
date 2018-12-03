@@ -437,18 +437,25 @@
         basicApplyIndex.startApply();
 
         //定位成功回调方法
-        mapPosition.complete(function (data) {
-            var province = data.addressComponent.province;
-            var city = data.addressComponent.city;
-            if (province && city) {
-                AssessCommon.initAreaInfo({
-                    provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
-                    cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
-                    provinceDefaultText: province.replace('省', ''),
-                    cityDefaultText: city.replace('市', '')
-                });
-            }
-        })
+        try {
+            mapPosition.complete(function (data) {
+                var province = data.addressComponent.province;
+                var city = data.addressComponent.city;
+                if (province && city) {
+                    AssessCommon.initAreaInfo({
+                        provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                        cityTarget: basicCommon.basicApplyForm.find('[name=city]'),
+                        provinceDefaultText: province.replace('省', ''),
+                        cityDefaultText: city.replace('市', '')
+                    });
+                }
+            })
+        } catch (e) {
+            AssessCommon.initAreaInfo({
+                provinceTarget: basicCommon.basicApplyForm.find('[name=province]'),
+                cityTarget: basicCommon.basicApplyForm.find('[name=city]')
+            });
+        }
     });
 
 </script>
@@ -475,7 +482,7 @@
                         window.close();
                     });
                 } else {
-                    Alert("提交数据失败!");
+                    Alert(result.errmsg);
                 }
             }
         });
@@ -501,11 +508,8 @@
                         window.close();
                     });
                 } else {
-                    Alert("保存草稿失败!");
+                    Alert(result.errmsg);
                 }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
     }

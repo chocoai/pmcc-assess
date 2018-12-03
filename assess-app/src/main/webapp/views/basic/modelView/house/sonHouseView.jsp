@@ -767,24 +767,23 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            类别<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="category"
-                                                    class="form-control search-select select2 category">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="type"
                                                     class="form-control search-select select2 type">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            类别<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <select required="required" name="category"
+                                                    class="form-control search-select select2 category">
                                             </select>
                                         </div>
                                     </div>
@@ -804,11 +803,10 @@
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
-                                            户型图<span class="symbol required"></span>
+                                            附件<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input id="positionDiagramFileID" name="positionDiagramFileID"
-                                                   required="required" placeholder="上传附件" class="form-control" type="file">
+                                            <input id="positionDiagramFileID" placeholder="上传附件" class="form-control" type="file">
                                             <div id="_positionDiagramFileID"></div>
                                         </div>
                                     </div>

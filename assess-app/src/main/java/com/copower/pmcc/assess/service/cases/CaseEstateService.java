@@ -350,4 +350,15 @@ public class CaseEstateService {
         }
         return vo;
     }
+
+    /**
+     * 是否有楼盘信息
+     * @param name
+     * @param province
+     * @param city
+     * @return
+     */
+    public Boolean hasEstateByName(String name,String province,String city){
+        return caseEstateDao.getEstateCountByName(name, province, city) > 0;
+    }
 }

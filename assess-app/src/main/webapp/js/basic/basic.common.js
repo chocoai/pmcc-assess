@@ -271,22 +271,32 @@ basicCommon.isRelation = function (applyForm) {
 //获取表单数据
 basicCommon.getFormData = function () {
     var item = {};
-    var basicApply = formParams(basicCommon.basicApplyForm);
+    var basicApply = formSerializeArray(basicCommon.basicApplyForm);
+    var isRetain = false;
+    if (!basicApply.housePartInMode) {
+        basicApply.houseNumber = '';
+        if (!basicApply.unitPartInMode) {
+            basicApply.unitNumber = '';
+            if (!basicApply.buildingPartInMode) {
+                basicApply.buildingNumber = '';
+            }
+        }
+    }
     item.basicApply = basicApply;
     if (basicApply.estatePartInMode) {
-        item.basicEstate = formParams(estateCommon.estateForm);
-        item.basicEstateLandState = formParams(estateCommon.estateLandStateForm);
+        item.basicEstate = formSerializeArray(estateCommon.estateForm);
+        item.basicEstateLandState = formSerializeArray(estateCommon.estateLandStateForm);
     }
     if (basicApply.buildingPartInMode) {
-        item.basicBuildingMain = formParams(buildingCommon.buildingMainForm);
-        item.basicBuilding = formParams(buildingCommon.buildingForm);
+        item.basicBuildingMain = formSerializeArray(buildingCommon.buildingMainForm);
+        item.basicBuilding = formSerializeArray(buildingCommon.buildingForm);
     }
     if (basicApply.unitPartInMode) {
-        item.basicUnit = formParams(unitCommon.unitForm);
+        item.basicUnit = formSerializeArray(unitCommon.unitForm);
     }
     if (basicApply.housePartInMode) {
-        item.basicHouse = formParams(houseCommon.houseForm);
-        item.basicTrading = formParams(houseCommon.houseTradingForm);
+        item.basicHouse = formSerializeArray(houseCommon.houseForm);
+        item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
     }
     return item;
 };

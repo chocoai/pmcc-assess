@@ -14,48 +14,44 @@
     <div class="x_content">
         <div role="tabpanel" data-example-id="togglable-tabs">
             <ul class="nav nav-tabs bar_tabs" role="tablist" id="caseTab">
-                <c:if test="${basicApply.estatePartInFlag eq true}">
-                    <li role="presentation" class=""><a href="#basicEstate" role="tab" id="profile-tab1"
-                                                        aria-expanded="true"
-                                                        onclick="objectData.estate.init()">楼盘</a>
+                <c:if test="${not empty basicApply.estatePartInMode}">
+                    <li role="presentation" class="">
+                        <a href="#basicEstate" role="tab" data-toggle="tab" aria-expanded="true">楼盘</a>
                     </li>
                 </c:if>
-                <c:if test="${basicApply.buildingPartInFlag eq true}">
-                    <li role="presentation" class=""><a href="#caseBuild" role="tab" id="profile-tab2"
-                                                        aria-expanded="false"
-                                                        onclick="objectData.building.init()">楼栋</a>
+                <c:if test="${not empty basicApply.buildingPartInMode}">
+                    <li role="presentation" class="">
+                        <a href="#caseBuild" role="tab" data-toggle="tab" aria-expanded="true">楼栋</a>
                     </li>
                 </c:if>
-                <c:if test="${basicApply.unitPartInFlag eq true}">
-                    <li role="presentation" class=""><a href="#caseUnit" role="tab" id="profile-tab3"
-                                                        aria-expanded="false"
-                                                        onclick="objectData.unit.init()">单元</a>
+                <c:if test="${not empty basicApply.unitPartInMode}">
+                    <li role="presentation" class="">
+                        <a href="#caseUnit" role="tab" data-toggle="tab" aria-expanded="true">单元</a>
                     </li>
                 </c:if>
-                <c:if test="${basicApply.housePartInFlag eq true}">
-                    <li role="presentation" class=""><a href="#caseHouse" role="tab" id="profile-tab4"
-                                                        aria-expanded="false"
-                                                        onclick="objectData.house.init();">房屋</a>
+                <c:if test="${not empty basicApply.housePartInMode}">
+                    <li role="presentation" class="">
+                        <a href="#caseHouse" role="tab" data-toggle="tab" aria-expanded="true">房屋</a>
                     </li>
                 </c:if>
             </ul>
             <div class="tab-content">
-                <c:if test="${basicApply.estatePartInFlag eq true}">
+                <c:if test="${not empty basicApply.estatePartInMode}">
                     <div role="tabpanel" class="tab-pane fade" id="basicEstate" aria-labelledby="profile-tab1">
                         <%@include file="/views/basic/modelView/estateDetail.jsp" %>
                     </div>
                 </c:if>
-                <c:if test="${basicApply.buildingPartInFlag eq true}">
+                <c:if test="${not empty basicApply.buildingPartInMode}">
                     <div role="tabpanel" class="tab-pane fade" id="caseBuild" aria-labelledby="profile-tab2">
                         <%@include file="/views/basic/modelView/buildDetail.jsp" %>
                     </div>
                 </c:if>
-                <c:if test="${basicApply.unitPartInFlag eq true}">
+                <c:if test="${not empty basicApply.unitPartInMode}">
                     <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                         <%@include file="/views/basic/modelView/unitDetail.jsp" %>
                     </div>
                 </c:if>
-                <c:if test="${basicApply.housePartInFlag eq true}">
+                <c:if test="${not empty basicApply.housePartInMode}">
                     <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                         <%@include file="/views/basic/modelView/houseDetail.jsp" %>
                     </div>
@@ -64,8 +60,8 @@
         </div>
     </div>
 </div>
-
-<script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/basic/basic.common.js"></script>
+<script type="text/javascript">
     var objectData = new Object();
 
     objectData.config = {
@@ -147,19 +143,19 @@
         //选项卡处理
         industry.keyApp("${basicApply.type}");
 
-        if ("${basicApply.estatePartInFlag}" == 'true') {
-            objectData.estate.init();
+        if ("${basicApply.estatePartInMode}") {
+            estateCommon.detail('${basicApply.id}');
         }
 
-        if ("${basicApply.buildingPartInFlag}" == 'true') {
+        if ("${basicApply.buildingPartInMode}") {
             buildingCommon.detail('${basicApply.id}');
         }
 
-        if ("${basicApply.unitPartInFlag}" == 'true') {
-            objectData.unit.init();
+        if ("${basicApply.unitPartInMode}") {
+            unitCommon.detail('${basicApply.id}');
         }
 
-        if ("${basicApply.housePartInFlag}" == 'true') {
+        if ("${basicApply.housePartInMode}") {
             houseCommon.detail('${basicApply.id}');
             objectData.house.init();
         }

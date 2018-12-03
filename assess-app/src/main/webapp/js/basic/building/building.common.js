@@ -9,6 +9,10 @@
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = ['building_floor_plan', 'building_figure_outside', 'building_floor_Appearance_figure'];
 
+    buildingCommon.getBuildingId = function () {
+        return buildingCommon.buildingForm.find('[name=id]').val();
+    }
+
     //添加楼栋
     buildingCommon.add = function (_this, callback) {
         var buildingNumber = $(_this).closest('form').find('[name=buildingNumber]').val();
@@ -90,7 +94,7 @@
             data: {applyId: applyId},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingMainForm.initLabel(result.data);
+                    buildingCommon.buildingMainForm.initForm(result.data);
                     var buildings = buildingCommon.getBuildingList(result.data.id);
                     if (buildings && buildings.length > 0) {
                         buildingCommon.showBuildingDetail(buildings[0].id);
@@ -169,11 +173,6 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    buildingCommon.buildingForm.initLabel(result.data);
-                    buildingCommon.buildingForm.find('[data-name=openTime]').text(formatDate(result.data.openTime));
-                    buildingCommon.buildingForm.find('[data-name=roomTime]').text(formatDate(result.data.roomTime));
-                    buildingCommon.buildingForm.find('[data-name=beCompletedTime]').text(formatDate(result.data.beCompletedTime));
-
                     buildingCommon.buildingForm.initForm(result.data, function () {
                         //附件显示
                         $.each(buildingCommon.buildingFileControlIdArray, function (i, item) {

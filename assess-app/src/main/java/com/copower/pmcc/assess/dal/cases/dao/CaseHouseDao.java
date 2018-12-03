@@ -113,4 +113,20 @@ public class CaseHouseDao {
         return caseHouseMapper.deleteByPrimaryKey(id) > 0;
     }
 
+    /**
+     * 获取房屋数量
+     * @param houseNumber
+     * @param unitId
+     * @return
+     */
+    public int getHouseCount(String houseNumber, Integer unitId) {
+        CaseHouseExample example = new CaseHouseExample();
+        CaseHouseExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(houseNumber))
+            criteria.andHouseNumberEqualTo(houseNumber);
+        if (unitId != null)
+            criteria.andUnitIdEqualTo(unitId);
+        return caseHouseMapper.countByExample(example);
+    }
+
 }

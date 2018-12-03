@@ -147,14 +147,12 @@ industry.industryTwo = {
 
 industry.changeEvent = function () {
     basicCommon.basicApplyForm.find("input[type='radio']").change(function () {
-        var item = $("#" + industry.config.id).find(":radio:checked").val();
-        if (industry.isNotBlank(item)) {
-            if (item == industry.config.notIndustry.key) {
-                industry.industryOne.init();
-            }
-            if (item == industry.config.industry.key) {
-                industry.industryTwo.init();
-            }
+        var item = $(this).val();
+        if (item == industry.config.notIndustry.key) {
+            industry.industryOne.init();
+        }
+        if (item == industry.config.industry.key) {
+            industry.industryTwo.init();
         }
     });
 };

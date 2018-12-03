@@ -303,8 +303,7 @@
                                             户型图<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-11">
-                                            <input id="house_latest_family_planV" name="house_latest_family_planV"
-                                                   required="required" placeholder="上传附件" class="form-control"
+                                            <input id="house_latest_family_planV"  placeholder="上传附件" class="form-control"
                                                    type="file">
                                             <div id="_house_latest_family_planV"></div>
                                         </div>

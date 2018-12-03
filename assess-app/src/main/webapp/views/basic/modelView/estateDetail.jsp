@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form class="form-horizontal" id="frm_estate">
+<form class="form-horizontal" id="basicEstateFrm">
     <div class="x_content">
         <div class="x_title">
             <h3>

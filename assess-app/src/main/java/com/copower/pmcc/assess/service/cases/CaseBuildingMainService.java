@@ -103,4 +103,9 @@ public class CaseBuildingMainService {
     public boolean deleteCaseBuildingMain(Integer id) {
         return caseBuildingMainDao.deleteBuildingMain(id);
     }
+
+
+    public Boolean hasBuildingMain(String buildingNumber, Integer estateId){
+        return caseBuildingMainDao.getBuildingMainCount(buildingNumber, estateId) > 0;
+    }
 }

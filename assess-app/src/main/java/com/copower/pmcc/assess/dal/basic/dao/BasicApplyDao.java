@@ -20,6 +20,7 @@ public class BasicApplyDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -29,14 +30,15 @@ public class BasicApplyDao {
 
     /**
      * 获取数据列表
+     *
      * @param estateName
      * @return
      */
-    public List<BasicApply> getBasicApplyListByName(String estateName,Boolean draftFlag) {
+    public List<BasicApply> getBasicApplyListByName(String estateName, Boolean draftFlag) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(estateName)){
-            criteria.andEstateNameLike(String.format("%s%s%s","%",estateName,"%"));
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
         }
         criteria.andDraftFlagEqualTo(draftFlag);
         example.setOrderByClause("id desc");
@@ -45,40 +47,57 @@ public class BasicApplyDao {
 
     public List<BasicApply> getBasicApplyList(BasicApply basicApply) {
         BasicApplyExample example = new BasicApplyExample();
-        MybatisUtils.convertObj2Example(basicApply,example);
+        MybatisUtils.convertObj2Example(basicApply, example);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
 
     /**
      * 新增
-     * @param caseBasicApply
+     *
+     * @param basicApply
      * @return
      */
-    public boolean addBasicApply(BasicApply caseBasicApply) {
-        return basicApplyMapper.insertSelective(caseBasicApply) > 0;
+    public boolean addBasicApply(BasicApply basicApply) {
+        return basicApplyMapper.insertSelective(basicApply) > 0;
     }
 
-    public Integer saveBasicApply(BasicApply basicApply){
-        basicApplyMapper.insertSelective(basicApply) ;
+    public Integer saveBasicApply(BasicApply basicApply) {
+        basicApplyMapper.insertSelective(basicApply);
         return basicApply.getId();
     }
 
     /**
      * 编辑
-     * @param caseBasicApply
+     *
+     * @param basicApply
      * @return
      */
-    public boolean updateBasicApply(BasicApply caseBasicApply) {
-        return basicApplyMapper.updateByPrimaryKeySelective(caseBasicApply) > 0;
+    public boolean updateBasicApply(BasicApply basicApply) {
+        return basicApplyMapper.updateByPrimaryKeySelective(basicApply) > 0;
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteBasicApply(Integer id){
+    public boolean deleteBasicApply(Integer id) {
         return basicApplyMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+    /**
+     * 根据条件查询申请的数量
+     *
+     * @param basicApply
+     * @param applyId
+     * @return
+     */
+    public int getBasicApplyCount(BasicApply basicApply, Integer applyId) {
+        BasicApplyExample example = new BasicApplyExample();
+        example = MybatisUtils.convertObj2Example(basicApply, example);
+        example.createCriteria().andIdNotEqualTo(applyId);
+        return basicApplyMapper.countByExample(example);
     }
 }

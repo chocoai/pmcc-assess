@@ -102,7 +102,7 @@
         <div class="form-group">
             <div class="x-valid">
                 <label class="col-sm-1 control-label">房屋平面图</label>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div id="_house_img_plan"></div>
                 </div>
             </div>

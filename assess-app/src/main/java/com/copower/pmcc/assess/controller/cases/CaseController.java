@@ -1,9 +1,5 @@
 package com.copower.pmcc.assess.controller.cases;
 
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +18,18 @@ public class CaseController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private ErpAreaService erpAreaService;
-    @Autowired
-    private DataBlockService dataBlockService;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
 
-    @RequestMapping(value = "/view", name = "转到index页面 ",method = {RequestMethod.GET})
-    public ModelAndView index() {
-        String view = "/case/baseView" ;
+    @RequestMapping(value = "/estateSearch", name = "楼盘案例查询",method = {RequestMethod.GET})
+    public ModelAndView estateSearch() {
+        String view = "/case/estateSearch" ;
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-        modelAndView.addObject("dataBlocks",dataBlockService.dataBlockVos(new DataBlock()));//基础板块信息
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/houseSearch", name = "房屋案例查询",method = {RequestMethod.GET})
+    public ModelAndView houseSearch() {
+        String view = "/case/houseSearch" ;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         return modelAndView;
     }
 }

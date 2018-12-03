@@ -28,6 +28,7 @@ public class CaseEstateDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -37,6 +38,7 @@ public class CaseEstateDao {
 
     /**
      * 获取数据列表
+     *
      * @param caseEstate
      * @return
      */
@@ -48,6 +50,7 @@ public class CaseEstateDao {
 
     /**
      * 新增
+     *
      * @param caseEstate
      * @return
      */
@@ -58,6 +61,7 @@ public class CaseEstateDao {
 
     /**
      * 编辑
+     *
      * @param caseEstate
      * @return
      */
@@ -65,20 +69,20 @@ public class CaseEstateDao {
         return caseEstateMapper.updateByPrimaryKeySelective(caseEstate) > 0;
     }
 
-    public List<CaseEstate> getCaseEstateList(String name, String province, String city, String district){
+    public List<CaseEstate> getCaseEstateList(String name, String province, String city, String district) {
         CaseEstateExample example = new CaseEstateExample();
         CaseEstateExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (!StringUtils.isEmpty(name)){
-            criteria.andNameLike(String.format("%s%s%s","%",name,"%"));
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
         }
-        if (!StringUtils.isEmpty(province)){
+        if (!StringUtils.isEmpty(province)) {
             criteria.andProvinceEqualTo(province);
         }
-        if (!StringUtils.isEmpty(city)){
+        if (!StringUtils.isEmpty(city)) {
             criteria.andCityEqualTo(city);
         }
-        if (!StringUtils.isEmpty(district)){
+        if (!StringUtils.isEmpty(district)) {
             criteria.andDistrictEqualTo(district);
         }
         example.setOrderByClause("id desc");
@@ -87,27 +91,53 @@ public class CaseEstateDao {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteEstate(Integer id){
+    public boolean deleteEstate(Integer id) {
         return caseEstateMapper.deleteByPrimaryKey(id) > 0;
     }
 
     /**
      * 获取版本最新的楼盘信息
+     *
      * @param name
      * @param province
      * @param city
      * @param district
      * @return
      */
-    public List<CustomCaseEntity> getLatestVersionEstateList(String name, String province, String city, String district){
+    public List<CustomCaseEntity> getLatestVersionEstateList(String name, String province, String city, String district) {
         return customCaseEstateMapper.getCaseEstateList(name, province, city, district);
     }
 
-    public List<CustomCaseEntity> getLatestVersionEstateList(String name){
-        return getLatestVersionEstateList(name,null,null,null);
+    public List<CustomCaseEntity> getLatestVersionEstateList(String name) {
+        return getLatestVersionEstateList(name, null, null, null);
+    }
+
+    /**
+     * 获取楼盘数量
+     *
+     * @param name
+     * @param province
+     * @param city
+     * @return
+     */
+    public int getEstateCountByName(String name, String province, String city) {
+        CaseEstateExample example = new CaseEstateExample();
+        CaseEstateExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameEqualTo(name);
+        }
+        if (!StringUtils.isEmpty(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        return caseEstateMapper.countByExample(example);
     }
 
 }

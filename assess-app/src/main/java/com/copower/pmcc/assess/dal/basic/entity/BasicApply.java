@@ -7,6 +7,10 @@ public class BasicApply {
 
     private String processInsId;
 
+    private String province;
+
+    private String city;
+
     private Integer type;
 
     private String estateName;
@@ -57,6 +61,22 @@ public class BasicApply {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
     }
 
     public Integer getType() {

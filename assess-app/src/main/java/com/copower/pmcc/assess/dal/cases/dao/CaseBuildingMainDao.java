@@ -94,11 +94,12 @@ public class CaseBuildingMainDao {
 
     /**
      * 获取最新版本楼栋主信息
+     *
      * @param estateId
      * @return
      */
-    public List<CustomCaseEntity> getLatestVersionBuildingMainList(String buildingNumber,Integer estateId){
-        return customCaseMapper.getCaseBuildingMainList(buildingNumber,estateId);
+    public List<CustomCaseEntity> getLatestVersionBuildingMainList(String buildingNumber, Integer estateId) {
+        return customCaseMapper.getCaseBuildingMainList(buildingNumber, estateId);
     }
 
     /**
@@ -109,5 +110,25 @@ public class CaseBuildingMainDao {
      */
     public boolean deleteBuildingMain(Integer id) {
         return caseBuildingMainMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+
+    /**
+     * 获取楼栋数据
+     *
+     * @param buildingNumber
+     * @param estateId
+     * @return
+     */
+    public int getBuildingMainCount(String buildingNumber, Integer estateId) {
+        CaseBuildingMainExample example = new CaseBuildingMainExample();
+        CaseBuildingMainExample.Criteria criteria = example.createCriteria();
+        if (!StringUtils.isEmpty(buildingNumber)) {
+            criteria.andBuildingNumberLike(String.format("%s%s%s", "%", buildingNumber, "%"));
+        }
+        if (estateId != null) {
+            criteria.andEstateIdEqualTo(estateId);
+        }
+        return caseBuildingMainMapper.countByExample(example);
     }
 }

@@ -159,7 +159,7 @@
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
                         var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-search-minus fa-white"></i></a>';
+                        str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></a>';
                         str += '</div>';
                         return str;
                     }

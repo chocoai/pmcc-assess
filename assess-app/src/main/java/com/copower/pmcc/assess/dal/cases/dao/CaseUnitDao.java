@@ -28,6 +28,7 @@ public class CaseUnitDao {
 
     /**
      * 获取数据信息
+     *
      * @param id
      * @return
      */
@@ -37,6 +38,7 @@ public class CaseUnitDao {
 
     /**
      * 获取数据列表
+     *
      * @param caseUnit
      * @return
      */
@@ -49,6 +51,7 @@ public class CaseUnitDao {
 
     /**
      * 新增
+     *
      * @param caseUnit
      * @return
      */
@@ -59,6 +62,7 @@ public class CaseUnitDao {
 
     /**
      * 编辑
+     *
      * @param caseUnit
      * @return
      */
@@ -77,33 +81,47 @@ public class CaseUnitDao {
 
     /**
      * 获取最新半单元信息
+     *
      * @param buildingMainId
      * @return
      */
-    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber,Integer buildingMainId){
-        return customCaseMapper.getCaseUnitList(unitNumber,buildingMainId);
+    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingMainId) {
+        return customCaseMapper.getCaseUnitList(unitNumber, buildingMainId);
     }
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
-    public boolean deleteUnit(Integer id){
+    public boolean deleteUnit(Integer id) {
         return caseUnitMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId){
+    public List<CaseUnit> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingMainId) {
         CaseUnitExample example = new CaseUnitExample();
-        CaseUnitExample.Criteria criteria =example.createCriteria();
+        CaseUnitExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (StringUtils.isNotEmpty(unitNumber)){
-            criteria.andUnitNumberLike(String.format("%s%s%s","%",unitNumber,"%"));
+        if (StringUtils.isNotEmpty(unitNumber)) {
+            criteria.andUnitNumberLike(String.format("%s%s%s", "%", unitNumber, "%"));
         }
-        if (caseBuildingMainId != null){
+        if (caseBuildingMainId != null) {
             criteria.andBuildingMainIdEqualTo(caseBuildingMainId);
         }
         return caseUnitMapper.selectByExample(example);
     }
 
+
+    public int getUnitCount(String unitNumber, Integer caseBuildingMainId) {
+        CaseUnitExample example = new CaseUnitExample();
+        CaseUnitExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotEmpty(unitNumber)) {
+            criteria.andUnitNumberEqualTo(unitNumber);
+        }
+        if (caseBuildingMainId != null) {
+            criteria.andBuildingMainIdEqualTo(caseBuildingMainId);
+        }
+        return caseUnitMapper.countByExample(example);
+    }
 }

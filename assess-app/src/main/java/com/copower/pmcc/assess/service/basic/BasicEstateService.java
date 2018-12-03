@@ -408,12 +408,14 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> addEstateAndLandstate(String estateName) throws Exception {
+    public Map<String, Object> addEstateAndLandstate(String estateName,String province,String city) throws Exception {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setName(estateName);
+        basicEstate.setProvince(province);
+        basicEstate.setCity(city);
         basicEstate.setApplyId(0);
         basicEstate.setCreator(commonService.thisUserAccount());
         basicEstateDao.saveBasicEstate(basicEstate);
@@ -765,6 +767,5 @@ public class BasicEstateService {
 
         return objectMap;
     }
-
 
 }

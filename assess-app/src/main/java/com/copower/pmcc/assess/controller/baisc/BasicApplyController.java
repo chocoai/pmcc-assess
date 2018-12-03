@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,12 @@ public class BasicApplyController extends BaseController {
             BasicApply basicApply = publicBasicService.saveBasicApply(formData, false);
             //发起流程
             basicApplyService.processStartSubmit(basicApply);
-        } catch (Exception e) {
+        } catch (BusinessException e) {
+            log.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
+        }catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("案例申请提交异常");
         }
         return HttpResult.newCorrectResult();
     }
@@ -125,9 +130,12 @@ public class BasicApplyController extends BaseController {
             publicBasicService.saveBasicApply(formData, false);
             basicApplyService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
-        } catch (Exception e1) {
+        } catch (BusinessException e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }catch (Exception e1) {
             log.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult(e1);
+            return HttpResult.newErrorResult("案例申请返回修改提交异常");
         }
     }
 
@@ -211,9 +219,12 @@ public class BasicApplyController extends BaseController {
         try {
             publicBasicService.saveBasicApply(formData, true);
             return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            log.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult(e1);
+            return HttpResult.newErrorResult("保存草稿异常");
         }
     }
 
