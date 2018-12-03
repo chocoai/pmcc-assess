@@ -17,8 +17,9 @@
             <input type="hidden" id="mdCostAndDevelopmentOtherBuildingJSON" name="mdCostAndDevelopmentOtherBuildingJSON"
                    value='${mdCostAndDevelopmentOtherBuildingJSON}'>
             <input type="hidden" id="mdCostBuildingJSON" name="mdCostBuildingJSON" value='${mdCostBuildingJSON}'>
-            <input type="hidden" id="mdCostConstructionJSON" name="mdCostConstructionJSON"
-                   value='${mdCostConstructionJSON}'>
+            <input type="hidden" id="mdCostConstructionJSON" name="mdCostConstructionJSON" value='${mdCostConstructionJSON}'>
+
+
         </div>
         <div class="col-sm-12 form-group">
             <span class="col-sm-1">
@@ -44,57 +45,16 @@
     <jsp:include page="module/costModule/construction.jsp"></jsp:include>
 </div>
 <script type="text/javascript">
-    var AlgorithmsPrototype = function () {
-
-    };
-
-    /**
-     * @author:  zch
-     * 描述:判断是否为数字
-     * @date:
-     **/
-    AlgorithmsPrototype.prototype.isNumber = function (obj) {
-        if (obj == 0) {
-            return true;
-        }
-        if (obj == '0') {
-            return true;
-        }
-        if (AlgorithmsPrototype.prototype.isNotNull(obj)) {
-            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-            if (regPos.test(obj) || regNeg.test(obj)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    };
-
-    /**
-     * @author:  zch
-     * 描述:判断是否为null
-     * @date:
-     **/
-    AlgorithmsPrototype.prototype.isNotNull = function (obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == '') {
-            return false;
-        }
-        if (obj == "") {
-            return false;
-        }
-        if (obj == 'undefined') {
-            return false;
-        }
-        return true;
-    };
-
     var optionsBuildBox = new Object();
+
+    optionsBuildBox.isNotNull = function (item) {
+        if (item){
+            return true;
+        }
+        return false;
+    };
+
+
     optionsBuildBox.showBuilding = function () {
         $(".building").show();
         $(".construction").hide();
@@ -153,50 +113,40 @@
                 }
             });
         }
-        if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
+        if (optionsBuildBox.isNotNull(mdCostBuilding)) {
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
                 //初始化数据
                 optionsBuildBox.mdCostBuildingInit(mdCostBuilding);
-                var mdCostAndDevelopmentOtherBuildingJSON = "${mdCostAndDevelopmentOtherBuilding}";
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherBuildingJSON)) {
-                    mdCostAndDevelopmentOtherBuildingJSON = $("#mdCostAndDevelopmentOtherBuildingJSON").val();
-                    mdCostAndDevelopmentOtherBuildingJSON = JSON.parse(mdCostAndDevelopmentOtherBuildingJSON);
-                    constructEngineeringObject.setServerData(mdCostAndDevelopmentOtherBuildingJSON);
-                }
             } catch (e) {
                 console.log("json parse 失败!")
             }
         }
-        if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
+        if (optionsBuildBox.isNotNull(mdCostConstruction)) {
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);
                 //初始化数据
                 optionsBuildBox.mdCostConstructionInit(mdCostConstruction);
-                var mdCostAndDevelopmentOtherConstructionJSON = "${mdCostAndDevelopmentOtherConstruction}";
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherConstructionJSON)) {
-                    mdCostAndDevelopmentOtherConstructionJSON = $("#mdCostAndDevelopmentOtherConstructionJSON").val();
-                    mdCostAndDevelopmentOtherConstructionJSON = JSON.parse(mdCostAndDevelopmentOtherConstructionJSON);
-                    constructEngineeringObjectA.setServerData(mdCostAndDevelopmentOtherConstructionJSON);
-                }
             } catch (e) {
                 console.log("json parse 失败!")
             }
         }
-    }
+    };
 
     optionsBuildBox.getMdCostBuilding = function () {
         var jsonParams = build.formParams();
         jsonParams.id = "${mdCostBuilding.id}";//确保修改能成功
         return jsonParams;
     };
+
     optionsBuildBox.getMdCostConstruction = function () {
         var jsonParams = construction.formParams();
         jsonParams.id = "${mdCostConstruction.id}";//确保修改能成功
         return jsonParams;
     };
+
     optionsBuildBox.getBuildKey = function () {
         var val = $(".optionsBuildBox :radio:checked").val();
         if (val == 1) {

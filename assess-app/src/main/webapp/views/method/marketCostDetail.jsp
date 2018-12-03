@@ -40,33 +40,16 @@
     <jsp:include page="module/costModule/constructionDetail.jsp"></jsp:include>
 </div>
 <script type="text/javascript">
-    var AlgorithmsPrototype = function () {
 
-    };
-
-
-
-    /**
-     * @author:  zch
-     * 描述:判断是否为null
-     * @date:
-     **/
-    AlgorithmsPrototype.prototype.isNotNull = function (obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == '') {
-            return false;
-        }
-        if (obj == "") {
-            return false;
-        }
-        if (obj == 'undefined') {
-            return false;
-        }
-        return true;
-    };
     var optionsBuildBox = new Object();
+
+    optionsBuildBox.isNotNull = function (item) {
+        if (item){
+            return true;
+        }
+        return false;
+    };
+
     optionsBuildBox.showBuilding = function () {
         $(".building").show();
         $(".construction").hide();
@@ -119,7 +102,7 @@
             });
         }
         $(".optionsBuildBox :radio").attr('disabled','disabled');
-        if (AlgorithmsPrototype.prototype.isNotNull(mdCostBuilding)) {
+        if (optionsBuildBox.isNotNull(mdCostBuilding)) {
             try {
                 mdCostBuilding = $("#mdCostBuildingJSON").val();
                 mdCostBuilding = JSON.parse(mdCostBuilding);
@@ -128,7 +111,7 @@
                 console.log("json parse 失败!")
             }
         }
-        if (AlgorithmsPrototype.prototype.isNotNull(mdCostConstruction)) {
+        if (optionsBuildBox.isNotNull(mdCostConstruction)) {
             try {
                 mdCostConstruction = $("#mdCostConstructionJSON").val();
                 mdCostConstruction = JSON.parse(mdCostConstruction);
@@ -137,7 +120,7 @@
                 console.log("json parse 失败!")
             }
         }
-    }
+    };
 
     $(function () {
         optionsBuildBox.tabControl();

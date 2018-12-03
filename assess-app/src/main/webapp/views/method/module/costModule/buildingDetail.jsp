@@ -84,22 +84,13 @@
                         其它工程费
                     </label>
                     <div class="x-valid">
-                        <div class="col-sm-5">
+                        <div class="col-sm-11">
                             <input type="text"
                                    placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax"
                                    readonly="readonly">
                         </div>
                     </div>
-                    <label class="col-sm-1 control-label">
-                        其它工程费说明
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-5">
-                            <input type="text"
-                                   placeholder="其它工程费说明" class="form-control" name="otherEngineeringCostTaxExplain"
-                                   readonly="readonly">
-                        </div>
-                    </div>
+
                 </div>
             </form>
         </div>

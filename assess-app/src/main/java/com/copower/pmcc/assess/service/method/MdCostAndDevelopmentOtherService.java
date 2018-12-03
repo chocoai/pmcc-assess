@@ -63,6 +63,19 @@ public class MdCostAndDevelopmentOtherService {
         return otherList;
     }
 
+    public List<MdCostAndDevelopmentOther> costAndDevelopmentOtherList(String type,Integer pid,String databaseName){
+        return mdCostAndDevelopmentOtherDao.costAndDevelopmentOtherList(type, pid, databaseName);
+    }
+
+    public MdCostAndDevelopmentOther getByPidMdCostAndDevelopmentOther(String type,Integer pid,String databaseName){
+        List<MdCostAndDevelopmentOther> mdCostAndDevelopmentOtherList = costAndDevelopmentOtherList(type, pid, databaseName);
+        if (!ObjectUtils.isEmpty(mdCostAndDevelopmentOtherList)){
+            return  mdCostAndDevelopmentOtherList.get(0);
+        }
+        return null;
+    }
+
+
     public MdCostAndDevelopmentOther getMdCostAndDevelopmentOther(String entityName,int pid){
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = new MdCostAndDevelopmentOther();
         mdCostAndDevelopmentOther.setPid(pid);

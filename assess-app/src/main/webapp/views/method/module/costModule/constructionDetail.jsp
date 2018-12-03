@@ -83,31 +83,6 @@
                 <div class="form-group">
                     <div class="x-valid">
                         <label class="col-sm-1 control-label">
-                            契税率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="契税率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="deedTax">
-                        </div>
-                    </div>
-
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            交易费率
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="交易费率" class="form-control x-percent" data-rule-number='true'
-                                   readonly="readonly"
-                                   name="transactionCostTax">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
                             地方教育费附加
                         </label>
                         <div class="col-sm-3">
@@ -253,20 +228,12 @@
                         其它工程费
                     </label>
                     <div class="x-valid">
-                        <div class="col-sm-5">
+                        <div class="col-sm-11">
                             <input type="text" readonly="readonly"
                                    placeholder="其它工程费" class="form-control" name="otherEngineeringCostTax">
                         </div>
                     </div>
-                    <label class="col-sm-1 control-label">
-                        其它工程费说明
-                    </label>
-                    <div class="x-valid">
-                        <div class="col-sm-5">
-                            <input type="text" readonly="readonly"
-                                   placeholder="其它工程费说明" class="form-control" name="otherEngineeringCostTaxExplain">
-                        </div>
-                    </div>
+
                 </div>
 
             </form>
