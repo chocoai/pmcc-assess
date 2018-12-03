@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/10/8
-  Time: 15:13
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_panel">
     <div class="x_title collapse-link">
@@ -153,10 +147,10 @@
             <div class="form-group">
                 <div class="x-valid">
                     <label class="col-sm-1 control-label">
-                        增值税金及附加率<span class="symbol required"></span>
+                        营业税金及附加<span class="symbol required"></span>
                     </label>
                     <div class="col-sm-3">
-                        <input type="text" placeholder="增值税金及附加率" class="form-control x-percent"  required="required" name="businessAdditionalTax">
+                        <input type="text" placeholder="营业税金及附加" class="form-control x-percent"  required="required" name="businessAdditionalTax">
                     </div>
                 </div>
 
