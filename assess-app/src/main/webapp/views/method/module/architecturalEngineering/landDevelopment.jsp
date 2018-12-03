@@ -91,6 +91,14 @@
         $("#landEngineeringDevelopmentID").find('.total').text(total.toFixed(2));
     }
 
+    landEngineeringDevelopment.getJsonValue = function () {
+        var arr = [];
+        $("#landEngineeringDevelopmentID").find(':text').each(function () {
+            arr.push({name:$(this).attr("name"),value:$(this).val()});
+        });
+        return arr;
+    };
+
 
 </script>
 

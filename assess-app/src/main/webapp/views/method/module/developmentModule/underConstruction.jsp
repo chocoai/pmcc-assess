@@ -1122,6 +1122,7 @@
                 yes: function () {
                     $(input).val(underEngineeringDevelopment.getTotal);
                     layer.close(layer.index);
+                    underConstruction.constructionInstallationEngineeringFeeEvent.eventSave(underEngineeringDevelopment.getTotal());
                 },
                 content: $("#" + underConstruction.config.id).find("." + underConstruction.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {
@@ -1129,15 +1130,10 @@
                 }
             });
         },
-        eventSave: function () {
-            var data = underDevelopment.getCalculatedResults();
+        eventSave: function (data) {
             underConstruction.algsObj.getAndSet("set", underConstruction.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
             underConstruction.algsObj.constructionInstallationEngineeringFee();
-            underConstruction.constructionInstallationEngineeringFeeEvent.serverSave(underDevelopment.loadData());
-            underConstruction.constructionInstallationEngineeringFeeEvent.close();
-        },
-        close: function () {
-            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
+            underConstruction.constructionInstallationEngineeringFeeEvent.serverSave(underEngineeringDevelopment.getJsonValue());
         },
         serverSave: function (data) {
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";

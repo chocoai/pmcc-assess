@@ -1116,6 +1116,7 @@
                 yes: function () {
                     $(input).val(landEngineeringDevelopment.getTotal);
                     layer.close(layer.index);
+                    landEngineering.constructionInstallationEngineeringFeeEvent.eventSave(landEngineeringDevelopment.getJsonValue());
                 },
                 content: $("#" + landEngineering.config.id).find("." + landEngineering.config.inputConfig.constructionInstallationEngineeringFee.class),
                 success:function () {
@@ -1123,15 +1124,10 @@
                 }
             });
         },
-        eventSave: function () {
-            var data = landEngineeringDevelopment.getCalculatedResults();
-            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.tax, data);
+        eventSave: function (data) {
+            landEngineering.algsObj.getAndSet("set", landEngineering.config.inputConfig.constructionInstallationEngineeringFee.tax, landEngineeringDevelopment.getTotal());
             landEngineering.algsObj.constructionInstallationEngineeringFee();
-            landEngineering.constructionInstallationEngineeringFeeEvent.serverSave(landEngineeringDevelopment.loadData());
-            landEngineering.constructionInstallationEngineeringFeeEvent.close();
-        },
-        close: function () {
-            layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
+            landEngineering.constructionInstallationEngineeringFeeEvent.serverSave(data);
         },
         serverSave: function (data) {
             var url = "${pageContext.request.contextPath}/marketCost/saveAndUpdateMdCostAndDevelopmentOther";

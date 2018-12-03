@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/8/9
-  Time: 11:27
-  To change this template use File | Settings | File Templates.
-  建筑安装工程费
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="form-group">
     <form id="underEngineeringDevelopmentForm">
@@ -113,5 +106,25 @@
         })
         $("#underEngineeringDevelopmentID").find('.total').text(total.toFixed(2));
     }
+
+    //获取要保存的json数据
+    underEngineeringDevelopment.getJsonValue = function () {
+        var arr = [];
+        $("#underEngineeringDevelopmentID").find('tbody tr').each(function () {
+            var currency = $(this).find('td:eq(1)').find(':text').val();
+            var completionDegree = $(this).find('td:eq(2)').find(':text').attr('data-value');
+            arr.push({
+                currency:{
+                    name:$(this).find('td:eq(1)').find(':text').attr("name"),
+                    value:$(this).find('td:eq(1)').find(':text').val()
+                },
+                completionDegree:{
+                    name:$(this).find('td:eq(2)').find(':text').attr("name"),
+                    value:$(this).find('td:eq(2)').find(':text').val()
+                }
+            });
+        });
+        return arr;
+    };
 
 </script>
