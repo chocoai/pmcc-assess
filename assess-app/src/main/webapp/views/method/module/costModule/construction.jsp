@@ -7,27 +7,7 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--土地购买价格 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="土地购买价格" class="form-control" readonly="readonly"--%>
-                <%--name="landPurchasePrice">--%>
-                <%--</div>--%>
-                <%--</div>--%>
 
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--土地取得相关税费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="土地取得相关税费" class="form-control" readonly="readonly"--%>
-                <%--name="landGetRelevant">--%>
-                <%--</div>--%>
-                <%--</div>--%>
                 <input type="hidden"
                        placeholder="土地取得相关税费" class="form-control" readonly="readonly"
                        name="landGetRelevant">
@@ -44,26 +24,7 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--建筑安装工程费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="建筑安装工程费" class="form-control" readonly="readonly"--%>
-                <%--name="constructionInstallationEngineeringFee">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--勘察设计和前期工程费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="勘察设计和前期工程费" class="form-control" readonly="readonly"--%>
-                <%--name="reconnaissanceDesign">--%>
-                <%--</div>--%>
-                <%--</div>--%>
+
                 <input type="hidden"
                        placeholder="建筑安装工程费" class="form-control" readonly="readonly"
                        name="constructionInstallationEngineeringFee">
@@ -73,51 +34,11 @@
             </div>
 
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--基础设施费用 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="基础设施费用" class="form-control" readonly="readonly"--%>
-                <%--name="infrastructureCost">--%>
-                <%--</div>--%>
-                <%--</div>--%>
 
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--公共配套设施费用 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="公共配套设施费用" class="form-control" readonly="readonly"--%>
-                <%--name="infrastructureMatchingCost">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--开发期间税费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="开发期间税费" class="form-control" readonly="readonly"--%>
-                <%--name="devDuring">--%>
-                <%--</div>--%>
-                <%--</div>--%>
             </div>
 
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--其它工程费 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="其它工程费" class="form-control" readonly="readonly"--%>
-                <%--name="otherEngineeringCost">--%>
-                <%--</div>--%>
-                <%--</div>--%>
+
             </div>
             <input type="hidden"
                    placeholder="其它工程费" class="form-control" readonly="readonly"
@@ -138,38 +59,7 @@
     <div>
         <form class="form-horizontal">
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--不可预见费率 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="不可预见费率" class="form-control" readonly="readonly"--%>
-                <%--name="unforeseenExpenses">--%>
-                <%--</div>--%>
-                <%--</div>--%>
 
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--管理费率 (计算金额)--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="管理费率" class="form-control" readonly="readonly"--%>
-                <%--name="managementExpense">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--增值税金及附加率--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="增值税金及附加率" class="form-control" readonly="readonly"--%>
-                <%--name="businessAdditional">--%>
-                <%--</div>--%>
-                <%--</div>--%>
                 <input type="hidden"
                        placeholder="不可预见费率" class="form-control" readonly="readonly"
                        name="unforeseenExpenses">
@@ -182,38 +72,7 @@
             </div>
 
             <div class="form-group">
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--G20--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="G20" class="form-control" readonly="readonly"--%>
-                <%--name="G20">--%>
-                <%--</div>--%>
-                <%--</div>--%>
 
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--G22--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="G22" class="form-control" readonly="readonly"--%>
-                <%--name="G22">--%>
-                <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="x-valid">--%>
-                <%--<label class="col-sm-1 control-label">--%>
-                <%--G23--%>
-                <%--</label>--%>
-                <%--<div class="col-sm-3">--%>
-                <%--<input type="text"--%>
-                <%--placeholder="G23" class="form-control" readonly="readonly"--%>
-                <%--name="G23">--%>
-                <%--</div>--%>
-                <%--</div>--%>
             </div>
             <input type="hidden"
                    placeholder="G20" class="form-control" readonly="readonly"
@@ -233,12 +92,6 @@
     <jsp:include page="../costModule/construction/resultView.jsp"></jsp:include>
     <div class="constructionInstallationEngineeringFeeClass" style="display: none;">
         <jsp:include page="/views/method/module/architecturalEngineering/constructionEngineering.jsp"></jsp:include>
-        <%--<div class="modal-footer">--%>
-            <%--<input class="btn btn btn-primary" type="button" value="关闭"--%>
-                   <%--onclick="construction.constructionInstallationEngineeringFeeEvent.close()">--%>
-            <%--<input class="btn btn-success" value="确认" type="button"--%>
-                   <%--onclick="construction.constructionInstallationEngineeringFeeEvent.eventSave()">--%>
-        <%--</div>--%>
     </div>
 </div>
 
@@ -640,7 +493,7 @@
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0, temp = 0;
             a = $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html();//E8 土地取得成本合计
             b = $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html();//E16
-            c = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
+            // c = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
             d = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.key, null);//E18 管理费
             e = $("#" + construction.config.id).find("." + construction.config.inputConfig.interestInvestment.key).html();//E20 投资利息
             f = $("#" + construction.config.id).find("." + construction.config.inputConfig.investmentProfit.key).html();//E22 投资利润
@@ -701,7 +554,7 @@
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, g = 0, h = 0, i = 0, temp = 0;
             a = $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html();//E8 土地取得成本合计
             b = $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html();//E16
-            c = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
+            // c = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
             d = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.key, null);//E18 管理费
             e = construction.algsObj.getAndSet("get", construction.config.inputConfig.investmentProfit.tax, null);//D22
             a = Number(a);
@@ -726,7 +579,7 @@
             e = construction.algsObj.getAndSet("get", construction.config.inputConfig.infrastructureMatchingCost.key, null);//E13 公共配套设施建设费
             f = construction.algsObj.getAndSet("get", construction.config.inputConfig.devDuring.key, null);//E14 开发期间税费 计算金额
             g = construction.algsObj.getAndSet("get", construction.config.inputConfig.otherEngineeringCost.key, null);//E15 其它工程费率 计算金额
-            h = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
+            // h = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);//E17 不可预见费
             i = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.key, null);//E18 管理费
             var developYearNumber = construction.algsObj.getAndSet("get", construction.config.inputConfig.developYearNumber.tax, null);//H3 开发年数
             var interestInvestment = construction.algsObj.getAndSet("get", construction.config.inputConfig.interestInvestment.tax, null);//D20 投资利息率
@@ -771,7 +624,7 @@
             var a = 0, b = 0, c = 0, d = 0, e = 0, f = 0, temp = 0;
             a = $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html();
             a = Number(a);
-            b = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);
+            // b = construction.algsObj.getAndSet("get", construction.config.inputConfig.unforeseenExpenses.key, null);
             c = $("#" + construction.config.id).find("." + construction.config.inputConfig.landGetCostTotal.key).html();
             c = Number(c);
             d = construction.algsObj.getAndSet("get", construction.config.inputConfig.managementExpense.tax, null);
@@ -814,6 +667,8 @@
             }
             temp = a + b + c + d + e + f;
             temp = temp.toFixed(4);
+            // console.log('建设成本小计');
+            // console.log("a:" + a + " b:" + b + " c:" + c + " d:" + d + " e:" + e + " f:" + f);
             $("#" + construction.config.id).find("." + construction.config.inputConfig.constructionSubtotal.key).html(temp);
             // construction.algsObj.unforeseenExpenses();//不可预见费
         },
