@@ -384,7 +384,7 @@ public class BasicEstateService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> getBasicEstateByApplyId(Integer applyId) throws Exception {
+    public Map<String, Object> getBasicEstateMapByApplyId(Integer applyId) throws Exception {
         Map<String, Object> objectMap = Maps.newHashMap();
         BasicEstate where = new BasicEstate();
         where.setApplyId(applyId);
@@ -400,6 +400,16 @@ public class BasicEstateService {
         return objectMap;
     }
 
+    public BasicEstate getBasicEstateByApplyId(Integer applyId) throws Exception {
+        BasicEstate where = new BasicEstate();
+        where.setApplyId(applyId);
+        if (applyId == null || applyId == 0)
+            where.setCreator(commonService.thisUserAccount());
+        List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(where);
+        if (CollectionUtils.isEmpty(basicEstates)) return null;
+        return basicEstates.get(0);
+    }
+
 
     /**
      * 添加楼盘及土地基本信息
@@ -408,7 +418,7 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
-    public Map<String, Object> addEstateAndLandstate(String estateName,String province,String city) throws Exception {
+    public Map<String, Object> addEstateAndLandstate(String estateName, String province, String city) throws Exception {
         this.clearInvalidData(0);
         Map<String, Object> objectMap = Maps.newHashMap();
 

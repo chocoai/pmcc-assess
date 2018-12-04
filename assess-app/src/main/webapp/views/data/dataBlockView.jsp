@@ -301,8 +301,7 @@
                                             方位<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="position"
-                                                   placeholder="方位" required="required">
+                                            <input type="text" class="form-control" name="position" placeholder="方位" >
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -310,8 +309,7 @@
                                             区域性质<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="regionalNature"
-                                                   placeholder="区域性质" required="required">
+                                            <input type="text" class="form-control" name="regionalNature" placeholder="区域性质" >
                                         </div>
                                     </div>
                                 </div>

@@ -6,14 +6,15 @@ import com.copower.pmcc.assess.common.enums.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.cases.*;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -183,7 +184,7 @@ public class PublicBasicService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private PublicService publicService;
+    private DataBlockService dataBlockService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -611,9 +612,9 @@ public class PublicBasicService {
             BeanUtils.copyProperties(basicUnit, caseUnit);
             caseUnit.setBuildingMainId(caseBuildingMainId);
             caseUnit.setType(basicApply.getType());
-            if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getUnitPartInMode())){
+            if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getUnitPartInMode())) {
                 caseUnit.setVersion(caseUnitService.getVersion(basicApply.getCaseUnitId()) + 1);
-            }else{
+            } else {
                 caseUnit.setVersion(1);
             }
             caseUnit.setId(null);
@@ -716,9 +717,9 @@ public class PublicBasicService {
             BeanUtils.copyProperties(basicHouse, caseHouse);
             caseHouse.setUnitId(unitId);
             caseHouse.setType(basicApply.getType());
-            if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())){
+            if (BasicApplyPartInModeEnum.UPGRADE.getKey().equals(basicApply.getHousePartInMode())) {
                 caseHouse.setVersion(caseHouseService.getVersion(basicApply.getCaseHouseId()) + 1);
-            }else {
+            } else {
                 caseHouse.setVersion(1);
             }
             caseHouse.setId(null);
@@ -1010,12 +1011,12 @@ public class PublicBasicService {
     public void flowWrite(String processInsId) throws Exception {
         BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
         if (basicApply != null) {
-            BasicEstate basicEstate = this.getByAppIdBasicEstate(basicApply.getId());
-            BasicEstateLandState basicEstateLandState = this.getByAppIdEstateLandState(basicApply.getId());
-            BasicBuildingMain basicBuildingMain = this.getByAppIdBasicBuildingMain(basicApply.getId());
-            BasicUnit basicUnit = this.getByByAppIdBasicUnit(basicApply.getId());
-            BasicHouse basicHouse = this.getByAppIdBasicHouseVo(basicApply.getId());
-            BasicHouseTrading basicTrading = this.getByAppIdBasicHouseTrading(basicApply.getId());
+            BasicEstate basicEstate = this.getBasicEstateByAppId(basicApply.getId());
+            BasicEstateLandState basicEstateLandState = this.getEstateLandStateByAppId(basicApply.getId());
+            BasicBuildingMain basicBuildingMain = this.getBasicBuildingMainByAppId(basicApply.getId());
+            BasicUnit basicUnit = this.getBasicUnitByAppId(basicApply.getId());
+            BasicHouse basicHouse = this.getBasicHouseVoByAppId(basicApply.getId());
+            BasicHouseTrading basicTrading = this.getBasicHouseTradingByAppId(basicApply.getId());
 
             //1.如果楼盘升级，则新增一条楼盘数据，并将与该楼盘相关关联的楼栋数据关联id更新为新添加的楼盘数据id
             //2.楼栋与单元处理方式与楼盘一致
@@ -1032,6 +1033,16 @@ public class PublicBasicService {
                     caseBuildingMainService.updateEstateId(estateId, caseEstate.getId());
                 }
                 estateId = caseEstate.getId();
+                //回写版块到基础数据中
+                if (basicApply.getWriteBackBlockFlag() == Boolean.TRUE) {
+                    DataBlock dataBlock=new DataBlock();
+                    dataBlock.setProvince(basicEstate.getProvince());
+                    dataBlock.setCity(basicEstate.getCity());
+                    dataBlock.setDistrict(basicEstate.getDistrict());
+                    dataBlock.setName(basicEstate.getName());
+                    dataBlock.setCreator(basicEstate.getCreator());
+                    dataBlockService.saveAndUpdateDataBlock(dataBlock);
+                }
             }
 
             //处理楼栋
@@ -1192,7 +1203,7 @@ public class PublicBasicService {
                         case ADD:
                         case REFERENCE:
                             //案例库中验证
-                            if (basicApply.getCaseUnitId() != null && caseUnitService.hasUnit(basicHouse.getHouseNumber(), basicApply.getCaseUnitId())) {
+                            if (basicApply.getCaseUnitId() != null && caseHouseService.hasHouse(basicHouse.getHouseNumber(), basicApply.getCaseUnitId())) {
                                 throw new BusinessException("案例中已存在相同编号的房屋");
                             }
                             basicApply.setHouseNumber(basicHouse.getHouseNumber());
@@ -1236,7 +1247,7 @@ public class PublicBasicService {
         }
     }
 
-    public BasicEstateVo getByAppIdBasicEstate(Integer appId) throws Exception {
+    public BasicEstateVo getBasicEstateByAppId(Integer appId) throws Exception {
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setApplyId(appId);
         List<BasicEstate> basicEstates = basicEstateService.basicEstateList(basicEstate);
@@ -1247,7 +1258,7 @@ public class PublicBasicService {
         }
     }
 
-    public BasicEstateLandStateVo getByAppIdEstateLandState(Integer appId) throws Exception {
+    public BasicEstateLandStateVo getEstateLandStateByAppId(Integer appId) throws Exception {
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
         basicEstateLandState.setApplyId(appId);
         List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
@@ -1258,7 +1269,7 @@ public class PublicBasicService {
         }
     }
 
-    public BasicBuildingMain getByAppIdBasicBuildingMain(Integer appId) throws Exception {
+    public BasicBuildingMain getBasicBuildingMainByAppId(Integer appId) throws Exception {
         BasicBuildingMain basicBuildingMain = new BasicBuildingMain();
         basicBuildingMain.setApplyId(appId);
         List<BasicBuildingMain> basicBuildingMains = basicBuildingMainService.basicBuildingMainList(basicBuildingMain);
@@ -1269,7 +1280,7 @@ public class PublicBasicService {
         }
     }
 
-    public BasicUnit getByByAppIdBasicUnit(Integer appId) throws Exception {
+    public BasicUnit getBasicUnitByAppId(Integer appId) throws Exception {
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setApplyId(appId);
         List<BasicUnit> unitList = basicUnitService.basicUnitList(basicUnit);
@@ -1280,7 +1291,7 @@ public class PublicBasicService {
         }
     }
 
-    public BasicHouseTradingVo getByAppIdBasicHouseTrading(Integer appId) throws Exception {
+    public BasicHouseTradingVo getBasicHouseTradingByAppId(Integer appId) throws Exception {
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setApplyId(appId);
         List<BasicHouseTrading> basicHouseTradingList = basicHouseTradingService.basicHouseTradingList(basicHouseTrading);
@@ -1291,8 +1302,8 @@ public class PublicBasicService {
         }
     }
 
-    public BasicHouseVo getByAppIdBasicHouseVo(Integer appId) throws Exception {
-        BasicHouse basicHouse = new BasicHouseVo();
+    public BasicHouseVo getBasicHouseVoByAppId(Integer appId) throws Exception {
+        BasicHouse basicHouse = new BasicHouse();
         basicHouse.setApplyId(appId);
         List<BasicHouse> basicHouseList = basicHouseService.basicHouseList(basicHouse);
         if (!ObjectUtils.isEmpty(basicHouseList)) {

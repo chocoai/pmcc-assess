@@ -64,7 +64,7 @@ public class DataBlockService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataBlockVo> vos = dataBlockVos(province, city, district,name);
+        List<DataBlockVo> vos = dataBlockVos(province, city, district, name);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
@@ -128,5 +128,25 @@ public class DataBlockService {
         if (StringUtils.isNotBlank(distric))
             dataBlock.setDistrict(distric);
         return dataBlockDao.getDataBlockList(dataBlock);
+    }
+
+    /**
+     * 版块是否已存在
+     *
+     * @param province
+     * @param city
+     * @param distric
+     * @param blockName
+     * @return
+     */
+    public Boolean isExistBlock(String province, String city, String distric, String blockName) {
+        DataBlock dataBlock = new DataBlock();
+        dataBlock.setProvince(province);
+        dataBlock.setCity(city);
+        if (StringUtils.isNotBlank(distric))
+            dataBlock.setDistrict(distric);
+        dataBlock.setName(blockName);
+        List<DataBlock> blockList = dataBlockDao.getDataBlockList(dataBlock);
+        return blockList.size() > 0;
     }
 }

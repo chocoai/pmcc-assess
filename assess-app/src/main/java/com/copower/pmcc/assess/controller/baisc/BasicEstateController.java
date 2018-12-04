@@ -87,7 +87,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/getBasicEstateByApplyId", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicEstateByApplyId(Integer applyId){
         try {
-            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateByApplyId(applyId));
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapByApplyId(applyId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);
             return HttpResult.newErrorResult(e.getMessage());
