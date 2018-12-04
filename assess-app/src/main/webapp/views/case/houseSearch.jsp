@@ -146,7 +146,7 @@
     };
 
     houseSearch.findHouse = function (id) {
-        var href = "${pageContext.request.contextPath}/case/findCaseBaseHouse";
+        var href = "${pageContext.request.contextPath}/case/findHouseView";
         href += "?id=" + id;
         window.open(href, "");
     };
