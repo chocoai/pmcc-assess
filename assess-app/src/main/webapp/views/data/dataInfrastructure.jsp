@@ -151,8 +151,7 @@
             formData: {
                 fieldsName: target,
                 tableName: tableName,
-                tableId: id,
-                projectId: 0
+                tableId: id
             },
             deleteFlag: true
         })

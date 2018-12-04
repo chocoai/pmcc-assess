@@ -82,14 +82,6 @@
 <script type="text/javascript">
     $(function () {
         landLevel.loadLandLevelList();
-        landLevel.select2Load();
-
-        AssessCommon.initAreaInfo({
-            useDefaultText: false,
-            provinceTarget: $("#queryProvince"),
-            cityTarget: $("#queryCity"),
-            districtTarget: $("#queryDistrict")
-        })
     });
 
     var landLevel = {
@@ -111,6 +103,7 @@
             cols.push({field: 'provinceName', title: '省'});
             cols.push({field: 'cityName', title: '市'});
             cols.push({field: 'districtName', title: '县'});
+            cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -164,9 +157,36 @@
                 provinceValue: '',
                 cityValue: '',
                 districtValue: ''
-            })
+            });
+
+            FileUtils.uploadFiles({
+                target: "uploadFile",
+                onUpload: function (file) {
+                    var formData = {
+                        tableName: AssessDBKey.DataLandLevel,
+                        tableId: 0
+                    };
+                    return formData;
+                }, onUploadComplete: function (result, file) {
+                    landLevel.showFileList(0);
+                },
+                deleteFlag: true
+            });
             $('#' + landLevel.config().box).modal("show");
         },
+
+        //显示附件列表
+        showFileList: function (tableId) {
+            FileUtils.getFileShows({
+                target: "uploadFile",
+                formData: {
+                    tableName: AssessDBKey.DataLandLevel,
+                    tableId: tableId
+                },
+                deleteFlag: true
+            })
+        },
+
         saveData: function () {
             if (!$("#" + landLevel.config().frm).valid()) {
                 return false;
@@ -192,10 +212,6 @@
                 }
             })
         },
-        select2Load: function () {
-            //使数据校验生效
-            $("#" + landLevel.config().frm).validate();
-        },
         getAndInit: function (id) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataLandLevel/getDataLandLevelById",
@@ -213,7 +229,21 @@
                             provinceValue: result.data.province,
                             cityValue: result.data.city,
                             districtValue: result.data.district
-                        })
+                        });
+                        FileUtils.uploadFiles({
+                            target: "uploadFile",
+                            onUpload: function (file) {
+                                var formData = {
+                                    tableName: AssessDBKey.DataLandLevel,
+                                    tableId: id
+                                };
+                                return formData;
+                            }, onUploadComplete: function (data, file) {
+                                landLevel.showFileList(id);
+                            },
+                            deleteFlag: true
+                        });
+                        landLevel.showFileList(id);
                         $('#' + landLevel.config().box).modal("show");
                     }
                 },
@@ -222,21 +252,15 @@
                 }
             })
         },
-        objectWriteSelectData: function (frm, data, name) {
-            if (landLevel.isEmpty(data)) {
-                $("#" + frm + " ." + name).val(data).trigger("change");
-            } else {
-                $("#" + frm + " ." + name).val(null).trigger("change");
-            }
-        },
 
         //加载土地级别信息
         loadLandLevelDetailList: function () {
             var cols = [];
-            cols.push({field: 'classify', title: '大类'});
-            cols.push({field: 'type', title: '类型'});
-            cols.push({field: 'category', title: '类别'});
-            cols.push({field: 'levelRange', title: '级别范围'});
+            cols.push({field: 'classify', title: '大类',width:'6%'});
+            cols.push({field: 'type', title: '类型',width:'6%'});
+            cols.push({field: 'category', title: '类别',width:'6%'});
+            cols.push({field: 'levelRange', title: '级别范围',width:'30%'});
+            cols.push({field: 'mainStreet', title: '主要街道',width:'40%'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -369,6 +393,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">县</label>
+                                        <div class="col-sm-10">
+                                            <input id="uploadFile" placeholder="上传附件" class="form-control" type="file">
+                                            <div id="_uploadFile"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -460,8 +493,17 @@
                                             级别范围
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="levelRange"
-                                                   placeholder="级别范围">
+                                            <textarea class="form-control" name="levelRange" placeholder="级别范围"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            主要街道
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="mainStreet" placeholder="主要街道"></textarea>
                                         </div>
                                     </div>
                                 </div>

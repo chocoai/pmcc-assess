@@ -8,6 +8,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="level_range" property="levelRange" jdbcType="VARCHAR" />
+    <result column="main_street" property="mainStreet" jdbcType="VARCHAR" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, land_level_id, classify, type, category, level_range, bis_delete, creator, gmt_created, 
-    gmt_modified
+    id, land_level_id, classify, type, category, level_range, main_street, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
     select
@@ -110,13 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_land_level_detail (land_level_id, classify, type, 
-      category, level_range, bis_delete, 
-      creator, gmt_created, gmt_modified
-      )
+      category, level_range, main_street, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{category,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, #{mainStreet,jdbcType=VARCHAR}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -138,6 +139,9 @@
       </if>
       <if test="levelRange != null" >
         level_range,
+      </if>
+      <if test="mainStreet != null" >
+        main_street,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -167,6 +171,9 @@
       </if>
       <if test="levelRange != null" >
         #{levelRange,jdbcType=VARCHAR},
+      </if>
+      <if test="mainStreet != null" >
+        #{mainStreet,jdbcType=VARCHAR},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -209,6 +216,9 @@
       <if test="record.levelRange != null" >
         level_range = #{record.levelRange,jdbcType=VARCHAR},
       </if>
+      <if test="record.mainStreet != null" >
+        main_street = #{record.mainStreet,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
@@ -234,6 +244,7 @@
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR},
       level_range = #{record.levelRange,jdbcType=VARCHAR},
+      main_street = #{record.mainStreet,jdbcType=VARCHAR},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -260,6 +271,9 @@
       <if test="levelRange != null" >
         level_range = #{levelRange,jdbcType=VARCHAR},
       </if>
+      <if test="mainStreet != null" >
+        main_street = #{mainStreet,jdbcType=VARCHAR},
+      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -282,6 +296,7 @@
       type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
       level_range = #{levelRange,jdbcType=VARCHAR},
+      main_street = #{mainStreet,jdbcType=VARCHAR},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

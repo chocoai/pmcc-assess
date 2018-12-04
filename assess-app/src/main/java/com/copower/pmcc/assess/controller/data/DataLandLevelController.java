@@ -115,27 +115,6 @@ public class DataLandLevelController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/listDataLandLevel", method = {RequestMethod.GET}, name = "土地级别维护 list")
-    public HttpResult list(String province, String city, String district) {
-        try {
-            DataLandLevel dataLandLevel = new DataLandLevel();
-            if (!StringUtils.isEmpty(province)) {
-                dataLandLevel.setProvince(province);
-            }
-            if (!StringUtils.isEmpty(city)) {
-                dataLandLevel.setCity(city);
-            }
-            if (!StringUtils.isEmpty(district)) {
-                dataLandLevel.setDistrict(district);
-            }
-            return HttpResult.newCorrectResult(dataLandLevelService.landLevels(dataLandLevel));
-        } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("异常");
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getDataLandLevelDetailList", method = {RequestMethod.GET}, name = "获取土地级别信息列表")
     public BootstrapTableVo getDataLandLevelDetailList(Integer landLevelId) {
         return dataLandLevelDetailService.getDataLandLevelDetailList(landLevelId);

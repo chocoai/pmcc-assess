@@ -298,7 +298,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            方位<span class="symbol required"></span>
+                                            方位
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control" name="position" placeholder="方位" >
@@ -306,7 +306,7 @@
                                     </div>
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            区域性质<span class="symbol required"></span>
+                                            区域性质
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control" name="regionalNature" placeholder="区域性质" >

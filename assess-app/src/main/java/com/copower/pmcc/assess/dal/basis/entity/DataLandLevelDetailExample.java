@@ -505,6 +505,76 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andMainStreetIsNull() {
+            addCriterion("main_street is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetIsNotNull() {
+            addCriterion("main_street is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetEqualTo(String value) {
+            addCriterion("main_street =", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotEqualTo(String value) {
+            addCriterion("main_street <>", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetGreaterThan(String value) {
+            addCriterion("main_street >", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetGreaterThanOrEqualTo(String value) {
+            addCriterion("main_street >=", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLessThan(String value) {
+            addCriterion("main_street <", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLessThanOrEqualTo(String value) {
+            addCriterion("main_street <=", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetLike(String value) {
+            addCriterion("main_street like", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotLike(String value) {
+            addCriterion("main_street not like", value, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetIn(List<String> values) {
+            addCriterion("main_street in", values, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotIn(List<String> values) {
+            addCriterion("main_street not in", values, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetBetween(String value1, String value2) {
+            addCriterion("main_street between", value1, value2, "mainStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainStreetNotBetween(String value1, String value2) {
+            addCriterion("main_street not between", value1, value2, "mainStreet");
+            return (Criteria) this;
+        }
+
         public Criteria andBisDeleteIsNull() {
             addCriterion("bis_delete is null");
             return (Criteria) this;
