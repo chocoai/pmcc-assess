@@ -25,6 +25,12 @@
 </div>
 <script type="text/javascript">
     var landEngineeringDevelopment = {};
+    landEngineeringDevelopment.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
     landEngineeringDevelopment.treeViewHtml = '';
     landEngineeringDevelopment.viewInit = function () {
         //1.读取数据 2.将数据初始化成树形结构
@@ -48,10 +54,20 @@
                     $("#landEngineeringDevelopmentID").find('tbody').empty().append(landEngineeringDevelopment.treeViewHtml);
                     $("#landEngineeringDevelopmentID").treegrid();
                     $("#landEngineeringDevelopmentForm").validate();
+                    var mdCostAndDevelopmentOtherArchitecturalJSON = "${mdCostAndDevelopmentOtherArchitectural}";
+                    if (landEngineeringDevelopment.isNotBlank(mdCostAndDevelopmentOtherArchitecturalJSON)) {
+                        try {
+                            mdCostAndDevelopmentOtherArchitecturalJSON = $("#mdCostAndDevelopmentOtherArchitecturalJSON").val();
+                            mdCostAndDevelopmentOtherArchitecturalJSON = JSON.parse(mdCostAndDevelopmentOtherArchitecturalJSON);
+                            landEngineeringDevelopment.setTreeValue(mdCostAndDevelopmentOtherArchitecturalJSON);
+                        } catch (e) {
+                            console.log("设置从表数据 失败!");
+                        }
+                    }
                 }
             }
         })
-    }
+    };
 
     //递归设置treeview的html
     landEngineeringDevelopment.recursionTreeView = function (nodes) {
@@ -80,8 +96,25 @@
             if (AssessCommon.isNumber($(this).val())) {
                 total += parseFloat($(this).val());
             }
-        })
+        });
         $("#landEngineeringDevelopmentID").find('.total').text(total.toFixed(2));
+    };
+
+    /**
+     * 设置树的值
+     * @param data
+     */
+    landEngineeringDevelopment.setTreeValue = function (data) {
+        if (this.isNotBlank(data)) {
+            $("#landEngineeringDevelopmentID").find(':text').each(function () {
+                var item = $(this);
+                $.each(data, function (i, n) {
+                    if (n.name == item.attr("name")) {
+                        item.val(n.value);
+                    }
+                });
+            });
+        }
     };
 
     landEngineeringDevelopment.getJsonValue = function () {
