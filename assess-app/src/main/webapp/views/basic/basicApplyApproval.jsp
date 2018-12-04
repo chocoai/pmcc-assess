@@ -28,7 +28,10 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
+
         var data = formApproval.getFormData();
+        data.blockName = estateCommon.estateForm.find('[name=blockName]').val();
+        data.writeBackBlockFlag = estateCommon.estateForm.find('[name=writeBackBlockFlag]').prop('checked');
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApply/basicApprovalSubmit",
@@ -43,7 +46,7 @@
                     });
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    Alert(result.errmsg);
                 }
             },
             error: function (result) {

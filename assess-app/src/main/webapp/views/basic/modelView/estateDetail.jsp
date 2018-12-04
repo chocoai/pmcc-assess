@@ -47,9 +47,24 @@
             </div>
             <div class="x-valid">
                 <label class="col-sm-1 control-label">基础版块</label>
-                <div class="col-sm-3">
-                    <label class="form-control">${basicEstate.blockName}</label>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty processInsId and empty basicEstate.blockId}">
+                        <div class="col-sm-3">
+                            <div class="input-group mar-btm">
+                                <input type="text" name="blockName" class="form-control" value="${basicEstate.blockName}">
+                                <div class="input-group-addon">
+                                    <input id="checkbox-addons" name="writeBackBlockFlag" class="magic-checkbox" type="checkbox">
+                                    <label for="checkbox-addons">回写</label>
+                                </div>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col-sm-3">
+                            <label class="form-control">${basicEstate.blockName}</label>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <div class="form-group">

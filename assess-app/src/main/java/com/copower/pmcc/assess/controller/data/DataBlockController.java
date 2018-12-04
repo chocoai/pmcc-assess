@@ -129,4 +129,15 @@ public class DataBlockController extends BaseController {
             return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/isExistBlock", method = {RequestMethod.GET}, name = "验证版块是否已存在")
+    public HttpResult isExistBlock(String province, String city, String district,String name) {
+        try {
+            return HttpResult.newCorrectResult(dataBlockService.isExistBlock(province, city, district,name));
+        } catch (Exception e) {
+            log.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("获取版块信息异常");
+        }
+    }
 }

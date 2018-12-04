@@ -41,6 +41,8 @@ public class BasicApply {
 
     private String housePartInMode;
 
+    private Boolean writeBackBlockFlag;
+
     private String creator;
 
     private Date gmtCreated;
@@ -197,6 +199,14 @@ public class BasicApply {
 
     public void setHousePartInMode(String housePartInMode) {
         this.housePartInMode = housePartInMode == null ? null : housePartInMode.trim();
+    }
+
+    public Boolean getWriteBackBlockFlag() {
+        return writeBackBlockFlag;
+    }
+
+    public void setWriteBackBlockFlag(Boolean writeBackBlockFlag) {
+        this.writeBackBlockFlag = writeBackBlockFlag;
     }
 
     public String getCreator() {

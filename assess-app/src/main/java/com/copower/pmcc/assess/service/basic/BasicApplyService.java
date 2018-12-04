@@ -4,9 +4,11 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basic.dao.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basic.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basic.entity.BasicEstate;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -16,6 +18,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -34,6 +37,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kings on 2018-10-24.
@@ -60,6 +64,8 @@ public class BasicApplyService {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private DataBlockService dataBlockService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -133,8 +139,26 @@ public class BasicApplyService {
      * @param approvalModelDto
      * @throws Exception
      */
-    public void processApprovalSubmit(ApprovalModelDto approvalModelDto) throws Exception {
+    @Transactional(value = "transactionManagerBasic", rollbackFor = Exception.class)
+    public void processApprovalSubmit(ApprovalModelDto approvalModelDto, String blockName, Boolean writeBackBlockFlag) throws Exception {
         try {
+            if (writeBackBlockFlag != null) {
+                BasicApply basicApply = getBasicApplyByProcessInsId(approvalModelDto.getProcessInsId());
+                if (basicApply == null)
+                    throw new BusinessException("未找到申请数据");
+                BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                if (basicEstate == null)
+                    throw new BusinessException("未找到楼盘数据");
+                if (writeBackBlockFlag == Boolean.TRUE) {
+                    if (dataBlockService.isExistBlock(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), blockName))
+                        throw new BusinessException("该版块名称基础数据中已存在");
+                }
+                basicEstate.setBlockName(blockName);
+                basicEstateService.saveAndUpdateBasicEstate(basicEstate);
+
+                basicApply.setWriteBackBlockFlag(writeBackBlockFlag);
+                updateBasicApply(basicApply);
+            }
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

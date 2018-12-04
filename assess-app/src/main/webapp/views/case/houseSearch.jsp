@@ -119,12 +119,12 @@
                                     <input type="text" class="form-control" id="tradingTimeEnd" style="width: 45%;display:inline;"/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="x-valid">
-                            <div class="col-sm-2">
-                                <label class="btn btn-primary" onclick="">
-                                    查询
-                                </label>
+                            <div class="x-valid">
+                                <div class="col-sm-2">
+                                    <label class="btn btn-primary" onclick="">
+                                        查询
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">

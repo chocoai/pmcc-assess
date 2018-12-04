@@ -98,9 +98,9 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
-    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto) {
+    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto,String blockName,Boolean writeBackBlockFlag) {
         try {
-            basicApplyService.processApprovalSubmit(approvalModelDto);
+            basicApplyService.processApprovalSubmit(approvalModelDto,blockName,writeBackBlockFlag);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
@@ -150,12 +150,12 @@ public class BasicApplyController extends BaseController {
         if (basicApply == null) {
             return;
         }
-        BasicUnit basicUnit = publicBasicService.getByByAppIdBasicUnit(basicApply.getId());
-        BasicEstateVo basicEstateVo = publicBasicService.getByAppIdBasicEstate(basicApply.getId());
-        BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getByAppIdEstateLandState(basicApply.getId());
-        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getByAppIdBasicHouseTrading(basicApply.getId());
-        BasicHouseVo basicHouseVo = publicBasicService.getByAppIdBasicHouseVo(basicApply.getId());
-        BasicBuildingMain buildingMain = publicBasicService.getByAppIdBasicBuildingMain(basicApply.getId());
+        BasicUnit basicUnit = publicBasicService.getBasicUnitByAppId(basicApply.getId());
+        BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateByAppId(basicApply.getId());
+        BasicEstateLandStateVo basicEstateLandStateVo = publicBasicService.getEstateLandStateByAppId(basicApply.getId());
+        BasicHouseTradingVo basicHouseTradingVo = publicBasicService.getBasicHouseTradingByAppId(basicApply.getId());
+        BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(basicApply.getId());
+        BasicBuildingMain buildingMain = publicBasicService.getBasicBuildingMainByAppId(basicApply.getId());
         if (basicApply != null) {
             modelAndView.addObject("basicApply", basicApplyService.getBasicApplyVo(basicApply));
         }

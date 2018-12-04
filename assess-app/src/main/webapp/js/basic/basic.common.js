@@ -100,16 +100,16 @@ basicCommon.hideTab = function (_this) {
     var a = $(_this).closest('a');
     var href = a.attr('href').replace('#', '');
     switch (href) {
-        case "#caseEstate":
+        case "caseEstate":
             basicCommon.basicApplyForm.find('[name=estatePartInMode]').val('');
             break;
-        case "#caseBuilding":
+        case "caseBuilding":
             basicCommon.basicApplyForm.find('[name=buildingPartInMode]').val('');
             break;
-        case "#caseUnit":
+        case "caseUnit":
             basicCommon.basicApplyForm.find('[name=unitPartInMode]').val('');
             break;
-        case "#caseHouse":
+        case "caseHouse":
             basicCommon.basicApplyForm.find('[name=housePartInMode]').val('');
             break;
     }

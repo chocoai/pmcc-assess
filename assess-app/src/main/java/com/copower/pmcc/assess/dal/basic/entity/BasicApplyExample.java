@@ -1365,6 +1365,66 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andWriteBackBlockFlagIsNull() {
+            addCriterion("write_back_block_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagIsNotNull() {
+            addCriterion("write_back_block_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagEqualTo(Boolean value) {
+            addCriterion("write_back_block_flag =", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagNotEqualTo(Boolean value) {
+            addCriterion("write_back_block_flag <>", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagGreaterThan(Boolean value) {
+            addCriterion("write_back_block_flag >", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("write_back_block_flag >=", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagLessThan(Boolean value) {
+            addCriterion("write_back_block_flag <", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagLessThanOrEqualTo(Boolean value) {
+            addCriterion("write_back_block_flag <=", value, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagIn(List<Boolean> values) {
+            addCriterion("write_back_block_flag in", values, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagNotIn(List<Boolean> values) {
+            addCriterion("write_back_block_flag not in", values, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagBetween(Boolean value1, Boolean value2) {
+            addCriterion("write_back_block_flag between", value1, value2, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andWriteBackBlockFlagNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("write_back_block_flag not between", value1, value2, "writeBackBlockFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
