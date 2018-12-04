@@ -63,5 +63,23 @@
         ORDER BY version DESC) AS T
         GROUP BY house_number ORDER BY version DESC,house_number
     </select>
+
+    <sql id="Base_Column_List" >
+        id, case_house_id, type, province, city, district, block_name, full_name, street,
+        practical_use, trading_type, trading_time, trading_unit_price, version, creator,
+        gmt_created, gmt_modified
+    </sql>
+    <select id="findCaseBaseHouseList" parameterType="map" resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBaseHouseMapper.BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from tb_case_base_house
+        <where>
+            <if test="caseBaseHouse.blockName != null" >
+                and block_name LIKE '%'#{caseBaseHouse.blockName}'%'
+            </if>
+            <if test="caseBaseHouse.fullName != null">
+                and full_name LIKE '%'#{caseBaseHouse.fullName}'%'
+            </if>
+        </where>
+    </select>
 </mapper>
 

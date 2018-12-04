@@ -51,17 +51,7 @@ public class MdCostAndDevelopmentOtherService {
         }
     }
 
-    public List<MdCostAndDevelopmentOther> getMdCostAndDevelopmentOtherList(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
-        List<MdCostAndDevelopmentOther> otherList = mdCostAndDevelopmentOtherDao.getMdCostAndDevelopmentOtherList(mdCostAndDevelopmentOther);
-        Ordering<MdCostAndDevelopmentOther> firstOrdering = Ordering.from(new Comparator<MdCostAndDevelopmentOther>() {
-            @Override
-            public int compare(MdCostAndDevelopmentOther o1, MdCostAndDevelopmentOther o2) {
-                return o1.getGmtCreated().compareTo(o2.getGmtCreated());
-            }
-        }).reverse();//排序 并且反转
-        Collections.sort(otherList, firstOrdering);
-        return otherList;
-    }
+
 
     public List<MdCostAndDevelopmentOther> costAndDevelopmentOtherList(String type,Integer pid,String databaseName){
         return mdCostAndDevelopmentOtherDao.costAndDevelopmentOtherList(type, pid, databaseName);
@@ -76,18 +66,6 @@ public class MdCostAndDevelopmentOtherService {
     }
 
 
-    public MdCostAndDevelopmentOther getMdCostAndDevelopmentOther(String entityName,int pid){
-        MdCostAndDevelopmentOther mdCostAndDevelopmentOther = new MdCostAndDevelopmentOther();
-        mdCostAndDevelopmentOther.setPid(pid);
-        mdCostAndDevelopmentOther.setType(entityName);
-        List<MdCostAndDevelopmentOther> otherList = getMdCostAndDevelopmentOtherList(mdCostAndDevelopmentOther);
-        if (!ObjectUtils.isEmpty(otherList)) {
-            mdCostAndDevelopmentOther = otherList.get(0);
-            return  mdCostAndDevelopmentOther;
-        } else {
-            return null;
-        }
-    }
 
     public int addMdCostAndDevelopmentOther(MdCostAndDevelopmentOther mdCostAndDevelopmentOther) {
         mdCostAndDevelopmentOther.setCreator(commonService.thisUserAccount());

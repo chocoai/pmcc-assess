@@ -113,7 +113,6 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         MdDevelopment mdDevelopment = new MdDevelopment();
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
         Integer id = 0;
-        Integer pid = 0;
         String keyMdDevelopment = null;
         JSONObject jsonObject = JSON.parseObject(formData);
         List<SchemeSupportInfo> supportInfoList = null;
@@ -127,41 +126,18 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             jsonContent = jsonObject.getString("supportInfoList");
             if (!StringUtils.isEmpty(jsonContent)) {
                 supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
-                //必须初始化,否则下面判定失败
-                jsonContent = null;
             }
             jsonContent = jsonObject.getString("mdDevelopmentHypothesis");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentHypothesis = JSONObject.parseObject(jsonContent, MdDevelopmentHypothesis.class);
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
-                //必须初始化,否则下面判定失败
-                jsonContent = null;
             }
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
             }
-            //确定假设开发法具体选择的哪一个方法来测算的
             keyMdDevelopment = jsonObject.getString("mdDevelopment");
-            if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
-                if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
-                    if (mdDevelopmentArchitectural != null) {
-                        mdDevelopment.setId(id);
-                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
-                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
-                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-                    }
-                }
-                if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
-                    if (mdDevelopmentHypothesis != null) {
-                        mdDevelopment.setId(id);
-                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
-                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
-                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-                    }
-                }
-            }
         } catch (Exception e1) {
             //不需要抛出异常
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));
@@ -176,14 +152,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
 
         //处理假设开发法 在建工程
         if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis)) {
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
-            if (mdCostAndDevelopmentOther != null) {
-                //存入从表id
-                mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());
-            }
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0,FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
             //存入上级主表id
             mdDevelopmentHypothesis.setPid(id);
-            pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+            Integer pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
             //处理从表
             if (mdCostAndDevelopmentOther != null) {
                 mdCostAndDevelopmentOther.setPid(pid);
@@ -193,18 +165,34 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
 
         //处理假设开发法 土地
         if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural)) {
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
-            if (mdCostAndDevelopmentOther != null) {
-                //存入从表id
-                mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());
-            }
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0,FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
             //存入上级主表id
             mdDevelopmentArchitectural.setPid(id);
-            pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+            Integer pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
             //处理从表
             if (mdCostAndDevelopmentOther != null) {
                 mdCostAndDevelopmentOther.setPid(pid);
                 mdCostAndDevelopmentOtherService.updateMdCostAndDevelopmentOther(mdCostAndDevelopmentOther);
+            }
+        }
+
+        //确定假设开发法具体选择的哪一个方法来测算的
+        if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
+            if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
+                if (mdDevelopmentArchitectural != null) {
+                    mdDevelopment.setId(id);
+                    mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
+                    mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+                    mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                }
+            }
+            if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
+                if (mdDevelopmentHypothesis != null) {
+                    mdDevelopment.setId(id);
+                    mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
+                    mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+                    mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
+                }
             }
         }
 
@@ -233,38 +221,32 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
         MdCostAndDevelopmentOther mdCostAndDevelopmentOther = null;
         String jsonContent = null;
-        //(id至少会有一个实体含有 否则保存不会提交成功)
-        Integer id = 0;
-        Integer pid = 0;
-
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+        if (schemeInfo == null){
+            return;
+        }
+        MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(schemeInfo.getMethodDataId());
+        if (mdDevelopment ==null){
+            return;
+        }
         //解析实体 ,并且对json 进行一些处理
         try {
             jsonContent = jsonObject.getString("supportInfoList");
             if (!StringUtils.isEmpty(jsonContent)) {
                 supportInfoList = JSONObject.parseArray(jsonContent, SchemeSupportInfo.class);
-                //必须初始化,否则下面判定失败
-                jsonContent = null;
             }
+            keyMdDevelopment = jsonObject.getString("mdDevelopment");
             jsonContent = jsonObject.getString("mdDevelopmentHypothesis");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentHypothesis = JSONObject.parseObject(jsonContent, MdDevelopmentHypothesis.class);
                 mdDevelopmentHypothesis.setJsonContent(JSON.toJSONString(jsonContent));
-                //必须初始化,否则下面判定失败
-                jsonContent = null;
-                if (!ObjectUtils.isEmpty(mdDevelopmentHypothesis.getId())) {
-                    id = mdDevelopmentService.getMdDevelopmentHypothesis(mdDevelopmentHypothesis.getId()).getPid();
-                }
             }
             jsonContent = jsonObject.getString("mdDevelopmentArchitectural");
             if (!StringUtils.isEmpty(jsonContent)) {
                 mdDevelopmentArchitectural = JSONObject.parseObject(jsonContent, MdDevelopmentArchitectural.class);
                 mdDevelopmentArchitectural.setJsonContent(JSON.toJSONString(jsonContent));
-                if (!ObjectUtils.isEmpty(mdDevelopmentArchitectural.getId())) {
-                    id = mdDevelopmentService.getMdDevelopmentArchitectural(mdDevelopmentArchitectural.getId()).getPid();
-                }
             }
         } catch (Exception e1) {
-            //不需要抛出异常
             logger.error(String.format("实体解析失败! ==> %s", e1.getMessage()));
         }
 
@@ -278,14 +260,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         //处理假设开发法 在建工程
         if (mdDevelopmentHypothesis != null) {
             if (mdDevelopmentHypothesis.getId() == null) {
-                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0);
-                if (mdCostAndDevelopmentOther != null) {
-                    //存入从表id
-                    mdDevelopmentHypothesis.setEngineeringId(mdCostAndDevelopmentOther.getId());
-                }
+                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(), 0,FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
                 //存入上级主表id
-                mdDevelopmentHypothesis.setPid(id);
-                pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
+                mdDevelopmentHypothesis.setPid(mdDevelopment.getId());
+                Integer pid = mdDevelopmentService.saveAndUpdateMdDevelopmentHypothesis(mdDevelopmentHypothesis);
                 //处理从表
                 if (mdCostAndDevelopmentOther != null) {
                     mdCostAndDevelopmentOther.setPid(pid);
@@ -299,14 +277,10 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         //处理假设开发法 土地
         if (mdDevelopmentArchitectural != null) {
             if (mdDevelopmentArchitectural.getId() == null) {
-                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0);
-                if (mdCostAndDevelopmentOther != null) {
-                    //存入从表id
-                    mdDevelopmentArchitectural.setEngineeringId(mdCostAndDevelopmentOther.getId());
-                }
+                mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(), 0,FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
                 //存入上级主表id
-                mdDevelopmentArchitectural.setPid(id);
-                pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
+                mdDevelopmentArchitectural.setPid(mdDevelopment.getId());
+                Integer pid = mdDevelopmentService.saveAndUpdateMdDevelopmentArchitectural(mdDevelopmentArchitectural);
                 //处理从表
                 if (mdCostAndDevelopmentOther != null) {
                     mdCostAndDevelopmentOther.setPid(pid);
@@ -317,27 +291,20 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         //确定假设开发法具体选择的哪一个方法来测算的
-        keyMdDevelopment = jsonObject.getString("mdDevelopment");
         if (org.apache.commons.lang.StringUtils.isNotBlank(keyMdDevelopment)) {
-            if (pid != null && pid != 0) {
-                MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
-                if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
-                    if (mdDevelopmentArchitectural != null) {
-                        mdDevelopment.setId(id);
-                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
-                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
-                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-                    }
-                }
-                if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
-                    if (mdDevelopmentHypothesis != null) {
-                        mdDevelopment.setId(id);
-                        mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
-                        mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
-                        mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
-                    }
+            if (Objects.equal("MdDevelopmentArchitectural", keyMdDevelopment)) {
+                if (mdDevelopmentArchitectural != null) {
+                    mdDevelopment.setPrice(new BigDecimal(mdDevelopmentArchitectural.getEstimateunitpricelandc33()));
+                    mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
                 }
             }
+            if (Objects.equal("MdDevelopmentHypothesis", keyMdDevelopment)) {
+                if (mdDevelopmentHypothesis != null) {
+                    mdDevelopment.setPrice(new BigDecimal(mdDevelopmentHypothesis.getEstimateunitpricelandc33()));
+                    mdDevelopment.setType(FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+                }
+            }
+            mdDevelopmentService.saveAndUpdateMdDevelopment(mdDevelopment);
         }
     }
 
@@ -381,7 +348,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
                                         }
                                     }
                                 }
-                                modelAndView.addObject("buildEconomicIndicatorsList",buildEconomicIndicatorsList);
+                                modelAndView.addObject("buildEconomicIndicatorsList", buildEconomicIndicatorsList);
                             }
                         }
                     }
@@ -392,52 +359,51 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
         List<SchemeSupportInfo> supportInfoList = schemeSupportInfoService.getSupportInfoList(projectPlanDetails.getId());
         modelAndView.addObject("supportInfosJSON", JSON.toJSONString(supportInfoList));
         SchemeInfo schemeInfo = null;
-        MdDevelopmentHypothesis mdDevelopmentHypothesis = null;
-        MdDevelopmentArchitectural mdDevelopmentArchitectural = null;
         try {
             schemeInfo = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
+            if (schemeInfo == null) {
+                return;
+            }
         } catch (Exception e1) {
             //不需要抛出异常
             logger.error(String.format("没有获取到数据 ==> %s", e1.getMessage()));
         }
-        Integer pid = null;
-        if (schemeInfo != null) {
-            pid = schemeInfo.getMethodDataId();
+        if (schemeInfo.getMethodDataId() == null) {
+            return;
         }
+        MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(schemeInfo.getMethodDataId());
+        if (mdDevelopment == null){
+            return;
+        }
+        modelAndView.addObject("mdDevelopment", mdDevelopment);
         //设置假设开发法 在建工程
-        if (pid != null) {
-            MdDevelopment mdDevelopment = mdDevelopmentService.getMdDevelopmentById(pid);
-            modelAndView.addObject("mdDevelopment", mdDevelopment);
-            mdDevelopmentHypothesis = new MdDevelopmentHypothesis();
-            mdDevelopmentHypothesis.setPid(pid);
-            List<MdDevelopmentHypothesis> mdDevelopmentHypothesisList = mdDevelopmentService.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
-            if (!ObjectUtils.isEmpty(mdDevelopmentHypothesisList)) {
-                //一定会是只有一个或者没有,关于原因 查看save method
-                mdDevelopmentHypothesis = mdDevelopmentHypothesisList.get(0);
-                modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
-                modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
-                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentHypothesis.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null) {
-                    modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
-                    modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
-                }
+        MdDevelopmentHypothesis mdDevelopmentHypothesis = new MdDevelopmentHypothesis();
+        mdDevelopmentHypothesis.setPid(mdDevelopment.getId());
+        List<MdDevelopmentHypothesis> mdDevelopmentHypothesisList = mdDevelopmentService.getMdDevelopmentHypothesisList(mdDevelopmentHypothesis);
+        if (!ObjectUtils.isEmpty(mdDevelopmentHypothesisList)) {
+            //一定会是只有一个或者没有,关于原因 查看save method
+            mdDevelopmentHypothesis = mdDevelopmentHypothesisList.get(0);
+            modelAndView.addObject("mdDevelopmentHypothesisJSON", mdDevelopmentHypothesis.getJsonContent());
+            modelAndView.addObject("mdDevelopmentHypothesis", mdDevelopmentHypothesis);
+            MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentHypothesis.class.getSimpleName(),mdDevelopmentHypothesis.getId(),FormatUtils.entityNameConvertToTableName(MdDevelopmentHypothesis.class));
+            if (mdCostAndDevelopmentOther != null) {
+                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesis", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherHypothesisJSON", mdCostAndDevelopmentOther.getJsonContent());
             }
         }
         //假设开发法 土地
-        if (pid != null) {
-            mdDevelopmentArchitectural = new MdDevelopmentArchitectural();
-            mdDevelopmentArchitectural.setPid(pid);
-            List<MdDevelopmentArchitectural> mdDevelopmentArchitecturalList = mdDevelopmentService.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
-            if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)) {
-                //一定会是 只有一个或者没有,原因...
-                mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);
-                modelAndView.addObject("mdDevelopmentArchitecturalJSON", mdDevelopmentArchitectural.getJsonContent());
-                modelAndView.addObject("mdDevelopmentArchitectural", mdDevelopmentArchitectural);
-                MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(mdDevelopmentArchitectural.getEngineeringId());
-                if (mdCostAndDevelopmentOther != null) {
-                    modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
-                    modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
-                }
+        MdDevelopmentArchitectural mdDevelopmentArchitectural = new MdDevelopmentArchitectural();
+        mdDevelopmentArchitectural.setPid(mdDevelopment.getId());
+        List<MdDevelopmentArchitectural> mdDevelopmentArchitecturalList = mdDevelopmentService.getMdDevelopmentArchitecturalList(mdDevelopmentArchitectural);
+        if (!ObjectUtils.isEmpty(mdDevelopmentArchitecturalList)) {
+            //一定会是 只有一个或者没有,原因...
+            mdDevelopmentArchitectural = mdDevelopmentArchitecturalList.get(0);
+            modelAndView.addObject("mdDevelopmentArchitecturalJSON", mdDevelopmentArchitectural.getJsonContent());
+            modelAndView.addObject("mdDevelopmentArchitectural", mdDevelopmentArchitectural);
+            MdCostAndDevelopmentOther mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdDevelopmentArchitectural.class.getSimpleName(),mdDevelopmentArchitectural.getId(),FormatUtils.entityNameConvertToTableName(MdDevelopmentArchitectural.class));
+            if (mdCostAndDevelopmentOther != null) {
+                modelAndView.addObject("mdCostAndDevelopmentOtherArchitectural", mdCostAndDevelopmentOther);
+                modelAndView.addObject("mdCostAndDevelopmentOtherArchitecturalJSON", mdCostAndDevelopmentOther.getJsonContent());
             }
         }
     }

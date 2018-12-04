@@ -100,13 +100,13 @@ public class DataBlockService {
         DataBlockVo vo = new DataBlockVo();
         BeanUtils.copyProperties(dataBlock, vo);
         if (StringUtils.isNotBlank(dataBlock.getProvince())) {
-            vo.setProvinceName(erpAreaService.getSysAreaName(dataBlock.getProvince()));//省
+            vo.setProvinceName(erpAreaService.getSysAreaName(dataBlock.getProvince()));
         }
         if (StringUtils.isNotBlank(dataBlock.getCity())) {
-            vo.setCityName(erpAreaService.getSysAreaName(dataBlock.getCity()));//市或者县
+            vo.setCityName(erpAreaService.getSysAreaName(dataBlock.getCity()));
         }
         if (StringUtils.isNotBlank(dataBlock.getDistrict())) {
-            vo.setDistrictName(erpAreaService.getSysAreaName(dataBlock.getDistrict()));//县
+            vo.setDistrictName(erpAreaService.getSysAreaName(dataBlock.getDistrict()));
         }
         return vo;
     }

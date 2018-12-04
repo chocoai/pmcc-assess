@@ -175,7 +175,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
         //处理(建筑物)
         if (!ObjectUtils.isEmpty(mdCostBuilding)) {
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostBuilding.class.getSimpleName(), 0);
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdCostBuilding.class.getSimpleName(), 0,null);
             //存入上级主表id
             mdCostBuilding.setPid(id);
             pid = mdMarketCostService.saveAndUpdateMdCostBuilding(mdCostBuilding);
@@ -187,7 +187,7 @@ public class ProjectTaskCostAssist implements ProjectTaskInterface {
 
         //处理(在建工程)
         if (!ObjectUtils.isEmpty(mdCostConstruction)) {
-            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getMdCostAndDevelopmentOther(MdCostConstruction.class.getSimpleName(), 0);
+            mdCostAndDevelopmentOther = mdCostAndDevelopmentOtherService.getByPidMdCostAndDevelopmentOther(MdCostConstruction.class.getSimpleName(), 0,null);
             mdCostConstruction.setPid(id);
             pid = mdMarketCostService.saveAndUpdateMdCostConstruction(mdCostConstruction);
             if (mdCostAndDevelopmentOther != null) {

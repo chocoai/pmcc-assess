@@ -116,7 +116,6 @@
             }
         });
         cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'regionalNature', title: '性质'});
         cols.push({field: 'remark', title: '描述'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -128,7 +127,7 @@
             }
         });
         $("#" + dataObjFun.config.father.table()).bootstrapTable('destroy');
-        TableInit(dataObjFun.config.father.table(), "${pageContext.request.contextPath}/dataBlock/getDataBlockList", cols, {
+        TableInit(dataObjFun.config.father.table(), "${pageContext.request.contextPath}/dataPosition/getDataPositionList", cols, {
             name: $("#queryName").val()
         }, {
             showColumns: false,
@@ -146,7 +145,7 @@
      **/
     dataObjFun.deleteDataById = function (id) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/dataBlock/deleteDataBlockById",
+            url: "${pageContext.request.contextPath}/dataPosition/deleteDataPositionById",
             type: "post",
             dataType: "json",
             data: {id: id},
@@ -171,7 +170,7 @@
      **/
     dataObjFun.editDataById = function (id) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/dataBlock/getDataBlockById",
+            url: "${pageContext.request.contextPath}/dataPosition/getDataPositionById",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -209,7 +208,7 @@
         }
         var data = formParams(dataObjFun.config.father.frm());
         $.ajax({
-            url: "${pageContext.request.contextPath}/dataBlock/saveAndUpdateDataBlock",
+            url: "${pageContext.request.contextPath}/dataPosition/saveAndUpdateDataPosition",
             type: "post",
             dataType: "json",
             data: data,
@@ -239,7 +238,7 @@
             provinceTarget: $("#province"),
             cityTarget: $("#city"),
             districtTarget: $("#district")
-        })
+        });
         $('#' + dataObjFun.config.father.box()).modal("show");
     }
 </script>
@@ -250,7 +249,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">基础版块维护</h3>
+                <h3 class="modal-title">方位维护</h3>
             </div>
             <form id="frmFather" class="form-horizontal">
                 <input type="hidden" id="id" name="id">
@@ -287,41 +286,25 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+
+
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-11">
                                             <input type="text" class="form-control" name="name"
                                                    placeholder="名称" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            方位<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="position"
-                                                   placeholder="方位" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            区域性质<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="regionalNature"
-                                                   placeholder="区域性质" required="required">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">
-                                            区域描述
+                                            描述
                                         </label>
                                         <div class="col-sm-11">
-                                            <textarea name="remark" class="form-control" placeholder="区域描述"></textarea>
+                                            <textarea name="remark" class="form-control" placeholder="描述"></textarea>
                                         </div>
                                     </div>
                                 </div>

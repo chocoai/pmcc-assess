@@ -1,8 +1,12 @@
 package com.copower.pmcc.assess.dal.cases.custom.mapper;
 
 import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,4 +47,16 @@ public interface CustomCaseMapper {
      * @return
      */
     public List<CustomCaseEntity> getCaseHouseList(@Param("houseNumber") String houseNumber,@Param("unitId") Integer unitId);
+
+    /**
+     * 根据条件查出 CaseBaseHouse 实体列表
+     * @param tradingUnitPriceStart
+     * @param tradingUnitPriceEnd
+     * @param tradingTimeStart
+     * @param tradingTimeEnd
+     * @param caseBaseHouse
+     * @return
+     * @throws SQLException
+     */
+    public  List<CaseBaseHouse> findCaseBaseHouseList(@Param("tradingUnitPriceStart")BigDecimal tradingUnitPriceStart, @Param("tradingUnitPriceEnd")BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart")Date tradingTimeStart,@Param("tradingTimeEnd")Date tradingTimeEnd, @Param("caseBaseHouse")CaseBaseHouse caseBaseHouse)throws SQLException;
 }

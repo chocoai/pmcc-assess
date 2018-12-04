@@ -81,52 +81,14 @@
 </div>
 
 <script>
-    var AlgorithmsPrototype = function () {
-
-    };
-    AlgorithmsPrototype.prototype.isNumber = function (obj) {
-        if (obj == 0) {
-            return true;
-        }
-        if (obj == '0') {
-            return true;
-        }
-        if (AlgorithmsPrototype.prototype.isNotNull(obj)) {
-            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-            if (regPos.test(obj) || regNeg.test(obj)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    };
-
-    /**
-     * @author:  zch
-     * 描述:判断是否为null
-     * @date:
-     **/
-    AlgorithmsPrototype.prototype.isNotNull = function (obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == '') {
-            return false;
-        }
-        if (obj == "") {
-            return false;
-        }
-        if (obj == 'undefined') {
-            return false;
-        }
-        return true;
-    };
-
 
     var optionsBuildBox = new Object();
+    optionsBuildBox.isNotNull = function (item) {
+        if (item){
+            return true;
+        }
+        return false;
+    };
     optionsBuildBox.showHypothesisDevelopment = function () {
         $(".landEngineering").show();
         $(".architecturalEngineering").hide();
@@ -201,6 +163,7 @@
         var mdDevelopmentHypothesis = "${mdDevelopmentHypothesis}";
         var mdDevelopmentArchitectural = "${mdDevelopmentArchitectural}";
         var mdDevelopment = "${mdDevelopment.type}";
+
         if (mdDevelopment == "tb_md_development_hypothesis") {
             $(".optionsBuildBox :radio").each(function (i, n) {
                 if ($(n).val() == "2") {
@@ -218,44 +181,21 @@
             });
         }
 
-        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentArchitectural)) {
+        if (optionsBuildBox.isNotNull(mdDevelopmentArchitectural)) {
             mdDevelopmentArchitectural = $("#mdDevelopmentArchitecturalJSON").val();
             try {
                 mdDevelopmentArchitectural = JSON.parse(mdDevelopmentArchitectural);
                 optionsBuildBox.architecturalEngineeringInit(mdDevelopmentArchitectural);
-                //设置从表数据
-                var mdCostAndDevelopmentOtherArchitecturalJSON = "${mdCostAndDevelopmentOtherArchitectural}";
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherArchitecturalJSON)) {
-                    try {
-                        mdCostAndDevelopmentOtherArchitecturalJSON = $("#mdCostAndDevelopmentOtherArchitecturalJSON").val();
-                        mdCostAndDevelopmentOtherArchitecturalJSON = JSON.parse(mdCostAndDevelopmentOtherArchitecturalJSON);
-                        landEngineeringDevelopment.setServerData(mdCostAndDevelopmentOtherArchitecturalJSON);
-                    } catch (e) {
-                        console.log("设置从表数据 失败!");
-                    }
-                }
-
             } catch (e) {
                 console.log("json parse 失败!")
             }
         }
 
-        if (AlgorithmsPrototype.prototype.isNotNull(mdDevelopmentHypothesis)) {
+        if (optionsBuildBox.isNotNull(mdDevelopmentHypothesis)) {
             mdDevelopmentHypothesis = $("#mdDevelopmentHypothesisJSON").val();
             try {
                 mdDevelopmentHypothesis = JSON.parse(mdDevelopmentHypothesis);
                 optionsBuildBox.hypothesisDevelopmentInit(mdDevelopmentHypothesis);
-                //设置从表数据
-                var mdCostAndDevelopmentOtherHypothesisJSON = "${mdCostAndDevelopmentOtherHypothesis}";
-                if (AlgorithmsPrototype.prototype.isNotNull(mdCostAndDevelopmentOtherHypothesisJSON)) {
-                    try {
-                        mdCostAndDevelopmentOtherHypothesisJSON = $("#mdCostAndDevelopmentOtherHypothesisJSON").val();
-                        mdCostAndDevelopmentOtherHypothesisJSON = JSON.parse(mdCostAndDevelopmentOtherHypothesisJSON);
-                        underDevelopment.setServerData(mdCostAndDevelopmentOtherHypothesisJSON);
-                    } catch (e) {
-                        console.log("设置从表数据 失败!");
-                    }
-                }
             } catch (e) {
                 console.log("json parse 失败!")
             }

@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
+import com.copower.pmcc.assess.dal.basis.entity.DataPosition;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.data.DataPositionService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,24 +17,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: zch
- * @Date: 2018/9/11 10:08
- * @Description:基础版块维护
+ * @Date: 2018/12/4 10:39
+ * @Description:方位维护
  */
-@RequestMapping(value = "/dataBlock")
+@RequestMapping(value = "/dataPosition")
 @Controller
-public class DataBlockController extends BaseController {
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
-    private DataBlockService dataBlockService;
+public class DataPositionController {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DataPositionService dataPositionService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/data/dataBlockView";
+        String view = "/data/dataPositionView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //所有省份
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());
@@ -42,27 +41,27 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockById", method = {RequestMethod.GET}, name = "获取基础版块维护")
-    public HttpResult getDataBlockById(Integer id) {
-        DataBlock dataBlock = null;
+    @RequestMapping(value = "/getDataPositionById", method = {RequestMethod.GET}, name = "获取方位维护")
+    public HttpResult getDataPositionById(Integer id) {
+        DataPosition dataPosition = null;
         try {
             if (id != null) {
-                dataBlock = dataBlockService.getDataBlockById(id);
+                dataPosition = dataPositionService.getDataPositionById(id);
             }
         } catch (Exception e1) {
             log.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(dataBlock);
+        return HttpResult.newCorrectResult(dataPosition);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockList", method = {RequestMethod.GET}, name = "获取基础版块维护列表")
-    public BootstrapTableVo getDataBlockList(String province, String city, String district,String name) {
-        DataBlock dataBlock = new DataBlock();
+    @RequestMapping(value = "/getDataPositionList", method = {RequestMethod.GET}, name = "获取方位维护列表")
+    public BootstrapTableVo getDataPositionList(String province, String city, String district, String name) {
+        DataPosition dataPosition = new DataPosition();
         BootstrapTableVo vo = null;
         try {
-            vo = dataBlockService.getDataBlockListVos(province, city, district,name);
+            vo = dataPositionService.getDataPositionListVos(province, city, district,name);
         } catch (Exception e1) {
             log.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -71,13 +70,13 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteDataBlockById", method = {RequestMethod.POST}, name = "删除基础版块维护")
-    public HttpResult deleteDataBlockById(Integer id) {
+    @RequestMapping(value = "/deleteDataPositionById", method = {RequestMethod.POST}, name = "删除方位维护")
+    public HttpResult deleteDataPositionById(Integer id) {
         try {
             if (id != null) {
-                DataBlock dataBlock = new DataBlock();
-                dataBlock.setId(id);
-                dataBlockService.removeDataBlock(dataBlock);
+                DataPosition dataPosition = new DataPosition();
+                dataPosition.setId(id);
+                dataPositionService.removeDataPosition(dataPosition);
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
@@ -88,10 +87,10 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateDataBlock", method = {RequestMethod.POST}, name = "更新基础版块维护")
-    public HttpResult saveAndUpdateDataBlock(DataBlock dataBlock) {
+    @RequestMapping(value = "/saveAndUpdateDataPosition", method = {RequestMethod.POST}, name = "更新方位维护")
+    public HttpResult saveAndUpdateDataPosition(DataPosition dataPosition) {
         try {
-            dataBlockService.saveAndUpdateDataBlock(dataBlock);
+            dataPositionService.saveAndUpdateDataPosition(dataPosition);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
@@ -100,10 +99,10 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataBlockListByArea", method = {RequestMethod.GET}, name = "获取版块信息by区域")
-    public HttpResult getDataBlockListByArea(String province, String city, String district) {
+    @RequestMapping(value = "/getDataPositionListByArea", method = {RequestMethod.GET}, name = "获取by区域")
+    public HttpResult getDataPositionListByArea(String province, String city, String district,String name) {
         try {
-            return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province, city, district));
+            return HttpResult.newCorrectResult(dataPositionService.dataPositionVoList(province, city, district,name));
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
@@ -111,23 +110,24 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/dataBlockList", method = {RequestMethod.GET}, name = "获取版块信息 list")
-    public HttpResult dataBlockList(String province, String city, String district) {
+    @RequestMapping(value = "/dataPositionList", method = {RequestMethod.GET}, name = "获取 list")
+    public HttpResult dataPositionList(String province, String city, String district) {
         try {
-            DataBlock dataBlock = new DataBlock();
+            DataPosition dataPosition = new DataPosition();
             if (org.apache.commons.lang.StringUtils.isNotBlank(province)) {
-                dataBlock.setProvince(province);
+                dataPosition.setProvince(province);
             }
             if (org.apache.commons.lang.StringUtils.isNotBlank(city)) {
-                dataBlock.setCity(city);
+                dataPosition.setCity(city);
             }
             if (org.apache.commons.lang.StringUtils.isNotBlank(district)) {
-                dataBlock.setDistrict(district);
+                dataPosition.setDistrict(district);
             }
-            return HttpResult.newCorrectResult(dataBlockService.dataBlockVos(dataBlock));
+            return HttpResult.newCorrectResult(dataPositionService.dataPositionVos(dataPosition));
         } catch (Exception e) {
             log.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }
+    
 }

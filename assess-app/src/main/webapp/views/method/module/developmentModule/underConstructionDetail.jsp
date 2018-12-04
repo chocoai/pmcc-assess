@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 13426
-  Date: 2018/8/17
-  Time: 11:28
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="underConstructionModel">
 
@@ -420,16 +414,16 @@
                         </div>
                     </div>
 
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label">
-                            费率说明
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text"
-                                   placeholder="费率说明" class="form-control"
-                                   name="landIncrementTaxExplain" readonly="readonly">
-                        </div>
-                    </div>
+                    <%--<div class="x-valid">--%>
+                        <%--<label class="col-sm-1 control-label">--%>
+                            <%--费率说明--%>
+                        <%--</label>--%>
+                        <%--<div class="col-sm-3">--%>
+                            <%--<input type="text"--%>
+                                   <%--placeholder="费率说明" class="form-control"--%>
+                                   <%--name="landIncrementTaxExplain" readonly="readonly">--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
 
             </form>
