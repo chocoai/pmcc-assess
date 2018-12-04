@@ -8,13 +8,14 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
+            <%@include file="/views/share/form_head.jsp" %>
 
             <%@include file="/views/case/caseHouse/houseDetail.jsp" %>
 
             <div class="x_panel">
                 <div class="x_content">
                     <div class="form-group">
-                        <div class="col-sm-6 col-sm-offset-5">
+                        <div class="col-sm-6 col-sm-offset-6">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
@@ -25,7 +26,10 @@
         </div>
     </div>
 </div>
-
-<%@include file="/views/share/main_footer.jsp" %>
 </body>
+<%@include file="/views/share/main_footer.jsp" %>
+<script type="text/javascript">
+
+</script>
+
 </html>

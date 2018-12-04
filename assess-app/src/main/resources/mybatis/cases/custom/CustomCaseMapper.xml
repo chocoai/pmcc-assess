@@ -69,15 +69,40 @@
         practical_use, trading_type, trading_time, trading_unit_price, version, creator,
         gmt_created, gmt_modified
     </sql>
+
     <select id="findCaseBaseHouseList" parameterType="map" resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBaseHouseMapper.BaseResultMap">
         select <include refid="Base_Column_List" />
         from tb_case_base_house
         <where>
             <if test="caseBaseHouse.blockName != null" >
-                and block_name LIKE '%'#{caseBaseHouse.blockName}'%'
+                and block_name LIKE concat(concat('%',#{caseBaseHouse.blockName}),'%')
             </if>
             <if test="caseBaseHouse.fullName != null">
-                and full_name LIKE '%'#{caseBaseHouse.fullName}'%'
+                and full_name LIKE concat(concat('%',#{caseBaseHouse.fullName}),'%')
+            </if>
+            <if test="caseBaseHouse.street != null">
+                and street LIKE concat(concat('%',#{caseBaseHouse.street}),'%')
+            </if>
+            <if test="caseBaseHouse.province != null">
+                and province = #{caseBaseHouse.province}
+            </if>
+            <if test="caseBaseHouse.city != null">
+                and city = #{caseBaseHouse.city}
+            </if>
+            <if test="caseBaseHouse.district != null">
+                and district = #{caseBaseHouse.district}
+            </if>
+            <if test="caseBaseHouse.practicalUse != null">
+                and practical_use = #{caseBaseHouse.practicalUse}
+            </if>
+            <if test="caseBaseHouse.tradingType != null">
+                and trading_type = #{caseBaseHouse.tradingType}
+            </if>
+            <if test="tradingTimeStart != null and tradingTimeEnd != null">
+                and trading_time <![CDATA[ >= ]]> #{tradingTimeStart} and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
+            </if>
+            <if test="tradingUnitPriceStart != null and tradingUnitPriceEnd != null">
+                and trading_unit_price <![CDATA[ >= ]]> #{tradingUnitPriceStart} and trading_unit_price <![CDATA[ <= ]]> #{tradingUnitPriceEnd}
             </if>
         </where>
     </select>
