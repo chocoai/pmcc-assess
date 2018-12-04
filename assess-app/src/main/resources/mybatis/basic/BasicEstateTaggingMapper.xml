@@ -3,14 +3,12 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basic.mapper.BasicEstateTaggingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="lng" property="lng" jdbcType="VARCHAR" />
     <result column="lat" property="lat" jdbcType="VARCHAR" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -74,8 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, estate_id, type, lng, lat, building_number, unit_number, remark, content, creator, 
-    gmt_created, gmt_modified
+    id, apply_id, type, lng, lat, name, remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTaggingExample" >
     select
@@ -111,14 +108,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_estate_tagging (estate_id, type, lng, 
-      lat, building_number, unit_number, 
-      remark, content, creator, 
-      gmt_created, gmt_modified)
-    values (#{estateId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
-      #{lat,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_estate_tagging (apply_id, type, lng, 
+      lat, name, remark, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{applyId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{lng,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,8 +123,8 @@
     </selectKey>
     insert into tb_basic_estate_tagging
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="estateId != null" >
-        estate_id,
+      <if test="applyId != null" >
+        apply_id,
       </if>
       <if test="type != null" >
         type,
@@ -138,17 +135,11 @@
       <if test="lat != null" >
         lat,
       </if>
-      <if test="buildingNumber != null" >
-        building_number,
-      </if>
-      <if test="unitNumber != null" >
-        unit_number,
+      <if test="name != null" >
+        name,
       </if>
       <if test="remark != null" >
         remark,
-      </if>
-      <if test="content != null" >
-        content,
       </if>
       <if test="creator != null" >
         creator,
@@ -161,8 +152,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="estateId != null" >
-        #{estateId,jdbcType=INTEGER},
+      <if test="applyId != null" >
+        #{applyId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
@@ -173,17 +164,11 @@
       <if test="lat != null" >
         #{lat,jdbcType=VARCHAR},
       </if>
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        #{unitNumber,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -208,8 +193,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
-        estate_id = #{record.estateId,jdbcType=INTEGER},
+      <if test="record.applyId != null" >
+        apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
@@ -220,17 +205,11 @@
       <if test="record.lat != null" >
         lat = #{record.lat,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unitNumber != null" >
-        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -249,14 +228,12 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_estate_tagging
     set id = #{record.id,jdbcType=INTEGER},
-      estate_id = #{record.estateId,jdbcType=INTEGER},
+      apply_id = #{record.applyId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       lng = #{record.lng,jdbcType=VARCHAR},
       lat = #{record.lat,jdbcType=VARCHAR},
-      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -267,8 +244,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging" >
     update tb_basic_estate_tagging
     <set >
-      <if test="estateId != null" >
-        estate_id = #{estateId,jdbcType=INTEGER},
+      <if test="applyId != null" >
+        apply_id = #{applyId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
@@ -279,17 +256,11 @@
       <if test="lat != null" >
         lat = #{lat,jdbcType=VARCHAR},
       </if>
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        unit_number = #{unitNumber,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -305,14 +276,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basic.entity.BasicEstateTagging" >
     update tb_basic_estate_tagging
-    set estate_id = #{estateId,jdbcType=INTEGER},
+    set apply_id = #{applyId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       lng = #{lng,jdbcType=VARCHAR},
       lat = #{lat,jdbcType=VARCHAR},
-      building_number = #{buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{unitNumber,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
