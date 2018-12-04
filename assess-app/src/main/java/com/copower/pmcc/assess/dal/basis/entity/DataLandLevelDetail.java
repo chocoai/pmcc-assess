@@ -15,6 +15,8 @@ public class DataLandLevelDetail {
 
     private String levelRange;
 
+    private String mainStreet;
+
     private Boolean bisDelete;
 
     private String creator;
@@ -69,6 +71,14 @@ public class DataLandLevelDetail {
 
     public void setLevelRange(String levelRange) {
         this.levelRange = levelRange == null ? null : levelRange.trim();
+    }
+
+    public String getMainStreet() {
+        return mainStreet;
+    }
+
+    public void setMainStreet(String mainStreet) {
+        this.mainStreet = mainStreet == null ? null : mainStreet.trim();
     }
 
     public Boolean getBisDelete() {
