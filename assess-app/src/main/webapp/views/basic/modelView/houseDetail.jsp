@@ -282,4 +282,3 @@
 </div>
 
 <%@include file="/views/basic/modelView/house/sonHouseDetail.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/house/house.common.js"></script>

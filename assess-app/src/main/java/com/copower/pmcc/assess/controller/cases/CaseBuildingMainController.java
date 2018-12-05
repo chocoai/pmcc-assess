@@ -108,9 +108,9 @@ public class CaseBuildingMainController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String buildingNumber, Integer estateId, Integer maxRows) {
+    public HttpResult autoCompleteCaseEstate(String buildingNumber, Integer estateId) {
         try {
-            List<CustomCaseEntity> caseEntities = caseBuildingMainService.autoCompleteCaseBuildingMain(buildingNumber, estateId, maxRows);
+            List<CustomCaseEntity> caseEntities = caseBuildingMainService.autoCompleteCaseBuildingMain(buildingNumber, estateId);
             return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

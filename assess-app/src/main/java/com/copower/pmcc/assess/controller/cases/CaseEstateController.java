@@ -246,24 +246,14 @@ public class CaseEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String name,String province,String city, Integer maxRows) {
+    public HttpResult autoCompleteCaseEstate(String name,String province,String city) {
         try {
-            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name,province,city, maxRows);
+            List<CustomCaseEntity> caseEstateList = caseEstateService.autoCompleteCaseEstate(name,province,city);
             return HttpResult.newCorrectResult(caseEstateList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/initAndUpdateSon", method = {RequestMethod.POST}, name = "初始化子类")
-    public HttpResult initAndUpdateSon() {
-        try {
-            caseEstateService.initAndUpdateSon(0, null);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e1) {
-            return HttpResult.newErrorResult("异常");
-        }
-    }
 
 }

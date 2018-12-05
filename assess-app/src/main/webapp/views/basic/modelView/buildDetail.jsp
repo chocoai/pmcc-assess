@@ -254,4 +254,3 @@
     </form>
 </div>
 <%@include file="/views/basic/modelView/build/sonBuildDetail.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/building/building.common.js"></script>

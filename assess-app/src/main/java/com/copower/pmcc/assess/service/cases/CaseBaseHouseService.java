@@ -40,41 +40,11 @@ public class CaseBaseHouseService {
         return caseBaseHouseDao.getBaseHouseById(id);
     }
 
-    public List<CaseBaseHouse> findCaseBaseHouseList(BigDecimal tradingUnitPriceStart, BigDecimal tradingUnitPriceEnd, Date tradingTimeStart, Date tradingTimeEnd, CaseBaseHouse caseBaseHouse) throws Exception {
-        if (caseBaseHouse != null){
-            if (StringUtils.isBlank(caseBaseHouse.getBlockName())){
-                caseBaseHouse.setBlockName(null);
-            }
-            if (StringUtils.isBlank(caseBaseHouse.getStreet())){
-                caseBaseHouse.setStreet(null);
-            }
-            if (StringUtils.isBlank(caseBaseHouse.getFullName())){
-                caseBaseHouse.setFullName(null);
-            }
-            if (StringUtils.isBlank(caseBaseHouse.getProvince())){
-                caseBaseHouse.setProvince(null);
-            }
-            if (StringUtils.isBlank(caseBaseHouse.getCity())){
-                caseBaseHouse.setCity(null);
-            }
-            if (StringUtils.isBlank(caseBaseHouse.getDistrict())){
-                caseBaseHouse.setDistrict(null);
-            }
-            if (caseBaseHouse.getTradingType() ==null){
-                caseBaseHouse.setTradingType(null);
-            }
-            if (caseBaseHouse.getPracticalUse() ==null){
-                caseBaseHouse.setPracticalUse(null);
-            }
-        }
-        return customCaseMapper.findCaseBaseHouseList(tradingUnitPriceStart, tradingUnitPriceEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BigDecimal tradingUnitPriceStart, BigDecimal tradingUnitPriceEnd, Date tradingTimeStart, Date tradingTimeEnd, CaseBaseHouse caseBaseHouse)throws Exception{
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseBaseHouse> list = this.findCaseBaseHouseList(tradingUnitPriceStart, tradingUnitPriceEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
+        List<CaseBaseHouse> list = customCaseMapper.findCaseBaseHouseList(tradingUnitPriceStart, tradingUnitPriceEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
         List<CaseBaseHouseVo> vos= LangUtils.transform(list,o->getCaseBaseHouseVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);

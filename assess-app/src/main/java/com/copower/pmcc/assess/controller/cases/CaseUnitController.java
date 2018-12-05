@@ -145,9 +145,9 @@ public class CaseUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId, Integer maxRows) {
+    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingMainId) {
         try {
-            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId, maxRows);
+            List<CustomCaseEntity> caseEntities = caseUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingMainId);
             return HttpResult.newCorrectResult(caseEntities);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");

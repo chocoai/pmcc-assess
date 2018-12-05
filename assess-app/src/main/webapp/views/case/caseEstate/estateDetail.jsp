@@ -141,17 +141,6 @@
             </div>
             <div class="form-group">
                 <div class="x-valid">
-                    <label class="col-sm-1 control-label">地图标注</label>
-                    <div class="col-sm-5">
-                        <div class="btn btn-success"
-                             onclick="window.open('${pageContext.request.contextPath}/caseEstate/detail?estateId=${caseEstate.id}')">
-                            地图标注
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
                     <label class="col-sm-1 control-label">总平面图</label>
                     <div class="col-sm-5">
                         <div id="_estate_floor_total_plan"></div>

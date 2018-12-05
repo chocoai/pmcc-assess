@@ -473,7 +473,6 @@
 </div>
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
-<script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/position.autocomplete.js"></script>
 <script type="text/javascript">
     $(function () {

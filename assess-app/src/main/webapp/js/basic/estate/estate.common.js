@@ -22,9 +22,11 @@
 
     //获取楼盘名称
     estateCommon.getEstateName = function () {
-        if (basicCommon.basicApplyForm.find('[name=estatePartInMode]')) {
+        alert(basicCommon.basicApplyForm.find('[name=estatePartInMode]').val());
+        if (basicCommon.basicApplyForm.find('[name=estatePartInMode]').val()) {
             return estateCommon.estateForm.find('[name=name]').val();
         } else {
+            alert(basicCommon.basicApplyForm.find('[name=estateName]').val());
             return basicCommon.basicApplyForm.find('[name=estateName]').val();
         }
     }
