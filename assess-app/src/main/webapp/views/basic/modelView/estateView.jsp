@@ -474,3 +474,16 @@
 
 <%@include file="/views/basic/modelView/estate/sonEstateView.jsp" %>
 <script src="${pageContext.request.contextPath}/js/basic/estate/estate.common.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete/position.autocomplete.js"></script>
+<script type="text/javascript">
+    $(function () {
+        estateCommon.estateForm.find('[name=position]').acptPosition({
+            provinceElement: estateCommon.estateForm.find('[name=province]'),
+            cityElement: estateCommon.estateForm.find('[name=city]'),
+            districtElement: estateCommon.estateForm.find('[name=district]'),
+            onSelect: function (id, name) {
+                estateCommon.estateForm.find('[name=position]').val(name);
+            }
+        })
+    })
+</script>

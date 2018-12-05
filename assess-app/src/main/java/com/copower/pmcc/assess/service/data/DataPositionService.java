@@ -71,32 +71,8 @@ public class DataPositionService {
         return vo;
     }
 
-    public List<DataPositionVo> dataPositionVos(DataPosition dataPosition) {
-        List<DataPosition> dataPositions = dataPositionDao.getDataPositionList(dataPosition);
-        List<DataPositionVo> vos = Lists.newArrayList();
-        if (!ObjectUtils.isEmpty(dataPositions)) {
-            for (DataPosition landLevel : dataPositions) {
-                vos.add(getDataPositionVo(landLevel));
-            }
-        }
-        return vos;
-    }
-
     public List<DataPositionVo> dataPositionVoList(String province, String city, String district, String name) {
-        DataPosition dataPosition = new DataPosition();
-        if (StringUtils.isNotBlank(province)) {
-            dataPosition.setProvince(province);
-        }
-        if (StringUtils.isNotBlank(city)) {
-            dataPosition.setCity(city);
-        }
-        if (StringUtils.isNotBlank(district)) {
-            dataPosition.setDistrict(district);
-        }
-        if (StringUtils.isNotBlank(name)) {
-            dataPosition.setName(name);
-        }
-        List<DataPosition> dataPositions = dataPositionDao.getDataPositionList(dataPosition);
+        List<DataPosition> dataPositions = dataPositionDao.getDataPositionList(province, city, district,name);
         List<DataPositionVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataPositions)) {
             for (DataPosition landLevel : dataPositions) {

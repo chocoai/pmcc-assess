@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script src="${pageContext.request.contextPath}/js/basic/industry.js"></script>
-<script src="${pageContext.request.contextPath}/js/developer.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/builder.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/property.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/land.level.select.js"></script>
-<script src="${pageContext.request.contextPath}/js/block.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/developer.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/builder.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/property.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/land.level.select.js"></script>
+<script src="${pageContext.request.contextPath}/js/select/block.select.js"></script>
 <div class="x_panel">
     <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
